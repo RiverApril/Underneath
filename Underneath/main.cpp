@@ -3,16 +3,28 @@
 //  Underneath
 //
 //  Created by Braeden Atlee on 9/29/14.
-//  Copyright (c) 2014 Braeden Atlee. All rights reserved.
+//  Copyright (c) 2014 Braeden Atlee. All rights reserved->
 //
 
-#include <iostream>
+#include "Ui.h"
+#include "Tile.h"
 
-int main(int argc, const char * argv[])
-{
+int main(int argc, const char * argv[]){
 
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    initTiles();
+
+    Ui::initNCurses();
+
+    Ui::changeMenu(new Ui::MenuMain());
+
+    running = true;
+    while (running) {
+		Ui::currentMenu->_handleInput(getch());
+        Ui::currentMenu->_update();
+    }
+
+    Ui::exitProgram();
+    
     return 0;
 }
 
