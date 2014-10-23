@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E10F8C0419F4136A000B909F /* Ui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E10F8C0219F4136A000B909F /* Ui.cpp */; };
-		E10F8C0719F43BA1000B909F /* UiMenuGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E10F8C0519F43BA1000B909F /* UiMenuGame.cpp */; };
+		E11493AF19F8C7660060B77C /* UiMenuGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E11493AD19F8C7660060B77C /* UiMenuGame.cpp */; };
 		E147E1A219F37E3100E1C4C1 /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E147E1A019F37E3100E1C4C1 /* Math.cpp */; };
 		E147E1A519F3850600E1C4C1 /* AiEntity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E147E1A319F3850600E1C4C1 /* AiEntity.cpp */; };
 		E147E1A819F3877C00E1C4C1 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E147E1A619F3877C00E1C4C1 /* Player.cpp */; };
@@ -37,8 +37,8 @@
 /* Begin PBXFileReference section */
 		E10F8C0219F4136A000B909F /* Ui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ui.cpp; sourceTree = "<group>"; };
 		E10F8C0319F4136A000B909F /* Ui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ui.h; sourceTree = "<group>"; };
-		E10F8C0519F43BA1000B909F /* UiMenuGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UiMenuGame.cpp; path = ../UiMenuGame.cpp; sourceTree = "<group>"; };
-		E10F8C0619F43BA1000B909F /* UiMenuGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UiMenuGame.h; path = ../UiMenuGame.h; sourceTree = "<group>"; };
+		E11493AD19F8C7660060B77C /* UiMenuGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UiMenuGame.cpp; sourceTree = "<group>"; };
+		E11493AE19F8C7660060B77C /* UiMenuGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UiMenuGame.h; sourceTree = "<group>"; };
 		E147E1A019F37E3100E1C4C1 /* Math.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Math.cpp; sourceTree = "<group>"; };
 		E147E1A119F37E3100E1C4C1 /* Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Math.h; sourceTree = "<group>"; };
 		E147E1A319F3850600E1C4C1 /* AiEntity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AiEntity.cpp; sourceTree = "<group>"; };
@@ -75,7 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				E10F8C0219F4136A000B909F /* Ui.cpp */,
-				E10F8C0519F43BA1000B909F /* UiMenuGame.cpp */,
+				E11493AD19F8C7660060B77C /* UiMenuGame.cpp */,
 			);
 			name = Ui;
 			sourceTree = "<group>";
@@ -83,6 +83,7 @@
 		E147E1AA19F3956100E1C4C1 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				E11493AE19F8C7660060B77C /* UiMenuGame.h */,
 				E147E1A419F3850600E1C4C1 /* AiEntity.h */,
 				E1B5E52119DC68B80092E2B1 /* Entity.h */,
 				E1F35D0A19E3A1E200E61D8B /* Geometry.h */,
@@ -91,7 +92,6 @@
 				E147E1A719F3877C00E1C4C1 /* Player.h */,
 				E1C63C1B19D9BB5C00A4AF9B /* Tile.h */,
 				E10F8C0319F4136A000B909F /* Ui.h */,
-				E10F8C0619F43BA1000B909F /* UiMenuGame.h */,
 				E1C63C1819D9B81200A4AF9B /* Level.h */,
 			);
 			name = Headers;
@@ -207,6 +207,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E11493AF19F8C7660060B77C /* UiMenuGame.cpp in Sources */,
 				E1F35D0B19E3A1E200E61D8B /* Geometry.cpp in Sources */,
 				E147E1A219F37E3100E1C4C1 /* Math.cpp in Sources */,
 				E10F8C0419F4136A000B909F /* Ui.cpp in Sources */,
@@ -217,7 +218,6 @@
 				E1C63C1919D9B81200A4AF9B /* Level.cpp in Sources */,
 				E1B5E52219DC68B80092E2B1 /* Entity.cpp in Sources */,
 				E1C63C1C19D9BB5C00A4AF9B /* Tile.cpp in Sources */,
-				E10F8C0719F43BA1000B909F /* UiMenuGame.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
