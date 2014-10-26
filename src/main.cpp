@@ -9,7 +9,7 @@
 #include "Ui.h"
 #include "Tile.h"
 
-int main(int argc, const char * argv[]){
+int main(int argc, const char * argv[]) {
 
     initTiles();
 
@@ -19,12 +19,12 @@ int main(int argc, const char * argv[]){
 
     running = true;
     while (running) {
-		Ui::currentMenu->_handleInput(getch());
+        Ui::currentMenu->_handleInput(getch());
         Ui::currentMenu->_update();
     }
 
     Ui::exitProgram();
-    
+
     return 0;
 }
 

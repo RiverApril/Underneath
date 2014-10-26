@@ -15,11 +15,11 @@ class Level;
 #include "Ui.h"
 #include "Geometry.h"
 
-class Entity{
+class Entity {
 
 public:
 
-    Entity(std::string icon, const Geometry::Point2* startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY);
+    Entity(std::string icon, char iconAlt, const Geometry::Point2* startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY);
 
     virtual ~Entity();
 
@@ -27,13 +27,14 @@ public:
     virtual bool update(int tick, Level* level);
 
     virtual const std::string getIcon(int x, int y, int tick, Level* level);
+    virtual const char getIconAlt(int x, int y, int tick, Level* level);
 
-    Geometry::Point2* const getPos(){
-		return pos;
+    Geometry::Point2* const getPos() {
+        return pos;
     }
 
-    int const getViewDistance(){
-		return viewDistance;
+    int const getViewDistance() {
+        return viewDistance;
     }
 
     const int getColorCode();
@@ -41,6 +42,7 @@ public:
 
 protected:
     std::string defaultIcon = "?";
+    char defaultIconAlt = '?';
     Geometry::Point2* pos;
     Geometry::Point2* lastPos;
     int colorCode;

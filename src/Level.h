@@ -17,7 +17,7 @@ class Entity;
 #include "Entity.h"
 #include "Geometry.h"
 
-class Level{
+class Level {
 
 public:
 
@@ -25,7 +25,7 @@ public:
     const static int HEIGHT = 1000;
 
     Level();
-	~Level();
+    ~Level();
 
     bool isInView(int x, int y, Entity* e);
 
@@ -53,7 +53,7 @@ public:
     void deleteEntity(Entity* e);
 
     Entity* displayEntityGrid[WIDTH][HEIGHT];
-    
+
 private:
 
     int tileGrid[WIDTH][HEIGHT];

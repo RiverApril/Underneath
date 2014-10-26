@@ -15,16 +15,16 @@ class Level;
 #include "Ui.h"
 #include "Geometry.h"
 
-namespace AiType{
-    const int aiNone = 0;
-    const int aiMoveRandom = 1 << 0;
+namespace AiType {
+const int aiNone = 0;
+const int aiMoveRandom = 1 << 0;
 };
 
-class AiEntity : public Entity{
+class AiEntity : public Entity {
 
 public:
 
-    AiEntity(int aiFlags, std::string icon, Geometry::Point2* startPos, int colorCode = Ui::COLOR_DEFAULT_ENTITY);
+    AiEntity(int aiFlags, std::string icon, char iconAlt, Geometry::Point2* startPos, int colorCode = Ui::COLOR_DEFAULT_ENTITY);
 
     ~AiEntity();
 

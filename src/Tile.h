@@ -12,26 +12,28 @@
 #include "Global.h"
 #include "Ui.h"
 
-enum TileFlag{
+enum TileFlag {
     tileFlagNone = 0,
     tileFlagSolid = 1 << 0,
 };
 
-class Tile{
+class Tile {
 public:
 
-    Tile(int index, std::string icon, Ui::color colorCode, Ui::color colorCodeUnseen, TileFlag flags);
+    Tile(int index, std::string icon, char iconAlt, Ui::color colorCode, TileFlag flags);
 
     std::string getIcon();
+    char getIconAlt();
     int getIndex();
     int getColorCode(bool inView);
 
-    bool isSolid(){
+    bool isSolid() {
         return flags & tileFlagSolid;
     }
 
 private:
     std::string icon;
+    char iconAlt;
     int index;
     Ui::color colorCode;
     Ui::color colorCodeUnseen;

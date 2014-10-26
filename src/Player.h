@@ -11,11 +11,11 @@
 
 #include "Entity.h"
 
-class Player : public Entity{
+class Player : public Entity {
 
 public:
 
-    Player(std::string name, std::string icon, const Geometry::Point2* startPos, Ui::color colorCode);
+    Player(std::string name, std::string icon, char iconAlt, const Geometry::Point2* startPos, Ui::color colorCode);
 
     ~Player();
 
@@ -25,7 +25,7 @@ public:
 
 private:
     std::string name;
-    
+
 };
 
 #endif /* defined(__Underneath__Player__) */

@@ -17,7 +17,6 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <math.h>
-#include <noise/noise.h>
 
 extern std::string debugMessage;
 extern bool running;
