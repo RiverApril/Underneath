@@ -4,3 +4,4 @@
 *.cbp
 *.depend
 *.layout
+*.xcodeproj/**
