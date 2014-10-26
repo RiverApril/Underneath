@@ -102,13 +102,75 @@ void Level::generate(unsigned int seed) {
         for (int j=0; j<HEIGHT; j++) {
             displayEntityGrid[i][j] = nullptr;
             tileGrid[i][j] = tileAir->getIndex();
-            explored[i][j] = false;
-            if(rand()%10==0) {
-                tileGrid[i][j] = tileWall->getIndex();
-            }
+            explored[i][j] = true;
         }
     }
+
+    std::vector<LevelGenerator::Room> rooms = LevelGenerator::createRooms(1000, WIDTH, HEIGHT);
+    LevelGenerator::makeRoomsAndPaths(rooms, this);
 
 
 }
 
+namespace LevelGenerator{
+
+    int OPTION_ROOM_RADIUS_MAX = 10;
+    int OPTION_ROOM_RADIUS_MIN = 2;
+
+    bool roomsOverlap(Room a, Room b, int border){
+        return !(((a.center.x-a.radius.x-border) > (b.center.x+b.radius.x+border) ||
+        (b.center.x-b.radius.x-border) > (a.center.x+a.radius.x+border)) ||
+        ((a.center.y-a.radius.y-border) > (b.center.y+b.radius.y+border) ||
+        (b.center.y-b.radius.y-border) > (a.center.y+a.radius.y+border)));
+    }
+
+    Room createRoom(int levelWidth, int levelHeight, std::vector<Room> presentRooms){
+        bool fit = false;
+        Room r;
+        int att = 0;
+        while(!fit && att<100){
+            att++;
+            r.radius.x = (rand()%(OPTION_ROOM_RADIUS_MAX-OPTION_ROOM_RADIUS_MIN))+OPTION_ROOM_RADIUS_MIN;
+            r.radius.y = (rand()%(OPTION_ROOM_RADIUS_MAX-OPTION_ROOM_RADIUS_MIN))+OPTION_ROOM_RADIUS_MIN;
+            r.center.x = rand()%(levelWidth-(r.radius.x*2))+r.radius.x;
+            r.center.y = rand()%(levelHeight-(r.radius.y*2))+r.radius.y;
+            fit = true;
+            for(int i=0;i<presentRooms.size();i++){
+                if(roomsOverlap(presentRooms[i], r, 2)){
+                    fit = false;
+                    break;
+                }
+            }
+        }
+        if(!fit){
+            r.radius.set(0);
+        }
+        return r;
+    }
+
+    std::vector<Room> createRooms(int qty, int levelWidth, int levelHeight){
+        std::vector<Room> rooms;
+        for(int i=0;i<qty;i++){
+            Room r = createRoom(levelWidth, levelHeight, rooms);
+            if(r.radius.x > 0 && r.radius.y > 0){
+                rooms.push_back(r);
+            }
+        }
+        return rooms;
+    }
+
+    void makeRoomsAndPaths(std::vector<Room> rooms, Level* level){
+        for(int i=0;i<rooms.size();i++){
+            Room r = rooms[i];
+            for(int j=-r.radius.x;j<=r.radius.x;j++){
+                level->setTile(r.center.x+j, r.center.y+r.radius.y, tileWall);
+                level->setTile(r.center.x+j, r.center.y-r.radius.y, tileWall);
+            }
+            for(int j=-r.radius.y;j<=r.radius.y;j++){
+                level->setTile(r.center.x+r.radius.x, r.center.y+j, tileWall);
+                level->setTile(r.center.x-r.radius.x, r.center.y+j, tileWall);
+            }
+        }
+
+    }
+}
