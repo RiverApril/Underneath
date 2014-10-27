@@ -66,8 +66,10 @@ private:
 
 namespace LevelGenerator{
 
-    extern int OPTION_ROOM_RADIUS_MAX;
-    extern int OPTION_ROOM_RADIUS_MIN;
+    extern const int OPTION_ROOM_RADIUS_MAX;
+    extern const int OPTION_ROOM_RADIUS_MIN;
+    extern const int OPTION_ROOM_ENTRANCES_MAX;
+    extern const int OPTION_ROOM_ENTRANCES_MIN;
 
     const int left = 0;
     const int right = 1;
@@ -77,22 +79,33 @@ namespace LevelGenerator{
     struct Entry{
         int direction = 0;
         int offset = 0;
-        bool used = false;
+        int x = 0;
+        int y = 0;
     };
 
     struct Room{
+        Room(){
+            entrances = new std::vector<Entry*>();
+        }
+        ~Room(){
+            std::vector<Entry*>::iterator it;
+            for(it = entrances->begin(); it!=entrances->end();) {
+                delete * it;
+                it = entrances->erase(it);
+            }
+        }
         Geometry::Point2 center;
         Geometry::Point2 radius;
-        std::vector<Entry> entrances;
+        std::vector<Entry*>* entrances;
     };
 
-    extern bool roomsOverlap(Room a, Room b);
+    extern bool roomsOverlap(Room* a, Room* b);
 
-    extern Room createRoom(int levelWidth, int levelHeight, std::vector<Room> presentRooms);
+    extern Room* createRoom(int levelWidth, int levelHeight, std::vector<Room*>* presentRooms);
 
-    extern std::vector<Room> createRooms(int qty, int levelWidth, int levelHeight);
+    extern std::vector<Room*>* createRooms(int qty, int levelWidth, int levelHeight);
 
-    extern void makeRoomsAndPaths(std::vector<Room> rooms, Level* level);
+    extern void makeRoomsAndPaths(std::vector<Room*>* rooms, Level* level);
 
 }
 

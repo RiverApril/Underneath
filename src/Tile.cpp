@@ -50,7 +50,7 @@ void initTiles() {
 
     //Technical
     tileAir = new Tile(a++, ".", '.', Ui::C_LIGHT_WHITE, tileFlagNone);
-    tileEdge = new Tile(a++, "X", 'X',  Ui::C_LIGHT_RED, tileFlagNone);
+    tileEdge = new Tile(a++, "X", 'X',  Ui::C_LIGHT_RED, tileFlagSolid);
     //Solids
     tileWall = new Tile(a++, "░", '#', Ui::C_LIGHT_WHITE, tileFlagSolid);
 }

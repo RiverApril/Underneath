@@ -45,7 +45,8 @@ void initNCurses() {
     initscr();
     start_color();
     use_default_colors();
-    resizeterm(TERMINAL_HEIGHT, TERMINAL_WIDTH);
+    TERMINAL_HEIGHT = getmaxy(stdscr);
+    TERMINAL_WIDTH = getmaxx(stdscr);
     keypad(stdscr, TRUE);
     noecho();
     curs_set(0);
