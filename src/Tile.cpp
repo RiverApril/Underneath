@@ -16,7 +16,7 @@ Tile::Tile(int index, std::string icon, char iconAlt, Ui::color colorCode, TileF
     tileList[index] = this;
 
     this->colorCode = colorCode;
-    this->colorCodeUnseen = Ui::C_BLACK;
+    this->colorCodeUnseen = Ui::C_DARK_GRAY;
 
     this->flags = flags;
 }
@@ -39,19 +39,32 @@ int Tile::getColorCode(bool inView) {
 
 
 
-Tile *tileList[10];
+Tile* tileList[10];
 Tile* tileAir;
 Tile* tileEdge;
+Tile* tileDebug1;
+Tile* tileDebug2;
+Tile* tileDebug3;
+Tile* tileDebug4;
+Tile* tileDebug5;
+Tile* tileDebug6;
 Tile* tileWall;
 
 void initTiles() {
 
     int a = 0;
 
-    //Technical
     tileAir = new Tile(a++, ".", '.', Ui::C_LIGHT_WHITE, tileFlagNone);
+
+    tileDebug1 = new Tile(a++, "1", '1',  Ui::C_LIGHT_GREEN, tileFlagNone);
+    tileDebug2 = new Tile(a++, "2", '2',  Ui::C_LIGHT_GREEN, tileFlagNone);
+    tileDebug3 = new Tile(a++, "3", '3',  Ui::C_LIGHT_GREEN, tileFlagNone);
+    tileDebug4 = new Tile(a++, "4", '4',  Ui::C_LIGHT_GREEN, tileFlagNone);
+    tileDebug5 = new Tile(a++, "5", '5',  Ui::C_LIGHT_GREEN, tileFlagNone);
+    tileDebug6 = new Tile(a++, "6", '6',  Ui::C_LIGHT_GREEN, tileFlagNone);
+    
     tileEdge = new Tile(a++, "X", 'X',  Ui::C_LIGHT_RED, tileFlagSolid);
-    //Solids
+
     tileWall = new Tile(a++, "░", '#', Ui::C_LIGHT_WHITE, tileFlagSolid);
 }
 

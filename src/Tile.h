@@ -43,6 +43,12 @@ private:
 extern Tile* tileList[10];
 extern Tile* tileAir;
 extern Tile* tileEdge;
+extern Tile* tileDebug1;
+extern Tile* tileDebug2;
+extern Tile* tileDebug3;
+extern Tile* tileDebug4;
+extern Tile* tileDebug5;
+extern Tile* tileDebug6;
 extern Tile* tileWall;
 
 

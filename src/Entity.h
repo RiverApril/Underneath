@@ -46,7 +46,7 @@ protected:
     Geometry::Point2* pos;
     Geometry::Point2* lastPos;
     int colorCode;
-    int viewDistance = 10;
+    int viewDistance = 8;
     bool updateIcon = true;
 };
 
