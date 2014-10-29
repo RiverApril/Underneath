@@ -19,30 +19,28 @@ class Entity {
 
 public:
 
-    Entity(std::string icon, char iconAlt, const Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY);
+    Entity(char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY);
 
     virtual ~Entity();
 
     virtual bool tryToMove(Point2 p, Level* world);
     virtual bool update(int tick, Level* level);
 
-    virtual const std::string getIcon(Point2 p, int tick, Level* level);
-    virtual const char getIconAlt(Point2 p, int tick, Level* level);
+    virtual char getIcon(Point2 p, int tick, Level* level);
 
-    Point2* const getPos() {
-        return pos;
+    Point2 getPos() {
+        return *pos;
     }
 
-    int const getViewDistance() {
+    int getViewDistance() {
         return viewDistance;
     }
 
-    const int getColorCode();
+    int getColorCode();
 
 
 protected:
-    std::string defaultIcon = "?";
-    char defaultIconAlt = '?';
+    char defaultIcon = '?';
     Point2* pos;
     Point2* lastPos;
     int colorCode;

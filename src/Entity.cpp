@@ -12,9 +12,8 @@
 #include "Ui.h"
 #include "Global.h"
 
-Entity::Entity(std::string icon, char iconAlt, const Point2 startPos, Ui::color colorCode) {
+Entity::Entity(char icon, Point2 startPos, Ui::color colorCode) {
     this->defaultIcon = icon;
-    this->defaultIconAlt = iconAlt;
     this->colorCode = colorCode;
 
     pos = new Point2(0, 0);
@@ -43,10 +42,10 @@ bool Entity::update(int tick, Level* level) {
 
     if(pos != lastPos || updateIcon) {
         if(level->inRange(*lastPos)) {
-            level->displayEntityGrid[lastPos->x][lastPos->y] = nullptr;
+            level->setDisplayEntity(*lastPos, nullptr);
         }
         if(level->inRange(*pos)) {
-            level->displayEntityGrid[pos->x][pos->y] = this;
+            level->setDisplayEntity(*pos, this);
         }
         u = true;
         lastPos->set(pos);
@@ -57,14 +56,10 @@ bool Entity::update(int tick, Level* level) {
     return u;
 }
 
-const std::string Entity::getIcon(Point2 p, int tick, Level* level) {
+char Entity::getIcon(Point2 p, int tick, Level* level) {
     return defaultIcon;
 }
 
-const char Entity::getIconAlt(Point2 p, int tick, Level* level) {
-    return defaultIconAlt;
-}
-
-const int Entity::getColorCode() {
+int Entity::getColorCode() {
     return colorCode;
 }

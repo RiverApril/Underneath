@@ -20,16 +20,15 @@ enum TileFlag {
 };
 
 inline TileFlag operator|(TileFlag a, TileFlag b){
-	return static_cast<TileFlag>(static_cast<int>(a)|static_cast<int>(b));
+    return static_cast<TileFlag>(static_cast<int>(a)|static_cast<int>(b));
 }
 
 class Tile {
 public:
 
-    Tile(int index, std::string icon, char iconAlt, Ui::color colorCode, TileFlag flags);
+    Tile(int index, char icon, Ui::color colorCode, TileFlag flags);
 
-    std::string getIcon();
-    char getIconAlt();
+    char getIcon();
     int getIndex();
     int getColorCode(bool inView);
 
@@ -42,8 +41,7 @@ public:
     }
 
 private:
-    std::string icon;
-    char iconAlt;
+    char icon;
     int index;
     Ui::color colorCode;
     Ui::color colorCodeUnseen;
@@ -54,6 +52,12 @@ extern Tile* tileList[20];
 extern Tile* tileFloor;
 extern Tile* tilePath;
 extern Tile* tileWall;
+extern Tile* tileDoor;
+extern Tile* tileSecretDoor;
+extern Tile* tileOpenDoor;
+
+extern Tile* tileStairDown;
+extern Tile* tileStairUp;
 
 extern Tile* tileEdge;
 extern Tile* tileUnset;

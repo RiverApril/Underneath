@@ -10,11 +10,11 @@
 #include "Math.h"
 #include "Global.h"
 
- Point2 Point2Zero = Point2(0, 0);
- Point2 Point2Left = Point2(-1, 0);
- Point2 Point2Right = Point2(1, 0);
- Point2 Point2Up = Point2(0, -1);
- Point2 Point2Down = Point2(0, 1);
+Point2 Point2Zero = Point2(0, 0);
+Point2 Point2Left = Point2(-1, 0);
+Point2 Point2Right = Point2(1, 0);
+Point2 Point2Up = Point2(0, -1);
+Point2 Point2Down = Point2(0, 1);
 
 Point2::Point2(int x, int y) {
     this->x = x;
@@ -35,19 +35,19 @@ void Point2::set(const Point2* other) {
 }
 
 
- Point2 Point2::operator+( Point2 other) {
+Point2 Point2::operator+( Point2 other) {
     return Point2(this->x+other.x, this->y+other.y);
 }
 
- Point2 Point2::operator-( Point2 other) {
+Point2 Point2::operator-( Point2 other) {
     return Point2(this->x-other.x, this->y-other.y);
 }
 
- Point2 Point2::operator*( Point2 other) {
+Point2 Point2::operator*( Point2 other) {
     return Point2(this->x*other.x, this->y*other.y);
 }
 
- Point2 Point2::operator/( Point2 other) {
+Point2 Point2::operator/( Point2 other) {
     return Point2(this->x/other.x, this->y/other.y);
 }
 
@@ -77,21 +77,21 @@ Point2* Point2::operator/=( Point2 other) {
 }
 
 
- Point2 Point2::operator+(int other) {
+Point2 Point2::operator+(int other) {
     return Point2(this->x+other, this->y+other);
 }
 
- Point2 Point2::operator-( int other) {
+Point2 Point2::operator-( int other) {
     return Point2(this->x-other, this->y-other);
 }
 
- Point2 Point2::operator*( int other) {
+Point2 Point2::operator*( int other) {
     return Point2(this->x*other, this->y*other);
 }
 
- Point2 Point2::operator/( int other) {
+Point2 Point2::operator/( int other) {
     return Point2(this->x/other, this->y/other);
- }
+}
 
 
 Vector2 Point2::operator+(double other) {

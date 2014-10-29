@@ -17,11 +17,6 @@
 
 namespace LevelGenerator{
 
-    extern const int OPTION_ROOM_RADIUS_MAX;
-    extern const int OPTION_ROOM_RADIUS_MIN;
-    extern const int OPTION_ROOM_ENTRANCES_MAX;
-    extern const int OPTION_ROOM_ENTRANCES_MIN;
-
     const int left = 0;
     const int right = 1;
     const int up = 2;
@@ -29,7 +24,6 @@ namespace LevelGenerator{
 
     struct Entry{
         int direction = 0;
-        int offset = 0;
         int x = 0;
         int y = 0;
     };
@@ -54,7 +48,7 @@ namespace LevelGenerator{
     extern std::vector<Room*>* createRooms(int qty, Point2 roomSize);
 
     extern void makeRoomsAndPaths(std::vector<Room*>* rooms, Level* level);
-    
+
 }
 
 #endif /* defined(__Underneath__LevelGenerator__) */

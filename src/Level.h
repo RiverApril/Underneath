@@ -18,22 +18,24 @@ class Entity;
 #include "Geometry.h"
 
 struct TileData{
-	int8_t index = 0;
+    int8_t index = 0;
     bool explored = false;
+    Entity* entity = nullptr;
 };
 
 class Level {
 
 public:
 
-    const static int WIDTH = 100;
-    const static int HEIGHT = 100;
-
     Level();
     ~Level();
 
     bool getExplored(Point2 p);
     void setExplored(Point2 p, bool a);
+
+    Entity* getDisplayEntity(Point2 p);
+
+    void setDisplayEntity(Point2 p, Entity* e);
 
     bool inRange(Point2 p);
     Tile* tileAt(Point2 p);
@@ -54,11 +56,15 @@ public:
     Entity* newEntity(Entity* newE);
     void deleteEntity(Entity* e);
 
-    Entity* displayEntityGrid[WIDTH][HEIGHT];
+    Point2 getSize(){
+        return *size;
+    }
 
 private:
 
-    TileData tileGrid[WIDTH][HEIGHT];
+    Point2* size;
+
+    TileData** tileGrid;
 
     std::vector<Entity*> entityList;
 };

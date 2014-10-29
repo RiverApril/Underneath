@@ -22,19 +22,19 @@ struct Point2 {
     bool operator!=(const Point2 other);
     void set(const Point2 *other);
 
-     Point2 operator+(Point2 other);
-     Point2 operator-(Point2 other);
-     Point2 operator*(Point2 other);
-     Point2 operator/(Point2 other);
+    Point2 operator+(Point2 other);
+    Point2 operator-(Point2 other);
+    Point2 operator*(Point2 other);
+    Point2 operator/(Point2 other);
 
     Point2* operator+=(Point2 other);
     Point2* operator-=(Point2 other);
     Point2* operator*=(Point2 other);
     Point2* operator/=(Point2 other);
 
-     Point2 operator+(int other);
-     Point2 operator-(int other);
-     Point2 operator*(int other);
+    Point2 operator+(int other);
+    Point2 operator-(int other);
+    Point2 operator*(int other);
     Point2 operator/(int other);
 
     Vector2 operator+(double other);

@@ -8,7 +8,7 @@
 
 #include "Player.h"
 
-Player::Player(std::string name, std::string icon, char iconAlt, const Point2 startPos, Ui::color colorCode) : Entity(icon, iconAlt, startPos, colorCode) {
+Player::Player(std::string name, char icon, Point2 startPos, Ui::color colorCode) : Entity(icon, startPos, colorCode) {
     this->name = name;
 }
 
@@ -21,6 +21,24 @@ bool Player::update(int tick, Level* level) {
 }
 
 void Player::move(Point2 p, Level* level) {
-    tryToMove(p, level);
+    if(tryToMove(p, level)){
 
+    }else{
+        int tid = level->indexAt(*pos+p);
+        if(tid == tileDoor->getIndex() || tid == tileSecretDoor->getIndex()){
+            level->setTile(*pos+p, tileOpenDoor);
+        }
+    }
+}
+
+bool Player::use(Level* level){
+
+    int tid = level->indexAt(*pos);
+    if(tid == tileStairDown->getIndex()){
+		
+    }else if(tid == tileStairUp->getIndex()){
+
+    }
+    
+    return false;
 }

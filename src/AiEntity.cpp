@@ -9,7 +9,7 @@
 #include "AiEntity.h"
 
 
-AiEntity::AiEntity(int aiFlags, std::string icon, char iconAlt, Point2 startPos, int colorCode) : Entity(icon, iconAlt, startPos, colorCode) {
+AiEntity::AiEntity(int aiFlags, char icon, Point2 startPos, int colorCode) : Entity(icon, startPos, colorCode) {
     this->ai = aiFlags;
 
     speed = new Point2(0, 0);
@@ -40,10 +40,10 @@ bool AiEntity::update(int tick, Level* level) {
     runAi(tick, level);
 
     tryToMove(
-        Point2(speed->x==0?0:(speed->x>0?((tick%speed->x)==0?1:0):((tick%-speed->x)==0?-1:0)),
-        speed->y==0?0:(speed->y>0?((tick%speed->y)==0?1:0):((tick%-speed->y)==0?-1:0))),
-        level
-    );
-
+              Point2(speed->x==0?0:(speed->x>0?((tick%speed->x)==0?1:0):((tick%-speed->x)==0?-1:0)),
+                     speed->y==0?0:(speed->y>0?((tick%speed->y)==0?1:0):((tick%-speed->y)==0?-1:0))),
+              level
+              );
+    
     return Entity::update(tick, level);
 }

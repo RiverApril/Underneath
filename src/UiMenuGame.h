@@ -11,40 +11,43 @@
 
 #include "Ui.h"
 #include "Geometry.h"
+#include "World.h"
 #include "Level.h"
 #include "Player.h"
 
 namespace Ui {
 
-class MenuGame : public Menu {
-public:
+    class MenuGame : public Menu {
+    public:
 
-    int GAME_WIDTH = 0;
-    int GAME_HEIGHT = 0;
+        int GAME_WIDTH = 0;
+        int GAME_HEIGHT = 0;
 
-    MenuGame();
+        MenuGame(std::string worldName);
 
-    ~MenuGame();
+        ~MenuGame();
 
-    void openUi();
-    void handleInput(int in);
-    void update();
+        bool init(std::string worldName);
 
-    void setGameAreaSize();
+        void openUi();
+        void handleInput(int in);
+        void update();
 
-    void viewMove(Point2 p);
-    void drawTileAt(Point2 p);
+        void setGameAreaSize();
 
-    bool paused = false;
-    bool updateView;
-    Point2* viewPos;
-    Point2* viewMoveSpeed;
-    bool playerMode = true;
-    bool debugMode = true;
-    Level* currentLevel;
-    Player* currentPlayer;
+        void viewUpdate();
+        void drawTileAt(Point2 p);
 
-};
+        bool paused = false;
+        bool updateView;
+        Point2* viewPos;
+        Point2* viewMoveSpeed;
+        bool playerMode = true;
+        World* currentWorld;
+        Level* currentLevel;
+        Player* currentPlayer;
+
+    };
 }
 
 #endif /* defined(__Underneath__UiMenuGame__) */
