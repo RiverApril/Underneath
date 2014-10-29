@@ -15,7 +15,13 @@
 enum TileFlag {
     tileFlagNone = 0,
     tileFlagSolid = 1 << 0,
+    tileFlagTall = 1 << 1,
+
 };
+
+inline TileFlag operator|(TileFlag a, TileFlag b){
+	return static_cast<TileFlag>(static_cast<int>(a)|static_cast<int>(b));
+}
 
 class Tile {
 public:
@@ -31,6 +37,10 @@ public:
         return flags & tileFlagSolid;
     }
 
+    bool isTall() {
+        return flags & tileFlagTall;
+    }
+
 private:
     std::string icon;
     char iconAlt;
@@ -40,16 +50,20 @@ private:
     TileFlag flags;
 };
 
-extern Tile* tileList[10];
-extern Tile* tileAir;
+extern Tile* tileList[20];
+extern Tile* tileFloor;
+extern Tile* tilePath;
+extern Tile* tileWall;
+
 extern Tile* tileEdge;
+extern Tile* tileUnset;
+
 extern Tile* tileDebug1;
 extern Tile* tileDebug2;
 extern Tile* tileDebug3;
 extern Tile* tileDebug4;
 extern Tile* tileDebug5;
 extern Tile* tileDebug6;
-extern Tile* tileWall;
 
 
 void initTiles();

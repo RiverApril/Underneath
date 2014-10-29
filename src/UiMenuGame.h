@@ -32,17 +32,15 @@ public:
 
     void setGameAreaSize();
 
-    void viewMove(int x, int y, bool cursor);
-    void drawTileAt(int i, int j);
+    void viewMove(Point2 p);
+    void drawTileAt(Point2 p);
 
     bool paused = false;
     bool updateView;
-    Geometry::Point2* viewPos;
-    Geometry::Point2* viewMoveSpeed;
-    Geometry::Point2* cursorPosition;
-    bool cursorMode = false;
+    Point2* viewPos;
+    Point2* viewMoveSpeed;
     bool playerMode = true;
-    int cursorTick = 0;
+    bool debugMode = true;
     Level* currentLevel;
     Player* currentPlayer;
 

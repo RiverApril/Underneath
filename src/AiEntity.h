@@ -24,7 +24,7 @@ class AiEntity : public Entity {
 
 public:
 
-    AiEntity(int aiFlags, std::string icon, char iconAlt, Geometry::Point2* startPos, int colorCode = Ui::COLOR_DEFAULT_ENTITY);
+    AiEntity(int aiFlags, std::string icon, char iconAlt, Point2 startPos, int colorCode = Ui::COLOR_DEFAULT_ENTITY);
 
     ~AiEntity();
 
@@ -35,7 +35,7 @@ public:
 protected:
     int ai = AiType::aiNone;
     int moveSpeed = 4;
-    Geometry::Point2* speed;
+    Point2* speed;
 };
 
 #endif /* defined(__Underneath__AiEntity__) */

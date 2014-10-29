@@ -9,10 +9,10 @@
 #include "AiEntity.h"
 
 
-AiEntity::AiEntity(int aiFlags, std::string icon, char iconAlt, Geometry::Point2* startPos, int colorCode) : Entity(icon, iconAlt, startPos, colorCode) {
+AiEntity::AiEntity(int aiFlags, std::string icon, char iconAlt, Point2 startPos, int colorCode) : Entity(icon, iconAlt, startPos, colorCode) {
     this->ai = aiFlags;
 
-    speed = new Geometry::Point2(0, 0);
+    speed = new Point2(0, 0);
 }
 
 AiEntity::~AiEntity() {
@@ -40,8 +40,8 @@ bool AiEntity::update(int tick, Level* level) {
     runAi(tick, level);
 
     tryToMove(
-        speed->x==0?0:(speed->x>0?((tick%speed->x)==0?1:0):((tick%-speed->x)==0?-1:0)),
-        speed->y==0?0:(speed->y>0?((tick%speed->y)==0?1:0):((tick%-speed->y)==0?-1:0)),
+        Point2(speed->x==0?0:(speed->x>0?((tick%speed->x)==0?1:0):((tick%-speed->x)==0?-1:0)),
+        speed->y==0?0:(speed->y>0?((tick%speed->y)==0?1:0):((tick%-speed->y)==0?-1:0))),
         level
     );
 

@@ -32,6 +32,8 @@ bool unicodeSupport = true;
 
 Menu* currentMenu;
 
+    WINDOW* debugWindow;
+
 void changeMenu(Menu* newMenu) {
     delete currentMenu;
     currentMenu = newMenu;
@@ -51,6 +53,10 @@ void initNCurses() {
     noecho();
     curs_set(0);
     timeout(-1);
+
+    debugWindow = newwin(30, 80, 0, 0);
+    wprintw(debugWindow, "Debug Window Init.");
+    wrefresh(debugWindow);
 
 
     limitedColorMode = COLORS<256;

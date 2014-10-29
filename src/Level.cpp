@@ -26,54 +26,65 @@ Level::~Level() {
     Utility::deleteContentsOfVector(&entityList);
 }
 
-bool Level::getExplored(int x, int y) {
-    return explored[x][y];
+bool Level::getExplored(Point2 p) {
+    return tileGrid[p.x][p.y].explored;
 }
 
-void Level::setExplored(int x, int y, bool a) {
-    explored[x][y] = a;
+void Level::setExplored(Point2 p, bool a) {
+    tileGrid[p.x][p.y].explored = a;
 }
 
-bool Level::isInView(int x, int y, Entity* e) {
-    return Math::distanceSquared(x, y, e->getPos()->x, e->getPos()->y) < (e->getViewDistance()*e->getViewDistance());
+bool Level::inRange(Point2 p) {
+    return p.x>=0 && p.y>=0 && p.x<WIDTH && p.y<HEIGHT;
 }
 
-bool Level::inRange(int x, int y) {
-    return x>=0 && y>=0 && x<WIDTH && y<HEIGHT;
-}
-
-bool Level::inRange(Geometry::Point2* a) {
-    return inRange(a->x, a->y);
-}
-
-bool Level::setTile(int x, int y, int tile) {
-    if(inRange(x, y)) {
-        tileGrid[x][y] = tile;
+bool Level::setTile(Point2 p, int tile) {
+    if(inRange(p)) {
+        tileGrid[p.x][p.y].index = tile;
         return true;
     }
     return false;
 }
 
-bool Level::setTile(int x, int y, Tile* tile) {
-    return setTile(x, y, tile->getIndex());
+bool Level::setTile(Point2 p, Tile* tile) {
+    return setTile(p, tile->getIndex());
 }
 
-Tile* Level::tileAt(int x, int y) {
-    return getTile(indexAt(x, y));
+Tile* Level::tileAt(Point2 p) {
+    return getTile(indexAt(p));
 }
 
-int Level::indexAt(int x, int y) {
-    if(inRange(x, y)) {
-        return tileGrid[x][y];
+int Level::indexAt(Point2 p) {
+    if(inRange(p)) {
+        return tileGrid[p.x][p.y].index;
     }
     return tileEdge->getIndex();
+}
+
+bool Level::canSee(Point2 origin, Point2 test, int range){
+
+    if(distanceSquared(origin.x, origin.y, test.x, test.y) > range*range){
+		return false;
+    }
+
+	Vector2 step = ((test-origin)/((double)range));
+
+	for(double i=0;i<range;i+=.2){
+		if(tileAt(origin+((step*i).truncate()))->isTall()){
+			return false;
+        }
+    }
+
+
+
+	return true;
 }
 
 long Level::entityCount() {
     return entityList.size();
 }
 
-bool Level::update(int tick, Geometry::Point2* viewPos) {
+bool Level::update(int tick, Point2* viewPos) {
     bool u = false;
     for (size_t i=0; i<entityList.size(); i++) {
         u = entityList[i]->update(tick, this) || u;
@@ -104,12 +115,12 @@ void Level::generate(unsigned int seed) {
     for (int i=0; i<WIDTH; i++) {
         for (int j=0; j<HEIGHT; j++) {
             displayEntityGrid[i][j] = nullptr;
-            tileGrid[i][j] = tileAir->getIndex();
-            explored[i][j] = true;
+            tileGrid[i][j].index = tileUnset->getIndex();
+            tileGrid[i][j].explored = false;
         }
     }
 
-    std::vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(1000, WIDTH, HEIGHT);
+    std::vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(1000, Point2(WIDTH, HEIGHT));
     LevelGenerator::makeRoomsAndPaths(rooms, this);
 
     Utility::deleteContentsOfVector(rooms);

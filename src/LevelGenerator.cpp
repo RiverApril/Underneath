@@ -14,8 +14,8 @@ namespace LevelGenerator{
     const int OPTION_ROOM_RADIUS_MAX = 10;
     const int OPTION_ROOM_RADIUS_MIN = 2;
 
-    const int OPTION_ROOM_ENTRANCES_MAX = 8;
-    const int OPTION_ROOM_ENTRANCES_MIN = 2;
+    const int OPTION_ROOM_ENTRANCES_MAX = 10;
+    const int OPTION_ROOM_ENTRANCES_MIN = 8;
 
     bool roomsOverlap(Room* a, Room* b, int border){
         return !(((a->center.x-a->radius.x-border) > (b->center.x+b->radius.x+border) ||
@@ -24,7 +24,7 @@ namespace LevelGenerator{
                   (b->center.y-b->radius.y-border) > (a->center.y+a->radius.y+border)));
     }
 
-    Room* createRoom(int levelWidth, int levelHeight, std::vector<Room*>* presentRooms){
+    Room* createRoom(Point2 roomSize, std::vector<Room*>* presentRooms){
         bool fit = false;
         Room* r = new Room();
         int att = 0;
@@ -32,8 +32,8 @@ namespace LevelGenerator{
             att++;
             r->radius.x = (rand()%(OPTION_ROOM_RADIUS_MAX-OPTION_ROOM_RADIUS_MIN))+OPTION_ROOM_RADIUS_MIN;
             r->radius.y = (rand()%(OPTION_ROOM_RADIUS_MAX-OPTION_ROOM_RADIUS_MIN))+OPTION_ROOM_RADIUS_MIN;
-            r->center.x = (rand()%(levelWidth-(r->radius.x*2)))+r->radius.x;
-            r->center.y = (rand()%(levelHeight-(r->radius.y*2)))+r->radius.y;
+            r->center.x = (rand()%(roomSize.x-(r->radius.x*2)))+r->radius.x;
+            r->center.y = (rand()%(roomSize.y-(r->radius.y*2)))+r->radius.y;
             fit = true;
             for(int i=0;i<presentRooms->size();i++){
                 if(roomsOverlap(presentRooms->at(i), r, 2)){
@@ -69,10 +69,10 @@ namespace LevelGenerator{
         return r;
     }
 
-    std::vector<Room*>* createRooms(int qty, int levelWidth, int levelHeight){
+    std::vector<Room*>* createRooms(int qty, Point2 roomSize){
         std::vector<Room*>* rooms = new std::vector<Room*>();
         for(int i=0;i<qty;i++){
-            Room* r = createRoom(levelWidth, levelHeight, rooms);
+            Room* r = createRoom(roomSize, rooms);
             if(r->radius.x > 0 && r->radius.y > 0){
                 rooms->push_back(r);
             }
@@ -84,19 +84,24 @@ namespace LevelGenerator{
         for(int i=0;i<rooms->size();i++){
             Room* r = rooms->at(i);
             for(int j=-r->radius.x;j<=r->radius.x;j++){
-                level->setTile(r->center.x+j, r->center.y+r->radius.y, tileWall);
-                level->setTile(r->center.x+j, r->center.y-r->radius.y, tileWall);
+                level->setTile(Point2(r->center.x+j, r->center.y+r->radius.y), tileWall);
+                level->setTile(Point2(r->center.x+j, r->center.y-r->radius.y), tileWall);
             }
             for(int j=-r->radius.y;j<=r->radius.y;j++){
-                level->setTile(r->center.x+r->radius.x, r->center.y+j, tileWall);
-                level->setTile(r->center.x-r->radius.x, r->center.y+j, tileWall);
+                level->setTile(Point2(r->center.x+r->radius.x, r->center.y+j), tileWall);
+                level->setTile(Point2(r->center.x-r->radius.x, r->center.y+j), tileWall);
+            }
+            for(int j=-r->radius.x+1;j<=r->radius.x-1;j++){
+                for(int k=-r->radius.y+1;k<=r->radius.y-1;k++){
+                    level->setTile(Point2(r->center.x+j, r->center.y+k), tileFloor);
+                }
             }
 
             for(int j=0;j<r->entrances->size();j++){
                 Entry* e = r->entrances->at(j);
                 e->x = (e->direction==left?-r->radius.x:(e->direction==right?r->radius.x:e->offset))+r->center.x;
                 e->y = (e->direction==up?-r->radius.y:(e->direction==down?r->radius.y:e->offset))+r->center.y;
-                //level->setTile(e->x, e->y, tileDebug1);
+                //level->setTile(e->x, e->y, tilePath);
             }
         }
         for(int i=0;i<rooms->size();i++){
@@ -141,32 +146,45 @@ namespace LevelGenerator{
                                 if(((e->direction == right && xoLarge) || (e->direction == left && !xoLarge)) &&
                                    ((eo->direction == up && yoLarge) || (eo->direction == down && !yoLarge))){
                                     for(int m=1;m<xdif;m++){
-                                        if(level->indexAt(e->x+(xoLarge?m:-m), e->y)==tileWall->getIndex()){
+                                        if(level->indexAt(Point2(e->x+(xoLarge?m:-m), e->y))!=tileUnset->getIndex()){
                                             blocked = true;
                                             break;
                                         }
                                     }
                                     for(int m=0;m<ydif;m++){
-                                        if(level->indexAt(e->x+(xoLarge?xdif:-xdif), e->y+(yoLarge?m:-m))==tileWall->getIndex()){
+                                        if(level->indexAt(Point2(e->x+(xoLarge?xdif:-xdif), e->y+(yoLarge?m:-m)))!=tileUnset->getIndex()){
                                             blocked = true;
                                             break;
                                         }
                                     }
                                     if(!blocked){
                                         for(int m=1;m<xdif;m++){
-                                            level->setTile(e->x+(xoLarge?m:-m), e->y, tileDebug2);
+                                            level->setTile(Point2(e->x+(xoLarge?m:-m), e->y), tilePath);
                                         }
                                         for(int m=0;m<ydif;m++){
-                                            level->setTile(e->x+(xoLarge?xdif:-xdif), e->y+(yoLarge?m:-m), tileDebug2);
+                                            level->setTile(Point2(e->x+(xoLarge?xdif:-xdif), e->y+(yoLarge?m:-m)), tilePath);
                                         }
-                                        level->setTile(e->x, e->y, tileDebug3);
-                                        level->setTile(eo->x, eo->y, tileDebug4);
-                                        level->setTile(e->x+(xoLarge?xdif:-xdif), e->y+(yoLarge?ydif:-ydif), tileDebug3);
+                                        level->setTile(Point2(e->x, e->y), tilePath);
+                                        level->setTile(Point2(eo->x, eo->y), tilePath);
                                     }
                                 }
                             }
                         }
 
+                    }
+                }
+            }
+        }
+
+        for(int i=0;i<level->WIDTH;i++){
+            for(int j=0;j<level->HEIGHT;j++){
+				if(level->indexAt(Point2(i, j))==tilePath->getIndex()){
+					for(int k=-1;k<=1;k++){
+                        for(int l=-1;l<=1;l++){
+							if(level->indexAt(Point2(i+k, j+l)) == tileUnset->getIndex()){
+								level->setTile(Point2(i+k, j+l), tileWall);
+                            }
+                        }
                     }
                 }
             }

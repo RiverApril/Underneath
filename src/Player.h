@@ -15,13 +15,13 @@ class Player : public Entity {
 
 public:
 
-    Player(std::string name, std::string icon, char iconAlt, const Geometry::Point2* startPos, Ui::color colorCode);
+    Player(std::string name, std::string icon, char iconAlt, const Point2 startPos, Ui::color colorCode);
 
     ~Player();
 
     bool update(int tick, Level* world);
 
-    void move(int x, int y, Level* level);
+    void move(Point2 p, Level* level);
 
 private:
     std::string name;

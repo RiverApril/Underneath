@@ -8,7 +8,6 @@
 
 #include "Math.h"
 
-namespace Math {
 
 int distanceSquared(int ax, int ay, int bx, int by) {
     int dx = abs(ax - bx);
@@ -24,4 +23,3 @@ int distanceSquared(int x, int y) {
     return dx*dx + dy*dy;
 }
 
-}

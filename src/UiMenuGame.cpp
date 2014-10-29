@@ -18,13 +18,12 @@ MenuGame::MenuGame() : Menu((1000/60)) {
     currentLevel = new Level();
     currentLevel->generate(static_cast<unsigned int>(time(NULL)));
 
-    currentPlayer = new Player("PlayerNameHere", "@", '@', Geometry::Point2Zero, C_WHITE);
+    currentPlayer = new Player("PlayerNameHere", "@", '@', Point2Zero, C_WHITE);
     currentLevel->newEntity(currentPlayer);
 
 
-    viewPos = new Geometry::Point2(0, 0);
-    viewMoveSpeed = new Geometry::Point2(0, 0);
-    cursorPosition = new Geometry::Point2(0, 0);
+    viewPos = new Point2(0, 0);
+    viewMoveSpeed = new Point2(0, 0);
 
     move(0, 0);
     clrtobot();
@@ -41,9 +40,8 @@ void MenuGame::openUi() {
     setGameAreaSize();
 
 
-    viewPos = new Geometry::Point2(0, 0);
-    viewMoveSpeed = new Geometry::Point2(2, 1);
-    cursorPosition = new Geometry::Point2(GAME_WIDTH/2, GAME_HEIGHT/2);
+    viewPos = new Point2(0, 0);
+    viewMoveSpeed = new Point2(2, 1);
 
 
     refresh();
@@ -53,40 +51,18 @@ void MenuGame::setGameAreaSize() {
     const int gameWidthMin = 8;
     const int edgeHeightMin = 2;
     const int edgeWidthPreferred = 20;
-    GAME_WIDTH = Math::max(TERMINAL_WIDTH - edgeWidthPreferred, gameWidthMin);
-    GAME_HEIGHT = Math::max(TERMINAL_HEIGHT - edgeHeightMin, edgeHeightMin);
+    GAME_WIDTH = max(TERMINAL_WIDTH - edgeWidthPreferred, gameWidthMin);
+    GAME_HEIGHT = max(TERMINAL_HEIGHT - edgeHeightMin, edgeHeightMin);
 
 
     updateView = true;
 }
 
-void MenuGame::viewMove(int x, int y, bool cursor) {
+void MenuGame::viewMove(Point2 p) {
     if(playerMode && currentPlayer != nullptr) {
-        currentPlayer->move(x, y, currentLevel);
+        currentPlayer->move(p, currentLevel);
         viewPos->x = currentPlayer->getPos()->x-GAME_WIDTH/2;
         viewPos->y = currentPlayer->getPos()->y-GAME_HEIGHT/2;
-    } else {
-        if(cursor) {
-            cursorPosition->x+=x;
-            cursorPosition->y+=y;
-            if(cursorPosition->x < 0) {
-                cursorPosition->x = 0;
-                viewMove(x, y, false);
-            } else if(cursorPosition->x >= GAME_WIDTH) {
-                cursorPosition->x = GAME_WIDTH-1;
-                viewMove(x, y, false);
-            }
-            if(cursorPosition->y < 0) {
-                cursorPosition->y = 0;
-                viewMove(x, y, false);
-            } else if(cursorPosition->y >= GAME_HEIGHT) {
-                cursorPosition->y = GAME_HEIGHT-1;
-                viewMove(x, y, false);
-            }
-        } else {
-            viewPos->x+=viewMoveSpeed->x*x;
-            viewPos->y+=viewMoveSpeed->y*y;
-        }
     }
 
     if(viewPos->x < 0) {
@@ -99,36 +75,34 @@ void MenuGame::viewMove(int x, int y, bool cursor) {
     } else if(viewPos->y > currentLevel->HEIGHT-GAME_HEIGHT) {
         viewPos->y = currentLevel->HEIGHT-GAME_HEIGHT;
     }
-
-    cursorTick = 0;
     updateView = true;
 }
 
-void MenuGame::drawTileAt(int i, int j) {
+void MenuGame::drawTileAt(Point2 p) {
     bool inView = false;
     if(playerMode && currentPlayer != nullptr) {
-        if(currentLevel->isInView(i, j, currentPlayer)) {
-            currentLevel->setExplored(i, j, true);
+        if(currentLevel->canSee(*currentPlayer->getPos(), p, currentPlayer->getViewDistance())) {
+            currentLevel->setExplored(p, true);
             inView = true;
         }
-        if(!currentLevel->getExplored(i, j)) {
+        if(!currentLevel->getExplored(p)) {
             Ui::setColor(C_BLACK);
             addch(' ');
             return;
         }
     }
-    Tile* tempTile = currentLevel->tileAt(i, j);
+    Tile* tempTile = currentLevel->tileAt(p);
 
-    if(currentLevel->inRange(i, j)) {
-        if(currentLevel->displayEntityGrid[i][j] != nullptr) {
+    if(currentLevel->inRange(p)) {
+        if(currentLevel->displayEntityGrid[p.x][p.y] != nullptr) {
 
 
             if(inView) {
-                Ui::setColor(currentLevel->displayEntityGrid[i][j]->getColorCode());
+                Ui::setColor(currentLevel->displayEntityGrid[p.x][p.y]->getColorCode());
                 if(unicodeSupport) {
-                    addstr(currentLevel->displayEntityGrid[i][j]->getIcon(i, j, tick, currentLevel).c_str());
+                    addstr(currentLevel->displayEntityGrid[p.x][p.y]->getIcon(p, tick, currentLevel).c_str());
                 } else {
-                    addch(currentLevel->displayEntityGrid[i][j]->getIconAlt(i, j, tick, currentLevel));
+                    addch(currentLevel->displayEntityGrid[p.x][p.y]->getIconAlt(p, tick, currentLevel));
                 }
                 return;
             }
@@ -145,72 +119,72 @@ void MenuGame::drawTileAt(int i, int j) {
 
 void MenuGame::handleInput(int in) {
     switch (in) {
-    case KEY_UP:
-    case 'w':
-        viewMove(0, -1, cursorMode);
-        break;
+        case KEY_UP:
+        case 'w':
+            viewMove(Point2Up);
+            break;
 
-    case KEY_DOWN:
-    case 's':
-        viewMove(0, 1, cursorMode);
-        break;
+        case KEY_DOWN:
+        case 's':
+            viewMove(Point2Down);
+            break;
 
-    case KEY_LEFT:
-    case 'a':
-        viewMove(-1, 0, cursorMode);
-        break;
+        case KEY_LEFT:
+        case 'a':
+            viewMove(Point2Left);
+            break;
 
-    case KEY_RIGHT:
-    case 'd':
-        viewMove(1, 0, cursorMode);
-        break;
+        case KEY_RIGHT:
+        case 'd':
+            viewMove(Point2Right);
+            break;
 
-    case 'W':
-        viewMove(0, -5, cursorMode);
-        break;
+        case 'W':
+            viewMove(Point2Up*5);
+            break;
 
-    case 'S':
-        viewMove(0, 5, cursorMode);
-        break;
+        case 'S':
+            viewMove(Point2Down*5);
+            break;
 
-    case 'A':
-        viewMove(-5, 0, cursorMode);
-        break;
+        case 'A':
+            viewMove(Point2Left*5);
+            break;
 
-    case 'D':
-        viewMove(5, 0, cursorMode);
-        break;
+        case 'D':
+            viewMove(Point2Right*5);
+            break;
 
-    case 'z':
-        cursorMode = !cursorMode;
-        updateView = true;
-        break;
+        case 'z':
+            debugMode = true;
+            updateView = true;
+            break;
 
-    case 'x':
-        currentLevel->newEntity(new AiEntity(AiType::aiMoveRandom, "A", 'A', new Geometry::Point2(cursorPosition->x+viewPos->x, cursorPosition->y+viewPos->y), Ui::C_DARK_RED));
-        break;
+        case 'x':
+            currentLevel->newEntity(new AiEntity(AiType::aiMoveRandom, "A", 'A', (*viewPos)+Point2(GAME_WIDTH/2, GAME_HEIGHT/2), Ui::C_DARK_RED));
+            break;
 
-    case 'c':
-        currentLevel->newEntity(new AiEntity(AiType::aiMoveRandom, "B", 'B', new Geometry::Point2(cursorPosition->x+viewPos->x, cursorPosition->y+viewPos->y), Ui::C_LIGHT_GREEN));
-        break;
+        case 'c':
+            currentLevel->newEntity(new AiEntity(AiType::aiMoveRandom, "B", 'B', (*viewPos)+Point2(GAME_WIDTH/2, GAME_HEIGHT/2), Ui::C_LIGHT_GREEN));
+            break;
 
-    case ' ':
-        paused = !paused;
-        break;
+        case ' ':
+            paused = !paused;
+            break;
 
-    case KEY_RESIZE:
-        setGameAreaSize();
-        break;
+        case KEY_RESIZE:
+            setGameAreaSize();
+            break;
 
-    case ERR:
-        break;
+        case ERR:
+            break;
 
-    case 27: //Escape
-        changeMenu(new MenuMain());
-        break;
+        case 27: //Escape
+            changeMenu(new MenuMain());
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -228,21 +202,10 @@ void MenuGame::update() {
         for(int j=0; j<GAME_HEIGHT; j++) {
             move(j, 0);
             for(int i=0; i<GAME_WIDTH; i++) {
-                drawTileAt(viewPos->x+i, viewPos->y+j);
+                drawTileAt(Point2(viewPos->x+i, viewPos->y+j));
             }
         }
     }
-
-    if(cursorMode) {
-        debugMessage+="Cursor Mode ";
-        move(cursorPosition->y, cursorPosition->x);
-        if(cursorTick%30<20) {
-            addch('#');
-        } else {
-            drawTileAt(cursorPosition->x+viewPos->x, cursorPosition->y+viewPos->y);
-        }
-    }
-    cursorTick++;
 
     Ui::setColor(C_WHITE);
     if(debugMessage.length() > 0) {
@@ -250,7 +213,11 @@ void MenuGame::update() {
         clrtobot();
         mvprintw(TERMINAL_HEIGHT-2, 0, debugMessage.c_str());
     }
-    mvprintw(TERMINAL_HEIGHT-1, 0, "%d, %d  ms: %.2f  fps: %d  e: %d  %s", cursorPosition->x+viewPos->x, cursorPosition->y+viewPos->y, ms, fps, currentLevel->entityCount(), updateView?"draw":"");
+    Point2 p = *viewPos;
+    if(currentPlayer!=nullptr){
+		p = *currentPlayer->getPos();
+    }
+    mvprintw(TERMINAL_HEIGHT-1, 0, "%d, %d  ms: %.2f  fps: %d  e: %d  %s", p.x, p.y, ms, fps, currentLevel->entityCount(), updateView?"draw":"");
     debugMessage = "";
     updateView = false;
     refresh();

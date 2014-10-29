@@ -42,16 +42,16 @@ namespace LevelGenerator{
             Utility::deleteContentsOfVector(entrances);
             delete entrances;
         }
-        Geometry::Point2 center;
-        Geometry::Point2 radius;
+        Point2 center;
+        Point2 radius;
         std::vector<Entry*>* entrances;
     };
 
     extern bool roomsOverlap(Room* a, Room* b);
 
-    extern Room* createRoom(int levelWidth, int levelHeight, std::vector<Room*>* presentRooms);
+    extern Room* createRoom(Point2 roomSize, std::vector<Room*>* presentRooms);
 
-    extern std::vector<Room*>* createRooms(int qty, int levelWidth, int levelHeight);
+    extern std::vector<Room*>* createRooms(int qty, Point2 roomSize);
 
     extern void makeRoomsAndPaths(std::vector<Room*>* rooms, Level* level);
     

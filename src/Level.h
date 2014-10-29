@@ -17,7 +17,10 @@ class Entity;
 #include "Entity.h"
 #include "Geometry.h"
 
-
+struct TileData{
+	int8_t index = 0;
+    bool explored = false;
+};
 
 class Level {
 
@@ -29,27 +32,24 @@ public:
     Level();
     ~Level();
 
-    bool isInView(int x, int y, Entity* e);
+    bool getExplored(Point2 p);
+    void setExplored(Point2 p, bool a);
 
-    bool getExplored(int x, int y);
-    void setExplored(int x, int y, bool a);
+    bool inRange(Point2 p);
+    Tile* tileAt(Point2 p);
+    bool setTile(Point2 p, int tile);
+    bool setTile(Point2 p, Tile* tile);
+    int indexAt(Point2 p);
 
-    bool inRange(int x, int y);
-    bool inRange(Geometry::Point2* a);
-    Tile* tileAt(int x, int y);
-    bool setTile(int x, int y, int tile);
-    bool setTile(int x, int y, Tile* tile);
-    int indexAt(int x, int y);
-
-    bool canSeeSky(int x, int y);
+    bool canSee(Point2 origin, Point2 test, int range);
 
     long entityCount();
 
     void generate(unsigned int seed);
 
-    bool update(int time, Geometry::Point2* viewPos);
+    bool update(int time, Point2* viewPos);
 
-    void needsRedraw(Geometry::Point2* p);
+    void needsRedraw(Point2* p);
 
     Entity* newEntity(Entity* newE);
     void deleteEntity(Entity* e);
@@ -58,8 +58,7 @@ public:
 
 private:
 
-    int tileGrid[WIDTH][HEIGHT];
-    bool explored[WIDTH][HEIGHT];
+    TileData tileGrid[WIDTH][HEIGHT];
 
     std::vector<Entity*> entityList;
 };
