@@ -16,6 +16,7 @@
 Level::Level() {
     size = new Point2(500, 500);
     tileGrid = new TileData*[size->x];
+    
     for(int i=0;i<size->x;i++){
         tileGrid[i] = new TileData[size->y];
         for(int j=0;j<size->y;j++){
@@ -27,39 +28,55 @@ Level::Level() {
 }
 
 Level::~Level() {
-    /*std::vector<Entity*>::iterator it;
-     for(it = entityList.begin(); it!=entityList.end();) {
-     delete * it;
-     it = entityList.erase(it);
-     }*/
-    Utility::deleteContentsOfVector(&entityList);
 
     for(int i=0;i<size->x;i++){
-        delete tileGrid[i];
+        delete [] tileGrid[i];
     }
-    delete tileGrid;
-    delete size;
-    
+    delete [] tileGrid;
+	
+    entityList.clear();
 }
 
 bool Level::getExplored(Point2 p) {
-    return tileGrid[p.x][p.y].explored;
+    if(inRange(p)) {
+    	return tileGrid[p.x][p.y].explored;
+    }else{
+        return false;
+    }
 }
 
 void Level::setExplored(Point2 p, bool a) {
-    tileGrid[p.x][p.y].explored = a;
+    if(inRange(p)) {
+    	tileGrid[p.x][p.y].explored = a;
+    }
 }
 
 Entity* Level::getDisplayEntity(Point2 p){
-    return tileGrid[p.x][p.y].entity;
+    if(inRange(p)) {
+    	return tileGrid[p.x][p.y].entity;
+    }else{
+        return nullptr;
+    }
 }
 
 void Level::setDisplayEntity(Point2 p, Entity* e){
-    tileGrid[p.x][p.y].entity = e;
+    if(inRange(p)) {
+    	tileGrid[p.x][p.y].entity = e;
+    }
 }
 
 bool Level::inRange(Point2 p) {
     return p.x>=0 && p.y>=0 && p.x<size->x && p.y<size->y;
+}
+
+Point2 Level::findRandomEmpty(){
+    Point2 p;
+    do{
+        p.x = rand()%size->x;
+        p.y = rand()%size->y;
+
+    }while(tileAt(p)->isSolid() || indexAt(p)==tileUnset->getIndex());
+    return p;
 }
 
 bool Level::setTile(Point2 p, int tile) {
@@ -111,7 +128,7 @@ long Level::entityCount() {
 bool Level::update(int tick, Point2* viewPos) {
     bool u = false;
     for (size_t i=0; i<entityList.size(); i++) {
-        u = entityList[i]->update(tick, this) || u;
+        u = entityList.at(i)->update(tick, this) || u;
     }
     return u;
 }
@@ -141,13 +158,15 @@ void Level::generate(unsigned int seed) {
             tileGrid[i][j].index = tileUnset->getIndex();
             tileGrid[i][j].explored = false;
             tileGrid[i][j].entity = nullptr;
+            if(i==0 || j==0 || i==(size->x-1) || j==(size->y-1)){
+                tileGrid[i][j].index = tileWall->getIndex();
+            }
         }
     }
 
     std::vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(1000, *size);
     LevelGenerator::makeRoomsAndPaths(rooms, this);
 
-    Utility::deleteContentsOfVector(rooms);
     delete rooms;
     
     

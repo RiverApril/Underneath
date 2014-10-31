@@ -24,8 +24,8 @@ namespace LevelGenerator{
         int att = 0;
         while(!fit && att<100){
             att++;
-            r->radius.x = (rand()%10)+3;
-            r->radius.y = (rand()%10)+3;
+            r->radius.x = (rand()%6)+3;
+            r->radius.y = (rand()%6)+3;
             r->center.x = (rand()%(roomSize.x-(r->radius.x*2)))+r->radius.x;
             r->center.y = (rand()%(roomSize.y-(r->radius.y*2)))+r->radius.y;
             fit = true;
@@ -79,6 +79,10 @@ namespace LevelGenerator{
             }
         }
         return rooms;
+    }
+
+    int getPathAndMaybeDoor(){
+        return (rand()%30==0?(rand()%10==0?tileSecretDoor:tileDoor):tilePath)->getIndex();
     }
 
     void makeRoomsAndPaths(std::vector<Room*>* rooms, Level* level){
@@ -153,10 +157,34 @@ namespace LevelGenerator{
                                     }
                                     if(!blocked){
                                         for(int m=1;m<xdif;m++){
-                                            level->setTile(Point2(e->x+(xoLarge?m:-m), e->y), tilePath);
+                                            level->setTile(Point2(e->x+(xoLarge?m:-m), e->y), getPathAndMaybeDoor());
+
+                                            if(rand()%10==0){
+                                                int a = rand()%10;
+                                                int aa = (rand()%3)-1;
+                                                for(int n=1;n<a;n++){
+                                                    if(level->indexAt(Point2(e->x+(xoLarge?m:-m), e->y+(n*aa)))==tileUnset->getIndex()){
+                                                        level->setTile(Point2(e->x+(xoLarge?m:-m), e->y+(n*aa)), getPathAndMaybeDoor());
+                                                    }else{
+                                                        break;
+                                                    }
+                                                }
+                                            }
                                         }
                                         for(int m=0;m<ydif;m++){
-                                            level->setTile(Point2(e->x+(xoLarge?xdif:-xdif), e->y+(yoLarge?m:-m)), tilePath);
+                                            level->setTile(Point2(e->x+(xoLarge?xdif:-xdif), e->y+(yoLarge?m:-m)), getPathAndMaybeDoor());
+
+                                            if(rand()%10==0){
+                                                int a = rand()%10;
+                                                int aa = (rand()%3)-1;
+                                                for(int n=1;n<a;n++){
+                                                    if(level->indexAt(Point2(e->x+(xoLarge?xdif:-xdif)+(n*aa), e->y+(yoLarge?m:-m)))==tileUnset->getIndex()){
+														level->setTile(Point2(e->x+(xoLarge?xdif:-xdif)+(n*aa), e->y+(yoLarge?m:-m)), getPathAndMaybeDoor());
+                                                    }else{
+                                                        break;
+                                                    }
+                                                }
+                                            }
                                         }
                                         level->setTile(Point2(e->x, e->y), (rand()%20)==0?tileSecretDoor:tileDoor);
                                         level->setTile(Point2(eo->x, eo->y), (rand()%20)==0?tileSecretDoor:tileDoor);
@@ -172,7 +200,7 @@ namespace LevelGenerator{
 
         for(int i=0;i<level->getSize().x;i++){
             for(int j=0;j<level->getSize().y;j++){
-                if(level->indexAt(Point2(i, j))==tilePath->getIndex()){
+                if(!level->tileAt(Point2(i, j))->isSolid()){
                     for(int k=-1;k<=1;k++){
                         for(int l=-1;l<=1;l++){
                             if(level->indexAt(Point2(i+k, j+l)) == tileUnset->getIndex()){

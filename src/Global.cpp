@@ -11,6 +11,3 @@
 std::string debugMessage;
 
 bool running;
-
-int TERMINAL_WIDTH = 80;
-int TERMINAL_HEIGHT = 30;

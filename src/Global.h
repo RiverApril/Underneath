@@ -21,7 +21,4 @@
 extern std::string debugMessage;
 extern bool running;
 
-extern int TERMINAL_WIDTH;
-extern int TERMINAL_HEIGHT;
-
 #endif /* defined(__Underneath__Global__) */

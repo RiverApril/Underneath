@@ -1,13 +1,13 @@
 //
-//  UiMenuGame.cpp
+//  MenuGame.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/19/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "UiMenuGame.h"
-#include "UiMenuMain.h"
+#include "MenuGame.h"
+#include "MenuMain.h"
 #include "AiEntity.h"
 #include "Math.h"
 
@@ -28,6 +28,8 @@ namespace Ui {
 
         viewPos = new Point2(0, 0);
         viewMoveSpeed = new Point2(0, 0);
+
+        viewUpdate();
     }
 
     bool MenuGame::init(std::string worldName){
@@ -50,15 +52,15 @@ namespace Ui {
         currentLevel = currentWorld->currentLevel;
         currentPlayer = currentWorld->currentPlayer;
 
+        updateView = true;
+
         return true;
     }
 
     MenuGame::~MenuGame() {
-        delete currentLevel;
         delete viewPos;
         delete viewMoveSpeed;
-        delete currentLevel;
-        delete currentPlayer;
+        delete currentWorld;
     }
 
     void MenuGame::openUi() {
@@ -71,6 +73,7 @@ namespace Ui {
         viewMoveSpeed = new Point2(2, 1);
 
 
+        updateView = true;
         refresh();
     }
 
@@ -78,8 +81,8 @@ namespace Ui {
         const int gameWidthMin = 8;
         const int edgeHeightMin = 2;
         const int edgeWidthPreferred = 20;
-        GAME_WIDTH = max(TERMINAL_WIDTH - edgeWidthPreferred, gameWidthMin);
-        GAME_HEIGHT = max(TERMINAL_HEIGHT - edgeHeightMin, edgeHeightMin);
+        gameArea.x = max(terminalSize.x - edgeWidthPreferred, gameWidthMin);
+        gameArea.y = max(terminalSize.y - edgeHeightMin, edgeHeightMin);
 
 
         updateView = true;
@@ -87,20 +90,20 @@ namespace Ui {
 
     void MenuGame::viewUpdate() {
         if(playerMode && currentPlayer != nullptr) {
-            viewPos->x = currentPlayer->getPos().x-GAME_WIDTH/2;
-            viewPos->y = currentPlayer->getPos().y-GAME_HEIGHT/2;
+            viewPos->x = currentPlayer->getPos().x-gameArea.x/2;
+            viewPos->y = currentPlayer->getPos().y-gameArea.y/2;
         }
 
-        if(viewPos->x < 0) {
+        /*if(viewPos->x < 0) {
             viewPos->x = 0;
-        } else if(viewPos->x > currentLevel->getSize().x-GAME_WIDTH) {
-            viewPos->x = currentLevel->getSize().x-GAME_WIDTH;
+        } else if(viewPos->x > currentLevel->getSize().x-gameArea.x) {
+            viewPos->x = currentLevel->getSize().x-gameArea.x;
         }
         if(viewPos->y < 0) {
             viewPos->y = 0;
-        } else if(viewPos->y > currentLevel->getSize().y-GAME_HEIGHT) {
-            viewPos->y = currentLevel->getSize().y-GAME_HEIGHT;
-        }
+        } else if(viewPos->y > currentLevel->getSize().y-gameArea.y) {
+            viewPos->y = currentLevel->getSize().y-gameArea.y;
+        }*/
         updateView = true;
     }
 
@@ -124,7 +127,7 @@ namespace Ui {
 
                 if(inView) {
                     Ui::setColor(currentLevel->getDisplayEntity(p)->getColorCode());
-                    addch(currentLevel->getDisplayEntity(p)->getIcon(p, tick, currentLevel));
+                    addch(currentLevel->getDisplayEntity(p)->getIcon(p, (int)tick, currentLevel));
                     return;
                 }
 
@@ -164,12 +167,17 @@ namespace Ui {
                 currentPlayer->use(currentLevel);
                 break;
 
+            case 'r':
+                currentPlayer->move(currentLevel->findRandomEmpty()-currentPlayer->getPos(), currentLevel);
+                viewUpdate();
+                break;
+
             case 'x':
-                currentLevel->newEntity(new AiEntity(AiType::aiMoveRandom, 'A', (*viewPos)+Point2(GAME_WIDTH/2, GAME_HEIGHT/2), Ui::C_DARK_RED));
+                currentLevel->newEntity(new AiEntity(AiType::aiMoveRandom, 'A', (*viewPos)+Point2(gameArea.x/2, gameArea.y/2), Ui::C_DARK_RED));
                 break;
 
             case 'c':
-                currentLevel->newEntity(new AiEntity(AiType::aiMoveRandom, 'B', (*viewPos)+Point2(GAME_WIDTH/2, GAME_HEIGHT/2), Ui::C_LIGHT_GREEN));
+                currentLevel->newEntity(new AiEntity(AiType::aiMoveRandom, 'B', (*viewPos)+Point2(gameArea.x/2, gameArea.y/2), Ui::C_LIGHT_GREEN));
                 break;
 
             case ' ':
@@ -199,17 +207,18 @@ namespace Ui {
         }
 
         if(!paused) {
-            updateView = currentLevel->update(tick, viewPos) || updateView;
+            updateView = currentLevel->update((int)tick, viewPos) || updateView;
         } else {
             debugMessage+="Paused ";
         }
 
         if(updateView) {
+            viewUpdate();
             move(0, 0);
             clrtobot();
-            for(int j=0; j<GAME_HEIGHT; j++) {
+            for(int j=0; j<gameArea.y; j++) {
                 move(j, 0);
-                for(int i=0; i<GAME_WIDTH; i++) {
+                for(int i=0; i<gameArea.x; i++) {
                     drawTileAt(Point2(viewPos->x+i, viewPos->y+j));
                 }
             }
@@ -217,15 +226,15 @@ namespace Ui {
 
         Ui::setColor(C_WHITE);
         if(debugMessage.length() > 0) {
-            move(TERMINAL_HEIGHT-2, 0);
+            move(terminalSize.y-2, 0);
             clrtobot();
-            mvprintw(TERMINAL_HEIGHT-2, 0, debugMessage.c_str());
+            mvprintw(terminalSize.y-2, 0, debugMessage.c_str());
         }
         Point2 p = *viewPos;
         if(currentPlayer!=nullptr){
             p = currentPlayer->getPos();
         }
-        mvprintw(TERMINAL_HEIGHT-1, 0, "%d, %d  ms: %.2f  fps: %d  e: %d  %s", p.x, p.y, ms, fps, currentLevel->entityCount(), updateView?"draw":"");
+        mvprintw(terminalSize.y-1, 0, "%d, %d  ms: %.2f  fps: %d  e: %d  %s  t: %d", p.x, p.y, ms, fps, currentLevel->entityCount(), updateView?"draw":"", tick);
         debugMessage = "";
         updateView = false;
         refresh();

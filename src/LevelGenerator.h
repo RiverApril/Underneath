@@ -33,7 +33,7 @@ namespace LevelGenerator{
             entrances = new std::vector<Entry*>();
         }
         ~Room(){
-            Utility::deleteContentsOfVector(entrances);
+            //Utility::deleteContentsOfVector(entrances);
             delete entrances;
         }
         Point2 center;

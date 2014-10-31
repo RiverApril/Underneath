@@ -1,13 +1,13 @@
 //
-//  UiMenuMain.cpp
+//  MenuMain.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/29/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "UiMenuMain.h"
-#include "UiMenuGame.h"
+#include "MenuMain.h"
+#include "MenuGame.h"
 #include "Global.h"
 
 namespace Ui {
@@ -26,12 +26,13 @@ namespace Ui {
             case KEY_ENTER:
             case 13:
             case '\n':
+            case ' ':
                 switch (selection) {
                     case 0:
                         changeMenu(new MenuGame("testGame"));
                         break;
 
-                    case 2:
+                    case maxUiSelection:
                         running = false;
                         break;
 
@@ -75,6 +76,7 @@ namespace Ui {
             attrset(COLOR_PAIR(i));
             printw("%X ", i);
         }
+        mvprintw(terminalSize.y-1, 0, "ms: %.2f fps: %d t: %d", ms, fps, tick);
         refresh();
     }
     

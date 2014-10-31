@@ -9,6 +9,7 @@
 #ifndef __Underneath__Ui__
 #define __Underneath__Ui__
 
+#include "Geometry.h"
 
 namespace Ui {
 
@@ -49,7 +50,7 @@ namespace Ui {
 
     void setColor(color c, int attr = 0);
 
-    extern int tick;
+    extern long tick;
 
     extern double ms;
 
@@ -61,6 +62,8 @@ namespace Ui {
 
     extern bool limitedColorMode;
 
+
+    extern Point2 terminalSize;
 
 
     class Menu {

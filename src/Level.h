@@ -38,6 +38,9 @@ public:
     void setDisplayEntity(Point2 p, Entity* e);
 
     bool inRange(Point2 p);
+
+    Point2 findRandomEmpty();
+
     Tile* tileAt(Point2 p);
     bool setTile(Point2 p, int tile);
     bool setTile(Point2 p, Tile* tile);

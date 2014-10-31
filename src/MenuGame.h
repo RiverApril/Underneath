@@ -1,5 +1,5 @@
 //
-//  UiMenuGame.h
+//  MenuGame.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/19/14.
@@ -20,8 +20,7 @@ namespace Ui {
     class MenuGame : public Menu {
     public:
 
-        int GAME_WIDTH = 0;
-        int GAME_HEIGHT = 0;
+        Point2 gameArea;
 
         MenuGame(std::string worldName);
 

@@ -7,7 +7,7 @@
 //
 
 #include "Ui.h"
-#include "UiMenuGame.h"
+#include "MenuGame.h"
 #include "Entity.h"
 #include "AiEntity.h"
 #include "Player.h"
@@ -16,7 +16,7 @@ namespace Ui {
 
     const color COLOR_DEFAULT_ENTITY = C_LIGHT_RED;
 
-    int tick = 0;
+    long tick = 0;
 
     double ms = 0;
 
@@ -28,9 +28,9 @@ namespace Ui {
 
     bool limitedColorMode = true;
 
-    Menu* currentMenu;
+    Point2 terminalSize;
 
-    WINDOW* debugWindow;
+    Menu* currentMenu;
 
     void changeMenu(Menu* newMenu) {
         delete currentMenu;
@@ -45,16 +45,12 @@ namespace Ui {
         initscr();
         start_color();
         use_default_colors();
-        TERMINAL_HEIGHT = getmaxy(stdscr);
-        TERMINAL_WIDTH = getmaxx(stdscr);
+        terminalSize.y = getmaxy(stdscr);
+        terminalSize.x = getmaxx(stdscr);
         keypad(stdscr, TRUE);
         noecho();
         curs_set(0);
-        timeout(-1);
-
-        debugWindow = newwin(30, 80, 0, 0);
-        wprintw(debugWindow, "Debug Window Init.");
-        wrefresh(debugWindow);
+        //timeout(-1);
 
 
         limitedColorMode = COLORS<256;
@@ -141,8 +137,8 @@ namespace Ui {
     void Menu::_handleInput(int in) {
         switch (in) {
             case KEY_RESIZE:
-                TERMINAL_WIDTH = getmaxx(stdscr);
-                TERMINAL_HEIGHT = getmaxy(stdscr);
+                terminalSize.x = getmaxx(stdscr);
+                terminalSize.y = getmaxy(stdscr);
                 move(0, 0);
                 clrtobot();
                 break;
