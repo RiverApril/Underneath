@@ -40,6 +40,10 @@ public:
         return flags & tileFlagTall;
     }
 
+    bool hasFlag(TileFlag flag) {
+        return flags & flag;
+    }
+
 private:
     char icon;
     int index;

@@ -7,43 +7,65 @@
 //
 
 #include "AiEntity.h"
+#include "Utility.h"
 
+AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE){
 
-AiEntity::AiEntity(int aiFlags, char icon, Point2 startPos, int colorCode) : Entity(icon, startPos, colorCode) {
+}
+
+AiEntity::AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::color colorCode) : Alive(name, icon, startPos, colorCode) {
     this->ai = aiFlags;
-
-    speed = new Point2(0, 0);
 }
 
 AiEntity::~AiEntity() {
-    delete speed;
+    
 }
 
-void AiEntity::runAi(int tick, Level* world) {
+void AiEntity::runAi(int tick, Level* level) {
 
-    if(ai & AiType::aiMoveRandom) {
-        if(rand()%20==0) {
-            if(rand()%2==0) {
-                speed->x = (rand()%3-1) * moveSpeed;
-                speed->y = 0;
-            } else {
-                speed->x = 0;
-                speed->y = (rand()%3-1) * moveSpeed;
-            }
-        }
+    Point2 speed;
+
+    if(ai & aiMoveRandom) {
+        speed.x = (rand()%3-1);
+        speed.y = (rand()%3-1);
     }
+
+    tryToMove(speed, level);
 
 }
 
 bool AiEntity::update(int tick, Level* level) {
 
     runAi(tick, level);
-
-    tryToMove(
-              Point2(speed->x==0?0:(speed->x>0?((tick%speed->x)==0?1:0):((tick%-speed->x)==0?-1:0)),
-                     speed->y==0?0:(speed->y>0?((tick%speed->y)==0?1:0):((tick%-speed->y)==0?-1:0))),
-              level
-              );
     
-    return Entity::update(tick, level);
+    return Alive::update(tick, level);
 }
+
+AiEntity* AiEntity::clone(AiEntity* oldE, AiEntity* newE){
+
+    if(newE == nullptr){
+        newE = new AiEntity();
+    }
+
+    Alive::clone(oldE, newE);
+
+    newE->ai = oldE->ai;
+    
+    return newE;
+}
+
+void AiEntity::save(std::string* data){
+    Alive::save(data);
+    Utility::saveInt(data, ai);
+}
+
+int AiEntity::getEntityTypeId(){
+    return ENTITY_TYPE_AIENTITY;
+}
+
+void AiEntity::load(char* data, int* position){
+    Alive::load(data, position);
+    ai = Utility::loadInt(data, position);
+}
+
+

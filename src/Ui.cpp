@@ -11,6 +11,19 @@
 #include "Entity.h"
 #include "AiEntity.h"
 #include "Player.h"
+#include "Math.h"
+
+std::string debugMessage = "";
+
+
+void debug(std::string s){
+    debugPlain(s+"  ");
+}
+
+void debugPlain(std::string s){
+    debugMessage+=s;
+    debugMessage = debugMessage.substr(debugMessage.size()-min(Ui::terminalSize.x, (int)debugMessage.size()));
+}
 
 namespace Ui {
 
@@ -18,13 +31,13 @@ namespace Ui {
 
     long tick = 0;
 
-    double ms = 0;
+    /*double ms = 0;
 
     int fps = 0;
     long l = 0;
     long lastL = 0;
     long startTime = 0;
-    int frames = 0;
+    int frames = 0;*/
 
     bool limitedColorMode = true;
 
@@ -45,8 +58,7 @@ namespace Ui {
         initscr();
         start_color();
         use_default_colors();
-        terminalSize.y = getmaxy(stdscr);
-        terminalSize.x = getmaxx(stdscr);
+        setTerminalSizeVar();
         keypad(stdscr, TRUE);
         noecho();
         curs_set(0);
@@ -73,6 +85,11 @@ namespace Ui {
         running = false;
         delete currentMenu;
         endwin();
+    }
+
+    void setTerminalSizeVar(){
+        terminalSize.y = getmaxy(stdscr)-1;
+        terminalSize.x = getmaxx(stdscr);
     }
 
     void setColor(color c, int attr) {
@@ -125,7 +142,7 @@ namespace Ui {
     }
 
     void Menu::_openUi() {
-        timeout(inputTimeout);
+        //timeout(inputTimeout);
         move(0, 0);
         clrtobot();
         refresh();
@@ -137,8 +154,7 @@ namespace Ui {
     void Menu::_handleInput(int in) {
         switch (in) {
             case KEY_RESIZE:
-                terminalSize.x = getmaxx(stdscr);
-                terminalSize.y = getmaxy(stdscr);
+                setTerminalSizeVar();
                 move(0, 0);
                 clrtobot();
                 break;
@@ -152,7 +168,7 @@ namespace Ui {
 
         tick++;
 
-        l = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        /*l = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
         ms = (l - lastL)/1000.0;
         lastL = l;
@@ -162,6 +178,13 @@ namespace Ui {
             startTime = l;
             fps = frames;
             frames = 0;
+        }*/
+
+        if(debugMessage.length() > 0) {
+            setColor(C_WHITE);
+            move(terminalSize.y-1, 0);
+            clrtobot();
+            mvprintw(terminalSize.y, 0, debugMessage.c_str());
         }
 
     }

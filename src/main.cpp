@@ -12,6 +12,14 @@
 
 int main(int argc, const char * argv[]) {
 
+    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath))){
+        return errno;
+    }
+
+    debug("Working Directory: "+(std::string(cCurrentPath)));
+    UnderneathDir = "Underneath";
+    WorldsDir = UnderneathDir+"/"+"Worlds";
+
     initTiles();
 
     Ui::initNCurses();

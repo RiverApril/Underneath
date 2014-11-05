@@ -8,6 +8,11 @@
 
 #include "Global.h"
 
-std::string debugMessage;
+char cCurrentPath[FILENAME_MAX];
 
 bool running;
+
+int nextUniqueId;
+
+std::string UnderneathDir;
+std::string WorldsDir;

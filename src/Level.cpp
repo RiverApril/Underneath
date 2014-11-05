@@ -7,14 +7,16 @@
 //
 
 #include "Level.h"
+#include "AiEntity.h"
 #include "Math.h"
 #include "Geometry.h"
 #include "Global.h"
 #include "LevelGenerator.h"
 #include "Utility.h"
 
-Level::Level() {
-    size = new Point2(500, 500);
+Level::Level(std::string n, Point2 s) {
+    name = n;
+    size = new Point2(s);
     tileGrid = new TileData*[size->x];
     
     for(int i=0;i<size->x;i++){
@@ -69,13 +71,33 @@ bool Level::inRange(Point2 p) {
     return p.x>=0 && p.y>=0 && p.x<size->x && p.y<size->y;
 }
 
-Point2 Level::findRandomEmpty(){
+Point2 Level::findRandomOfType(int index){
     Point2 p;
     do{
         p.x = rand()%size->x;
         p.y = rand()%size->y;
 
-    }while(tileAt(p)->isSolid() || indexAt(p)==tileUnset->getIndex());
+    }while(indexAt(p)!=index);
+    return p;
+}
+
+Point2 Level::findRandomWithFlag(TileFlag flags){
+    Point2 p;
+    do{
+        p.x = rand()%size->x;
+        p.y = rand()%size->y;
+
+    }while(!(tileAt(p)->hasFlag(flags)));
+    return p;
+}
+
+Point2 Level::findRandomWithoutFlag(TileFlag flags){
+    Point2 p;
+    do{
+        p.x = rand()%size->x;
+        p.y = rand()%size->y;
+
+    }while((tileAt(p)->hasFlag(flags)));
     return p;
 }
 
@@ -128,12 +150,16 @@ long Level::entityCount() {
 bool Level::update(int tick, Point2* viewPos) {
     bool u = false;
     for (size_t i=0; i<entityList.size(); i++) {
-        u = entityList.at(i)->update(tick, this) || u;
+        if(entityList.at(i)->update(tick, this)){
+            u = true;
+        }
     }
     return u;
 }
 
 Entity* Level::newEntity(Entity* newE) {
+    newE->uniqueId = nextUniqueId;
+    nextUniqueId++;
     entityList.push_back(newE);
     return newE;
 }
@@ -150,7 +176,7 @@ void Level::deleteEntity(Entity* e) {
     }
 }
 
-void Level::generate(unsigned int seed) {
+Point2 Level::generate(unsigned int seed) {
     srand(seed);
 
     for (int i=0; i<size->x; i++) {
@@ -168,7 +194,63 @@ void Level::generate(unsigned int seed) {
     LevelGenerator::makeRoomsAndPaths(rooms, this);
 
     delete rooms;
+
+    Point2 p;
+
+    p = findRandomOfType(tileFloor->getIndex());
+    setTile(p, tileStairUp);
+
+    for(int i=0;i<10;i++){
+        Point2 f = findRandomOfType(tileFloor->getIndex());
+        if(distanceSquared(f, p) > 20*20){
+        	setTile(f, tileStairDown->getIndex());
+        }else{
+            i--;
+            debug("Too close");
+        }
+    }
+
+
+    AiEntity* rat = new AiEntity("Rat", aiMoveRandom, 'r', Point2Zero, Ui::C_DARK_YELLOW);
+    int ratCount = (rand()%50)+10;
+    for(int i=0;i<ratCount;i++){
+        AiEntity* r = AiEntity::clone(rat, nullptr);
+        Point2 pp = Point2(findRandomWithoutFlag(tileFlagSolid));
+        r->setPos(pp);
+        newEntity(r);
+    }
+
+    return p;
     
     
 }
+
+void Level::save(std::string* data){
+    size->save(data);
+    for(int i=0;i<size->x;i++){
+        for(int j=0;j<size->y;j++){
+            Utility::saveInt8Bit(data, tileGrid[i][j].index);
+            Utility::saveBool(data, tileGrid[i][j].explored);
+        }
+    }
+    Utility::saveInt(data, (int)entityList.size());
+    for(int i=0;i<entityList.size();i++){
+        entityList[i]->save(data);
+    }
+}
+
+void Level::load(char* data, int* position){
+    for(int i=0;i<size->x;i++){
+        for(int j=0;j<size->y;j++){
+            tileGrid[i][j].index = Utility::loadInt8Bit(data, position);
+            tileGrid[i][j].explored = Utility::loadBool(data, position);
+        }
+    }
+    int entityCount = Utility::loadInt(data, position);
+    for(int i=0;i<entityCount;i++){
+        entityList.push_back(Entity::loadNew(data, position));
+    }
+}
+
+
 

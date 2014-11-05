@@ -9,13 +9,14 @@
 #ifndef __Underneath__Level__
 #define __Underneath__Level__
 
-class Entity;
-
 #include "Global.h"
 
 #include "Tile.h"
+#include "World.h"
 #include "Entity.h"
 #include "Geometry.h"
+
+class Entity;
 
 struct TileData{
     int8_t index = 0;
@@ -27,11 +28,15 @@ class Level {
 
 public:
 
-    Level();
+    Level(std::string n, Point2 s = Point2(100, 100));
     ~Level();
 
     bool getExplored(Point2 p);
     void setExplored(Point2 p, bool a);
+
+    std::string getName(){
+        return name;
+    }
 
     Entity* getDisplayEntity(Point2 p);
 
@@ -39,7 +44,9 @@ public:
 
     bool inRange(Point2 p);
 
-    Point2 findRandomEmpty();
+    Point2 findRandomOfType(int index);
+    Point2 findRandomWithFlag(TileFlag flag);
+    Point2 findRandomWithoutFlag(TileFlag flag);
 
     Tile* tileAt(Point2 p);
     bool setTile(Point2 p, int tile);
@@ -50,7 +57,7 @@ public:
 
     long entityCount();
 
-    void generate(unsigned int seed);
+    Point2 generate(unsigned int seed);
 
     bool update(int time, Point2* viewPos);
 
@@ -63,13 +70,19 @@ public:
         return *size;
     }
 
+    void save(std::string*);
+
+    void load(char* data, int*position);
+
+    std::vector<Entity*> entityList;
+
 private:
 
     Point2* size;
 
     TileData** tileGrid;
 
-    std::vector<Entity*> entityList;
+    std::string name;
 };
 
 

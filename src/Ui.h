@@ -11,6 +11,11 @@
 
 #include "Geometry.h"
 
+extern std::string debugMessage;
+
+void debugPlain(std::string s);
+void debug(std::string s);
+
 namespace Ui {
 
     typedef int color;
@@ -48,20 +53,21 @@ namespace Ui {
 
     void exitProgram();
 
+    void setTerminalSizeVar();
+
     void setColor(color c, int attr = 0);
 
     extern long tick;
 
-    extern double ms;
+    /*extern double ms;
 
     extern int fps;
     extern long l;
     extern long lastL;
     extern long startTime;
-    extern int frames;
+    extern int frames;*/
 
     extern bool limitedColorMode;
-
 
     extern Point2 terminalSize;
 

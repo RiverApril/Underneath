@@ -9,7 +9,6 @@
 #ifndef __Underneath__Math__
 #define __Underneath__Math__
 
-
 constexpr const double pi = 3.14159265358979;
 
 int distanceSquared(int ax, int ay, int bx, int by);

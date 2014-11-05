@@ -14,7 +14,18 @@
 
 namespace Utility{
 
-    //template <typename T> void deleteContentsOfVector(std::vector<T*>* v);
+    void saveInt(std::string* data, int n);
+    void saveChar(std::string* data, char n);
+    void saveInt8Bit(std::string* data, int8_t n);
+    void saveBool(std::string* data, bool n);
+    void saveString(std::string* data, std::string n);
+
+
+    int loadInt(char* data, int* position);
+    char loadChar(char* data, int* position);
+    int8_t loadInt8Bit(char* data, int* position);
+    bool loadBool(char* data, int* position);
+    std::string loadString(char* data, int* position);
 }
 
 

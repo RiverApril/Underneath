@@ -8,6 +8,7 @@
 
 #include "MenuMain.h"
 #include "MenuGame.h"
+#include "MenuPreGame.h"
 #include "Global.h"
 
 namespace Ui {
@@ -29,7 +30,7 @@ namespace Ui {
             case ' ':
                 switch (selection) {
                     case 0:
-                        changeMenu(new MenuGame("testGame"));
+                        changeMenu(new MenuPreGame());
                         break;
 
                     case maxUiSelection:
@@ -76,7 +77,6 @@ namespace Ui {
             attrset(COLOR_PAIR(i));
             printw("%X ", i);
         }
-        mvprintw(terminalSize.y-1, 0, "ms: %.2f fps: %d t: %d", ms, fps, tick);
         refresh();
     }
     

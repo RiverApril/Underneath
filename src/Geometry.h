@@ -20,7 +20,10 @@ struct Point2 {
     Point2() : Point2(0, 0){}
     bool operator==(const Point2 other);
     bool operator!=(const Point2 other);
-    void set(const Point2 *other);
+
+    
+
+    void set(const Point2 other);
 
     Point2 operator+(Point2 other);
     Point2 operator-(Point2 other);
@@ -42,6 +45,10 @@ struct Point2 {
     Vector2 operator*(double other);
     Vector2 operator/(double other);
 
+    void save(std::string* data);
+
+    static Point2 load(char* data, int* position);
+
     void set(int i) {
         this->x = i;
         this->y = i;
@@ -53,10 +60,10 @@ struct Vector2 {
     double x,y;
 
     Vector2(double x, double y);
-    bool operator==(const Vector2 &other);
-    bool operator!=(const Vector2 &other);
-    void set(const Vector2 *other);
-    void set(const Point2 *other);
+    bool operator==(const Vector2 other);
+    bool operator!=(const Vector2 other);
+    void set(const Vector2 other);
+    void set(const Point2 other);
     Point2 truncate();
 
     Vector2 operator+(double other);
@@ -66,6 +73,9 @@ struct Vector2 {
 
     std::string toString();
 };
+
+
+int distanceSquared(Point2 a, Point2 b);
 
 extern Point2 Point2Zero;
 extern Point2 Point2Left;

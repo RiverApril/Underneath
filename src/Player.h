@@ -9,11 +9,15 @@
 #ifndef __Underneath__Player__
 #define __Underneath__Player__
 
-#include "Entity.h"
+#include "Alive.h"
 
-class Player : public Entity {
+class Player : public Alive {
 
 public:
+
+    static Player* clone(Player* oldE, Player* newE);
+
+    Player();
 
     Player(std::string name, char icon, Point2 startPos, Ui::color colorCode);
 
@@ -21,12 +25,21 @@ public:
 
     bool update(int tick, Level* world);
 
-    void move(Point2 p, Level* level);
+    bool moveRelative(Point2 p, Level* level);
+
+    bool moveExact(Point2, Level* level);
 
     bool use(Level* level);
 
-private:
-    std::string name;
+
+    virtual void save(std::string* data);
+
+    virtual int getEntityTypeId();
+
+    virtual void load(char* data, int* position);
+    
+    
+protected:
 
 };
 

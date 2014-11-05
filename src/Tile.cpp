@@ -71,7 +71,7 @@ void initTiles() {
     tileStairUp = new Tile(a++, '^',  Ui::C_LIGHT_GREEN, tileFlagNone);
 
     tileEdge = new Tile(a++, 'X',  Ui::C_LIGHT_RED, tileFlagSolid);
-    tileUnset = new Tile(a++, 'X',  Ui::C_LIGHT_MAGENTA, tileFlagNone);
+    tileUnset = new Tile(a++, 'X',  Ui::C_LIGHT_MAGENTA, tileFlagSolid);
 
     tileDebug1 = new Tile(a++, '1',  Ui::C_LIGHT_GREEN, tileFlagNone);
     tileDebug2 = new Tile(a++, '2',  Ui::C_LIGHT_GREEN, tileFlagNone);

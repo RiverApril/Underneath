@@ -9,22 +9,24 @@
 #ifndef __Underneath__AiEntity__
 #define __Underneath__AiEntity__
 
-class Level;
+#include "Alive.h"
 
-#include "Level.h"
-#include "Ui.h"
-#include "Geometry.h"
+typedef int AiType;
 
-namespace AiType {
-    const int aiNone = 0;
-    const int aiMoveRandom = 1 << 0;
-};
+const AiType aiNone = 0;
+const AiType aiMoveRandom = 1 << 0;
 
-class AiEntity : public Entity {
+
+
+class AiEntity : public Alive {
 
 public:
 
-    AiEntity(int aiFlags, char icon, Point2 startPos, int colorCode = Ui::COLOR_DEFAULT_ENTITY);
+    static AiEntity* clone(AiEntity* oldE, AiEntity* newE);
+
+    AiEntity();
+
+    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, int colorCode = Ui::COLOR_DEFAULT_ENTITY);
 
     ~AiEntity();
 
@@ -32,10 +34,15 @@ public:
     bool update(int tick, Level* level);
 
 
+    virtual void save(std::string* data);
+
+    virtual int getEntityTypeId();
+
+    virtual void load(char* data, int* position);
+
+
 protected:
-    int ai = AiType::aiNone;
-    int moveSpeed = 4;
-    Point2* speed;
+    int ai = aiNone;
 };
 
 #endif /* defined(__Underneath__AiEntity__) */

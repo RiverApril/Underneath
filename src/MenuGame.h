@@ -36,15 +36,16 @@ namespace Ui {
 
         void viewUpdate();
         void drawTileAt(Point2 p);
-
-        bool paused = false;
+		
         bool updateView;
+        bool timePassed;
         Point2* viewPos;
         Point2* viewMoveSpeed;
         bool playerMode = true;
         World* currentWorld;
         Level* currentLevel;
         Player* currentPlayer;
+        int time = 0;
 
     };
 }

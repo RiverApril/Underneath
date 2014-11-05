@@ -9,28 +9,35 @@
 #ifndef __Underneath__World__
 #define __Underneath__World__
 
+class Player;
+class Level;
+
 #include "Global.h"
-#include "Level.h"
-#include "Player.h"
 
 class World {
 
 public:
 
-    World();
+    World(std::string n);
 
     ~World();
 
+    std::vector<Level*>* levels;
+
     Level* currentLevel;
     Player* currentPlayer;
+    std::string* name;
 
 };
 
 namespace WorldLoader {
     bool exists(std::string name);
-    bool load(std::string name);
-    bool create(std::string name);
-    extern World* loadedWorld;
+    World* load(std::string name);
+    bool save(World* loadedWorld);
+    World* create(std::string name);
 }
+
+#include "Player.h"
+#include "Level.h"
 
 #endif /* defined(__Underneath__World__) */

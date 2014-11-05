@@ -8,6 +8,7 @@
 
 #include "Geometry.h"
 #include "Math.h"
+#include "Utility.h"
 #include "Global.h"
 
 Point2 Point2Zero = Point2(0, 0);
@@ -29,9 +30,9 @@ bool Point2::operator!=(const Point2 other) {
     return !(*this == other);
 }
 
-void Point2::set(const Point2* other) {
-    this->x = other->x;
-    this->y = other->y;
+void Point2::set(const Point2 other) {
+    this->x = other.x;
+    this->y = other.y;
 }
 
 
@@ -115,6 +116,14 @@ std::string Point2::toString() {
     return std::to_string(x)+", "+std::to_string(y);
 }
 
+void Point2::save(std::string* data){
+    Utility::saveInt(data, x);
+    Utility::saveInt(data, y);
+}
+
+Point2 Point2::load(char* data, int* position){
+    return Point2(Utility::loadInt(data, position), Utility::loadInt(data, position));
+}
 
 
 
@@ -123,22 +132,22 @@ Vector2::Vector2(double x, double y) {
     this->y = y;
 }
 
-bool Vector2::operator==(const Vector2 &other) {
+bool Vector2::operator==(Vector2 other) {
     return this->x == other.x && this->y == other.y;
 }
 
-bool Vector2::operator!=(const Vector2 &other) {
+bool Vector2::operator!=(Vector2 other) {
     return !(*this == other);
 }
 
-void Vector2::set(const Vector2 *other) {
-    this->x = other->x;
-    this->y = other->y;
+void Vector2::set(Vector2 other) {
+    this->x = other.x;
+    this->y = other.y;
 }
 
-void Vector2::set(const Point2 *other) {
-    this->x = other->x;
-    this->y = other->y;
+void Vector2::set(Point2 other) {
+    this->x = other.x;
+    this->y = other.y;
 }
 
 Point2 Vector2::truncate() {
@@ -162,6 +171,10 @@ Vector2 Vector2::operator*( double other) {
 
 Vector2 Vector2::operator/( double other) {
     return Vector2(this->x/other, this->y/other);
+}
+
+int distanceSquared(Point2 a, Point2 b){
+    return distanceSquared(a.x, a.y, b.x, b.y);
 }
 
 
