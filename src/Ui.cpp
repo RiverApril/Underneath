@@ -13,16 +13,14 @@
 #include "Player.h"
 #include "Math.h"
 
-std::string debugMessage = "";
-
+std::vector<std::string> consoleBuffer;
 
 void debug(std::string s){
-    debugPlain(s+"  ");
+    print("DEBUG: "+s);
 }
 
-void debugPlain(std::string s){
-    debugMessage+=s;
-    debugMessage = debugMessage.substr(debugMessage.size()-min(Ui::terminalSize.x, (int)debugMessage.size()));
+void print(std::string s){
+    consoleBuffer.push_back(s);
 }
 
 namespace Ui {
@@ -46,9 +44,11 @@ namespace Ui {
     Menu* currentMenu;
 
     void changeMenu(Menu* newMenu) {
-        delete currentMenu;
+        if(currentMenu != nullptr){
+        	currentMenu->_closeUi(newMenu);
+        }
+        newMenu->_openUi(currentMenu);
         currentMenu = newMenu;
-        newMenu->_openUi();
     }
 
     void initNCurses() {
@@ -88,8 +88,8 @@ namespace Ui {
     }
 
     void setTerminalSizeVar(){
-        terminalSize.y = getmaxy(stdscr)-1;
         terminalSize.x = getmaxx(stdscr);
+        terminalSize.y = getmaxy(stdscr);
     }
 
     void setColor(color c, int attr) {
@@ -137,18 +137,28 @@ namespace Ui {
     }
 
 
-    Menu::Menu(int inputTimeout) {
-        this->inputTimeout = inputTimeout;
+    Menu::Menu(bool temp) {
+        isTemp = temp;
     }
 
-    void Menu::_openUi() {
+    void Menu::_openUi(Menu* oldMenu) {
         //timeout(inputTimeout);
         move(0, 0);
         clrtobot();
         refresh();
-        openUi();
+        openUi(oldMenu);
         update();
         refresh();
+        if(isTemp){
+            parentMenu = oldMenu;
+        }
+    }
+
+    void Menu::_closeUi(Menu* newMenu){
+        if(isTemp && newMenu == parentMenu){
+            delete this;
+        }
+        closeUi(newMenu);
     }
 
     void Menu::_handleInput(int in) {
@@ -158,8 +168,26 @@ namespace Ui {
                 move(0, 0);
                 clrtobot();
                 break;
+
+            case '`':
+                debug("Debug Test, Rand: "+std::to_string(rand()));
+                break;
         }
         handleInput(in);
+    }
+
+    void Menu::printConsole(int topY, int bottomY){
+        setColor(C_WHITE);
+        int j = 1;
+        for(int i=bottomY;i>=topY;i--){
+            move(i, 0);
+            clrtoeol();
+            if(((int)(consoleBuffer.size())-j) < 0){
+                break;
+            }
+            printw(consoleBuffer[consoleBuffer.size()-j].c_str());
+            j++;
+        }
     }
 
     void Menu::_update() {
@@ -180,12 +208,7 @@ namespace Ui {
             frames = 0;
         }*/
 
-        if(debugMessage.length() > 0) {
-            setColor(C_WHITE);
-            move(terminalSize.y-1, 0);
-            clrtobot();
-            mvprintw(terminalSize.y, 0, debugMessage.c_str());
-        }
+        
 
     }
 }

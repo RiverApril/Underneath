@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 
 #include <ncurses.h>
 #include <time.h>

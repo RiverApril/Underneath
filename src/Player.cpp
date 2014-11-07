@@ -69,6 +69,7 @@ Player* Player::clone(Player* oldE, Player* newE){
 
 void Player::save(std::string* data){
     Alive::save(data);
+    debug("Save Player hp: "+std::to_string(hp));
 }
 
 int Player::getEntityTypeId(){

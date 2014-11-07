@@ -15,11 +15,12 @@ namespace Ui {
     class MenuPreGame : public Ui::Menu {
     public:
 
-        MenuPreGame() : Menu(100) {}
+        MenuPreGame() : Menu(false) {}
 
         ~MenuPreGame() {}
 
-        void openUi();
+        void openUi(Menu* oldMenu);
+        void closeUi(Menu* newMenu);
         void handleInput(int in);
         void update();
 

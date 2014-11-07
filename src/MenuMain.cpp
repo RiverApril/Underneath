@@ -13,8 +13,12 @@
 
 namespace Ui {
 
-    void MenuMain::openUi() {
+    void MenuMain::openUi(Menu* oldMenu) {
 
+    }
+
+    void MenuMain::closeUi(Menu* newMenu) {
+        delete this;
     }
 
     void MenuMain::handleInput(int in) {
@@ -77,6 +81,9 @@ namespace Ui {
             attrset(COLOR_PAIR(i));
             printw("%X ", i);
         }
+
+        printConsole();
+        
         refresh();
     }
     

@@ -15,11 +15,12 @@ namespace Ui {
     class MenuMain : public Ui::Menu {
     public:
 
-        MenuMain() : Menu(100) {}
+        MenuMain() : Menu(false) {}
 
         ~MenuMain() {}
 
-        void openUi();
+        void openUi(Menu* oldMenu);
+        void closeUi(Menu* newMenu);
         void handleInput(int in);
         void update();
 

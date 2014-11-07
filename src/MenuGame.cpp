@@ -15,7 +15,7 @@
 namespace Ui {
 
 
-    MenuGame::MenuGame(std::string worldName) : Menu((1000/60)) {
+    MenuGame::MenuGame(std::string worldName) : Menu(false) {
 
         move(0, 0);
         clrtobot();
@@ -45,15 +45,11 @@ namespace Ui {
         }
 
         if(WorldLoader::exists(worldName)){
-            debug(worldName+" exists");
-            debug("loading");
             currentWorld = WorldLoader::load(worldName);
             if(currentWorld == nullptr){
-                debug("load failed, creating new");
                 currentWorld = WorldLoader::create(worldName);
             }
         }else{
-            debug(worldName+" does not exist, creating new");
             currentWorld = WorldLoader::create(worldName);
         }
         if(currentWorld == nullptr){
@@ -77,7 +73,7 @@ namespace Ui {
         currentWorld = nullptr;
     }
 
-    void MenuGame::openUi() {
+    void MenuGame::openUi(Menu* oldMenu) {
 
         setGameAreaSize();
 
@@ -90,16 +86,22 @@ namespace Ui {
         refresh();
     }
 
+    void MenuGame::closeUi(Menu* newMenu){
+        if(!newMenu->isTemp){
+            delete this;
+        }
+    }
+
     void MenuGame::setGameAreaSize() {
-        gameArea.x = terminalSize.x - 24;
-        gameArea.y = terminalSize.y - 2;
+        gameArea.x = terminalSize.x - borderSize.x;
+        gameArea.y = terminalSize.y - borderSize.y;
 
 
         updateView = true;
     }
 
     void MenuGame::viewUpdate() {
-        if(playerMode && currentPlayer != nullptr) {
+        if(mode == modePlayerControl && currentPlayer != nullptr) {
             viewPos->x = currentPlayer->getPos().x-gameArea.x/2;
             viewPos->y = currentPlayer->getPos().y-gameArea.y/2;
         }
@@ -120,7 +122,7 @@ namespace Ui {
     void MenuGame::drawTileAt(Point2 p) {
         bool inView = false;
         if(currentLevel != nullptr){
-            if(playerMode && currentPlayer != nullptr) {
+            if(currentPlayer != nullptr) {
                 if(currentLevel->canSee(currentPlayer->getPos(), p, currentPlayer->getViewDistance())) {
                     currentLevel->setExplored(p, true);
                     inView = true;
@@ -152,6 +154,18 @@ namespace Ui {
         }
     }
 
+    void MenuGame::arrowMove(int x, int y){
+        if(mode == modeAdjustBorder){
+            gameArea.x += x;
+            gameArea.y += y;
+        } else if(mode == modePlayerControl && currentPlayer != nullptr && currentLevel != nullptr){
+            if(currentPlayer->moveRelative(Point2(x, y), currentLevel)){
+                timePassed = true;
+            }
+            viewUpdate();
+        }
+    }
+
     void MenuGame::handleInput(int in) {
         switch (in) {
             case KEY_RESIZE:
@@ -162,46 +176,77 @@ namespace Ui {
                 break;
 
             case 27: //Escape
+
                 WorldLoader::save(currentWorld);
                 changeMenu(new MenuMain());
+                break;
+
+            case KEY_UP:
+            case 'w':
+                arrowMove(0, -1);
+                break;
+
+            case KEY_DOWN:
+            case 's':
+                arrowMove(0, 1);
+                break;
+
+            case KEY_LEFT:
+            case 'a':
+                arrowMove(-1, 0);
+                break;
+
+            case KEY_RIGHT:
+            case 'd':
+                arrowMove(1, 0);
+                break;
+
+            case '1':
+                mode = modePlayerControl;
+                break;
+
+            case '2':
+                if(mode == modeAdjustBorder){
+                    mode = modePlayerControl;
+                }else{
+                    mode = modeAdjustBorder;
+                }
+                break;
+
+            case KEY_ENTER:
+            case 13:
+            case '\n':
+                if(mode == modeConsoleInput){
+                    mode = modePlayerControl;
+                    execute(input);
+                    input = "";
+                }else{
+                	mode = modeConsoleInput;
+                }
                 break;
 
             default:
                 break;
         }
+        if(mode == modeConsoleInput){
+            switch (in) {
+                case KEY_BACKSPACE:
+                case 8: //Backspace
+                case 127: //Delete
+                    if(input.length() > 0){
+                        input = input.substr(0, input.length()-1);
+                    }
+                    break;
+                    
+                default:
+                    if((in>=32 && in<=126)){
+                        input += in;
+                    }
+                    break;
+            }
+        }
         if(currentPlayer != nullptr && currentLevel != nullptr){
             switch (in) {
-                case KEY_UP:
-                case 'w':
-                    if(currentPlayer->moveRelative(Point2Up, currentLevel)){
-                        timePassed = true;
-                    }
-                    viewUpdate();
-                    break;
-
-                case KEY_DOWN:
-                case 's':
-                    if(currentPlayer->moveRelative(Point2Down, currentLevel)){
-                        timePassed = true;
-                    }
-                    viewUpdate();
-                    break;
-
-                case KEY_LEFT:
-                case 'a':
-                    if(currentPlayer->moveRelative(Point2Left, currentLevel)){
-                        timePassed = true;
-                    }
-                    viewUpdate();
-                    break;
-
-                case KEY_RIGHT:
-                case 'd':
-                    if(currentPlayer->moveRelative(Point2Right, currentLevel)){
-                        timePassed = true;
-                    }
-                    viewUpdate();
-                    break;
 
                 case 'g':
                     if(currentPlayer->use(currentLevel)){
@@ -227,7 +272,13 @@ namespace Ui {
                 }
 
                 case 'o':
+
                     currentPlayer->hurt(1);
+                    break;
+
+                case 'p':
+                    
+                    currentPlayer->heal(1);
                     break;
 
 
@@ -251,25 +302,23 @@ namespace Ui {
             }
         }
 
-        if(updateView) {
-            viewUpdate();
-            move(0, 0);
-            clrtobot();
-            for(int j=0; j<gameArea.y; j++) {
-                move(j, 0);
-                for(int i=0; i<gameArea.x; i++) {
-                    drawTileAt(Point2(viewPos->x+i, viewPos->y+j));
-                }
+        viewUpdate();
+        move(0, 0);
+        clrtobot();
+        for(int j=0; j<gameArea.y; j++) {
+            move(j, 0);
+            for(int i=0; i<gameArea.x; i++) {
+                drawTileAt(Point2(viewPos->x+i, viewPos->y+j));
             }
-            setColor(C_WHITE);
-            for(int j=0; j<terminalSize.y; j++) {
-                mvaddch(j, gameArea.x, '|');
-            }
-            for(int i=0; i<terminalSize.x; i++) {
-                mvaddch(gameArea.y, i, '-');
-            }
-            mvaddch(gameArea.y, gameArea.x, '+');
         }
+        setColor((mode == modeAdjustBorder)?C_LIGHT_YELLOW:C_WHITE, (mode == modeAdjustBorder)?A_BLINK:0);
+        for(int j=0; j<terminalSize.y; j++) {
+            mvaddch(j, gameArea.x, '|');
+        }
+        for(int i=0; i<terminalSize.x; i++) {
+            mvaddch(gameArea.y, i, '-');
+        }
+        mvaddch(gameArea.y, gameArea.x, '+');
 
         Ui::setColor(C_WHITE);
         Point2 p = *viewPos;
@@ -291,7 +340,8 @@ namespace Ui {
             clrtoeol();
             
             Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
-            mvprintw(2, gameArea.x+1, "HP: %d/%d %s", hp, maxHp, currentPlayer->getHpBar(10).c_str());
+            mvprintw(2, gameArea.x+1, "HP: %d/%d", hp, maxHp);
+            mvprintw(3, gameArea.x+2, "%s",currentPlayer->getHpBar(borderSize.x-3).c_str());
         }
         
         Ui::setColor(C_WHITE);
@@ -306,10 +356,37 @@ namespace Ui {
         
         updateView = false;
         timePassed = false;
+
+        printConsole(gameArea.y+1, terminalSize.y-2);
+
+        if(mode == modeConsoleInput){
+            Ui::setColor(C_DARK_GREEN);
+        	mvprintw(terminalSize.y-1, 0, "> %s", input.c_str());
+            Ui::setColor(C_LIGHT_GREEN, A_BLINK);
+            mvprintw(terminalSize.y-1, 2+(int)input.length(), "_");
+        }
         
         refresh();
         
         
     }
-    
+
+
+    bool MenuGame::execute(std::string commandRaw){
+        std::vector<std::string> arguments;
+        int lastI = 0;
+        for(int i=0;i<commandRaw.length();i++){
+            if(commandRaw[i] == ' '){
+                arguments.push_back(commandRaw.substr(lastI, i-lastI));
+                lastI = i+1;
+            }
+        }
+        arguments.push_back(commandRaw.substr(lastI));
+
+        for(int i=0;i<arguments.size();i++){
+            //debug(arguments[i]);
+        }
+        return false;
+    }
+
 }

@@ -12,8 +12,12 @@
 
 namespace Ui {
 
-    void MenuPreGame::openUi() {
+    void MenuPreGame::openUi(Menu* oldMenu) {
 
+    }
+
+    void MenuPreGame::closeUi(Menu* newMenu) {
+        delete this;
     }
 
     void MenuPreGame::handleInput(int in) {
@@ -102,17 +106,18 @@ namespace Ui {
 			s = "You need to enter a name.";
         }else{
             if(WorldLoader::exists(name)){
-                setColor(C_LIGHT_YELLOW);
+                setColor(C_LIGHT_GREEN);
                 s = "World exists, it will be loaded.";
             }else{
-                setColor(C_LIGHT_GREEN);
+                setColor(C_LIGHT_YELLOW);
                 s = "World does not exist, it will be created.";
             }
         }
         move(6, 1);
         clrtoeol();
         printw(s.c_str());
-		
+
+        printConsole();
 
         refresh();
     }

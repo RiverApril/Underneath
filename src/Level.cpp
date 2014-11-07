@@ -206,7 +206,6 @@ Point2 Level::generate(unsigned int seed) {
         	setTile(f, tileStairDown->getIndex());
         }else{
             i--;
-            debug("Too close");
         }
     }
 
@@ -226,6 +225,7 @@ Point2 Level::generate(unsigned int seed) {
 }
 
 void Level::save(std::string* data){
+    
     size->save(data);
     for(int i=0;i<size->x;i++){
         for(int j=0;j<size->y;j++){

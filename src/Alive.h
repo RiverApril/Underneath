@@ -35,6 +35,10 @@ public:
         hp -= amount;
     }
 
+    void heal(int amount){
+        hp += amount;
+    }
+
     int getViewDistance() {
         return viewDistance;
     }

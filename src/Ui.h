@@ -11,10 +11,10 @@
 
 #include "Geometry.h"
 
-extern std::string debugMessage;
+extern std::vector<std::string> consoleBuffer;
 
-void debugPlain(std::string s);
 void debug(std::string s);
+void print(std::string s);
 
 namespace Ui {
 
@@ -75,20 +75,27 @@ namespace Ui {
     class Menu {
     public:
 
-        Menu(int inputTimeout);
+        Menu(bool temp);
 
         virtual ~Menu() {}
 
-        void _openUi();
+        void _openUi(Menu* oldMenu);
+        void _closeUi(Menu* newMenu);
         void _handleInput(int i);
         void _update();
 
-        virtual void openUi() {}
+        void printConsole(int topY = terminalSize.y-4, int bottomY = terminalSize.y-1);
+
+        virtual void openUi(Menu* oldMenu) {}
+        virtual void closeUi(Menu* newMenu) {}
         virtual void handleInput(int i) {}
         virtual void update() {}
+        
+        bool isTemp = false;
 
     protected:
-        bool inputTimeout;
+
+        Menu* parentMenu = nullptr;
 
     };
     

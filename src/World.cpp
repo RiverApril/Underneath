@@ -52,6 +52,7 @@ namespace WorldLoader {
     World* loadedWorld;
 
     bool exists(std::string name){
+        debug("Does "+name+" Exist?");
 
         std::string dir = WorldsDir+"/"+name+"/";
 
@@ -66,6 +67,8 @@ namespace WorldLoader {
         }
         fclose(fileWorldInfo);
         //
+
+        debug(l?"Yes ":"No ");
 
         return l;
     }
@@ -85,6 +88,7 @@ namespace WorldLoader {
     }
 
     World* load(std::string name){
+        debug("Loading "+name+"...");
 
         std::string dir = WorldsDir+"/"+name+"/";
 
@@ -110,14 +114,10 @@ namespace WorldLoader {
 
 
 
-            for(int i=-1;i<levelCount;i++){
+            for(int i=0;i<levelCount;i++){
                 std::string levelName;
 
-                if(i == -1){
-                    levelName = currentLevelName;
-                }else{
-					levelName = Utility::loadString(data, position);
-                }
+                levelName = Utility::loadString(data, position);
 
                 //levelName.lvl
                 FILE* fileLevel;
@@ -135,12 +135,11 @@ namespace WorldLoader {
 
                     level->load(levelData, levelPosition);
 
-
-                    if(i == -1){
+                    if(levelName == currentLevelName){
                         world->currentLevel = level;
-                    }else{
-                        world->levels->push_back(level);
                     }
+
+                    world->levels->push_back(level);
 
                     delete levelPosition;
 
@@ -165,19 +164,24 @@ namespace WorldLoader {
         fclose(fileWorldInfo);
 		//
 
+
+        debug(world==nullptr?"Load Failed ":"Loaded");
+
         return world;
     }
 
     bool save(World* loadedWorld){
+        debug("Saving "+*(loadedWorld->name)+"...");
+        bool failed = false;
 
         mkdir(UnderneathDir.c_str(), 0777);
         mkdir(WorldsDir.c_str(), 0777);
         std::string dir = WorldsDir+"/"+loadedWorld->name->c_str()+"/";
         mkdir(dir.c_str(), 0777);
 
-        std::remove((dir+"world"+".info.back").c_str());
+        std::remove((dir+"world"+".info.backup").c_str());
         std::rename((dir+"world"+".info").c_str(),
-                    (dir+"world"+".info.back").c_str());
+                    (dir+"world"+".info.backup").c_str());
 
         //world.info
         FILE* fileWorldInfo;
@@ -200,40 +204,50 @@ namespace WorldLoader {
             }
 
             delete data;
+
+
+
+            for(int i=0;i<loadedWorld->levels->size();i++){
+                Level* l = loadedWorld->levels->at(i);
+
+                //levelName.lvl
+                FILE* fileLevel;
+
+                std::remove((dir+(l->getName())+".lvl.backup").c_str());
+                std::rename((dir+(l->getName())+".lvl").c_str(),
+                            (dir+(l->getName())+".lvl.backup").c_str());
+
+                fileLevel = fopen((dir+(l->getName())+".lvl").c_str(), "wb");
+                if(fileLevel != nullptr){
+                    std::string* data = new std::string();
+                    
+
+                    l->save(data);
+
+                    for(int j=0;j<data->size();j++){
+                        fputc(data->at(j), fileLevel);
+                    }
+                    
+                    delete data;
+                }else{
+                    failed = true;
+                    break;
+                }
+                fclose(fileLevel);
+                //
+            }
+
+        }else{
+            failed = true;
         }
         fclose(fileWorldInfo);
         //
 
 
-        for(int i=0;i<loadedWorld->levels->size();i++){
-            Level* l = loadedWorld->levels->at(i);
-
-            //levelName.lvl
-            FILE* fileLevel;
-
-            std::remove((dir+(l->getName())+".lvl.back").c_str());
-            std::rename((dir+(l->getName())+".lvl").c_str(),
-                        (dir+(l->getName())+".lvl.back").c_str());
-
-            fileLevel = fopen((dir+(l->getName())+".lvl").c_str(), "wb");
-            if(fileLevel != nullptr){
-                std::string* data = new std::string();
-
-                l->save(data);
-
-                for(int j=0;j<data->size();j++){
-                    fputc(data->at(j), fileLevel);
-                }
-
-                delete data;
-
-                return true;
-            }
-            fclose(fileLevel);
-            //
-        }
 
 
+
+        debug(failed?"Save Failed":"Saved");
 
 
         return false;
