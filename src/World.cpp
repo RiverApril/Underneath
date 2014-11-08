@@ -80,10 +80,10 @@ namespace WorldLoader {
 
         char* buffer = new char[fileSize];
         fread(buffer, fileSize, 1, file);
-        printf("Length: %ld\n", fileSize);
+        /*printf("Length: %ld\n", fileSize);
         for(int i=0;i<fileSize;i++){
             printf("%d ", (int)buffer[i]);
-        }
+        }*/
         return buffer;
     }
 
@@ -105,13 +105,14 @@ namespace WorldLoader {
 
             int* position = new int(0);
 
+            world = new World(name);
+
+            world->worldTime = Utility::loadNumber<unsigned long>(data, position);
+
             int levelCount = Utility::loadInt8Bit(data, position);
 
             std::string currentLevelName = Utility::loadString(data, position);
             int playerUniqueId = Utility::loadInt(data, position);
-
-            world = new World(name);
-
 
 
             for(int i=0;i<levelCount;i++){
@@ -190,6 +191,8 @@ namespace WorldLoader {
         if(fileWorldInfo != nullptr){
             std::string* data = new std::string();
 
+            Utility::saveNumber(data, loadedWorld->worldTime);
+
             Utility::saveInt8Bit(data, (int8_t)loadedWorld->levels->size());
 
             Utility::saveString(data, loadedWorld->currentLevel->getName());
@@ -204,8 +207,6 @@ namespace WorldLoader {
             }
 
             delete data;
-
-
 
             for(int i=0;i<loadedWorld->levels->size();i++){
                 Level* l = loadedWorld->levels->at(i);
@@ -267,5 +268,46 @@ namespace WorldLoader {
         save(loadedWorld);
 
         return loadedWorld;
+    }
+
+    bool deleteWorld(std::string name){
+        debug("Deleting "+name+"...");
+
+        std::string dir = WorldsDir+"/"+name+"/";
+
+        //world.info
+        FILE* fileWorldInfo;
+
+        fileWorldInfo = std::fopen((dir+"world"+".info").c_str(), "rb");
+        if(fileWorldInfo != nullptr){
+
+            char* data = readData(fileWorldInfo);
+
+            int* position = new int(0);
+
+            Utility::loadNumber<unsigned long>(data, position);
+            int levelCount = Utility::loadInt8Bit(data, position);
+            Utility::loadString(data, position);
+            Utility::loadInt(data, position);
+
+
+            for(int i=0;i<levelCount;i++){
+                std::string levelName;
+
+                levelName = Utility::loadString(data, position);
+
+                std::remove((dir+levelName+".lvl").c_str());
+            }
+            
+            delete position;
+        }
+        fclose(fileWorldInfo);
+        //
+
+        std::remove((dir+"world"+".info").c_str());
+
+        debug("Deleted");
+
+        return true;
     }
 }

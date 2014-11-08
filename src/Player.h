@@ -11,7 +11,7 @@
 
 #include "Alive.h"
 
-class Player : public Alive {
+class Player : public Alive{
 
 public:
 

@@ -31,6 +31,14 @@ public:
         return maxHp;
     }
 
+    int getMp(){
+        return mp;
+    }
+
+    int getMaxMp(){
+        return maxMp;
+    }
+
     void hurt(int amount){
         hp -= amount;
     }
@@ -43,15 +51,6 @@ public:
         return viewDistance;
     }
 
-    std::string getHpBar(unsigned int size, char filled = '=', char empty = '-'){
-        std::string s = "";
-        int l = (int)(((double)size/maxHp)*hp);
-        for(int i=0;i<size;i++){
-            s+=i<l?filled:empty;
-        }
-        return s;
-    }
-
     virtual void save(std::string* data);
 
     virtual int getEntityTypeId();
@@ -61,6 +60,8 @@ public:
 protected:
     int maxHp = 30;
     int hp = maxHp;
+    int maxMp = 10;
+    int mp = maxMp;
     int viewDistance = 8;
 
 };

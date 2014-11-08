@@ -27,6 +27,7 @@ public:
     Level* currentLevel;
     Player* currentPlayer;
     std::string* name;
+    unsigned long worldTime = 0;
 
 };
 
@@ -35,6 +36,7 @@ namespace WorldLoader {
     World* load(std::string name);
     bool save(World* loadedWorld);
     World* create(std::string name);
+    bool deleteWorld(std::string name);
 }
 
 #include "Player.h"

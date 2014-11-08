@@ -27,7 +27,7 @@ namespace Ui {
 
     const color COLOR_DEFAULT_ENTITY = C_LIGHT_RED;
 
-    long tick = 0;
+    unsigned long tick = 0;
 
     /*double ms = 0;
 

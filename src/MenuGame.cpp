@@ -10,6 +10,7 @@
 #include "MenuMain.h"
 #include "AiEntity.h"
 #include "Math.h"
+#include "Utility.h"
 
 
 namespace Ui {
@@ -156,8 +157,9 @@ namespace Ui {
 
     void MenuGame::arrowMove(int x, int y){
         if(mode == modeAdjustBorder){
-            gameArea.x += x;
-            gameArea.y += y;
+            borderSize.x -= x;
+            borderSize.y -= y;
+            setGameAreaSize();
         } else if(mode == modePlayerControl && currentPlayer != nullptr && currentLevel != nullptr){
             if(currentPlayer->moveRelative(Point2(x, y), currentLevel)){
                 timePassed = true;
@@ -296,7 +298,7 @@ namespace Ui {
         }
 
         if(timePassed) {
-            time++;
+            currentWorld->worldTime++;
             if(currentLevel->update((int)tick, viewPos)){
                 updateView = true;
             }
@@ -312,7 +314,7 @@ namespace Ui {
             }
         }
         setColor((mode == modeAdjustBorder)?C_LIGHT_YELLOW:C_WHITE, (mode == modeAdjustBorder)?A_BLINK:0);
-        for(int j=0; j<terminalSize.y; j++) {
+        for(int j=0; j<gameArea.y; j++) {
             mvaddch(j, gameArea.x, '|');
         }
         for(int i=0; i<terminalSize.x; i++) {
@@ -334,6 +336,8 @@ namespace Ui {
 
             const int hp = currentPlayer->getHp();
             const int maxHp = currentPlayer->getMaxHp();
+            const int mp = currentPlayer->getMp();
+            const int maxMp = currentPlayer->getMaxMp();
             
             move(2, gameArea.x+1);
             
@@ -341,13 +345,19 @@ namespace Ui {
             
             Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
             mvprintw(2, gameArea.x+1, "HP: %d/%d", hp, maxHp);
-            mvprintw(3, gameArea.x+2, "%s",currentPlayer->getHpBar(borderSize.x-3).c_str());
+            addch(' ');
+            printw("%s", Utility::makeBar(hp, maxHp, terminalSize.x - getcurx(stdscr) - 2).c_str());
+
+            Ui::setColor(C_DARK_CYAN);
+            mvprintw(3, gameArea.x+1, "MP: %d/%d", mp, maxMp);
+            addch(' ');
+            printw("%s", Utility::makeBar(mp, maxMp, terminalSize.x - getcurx(stdscr) - 2).c_str());
         }
         
         Ui::setColor(C_WHITE);
         
-        mvprintw(10, gameArea.x+1, "Time: %d", time);
-        mvprintw(11, gameArea.x+1, "Tick: %d", tick);
+        mvprintw(10, gameArea.x+1, "Time: %u", currentWorld->worldTime);
+        //mvprintw(11, gameArea.x+1, "Tick: %d", tick);
         
         if(currentLevel != nullptr){
             mvprintw(gameArea.y, 0, "%d, %d  e: %d", p.x, p.y, currentLevel->entityCount());

@@ -10,6 +10,8 @@
 
 namespace Utility{
 
+
+
     void saveInt(std::string* data, int n){
         data->push_back((char)((n >> 24) & 0xFF));
         data->push_back((char)((n >> 16) & 0xFF));
@@ -37,6 +39,8 @@ namespace Utility{
     }
 
 
+
+    
 
     int loadInt(char* data, int* position){
         return ((loadChar(data, position)<<24) |
@@ -70,6 +74,15 @@ namespace Utility{
             l+=loadChar(data, position);
         }
         return l;
+    }
+
+    std::string makeBar(int progress, int maxProgress, unsigned int size, char filled, char empty){
+        std::string s = "";
+        int l = (int)(((double)size/maxProgress)*progress);
+        for(int i=0;i<size;i++){
+            s+=i>=l?empty:filled;
+        }
+        return s;
     }
 
 }

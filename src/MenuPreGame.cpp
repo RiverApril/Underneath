@@ -21,10 +21,13 @@ namespace Ui {
     }
 
     void MenuPreGame::handleInput(int in) {
-        const int maxUiSelection = 2;
-        const int selPlay = 0;
-        const int selName = 1;
-        const int selBack = 2;
+
+        const int selName = 0;
+        const int selPlay = 1;
+        const int selDel = 2;
+        const int selBack = 3;
+
+        const int maxUiSelection = selBack;
 
         move(selection+2, 0);
         clrtoeol();
@@ -36,12 +39,14 @@ namespace Ui {
             case ' ':
                 switch (selection) {
                     case selPlay:
+                    case selName:
                         if(name.length() > 0){
                         	changeMenu(new MenuGame(name));
                         }
                         break;
 
-                    case selName:
+                    case selDel:
+                        WorldLoader::deleteWorld(name);
                         break;
 
                     case selBack:
@@ -65,6 +70,10 @@ namespace Ui {
                 if(selection>maxUiSelection) {
                     selection = 0;
                 }
+                break;
+
+            case 27:
+                changeMenu(new MenuMain());
                 break;
 
             case KEY_BACKSPACE:
@@ -92,9 +101,10 @@ namespace Ui {
         setColor(C_WHITE);
 
         mvprintw(1, 1, "Enter name to play");
-        mvprintw(2, 3, "Start");
-        mvprintw(3, 3, "Enter Name: %s", name.c_str());
-        mvprintw(4, 3, "Back");
+        mvprintw(2, 3, "Enter Name: %s", name.c_str());
+        mvprintw(3, 3, "Start");
+        mvprintw(4, 3, "Delete");
+        mvprintw(5, 3, "Back");
 
         mvprintw(selection+2, 1, "-");
 

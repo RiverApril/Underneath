@@ -57,7 +57,7 @@ namespace Ui {
 
     void setColor(color c, int attr = 0);
 
-    extern long tick;
+    extern unsigned long tick;
 
     /*extern double ms;
 

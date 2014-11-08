@@ -59,7 +59,7 @@ public:
 
     Point2 generate(unsigned int seed);
 
-    bool update(int time, Point2* viewPos);
+    bool update(int tick, Point2* viewPos);
 
     void needsRedraw(Point2* p);
 

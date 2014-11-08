@@ -24,7 +24,7 @@ namespace Ui {
         void handleInput(int in);
         void update();
 
-        int selection = 0;
+        int selection = 1;
         std::string name = "";
     };
 }

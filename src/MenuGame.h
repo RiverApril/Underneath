@@ -50,7 +50,6 @@ namespace Ui {
         World* currentWorld;
         Level* currentLevel;
         Player* currentPlayer;
-        int time = 0;
         std::string input = "";
 
         int modePlayerControl = 0;
