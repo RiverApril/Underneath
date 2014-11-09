@@ -62,22 +62,23 @@ Player* Player::clone(Player* oldE, Player* newE){
 
     Alive::clone(oldE, newE);
 
-    //Player Specific
+    EMagical::copy(oldE, newE);
 
     return newE;
-}
-
-void Player::save(std::string* data){
-    Alive::save(data);
-    //debug("Save Player hp: "+std::to_string(hp));
 }
 
 int Player::getEntityTypeId(){
     return ENTITY_TYPE_PLAYER;
 }
 
+void Player::save(std::string* data){
+    Alive::save(data);
+    EMagical::save(data);
+}
+
 void Player::load(char* data, int* position){
     Alive::load(data, position);
+    EMagical::load(data, position);
 }
 
 

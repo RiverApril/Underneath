@@ -10,8 +10,9 @@
 #define __Underneath__Player__
 
 #include "Alive.h"
+#include "EMagical.h"
 
-class Player : public Alive{
+class Player : public Alive, public EMagical{
 
 public:
 
@@ -32,9 +33,9 @@ public:
     bool use(Level* level);
 
 
-    virtual void save(std::string* data);
-
     virtual int getEntityTypeId();
+
+    virtual void save(std::string* data);
 
     virtual void load(char* data, int* position);
     

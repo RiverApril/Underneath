@@ -31,14 +31,6 @@ public:
         return maxHp;
     }
 
-    int getMp(){
-        return mp;
-    }
-
-    int getMaxMp(){
-        return maxMp;
-    }
-
     void hurt(int amount){
         hp -= amount;
     }
@@ -60,8 +52,6 @@ public:
 protected:
     int maxHp = 30;
     int hp = maxHp;
-    int maxMp = 10;
-    int mp = maxMp;
     int viewDistance = 8;
 
 };

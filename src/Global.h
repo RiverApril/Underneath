@@ -22,6 +22,7 @@
 #include <assert.h>
 
 #include <stdio.h>
+
 #ifdef WINDOWS
 #include <direct.h>
 #define GetCurrentDir _getcwd

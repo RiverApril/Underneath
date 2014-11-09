@@ -21,7 +21,31 @@ namespace Ui {
     typedef int color;
 
 
-    const color C_DARK_BLACK = 0xE8;
+    /*const color C_DARK_BLACK = 0xE8;
+    const color C_DARK_RED = 0x1;
+    const color C_DARK_GREEN = 0x2;
+    const color C_DARK_YELLOW = 0x3;
+    const color C_DARK_BLUE = 0x4;
+    const color C_DARK_MAGENTA = 0x5;
+    const color C_DARK_CYAN = 0x6;
+    const color C_DARK_WHITE = 0x7;
+
+    const color C_LIGHT_BLACK = 0x8;
+    const color C_LIGHT_RED = 0x9;
+    const color C_LIGHT_GREEN = 0xA;
+    const color C_LIGHT_YELLOW = 0xB;
+    const color C_LIGHT_BLUE = 0xC;
+    const color C_LIGHT_MAGENTA = 0xD;
+    const color C_LIGHT_CYAN = 0xE;
+    const color C_LIGHT_WHITE = 0xF;
+
+    const color C_LIGHT_GRAY = C_DARK_WHITE;
+    const color C_DARK_GRAY = C_LIGHT_BLACK;
+
+    const color C_WHITE = C_LIGHT_WHITE;
+    const color C_BLACK = C_DARK_BLACK;*/
+
+    const color C_DARK_BLACK = 0x0; // white when background is black
     const color C_DARK_RED = 0x1;
     const color C_DARK_GREEN = 0x2;
     const color C_DARK_YELLOW = 0x3;
@@ -46,6 +70,8 @@ namespace Ui {
     const color C_BLACK = C_DARK_BLACK;
 
 
+
+
     extern const color COLOR_DEFAULT_ENTITY;
 
     void initNCurses();
@@ -55,7 +81,7 @@ namespace Ui {
 
     void setTerminalSizeVar();
 
-    void setColor(color c, int attr = 0);
+    void setColor(color fg, color bg = C_BLACK, int attr = 0);
 
     extern unsigned long tick;
 
@@ -90,12 +116,15 @@ namespace Ui {
         virtual void closeUi(Menu* newMenu) {}
         virtual void handleInput(int i) {}
         virtual void update() {}
+
+        void printCenter(int y, std::string s, ...);
+        void printCenterOffset(int y, int xOff, std::string s, ...);
         
         bool isTemp = false;
 
-    protected:
-
         Menu* parentMenu = nullptr;
+
+    protected:
 
     };
     

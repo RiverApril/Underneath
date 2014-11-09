@@ -63,6 +63,7 @@ namespace Ui {
         noecho();
         curs_set(0);
         //timeout(-1);
+        ESCDELAY = 1;
 
 
         limitedColorMode = COLORS<256;
@@ -75,8 +76,13 @@ namespace Ui {
 
     void initColorPairs() {
 
-        for(int i = 0; i<COLORS; i++) {
-            init_pair(i, i, 0);
+        int a = 0;
+
+        for(int i = 0; i<0x10; i++) {
+            for(int j = 0; j<0x10; j++) {
+            	init_pair(a, j, i);
+                a++;
+            }
         }
 
     }
@@ -92,48 +98,20 @@ namespace Ui {
         terminalSize.y = getmaxy(stdscr);
     }
 
-    void setColor(color c, int attr) {
-        if(limitedColorMode) {
-            switch(c){
-                case C_DARK_BLACK:
-                case C_LIGHT_BLACK:
-                    c = COLOR_BLACK;
-                    break;
-                case C_DARK_BLUE:
-                case C_LIGHT_BLUE:
-                    c = COLOR_BLUE;
-                    break;
-                case C_DARK_CYAN:
-                case C_LIGHT_CYAN:
-                    c = COLOR_CYAN;
-                    break;
-                case C_DARK_GREEN:
-                case C_LIGHT_GREEN:
-                    c = COLOR_GREEN;
-                    break;
-                case C_DARK_MAGENTA:
-                case C_LIGHT_MAGENTA:
-                    c = COLOR_MAGENTA;
-                    break;
-                case C_DARK_RED:
-                case C_LIGHT_RED:
-                    c = COLOR_RED;
-                    break;
-                case C_DARK_WHITE:
-                case C_LIGHT_WHITE:
-                    c = COLOR_WHITE;
-                    break;
-                case C_DARK_YELLOW:
-                case C_LIGHT_YELLOW:
-                    c = COLOR_YELLOW;
-                    break;
-                default:
-                    c  = COLOR_BLACK;
-                    break;
-
+    void setColor(color fg, color bg, int attr) {
+        if(limitedColorMode){
+            if(fg == 0x8){
+                fg = 0x7;
+            }else if(fg >= 0x8){
+                fg -= 0x8;
+            }
+            if(bg == 0x8){
+                bg = 0x7;
+            }else if(bg >= 0x8){
+                bg -= 0x8;
             }
         }
-        attrset(COLOR_PAIR(c) | attr);
+        attrset(COLOR_PAIR(fg + (bg*0x10)) | attr);
     }
 
 
@@ -155,10 +133,10 @@ namespace Ui {
     }
 
     void Menu::_closeUi(Menu* newMenu){
+        closeUi(newMenu);
         if(isTemp && newMenu == parentMenu){
             delete this;
         }
-        closeUi(newMenu);
     }
 
     void Menu::_handleInput(int in) {
@@ -210,5 +188,21 @@ namespace Ui {
 
         
 
+    }
+
+    void Menu::printCenter(int y, std::string s, ...){
+        move(y, (terminalSize.x/2)-((int)(s.length()-1)/2));
+        va_list args;
+        va_start(args, s);
+        vwprintw(stdscr, s.c_str(), args);
+        va_end(args);
+    }
+
+    void Menu::printCenterOffset(int y, int xOff, std::string s, ...){
+        move(y, (terminalSize.x/2)-((int)(s.length()-1)/2)+xOff);
+        va_list args;
+        va_start(args, s);
+        vwprintw(stdscr, s.c_str(), args);
+        va_end(args);
     }
 }

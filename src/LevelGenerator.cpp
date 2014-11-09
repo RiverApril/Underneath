@@ -200,7 +200,8 @@ namespace LevelGenerator{
 
         for(int i=0;i<level->getSize().x;i++){
             for(int j=0;j<level->getSize().y;j++){
-                if(!level->tileAt(Point2(i, j))->isSolid()){
+                int a = level->tileAt(Point2(i, j))->getIndex();
+                if(!level->tileAt(Point2(i, j))->isSolid() || a == tileDoor->getIndex() || a == tileSecretDoor->getIndex()){
                     for(int k=-1;k<=1;k++){
                         for(int l=-1;l<=1;l++){
                             if(level->indexAt(Point2(i+k, j+l)) == tileUnset->getIndex()){

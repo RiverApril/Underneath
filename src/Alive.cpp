@@ -34,8 +34,6 @@ Alive* Alive::clone(Alive* oldE, Alive* newE){
 
     newE->maxHp = oldE->maxHp;
     newE->hp = oldE->hp;
-    newE->maxMp = oldE->maxMp;
-    newE->mp = oldE->mp;
     newE->viewDistance = oldE->viewDistance;
 
     return newE;
@@ -46,8 +44,6 @@ void Alive::save(std::string* data){
     Entity::save(data);
     Utility::saveInt(data, maxHp);
     Utility::saveInt(data, hp);
-    Utility::saveInt(data, maxMp);
-    Utility::saveInt(data, mp);
     Utility::saveInt(data, viewDistance);
 }
 
@@ -59,8 +55,6 @@ void Alive::load(char* data, int* position){
     Entity::load(data, position);
     maxHp = Utility::loadInt(data, position);
     hp = Utility::loadInt(data, position);
-    maxMp = Utility::loadInt(data, position);
-    mp = Utility::loadInt(data, position);
     viewDistance = Utility::loadInt(data, position);
 }
 

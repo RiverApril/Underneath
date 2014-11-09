@@ -106,17 +106,6 @@ namespace Ui {
             viewPos->x = currentPlayer->getPos().x-gameArea.x/2;
             viewPos->y = currentPlayer->getPos().y-gameArea.y/2;
         }
-
-        /*if(viewPos->x < 0) {
-         viewPos->x = 0;
-         } else if(viewPos->x > currentLevel->getSize().x-gameArea.x) {
-         viewPos->x = currentLevel->getSize().x-gameArea.x;
-         }
-         if(viewPos->y < 0) {
-         viewPos->y = 0;
-         } else if(viewPos->y > currentLevel->getSize().y-gameArea.y) {
-         viewPos->y = currentLevel->getSize().y-gameArea.y;
-         }*/
         updateView = true;
     }
 
@@ -129,7 +118,7 @@ namespace Ui {
                     inView = true;
                 }
                 if(!currentLevel->getExplored(p)) {
-                    Ui::setColor(C_BLACK);
+                    Ui::setColor(C_DARK_BLACK);
                     addch(' ');
                     return;
                 }
@@ -147,7 +136,7 @@ namespace Ui {
 
                 }
             }
-            Ui::setColor(tempTile->getColorCode(inView));
+            Ui::setColor(tempTile->getFgColor(inView), tempTile->getBgColor(inView));
             addch(tempTile->getIcon());
         }else{
             Ui::setColor(C_LIGHT_MAGENTA);
@@ -313,7 +302,9 @@ namespace Ui {
                 drawTileAt(Point2(viewPos->x+i, viewPos->y+j));
             }
         }
-        setColor((mode == modeAdjustBorder)?C_LIGHT_YELLOW:C_WHITE, (mode == modeAdjustBorder)?A_BLINK:0);
+        setColor((mode == modeAdjustBorder)?C_BLACK:C_WHITE,
+                 (mode == modeAdjustBorder)?C_LIGHT_YELLOW:C_BLACK,
+                 (mode == modeAdjustBorder)?A_BLINK:0);
         for(int j=0; j<gameArea.y; j++) {
             mvaddch(j, gameArea.x, '|');
         }

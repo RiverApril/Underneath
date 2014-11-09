@@ -26,11 +26,12 @@ inline TileFlag operator|(TileFlag a, TileFlag b){
 class Tile {
 public:
 
-    Tile(int index, char icon, Ui::color colorCode, TileFlag flags);
+    Tile(int index, char icon, Ui::color fgColor, Ui::color bgColor, TileFlag flags, Ui::color fgColorUnseen = Ui::C_DARK_GRAY, Ui::color bgColorUnseen = Ui::C_BLACK);
 
     char getIcon();
     int getIndex();
-    int getColorCode(bool inView);
+    Ui::color getFgColor(bool inView);
+    Ui::color getBgColor(bool inView);
 
     bool isSolid() {
         return flags & tileFlagSolid;
@@ -47,8 +48,10 @@ public:
 private:
     char icon;
     int index;
-    Ui::color colorCode;
-    Ui::color colorCodeUnseen;
+    Ui::color fgColor;
+    Ui::color bgColor;
+    Ui::color fgColorUnseen;
+    Ui::color bgColorUnseen;
     TileFlag flags;
 };
 

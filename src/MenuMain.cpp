@@ -72,15 +72,24 @@ namespace Ui {
             mvaddstr(0, 0, "Limited Color Mode");
         }
         setColor(C_WHITE);
-        mvaddstr(1, 1, "Main Menu");
-        mvaddstr(2, 3, "Play");
-        mvaddstr(3, 3, "Exit");
-        mvaddstr(selection+2, 1, "-");
-        move(6, 0);
+        printCenter(2,  "  _ _ ___ ___ ___ ___ ___ ___ ___ ___ ___  ");
+        printCenter(3,  " | | |   |   \\ __|  _|   | __| _ |_ _| | | ");
+        printCenter(4,  " | | | | | | | __| | | | | __|   || ||   | ");
+        printCenter(5,  " |___|_|_|___/___|_| |_|_|___|_|_||_||_|_| ");
+        printCenter(6,  " (    )     (    (       )        (      ) ");
+        printCenter(7,  "  )  (       )    )     (          )    (  ");
+        printCenter(8,  " (    )     (    (                (      ) ");
+        printCenter(9,  "  )  (       )                     )       ");
+        printCenter(10, " (          (                     (        ");
+        printCenter(11, "  )                                )       ");
+        printCenter(12, "                                  (        ");
+        printCenter(10, "%sPlay%s", selection==0?"- ":"  ", selection==0?" -":"  ");
+        printCenter(11, "%sExit%s", selection==1?"- ":"  ", selection==1?" -":"  ");
+        /*move(10, 0);
         for(int i=0; i<COLORS; i++) {
             attrset(COLOR_PAIR(i));
             printw("%X ", i);
-        }
+        }*/
 
         printConsole();
         

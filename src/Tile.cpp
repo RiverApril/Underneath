@@ -9,13 +9,15 @@
 #include "Global.h"
 #include "Tile.h"
 
-Tile::Tile(int index, char icon, Ui::color colorCode, TileFlag flags) {
+Tile::Tile(int index, char icon, Ui::color fgColor, Ui::color bgColor, TileFlag flags, Ui::color fgColorUnseen, Ui::color bgColorUnseen) {
     this->index = index;
     this->icon = icon;
     tileList[index] = this;
 
-    this->colorCode = colorCode;
-    this->colorCodeUnseen = Ui::C_DARK_GRAY;
+    this->fgColor = fgColor;
+    this->bgColor = bgColor;
+    this->fgColorUnseen = fgColorUnseen;
+    this->bgColorUnseen = bgColorUnseen;
 
     this->flags = flags;
 }
@@ -28,8 +30,12 @@ int Tile::getIndex() {
     return index;
 }
 
-int Tile::getColorCode(bool inView) {
-    return inView?colorCode:colorCodeUnseen;
+Ui::color Tile::getFgColor(bool inView) {
+    return inView?fgColor:fgColorUnseen;
+}
+
+Ui::color Tile::getBgColor(bool inView) {
+    return inView?bgColor:bgColorUnseen;
 }
 
 
@@ -59,26 +65,33 @@ void initTiles() {
 
     int a = 0;
 
-    tileFloor = new Tile(a++, '.', Ui::C_LIGHT_WHITE, tileFlagNone);
-    tilePath = new Tile(a++, '.', Ui::C_LIGHT_GRAY, tileFlagNone);
+    using namespace Ui;
 
-    tileWall = new Tile(a++, '#', Ui::C_LIGHT_WHITE, tileFlagSolid | tileFlagTall);
-    tileDoor = new Tile(a++, '%', Ui::C_LIGHT_YELLOW, tileFlagSolid | tileFlagTall);
-    tileSecretDoor = new Tile(a++, '#', Ui::C_LIGHT_WHITE, tileFlagSolid | tileFlagTall);
-    tileOpenDoor = new Tile(a++, '/', Ui::C_LIGHT_YELLOW, tileFlagNone);
+    color bg = C_BLACK;
 
-    tileStairDown = new Tile(a++, 'v',  Ui::C_LIGHT_GREEN, tileFlagNone);
-    tileStairUp = new Tile(a++, '^',  Ui::C_LIGHT_GREEN, tileFlagNone);
+    tileFloor = new Tile(a++, '.', C_WHITE, bg, tileFlagNone);
+    tilePath = new Tile(a++, '.', C_LIGHT_GRAY, bg, tileFlagNone);
 
-    tileEdge = new Tile(a++, 'X',  Ui::C_LIGHT_RED, tileFlagSolid);
-    tileUnset = new Tile(a++, 'X',  Ui::C_LIGHT_MAGENTA, tileFlagSolid);
+    tileWall = new Tile(a++, ' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall,
+                        C_BLACK, C_DARK_GRAY);
+    tileDoor = new Tile(a++, '%', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall,
+                        C_BLACK, C_DARK_GRAY);
+    tileSecretDoor = new Tile(a++, ' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall,
+                              C_BLACK, C_DARK_GRAY);
+    tileOpenDoor = new Tile(a++, '/', C_WHITE, bg, tileFlagNone);
 
-    tileDebug1 = new Tile(a++, '1',  Ui::C_LIGHT_GREEN, tileFlagNone);
-    tileDebug2 = new Tile(a++, '2',  Ui::C_LIGHT_GREEN, tileFlagNone);
-    tileDebug3 = new Tile(a++, '3',  Ui::C_LIGHT_GREEN, tileFlagNone);
-    tileDebug4 = new Tile(a++, '4',  Ui::C_LIGHT_GREEN, tileFlagNone);
-    tileDebug5 = new Tile(a++, '5',  Ui::C_LIGHT_GREEN, tileFlagNone);
-    tileDebug6 = new Tile(a++, '6',  Ui::C_LIGHT_GREEN, tileFlagNone);
+    tileStairDown = new Tile(a++, 'v',  C_LIGHT_GREEN, bg, tileFlagNone);
+    tileStairUp = new Tile(a++, '^',  C_LIGHT_GREEN, bg, tileFlagNone);
+
+    tileEdge = new Tile(a++, 'X',  C_LIGHT_RED, bg, tileFlagSolid);
+    tileUnset = new Tile(a++, 'X',  C_LIGHT_MAGENTA, bg, tileFlagSolid);
+
+    tileDebug1 = new Tile(a++, '1',  C_LIGHT_GREEN, bg, tileFlagNone);
+    tileDebug2 = new Tile(a++, '2',  C_LIGHT_GREEN, bg, tileFlagNone);
+    tileDebug3 = new Tile(a++, '3',  C_LIGHT_GREEN, bg, tileFlagNone);
+    tileDebug4 = new Tile(a++, '4',  C_LIGHT_GREEN, bg, tileFlagNone);
+    tileDebug5 = new Tile(a++, '5',  C_LIGHT_GREEN, bg, tileFlagNone);
+    tileDebug6 = new Tile(a++, '6',  C_LIGHT_GREEN, bg, tileFlagNone);
 }
 
 Tile* getTile(int index) {

@@ -17,15 +17,19 @@ namespace Ui {
 
         MenuPreGame() : Menu(false) {}
 
-        ~MenuPreGame() {}
+        ~MenuPreGame() {
+            delete deleteAnswer;
+        }
 
         void openUi(Menu* oldMenu);
         void closeUi(Menu* newMenu);
         void handleInput(int in);
         void update();
 
-        int selection = 1;
+        int selection = 0;
         std::string name = "";
+
+        bool* deleteAnswer;
     };
 }
 

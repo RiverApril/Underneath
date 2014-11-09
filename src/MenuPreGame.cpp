@@ -9,23 +9,27 @@
 #include "MenuPreGame.h"
 #include "MenuMain.h"
 #include "MenuGame.h"
+#include "MenuTempYesNo.h"
 
 namespace Ui {
 
     void MenuPreGame::openUi(Menu* oldMenu) {
-
+        if(deleteAnswer != nullptr && *deleteAnswer){
+            WorldLoader::deleteWorld(name);
+            *deleteAnswer = false;
+            delete deleteAnswer;
+        }
     }
 
     void MenuPreGame::closeUi(Menu* newMenu) {
-        delete this;
+
     }
 
     void MenuPreGame::handleInput(int in) {
 
-        const int selName = 0;
-        const int selPlay = 1;
-        const int selDel = 2;
-        const int selBack = 3;
+        const int selPlay = 0;
+        const int selDel = 1;
+        const int selBack = 2;
 
         const int maxUiSelection = selBack;
 
@@ -39,14 +43,16 @@ namespace Ui {
             case ' ':
                 switch (selection) {
                     case selPlay:
-                    case selName:
                         if(name.length() > 0){
                         	changeMenu(new MenuGame(name));
                         }
                         break;
 
                     case selDel:
-                        WorldLoader::deleteWorld(name);
+                        deleteAnswer = new bool(false);
+                        if(WorldLoader::exists(name)){
+                        	changeMenu(new MenuTempYesNo("Are you sure you want to delete '"+name+"' ?", deleteAnswer));
+                		}
                         break;
 
                     case selBack:
@@ -79,18 +85,14 @@ namespace Ui {
             case KEY_BACKSPACE:
             case 8: //Backspace
             case 127: //Delete
-                if(selection == selName){
-                    if(name.length() > 0){
-                        name = name.substr(0, name.length()-1);
-                    }
+                if(name.length() > 0){
+                    name = name.substr(0, name.length()-1);
                 }
                 break;
 
             default:
-                if(selection == selName){
-                    if((in>=65 && in<=90) || (in>=97 && in<=122)){
-                        name += in;
-                    }
+                if((in>=65 && in<=90) || (in>=97 && in<=122)){
+                    name += in;
                 }
                 break;
         }
@@ -98,34 +100,29 @@ namespace Ui {
     }
 
     void MenuPreGame::update() {
+
+        bool e = WorldLoader::exists(name);
+
+        setColor(C_WHITE);
+        
+        printCenter(2, "Enter Name");
+
+        printCenter(5, e?"  %sContinue%s  ":"%sCreate New%s",
+                    selection==0?"- ":"  ", selection==0?" -":"  ");
+
+        setColor(e?C_LIGHT_RED:C_DARK_GRAY);
+        printCenter(6, "%sDelete%s",
+                    selection==1?"- ":"  ", selection==1?" -":"  ");
         setColor(C_WHITE);
 
-        mvprintw(1, 1, "Enter name to play");
-        mvprintw(2, 3, "Enter Name: %s", name.c_str());
-        mvprintw(3, 3, "Start");
-        mvprintw(4, 3, "Delete");
-        mvprintw(5, 3, "Back");
+        printCenter(8, "%sBack%s", selection==2?"- ":"  ",
+                    selection==2?" -":"  ");
 
-        mvprintw(selection+2, 1, "-");
-
-
-        std::string s = "";
-
-        if(name.length() == 0){
-            setColor(C_LIGHT_RED);
-			s = "You need to enter a name.";
-        }else{
-            if(WorldLoader::exists(name)){
-                setColor(C_LIGHT_GREEN);
-                s = "World exists, it will be loaded.";
-            }else{
-                setColor(C_LIGHT_YELLOW);
-                s = "World does not exist, it will be created.";
-            }
-        }
-        move(6, 1);
+		
+        setColor(e?C_LIGHT_GREEN:C_LIGHT_YELLOW);
+        move(3, 0);
         clrtoeol();
-        printw(s.c_str());
+        printCenter(3, name);
 
         printConsole();
 

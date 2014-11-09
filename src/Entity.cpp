@@ -114,6 +114,7 @@ void Entity::load(char* data, int* position){
     pos->set(Point2::load(data, position));
     lastPos->set(Point2::load(data, position));
     colorCode = Utility::loadInt(data, position);
+    updateIcon = true;
 }
 
 Entity* Entity::loadNew(char* data, int* position){
