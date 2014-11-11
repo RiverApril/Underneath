@@ -22,20 +22,20 @@ public:
 
     ~World();
 
-    std::vector<Level*>* levels;
+    shared_ptr<std::vector<shared_ptr<Level>>> levels;
 
-    Level* currentLevel;
-    Player* currentPlayer;
-    std::string* name;
+    shared_ptr<Level> currentLevel;
+    shared_ptr<Player> currentPlayer;
+    shared_ptr<std::string> name;
     unsigned long worldTime = 0;
 
 };
 
 namespace WorldLoader {
     bool exists(std::string name);
-    World* load(std::string name);
-    bool save(World* loadedWorld);
-    World* create(std::string name);
+    shared_ptr<World> load(std::string name);
+    bool save(shared_ptr<World> loadedWorld);
+    shared_ptr<World> create(std::string name);
     bool deleteWorld(std::string name);
 }
 

@@ -10,7 +10,7 @@
 
 namespace Ui {
 
-    MenuTempYesNo::MenuTempYesNo(std::string question, bool* answer) : Menu(true){
+    MenuTempYesNo::MenuTempYesNo(string question, bool* answer) : Menu(true){
         this->question = question;
         this->answer = answer;
     }

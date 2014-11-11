@@ -20,7 +20,7 @@ Entity::Entity() : Entity("", ' ', Point2Zero, Ui::C_WHITE){
 
 }
 
-Entity::Entity(std::string name, char icon, Point2 startPos, Ui::color colorCode) {
+Entity::Entity(string name, char icon, Point2 startPos, Ui::color colorCode) {
     this->defaultIcon = icon;
     this->colorCode = colorCode;
     this->name = name;
@@ -36,7 +36,7 @@ Entity::~Entity() {
     delete lastPos;
 }
 
-bool Entity::tryToMove(Point2 p, Level* level) {
+bool Entity::tryToMove(Point2 p, shared_ptr<Level> level) {
     if(!level->tileAt(*pos+p)->isSolid()) {
         pos->x += p.x;
         pos->y += p.y;
@@ -45,16 +45,17 @@ bool Entity::tryToMove(Point2 p, Level* level) {
     return false;
 }
 
-bool Entity::update(int tick, Level* level) {
+bool Entity::update(int tick, shared_ptr<Level> level) {
 
     bool u = false;
+    
 
     if(pos != lastPos || updateIcon) {
         if(level->inRange(*lastPos)) {
             level->setDisplayEntity(*lastPos, nullptr);
         }
         if(level->inRange(*pos)) {
-            level->setDisplayEntity(*pos, this);
+            level->setDisplayEntity(*pos, shared_from_this());
         }
         u = true;
         lastPos->set(*pos);
@@ -65,7 +66,7 @@ bool Entity::update(int tick, Level* level) {
     return u;
 }
 
-char Entity::getIcon(Point2 p, int tick, Level* level) {
+char Entity::getIcon(Point2 p, int tick, shared_ptr<Level> level) {
     return defaultIcon;
 }
 
@@ -74,10 +75,10 @@ int Entity::getColorCode() {
 }
 
 
-Entity* Entity::clone(Entity* oldE, Entity* newE){
+shared_ptr<Entity> Entity::clone(shared_ptr<Entity> oldE, shared_ptr<Entity> newE){
 
     if(newE == nullptr){
-        newE = new Entity();
+        newE = shared_ptr<Entity>(new Entity());
     }
 
     newE->defaultIcon = oldE->defaultIcon;
@@ -90,7 +91,7 @@ Entity* Entity::clone(Entity* oldE, Entity* newE){
     return newE;
 }
 
-void Entity::save(std::string* data){
+void Entity::save(string* data){
     Utility::saveInt(data, getEntityTypeId());
 
     Utility::saveInt(data, uniqueId);
@@ -117,19 +118,19 @@ void Entity::load(char* data, int* position){
     updateIcon = true;
 }
 
-Entity* Entity::loadNew(char* data, int* position){
-    Entity* e;
+shared_ptr<Entity> Entity::loadNew(char* data, int* position){
+    shared_ptr<Entity> e;
 
     int type = Utility::loadInt(data, position);
 
     if(type == ENTITY_TYPE_ENTITY){
-        e = new Entity();
+        e = shared_ptr<Entity>(new Entity());
     }else if(type == ENTITY_TYPE_ALIVE){
-        e = new Alive();
+        e = shared_ptr<Alive>(new Alive());
     }else if(type == ENTITY_TYPE_AIENTITY){
-        e = new AiEntity();
+        e = shared_ptr<AiEntity>(new AiEntity());
     }else if(type == ENTITY_TYPE_PLAYER){
-        e = new Player();
+        e = shared_ptr<Player>(new Player());
     }
     e->load(data, position);
 

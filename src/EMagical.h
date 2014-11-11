@@ -11,11 +11,11 @@
 
 #include "Global.h"
 
-class EMagical{
+class EMagical {
 
 public:
 
-	static void copy(EMagical* oldE, EMagical* newE);
+	static void copy(shared_ptr<EMagical> oldE, shared_ptr<EMagical> newE);
 
     int getMp(){
         return mp;
@@ -25,7 +25,7 @@ public:
         return maxMp;
     }
 
-    void save(std::string* data);
+    void save(string* data);
 
     void load(char* data, int* position);
     

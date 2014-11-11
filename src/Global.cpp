@@ -14,5 +14,5 @@ bool running;
 
 int nextUniqueId;
 
-std::string UnderneathDir;
-std::string WorldsDir;
+string UnderneathDir;
+string WorldsDir;

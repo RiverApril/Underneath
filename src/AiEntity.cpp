@@ -21,7 +21,7 @@ AiEntity::~AiEntity() {
     
 }
 
-void AiEntity::runAi(int tick, Level* level) {
+void AiEntity::runAi(int tick, shared_ptr<Level> level) {
 
     Point2 speed;
 
@@ -34,17 +34,17 @@ void AiEntity::runAi(int tick, Level* level) {
 
 }
 
-bool AiEntity::update(int tick, Level* level) {
+bool AiEntity::update(int tick, shared_ptr<Level> level) {
 
     runAi(tick, level);
     
     return Alive::update(tick, level);
 }
 
-AiEntity* AiEntity::clone(AiEntity* oldE, AiEntity* newE){
+shared_ptr<AiEntity> AiEntity::clone(shared_ptr<AiEntity> oldE, shared_ptr<AiEntity> newE){
 
     if(newE == nullptr){
-        newE = new AiEntity();
+        newE = shared_ptr<AiEntity>(new AiEntity());
     }
 
     Alive::clone(oldE, newE);

@@ -23,11 +23,11 @@ namespace Ui {
         Point2 gameArea;
         Point2 borderSize = Point2(24, 4);
 
-        MenuGame(std::string worldName);
+        MenuGame(string worldName);
 
         ~MenuGame();
 
-        bool init(std::string worldName);
+        bool init(string worldName);
 
         void openUi(Menu* oldMenu);
         void closeUi(Menu* newMenu);
@@ -39,22 +39,19 @@ namespace Ui {
         void viewUpdate();
         void drawTileAt(Point2 p);
         void arrowMove(int x, int y);
-
-        bool execute(std::string commandRaw);
 		
         bool updateView;
         bool timePassed;
         Point2* viewPos;
         Point2* viewMoveSpeed;
 
-        World* currentWorld;
-        Level* currentLevel;
-        Player* currentPlayer;
-        std::string input = "";
+        shared_ptr<World> currentWorld;
+        shared_ptr<Level> currentLevel;
+        shared_ptr<Player> currentPlayer;
+
 
         int modePlayerControl = 0;
         int modeAdjustBorder = 1;
-        int modeConsoleInput = 2;
         int mode = modePlayerControl;
 
     };

@@ -22,7 +22,7 @@ class AiEntity : public Alive {
 
 public:
 
-    static AiEntity* clone(AiEntity* oldE, AiEntity* newE);
+    static shared_ptr<AiEntity> clone(shared_ptr<AiEntity> oldE, shared_ptr<AiEntity> newE);
 
     AiEntity();
 
@@ -30,8 +30,8 @@ public:
 
     ~AiEntity();
 
-    void runAi(int tick, Level* level);
-    bool update(int tick, Level* level);
+    void runAi(int tick, shared_ptr<Level> level);
+    bool update(int tick, shared_ptr<Level> level);
 
 
     virtual void save(std::string* data);

@@ -14,20 +14,20 @@ Alive::Alive() : Alive("", ' ', Point2Zero, Ui::C_WHITE){
 
 }
 
-Alive::Alive(std::string name, char icon, Point2 startPos, Ui::color colorCode) : Entity(name, icon, startPos, colorCode){
+Alive::Alive(string name, char icon, Point2 startPos, Ui::color colorCode) : Entity(name, icon, startPos, colorCode){
 
 }
 
 
-bool Alive::update(int tick, Level* level) {
+bool Alive::update(int tick, shared_ptr<Level> level) {
     return Entity::update(tick, level);
 }
 
 
-Alive* Alive::clone(Alive* oldE, Alive* newE){
+shared_ptr<Alive> Alive::clone(shared_ptr<Alive> oldE, shared_ptr<Alive> newE){
 
     if(newE == nullptr){
-        newE = new Alive();
+        newE = shared_ptr<Alive>(new Alive());
     }
 
     Entity::clone(oldE, newE);
@@ -40,7 +40,7 @@ Alive* Alive::clone(Alive* oldE, Alive* newE){
 
 }
 
-void Alive::save(std::string* data){
+void Alive::save(string* data){
     Entity::save(data);
     Utility::saveInt(data, maxHp);
     Utility::saveInt(data, hp);

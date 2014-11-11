@@ -13,18 +13,18 @@ Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE){
 
 }
 
-Player::Player(std::string name, char icon, Point2 startPos, Ui::color colorCode) : Alive(name, icon, startPos, colorCode) {
+Player::Player(string name, char icon, Point2 startPos, Ui::color colorCode) : Alive(name, icon, startPos, colorCode) {
 }
 
 Player::~Player() {
 
 }
 
-bool Player::update(int tick, Level* level) {
+bool Player::update(int tick, shared_ptr<Level> level) {
     return Alive::update(tick, level);
 }
 
-bool Player::moveExact(Point2 p, Level* level){
+bool Player::moveExact(Point2 p, shared_ptr<Level> level){
     if(tryToMove(p-*pos, level)){
         return true;
     }else{
@@ -37,11 +37,11 @@ bool Player::moveExact(Point2 p, Level* level){
     return false;
 }
 
-bool Player::moveRelative(Point2 p, Level* level) {
+bool Player::moveRelative(Point2 p, shared_ptr<Level> level) {
     return moveExact(p+*pos, level);
 }
 
-bool Player::use(Level* level){
+bool Player::use(shared_ptr<Level> level){
 
     int tid = level->indexAt(*pos);
     if(tid == tileStairDown->getIndex()){
@@ -54,10 +54,10 @@ bool Player::use(Level* level){
 }
 
 
-Player* Player::clone(Player* oldE, Player* newE){
+shared_ptr<Player> Player::clone(shared_ptr<Player> oldE, shared_ptr<Player> newE){
 
     if(newE == nullptr){
-        newE = new Player();
+        newE = shared_ptr<Player>(new Player());
     }
 
     Alive::clone(oldE, newE);
@@ -71,7 +71,7 @@ int Player::getEntityTypeId(){
     return ENTITY_TYPE_PLAYER;
 }
 
-void Player::save(std::string* data){
+void Player::save(string* data){
     Alive::save(data);
     EMagical::save(data);
 }

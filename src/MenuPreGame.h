@@ -27,7 +27,7 @@ namespace Ui {
         void update();
 
         int selection = 0;
-        std::string name = "";
+        string name = "";
 
         bool* deleteAnswer;
     };

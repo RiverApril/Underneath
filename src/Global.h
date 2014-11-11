@@ -31,13 +31,15 @@
 #define GetCurrentDir getcwd
 #endif
 
+using namespace std;
+
 extern char cCurrentPath[FILENAME_MAX];
 
 extern bool running;
 
 extern int nextUniqueId;
 
-extern std::string UnderneathDir;
-extern std::string WorldsDir;
+extern string UnderneathDir;
+extern string WorldsDir;
 
 #endif /* defined(__Underneath__Global__) */

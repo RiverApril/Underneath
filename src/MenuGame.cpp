@@ -16,7 +16,7 @@
 namespace Ui {
 
 
-    MenuGame::MenuGame(std::string worldName) : Menu(false) {
+    MenuGame::MenuGame(string worldName) : Menu(false) {
 
         move(0, 0);
         clrtobot();
@@ -34,15 +34,10 @@ namespace Ui {
         viewUpdate();
     }
 
-    bool MenuGame::init(std::string worldName){
+    bool MenuGame::init(string worldName){
 
         if(worldName.size() == 0){
             return false;
-        }
-
-        if(currentWorld != nullptr){
-            delete currentWorld;
-            currentWorld = nullptr;
         }
 
         if(WorldLoader::exists(worldName)){
@@ -70,7 +65,6 @@ namespace Ui {
     MenuGame::~MenuGame() {
         delete viewPos;
         delete viewMoveSpeed;
-        delete currentWorld;
         currentWorld = nullptr;
     }
 
@@ -207,34 +201,13 @@ namespace Ui {
             case KEY_ENTER:
             case 13:
             case '\n':
-                if(mode == modeConsoleInput){
-                    mode = modePlayerControl;
-                    execute(input);
-                    input = "";
-                }else{
-                	mode = modeConsoleInput;
+                if(!consoleInputMode){
+                    consoleInputMode = true;
                 }
                 break;
 
             default:
                 break;
-        }
-        if(mode == modeConsoleInput){
-            switch (in) {
-                case KEY_BACKSPACE:
-                case 8: //Backspace
-                case 127: //Delete
-                    if(input.length() > 0){
-                        input = input.substr(0, input.length()-1);
-                    }
-                    break;
-                    
-                default:
-                    if((in>=32 && in<=126)){
-                        input += in;
-                    }
-                    break;
-            }
         }
         if(currentPlayer != nullptr && currentLevel != nullptr){
             switch (in) {
@@ -358,36 +331,11 @@ namespace Ui {
         updateView = false;
         timePassed = false;
 
-        printConsole(gameArea.y+1, terminalSize.y-2);
-
-        if(mode == modeConsoleInput){
-            Ui::setColor(C_DARK_GREEN);
-        	mvprintw(terminalSize.y-1, 0, "> %s", input.c_str());
-            Ui::setColor(C_LIGHT_GREEN, A_BLINK);
-            mvprintw(terminalSize.y-1, 2+(int)input.length(), "_");
-        }
+        printConsole(gameArea.y+1);
         
         refresh();
         
         
-    }
-
-
-    bool MenuGame::execute(std::string commandRaw){
-        std::vector<std::string> arguments;
-        int lastI = 0;
-        for(int i=0;i<commandRaw.length();i++){
-            if(commandRaw[i] == ' '){
-                arguments.push_back(commandRaw.substr(lastI, i-lastI));
-                lastI = i+1;
-            }
-        }
-        arguments.push_back(commandRaw.substr(lastI));
-
-        for(int i=0;i<arguments.size();i++){
-            //debug(arguments[i]);
-        }
-        return false;
     }
 
 }

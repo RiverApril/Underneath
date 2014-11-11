@@ -14,13 +14,12 @@
 #include "LevelGenerator.h"
 #include "Utility.h"
 
-Level::Level(std::string n, Point2 s) {
+Level::Level(string n, Point2 s) {
     name = n;
     size = new Point2(s);
-    tileGrid = new TileData*[size->x];
+    tileGrid = vector<vector<TileData>>(size->x, std::vector<TileData>(size->y));
     
     for(int i=0;i<size->x;i++){
-        tileGrid[i] = new TileData[size->y];
         for(int j=0;j<size->y;j++){
             tileGrid[i][j].index = tileUnset->getIndex();
             tileGrid[i][j].explored = false;
@@ -30,14 +29,9 @@ Level::Level(std::string n, Point2 s) {
 }
 
 Level::~Level() {
-
-    for(int i=0;i<size->x;i++){
-        delete [] tileGrid[i];
-    }
-    delete [] tileGrid;
-	
-    entityList.clear();
+    delete size;
 }
+
 
 bool Level::getExplored(Point2 p) {
     if(inRange(p)) {
@@ -53,7 +47,7 @@ void Level::setExplored(Point2 p, bool a) {
     }
 }
 
-Entity* Level::getDisplayEntity(Point2 p){
+shared_ptr<Entity> Level::getDisplayEntity(Point2 p){
     if(inRange(p)) {
     	return tileGrid[p.x][p.y].entity;
     }else{
@@ -61,7 +55,7 @@ Entity* Level::getDisplayEntity(Point2 p){
     }
 }
 
-void Level::setDisplayEntity(Point2 p, Entity* e){
+void Level::setDisplayEntity(Point2 p, shared_ptr<Entity> e){
     if(inRange(p)) {
     	tileGrid[p.x][p.y].entity = e;
     }
@@ -150,28 +144,25 @@ long Level::entityCount() {
 bool Level::update(int tick, Point2* viewPos) {
     bool u = false;
     for (size_t i=0; i<entityList.size(); i++) {
-        if(entityList.at(i)->update(tick, this)){
+        if(entityList.at(i)->update(tick, shared_from_this())){
             u = true;
         }
     }
     return u;
 }
 
-Entity* Level::newEntity(Entity* newE) {
+shared_ptr<Entity> Level::newEntity(shared_ptr<Entity> newE) {
     newE->uniqueId = nextUniqueId;
     nextUniqueId++;
     entityList.push_back(newE);
     return newE;
 }
 
-void Level::deleteEntity(Entity* e) {
-    std::vector<Entity*>::iterator it;
-    for(it = entityList.begin(); it!=entityList.end();) {
-        if((*it) == e) {
-            delete * it;
-            it = entityList.erase(it);
-        } else {
-            it++;
+void Level::deleteEntity(shared_ptr<Entity> e) {
+    for(int i=0;i<entityList.size();i++){
+        if(e->uniqueId == entityList[i]->uniqueId){
+            entityList.erase(entityList.begin()+i);
+            break;
         }
     }
 }
@@ -190,10 +181,8 @@ Point2 Level::generate(unsigned int seed) {
         }
     }
 
-    std::vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(1000, *size);
-    LevelGenerator::makeRoomsAndPaths(rooms, this);
-
-    delete rooms;
+    shared_ptr<vector<shared_ptr<LevelGenerator::Room>>> rooms = LevelGenerator::createRooms(1000, *size);
+    LevelGenerator::makeRoomsAndPaths(rooms, shared_from_this());
 
     Point2 p;
 
@@ -210,10 +199,10 @@ Point2 Level::generate(unsigned int seed) {
     }
 
 
-    AiEntity* rat = new AiEntity("Rat", aiMoveRandom, 'r', Point2Zero, Ui::C_DARK_YELLOW);
+    shared_ptr<AiEntity> rat = shared_ptr<AiEntity>(new AiEntity("Rat", aiMoveRandom, 'r', Point2Zero, Ui::C_DARK_YELLOW));
     int ratCount = (rand()%50)+10;
     for(int i=0;i<ratCount;i++){
-        AiEntity* r = AiEntity::clone(rat, nullptr);
+        shared_ptr<AiEntity> r = AiEntity::clone(rat, nullptr);
         Point2 pp = Point2(findRandomWithoutFlag(tileFlagSolid));
         r->setPos(pp);
         newEntity(r);
@@ -224,7 +213,7 @@ Point2 Level::generate(unsigned int seed) {
     
 }
 
-void Level::save(std::string* data){
+void Level::save(string* data){
     
     size->save(data);
     for(int i=0;i<size->x;i++){

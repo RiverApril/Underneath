@@ -45,7 +45,7 @@ struct Point2 {
     Vector2 operator*(double other);
     Vector2 operator/(double other);
 
-    void save(std::string* data);
+    void save(string* data);
 
     static Point2 load(char* data, int* position);
 
@@ -53,7 +53,7 @@ struct Point2 {
         this->x = i;
         this->y = i;
     }
-    std::string toString();
+    string toString();
 };
 
 struct Vector2 {
@@ -71,7 +71,7 @@ struct Vector2 {
     Vector2 operator*(double other);
     Vector2 operator/(double other);
 
-    std::string toString();
+    string toString();
 };
 
 

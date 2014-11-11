@@ -112,11 +112,11 @@ Vector2 Point2::operator/( double other) {
 }
 
 
-std::string Point2::toString() {
-    return std::to_string(x)+", "+std::to_string(y);
+string Point2::toString() {
+    return to_string(x)+", "+to_string(y);
 }
 
-void Point2::save(std::string* data){
+void Point2::save(string* data){
     Utility::saveInt(data, x);
     Utility::saveInt(data, y);
 }
@@ -179,6 +179,6 @@ int distanceSquared(Point2 a, Point2 b){
 
 
 
-std::string Vector2::toString() {
-    return std::to_string(x)+", "+std::to_string(y);
+string Vector2::toString() {
+    return to_string(x)+", "+to_string(y);
 }

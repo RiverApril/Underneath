@@ -15,14 +15,14 @@ namespace Ui {
     class MenuTempYesNo : public Ui::Menu {
     public:
 
-        MenuTempYesNo(std::string question, bool* answer);
+        MenuTempYesNo(string question, bool* answer);
 
         ~MenuTempYesNo() {}
 
         void handleInput(int in);
         void update();
 
-        std::string question;
+        string question;
         bool* answer;
 
 

@@ -9,12 +9,12 @@
 #include "EMagical.h"
 #include "Utility.h"
 
-void EMagical::copy(EMagical* oldE, EMagical* newE){
+void EMagical::copy(shared_ptr<EMagical> oldE, shared_ptr<EMagical> newE){
     newE->maxMp = oldE->maxMp;
     newE->mp = oldE->mp;
 }
 
-void EMagical::save(std::string* data){
+void EMagical::save(string* data){
     Utility::saveInt(data, maxMp);
     Utility::saveInt(data, mp);
 

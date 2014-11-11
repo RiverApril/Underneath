@@ -12,30 +12,30 @@
 #include "Alive.h"
 #include "EMagical.h"
 
-class Player : public Alive, public EMagical{
+class Player : public Alive, public EMagical {
 
 public:
 
-    static Player* clone(Player* oldE, Player* newE);
+    static shared_ptr<Player> clone(shared_ptr<Player> oldE, shared_ptr<Player> newE);
 
     Player();
 
-    Player(std::string name, char icon, Point2 startPos, Ui::color colorCode);
+    Player(string name, char icon, Point2 startPos, Ui::color colorCode);
 
     ~Player();
 
-    bool update(int tick, Level* world);
+    bool update(int tick, shared_ptr<Level> world);
 
-    bool moveRelative(Point2 p, Level* level);
+    bool moveRelative(Point2 p, shared_ptr<Level> level);
 
-    bool moveExact(Point2, Level* level);
+    bool moveExact(Point2, shared_ptr<Level> level);
 
-    bool use(Level* level);
+    bool use(shared_ptr<Level> level);
 
 
     virtual int getEntityTypeId();
 
-    virtual void save(std::string* data);
+    virtual void save(string* data);
 
     virtual void load(char* data, int* position);
     

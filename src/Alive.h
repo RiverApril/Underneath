@@ -15,13 +15,13 @@ class Alive : public Entity{
 
 public:
 
-    static Alive* clone(Alive* oldE, Alive* newE);
+    static shared_ptr<Alive> clone(shared_ptr<Alive> oldE, shared_ptr<Alive> newE);
 
     Alive();
 
-    Alive(std::string name, char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY);
+    Alive(string name, char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY);
 
-    virtual bool update(int tick, Level* level);
+    virtual bool update(int tick, shared_ptr<Level> level);
 
     int getHp(){
         return hp;
@@ -43,7 +43,7 @@ public:
         return viewDistance;
     }
 
-    virtual void save(std::string* data);
+    virtual void save(string* data);
 
     virtual int getEntityTypeId();
 

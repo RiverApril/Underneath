@@ -16,13 +16,15 @@ int main(int argc, const char * argv[]) {
         return errno;
     }
 
-    debug("Working Directory: "+(std::string(cCurrentPath)));
+    debug("Working Directory: "+(string(cCurrentPath)));
     UnderneathDir = "Underneath";
     WorldsDir = UnderneathDir+"/"+"Worlds";
 
     initTiles();
 
     Ui::initNCurses();
+
+    Ui::initCommandList();
 
     Ui::changeMenu(new Ui::MenuMain());
 

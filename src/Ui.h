@@ -11,10 +11,10 @@
 
 #include "Geometry.h"
 
-extern std::vector<std::string> consoleBuffer;
+extern vector<string> consoleBuffer;
 
-void debug(std::string s);
-void print(std::string s);
+void debug(string s);
+void print(string s);
 
 namespace Ui {
 
@@ -97,6 +97,10 @@ namespace Ui {
 
     extern Point2 terminalSize;
 
+    extern bool consoleInputMode;
+    extern string consoleInput;
+    extern int consoleScroll;
+
 
     class Menu {
     public:
@@ -117,21 +121,61 @@ namespace Ui {
         virtual void handleInput(int i) {}
         virtual void update() {}
 
-        void printCenter(int y, std::string s, ...);
-        void printCenterOffset(int y, int xOff, std::string s, ...);
+        void printCenter(int y, string s, ...);
+        void printCenterOffset(int y, int xOff, string s, ...);
         
         bool isTemp = false;
+
+        bool menuOnlyExecute(string commandName, vector<string>arguments, string argumentsRaw){
+            return false;
+        }
+
+        string menuOnlyCommands(){
+            return "";
+        }
+
+        string menuOnlyCommandHelp(string name){
+			return "";
+        }
 
         Menu* parentMenu = nullptr;
 
     protected:
 
     };
+
+    bool execute(string commandRaw, Menu* currentMenu);
+
+    struct Command {
+        Command(){}
+
+        virtual bool acceptableName(string name){
+            return name.compare(defaultName()) == 0;
+        }
+        virtual bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
+            return false;
+        }
+
+        virtual string help(){
+			return "Undefined Command";
+        }
+
+        virtual string usage(){
+            return "Undefined Command";
+        }
+        virtual string defaultName(){
+            return "Undefined";
+        }
+    };
+
+    extern vector<Command*> commandList;
     
-    
+    void initCommandList();
     
     
     extern Menu* currentMenu;
+
+    extern bool printDebugEnabled;
     
     void changeMenu(Menu* newMenu);
     

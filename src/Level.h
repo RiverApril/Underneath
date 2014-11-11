@@ -21,26 +21,26 @@ class Entity;
 struct TileData{
     int8_t index = 0;
     bool explored = false;
-    Entity* entity = nullptr;
+    shared_ptr<Entity> entity = nullptr;
 };
 
-class Level {
+class Level : public enable_shared_from_this<Level>{
 
 public:
 
-    Level(std::string n, Point2 s = Point2(100, 100));
+    Level(string n, Point2 s = Point2(100, 100));
     ~Level();
 
     bool getExplored(Point2 p);
     void setExplored(Point2 p, bool a);
 
-    std::string getName(){
+    string getName(){
         return name;
     }
 
-    Entity* getDisplayEntity(Point2 p);
+    shared_ptr<Entity> getDisplayEntity(Point2 p);
 
-    void setDisplayEntity(Point2 p, Entity* e);
+    void setDisplayEntity(Point2 p, shared_ptr<Entity> e);
 
     bool inRange(Point2 p);
 
@@ -63,26 +63,26 @@ public:
 
     void needsRedraw(Point2* p);
 
-    Entity* newEntity(Entity* newE);
-    void deleteEntity(Entity* e);
+    shared_ptr<Entity> newEntity(shared_ptr<Entity> newE);
+    void deleteEntity(shared_ptr<Entity> e);
 
     Point2 getSize(){
         return *size;
     }
 
-    void save(std::string*);
+    void save(string*);
 
     void load(char* data, int*position);
 
-    std::vector<Entity*> entityList;
+    vector<shared_ptr<Entity>> entityList;
 
 private:
 
     Point2* size;
 
-    TileData** tileGrid;
+    vector<vector<TileData>> tileGrid;
 
-    std::string name;
+    string name;
 };
 
 

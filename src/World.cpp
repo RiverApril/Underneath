@@ -14,42 +14,18 @@
 
 
 World::World(std::string n){
-    levels = new std::vector<Level*>();
-    this->name = new std::string(n);
+    levels = shared_ptr<std::vector<shared_ptr<Level>>>(new std::vector<shared_ptr<Level>>());
+    this->name = shared_ptr<string>(new string(n));
 }
 
 World::~World(){
 
-    if(currentPlayer != nullptr){
-    	delete currentPlayer;
-    	currentPlayer = nullptr;
-    }
-
-    if(name != nullptr){
-        delete name;
-        name = nullptr;
-    }
-
-    if(levels != nullptr){
-
-        for (int i=0; i<levels->size(); i++) {
-            if(levels->at(i) != nullptr){
-                delete levels->at(i);
-                levels->at(i) = nullptr;
-            }
-        }
-
-        levels->empty();
-
-        delete levels;
-        levels = nullptr;
-    }
 
 }
 
 namespace WorldLoader {
 
-    World* loadedWorld;
+    shared_ptr<World> loadedWorld;
 
     bool exists(std::string name){
         debug("Does "+name+" Exist?");
@@ -87,13 +63,13 @@ namespace WorldLoader {
         return buffer;
     }
 
-    World* load(std::string name){
+    shared_ptr<World> load(std::string name){
         debug("Loading "+name+"...");
 
         std::string dir = WorldsDir+"/"+name+"/";
 
 
-        World* world = nullptr;
+        shared_ptr<World> world = nullptr;
 
         //world.info
         FILE* fileWorldInfo;
@@ -105,7 +81,7 @@ namespace WorldLoader {
 
             int* position = new int(0);
 
-            world = new World(name);
+            world = shared_ptr<World>(new World(name));
 
             world->worldTime = Utility::loadNumber<unsigned long>(data, position);
 
@@ -132,7 +108,7 @@ namespace WorldLoader {
 
                     Point2 levelSize = Point2::load(levelData, levelPosition);
 
-                    Level* level = new Level(levelName, levelSize);
+                    shared_ptr<Level> level = shared_ptr<Level>(new Level(levelName, levelSize));
 
                     level->load(levelData, levelPosition);
 
@@ -156,7 +132,7 @@ namespace WorldLoader {
 
             for(int i=0;i<world->currentLevel->entityCount();i++){
                 if(world->currentLevel->entityList[i]->uniqueId == playerUniqueId){
-                    world->currentPlayer = (Player*)world->currentLevel->entityList[i];
+                    world->currentPlayer = dynamic_pointer_cast<Player>(world->currentLevel->entityList[i]);
                 }
             }
 
@@ -171,7 +147,7 @@ namespace WorldLoader {
         return world;
     }
 
-    bool save(World* loadedWorld){
+    bool save(shared_ptr<World> loadedWorld){
         debug("Saving "+*(loadedWorld->name)+"...");
         bool failed = false;
 
@@ -209,7 +185,7 @@ namespace WorldLoader {
             delete data;
 
             for(int i=0;i<loadedWorld->levels->size();i++){
-                Level* l = loadedWorld->levels->at(i);
+                shared_ptr<Level> l = loadedWorld->levels->at(i);
 
                 //levelName.lvl
                 FILE* fileLevel;
@@ -254,15 +230,15 @@ namespace WorldLoader {
         return false;
     }
 
-    World* create(std::string name){
+    shared_ptr<World> create(std::string name){
 
-        World* loadedWorld = new World(name);
+        shared_ptr<World> loadedWorld = shared_ptr<World>(new World(name));
 
-        loadedWorld->currentLevel = new Level("start");
+        loadedWorld->currentLevel = shared_ptr<Level>(new Level("start"));
         Point2 p = loadedWorld->currentLevel->generate(static_cast<unsigned int>(time(NULL)));
         loadedWorld->levels->push_back(loadedWorld->currentLevel);
 
-        loadedWorld->currentPlayer = new Player(name, '@', p, Ui::C_WHITE);
+        loadedWorld->currentPlayer = shared_ptr<Player>(new Player(name, '@', p, Ui::C_WHITE));
         loadedWorld->currentLevel->newEntity(loadedWorld->currentPlayer);
 
         save(loadedWorld);
