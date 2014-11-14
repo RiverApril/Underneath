@@ -25,7 +25,7 @@ World::~World(){
 
 namespace WorldLoader {
 
-    shared_ptr<World> loadedWorld;
+    //shared_ptr<World> loadedWorld;
 
     bool exists(std::string name){
         debug("Does "+name+" Exist?");
@@ -108,7 +108,7 @@ namespace WorldLoader {
 
                     Point2 levelSize = Point2::load(levelData, levelPosition);
 
-                    shared_ptr<Level> level = shared_ptr<Level>(new Level(levelName, levelSize));
+                    shared_ptr<Level> level = shared_ptr<Level>(new Level(world, levelName, levelSize));
 
                     level->load(levelData, levelPosition);
 
@@ -220,30 +220,33 @@ namespace WorldLoader {
         fclose(fileWorldInfo);
         //
 
-
-
-
-
         debug(failed?"Save Failed":"Saved");
-
 
         return false;
     }
 
     shared_ptr<World> create(std::string name){
 
-        shared_ptr<World> loadedWorld = shared_ptr<World>(new World(name));
+        shared_ptr<World> world(new World(name));
 
-        loadedWorld->currentLevel = shared_ptr<Level>(new Level("start"));
-        Point2 p = loadedWorld->currentLevel->generate(static_cast<unsigned int>(time(NULL)));
-        loadedWorld->levels->push_back(loadedWorld->currentLevel);
+        world->currentLevel = shared_ptr<Level>(new Level(world, "start"));
+        Point2 p = world->currentLevel->generate(static_cast<unsigned int>(time(NULL)));
+        world->levels->push_back(world->currentLevel);
 
-        loadedWorld->currentPlayer = shared_ptr<Player>(new Player(name, '@', p, Ui::C_WHITE));
-        loadedWorld->currentLevel->newEntity(loadedWorld->currentPlayer);
 
-        save(loadedWorld);
+        world->currentPlayer = shared_ptr<Player>(new Player(name, '@', p, Ui::C_WHITE));
+        world->currentPlayer->setActiveWeapon(shared_ptr<Weapon>(new Weapon(3, "Training Sword")));
 
-        return loadedWorld;
+        for(int i=0;i<10;i++){
+        	world->currentPlayer->inventory.push_back(shared_ptr<Item>(new Item("Test Item "+to_string(i))));
+        }
+        
+
+        world->currentLevel->newEntity(world->currentPlayer);
+
+        save(world);
+
+        return world;
     }
 
     bool deleteWorld(std::string name){

@@ -31,6 +31,9 @@
 #define GetCurrentDir getcwd
 #endif
 
+
+#define forVector(list, i) for(i=0;i<list.size();i++)
+
 using namespace std;
 
 extern char cCurrentPath[FILENAME_MAX];

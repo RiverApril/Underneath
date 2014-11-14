@@ -8,18 +8,20 @@
 
 #include "Math.h"
 
+namespace Math {
 
-int distanceSquared(int ax, int ay, int bx, int by) {
-    int dx = abs(ax - bx);
-    int dy = abs(ay - by);
+    int distanceSquared(int ax, int ay, int bx, int by) {
+        int dx = abs(ax - bx);
+        int dy = abs(ay - by);
 
-    return dx*dx + dy*dy;
+        return dx*dx + dy*dy;
+    }
+
+    int distanceSquared(int x, int y) {
+        int dx = abs(x);
+        int dy = abs(y);
+
+        return dx*dx + dy*dy;
+    }
+
 }
-
-int distanceSquared(int x, int y) {
-    int dx = abs(x);
-    int dy = abs(y);
-
-    return dx*dx + dy*dy;
-}
-

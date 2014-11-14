@@ -16,6 +16,7 @@ enum TileFlag {
     tileFlagNone = 0,
     tileFlagSolid = 1 << 0,
     tileFlagTall = 1 << 1,
+    tileFlagDoor = 1 << 2,
 
 };
 

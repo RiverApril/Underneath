@@ -38,7 +38,7 @@ namespace Ui {
 
         void viewUpdate();
         void drawTileAt(Point2 p);
-        void arrowMove(int x, int y);
+        void arrowMove(Point2 p);
 		
         bool updateView;
         bool timePassed;
@@ -52,6 +52,7 @@ namespace Ui {
 
         int modePlayerControl = 0;
         int modeAdjustBorder = 1;
+        int modeInterectChoose = 2;
         int mode = modePlayerControl;
 
     };

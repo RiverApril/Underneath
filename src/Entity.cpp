@@ -22,7 +22,8 @@ Entity::Entity() : Entity("", ' ', Point2Zero, Ui::C_WHITE){
 
 Entity::Entity(string name, char icon, Point2 startPos, Ui::color colorCode) {
     this->defaultIcon = icon;
-    this->colorCode = colorCode;
+    this->fgColorCode = colorCode;
+    this->bgColorCode = Ui::C_BLACK;
     this->name = name;
 
     pos = new Point2(0, 0);
@@ -36,13 +37,32 @@ Entity::~Entity() {
     delete lastPos;
 }
 
-bool Entity::tryToMove(Point2 p, shared_ptr<Level> level) {
-    if(!level->tileAt(*pos+p)->isSolid()) {
-        pos->x += p.x;
-        pos->y += p.y;
-        return true;
+bool Entity::tryToMoveAbsalute(Point2 p, shared_ptr<Level> level) {
+    if(!level->tileAt(p)->isSolid()) {
+        bool block = false;
+        int i;
+        forVector(level->entityList, i){
+            if(level->entityList[i]->uniqueId == uniqueId){
+                continue;
+            }
+            if(level->entityList[i]->getPos() == p){
+
+                if(level->entityList[i]->isSolid()){
+                    block = true;
+                    break;
+                }
+            }
+        }
+        if(!block){
+            pos->x = p.x;
+            pos->y = p.y;
+            return true;
+        }
     }
     return false;
+}
+bool Entity::tryToMoveRelative(Point2 p, shared_ptr<Level> level) {
+    return tryToMoveAbsalute(*pos+p, level);
 }
 
 bool Entity::update(int tick, shared_ptr<Level> level) {
@@ -52,7 +72,9 @@ bool Entity::update(int tick, shared_ptr<Level> level) {
 
     if(pos != lastPos || updateIcon) {
         if(level->inRange(*lastPos)) {
-            level->setDisplayEntity(*lastPos, nullptr);
+            if(level->getDisplayEntity(*lastPos) != nullptr && level->getDisplayEntity(*lastPos)->uniqueId == uniqueId){
+            	level->setDisplayEntity(*lastPos, nullptr);
+            }
         }
         if(level->inRange(*pos)) {
             level->setDisplayEntity(*pos, shared_from_this());
@@ -70,8 +92,12 @@ char Entity::getIcon(Point2 p, int tick, shared_ptr<Level> level) {
     return defaultIcon;
 }
 
-int Entity::getColorCode() {
-    return colorCode;
+int Entity::getFgColorCode() {
+    return fgColorCode;
+}
+
+int Entity::getBgColorCode() {
+    return bgColorCode;
 }
 
 
@@ -85,8 +111,10 @@ shared_ptr<Entity> Entity::clone(shared_ptr<Entity> oldE, shared_ptr<Entity> new
     newE->name = oldE->name;
     newE->pos->set(*oldE->pos);
     newE->lastPos->set(*oldE->lastPos);
-    newE->colorCode = oldE->colorCode;
+    newE->fgColorCode = oldE->fgColorCode;
+    newE->bgColorCode = oldE->bgColorCode;
     newE->updateIcon = oldE->updateIcon;
+    newE->solid = oldE->solid;
 
     return newE;
 }
@@ -100,7 +128,9 @@ void Entity::save(string* data){
     Utility::saveString(data, name);
     pos->save(data);
     lastPos->save(data);
-    Utility::saveInt(data, colorCode);
+    Utility::saveInt(data, fgColorCode);
+    Utility::saveInt(data, bgColorCode);
+    Utility::saveBool(data, solid);
 }
 
 int Entity::getEntityTypeId(){
@@ -114,8 +144,10 @@ void Entity::load(char* data, int* position){
     name = Utility::loadString(data, position);
     pos->set(Point2::load(data, position));
     lastPos->set(Point2::load(data, position));
-    colorCode = Utility::loadInt(data, position);
+    fgColorCode = Utility::loadInt(data, position);
+    bgColorCode = Utility::loadInt(data, position);
     updateIcon = true;
+    solid = Utility::loadBool(data, position);
 }
 
 shared_ptr<Entity> Entity::loadNew(char* data, int* position){

@@ -32,7 +32,10 @@ public:
 
     virtual ~Entity();
 
-    virtual bool tryToMove(Point2 p, shared_ptr<Level> world);
+    virtual bool tryToMoveAbsalute(Point2 p, shared_ptr<Level> world);
+
+    virtual bool tryToMoveRelative(Point2 p, shared_ptr<Level> world);
+    
     virtual bool update(int tick, shared_ptr<Level> level);
 
     virtual char getIcon(Point2 p, int tick, shared_ptr<Level> level);
@@ -45,7 +48,12 @@ public:
         pos->set(p);
     }
 
-    int getColorCode();
+    bool isSolid(){
+        return solid;
+    }
+
+    virtual int getFgColorCode();
+    virtual int getBgColorCode();
 
     virtual void save(string* data);
 
@@ -66,8 +74,10 @@ protected:
     string name;
     Point2* pos;
     Point2* lastPos;
-    int colorCode;
+    int fgColorCode;
+    int bgColorCode;
     bool updateIcon = true;
+    bool solid = true;
 
 };
 

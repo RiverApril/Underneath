@@ -14,7 +14,8 @@
 #include "LevelGenerator.h"
 #include "Utility.h"
 
-Level::Level(string n, Point2 s) {
+Level::Level(shared_ptr<World> w, string n, Point2 s) {
+    currentWorld = w;
     name = n;
     size = new Point2(s);
     tileGrid = vector<vector<TileData>>(size->x, std::vector<TileData>(size->y));
@@ -120,7 +121,7 @@ int Level::indexAt(Point2 p) {
 
 bool Level::canSee(Point2 origin, Point2 test, int range){
 
-    if(distanceSquared(origin.x, origin.y, test.x, test.y) > range*range){
+    if(Math::distanceSquared(origin.x, origin.y, test.x, test.y) > range*range){
         return false;
     }
 
@@ -167,6 +168,43 @@ void Level::deleteEntity(shared_ptr<Entity> e) {
     }
 }
 
+bool Level::canPathTo(Point2 from, Point2 to){
+    vector<vector<char>> map = vector<vector<char>>(size->x, vector<char>(size->y));
+    for(int i=0;i<size->x;i++){
+        for(int j=0;j<size->y;j++){
+			map[i][j] = 'U';
+        }
+    }
+    queue<Point2> priorityQueue;
+    priorityQueue.push(from);
+    while(!priorityQueue.empty()){
+        Point2 c = priorityQueue.front();
+        priorityQueue.pop();
+        if(c == to){
+            return true;
+        }else{
+            for(int i=c.x-1;i<=c.x+1;i++){
+                for(int j=c.y-1;j<=c.y+1;j++){
+                    Point2 p = Point2(i, j);
+                    if(inRange(p)){
+                        if(!tileAt(p)->isSolid() || tileAt(p)->hasFlag(tileFlagDoor)){
+                            if(c != p){
+                                if(map[i][j] == 'U'){
+                                    map[i][j] = 'V';
+                                    priorityQueue.push(p);
+                                }
+                                map[c.x][c.y] = 'E';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+
+}
+
 Point2 Level::generate(unsigned int seed) {
     srand(seed);
 
@@ -189,17 +227,20 @@ Point2 Level::generate(unsigned int seed) {
     p = findRandomOfType(tileFloor->getIndex());
     setTile(p, tileStairUp);
 
+    int fail = 0;
+
     for(int i=0;i<10;i++){
         Point2 f = findRandomOfType(tileFloor->getIndex());
-        if(distanceSquared(f, p) > 20*20){
+        if(((distanceSquared(f, p) > 20*20) || fail>20) && canPathTo(p, f)){
         	setTile(f, tileStairDown->getIndex());
         }else{
             i--;
+            fail++;
         }
     }
 
 
-    shared_ptr<AiEntity> rat = shared_ptr<AiEntity>(new AiEntity("Rat", aiMoveRandom, 'r', Point2Zero, Ui::C_DARK_YELLOW));
+    shared_ptr<AiEntity> rat = shared_ptr<AiEntity>(new AiEntity("Rat", aiMoveRandom, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5));
     int ratCount = (rand()%50)+10;
     for(int i=0;i<ratCount;i++){
         shared_ptr<AiEntity> r = AiEntity::clone(rat, nullptr);
@@ -207,6 +248,17 @@ Point2 Level::generate(unsigned int seed) {
         r->setPos(pp);
         newEntity(r);
     }
+
+    shared_ptr<AiEntity> goblin = shared_ptr<AiEntity>(new AiEntity("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10));
+    goblin->setActiveWeapon(shared_ptr<Weapon>(new Weapon(1, "Rusted Spear")));
+    int goblinCount = (rand()%40)+10;
+    for(int i=0;i<goblinCount;i++){
+        shared_ptr<AiEntity> g = AiEntity::clone(goblin, nullptr);
+        Point2 pp = Point2(findRandomWithoutFlag(tileFlagSolid));
+        g->setPos(pp);
+        newEntity(g);
+    }
+
 
     return p;
     

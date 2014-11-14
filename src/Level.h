@@ -28,7 +28,7 @@ class Level : public enable_shared_from_this<Level>{
 
 public:
 
-    Level(string n, Point2 s = Point2(100, 100));
+    Level(shared_ptr<World> w, string n, Point2 s = Point2(100, 100));
     ~Level();
 
     bool getExplored(Point2 p);
@@ -57,6 +57,8 @@ public:
 
     long entityCount();
 
+    bool canPathTo(Point2 from, Point2 to);
+
     Point2 generate(unsigned int seed);
 
     bool update(int tick, Point2* viewPos);
@@ -75,6 +77,8 @@ public:
     void load(char* data, int*position);
 
     vector<shared_ptr<Entity>> entityList;
+
+    shared_ptr<World> currentWorld;
 
 private:
 

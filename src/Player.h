@@ -11,6 +11,7 @@
 
 #include "Alive.h"
 #include "EMagical.h"
+#include "Weapon.h"
 
 class Player : public Alive, public EMagical {
 
@@ -28,9 +29,13 @@ public:
 
     bool moveRelative(Point2 p, shared_ptr<Level> level);
 
-    bool moveExact(Point2, shared_ptr<Level> level);
+    bool moveAbsalute(Point2, shared_ptr<Level> level);
 
-    bool use(shared_ptr<Level> level);
+    bool interact(shared_ptr<Level> level, Point2 posToInteract);
+
+    bool interactWithTile(shared_ptr<Level> level, int tid, Point2 posOfTile);
+
+    bool interactWithEntity(shared_ptr<Level> level, shared_ptr<Entity> e, Point2 posOfEntity);
 
 
     virtual int getEntityTypeId();
@@ -38,6 +43,7 @@ public:
     virtual void save(string* data);
 
     virtual void load(char* data, int* position);
+
     
     
 protected:

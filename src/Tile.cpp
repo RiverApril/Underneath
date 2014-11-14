@@ -74,9 +74,9 @@ void initTiles() {
 
     tileWall = new Tile(a++, ' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall,
                         C_BLACK, C_DARK_GRAY);
-    tileDoor = new Tile(a++, '%', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall,
+    tileDoor = new Tile(a++, '%', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor,
                         C_BLACK, C_DARK_GRAY);
-    tileSecretDoor = new Tile(a++, ' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall,
+    tileSecretDoor = new Tile(a++, ' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor,
                               C_BLACK, C_DARK_GRAY);
     tileOpenDoor = new Tile(a++, '/', C_WHITE, bg, tileFlagNone);
 

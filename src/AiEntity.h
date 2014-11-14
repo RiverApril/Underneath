@@ -15,6 +15,8 @@ typedef int AiType;
 
 const AiType aiNone = 0;
 const AiType aiMoveRandom = 1 << 0;
+const AiType aiFollowPlayerDumb = 1 << 1;
+const AiType aiAttackPlayer = 1 << 2;
 
 
 
@@ -26,7 +28,7 @@ public:
 
     AiEntity();
 
-    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, int colorCode = Ui::COLOR_DEFAULT_ENTITY);
+    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, int colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
 
     ~AiEntity();
 

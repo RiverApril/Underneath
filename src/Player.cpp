@@ -24,32 +24,65 @@ bool Player::update(int tick, shared_ptr<Level> level) {
     return Alive::update(tick, level);
 }
 
-bool Player::moveExact(Point2 p, shared_ptr<Level> level){
-    if(tryToMove(p-*pos, level)){
+bool Player::moveAbsalute(Point2 p, shared_ptr<Level> level){
+    if(tryToMoveAbsalute(p, level)){
         return true;
     }else{
-        int tid = level->indexAt(p);
-        if(tid == tileDoor->getIndex() || tid == tileSecretDoor->getIndex()){
-            level->setTile(p, tileOpenDoor);
-            return true;
-        }
+        return interact(level, p);
     }
     return false;
 }
 
 bool Player::moveRelative(Point2 p, shared_ptr<Level> level) {
-    return moveExact(p+*pos, level);
+    return moveAbsalute(p+*pos, level);
 }
 
-bool Player::use(shared_ptr<Level> level){
+bool Player::interact(shared_ptr<Level> level, Point2 posToInteract){
+    int tid = level->indexAt(posToInteract);
+    int i;
+    forVector(level->entityList, i){
+        shared_ptr<Entity> e = level->entityList[i];
+        if(e->uniqueId != uniqueId){
+            if(level->entityList[i]->getPos() == posToInteract){
+                if(e->isSolid()){
+                    if(interactWithEntity(level, e, posToInteract)){
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return interactWithTile(level, tid, posToInteract);
+}
 
-    int tid = level->indexAt(*pos);
+bool Player::interactWithTile(shared_ptr<Level> level, int tid, Point2 posOfTile){
+
     if(tid == tileStairDown->getIndex()){
 		
     }else if(tid == tileStairUp->getIndex()){
 
+    }else if(tid == tileOpenDoor->getIndex()){
+        if(posOfTile != *pos){
+        	level->setTile(posOfTile, tileDoor);
+        }
+    }else if(tileList[tid]->hasFlag(tileFlagDoor)){
+        level->setTile(posOfTile, tileOpenDoor);
+        return true;
     }
-    
+
+    return false;
+}
+
+bool Player::interactWithEntity(shared_ptr<Level> level, shared_ptr<Entity> e, Point2 posOfEntity){
+    shared_ptr<Alive> a = dynamic_pointer_cast<Alive>(e);
+    if(a != nullptr){
+        if(activeWeapon != nullptr){
+            print("Dealt "+to_string(a->hurt(activeWeapon))+" damage.");
+        }else{
+            print("No weapon eqiped.");
+        }
+        return true;
+    }
     return false;
 }
 
