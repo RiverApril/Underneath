@@ -21,6 +21,10 @@ Player::~Player() {
 }
 
 bool Player::update(int tick, shared_ptr<Level> level) {
+    if(dead){
+        
+        level->currentWorld->currentPlayer.reset();
+    }
     return Alive::update(tick, level);
 }
 
@@ -90,7 +94,7 @@ bool Player::interactWithEntity(shared_ptr<Level> level, shared_ptr<Entity> e, P
 shared_ptr<Player> Player::clone(shared_ptr<Player> oldE, shared_ptr<Player> newE){
 
     if(newE == nullptr){
-        newE = shared_ptr<Player>(new Player());
+        newE = make_shared<Player>();
     }
 
     Alive::clone(oldE, newE);

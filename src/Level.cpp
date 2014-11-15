@@ -229,7 +229,7 @@ Point2 Level::generate(unsigned int seed) {
 
     int fail = 0;
 
-    for(int i=0;i<10;i++){
+    for(int i=0;i<2;i++){
         Point2 f = findRandomOfType(tileFloor->getIndex());
         if(((distanceSquared(f, p) > 20*20) || fail>20) && canPathTo(p, f)){
         	setTile(f, tileStairDown->getIndex());
@@ -240,29 +240,37 @@ Point2 Level::generate(unsigned int seed) {
     }
 
 
-    shared_ptr<AiEntity> rat = shared_ptr<AiEntity>(new AiEntity("Rat", aiMoveRandom, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5));
-    int ratCount = (rand()%50)+10;
-    for(int i=0;i<ratCount;i++){
-        shared_ptr<AiEntity> r = AiEntity::clone(rat, nullptr);
-        Point2 pp = Point2(findRandomWithoutFlag(tileFlagSolid));
-        r->setPos(pp);
-        newEntity(r);
-    }
+    shared_ptr<AiEntity> rat = make_shared<AiEntity>("Rat", aiMoveRandom | aiFleeFromPlayerDumb, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
+    rat->viewDistance = 4;
 
-    shared_ptr<AiEntity> goblin = shared_ptr<AiEntity>(new AiEntity("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10));
-    goblin->setActiveWeapon(shared_ptr<Weapon>(new Weapon(1, "Rusted Spear")));
-    int goblinCount = (rand()%40)+10;
-    for(int i=0;i<goblinCount;i++){
-        shared_ptr<AiEntity> g = AiEntity::clone(goblin, nullptr);
-        Point2 pp = Point2(findRandomWithoutFlag(tileFlagSolid));
-        g->setPos(pp);
-        newEntity(g);
-    }
+    addEntitiesRandomly(rat, (rand()%50)+10);
+
+
+    shared_ptr<AiEntity> goblin = make_shared<AiEntity>("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
+    goblin->setActiveWeapon(make_shared<Weapon>(1, "Rusted Spear"));
+
+    addEntitiesRandomly(goblin, (rand()%40)+10);
+
+
+    shared_ptr<AiEntity> troll = make_shared<AiEntity>("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
+    troll->setActiveWeapon(make_shared<Weapon>(3, "Club"));
+
+    addEntitiesRandomly(troll, (rand()%20)+10);
 
 
     return p;
     
     
+}
+
+template <typename T> void Level::addEntitiesRandomly(shared_ptr<T> e, int count){
+
+    for(int i=0;i<count;i++){
+        shared_ptr<T> r = T::clone(e, nullptr);
+        Point2 pp = Point2(findRandomWithoutFlag(tileFlagSolid));
+        r->setPos(pp);
+        newEntity(r);
+    }
 }
 
 void Level::save(string* data){

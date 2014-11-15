@@ -29,9 +29,9 @@ shared_ptr<Item> Item::loadNew(char* data, int* position){
     int type = Utility::loadInt(data, position);
 
     if(type == ITEM_TYPE_ITEM){
-        e = shared_ptr<Item>(new Item());
+        e = make_shared<Item>();
     }else if(type == ITEM_TYPE_WEAPON){
-        e = shared_ptr<Weapon>(new Weapon());
+        e = make_shared<Weapon>();
     }
     e->load(data, position);
 

@@ -14,8 +14,8 @@
 
 
 World::World(std::string n){
-    levels = shared_ptr<std::vector<shared_ptr<Level>>>(new std::vector<shared_ptr<Level>>());
-    this->name = shared_ptr<string>(new string(n));
+    levels = make_shared<vector<shared_ptr<Level>>>();
+    this->name = make_shared<string>(n);
 }
 
 World::~World(){
@@ -81,7 +81,7 @@ namespace WorldLoader {
 
             int* position = new int(0);
 
-            world = shared_ptr<World>(new World(name));
+            world = make_shared<World>(name);
 
             world->worldTime = Utility::loadNumber<unsigned long>(data, position);
 
@@ -108,7 +108,7 @@ namespace WorldLoader {
 
                     Point2 levelSize = Point2::load(levelData, levelPosition);
 
-                    shared_ptr<Level> level = shared_ptr<Level>(new Level(world, levelName, levelSize));
+                    shared_ptr<Level> level = make_shared<Level>(world, levelName, levelSize);
 
                     level->load(levelData, levelPosition);
 
@@ -227,18 +227,18 @@ namespace WorldLoader {
 
     shared_ptr<World> create(std::string name){
 
-        shared_ptr<World> world(new World(name));
+        shared_ptr<World> world = make_shared<World>(name);
 
-        world->currentLevel = shared_ptr<Level>(new Level(world, "start"));
+        world->currentLevel = make_shared<Level>(world, "start");
         Point2 p = world->currentLevel->generate(static_cast<unsigned int>(time(NULL)));
         world->levels->push_back(world->currentLevel);
 
 
-        world->currentPlayer = shared_ptr<Player>(new Player(name, '@', p, Ui::C_WHITE));
-        world->currentPlayer->setActiveWeapon(shared_ptr<Weapon>(new Weapon(3, "Training Sword")));
+        world->currentPlayer = make_shared<Player>(name, '@', p, Ui::C_WHITE);
+        world->currentPlayer->setActiveWeapon(make_shared<Weapon>(3, "Training Sword"));
 
         for(int i=0;i<10;i++){
-        	world->currentPlayer->inventory.push_back(shared_ptr<Item>(new Item("Test Item "+to_string(i))));
+        	world->currentPlayer->inventory.push_back(make_shared<Item>("Test Item "+to_string(i)));
         }
         
 

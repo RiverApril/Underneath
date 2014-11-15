@@ -17,6 +17,8 @@ const AiType aiNone = 0;
 const AiType aiMoveRandom = 1 << 0;
 const AiType aiFollowPlayerDumb = 1 << 1;
 const AiType aiAttackPlayer = 1 << 2;
+const AiType aiFleeFromPlayerDumb = 1 << 3;
+const AiType aiFollowPlayerSmart = 1 << 4;
 
 
 
@@ -45,6 +47,8 @@ public:
 
 protected:
     int ai = aiNone;
+
+    Point2 lastKnownPlayerPos;
 };
 
 #endif /* defined(__Underneath__AiEntity__) */

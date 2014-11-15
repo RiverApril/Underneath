@@ -91,7 +91,7 @@ namespace Ui {
                 break;
 
             default:
-                if((in>=65 && in<=90) || (in>=97 && in<=122)){
+                if((in=='_') || (in>='0' && in<='9') || (in>='A' && in<='Z') || (in>='a' && in<='z')){
                     name += in;
                 }
                 break;
@@ -123,6 +123,8 @@ namespace Ui {
         move(3, 0);
         clrtoeol();
         printCenter(3, name);
+        setColor(C_WHITE, C_BLACK, A_BLINK);
+        printCenterOffset(3, (int)(name.length()/2)+1, "_");
 
         printConsole();
 

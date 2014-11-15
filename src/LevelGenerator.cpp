@@ -20,7 +20,7 @@ namespace LevelGenerator{
 
     shared_ptr<Room> createRoom(Point2 roomSize, shared_ptr<vector<shared_ptr<Room>>> presentRooms){
         bool fit = false;
-        shared_ptr<Room> r = shared_ptr<Room>(new Room());
+        shared_ptr<Room> r = make_shared<Room>();
         int att = 0;
         while(!fit && att<100){
             att++;
@@ -42,7 +42,7 @@ namespace LevelGenerator{
             int ec = (rand()%4)+4;
             bool eL = false, eR = false, eU = false, eD = false;
             for(int i=0;i<ec || (!(eL && eR && eU && eD));i++){
-                shared_ptr<Entry> e = shared_ptr<Entry>(new Entry());
+                shared_ptr<Entry> e = make_shared<Entry>();
                 e->direction = rand()%4;
                 if(e->direction == left) eL = true;
                 if(e->direction == right) eR = true;
@@ -71,7 +71,7 @@ namespace LevelGenerator{
     }
 
     shared_ptr<vector<shared_ptr<Room>>> createRooms(int qty, Point2 roomSize){
-        shared_ptr<vector<shared_ptr<Room>>> rooms = shared_ptr<vector<shared_ptr<Room>>>(new vector<shared_ptr<Room>>());
+        shared_ptr<vector<shared_ptr<Room>>> rooms = make_shared<vector<shared_ptr<Room>>>();
         for(int i=0;i<qty;i++){
             shared_ptr<Room> r = createRoom(roomSize, rooms);
             if(r->radius.x > 0 && r->radius.y > 0){

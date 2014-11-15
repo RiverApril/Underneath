@@ -61,6 +61,8 @@ public:
 
     Point2 generate(unsigned int seed);
 
+    template <typename T> void addEntitiesRandomly(shared_ptr<T> e, int count);
+
     bool update(int tick, Point2* viewPos);
 
     void needsRedraw(Point2* p);

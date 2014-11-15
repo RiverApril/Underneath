@@ -73,7 +73,7 @@ void Alive::addEffect(Effect e){
 shared_ptr<Alive> Alive::clone(shared_ptr<Alive> oldE, shared_ptr<Alive> newE){
 
     if(newE == nullptr){
-        newE = shared_ptr<Alive>(new Alive());
+        newE = make_shared<Alive>();
     }
 
     Entity::clone(oldE, newE);

@@ -51,12 +51,16 @@ public:
         return maxHp;
     }
 
+    virtual void die(){
+        hp = 0;
+        dead = true;
+        pos->set(-1);
+    }
+
     int hurt(int amount){
         hp -= amount;
         if(hp<=0){
-            hp = 0;
-            dead = true;
-            pos->set(-1);
+            die();
         }
         regenTick = 0;
         debug(name+" hp: "+to_string(hp));
@@ -97,10 +101,6 @@ public:
         }
     }
 
-    int getViewDistance() {
-        return viewDistance;
-    }
-
     virtual void save(string* data);
 
     virtual int getEntityTypeId();
@@ -127,10 +127,11 @@ public:
 
     vector<Effect> effects;
 
+    int viewDistance = 8;
+
 protected:
     int maxHp = 30;
     int hp = maxHp;
-    int viewDistance = 8;
     bool dead = false;
     int regenTick = 0;
 

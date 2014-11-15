@@ -62,6 +62,11 @@ bool Entity::tryToMoveAbsalute(Point2 p, shared_ptr<Level> level) {
     return false;
 }
 bool Entity::tryToMoveRelative(Point2 p, shared_ptr<Level> level) {
+    /*if(p.x != 0 && p.y != 0){
+        bool xx = tryToMoveRelative(Point2(p.x, 0), level);
+        bool yy = tryToMoveRelative(Point2(0, p.y), level);
+        return xx || yy;
+    }*/
     return tryToMoveAbsalute(*pos+p, level);
 }
 
@@ -104,7 +109,7 @@ int Entity::getBgColorCode() {
 shared_ptr<Entity> Entity::clone(shared_ptr<Entity> oldE, shared_ptr<Entity> newE){
 
     if(newE == nullptr){
-        newE = shared_ptr<Entity>(new Entity());
+        newE = make_shared<Entity>();
     }
 
     newE->defaultIcon = oldE->defaultIcon;
@@ -156,13 +161,13 @@ shared_ptr<Entity> Entity::loadNew(char* data, int* position){
     int type = Utility::loadInt(data, position);
 
     if(type == ENTITY_TYPE_ENTITY){
-        e = shared_ptr<Entity>(new Entity());
+        e = make_shared<Entity>();
     }else if(type == ENTITY_TYPE_ALIVE){
-        e = shared_ptr<Alive>(new Alive());
+        e = make_shared<Alive>();
     }else if(type == ENTITY_TYPE_AIENTITY){
-        e = shared_ptr<AiEntity>(new AiEntity());
+        e = make_shared<AiEntity>();
     }else if(type == ENTITY_TYPE_PLAYER){
-        e = shared_ptr<Player>(new Player());
+        e = make_shared<Player>();
     }
     e->load(data, position);
 

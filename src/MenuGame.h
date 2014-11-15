@@ -46,8 +46,6 @@ namespace Ui {
         Point2* viewMoveSpeed;
 
         shared_ptr<World> currentWorld;
-        shared_ptr<Level> currentLevel;
-        shared_ptr<Player> currentPlayer;
 
 
         int modePlayerControl = 0;

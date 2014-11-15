@@ -30,7 +30,7 @@ namespace LevelGenerator{
 
     struct Room{
         Room(){
-            entrances = shared_ptr<vector<shared_ptr<Entry>>>(new vector<shared_ptr<Entry>>());
+            entrances = make_shared<vector<shared_ptr<Entry>>>();
         }
         ~Room(){
             
