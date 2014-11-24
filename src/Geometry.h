@@ -30,6 +30,8 @@ struct Point2 {
     Point2 operator*(Point2 other);
     Point2 operator/(Point2 other);
 
+    Point2 operator-();
+
     Point2* operator+=(Point2 other);
     Point2* operator-=(Point2 other);
     Point2* operator*=(Point2 other);
@@ -45,7 +47,7 @@ struct Point2 {
     Vector2 operator*(double other);
     Vector2 operator/(double other);
 
-    void save(string* data);
+    static void save(Point2 p, string* data);
 
     static Point2 load(char* data, int* position);
 
@@ -56,6 +58,47 @@ struct Point2 {
     string toString();
 };
 
+struct Point3 {
+    int x,y,z;
+
+    Point3(int x, int y, int z);
+    Point3() : Point3(0, 0, 0){}
+    bool operator==(const Point3 other);
+    bool operator!=(const Point3 other);
+
+
+
+    void set(const Point3 other);
+
+    Point3 operator+(Point3 other);
+    Point3 operator-(Point3 other);
+    Point3 operator*(Point3 other);
+    Point3 operator/(Point3 other);
+
+    Point3 operator-();
+
+    Point3* operator+=(Point3 other);
+    Point3* operator-=(Point3 other);
+    Point3* operator*=(Point3 other);
+    Point3* operator/=(Point3 other);
+
+    Point3 operator+(int other);
+    Point3 operator-(int other);
+    Point3 operator*(int other);
+    Point3 operator/(int other);
+
+    void save(string* data);
+
+    static Point3 load(char* data, int* position);
+
+    void set(int i) {
+        this->x = i;
+        this->y = i;
+    }
+    string toString();
+};
+
+
 struct Vector2 {
     double x,y;
 
@@ -65,6 +108,9 @@ struct Vector2 {
     void set(const Vector2 other);
     void set(const Point2 other);
     Point2 truncate();
+    Point2 round();
+    Point2 ceil();
+    Point2 floor();
 
     Vector2 operator+(double other);
     Vector2 operator-(double other);

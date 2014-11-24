@@ -83,8 +83,8 @@ void initTiles() {
     tileStairDown = new Tile(a++, 'v',  C_LIGHT_GREEN, bg, tileFlagNone);
     tileStairUp = new Tile(a++, '^',  C_LIGHT_GREEN, bg, tileFlagNone);
 
-    tileEdge = new Tile(a++, 'X',  C_LIGHT_RED, bg, tileFlagSolid);
-    tileUnset = new Tile(a++, 'X',  C_LIGHT_MAGENTA, bg, tileFlagSolid);
+    tileEdge = new Tile(a++, 'X',  C_LIGHT_RED, bg, tileFlagSolid | tileFlagTall);
+    tileUnset = new Tile(a++, 'X',  C_LIGHT_MAGENTA, bg, tileFlagSolid | tileFlagTall);
 
     tileDebug1 = new Tile(a++, '1',  C_LIGHT_GREEN, bg, tileFlagNone);
     tileDebug2 = new Tile(a++, '2',  C_LIGHT_GREEN, bg, tileFlagNone);

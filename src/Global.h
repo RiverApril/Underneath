@@ -17,7 +17,7 @@
 #include <time.h>
 #include <locale.h>
 #include <stdlib.h>
-#include <math.h>
+#include <cmath>
 #include <fstream>
 #include <assert.h>
 

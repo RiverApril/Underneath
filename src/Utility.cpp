@@ -8,7 +8,7 @@
 
 #include "Utility.h"
 
-namespace Utility{
+namespace FileUtility {
 
 
 
@@ -32,8 +32,9 @@ namespace Utility{
     }
 
     void saveString(string* data, string n){
-        saveInt(data, (int)n.size());
-        for(int i=0;i<n.size();i++){
+        int count = (int)n.size();
+        saveInt(data, count);
+        for(int i=0;i<count;i++){
             saveChar(data, n[i]);
         }
     }
@@ -75,6 +76,10 @@ namespace Utility{
         }
         return l;
     }
+
+}
+
+namespace DrawingUtility {
 
     string makeBar(int progress, int maxProgress, unsigned int size, char filled, char empty){
         string s = "";

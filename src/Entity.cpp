@@ -10,31 +10,28 @@
 #include "Alive.h"
 #include "AiEntity.h"
 #include "Player.h"
+#include "ItemEntity.h"
 
 #include "Level.h"
 #include "Math.h"
 #include "Utility.h"
 #include "Global.h"
 
-Entity::Entity() : Entity("", ' ', Point2Zero, Ui::C_WHITE){
+Entity::Entity() : Entity(' ', Point2Zero, Ui::C_WHITE){
 
 }
 
-Entity::Entity(string name, char icon, Point2 startPos, Ui::color colorCode) {
+Entity::Entity(char icon, Point2 startPos, Ui::color colorCode) {
     this->defaultIcon = icon;
     this->fgColorCode = colorCode;
     this->bgColorCode = Ui::C_BLACK;
-    this->name = name;
 
-    pos = new Point2(0, 0);
-    lastPos = new Point2(0, 0);
-    pos->set(startPos);
-    lastPos->set(startPos);
+    pos = startPos;
+    lastPos = startPos;
 }
 
 Entity::~Entity() {
-    delete pos;
-    delete lastPos;
+
 }
 
 bool Entity::tryToMoveAbsalute(Point2 p, shared_ptr<Level> level) {
@@ -45,7 +42,7 @@ bool Entity::tryToMoveAbsalute(Point2 p, shared_ptr<Level> level) {
             if(level->entityList[i]->uniqueId == uniqueId){
                 continue;
             }
-            if(level->entityList[i]->getPos() == p){
+            if(level->entityList[i]->pos == p){
 
                 if(level->entityList[i]->isSolid()){
                     block = true;
@@ -54,8 +51,7 @@ bool Entity::tryToMoveAbsalute(Point2 p, shared_ptr<Level> level) {
             }
         }
         if(!block){
-            pos->x = p.x;
-            pos->y = p.y;
+            pos = p;
             return true;
         }
     }
@@ -67,7 +63,7 @@ bool Entity::tryToMoveRelative(Point2 p, shared_ptr<Level> level) {
         bool yy = tryToMoveRelative(Point2(0, p.y), level);
         return xx || yy;
     }*/
-    return tryToMoveAbsalute(*pos+p, level);
+    return tryToMoveAbsalute(pos+p, level);
 }
 
 bool Entity::update(int tick, shared_ptr<Level> level) {
@@ -76,16 +72,11 @@ bool Entity::update(int tick, shared_ptr<Level> level) {
     
 
     if(pos != lastPos || updateIcon) {
-        if(level->inRange(*lastPos)) {
-            if(level->getDisplayEntity(*lastPos) != nullptr && level->getDisplayEntity(*lastPos)->uniqueId == uniqueId){
-            	level->setDisplayEntity(*lastPos, nullptr);
-            }
-        }
-        if(level->inRange(*pos)) {
-            level->setDisplayEntity(*pos, shared_from_this());
-        }
+        
+        //setAndUnsetDisplayEntity(level);
+
         u = true;
-        lastPos->set(*pos);
+        lastPos = pos;
 
         updateIcon = false;
     }
@@ -106,16 +97,15 @@ int Entity::getBgColorCode() {
 }
 
 
-shared_ptr<Entity> Entity::clone(shared_ptr<Entity> oldE, shared_ptr<Entity> newE){
+Entity* Entity::clone(Entity* oldE, Entity* newE){
 
     if(newE == nullptr){
-        newE = make_shared<Entity>();
+        newE = new Entity();
     }
 
     newE->defaultIcon = oldE->defaultIcon;
-    newE->name = oldE->name;
-    newE->pos->set(*oldE->pos);
-    newE->lastPos->set(*oldE->lastPos);
+    newE->pos = oldE->pos;
+    newE->lastPos = oldE->lastPos;
     newE->fgColorCode = oldE->fgColorCode;
     newE->bgColorCode = oldE->bgColorCode;
     newE->updateIcon = oldE->updateIcon;
@@ -125,17 +115,19 @@ shared_ptr<Entity> Entity::clone(shared_ptr<Entity> oldE, shared_ptr<Entity> new
 }
 
 void Entity::save(string* data){
-    Utility::saveInt(data, getEntityTypeId());
+    FileUtility::saveInt(data, getEntityTypeId());
 
-    Utility::saveInt(data, uniqueId);
+
+    FileUtility::saveInt(data, uniqueId);
     
-    Utility::saveChar(data, defaultIcon);
-    Utility::saveString(data, name);
-    pos->save(data);
-    lastPos->save(data);
-    Utility::saveInt(data, fgColorCode);
-    Utility::saveInt(data, bgColorCode);
-    Utility::saveBool(data, solid);
+    FileUtility::saveChar(data, defaultIcon);
+    
+    Point2::save(pos, data);
+    Point2::save(lastPos, data);
+    
+    FileUtility::saveChar(data, fgColorCode);
+    FileUtility::saveChar(data, bgColorCode);
+    FileUtility::saveBool(data, solid);
 }
 
 int Entity::getEntityTypeId(){
@@ -143,33 +135,52 @@ int Entity::getEntityTypeId(){
 }
 
 void Entity::load(char* data, int* position){
-    uniqueId = Utility::loadInt(data, position);
+    //Entity::loadNew() loads the entityId
 
-    defaultIcon = Utility::loadChar(data, position);
-    name = Utility::loadString(data, position);
-    pos->set(Point2::load(data, position));
-    lastPos->set(Point2::load(data, position));
-    fgColorCode = Utility::loadInt(data, position);
-    bgColorCode = Utility::loadInt(data, position);
+    uniqueId = FileUtility::loadInt(data, position);
+
+    defaultIcon = FileUtility::loadChar(data, position);
+
+    pos = Point2::load(data, position);
+    lastPos = Point2::load(data, position);
+
+    fgColorCode = FileUtility::loadChar(data, position);
+    bgColorCode = FileUtility::loadChar(data, position);
+    solid = FileUtility::loadBool(data, position);
+
     updateIcon = true;
-    solid = Utility::loadBool(data, position);
 }
 
-shared_ptr<Entity> Entity::loadNew(char* data, int* position){
-    shared_ptr<Entity> e;
+Entity* Entity::loadNew(char* data, int* position){
+    Entity* e;
 
-    int type = Utility::loadInt(data, position);
+    int type = FileUtility::loadInt(data, position);
 
-    if(type == ENTITY_TYPE_ENTITY){
-        e = make_shared<Entity>();
-    }else if(type == ENTITY_TYPE_ALIVE){
-        e = make_shared<Alive>();
-    }else if(type == ENTITY_TYPE_AIENTITY){
-        e = make_shared<AiEntity>();
-    }else if(type == ENTITY_TYPE_PLAYER){
-        e = make_shared<Player>();
+    switch (type) {
+        case ENTITY_TYPE_ENTITY:
+            e = new Entity();
+            break;
+        case ENTITY_TYPE_ALIVE:
+            e = new Alive();
+            break;
+        case ENTITY_TYPE_AIENTITY:
+            e = new AiEntity();
+            break;
+        case ENTITY_TYPE_PLAYER:
+            e = new Player();
+            break;
+        case ENTITY_TYPE_ITEMENTITY:
+            e = new ItemEntity();
+            break;
+
+        default:
+            throw FileUtility::ExceptionLoad("Entity type unknown: "+to_string(type));
+            return nullptr;
+            break;
     }
     e->load(data, position);
+
+    debug("Loaded "+e->getName()+"("+to_string(e->getEntityTypeId())+")"+", Pos: "+e->pos.toString());
 
     return e;
 }

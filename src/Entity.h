@@ -19,16 +19,17 @@ const int ENTITY_TYPE_ENTITY = 0;
 const int ENTITY_TYPE_ALIVE = 1;
 const int ENTITY_TYPE_AIENTITY = 2;
 const int ENTITY_TYPE_PLAYER = 3;
+const int ENTITY_TYPE_ITEMENTITY = 4;
 
-class Entity : public enable_shared_from_this<Entity>{
+class Entity{
 
 public:
 
-    static shared_ptr<Entity> clone(shared_ptr<Entity> oldE, shared_ptr<Entity> newE);
+    static Entity* clone(Entity* oldE, Entity* newE);
 
     Entity();
 
-    Entity(string name, char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY);
+    Entity(char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY);
 
     virtual ~Entity();
 
@@ -38,18 +39,16 @@ public:
     
     virtual bool update(int tick, shared_ptr<Level> level);
 
+    //void setAndUnsetDisplayEntity(shared_ptr<Level> level);
+
     virtual char getIcon(Point2 p, int tick, shared_ptr<Level> level);
-
-    Point2 getPos() {
-        return *pos;
-    }
-
-    void setPos(Point2 p){
-        pos->set(p);
-    }
 
     bool isSolid(){
         return solid;
+    }
+
+    virtual string getName(){
+        return "NO_NAME";
     }
 
     virtual int getFgColorCode();
@@ -59,25 +58,25 @@ public:
 
     virtual int getEntityTypeId();
 
+    virtual int getRenderDepth(){
+        return 0;
+    }
+
     virtual void load(char* data, int* position);
 
-    static shared_ptr<Entity> loadNew(char* data, int* position);
-
-    string getName(){
-        return name;
-    }
+    static Entity* loadNew(char* data, int* position);
 
     int uniqueId = 0;
 
+    Point2 pos;
+
 protected:
     char defaultIcon = '?';
-    string name;
-    Point2* pos;
-    Point2* lastPos;
-    int fgColorCode;
-    int bgColorCode;
+    Point2 lastPos;
+    Ui::color fgColorCode;
+    Ui::color bgColorCode;
     bool updateIcon = true;
-    bool solid = true;
+    bool solid = false;
 
 };
 

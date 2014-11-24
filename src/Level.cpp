@@ -14,7 +14,7 @@
 #include "LevelGenerator.h"
 #include "Utility.h"
 
-Level::Level(shared_ptr<World> w, string n, Point2 s) {
+Level::Level(World* w, string n, Point2 s) {
     currentWorld = w;
     name = n;
     size = new Point2(s);
@@ -24,7 +24,7 @@ Level::Level(shared_ptr<World> w, string n, Point2 s) {
         for(int j=0;j<size->y;j++){
             tileGrid[i][j].index = tileUnset->getIndex();
             tileGrid[i][j].explored = false;
-            tileGrid[i][j].entity = nullptr;
+            //tileGrid[i][j].entity = nullptr;
         }
     }
 }
@@ -48,7 +48,7 @@ void Level::setExplored(Point2 p, bool a) {
     }
 }
 
-shared_ptr<Entity> Level::getDisplayEntity(Point2 p){
+/*Entity* Level::getDisplayEntity(Point2 p){
     if(inRange(p)) {
     	return tileGrid[p.x][p.y].entity;
     }else{
@@ -56,11 +56,11 @@ shared_ptr<Entity> Level::getDisplayEntity(Point2 p){
     }
 }
 
-void Level::setDisplayEntity(Point2 p, shared_ptr<Entity> e){
+void Level::setDisplayEntity(Point2 p, Entity* e){
     if(inRange(p)) {
     	tileGrid[p.x][p.y].entity = e;
     }
-}
+}*/
 
 bool Level::inRange(Point2 p) {
     return p.x>=0 && p.y>=0 && p.x<size->x && p.y<size->y;
@@ -133,8 +133,6 @@ bool Level::canSee(Point2 origin, Point2 test, int range){
         }
     }
 
-
-
     return true;
 }
 
@@ -142,7 +140,7 @@ long Level::entityCount() {
     return entityList.size();
 }
 
-bool Level::update(int tick, Point2* viewPos) {
+bool Level::update(int tick, Point2 viewPos) {
     bool u = false;
     for (size_t i=0; i<entityList.size(); i++) {
         if(entityList.at(i)->update(tick, shared_from_this())){
@@ -152,45 +150,124 @@ bool Level::update(int tick, Point2* viewPos) {
     return u;
 }
 
-shared_ptr<Entity> Level::newEntity(shared_ptr<Entity> newE) {
+/*void Level::setAndUnsetDisplayEntities(){
+    for (size_t i=0; i<entityList.size(); i++) {
+        entityList.at(i)->setAndUnsetDisplayEntity(shared_from_this());
+    }
+}*/
+
+Entity* Level::newEntity(Entity* newE) {
     newE->uniqueId = nextUniqueId;
     nextUniqueId++;
     entityList.push_back(newE);
     return newE;
 }
 
-void Level::deleteEntity(shared_ptr<Entity> e) {
+void Level::removeEntity(Entity* e, bool deleteEntity) {
     for(int i=0;i<entityList.size();i++){
         if(e->uniqueId == entityList[i]->uniqueId){
             entityList.erase(entityList.begin()+i);
-            break;
+            debug("Removed: "+e->getName());
+            if(deleteEntity){
+                string n = e->getName();
+                delete e;
+                debug("Deleted: "+n);
+            }
+            return;
         }
     }
+    debug("Failed to delete: "+e->getName());
+}
+
+vector<Point2> Level::getPathTo(Point2 from, Point2 to){
+	vector<vector<int>> map = vector<vector<int>>(size->x, vector<int>(size->y));
+
+    for(int i=0;i<size->x;i++){
+        for(int j=0;j<size->y;j++){
+            map[i][j] = -1;
+        }
+    }
+
+    queue<Point2> priorityQueue;
+    priorityQueue.push(from);
+
+    while(!priorityQueue.empty()){
+        Point2 c = priorityQueue.front();
+        priorityQueue.pop();
+        if(c == to){
+            vector<Point2> path;
+            Point2 l = to;
+            int v = map[to.x][to.y];
+            while(v > 0){
+                bool leave = false;
+                for(int i=-1;i<=1 && !leave;i++){
+                    for(int j=-1;j<=1 && !leave;j++){
+                        Point2 p = Point2(i+l.x, j+l.y);
+                        if((abs(i)+abs(j)) == 1){
+                        	if(inRange(p)){
+                                if(map[p.x][p.y] < v && map[p.x][p.y] != -1){
+                                    v = map[p.x][p.y];
+                                    l = p;
+                                    leave = true;
+                                    path.push_back(l);
+                                }
+                            }
+                        }
+                    }
+                }
+                if(!leave){
+                    break;
+                }
+            }
+            return path;
+        }else{
+            for(int i=-1;i<=1;i++){
+                for(int j=-1;j<=1;j++){
+                    Point2 p = Point2(i+c.x, j+c.y);
+                    if((abs(i)+abs(j)) == 1){
+                    	if(inRange(p)){
+                        	if(!tileAt(p)->isSolid() || tileAt(p)->hasFlag(tileFlagDoor)){
+                                if(map[p.x][p.y] == -1){
+                                    map[p.x][p.y] = map[c.x][c.y]+1;
+                                    priorityQueue.push(p);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    return vector<Point2>();
 }
 
 bool Level::canPathTo(Point2 from, Point2 to){
-    vector<vector<char>> map = vector<vector<char>>(size->x, vector<char>(size->y));
+    return !getPathTo(from, to).empty();
+
+    /*vector<vector<char>> map = vector<vector<char>>(size->x, vector<char>(size->y));
     for(int i=0;i<size->x;i++){
         for(int j=0;j<size->y;j++){
-			map[i][j] = 'U';
+            map[i][j] = 'U';
         }
     }
     queue<Point2> priorityQueue;
     priorityQueue.push(from);
+
     while(!priorityQueue.empty()){
         Point2 c = priorityQueue.front();
         priorityQueue.pop();
         if(c == to){
             return true;
         }else{
-            for(int i=c.x-1;i<=c.x+1;i++){
-                for(int j=c.y-1;j<=c.y+1;j++){
-                    Point2 p = Point2(i, j);
-                    if(inRange(p)){
-                        if(!tileAt(p)->isSolid() || tileAt(p)->hasFlag(tileFlagDoor)){
-                            if(c != p){
-                                if(map[i][j] == 'U'){
-                                    map[i][j] = 'V';
+            for(int i=-1;i<=1;i++){
+                for(int j=-1;j<=1;j++){
+                    Point2 p = Point2(i+c.x, j+c.y);
+                    if((abs(i)+abs(j)) == 1){
+                    	if(inRange(p)){
+                        	if(!tileAt(p)->isSolid() || tileAt(p)->hasFlag(tileFlagDoor)){
+                                if(map[p.x][p.y] == 'U'){
+                                    map[p.x][p.y] = 'V';
                                     priorityQueue.push(p);
                                 }
                                 map[c.x][c.y] = 'E';
@@ -201,8 +278,7 @@ bool Level::canPathTo(Point2 from, Point2 to){
             }
         }
     }
-    return false;
-
+    return false;*/
 }
 
 Point2 Level::generate(unsigned int seed) {
@@ -212,7 +288,7 @@ Point2 Level::generate(unsigned int seed) {
         for (int j=0; j<size->y; j++) {
             tileGrid[i][j].index = tileUnset->getIndex();
             tileGrid[i][j].explored = false;
-            tileGrid[i][j].entity = nullptr;
+            //tileGrid[i][j].entity = nullptr;
             if(i==0 || j==0 || i==(size->x-1) || j==(size->y-1)){
                 tileGrid[i][j].index = tileWall->getIndex();
             }
@@ -222,68 +298,79 @@ Point2 Level::generate(unsigned int seed) {
     shared_ptr<vector<shared_ptr<LevelGenerator::Room>>> rooms = LevelGenerator::createRooms(1000, *size);
     LevelGenerator::makeRoomsAndPaths(rooms, shared_from_this());
 
-    Point2 p;
-
-    p = findRandomOfType(tileFloor->getIndex());
-    setTile(p, tileStairUp);
-
-    int fail = 0;
-
-    for(int i=0;i<2;i++){
-        Point2 f = findRandomOfType(tileFloor->getIndex());
-        if(((distanceSquared(f, p) > 20*20) || fail>20) && canPathTo(p, f)){
-        	setTile(f, tileStairDown->getIndex());
+    Point2 stairUpPos;
+    Point2 stairDownPos;
+    int dist = (size->x+size->y) / 2;
+    while(true){
+        stairDownPos = findRandomOfType(tileFloor->getIndex());
+        stairUpPos = findRandomOfType(tileFloor->getIndex());
+        if((distanceSquared(stairUpPos, stairDownPos) > (dist*dist)) && canPathTo(stairUpPos, stairDownPos)){
+            break;
         }else{
-            i--;
-            fail++;
+            dist--;
+            if(dist < 1){
+                dist = 1;
+            }
+        }
+    }
+
+    setTile(stairDownPos, tileStairDown);
+    setTile(stairUpPos, tileStairUp);
+
+    vector<Point2> path = getPathTo(stairUpPos, stairDownPos);
+    int i;
+    forVector(path, i){
+        if(!tileAt(path[i])->isSolid()){
+        	setTile(path[i], tileDebug1);
         }
     }
 
 
-    shared_ptr<AiEntity> rat = make_shared<AiEntity>("Rat", aiMoveRandom | aiFleeFromPlayerDumb, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
+    AiEntity* rat = new AiEntity("Rat", aiMoveRandom | aiFleeFromPlayerDumb, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
     rat->viewDistance = 4;
 
-    addEntitiesRandomly(rat, (rand()%50)+10);
+    addEntitiesRandomly(rat, (rand()%10)+20);
 
 
-    shared_ptr<AiEntity> goblin = make_shared<AiEntity>("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
-    goblin->setActiveWeapon(make_shared<Weapon>(1, "Rusted Spear"));
+    AiEntity* goblin = new AiEntity ("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
+    goblin->setActiveWeapon(new Weapon(1, "Rusted Spear"));
 
-    addEntitiesRandomly(goblin, (rand()%40)+10);
-
-
-    shared_ptr<AiEntity> troll = make_shared<AiEntity>("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-    troll->setActiveWeapon(make_shared<Weapon>(3, "Club"));
-
-    addEntitiesRandomly(troll, (rand()%20)+10);
+    addEntitiesRandomly(goblin, (rand()%80)+20);
 
 
-    return p;
+    AiEntity* troll = new AiEntity ("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
+    troll->setActiveWeapon((new Weapon(3, "Spiked Club"))->addEnchantment(enchBleed, 10, 1));
+
+    addEntitiesRandomly(troll, (rand()%100)+20);
+
+
+    return stairUpPos;
     
     
 }
 
-template <typename T> void Level::addEntitiesRandomly(shared_ptr<T> e, int count){
+template <typename T> void Level::addEntitiesRandomly(T* e, int count){
 
     for(int i=0;i<count;i++){
-        shared_ptr<T> r = T::clone(e, nullptr);
+        T* r = T::clone(e, nullptr);
         Point2 pp = Point2(findRandomWithoutFlag(tileFlagSolid));
-        r->setPos(pp);
+        r->pos = pp;
         newEntity(r);
     }
 }
 
 void Level::save(string* data){
     
-    size->save(data);
+    Point2::save(*size, data);
     for(int i=0;i<size->x;i++){
         for(int j=0;j<size->y;j++){
-            Utility::saveInt8Bit(data, tileGrid[i][j].index);
-            Utility::saveBool(data, tileGrid[i][j].explored);
+            FileUtility::saveInt8Bit(data, tileGrid[i][j].index);
+            FileUtility::saveBool(data, tileGrid[i][j].explored);
         }
     }
-    Utility::saveInt(data, (int)entityList.size());
+    FileUtility::saveInt(data, (int)entityList.size());
     for(int i=0;i<entityList.size();i++){
+        debug("Saving "+entityList[i]->getName()+"("+to_string(entityList[i]->getEntityTypeId())+")"+", Pos: "+entityList[i]->pos.toString());
         entityList[i]->save(data);
     }
 }
@@ -291,11 +378,11 @@ void Level::save(string* data){
 void Level::load(char* data, int* position){
     for(int i=0;i<size->x;i++){
         for(int j=0;j<size->y;j++){
-            tileGrid[i][j].index = Utility::loadInt8Bit(data, position);
-            tileGrid[i][j].explored = Utility::loadBool(data, position);
+            tileGrid[i][j].index = FileUtility::loadInt8Bit(data, position);
+            tileGrid[i][j].explored = FileUtility::loadBool(data, position);
         }
     }
-    int entityCount = Utility::loadInt(data, position);
+    int entityCount = FileUtility::loadInt(data, position);
     for(int i=0;i<entityCount;i++){
         entityList.push_back(Entity::loadNew(data, position));
     }

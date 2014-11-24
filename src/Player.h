@@ -10,14 +10,13 @@
 #define __Underneath__Player__
 
 #include "Alive.h"
-#include "EMagical.h"
 #include "Weapon.h"
 
-class Player : public Alive, public EMagical {
+class Player : public Alive {
 
 public:
 
-    static shared_ptr<Player> clone(shared_ptr<Player> oldE, shared_ptr<Player> newE);
+    static Player* clone(Player* oldE, Player* newE);
 
     Player();
 
@@ -31,14 +30,18 @@ public:
 
     bool moveAbsalute(Point2, shared_ptr<Level> level);
 
-    bool interact(shared_ptr<Level> level, Point2 posToInteract);
+    bool interact(shared_ptr<Level> level, Point2 posToInteract, bool needToBeSolid);
 
     bool interactWithTile(shared_ptr<Level> level, int tid, Point2 posOfTile);
 
-    bool interactWithEntity(shared_ptr<Level> level, shared_ptr<Entity> e, Point2 posOfEntity);
+    bool interactWithEntity(shared_ptr<Level> level, Entity* e, Point2 posOfEntity);
 
 
     virtual int getEntityTypeId();
+
+    virtual int getRenderDepth(){
+        return 1;
+    }
 
     virtual void save(string* data);
 

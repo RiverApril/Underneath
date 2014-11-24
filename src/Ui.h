@@ -18,7 +18,7 @@ void print(string s);
 
 namespace Ui {
 
-    typedef int color;
+    typedef char color;
 
 
     /*const color C_DARK_BLACK = 0xE8;

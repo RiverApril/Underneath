@@ -8,6 +8,7 @@
 
 #include "Player.h"
 #include "Level.h"
+#include "ItemEntity.h"
 
 Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE){
 
@@ -22,8 +23,7 @@ Player::~Player() {
 
 bool Player::update(int tick, shared_ptr<Level> level) {
     if(dead){
-        
-        level->currentWorld->currentPlayer.reset();
+        level->currentWorld->currentPlayer = nullptr;
     }
     return Alive::update(tick, level);
 }
@@ -32,23 +32,23 @@ bool Player::moveAbsalute(Point2 p, shared_ptr<Level> level){
     if(tryToMoveAbsalute(p, level)){
         return true;
     }else{
-        return interact(level, p);
+        return interact(level, p, true);
     }
     return false;
 }
 
 bool Player::moveRelative(Point2 p, shared_ptr<Level> level) {
-    return moveAbsalute(p+*pos, level);
+    return moveAbsalute(p+pos, level);
 }
 
-bool Player::interact(shared_ptr<Level> level, Point2 posToInteract){
+bool Player::interact(shared_ptr<Level> level, Point2 posToInteract, bool needToBeSolid){
     int tid = level->indexAt(posToInteract);
     int i;
     forVector(level->entityList, i){
-        shared_ptr<Entity> e = level->entityList[i];
+        Entity* e = level->entityList[i];
         if(e->uniqueId != uniqueId){
-            if(level->entityList[i]->getPos() == posToInteract){
-                if(e->isSolid()){
+            if(level->entityList[i]->pos == posToInteract){
+                if(!needToBeSolid || e->isSolid()){
                     if(interactWithEntity(level, e, posToInteract)){
                         return true;
                     }
@@ -66,7 +66,7 @@ bool Player::interactWithTile(shared_ptr<Level> level, int tid, Point2 posOfTile
     }else if(tid == tileStairUp->getIndex()){
 
     }else if(tid == tileOpenDoor->getIndex()){
-        if(posOfTile != *pos){
+        if(posOfTile != pos){
         	level->setTile(posOfTile, tileDoor);
         }
     }else if(tileList[tid]->hasFlag(tileFlagDoor)){
@@ -77,8 +77,9 @@ bool Player::interactWithTile(shared_ptr<Level> level, int tid, Point2 posOfTile
     return false;
 }
 
-bool Player::interactWithEntity(shared_ptr<Level> level, shared_ptr<Entity> e, Point2 posOfEntity){
-    shared_ptr<Alive> a = dynamic_pointer_cast<Alive>(e);
+bool Player::interactWithEntity(shared_ptr<Level> level, Entity* e, Point2 posOfEntity){
+
+    Alive* a = dynamic_cast<Alive*>(e);
     if(a != nullptr){
         if(activeWeapon != nullptr){
             print("Dealt "+to_string(a->hurt(activeWeapon))+" damage.");
@@ -87,19 +88,26 @@ bool Player::interactWithEntity(shared_ptr<Level> level, shared_ptr<Entity> e, P
         }
         return true;
     }
+
+    ItemEntity* ie = dynamic_cast<ItemEntity*>(e);
+    if(ie != nullptr){
+        inventory.push_back(ie->getItem());
+        level->removeEntity(e, true);
+        print("Picked up item.");
+        return true;
+    }
+
     return false;
 }
 
 
-shared_ptr<Player> Player::clone(shared_ptr<Player> oldE, shared_ptr<Player> newE){
+Player* Player::clone(Player* oldE, Player* newE){
 
     if(newE == nullptr){
-        newE = make_shared<Player>();
+        newE = new Player();
     }
 
     Alive::clone(oldE, newE);
-
-    EMagical::copy(oldE, newE);
 
     return newE;
 }
@@ -110,12 +118,10 @@ int Player::getEntityTypeId(){
 
 void Player::save(string* data){
     Alive::save(data);
-    EMagical::save(data);
 }
 
 void Player::load(char* data, int* position){
     Alive::load(data, position);
-    EMagical::load(data, position);
 }
 
 

@@ -8,11 +8,13 @@
 
 #include "MenuTempInv.h"
 #include "Math.h"
+#include "ItemEntity.h"
 
 namespace Ui {
 
-    MenuTempInv::MenuTempInv(shared_ptr<Alive> alive) : Menu(true){
+    MenuTempInv::MenuTempInv(Alive* alive, World* w) : Menu(true){
         this->alive = alive;
+        this->currentWorld = w;
     }
 
     void MenuTempInv::handleInput(int in){
@@ -25,6 +27,25 @@ namespace Ui {
                 selected++;
                 break;
 
+            case 'd':{
+                Item* drop = alive->inventory[selected];
+                alive->removeItem(alive->inventory[selected], false);
+                currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
+                break;
+            }
+
+            case 'e':{
+                    Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
+                if(weapon != nullptr){
+                    if(alive->getActiveWeapon() == weapon){
+                        alive->setActiveWeapon(nullptr);
+                    }else{
+                        alive->setActiveWeapon(weapon);
+                    }
+                }
+                break;
+            }
+
             case 27: //Escape
             case 'i':
                 changeMenu(parentMenu);
@@ -34,20 +55,26 @@ namespace Ui {
             selected = 0;
         }
         if(selected >= alive->inventory.size()){
-            selected = (int)alive->inventory.size();
+            selected = (int)alive->inventory.size()-1;
         }
     }
 
-    void MenuTempInv::update(){
+    void MenuTempInv::update() {
         int minI = Math::max(0, scrollOffset);
         int maxI = (int)alive->inventory.size() - scrollOffset;
+        move(0, 0);
+        clrtobot();
         mvprintw(0, 0, (alive->getName()+"'s Inventory: ").c_str());
         mvhline(1, 0, '-', terminalSize.x);
         for(int i=minI;i<maxI;i++){
+            char prefix = ' ';
+            if(alive->inventory[i] == alive->getActiveWeapon()){
+                prefix = 'E';
+            }
             if(i == selected){
                 setColor(C_BLACK, C_WHITE);
             }
-            mvprintw(i+2, 0, ("- %s"), alive->inventory[i]->name.c_str());
+            mvprintw(i+2, 0, ("%c %s"), prefix, alive->inventory[i]->name.c_str());
             if(i == selected){
                 setColor(C_WHITE, C_BLACK);
             }

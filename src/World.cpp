@@ -13,9 +13,9 @@
 #include <sys/types.h>
 
 
-World::World(std::string n){
-    levels = make_shared<vector<shared_ptr<Level>>>();
-    this->name = make_shared<string>(n);
+World::World(string n){
+    levels = vector<shared_ptr<Level>>();
+    this->name = n;
 }
 
 World::~World(){
@@ -25,10 +25,10 @@ World::~World(){
 
 namespace WorldLoader {
 
-    //shared_ptr<World> loadedWorld;
+    //World* loadedWorld;
 
     bool exists(std::string name){
-        debug("Does "+name+" Exist?");
+        //debug("Does "+name+" Exist?");
 
         std::string dir = WorldsDir+"/"+name+"/";
 
@@ -44,7 +44,7 @@ namespace WorldLoader {
         fclose(fileWorldInfo);
         //
 
-        debug(l?"Yes ":"No ");
+        //debug(l?"Yes ":"No ");
 
         return l;
     }
@@ -63,102 +63,118 @@ namespace WorldLoader {
         return buffer;
     }
 
-    shared_ptr<World> load(std::string name){
-        debug("Loading "+name+"...");
+    World* load(std::string name){
 
-        std::string dir = WorldsDir+"/"+name+"/";
+        try{
+            debug("Loading "+name+"...");
 
+            std::string dir = WorldsDir+"/"+name+"/";
 
-        shared_ptr<World> world = nullptr;
+            World* world = nullptr;
 
-        //world.info
-        FILE* fileWorldInfo;
+            //world.info
+            FILE* fileWorldInfo;
 
-        fileWorldInfo = std::fopen((dir+"world"+".info").c_str(), "rb");
-        if(fileWorldInfo != nullptr){
+            fileWorldInfo = std::fopen((dir+"world"+".info").c_str(), "rb");
+            if(fileWorldInfo != nullptr){
 
-            char* data = readData(fileWorldInfo);
+                char* data = readData(fileWorldInfo);
 
-            int* position = new int(0);
+                int* position = new int(0);
 
-            world = make_shared<World>(name);
+                world = new World(name);
 
-            world->worldTime = Utility::loadNumber<unsigned long>(data, position);
+                world->worldTime = FileUtility::loadNumber<unsigned long>(data, position);
 
-            int levelCount = Utility::loadInt8Bit(data, position);
+                int levelCount = FileUtility::loadInt8Bit(data, position);
 
-            std::string currentLevelName = Utility::loadString(data, position);
-            int playerUniqueId = Utility::loadInt(data, position);
+                std::string currentLevelName = FileUtility::loadString(data, position);
+                int playerUniqueId = FileUtility::loadInt(data, position);
 
+                world->currentLevel = nullptr;
 
-            for(int i=0;i<levelCount;i++){
-                std::string levelName;
+                for(int i=0;i<levelCount;i++){
+                    std::string levelName;
 
-                levelName = Utility::loadString(data, position);
+                    levelName = FileUtility::loadString(data, position);
 
-                //levelName.lvl
-                FILE* fileLevel;
+                    //levelName.lvl
+                    FILE* fileLevel;
 
-                fileLevel = std::fopen((dir+(levelName)+".lvl").c_str(), "rb");
-                if(fileLevel != nullptr){
+                    fileLevel = std::fopen((dir+(levelName)+".lvl").c_str(), "rb");
+                    if(fileLevel != nullptr){
 
-                    char* levelData = readData(fileLevel);
+                        char* levelData = readData(fileLevel);
 
-                    int* levelPosition = new int(0);
+                        int* levelPosition = new int(0);
 
-                    Point2 levelSize = Point2::load(levelData, levelPosition);
+                        Point2 levelSize = Point2::load(levelData, levelPosition);
 
-                    shared_ptr<Level> level = make_shared<Level>(world, levelName, levelSize);
+                        shared_ptr<Level> level = make_shared<Level>(world, levelName, levelSize);
 
-                    level->load(levelData, levelPosition);
+                        level->load(levelData, levelPosition);
 
-                    if(levelName == currentLevelName){
-                        world->currentLevel = level;
+                        if(levelName.compare(currentLevelName) == 0){
+                            world->currentLevel = level;
+                            debug("Found current level: "+currentLevelName);
+                        }
+
+                        world->levels.push_back(level);
+
+                        delete levelData;
+
+                        delete levelPosition;
+
                     }
 
-                    world->levels->push_back(level);
-
-                    delete levelPosition;
-
+                    fclose(fileLevel);
+                    //
                 }
 
-                fclose(fileLevel);
-                //
-            }
-
-            if(world->currentLevel == nullptr && world->levels->size() > 0){
-                world->currentLevel = world->levels->at(0);
-            }
-
-            for(int i=0;i<world->currentLevel->entityCount();i++){
-                if(world->currentLevel->entityList[i]->uniqueId == playerUniqueId){
-                    world->currentPlayer = dynamic_pointer_cast<Player>(world->currentLevel->entityList[i]);
+                if(world->currentLevel == nullptr && world->levels.size() > 0){
+                    debug("Failed to find current level, defaulting to: "+world->levels.at(0)->getName());
+                    world->currentLevel = world->levels.at(0);
                 }
-            }
 
-            delete position;
+                if(world->currentLevel != nullptr){
+                    for(int i=0;i<world->currentLevel->entityCount();i++){
+                        if(world->currentLevel->entityList[i]->uniqueId == playerUniqueId){
+                            world->currentPlayer = dynamic_cast<Player*>(world->currentLevel->entityList[i]);
+                        }
+                    }
+                }
+
+                delete data;
+
+                delete position;
+            }
+            fclose(fileWorldInfo);
+            //
+
+
+        	debug(world==nullptr?"Load Failed":"Loaded");
+
+        	return world;
+        }catch(FileUtility::ExceptionLoad e){
+            debug("Load Failed: "+e.description);
         }
-        fclose(fileWorldInfo);
-		//
+        return nullptr;
 
-
-        debug(world==nullptr?"Load Failed ":"Loaded");
-
-        return world;
     }
 
-    bool save(shared_ptr<World> loadedWorld){
-        debug("Saving "+*(loadedWorld->name)+"...");
+    bool save(World* loadedWorld){
+        debug("Saving "+(loadedWorld->name)+"...");
         bool failed = false;
 
         mkdir(UnderneathDir.c_str(), 0777);
         mkdir(WorldsDir.c_str(), 0777);
-        std::string dir = WorldsDir+"/"+loadedWorld->name->c_str()+"/";
+        std::string dir = WorldsDir+"/"+loadedWorld->name.c_str()+"/";
         mkdir(dir.c_str(), 0777);
 
         std::remove((dir+"world"+".info.backup").c_str());
         std::rename((dir+"world"+".info").c_str(),
                     (dir+"world"+".info.backup").c_str());
+        std::remove((dir+"world"+".info").c_str());
 
         //world.info
         FILE* fileWorldInfo;
@@ -167,15 +183,15 @@ namespace WorldLoader {
         if(fileWorldInfo != nullptr){
             std::string* data = new std::string();
 
-            Utility::saveNumber(data, loadedWorld->worldTime);
+            FileUtility::saveNumber(data, loadedWorld->worldTime);
 
-            Utility::saveInt8Bit(data, (int8_t)loadedWorld->levels->size());
+            FileUtility::saveInt8Bit(data, (int8_t)loadedWorld->levels.size());
 
-            Utility::saveString(data, loadedWorld->currentLevel->getName());
-            Utility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
+            FileUtility::saveString(data, loadedWorld->currentLevel->getName());
+            FileUtility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
 
-            for(int j=0;j<loadedWorld->levels->size();j++){
-            	Utility::saveString(data, loadedWorld->levels->at(j)->getName());
+            for(int j=0;j<loadedWorld->levels.size();j++){
+            	FileUtility::saveString(data, loadedWorld->levels.at(j)->getName());
             }
 
             for(int j=0;j<data->size();j++){
@@ -184,8 +200,8 @@ namespace WorldLoader {
 
             delete data;
 
-            for(int i=0;i<loadedWorld->levels->size();i++){
-                shared_ptr<Level> l = loadedWorld->levels->at(i);
+            for(int i=0;i<loadedWorld->levels.size();i++){
+                shared_ptr<Level> l = loadedWorld->levels.at(i);
 
                 //levelName.lvl
                 FILE* fileLevel;
@@ -193,6 +209,7 @@ namespace WorldLoader {
                 std::remove((dir+(l->getName())+".lvl.backup").c_str());
                 std::rename((dir+(l->getName())+".lvl").c_str(),
                             (dir+(l->getName())+".lvl.backup").c_str());
+                std::remove((dir+(l->getName())+".lvl").c_str());
 
                 fileLevel = fopen((dir+(l->getName())+".lvl").c_str(), "wb");
                 if(fileLevel != nullptr){
@@ -225,20 +242,20 @@ namespace WorldLoader {
         return false;
     }
 
-    shared_ptr<World> create(std::string name){
+    World* create(std::string name){
 
-        shared_ptr<World> world = make_shared<World>(name);
+        World* world = new World(name);
 
-        world->currentLevel = make_shared<Level>(world, "start");
+        world->currentLevel = make_shared<Level>(world, "startingFloor", Point2(300, 300));
         Point2 p = world->currentLevel->generate(static_cast<unsigned int>(time(NULL)));
-        world->levels->push_back(world->currentLevel);
+        world->levels.push_back(world->currentLevel);
 
 
-        world->currentPlayer = make_shared<Player>(name, '@', p, Ui::C_WHITE);
-        world->currentPlayer->setActiveWeapon(make_shared<Weapon>(3, "Training Sword"));
+        world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE);
+        world->currentPlayer->setActiveWeapon(new Weapon(3, "Training Sword"));
 
         for(int i=0;i<10;i++){
-        	world->currentPlayer->inventory.push_back(make_shared<Item>("Test Item "+to_string(i)));
+        	world->currentPlayer->inventory.push_back(new Item("Test Item "+to_string(i)));
         }
         
 
@@ -264,18 +281,19 @@ namespace WorldLoader {
 
             int* position = new int(0);
 
-            Utility::loadNumber<unsigned long>(data, position);
-            int levelCount = Utility::loadInt8Bit(data, position);
-            Utility::loadString(data, position);
-            Utility::loadInt(data, position);
+            FileUtility::loadNumber<unsigned long>(data, position);
+            int levelCount = FileUtility::loadInt8Bit(data, position);
+            FileUtility::loadString(data, position);
+            FileUtility::loadInt(data, position);
 
 
             for(int i=0;i<levelCount;i++){
                 std::string levelName;
 
-                levelName = Utility::loadString(data, position);
+                levelName = FileUtility::loadString(data, position);
 
                 std::remove((dir+levelName+".lvl").c_str());
+                std::rename((dir+levelName+".lvl.backup").c_str(), (dir+levelName+".lvl.deleted").c_str());
             }
             
             delete position;
@@ -284,6 +302,7 @@ namespace WorldLoader {
         //
 
         std::remove((dir+"world"+".info").c_str());
+        std::remove((dir+"world"+".info.backup").c_str());
 
         debug("Deleted");
 

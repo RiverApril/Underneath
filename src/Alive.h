@@ -11,6 +11,7 @@
 
 #include "Entity.h"
 #include "Weapon.h"
+#include "Math.h"
 
 
 typedef int EffectId;
@@ -35,13 +36,19 @@ class Alive : public Entity{
 
 public:
 
-    static shared_ptr<Alive> clone(shared_ptr<Alive> oldE, shared_ptr<Alive> newE);
+    static Alive* clone(Alive* oldE, Alive* newE);
 
     Alive();
 
     Alive(string name, char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
 
+    ~Alive();
+
     virtual bool update(int tick, shared_ptr<Level> level);
+
+    virtual string getName(){
+        return name;
+    }
 
     int getHp(){
         return hp;
@@ -51,10 +58,18 @@ public:
         return maxHp;
     }
 
+    int getMp(){
+        return mp;
+    }
+
+    int getMaxMp(){
+        return maxMp;
+    }
+
     virtual void die(){
         hp = 0;
         dead = true;
-        pos->set(-1);
+        pos.set(-1);
     }
 
     int hurt(int amount){
@@ -63,25 +78,25 @@ public:
             die();
         }
         regenTick = 0;
-        debug(name+" hp: "+to_string(hp));
+        //debug(name+" hp: "+to_string(hp));
         return amount;
     }
 
-    int hurt(shared_ptr<Weapon> w){
-        int d = w->baseDamage;
+    int hurt(Weapon* w){
+        int d = Math::max((rand()%(w->baseDamage)) + (rand()%(w->baseDamage)), 1);
         int i;
         forVector(w->enchantments, i){
             Enchantment ench = w->enchantments[i];
             switch(ench.eId){
                 case enchBleed:
                     if(rand()%ench.chance == 0){
-                        addEffect(Effect(effBleed, ench.power*100, ench.power));
+                        addEffect(Effect(effBleed, ench.power*10, ench.power));
                     }
                     break;
 
                 case enchFire:
                     if(rand()%ench.chance == 0){
-                        addEffect(Effect(effFire, ench.power*100, ench.power));
+                        addEffect(Effect(effFire, ench.power*10, ench.power));
                     }
                     break;
             }
@@ -107,13 +122,13 @@ public:
 
     virtual void load(char* data, int* position);
     
-    vector<shared_ptr<Item>> inventory;
+    vector<Item*> inventory;
 
-    void setActiveWeapon(shared_ptr<Weapon> newWeapon){
+    void setActiveWeapon(Weapon* newWeapon){
         
         for(int i=0;i<inventory.size();i++){
             if(inventory[i] == newWeapon){
-                activeWeapon = dynamic_pointer_cast<Weapon>(inventory[i]);
+                activeWeapon = dynamic_cast<Weapon*>(inventory[i]);
                 return;
             }
         }
@@ -121,8 +136,25 @@ public:
         activeWeapon = newWeapon;
     }
 
-    shared_ptr<Weapon> getActiveWeapon(){
+    Weapon* getActiveWeapon(){
         return activeWeapon;
+    }
+
+    bool removeItem(Item* item, bool deleteItem){
+        int i;
+        forVector(inventory, i){
+            if(inventory[i] == item){
+                if(activeWeapon == item){
+                    activeWeapon = nullptr;
+                }
+                inventory.erase(inventory.begin()+i);
+                if(deleteItem){
+                    delete item;
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     vector<Effect> effects;
@@ -130,12 +162,15 @@ public:
     int viewDistance = 8;
 
 protected:
+    string name;
     int maxHp = 30;
     int hp = maxHp;
+    int maxMp = 10;
+    int mp = maxMp;
     bool dead = false;
     int regenTick = 0;
 
-    shared_ptr<Weapon> activeWeapon;
+    Weapon* activeWeapon;
 
 };
 

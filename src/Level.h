@@ -21,14 +21,14 @@ class Entity;
 struct TileData{
     int8_t index = 0;
     bool explored = false;
-    shared_ptr<Entity> entity = nullptr;
+    //Entity* entity = nullptr;
 };
 
 class Level : public enable_shared_from_this<Level>{
 
 public:
 
-    Level(shared_ptr<World> w, string n, Point2 s = Point2(100, 100));
+    Level(World* w, string n, Point2 s);
     ~Level();
 
     bool getExplored(Point2 p);
@@ -38,9 +38,9 @@ public:
         return name;
     }
 
-    shared_ptr<Entity> getDisplayEntity(Point2 p);
+    //Entity* getDisplayEntity(Point2 p);
 
-    void setDisplayEntity(Point2 p, shared_ptr<Entity> e);
+    //void setDisplayEntity(Point2 p, Entity* e);
 
     bool inRange(Point2 p);
 
@@ -59,16 +59,18 @@ public:
 
     bool canPathTo(Point2 from, Point2 to);
 
+    vector<Point2> getPathTo(Point2 from, Point2 to);
+
     Point2 generate(unsigned int seed);
 
-    template <typename T> void addEntitiesRandomly(shared_ptr<T> e, int count);
+    template <typename T> void addEntitiesRandomly(T* e, int count);
 
-    bool update(int tick, Point2* viewPos);
+    bool update(int tick, Point2 viewPos);
 
-    void needsRedraw(Point2* p);
+    //void setAndUnsetDisplayEntities();
 
-    shared_ptr<Entity> newEntity(shared_ptr<Entity> newE);
-    void deleteEntity(shared_ptr<Entity> e);
+    Entity* newEntity(Entity* newE);
+    void removeEntity(Entity* e, bool deleteEntity);
 
     Point2 getSize(){
         return *size;
@@ -78,9 +80,9 @@ public:
 
     void load(char* data, int*position);
 
-    vector<shared_ptr<Entity>> entityList;
+    vector<Entity*> entityList;
 
-    shared_ptr<World> currentWorld;
+    World* currentWorld;
 
 private:
 

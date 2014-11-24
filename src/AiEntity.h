@@ -26,11 +26,11 @@ class AiEntity : public Alive {
 
 public:
 
-    static shared_ptr<AiEntity> clone(shared_ptr<AiEntity> oldE, shared_ptr<AiEntity> newE);
+    static AiEntity* clone(AiEntity* oldE, AiEntity* newE);
 
     AiEntity();
 
-    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, int colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
+    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
 
     ~AiEntity();
 

@@ -16,6 +16,8 @@ int main(int argc, const char * argv[]) {
         return errno;
     }
 
+
+
     debug("Working Directory: "+(string(cCurrentPath)));
     UnderneathDir = "Underneath";
     WorldsDir = UnderneathDir+"/"+"Worlds";

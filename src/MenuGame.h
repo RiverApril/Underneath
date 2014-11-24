@@ -42,10 +42,10 @@ namespace Ui {
 		
         bool updateView;
         bool timePassed;
-        Point2* viewPos;
-        Point2* viewMoveSpeed;
+        Point2 viewPos;
+        Point2 viewMoveSpeed;
 
-        shared_ptr<World> currentWorld;
+        World* currentWorld;
 
 
         int modePlayerControl = 0;

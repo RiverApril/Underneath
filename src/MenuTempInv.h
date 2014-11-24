@@ -11,19 +11,21 @@
 
 #include "Ui.h"
 #include "Alive.h"
+#include "World.h"
 
 namespace Ui {
     class MenuTempInv : public Ui::Menu {
     public:
 
-        MenuTempInv(shared_ptr<Alive> alive);
+        MenuTempInv(Alive* alive, World* w);
 
         ~MenuTempInv() {}
 
         void handleInput(int in);
         void update();
 
-        shared_ptr<Alive> alive;
+        Alive* alive;
+        World* currentWorld;
         int scrollOffset = 0;
         int selected = 0;
         

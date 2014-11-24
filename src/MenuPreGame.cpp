@@ -40,7 +40,6 @@ namespace Ui {
             case KEY_ENTER:
             case 13:
             case '\n':
-            case ' ':
                 switch (selection) {
                     case selPlay:
                         if(name.length() > 0){

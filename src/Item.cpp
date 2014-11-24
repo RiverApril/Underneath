@@ -11,27 +11,46 @@
 #include "Weapon.h"
 
 void Item::save(string* data){
-    Utility::saveInt(data, getItemTypeId());
-    Utility::saveString(data, name);
+    FileUtility::saveInt(data, getItemTypeId());
+    FileUtility::saveString(data, name);
 }
 
 void Item::load(char* data, int* position){
-    name = Utility::loadString(data, position);
+    name = FileUtility::loadString(data, position);
 }
 
 int Item::getItemTypeId(){
     return ITEM_TYPE_ITEM;
 }
 
-shared_ptr<Item> Item::loadNew(char* data, int* position){
-    shared_ptr<Item> e;
+Item* Item::clone(Item* oldE, Item* newE){
 
-    int type = Utility::loadInt(data, position);
+    if(newE == nullptr){
+        newE = new Item();
+    }
 
-    if(type == ITEM_TYPE_ITEM){
-        e = make_shared<Item>();
-    }else if(type == ITEM_TYPE_WEAPON){
-        e = make_shared<Weapon>();
+    newE->name = oldE->name;
+
+    return newE;
+}
+
+Item* Item::loadNew(char* data, int* position){
+    Item* e;
+
+    int type = FileUtility::loadInt(data, position);
+
+    switch (type) {
+        case ITEM_TYPE_ITEM:
+            e = new Item();
+            break;
+        case ITEM_TYPE_WEAPON:
+            e = new Weapon();
+            break;
+            
+        default:
+            throw FileUtility::ExceptionLoad("Item type unknown: "+to_string(type));
+            return nullptr;
+            break;
     }
     e->load(data, position);
 

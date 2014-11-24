@@ -15,42 +15,51 @@ Alive::Alive() : Alive("", ' ', Point2Zero, Ui::C_WHITE){
 
 }
 
-Alive::Alive(string name, char icon, Point2 startPos, Ui::color colorCode, int maxHp) : Entity(name, icon, startPos, colorCode){
+Alive::Alive(string name, char icon, Point2 startPos, Ui::color colorCode, int maxHp) : Entity(icon, startPos, colorCode){
 
+    this->name = name;
     this->maxHp = maxHp;
     this->hp = this->maxHp;
+    this->solid = true;
 
+}
+
+Alive::~Alive(){
+    int i;
+    forVector(inventory, i){
+        delete inventory[i];
+    }
 }
 
 
 bool Alive::update(int tick, shared_ptr<Level> level) {
 
     if(dead){
-        level->deleteEntity(shared_from_this());
-    }
-
-    if(regenTick>=10){
-        regenTick = 0;
-        heal(1);
+        level->removeEntity(this, true);
     }else{
-        regenTick++;
-    }
-
-    int i;
-    forVector(effects, i){
-
-        switch(effects[i].eId){
-            case effBleed:
-            case effFire:
-                hurt(effects[i].power);
-                break;
+        if(regenTick>=10){
+            regenTick = 0;
+            heal(1);
+        }else{
+            regenTick++;
         }
 
-        effects[i].duration--;
-        if(effects[i].duration==0){
-			effects.erase(effects.begin()+i);
-            i--;
-            continue;
+        int i;
+        forVector(effects, i){
+
+            switch(effects[i].eId){
+                case effBleed:
+                case effFire:
+                    hurt(effects[i].power);
+                    break;
+            }
+
+            effects[i].duration--;
+            if(effects[i].duration==0){
+                effects.erase(effects.begin()+i);
+                i--;
+                continue;
+            }
         }
     }
 
@@ -70,16 +79,19 @@ void Alive::addEffect(Effect e){
 }
 
 
-shared_ptr<Alive> Alive::clone(shared_ptr<Alive> oldE, shared_ptr<Alive> newE){
+Alive* Alive::clone(Alive* oldE, Alive* newE){
 
     if(newE == nullptr){
-        newE = make_shared<Alive>();
+        newE = new Alive();
     }
 
     Entity::clone(oldE, newE);
 
+    newE->name = oldE->name;
     newE->maxHp = oldE->maxHp;
     newE->hp = oldE->hp;
+    newE->maxMp = oldE->maxMp;
+    newE->mp = oldE->mp;
     newE->viewDistance = oldE->viewDistance;
 
     int activeWeaponIndex = -1;
@@ -90,7 +102,7 @@ shared_ptr<Alive> Alive::clone(shared_ptr<Alive> oldE, shared_ptr<Alive> newE){
         }
     }
     if(activeWeaponIndex != -1){
-    	newE->activeWeapon = dynamic_pointer_cast<Weapon>(newE->inventory[activeWeaponIndex]);
+    	newE->activeWeapon = dynamic_cast<Weapon*>(newE->inventory[activeWeaponIndex]);
     }
 
     newE->effects = oldE->effects;
@@ -105,60 +117,66 @@ int Alive::getEntityTypeId(){
 
 void Alive::save(string* data){
     Entity::save(data);
-    Utility::saveBool(data, dead);
-    Utility::saveInt(data, maxHp);
-    Utility::saveInt(data, hp);
-    Utility::saveInt(data, viewDistance);
-    Utility::saveInt(data, regenTick);
+    FileUtility::saveBool(data, dead);
+    FileUtility::saveInt(data, maxHp);
+    FileUtility::saveInt(data, hp);
+    FileUtility::saveInt(data, maxMp);
+    FileUtility::saveInt(data, mp);
+    FileUtility::saveInt(data, viewDistance);
+    FileUtility::saveInt(data, regenTick);
+    FileUtility::saveString(data, name);
 
     //
     int activeWeaponIndex = -1;
-    Utility::saveInt(data, (int)inventory.size());
+    FileUtility::saveInt(data, (int)inventory.size());
     for(int i=0;i<inventory.size();i++){
         inventory[i]->save(data);
         if(inventory[i] == activeWeapon){
             activeWeaponIndex = i;
         }
     }
-    Utility::saveInt(data, activeWeaponIndex);
+    FileUtility::saveInt(data, activeWeaponIndex);
     //
 
-    Utility::saveInt(data, (int)effects.size());
+    FileUtility::saveInt(data, (int)effects.size());
     for(int i=0;i<effects.size();i++){
-        Utility::saveInt(data, effects[i].eId);
-        Utility::saveInt(data, effects[i].duration);
-        Utility::saveInt(data, effects[i].power);
+        FileUtility::saveInt(data, effects[i].eId);
+        FileUtility::saveInt(data, effects[i].duration);
+        FileUtility::saveInt(data, effects[i].power);
     }
 }
 
 void Alive::load(char* data, int* position){
     Entity::load(data, position);
-    dead = Utility::loadBool(data, position);
-    maxHp = Utility::loadInt(data, position);
-    hp = Utility::loadInt(data, position);
-    viewDistance = Utility::loadInt(data, position);
-    regenTick = Utility::loadInt(data, position);
+    dead = FileUtility::loadBool(data, position);
+    maxHp = FileUtility::loadInt(data, position);
+    hp = FileUtility::loadInt(data, position);
+    maxMp = FileUtility::loadInt(data, position);
+    mp = FileUtility::loadInt(data, position);
+    viewDistance = FileUtility::loadInt(data, position);
+    regenTick = FileUtility::loadInt(data, position);
+    name = FileUtility::loadString(data, position);
 
     //
-    int size = Utility::loadInt(data, position);
+    int size = FileUtility::loadInt(data, position);
     for(int i=0;i<size;i++){
-        shared_ptr<Item> item = Item::loadNew(data, position);
+        Item* item = Item::loadNew(data, position);
         inventory.push_back(item);
     }
 
-    int activeWeaponIndex = Utility::loadInt(data, position);
+    int activeWeaponIndex = FileUtility::loadInt(data, position);
     if(activeWeaponIndex != -1){
-    	activeWeapon = dynamic_pointer_cast<Weapon>(inventory[activeWeaponIndex]);
+    	activeWeapon = dynamic_cast<Weapon*>(inventory[activeWeaponIndex]);
     }else{
         activeWeapon = nullptr;
     }
     //
 
-    size = Utility::loadInt(data, position);
+    size = FileUtility::loadInt(data, position);
     for(int i=0;i<size;i++){
-        int eId = Utility::loadInt(data, position);
-        int duration = Utility::loadInt(data, position);
-        int power = Utility::loadInt(data, position);
+        int eId = FileUtility::loadInt(data, position);
+        int duration = FileUtility::loadInt(data, position);
+        int power = FileUtility::loadInt(data, position);
         effects.push_back(Effect(eId, duration, power));
     }
 }

@@ -16,8 +16,10 @@ class Level;
 const int ITEM_TYPE_ITEM = 0;
 const int ITEM_TYPE_WEAPON = 1;
 
-class Item : public enable_shared_from_this<Item>{
+class Item {
 public:
+
+    static Item* clone(Item* oldE, Item* newE);
 
     Item() : Item("UNDEFINED"){
         
@@ -33,7 +35,7 @@ public:
 
     virtual int getItemTypeId();
 
-    static shared_ptr<Item> loadNew(char* data, int* position);
+    static Item* loadNew(char* data, int* position);
 
     string name;
 

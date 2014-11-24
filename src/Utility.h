@@ -12,7 +12,14 @@
 #include "Global.h"
 
 
-namespace Utility{
+namespace FileUtility {
+
+    struct ExceptionLoad{
+        ExceptionLoad(string description){
+            this->description = description;
+        }
+        string description;
+    };
 
 
     void saveInt(string* data, int n);
@@ -41,6 +48,10 @@ namespace Utility{
         }
         return a;
     }
+
+}
+
+namespace DrawingUtility {
 
 
     string makeBar(int progress, int maxProgress, unsigned int size, char filled = '=', char empty = '-');

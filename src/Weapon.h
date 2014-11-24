@@ -39,6 +39,9 @@ typedef int DamageType;
 class Weapon : public Item{
 public:
 
+    static Weapon* clone(Weapon* oldE, Weapon* newE);
+
+
     Weapon() : Weapon(0, "UNDEFINED"){
 
     }
@@ -52,6 +55,11 @@ public:
     virtual void load(char* data, int* position);
 
     virtual int getItemTypeId();
+
+    Weapon* addEnchantment(EnchantmentId eId, int chance, int power){
+        enchantments.push_back(Enchantment(eId,chance ,power));
+        return this;
+    }
 
     Weapon* addEnchantment(Enchantment e){
         enchantments.push_back(e);
