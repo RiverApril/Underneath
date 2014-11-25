@@ -22,7 +22,7 @@ ItemEntity::ItemEntity(Item* item, Point2 p) : Entity(' ', p, Ui::C_WHITE){
             defaultIcon = '*';
             break;
         case ITEM_TYPE_WEAPON:
-            defaultIcon = '/';
+            defaultIcon = ')';
             break;
 
         default:
