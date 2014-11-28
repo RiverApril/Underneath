@@ -21,14 +21,14 @@ Player::~Player() {
 
 }
 
-bool Player::update(int tick, shared_ptr<Level> level) {
+bool Player::update(int tick, Level* level) {
     if(dead){
         level->currentWorld->currentPlayer = nullptr;
     }
     return Alive::update(tick, level);
 }
 
-bool Player::moveAbsalute(Point2 p, shared_ptr<Level> level){
+bool Player::moveAbsalute(Point2 p, Level* level){
     if(tryToMoveAbsalute(p, level)){
         return true;
     }else{
@@ -37,17 +37,15 @@ bool Player::moveAbsalute(Point2 p, shared_ptr<Level> level){
     return false;
 }
 
-bool Player::moveRelative(Point2 p, shared_ptr<Level> level) {
+bool Player::moveRelative(Point2 p, Level* level) {
     return moveAbsalute(p+pos, level);
 }
 
-bool Player::interact(shared_ptr<Level> level, Point2 posToInteract, bool needToBeSolid){
+bool Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid){
     int tid = level->indexAt(posToInteract);
-    int i;
-    forVector(level->entityList, i){
-        Entity* e = level->entityList[i];
+    for(Entity* e : level->entityList){
         if(e->uniqueId != uniqueId){
-            if(level->entityList[i]->pos == posToInteract){
+            if(e->pos == posToInteract){
                 if(!needToBeSolid || e->isSolid()){
                     if(interactWithEntity(level, e, posToInteract)){
                         return true;
@@ -59,7 +57,7 @@ bool Player::interact(shared_ptr<Level> level, Point2 posToInteract, bool needTo
     return interactWithTile(level, tid, posToInteract);
 }
 
-bool Player::interactWithTile(shared_ptr<Level> level, int tid, Point2 posOfTile){
+bool Player::interactWithTile(Level* level, int tid, Point2 posOfTile){
 
     if(tid == tileStairDown->getIndex()){
 		
@@ -77,7 +75,7 @@ bool Player::interactWithTile(shared_ptr<Level> level, int tid, Point2 posOfTile
     return false;
 }
 
-bool Player::interactWithEntity(shared_ptr<Level> level, Entity* e, Point2 posOfEntity){
+bool Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity){
 
     Alive* a = dynamic_cast<Alive*>(e);
     if(a != nullptr){

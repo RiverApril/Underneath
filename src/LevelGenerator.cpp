@@ -85,7 +85,7 @@ namespace LevelGenerator{
         return (rand()%30==0?(rand()%10==0?tileSecretDoor:tileDoor):tilePath)->getIndex();
     }
 
-    void makeRoomsAndPaths(shared_ptr<vector<shared_ptr<Room>>> rooms, shared_ptr<Level> level){
+    void makeRoomsAndPaths(shared_ptr<vector<shared_ptr<Room>>> rooms, Level* level){
         for(int i=0;i<rooms->size();i++){
             shared_ptr<Room> r = rooms->at(i);
             for(int j=-r->radius.x;j<=r->radius.x;j++){
@@ -201,7 +201,7 @@ namespace LevelGenerator{
         for(int i=0;i<level->getSize().x;i++){
             for(int j=0;j<level->getSize().y;j++){
                 Tile* a = level->tileAt(Point2(i, j));
-                if(!a->isSolid() || a->hasFlag(tileFlagDoor)){
+                if(a->hasFlag(tileFlagPathable)){
                     for(int k=-1;k<=1;k++){
                         for(int l=-1;l<=1;l++){
                             if(level->indexAt(Point2(i+k, j+l)) == tileUnset->getIndex()){

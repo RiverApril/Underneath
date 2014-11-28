@@ -10,32 +10,42 @@
 
 namespace Ui {
 
-    MenuTempYesNo::MenuTempYesNo(string question, bool* answer) : Menu(true){
+    MenuTempYesNo::MenuTempYesNo(string question, yesNo* answer, bool canEscape) : Menu(){
         this->question = question;
         this->answer = answer;
+        this->canEscape = canEscape;
+        *answer = aUndefined;
     }
 
     void MenuTempYesNo::handleInput(int in){
         switch (in) {
             case 'Y':
             case 'y':
-                *answer = true;
-                changeMenu(parentMenu);
+                *answer = aYes;
+                closeThisMenu();
                 break;
 
             case 'N':
             case 'n':
-                *answer = false;
-                changeMenu(parentMenu);
+                *answer = aNo;
+                closeThisMenu();
                 break;
-                
+
+            case KEY_ESCAPE:
+                if(canEscape){
+                    *answer = aUndefined;
+                    closeThisMenu();
+                }
+                break;
+
             default:
                 break;
         }
     }
 
     void MenuTempYesNo::update(){
+        setColor(C_WHITE);
         printCenter(terminalSize.y/2-2, question);
-        printCenter(terminalSize.y/2, "Y / N ?");
+        printCenter(terminalSize.y/2, "  Y / N ?");
     }
 }

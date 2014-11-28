@@ -41,6 +41,8 @@ Ui::color Tile::getBgColor(bool inView) {
 
 
 Tile* tileList[20];
+
+
 Tile* tileFloor;
 Tile* tilePath;
 Tile* tileWall;
@@ -69,29 +71,35 @@ void initTiles() {
 
     color bg = C_BLACK;
 
-    tileFloor = new Tile(a++, '.', C_WHITE, bg, tileFlagNone);
-    tilePath = new Tile(a++, '.', C_LIGHT_GRAY, bg, tileFlagNone);
+    tileFloor = new Tile(a++, '.', C_WHITE, bg, tileFlagPathable);
+    tilePath = new Tile(a++, '.', C_LIGHT_GRAY, bg, tileFlagPathable);
 
     tileWall = new Tile(a++, ' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall,
                         C_BLACK, C_DARK_GRAY);
-    tileDoor = new Tile(a++, '%', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor,
+    tileDoor = new Tile(a++, '%', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable,
                         C_BLACK, C_DARK_GRAY);
     tileSecretDoor = new Tile(a++, ' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor,
                               C_BLACK, C_DARK_GRAY);
-    tileOpenDoor = new Tile(a++, '/', C_WHITE, bg, tileFlagNone);
+    tileOpenDoor = new Tile(a++, '/', C_WHITE, bg, tileFlagPathable);
 
-    tileStairDown = new Tile(a++, 'v',  C_LIGHT_GREEN, bg, tileFlagNone);
-    tileStairUp = new Tile(a++, '^',  C_LIGHT_GREEN, bg, tileFlagNone);
+    tileStairDown = new Tile(a++, 'v',  C_LIGHT_GREEN, bg, tileFlagPathable);
+    tileStairUp = new Tile(a++, '^',  C_LIGHT_GREEN, bg, tileFlagPathable);
 
     tileEdge = new Tile(a++, 'X',  C_LIGHT_RED, bg, tileFlagSolid | tileFlagTall);
     tileUnset = new Tile(a++, 'X',  C_LIGHT_MAGENTA, bg, tileFlagSolid | tileFlagTall);
 
-    tileDebug1 = new Tile(a++, '1',  C_LIGHT_GREEN, bg, tileFlagNone);
-    tileDebug2 = new Tile(a++, '2',  C_LIGHT_GREEN, bg, tileFlagNone);
-    tileDebug3 = new Tile(a++, '3',  C_LIGHT_GREEN, bg, tileFlagNone);
-    tileDebug4 = new Tile(a++, '4',  C_LIGHT_GREEN, bg, tileFlagNone);
-    tileDebug5 = new Tile(a++, '5',  C_LIGHT_GREEN, bg, tileFlagNone);
-    tileDebug6 = new Tile(a++, '6',  C_LIGHT_GREEN, bg, tileFlagNone);
+    tileDebug1 = new Tile(a++, '1',  C_LIGHT_GREEN, bg, tileFlagPathable);
+    tileDebug2 = new Tile(a++, '2',  C_LIGHT_GREEN, bg, tileFlagPathable);
+    tileDebug3 = new Tile(a++, '3',  C_LIGHT_GREEN, bg, tileFlagPathable);
+    tileDebug4 = new Tile(a++, '4',  C_LIGHT_GREEN, bg, tileFlagPathable);
+    tileDebug5 = new Tile(a++, '5',  C_LIGHT_GREEN, bg, tileFlagPathable);
+    tileDebug6 = new Tile(a++, '6',  C_LIGHT_GREEN, bg, tileFlagPathable);
+}
+
+void deleteTiles(){
+    for(Tile* tile : tileList){
+        delete tile;
+    }
 }
 
 Tile* getTile(int index) {

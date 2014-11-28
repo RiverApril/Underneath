@@ -25,14 +25,13 @@ Alive::Alive(string name, char icon, Point2 startPos, Ui::color colorCode, int m
 }
 
 Alive::~Alive(){
-    int i;
-    forVector(inventory, i){
-        delete inventory[i];
+    for(Item* i : inventory){
+        delete i;
     }
 }
 
 
-bool Alive::update(int tick, shared_ptr<Level> level) {
+bool Alive::update(int tick, Level* level) {
 
     if(dead){
         level->removeEntity(this, true);
@@ -43,19 +42,19 @@ bool Alive::update(int tick, shared_ptr<Level> level) {
         }else{
             regenTick++;
         }
-
-        int i;
+		
         forVector(effects, i){
+            Effect e = effects[i];
 
-            switch(effects[i].eId){
+            switch(e.eId){
                 case effBleed:
                 case effFire:
-                    hurt(effects[i].power);
+                    hurt(e.power);
                     break;
             }
 
-            effects[i].duration--;
-            if(effects[i].duration==0){
+            e.duration--;
+            if(e.duration==0){
                 effects.erase(effects.begin()+i);
                 i--;
                 continue;
@@ -67,11 +66,11 @@ bool Alive::update(int tick, shared_ptr<Level> level) {
 }
 
 void Alive::addEffect(Effect e){
-    int i;
     forVector(effects, i){
-        if(e.eId == effects[i].eId){
-            effects[i].duration = e.duration;
-            effects[i].power = e.power;
+        Effect ei = effects[i];
+        if(e.eId == ei.eId){
+            ei.duration = e.duration;
+            ei.power = e.power;
             return;
         }
     }
@@ -95,10 +94,10 @@ Alive* Alive::clone(Alive* oldE, Alive* newE){
     newE->viewDistance = oldE->viewDistance;
 
     int activeWeaponIndex = -1;
-    for(int i=0;i<oldE->inventory.size();i++){
+    forVector(oldE->inventory, i){
         newE->inventory.push_back(oldE->inventory[i]);
         if(oldE->inventory[i] == oldE->activeWeapon){
-            activeWeaponIndex = i;
+            activeWeaponIndex = (int)i;
         }
     }
     if(activeWeaponIndex != -1){
@@ -129,20 +128,21 @@ void Alive::save(string* data){
     //
     int activeWeaponIndex = -1;
     FileUtility::saveInt(data, (int)inventory.size());
-    for(int i=0;i<inventory.size();i++){
-        inventory[i]->save(data);
-        if(inventory[i] == activeWeapon){
-            activeWeaponIndex = i;
+    forVector(inventory, i){
+        Item* ie = inventory[i];
+        ie->save(data);
+        if(ie == activeWeapon){
+            activeWeaponIndex = (int)i;
         }
     }
     FileUtility::saveInt(data, activeWeaponIndex);
     //
 
     FileUtility::saveInt(data, (int)effects.size());
-    for(int i=0;i<effects.size();i++){
-        FileUtility::saveInt(data, effects[i].eId);
-        FileUtility::saveInt(data, effects[i].duration);
-        FileUtility::saveInt(data, effects[i].power);
+    for(Effect e : effects){
+        FileUtility::saveInt(data, e.eId);
+        FileUtility::saveInt(data, e.duration);
+        FileUtility::saveInt(data, e.power);
     }
 }
 
@@ -159,7 +159,7 @@ void Alive::load(char* data, int* position){
 
     //
     int size = FileUtility::loadInt(data, position);
-    for(int i=0;i<size;i++){
+    repeat(size, i){
         Item* item = Item::loadNew(data, position);
         inventory.push_back(item);
     }
@@ -173,7 +173,7 @@ void Alive::load(char* data, int* position){
     //
 
     size = FileUtility::loadInt(data, position);
-    for(int i=0;i<size;i++){
+    repeat(size, i){
         int eId = FileUtility::loadInt(data, position);
         int duration = FileUtility::loadInt(data, position);
         int power = FileUtility::loadInt(data, position);

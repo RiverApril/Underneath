@@ -24,7 +24,7 @@ public:
 
     ~ItemEntity();
 
-    virtual bool update(int tick, shared_ptr<Level> level);
+    virtual bool update(int tick, Level* level);
 
     virtual void save(string* data);
 

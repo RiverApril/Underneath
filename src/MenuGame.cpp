@@ -9,6 +9,7 @@
 #include "MenuGame.h"
 #include "MenuMain.h"
 #include "MenuTempInv.h"
+#include "MenuTempYesNo.h"
 #include "AiEntity.h"
 #include "Math.h"
 #include "Utility.h"
@@ -17,26 +18,30 @@
 namespace Ui {
 
 
-    MenuGame::MenuGame(string worldName) : Menu(false) {
+    MenuGame::MenuGame(string worldName) : Menu() {
+
+        printConsoleByDefault = false;
 
         move(0, 0);
         clrtobot();
-        mvaddstr(0, 0, "Loading...");
+        mvaddstr(0, 0, "Building Level...");
+        refresh();
 
-        if(!init(worldName)){
-            changeMenu(new MenuMain());
-            return;
-        }
+        initSuccess = init(worldName);
 
         viewPos = Point2Zero;
-
-        viewMoveSpeed = Point2Zero;
+        viewMoveSpeed = Point2(2, 1);
 
         /*if(currentWorld->currentLevel != nullptr){
         	currentWorld->currentLevel->setAndUnsetDisplayEntities();
         }*/
 
         viewUpdate();
+    }
+
+    MenuGame::~MenuGame() {
+        delete currentWorld;
+        delete saveAnswer;
     }
 
     bool MenuGame::init(string worldName){
@@ -62,27 +67,34 @@ namespace Ui {
         return true;
     }
 
-    MenuGame::~MenuGame() {
-        delete currentWorld;
-    }
+    bool MenuGame::openUi() {
+        if(*saveAnswer == aYes){
+            WorldLoader::save(currentWorld);
+            *saveAnswer = aUndefined;
+            closeThisMenu();
+            return false;
+        }else if(*saveAnswer == aNo){
+            *saveAnswer = aUndefined;
+            closeThisMenu();
+            return false;
+        }
 
-    void MenuGame::openUi(Menu* oldMenu) {
+        if(!initSuccess){
+            closeThisMenu();
+        }
 
         setGameAreaSize();
 
 
-        viewPos = Point2Zero;
-        viewMoveSpeed = Point2(2, 1);
-
-
         updateView = true;
+        move(0, 0);
+        clrtobot();
         refresh();
+        return true;
     }
 
-    void MenuGame::closeUi(Menu* newMenu){
-        if(!newMenu->isTemp){
-            delete this;
-        }
+    void MenuGame::closeUi(){
+
     }
 
     void MenuGame::setGameAreaSize() {
@@ -122,12 +134,11 @@ namespace Ui {
             if(currentWorld->currentLevel->inRange(p)) {
                 Entity* e = nullptr;
                 int d = INT16_MIN;
-                int i;
-                forVector(currentWorld->currentLevel->entityList, i){
-                    if(currentWorld->currentLevel->entityList[i]->pos == p){
-                        int dd = currentWorld->currentLevel->entityList[i]->getRenderDepth();
+                for(Entity* ei : currentWorld->currentLevel->entityList){
+                    if(ei->pos == p){
+                        int dd = ei->getRenderDepth();
                         if(d < dd){
-                            e = currentWorld->currentLevel->entityList[i];
+                            e = ei;
                             d = dd;
                         }
                     }
@@ -181,13 +192,13 @@ namespace Ui {
             case ERR:
                 break;
 
-            case 27: //Escape
+            case KEY_ESCAPE: //Escape
                 if(currentWorld->currentPlayer == nullptr){
                     WorldLoader::deleteWorld(currentWorld->name);
+                    closeThisMenu();
                 }else{
-                    WorldLoader::save(currentWorld);
+                    openMenu(new MenuTempYesNo("Do you want to save '"+currentWorld->name+"' ?", saveAnswer, true));
                 }
-                changeMenu(new MenuMain());
                 break;
 
             case KEY_UP:
@@ -207,7 +218,8 @@ namespace Ui {
                 break;
 
             case 'i':
-                changeMenu(new MenuTempInv(currentWorld->currentPlayer, currentWorld));
+            case '\t':
+                openMenu(new MenuTempInv(currentWorld->currentPlayer, currentWorld));
                 break;
 
             case '1':
@@ -221,9 +233,7 @@ namespace Ui {
                     mode = modeAdjustBorder;
                 }
                 break;
-
-            case KEY_ENTER:
-            case 13:
+                
             case '\n':
                 if(!consoleInputMode){
                     consoleInputMode = true;
@@ -244,7 +254,6 @@ namespace Ui {
                         mode = modePlayerControl;
                     }else{
                         mode = modeInterectChoose;
-                        debug("Interect Mode");
                     }
                     break;
 

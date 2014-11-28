@@ -24,7 +24,7 @@ struct TileData{
     //Entity* entity = nullptr;
 };
 
-class Level : public enable_shared_from_this<Level>{
+class Level{
 
 public:
 

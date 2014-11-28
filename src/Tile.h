@@ -12,17 +12,11 @@
 #include "Global.h"
 #include "Ui.h"
 
-enum TileFlag {
-    tileFlagNone = 0,
-    tileFlagSolid = 1 << 0,
-    tileFlagTall = 1 << 1,
-    tileFlagDoor = 1 << 2,
-
-};
-
-inline TileFlag operator|(TileFlag a, TileFlag b){
-    return static_cast<TileFlag>(static_cast<int>(a)|static_cast<int>(b));
-}
+typedef int TileFlag;
+const TileFlag tileFlagSolid = 1 << 0;
+const TileFlag tileFlagTall = 1 << 1;
+const TileFlag tileFlagDoor = 1 << 2;
+const TileFlag tileFlagPathable = 1 << 3;
 
 class Tile {
 public:
@@ -79,6 +73,7 @@ extern Tile* tileDebug6;
 
 
 void initTiles();
+void deleteTiles();
 Tile* getTile(int index);
 
 #endif /* defined(__Underneath__Tile__) */

@@ -34,8 +34,8 @@ public:
 
     ~AiEntity();
 
-    void runAi(int tick, shared_ptr<Level> level);
-    bool update(int tick, shared_ptr<Level> level);
+    void runAi(int tick, Level* level);
+    bool update(int tick, Level* level);
 
 
     virtual void save(std::string* data);

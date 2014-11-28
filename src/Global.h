@@ -14,6 +14,16 @@
 #include <queue>
 
 #include <ncurses.h>
+#undef COLOR_WHITE
+#undef COLOR_RED
+#undef COLOR_BLUE
+#undef COLOR_GREEN
+#undef COLOR_YELLOW
+#undef COLOR_MAGENTA
+#undef COLOR_CYAN
+#undef COLOR_BLUE
+#undef COLOR_BLACK
+
 #include <time.h>
 #include <locale.h>
 #include <stdlib.h>
@@ -32,11 +42,15 @@
 #endif
 
 
-#define forVector(list, i) for(i=0;i<list.size();i++)
+#define forVector(list, i) for(size_t i=0;i<list.size();i++)
+
+#define repeat(n, i) for(int i=0;i<n;i++)
+
+#define KEY_ESCAPE 27
 
 using namespace std;
 
-extern char cCurrentPath[FILENAME_MAX];
+extern char workingDirectory[FILENAME_MAX];
 
 extern bool running;
 
@@ -44,5 +58,6 @@ extern int nextUniqueId;
 
 extern string UnderneathDir;
 extern string WorldsDir;
+
 
 #endif /* defined(__Underneath__Global__) */

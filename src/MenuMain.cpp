@@ -13,12 +13,14 @@
 
 namespace Ui {
 
-    void MenuMain::openUi(Menu* oldMenu) {
-
+    bool MenuMain::openUi() {
+        move(0, 0);
+        clrtobot();
+        return true;
     }
 
-    void MenuMain::closeUi(Menu* newMenu) {
-        delete this;
+    void MenuMain::closeUi() {
+        
     }
 
     void MenuMain::handleInput(int in) {
@@ -28,13 +30,11 @@ namespace Ui {
         clrtoeol();
 
         switch (in) {
-            case KEY_ENTER:
-            case 13:
             case '\n':
             case ' ':
                 switch (selection) {
                     case 0:
-                        changeMenu(new MenuPreGame());
+                        openMenu(new MenuPreGame());
                         break;
 
                     case maxUiSelection:
@@ -90,8 +90,6 @@ namespace Ui {
             attrset(COLOR_PAIR(i));
             printw("%X ", i);
         }*/
-
-        printConsole();
         
         refresh();
     }

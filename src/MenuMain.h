@@ -9,18 +9,18 @@
 #ifndef __Underneath__UiMenuMain__
 #define __Underneath__UiMenuMain__
 
-#include "Ui.h"
+#include "Menu.h"
 
 namespace Ui {
-    class MenuMain : public Ui::Menu {
+    class MenuMain : public Menu {
     public:
 
-        MenuMain() : Menu(false) {}
+        MenuMain() : Menu() {}
 
         ~MenuMain() {}
 
-        void openUi(Menu* oldMenu);
-        void closeUi(Menu* newMenu);
+        bool openUi();
+        void closeUi();
         void handleInput(int in);
         void update();
 

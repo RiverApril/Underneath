@@ -13,49 +13,44 @@
 
 namespace Ui {
 
-    void MenuPreGame::openUi(Menu* oldMenu) {
-        if(deleteAnswer != nullptr && *deleteAnswer){
+    bool MenuPreGame::openUi() {
+        if(*deleteAnswer == aYes){
             WorldLoader::deleteWorld(name);
-            *deleteAnswer = false;
-            delete deleteAnswer;
+            *deleteAnswer = aUndefined;
         }
+        move(0, 0);
+        clrtobot();
+        selection = selPlay;
+        return true;
     }
 
-    void MenuPreGame::closeUi(Menu* newMenu) {
+    void MenuPreGame::closeUi() {
 
     }
 
     void MenuPreGame::handleInput(int in) {
 
-        const int selPlay = 0;
-        const int selDel = 1;
-        const int selBack = 2;
-
-        const int maxUiSelection = selBack;
-
         move(selection+2, 0);
         clrtoeol();
 
         switch (in) {
-            case KEY_ENTER:
-            case 13:
             case '\n':
                 switch (selection) {
                     case selPlay:
                         if(name.length() > 0){
-                        	changeMenu(new MenuGame(name));
+                            
+                        	openMenu(new MenuGame(name));
                         }
                         break;
 
                     case selDel:
-                        deleteAnswer = new bool(false);
                         if(WorldLoader::exists(name)){
-                        	changeMenu(new MenuTempYesNo("Are you sure you want to delete '"+name+"' ?", deleteAnswer));
+                        	openMenu(new MenuTempYesNo("Are you sure you want to delete '"+name+"' ?", deleteAnswer, true));
                 		}
                         break;
 
                     case selBack:
-                        changeMenu(new MenuMain());
+                        closeThisMenu();
                         break;
 
                     default:
@@ -78,7 +73,7 @@ namespace Ui {
                 break;
 
             case 27:
-                changeMenu(new MenuMain());
+                closeThisMenu();
                 break;
 
             case KEY_BACKSPACE:
@@ -124,8 +119,6 @@ namespace Ui {
         printCenter(3, name);
         setColor(C_WHITE, C_BLACK, A_BLINK);
         printCenterOffset(3, (int)(name.length()/2)+1, "_");
-
-        printConsole();
 
         refresh();
     }

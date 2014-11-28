@@ -34,17 +34,16 @@ Entity::~Entity() {
 
 }
 
-bool Entity::tryToMoveAbsalute(Point2 p, shared_ptr<Level> level) {
+bool Entity::tryToMoveAbsalute(Point2 p, Level* level) {
     if(!level->tileAt(p)->isSolid()) {
         bool block = false;
-        int i;
-        forVector(level->entityList, i){
-            if(level->entityList[i]->uniqueId == uniqueId){
+        for(Entity* e : level->entityList){
+            if(e->uniqueId == uniqueId){
                 continue;
             }
-            if(level->entityList[i]->pos == p){
+            if(e->pos == p){
 
-                if(level->entityList[i]->isSolid()){
+                if(e->isSolid()){
                     block = true;
                     break;
                 }
@@ -57,7 +56,7 @@ bool Entity::tryToMoveAbsalute(Point2 p, shared_ptr<Level> level) {
     }
     return false;
 }
-bool Entity::tryToMoveRelative(Point2 p, shared_ptr<Level> level) {
+bool Entity::tryToMoveRelative(Point2 p, Level* level) {
     /*if(p.x != 0 && p.y != 0){
         bool xx = tryToMoveRelative(Point2(p.x, 0), level);
         bool yy = tryToMoveRelative(Point2(0, p.y), level);
@@ -66,7 +65,7 @@ bool Entity::tryToMoveRelative(Point2 p, shared_ptr<Level> level) {
     return tryToMoveAbsalute(pos+p, level);
 }
 
-bool Entity::update(int tick, shared_ptr<Level> level) {
+bool Entity::update(int tick, Level* level) {
 
     bool u = false;
     
@@ -84,15 +83,15 @@ bool Entity::update(int tick, shared_ptr<Level> level) {
     return u;
 }
 
-char Entity::getIcon(Point2 p, int tick, shared_ptr<Level> level) {
+char Entity::getIcon(Point2 p, int tick, Level* level) {
     return defaultIcon;
 }
 
-int Entity::getFgColorCode() {
+Ui::color Entity::getFgColorCode() {
     return fgColorCode;
 }
 
-int Entity::getBgColorCode() {
+Ui::color Entity::getBgColorCode() {
     return bgColorCode;
 }
 
@@ -180,7 +179,7 @@ Entity* Entity::loadNew(char* data, int* position){
     }
     e->load(data, position);
 
-    debug("Loaded "+e->getName()+"("+to_string(e->getEntityTypeId())+")"+", Pos: "+e->pos.toString());
+    debug("Loaded Entity: "+e->getName()+"("+to_string(e->getEntityTypeId())+")"+", Pos: "+e->pos.toString());
 
     return e;
 }

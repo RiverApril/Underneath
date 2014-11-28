@@ -33,15 +33,15 @@ public:
 
     virtual ~Entity();
 
-    virtual bool tryToMoveAbsalute(Point2 p, shared_ptr<Level> world);
+    virtual bool tryToMoveAbsalute(Point2 p, Level* world);
 
-    virtual bool tryToMoveRelative(Point2 p, shared_ptr<Level> world);
+    virtual bool tryToMoveRelative(Point2 p, Level* world);
     
-    virtual bool update(int tick, shared_ptr<Level> level);
+    virtual bool update(int tick, Level* level);
 
-    //void setAndUnsetDisplayEntity(shared_ptr<Level> level);
+    //void setAndUnsetDisplayEntity(Level* level);
 
-    virtual char getIcon(Point2 p, int tick, shared_ptr<Level> level);
+    virtual char getIcon(Point2 p, int tick, Level* level);
 
     bool isSolid(){
         return solid;
@@ -51,8 +51,8 @@ public:
         return "NO_NAME";
     }
 
-    virtual int getFgColorCode();
-    virtual int getBgColorCode();
+    virtual Ui::color getFgColorCode();
+    virtual Ui::color getBgColorCode();
 
     virtual void save(string* data);
 

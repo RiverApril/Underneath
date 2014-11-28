@@ -44,7 +44,7 @@ public:
 
     ~Alive();
 
-    virtual bool update(int tick, shared_ptr<Level> level);
+    virtual bool update(int tick, Level* level);
 
     virtual string getName(){
         return name;
@@ -69,7 +69,7 @@ public:
     virtual void die(){
         hp = 0;
         dead = true;
-        pos.set(-1);
+        //pos.set(-1);
     }
 
     int hurt(int amount){
@@ -84,9 +84,7 @@ public:
 
     int hurt(Weapon* w){
         int d = Math::max((rand()%(w->baseDamage)) + (rand()%(w->baseDamage)), 1);
-        int i;
-        forVector(w->enchantments, i){
-            Enchantment ench = w->enchantments[i];
+        for(Enchantment ench : w->enchantments){
             switch(ench.eId){
                 case enchBleed:
                     if(rand()%ench.chance == 0){
@@ -125,10 +123,15 @@ public:
     vector<Item*> inventory;
 
     void setActiveWeapon(Weapon* newWeapon){
+
+        if(newWeapon == nullptr){
+            activeWeapon = nullptr;
+            return;
+        }
         
-        for(int i=0;i<inventory.size();i++){
-            if(inventory[i] == newWeapon){
-                activeWeapon = dynamic_cast<Weapon*>(inventory[i]);
+        for(Item* ie : inventory){
+            if(ie == newWeapon){
+                activeWeapon = dynamic_cast<Weapon*>(ie);
                 return;
             }
         }
@@ -141,13 +144,13 @@ public:
     }
 
     bool removeItem(Item* item, bool deleteItem){
-        int i;
         forVector(inventory, i){
-            if(inventory[i] == item){
+            Item* ie = inventory[i];
+            if(ie == item){
                 if(activeWeapon == item){
                     activeWeapon = nullptr;
                 }
-                inventory.erase(inventory.begin()+i);
+                inventory.erase(inventory.begin()+(long)i);
                 if(deleteItem){
                     delete item;
                 }

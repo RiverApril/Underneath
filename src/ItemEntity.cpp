@@ -36,7 +36,7 @@ ItemEntity::~ItemEntity(){
 }
 
 
-bool ItemEntity::update(int tick, shared_ptr<Level> level) {
+bool ItemEntity::update(int tick, Level* level) {
 
 
 

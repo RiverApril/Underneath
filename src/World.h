@@ -22,9 +22,9 @@ public:
 
     ~World();
 
-    vector<shared_ptr<Level>> levels;
+    vector<string> levels;
 
-    shared_ptr<Level> currentLevel;
+    Level* currentLevel;
     Player* currentPlayer;
     string name = "";
     unsigned long worldTime = 0;
@@ -37,6 +37,7 @@ namespace WorldLoader {
     bool save(World* loadedWorld);
     World* create(std::string name);
     bool deleteWorld(std::string name);
+    char* readData(FILE* file);
 }
 
 #include "Player.h"

@@ -6,19 +6,23 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved->
 //
 
-#include "Ui.h"
+#include "Command.h"
 #include "MenuMain.h"
 #include "Tile.h"
 
 int main(int argc, const char * argv[]) {
 
-    if (!GetCurrentDir(cCurrentPath, sizeof(cCurrentPath))){
+
+    cout << endl << "Press enter to start Underneath..." << endl;
+    cin.ignore();
+
+    if (!GetCurrentDir(workingDirectory, sizeof(workingDirectory))){
         return errno;
     }
 
 
 
-    debug("Working Directory: "+(string(cCurrentPath)));
+    debug("Working Directory: "+(string(workingDirectory)));
     UnderneathDir = "Underneath";
     WorldsDir = UnderneathDir+"/"+"Worlds";
 
@@ -28,15 +32,18 @@ int main(int argc, const char * argv[]) {
 
     Ui::initCommandList();
 
-    Ui::changeMenu(new Ui::MenuMain());
+    Ui::MenuMain* mainMenu = new Ui::MenuMain();
+    mainMenu->_openUi();
 
     running = true;
     while (running) {
-        Ui::currentMenu->_handleInput(getch());
-        Ui::currentMenu->_update();
+        mainMenu->_handleInput(getch());
+        mainMenu->_update();
     }
 
-    Ui::exitProgram();
+    endwin();
+
+    delete mainMenu;
 
     return 0;
 }

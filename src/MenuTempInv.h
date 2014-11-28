@@ -9,12 +9,12 @@
 #ifndef __Underneath__MenuTempInv__
 #define __Underneath__MenuTempInv__
 
-#include "Ui.h"
+#include "Menu.h"
 #include "Alive.h"
 #include "World.h"
 
 namespace Ui {
-    class MenuTempInv : public Ui::Menu {
+    class MenuTempInv : public Menu {
     public:
 
         MenuTempInv(Alive* alive, World* w);

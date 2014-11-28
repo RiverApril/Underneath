@@ -22,7 +22,7 @@ AiEntity::~AiEntity() {
     
 }
 
-void AiEntity::runAi(int tick, shared_ptr<Level> level) {
+void AiEntity::runAi(int tick, Level* level) {
 
     Point2 speed;
 
@@ -76,7 +76,7 @@ void AiEntity::runAi(int tick, shared_ptr<Level> level) {
 
 }
 
-bool AiEntity::update(int tick, shared_ptr<Level> level) {
+bool AiEntity::update(int tick, Level* level) {
 
     runAi(tick, level);
     

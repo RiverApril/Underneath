@@ -9,13 +9,13 @@
 #ifndef __Underneath__MenuTempYesNo__
 #define __Underneath__MenuTempYesNo__
 
-#include "Ui.h"
+#include "Menu.h"
 
 namespace Ui {
-    class MenuTempYesNo : public Ui::Menu {
+    class MenuTempYesNo : public Menu {
     public:
 
-        MenuTempYesNo(string question, bool* answer);
+        MenuTempYesNo(string question, yesNo* answer, bool canEscape);
 
         ~MenuTempYesNo() {}
 
@@ -23,7 +23,8 @@ namespace Ui {
         void update();
 
         string question;
-        bool* answer;
+        yesNo* answer;
+        bool canEscape;
 
 
     };

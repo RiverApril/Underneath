@@ -8,7 +8,7 @@
 
 #include "Global.h"
 
-char cCurrentPath[FILENAME_MAX];
+char workingDirectory[FILENAME_MAX];
 
 bool running;
 

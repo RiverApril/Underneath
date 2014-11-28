@@ -24,17 +24,17 @@ public:
 
     ~Player();
 
-    bool update(int tick, shared_ptr<Level> world);
+    bool update(int tick, Level* world);
 
-    bool moveRelative(Point2 p, shared_ptr<Level> level);
+    bool moveRelative(Point2 p, Level* level);
 
-    bool moveAbsalute(Point2, shared_ptr<Level> level);
+    bool moveAbsalute(Point2, Level* level);
 
-    bool interact(shared_ptr<Level> level, Point2 posToInteract, bool needToBeSolid);
+    bool interact(Level* level, Point2 posToInteract, bool needToBeSolid);
 
-    bool interactWithTile(shared_ptr<Level> level, int tid, Point2 posOfTile);
+    bool interactWithTile(Level* level, int tid, Point2 posOfTile);
 
-    bool interactWithEntity(shared_ptr<Level> level, Entity* e, Point2 posOfEntity);
+    bool interactWithEntity(Level* level, Entity* e, Point2 posOfEntity);
 
 
     virtual int getEntityTypeId();

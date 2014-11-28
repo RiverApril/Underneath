@@ -40,13 +40,15 @@ namespace LevelGenerator{
         shared_ptr<vector<shared_ptr<Entry>>> entrances;
     };
 
-    extern bool roomsOverlap(shared_ptr<Room> a, shared_ptr<Room> b);
+    int getPathAndMaybeDoor();
+
+    extern bool roomsOverlap(shared_ptr<Room> a, shared_ptr<Room> b, int border);
 
     extern shared_ptr<Room> createRoom(Point2 roomSize, shared_ptr<vector<shared_ptr<Room>>> presentRooms);
 
     extern shared_ptr<vector<shared_ptr<Room>>> createRooms(int qty, Point2 roomSize);
 
-    extern void makeRoomsAndPaths(shared_ptr<vector<shared_ptr<Room>>> rooms, shared_ptr<Level> level);
+    extern void makeRoomsAndPaths(shared_ptr<vector<shared_ptr<Room>>> rooms, Level* level);
 
 }
 

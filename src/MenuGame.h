@@ -9,7 +9,7 @@
 #ifndef __Underneath__UiMenuGame__
 #define __Underneath__UiMenuGame__
 
-#include "Ui.h"
+#include "Menu.h"
 #include "Geometry.h"
 #include "World.h"
 #include "Level.h"
@@ -29,8 +29,8 @@ namespace Ui {
 
         bool init(string worldName);
 
-        void openUi(Menu* oldMenu);
-        void closeUi(Menu* newMenu);
+        bool openUi();
+        void closeUi();
         void handleInput(int in);
         void update();
 
@@ -45,7 +45,10 @@ namespace Ui {
         Point2 viewPos;
         Point2 viewMoveSpeed;
 
+        bool initSuccess;
+
         World* currentWorld;
+        yesNo* saveAnswer = new yesNo(aUndefined);
 
 
         int modePlayerControl = 0;

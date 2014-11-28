@@ -12,7 +12,7 @@
 
 namespace Ui {
 
-    MenuTempInv::MenuTempInv(Alive* alive, World* w) : Menu(true){
+    MenuTempInv::MenuTempInv(Alive* alive, World* w) : Menu(){
         this->alive = alive;
         this->currentWorld = w;
     }
@@ -28,14 +28,16 @@ namespace Ui {
                 break;
 
             case 'd':{
-                Item* drop = alive->inventory[selected];
-                alive->removeItem(alive->inventory[selected], false);
-                currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
+                if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
+                    Item* drop = alive->inventory[selected];
+                    alive->removeItem(alive->inventory[selected], false);
+                    currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
+                }
                 break;
             }
 
             case 'e':{
-                    Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
+                Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
                 if(weapon != nullptr){
                     if(alive->getActiveWeapon() == weapon){
                         alive->setActiveWeapon(nullptr);
@@ -46,9 +48,10 @@ namespace Ui {
                 break;
             }
 
-            case 27: //Escape
+            case KEY_ESCAPE:
             case 'i':
-                changeMenu(parentMenu);
+            case '\t':
+                closeThisMenu();
                 break;
         }
         if(selected<0){
@@ -60,6 +63,7 @@ namespace Ui {
     }
 
     void MenuTempInv::update() {
+        setColor(C_WHITE);
         int minI = Math::max(0, scrollOffset);
         int maxI = (int)alive->inventory.size() - scrollOffset;
         move(0, 0);

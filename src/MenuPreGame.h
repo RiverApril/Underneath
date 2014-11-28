@@ -9,27 +9,34 @@
 #ifndef __Underneath__MenuPreGame__
 #define __Underneath__MenuPreGame__
 
-#include "Ui.h"
+#include "Menu.h"
 
 namespace Ui {
-    class MenuPreGame : public Ui::Menu {
+    class MenuPreGame : public Menu {
     public:
 
-        MenuPreGame() : Menu(false) {}
+        MenuPreGame() : Menu() {}
 
         ~MenuPreGame() {
             delete deleteAnswer;
         }
 
-        void openUi(Menu* oldMenu);
-        void closeUi(Menu* newMenu);
+        bool openUi();
+        void closeUi();
         void handleInput(int in);
         void update();
 
         int selection = 0;
         string name = "";
 
-        bool* deleteAnswer;
+        yesNo* deleteAnswer = new yesNo(aUndefined);
+
+    private:
+        static constexpr int selPlay = 0;
+        static constexpr int selDel = 1;
+        static constexpr int selBack = 2;
+
+        static constexpr int maxUiSelection = selBack;
     };
 }
 
