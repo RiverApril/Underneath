@@ -100,7 +100,7 @@ int AiEntity::getEntityTypeId(){
     return ENTITY_TYPE_AIENTITY;
 }
 
-void AiEntity::save(std::string* data){
+void AiEntity::save(std::vector<unsigned char>* data){
     Alive::save(data);
     FileUtility::saveInt(data, ai);
     if(ai & aiFollowPlayerSmart){
@@ -108,7 +108,7 @@ void AiEntity::save(std::string* data){
     }
 }
 
-void AiEntity::load(char* data, int* position){
+void AiEntity::load(unsigned char* data, int* position){
     Alive::load(data, position);
     ai = FileUtility::loadInt(data, position);
     if(ai & aiFollowPlayerSmart){

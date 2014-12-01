@@ -38,11 +38,11 @@ public:
     bool update(int tick, Level* level);
 
 
-    virtual void save(std::string* data);
+    virtual void save(std::vector<unsigned char>* data);
 
     virtual int getEntityTypeId();
 
-    virtual void load(char* data, int* position);
+    virtual void load(unsigned char* data, int* position);
 
 
 protected:

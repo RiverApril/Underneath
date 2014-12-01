@@ -114,7 +114,7 @@ int Alive::getEntityTypeId(){
     return ENTITY_TYPE_ALIVE;
 }
 
-void Alive::save(string* data){
+void Alive::save(vector<unsigned char>* data){
     Entity::save(data);
     FileUtility::saveBool(data, dead);
     FileUtility::saveInt(data, maxHp);
@@ -146,7 +146,7 @@ void Alive::save(string* data){
     }
 }
 
-void Alive::load(char* data, int* position){
+void Alive::load(unsigned char* data, int* position){
     Entity::load(data, position);
     dead = FileUtility::loadBool(data, position);
     maxHp = FileUtility::loadInt(data, position);
@@ -161,6 +161,7 @@ void Alive::load(char* data, int* position){
     int size = FileUtility::loadInt(data, position);
     repeat(size, i){
         Item* item = Item::loadNew(data, position);
+        debug("Loaded item: "+item->name+"("+to_string(item->getItemTypeId())+")");
         inventory.push_back(item);
     }
 

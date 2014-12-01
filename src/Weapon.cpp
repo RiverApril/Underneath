@@ -9,7 +9,7 @@
 #include "Weapon.h"
 #include "Utility.h"
 
-void Weapon::save(string* data){
+void Weapon::save(vector<unsigned char>* data){
     Item::save(data);
     
     FileUtility::saveInt(data, baseDamage);
@@ -22,7 +22,7 @@ void Weapon::save(string* data){
     }
 }
 
-void Weapon::load(char* data, int* position){
+void Weapon::load(unsigned char* data, int* position){
     Item::load(data, position);
 
     baseDamage = FileUtility::loadInt(data, position);

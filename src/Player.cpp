@@ -114,11 +114,11 @@ int Player::getEntityTypeId(){
     return ENTITY_TYPE_PLAYER;
 }
 
-void Player::save(string* data){
+void Player::save(vector<unsigned char>* data){
     Alive::save(data);
 }
 
-void Player::load(char* data, int* position){
+void Player::load(unsigned char* data, int* position){
     Alive::load(data, position);
 }
 

@@ -38,6 +38,16 @@ void print(string s){
     }
 }
 
+
+void debugf(string format, ...){
+    char buff[format.length()];
+    va_list args;
+    va_start(args, format);
+    vsprintf(buff, format.c_str(), args);
+    debug(buff);
+    va_end(args);
+}
+
 namespace Ui {
 
     const color COLOR_DEFAULT_ENTITY = C_LIGHT_RED;

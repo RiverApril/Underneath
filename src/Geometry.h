@@ -47,9 +47,9 @@ struct Point2 {
     Vector2 operator*(double other);
     Vector2 operator/(double other);
 
-    static void save(Point2 p, string* data);
+    static void save(Point2 p, vector<unsigned char>* data);
 
-    static Point2 load(char* data, int* position);
+    static Point2 load(unsigned char* data, int* position);
 
     void set(int i) {
         this->x = i;
@@ -87,9 +87,9 @@ struct Point3 {
     Point3 operator*(int other);
     Point3 operator/(int other);
 
-    void save(string* data);
+    void save(vector<unsigned char>* data);
 
-    static Point3 load(char* data, int* position);
+    static Point3 load(unsigned char* data, int* position);
 
     void set(int i) {
         this->x = i;

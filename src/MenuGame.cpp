@@ -116,6 +116,16 @@ namespace Ui {
     }
 
     void MenuGame::drawTileAt(Point2 p) {
+
+        /*DEBUGGING:
+        if(currentWorld->currentLevel != nullptr){
+            Tile* tempTile = currentWorld->currentLevel->tileAt(p);
+            Ui::setColor(tempTile->getFgColor(true), tempTile->getBgColor(true));
+            addch(tempTile->getIcon());
+        }
+        return;
+        //////////*/
+
         bool inView = false;
         if(currentWorld->currentLevel != nullptr){
             if(currentWorld->currentPlayer != nullptr) {

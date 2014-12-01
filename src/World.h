@@ -37,7 +37,7 @@ namespace WorldLoader {
     bool save(World* loadedWorld);
     World* create(std::string name);
     bool deleteWorld(std::string name);
-    char* readData(FILE* file);
+    unsigned char* readData(FILE* file);
 }
 
 #include "Player.h"

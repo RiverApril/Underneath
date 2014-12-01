@@ -114,11 +114,11 @@ public:
         }
     }
 
-    virtual void save(string* data);
+    virtual void save(vector<unsigned char>* data);
 
     virtual int getEntityTypeId();
 
-    virtual void load(char* data, int* position);
+    virtual void load(unsigned char* data, int* position);
     
     vector<Item*> inventory;
 

@@ -76,9 +76,9 @@ public:
         return *size;
     }
 
-    void save(string*);
+    void save(vector<unsigned char>*);
 
-    void load(char* data, int*position);
+    void load(unsigned char* data, int*position);
 
     vector<Entity*> entityList;
 

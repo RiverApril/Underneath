@@ -12,67 +12,85 @@ namespace FileUtility {
 
 
 
-    void saveInt(string* data, int n){
-        data->push_back((char)((n >> 24) & 0xFF));
-        data->push_back((char)((n >> 16) & 0xFF));
-        data->push_back((char)((n >> 8) & 0xFF));
-        data->push_back((char)(n & 0xFF));
+    void saveInt(vector<unsigned char>* data, int n){
+        data->push_back((unsigned char)((n >> 24) & 0xFF));
+        data->push_back((unsigned char)((n >> 16) & 0xFF));
+        data->push_back((unsigned char)((n >> 8) & 0xFF));
+        data->push_back((unsigned char)(n & 0xFF));
     }
 
-    void saveChar(string* data, char n){
+    void saveUnsignedLong(vector<unsigned char>* data, unsigned long n){
+        data->push_back((unsigned char)((n >> 48) & 0xFF));
+        data->push_back((unsigned char)((n >> 40) & 0xFF));
+        data->push_back((unsigned char)((n >> 32) & 0xFF));
+        data->push_back((unsigned char)((n >> 24) & 0xFF));
+        data->push_back((unsigned char)((n >> 16) & 0xFF));
+        data->push_back((unsigned char)((n >> 8) & 0xFF));
+        data->push_back((unsigned char)(n & 0xFF));
+    }
+
+    void saveUnsignedChar(vector<unsigned char>* data, unsigned char n){
         data->push_back(n);
     }
 
-    void saveInt8Bit(string* data, int8_t n){
-        data->push_back((char)n);
+    void saveInt8Bit(vector<unsigned char>* data, int8_t n){
+        data->push_back((unsigned char)n);
     }
 
-    void saveBool(string* data, bool n){
-        data->push_back((char)(n?'T':'F'));
+    void saveBool(vector<unsigned char>* data, bool n){
+        data->push_back((unsigned char)(n?'T':'F'));
     }
 
-    void saveString(string* data, string n){
+    void saveString(vector<unsigned char>* data, string n){
         int count = (int)n.size();
         saveInt(data, count);
         for(int i=0;i<count;i++){
-            saveChar(data, n[i]);
+            saveUnsignedChar(data, (unsigned char)n[i]);
         }
     }
 
+	
 
-
-    
-
-    int loadInt(char* data, int* position){
-        return ((loadChar(data, position)<<24) |
-                (loadChar(data, position)<<16) |
-                (loadChar(data, position)<< 8) |
-                (loadChar(data, position)<< 0));
+    int loadInt(unsigned char* data, int* position){
+        return ((loadUnsignedChar(data, position)<<24) |
+                (loadUnsignedChar(data, position)<<16) |
+                (loadUnsignedChar(data, position)<< 8) |
+                (loadUnsignedChar(data, position)<< 0));
     }
 
-    char loadChar(char* data, int* position){
-        char l = data[*position];
+    unsigned long loadUnsignedLong(unsigned char* data, int* position){
+        return ((((unsigned long)loadUnsignedChar(data, position))<<48) |
+				(((unsigned long)loadUnsignedChar(data, position))<<40) |
+				(((unsigned long)loadUnsignedChar(data, position))<<32) |
+                (((unsigned long)loadUnsignedChar(data, position))<<24) |
+                (((unsigned long)loadUnsignedChar(data, position))<<16) |
+                (((unsigned long)loadUnsignedChar(data, position))<< 8) |
+                (((unsigned long)loadUnsignedChar(data, position))<< 0));
+    }
+
+    unsigned char loadUnsignedChar(unsigned char* data, int* position){
+        unsigned char l = data[*position];
         *position+=1;
         return l;
     }
 
-    int8_t loadInt8Bit(char* data, int* position){
+    int8_t loadInt8Bit(unsigned char* data, int* position){
         int8_t l = (int8_t)(data[*position]);
         *position+=1;
         return l;
     }
 
-    bool loadBool(char* data, int* position){
+    bool loadBool(unsigned char* data, int* position){
         bool l = ((char)(data[*position]))=='T';
         *position+=1;
         return l;
     }
 
-    string loadString(char* data, int* position){
+    string loadString(unsigned char* data, int* position){
         int count = loadInt(data, position);
         string l;
         for(int i=0;i<count;i++){
-            l+=loadChar(data, position);
+            l+=(char)loadUnsignedChar(data, position);
         }
         return l;
     }

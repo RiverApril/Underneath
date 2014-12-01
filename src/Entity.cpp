@@ -113,19 +113,19 @@ Entity* Entity::clone(Entity* oldE, Entity* newE){
     return newE;
 }
 
-void Entity::save(string* data){
+void Entity::save(vector<unsigned char>* data){
     FileUtility::saveInt(data, getEntityTypeId());
 
 
     FileUtility::saveInt(data, uniqueId);
     
-    FileUtility::saveChar(data, defaultIcon);
+    FileUtility::saveUnsignedChar(data, defaultIcon);
     
     Point2::save(pos, data);
     Point2::save(lastPos, data);
     
-    FileUtility::saveChar(data, fgColorCode);
-    FileUtility::saveChar(data, bgColorCode);
+    FileUtility::saveUnsignedChar(data, fgColorCode);
+    FileUtility::saveUnsignedChar(data, bgColorCode);
     FileUtility::saveBool(data, solid);
 }
 
@@ -133,24 +133,24 @@ int Entity::getEntityTypeId(){
     return ENTITY_TYPE_ENTITY;
 }
 
-void Entity::load(char* data, int* position){
+void Entity::load(unsigned char* data, int* position){
     //Entity::loadNew() loads the entityId
 
     uniqueId = FileUtility::loadInt(data, position);
 
-    defaultIcon = FileUtility::loadChar(data, position);
+    defaultIcon = FileUtility::loadUnsignedChar(data, position);
 
     pos = Point2::load(data, position);
     lastPos = Point2::load(data, position);
 
-    fgColorCode = FileUtility::loadChar(data, position);
-    bgColorCode = FileUtility::loadChar(data, position);
+    fgColorCode = FileUtility::loadUnsignedChar(data, position);
+    bgColorCode = FileUtility::loadUnsignedChar(data, position);
     solid = FileUtility::loadBool(data, position);
 
     updateIcon = true;
 }
 
-Entity* Entity::loadNew(char* data, int* position){
+Entity* Entity::loadNew(unsigned char* data, int* position){
     Entity* e;
 
     int type = FileUtility::loadInt(data, position);

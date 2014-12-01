@@ -10,12 +10,12 @@
 #include "Utility.h"
 #include "Weapon.h"
 
-void Item::save(string* data){
+void Item::save(vector<unsigned char>* data){
     FileUtility::saveInt(data, getItemTypeId());
     FileUtility::saveString(data, name);
 }
 
-void Item::load(char* data, int* position){
+void Item::load(unsigned char* data, int* position){
     name = FileUtility::loadString(data, position);
 }
 
@@ -34,7 +34,7 @@ Item* Item::clone(Item* oldE, Item* newE){
     return newE;
 }
 
-Item* Item::loadNew(char* data, int* position){
+Item* Item::loadNew(unsigned char* data, int* position){
     Item* e;
 
     int type = FileUtility::loadInt(data, position);

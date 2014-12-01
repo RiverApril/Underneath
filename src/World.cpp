@@ -49,16 +49,16 @@ namespace WorldLoader {
         return l;
     }
 
-    char* readData(FILE* file){
+    unsigned char* readData(FILE* file){
         fseek(file, 0, SEEK_END);
         long fileSize = ftell(file);
         rewind(file);
 
-        char* buffer = new char[fileSize];
+        unsigned char* buffer = new unsigned char[fileSize];
         fread(buffer, fileSize, 1, file);
         /*printf("Length: %ld\n", fileSize);
         for(int i=0;i<fileSize;i++){
-            printf("%d ", (int)buffer[i]);
+            printf("%X, ", (int)buffer[i]);
         }*/
         return buffer;
     }
@@ -78,13 +78,13 @@ namespace WorldLoader {
             fileWorldInfo = std::fopen((dir+"world"+".info").c_str(), "rb");
             if(fileWorldInfo != nullptr){
 
-                char* data = readData(fileWorldInfo);
+                unsigned char* data = readData(fileWorldInfo);
 
                 int* position = new int(0);
 
                 world = new World(name);
 
-                world->worldTime = FileUtility::loadNumber<unsigned long>(data, position);
+                world->worldTime = FileUtility::loadUnsignedLong(data, position);
 
                 int levelCount = FileUtility::loadInt8Bit(data, position);
 
@@ -108,7 +108,7 @@ namespace WorldLoader {
 
                 if(fileLevel != nullptr){
 
-                    char* levelData = readData(fileLevel);
+                    unsigned char* levelData = readData(fileLevel);
 
                     int* levelPosition = new int(0);
 
@@ -174,9 +174,9 @@ namespace WorldLoader {
 
         fileWorldInfo = std::fopen((dir+"world"+".info").c_str(), "wb");
         if(fileWorldInfo != nullptr){
-            std::string* data = new std::string();
+            vector<unsigned char>* data = new vector<unsigned char>();
 
-            FileUtility::saveNumber(data, loadedWorld->worldTime);
+            FileUtility::saveUnsignedLong(data, loadedWorld->worldTime);
 
             FileUtility::saveInt8Bit(data, (int8_t)loadedWorld->levels.size());
 
@@ -209,7 +209,7 @@ namespace WorldLoader {
 
 
             if(fileLevel != nullptr){
-                std::string* data = new std::string();
+                vector<unsigned char>* data = new vector<unsigned char>();
 
                 l->save(data);
 
@@ -237,7 +237,7 @@ namespace WorldLoader {
 
                 fileLevel = fopen((dir+(l->getName())+".lvl").c_str(), "wb");
                 if(fileLevel != nullptr){
-                    std::string* data = new std::string();
+                    std::vector<unsigned char>* data = new std::string();
                     
 
                     l->save(data);
@@ -301,11 +301,11 @@ namespace WorldLoader {
         fileWorldInfo = std::fopen((dir+"world"+".info").c_str(), "rb");
         if(fileWorldInfo != nullptr){
 
-            char* data = readData(fileWorldInfo);
+            unsigned char* data = readData(fileWorldInfo);
 
             int* position = new int(0);
 
-            FileUtility::loadNumber<unsigned long>(data, position);
+            FileUtility::loadUnsignedLong(data, position);
             int levelCount = FileUtility::loadInt8Bit(data, position);
             FileUtility::loadString(data, position);
             FileUtility::loadInt(data, position);

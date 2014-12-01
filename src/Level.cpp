@@ -358,7 +358,7 @@ template <typename T> void Level::addEntitiesRandomly(T* e, int count){
     }
 }
 
-void Level::save(string* data){
+void Level::save(vector<unsigned char>* data){
     
     Point2::save(*size, data);
     for(int i=0;i<size->x;i++){
@@ -374,7 +374,7 @@ void Level::save(string* data){
     }
 }
 
-void Level::load(char* data, int* position){
+void Level::load(unsigned char* data, int* position){
 
     for(int i=0;i<size->x;i++){
         for(int j=0;j<size->y;j++){
@@ -384,7 +384,10 @@ void Level::load(char* data, int* position){
     }
     debug("Loaded "+to_string(size->x)+" x "+to_string(size->y)+" Tiles");
 
+    debugf("Entity Count bytes: %X %X %X %X", data[*position], data[*position+1], data[*position+2], data[*position+3]);
+    debug("Entity Count 4th byte: "+to_string(data[*position+3]));
     int entityCount = FileUtility::loadInt(data, position);
+    debug(to_string(entityCount)+" Entities to Load...");
     for(int i=0;i<entityCount;i++){
         entityList.push_back(Entity::loadNew(data, position));
     }

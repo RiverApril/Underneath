@@ -29,13 +29,13 @@ public:
         this->name = name;
     }
 
-    virtual void save(string* data);
+    virtual void save(vector<unsigned char>* data);
 
-    virtual void load(char* data, int* position);
+    virtual void load(unsigned char* data, int* position);
 
     virtual int getItemTypeId();
 
-    static Item* loadNew(char* data, int* position);
+    static Item* loadNew(unsigned char* data, int* position);
 
     string name;
 

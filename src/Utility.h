@@ -22,32 +22,20 @@ namespace FileUtility {
     };
 
 
-    void saveInt(string* data, int n);
-    void saveChar(string* data, char n);
-    void saveInt8Bit(string* data, int8_t n);
-    void saveBool(string* data, bool n);
-    void saveString(string* data, string n);
-
-    template <typename T> void saveNumber(string* data, T n){
-        for(int i=sizeof(T)-1;i>=0;i--){
-            data->push_back((char)((n >> (8*i)) & 0xFF));
-        }
-    }
+    void saveInt(vector<unsigned char>* data, int n);
+    void saveUnsignedLong(vector<unsigned char>* data, unsigned long n);
+    void saveUnsignedChar(vector<unsigned char>* data, unsigned char n);
+    void saveInt8Bit(vector<unsigned char>* data, int8_t n);
+    void saveBool(vector<unsigned char>* data, bool n);
+    void saveString(vector<unsigned char>* data, string n);
 
 
-    int loadInt(char* data, int* position);
-    char loadChar(char* data, int* position);
-    int8_t loadInt8Bit(char* data, int* position);
-    bool loadBool(char* data, int* position);
-    string loadString(char* data, int* position);
-
-    template <typename T> T loadNumber(char* data, int* position){
-        T a = 0;
-        for(int i=sizeof(T)-1;i>=0;i--){
-            a |= (loadChar(data, position)<<(8*i));
-        }
-        return a;
-    }
+    int loadInt(unsigned char* data, int* position);
+    unsigned long loadUnsignedLong(unsigned char* data, int* position);
+    unsigned char loadUnsignedChar(unsigned char* data, int* position);
+    int8_t loadInt8Bit(unsigned char* data, int* position);
+    bool loadBool(unsigned char* data, int* position);
+    string loadString(unsigned char* data, int* position);
 
 }
 

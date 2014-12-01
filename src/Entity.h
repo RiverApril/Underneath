@@ -54,7 +54,7 @@ public:
     virtual Ui::color getFgColorCode();
     virtual Ui::color getBgColorCode();
 
-    virtual void save(string* data);
+    virtual void save(vector<unsigned char>* data);
 
     virtual int getEntityTypeId();
 
@@ -62,9 +62,9 @@ public:
         return 0;
     }
 
-    virtual void load(char* data, int* position);
+    virtual void load(unsigned char* data, int* position);
 
-    static Entity* loadNew(char* data, int* position);
+    static Entity* loadNew(unsigned char* data, int* position);
 
     int uniqueId = 0;
 
