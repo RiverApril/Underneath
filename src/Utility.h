@@ -21,6 +21,9 @@ namespace FileUtility {
         string description;
     };
 
+    
+
+
 	void saveDouble(vector<unsigned char>* data, double n);
     void saveInt(vector<unsigned char>* data, int n);
     void saveUnsignedLong(vector<unsigned char>* data, unsigned long n);
@@ -28,6 +31,22 @@ namespace FileUtility {
     void saveInt8Bit(vector<unsigned char>* data, int8_t n);
     void saveBool(vector<unsigned char>* data, bool n);
     void saveString(vector<unsigned char>* data, string n);
+    
+    template <typename T>
+    void saveType(vector<unsigned char>* data, T n){
+        union{
+            T d;
+            unsigned char b[sizeof(T)];
+        } uTypeBytes;
+
+        uTypeBytes.d = n;
+
+        for(int i=0;i<sizeof(T);i++){
+            data->push_back((unsigned char)(((uTypeBytes.b[i])/* >> (i*8)*/) & 0xFF));
+        }
+    }
+
+
 
 	double loadDouble(unsigned char* data, int* position);
     int loadInt(unsigned char* data, int* position);
@@ -36,6 +55,20 @@ namespace FileUtility {
     int8_t loadInt8Bit(unsigned char* data, int* position);
     bool loadBool(unsigned char* data, int* position);
     string loadString(unsigned char* data, int* position);
+
+    template <typename T>
+    T loadType(unsigned char* data, int* position){
+
+        union{
+            T d;
+            unsigned char b[sizeof(T)];
+        } uTypeBytes;
+
+        for(int i=0;i<sizeof(T);i++){
+            uTypeBytes.b[i] = ((unsigned char)loadUnsignedChar(data, position));
+        }
+        return uTypeBytes.d;
+    }
 
 }
 

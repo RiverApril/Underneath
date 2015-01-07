@@ -312,8 +312,8 @@ namespace Ui {
         if(timePassed > 0) {
             currentWorld->worldTime += timePassed;
             timePassed = 0;
-            render(currentWorld->worldTime);
             currentWorld->currentLevel->update(currentWorld->worldTime, viewPos);
+            render(currentWorld->worldTime);
         }
         
     }

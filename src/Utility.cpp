@@ -10,9 +10,6 @@
 
 namespace FileUtility {
 
-
-
-
     void saveDouble(vector<unsigned char>* data, double n){
 
         union{
@@ -22,7 +19,7 @@ namespace FileUtility {
 
         uDoubleBytes.d = n;
         for(int i=0;i<sizeof(double);i++){
-            data->push_back((unsigned char)(((uDoubleBytes.b[i]) >> (i*8)) & 0xFF));
+            data->push_back((unsigned char)(((uDoubleBytes.b[i])/* >> (i*8)*/) & 0xFF));
         }
     }
 

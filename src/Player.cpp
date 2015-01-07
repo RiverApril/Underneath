@@ -157,10 +157,17 @@ int Player::getEntityTypeId(){
 
 void Player::save(vector<unsigned char>* data){
     Alive::save(data);
+    levels.save(data);
+    xp.save(data);
+    nextLevelXp.save(data);
+
 }
 
 void Player::load(unsigned char* data, int* position){
     Alive::load(data, position);
+    levels.load(data, position);
+    xp.load(data, position);
+    nextLevelXp.load(data, position);
 }
 
 double Player::useDelay(Item* item){

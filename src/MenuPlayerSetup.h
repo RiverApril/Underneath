@@ -44,7 +44,7 @@ namespace Ui {
 		
         static const int totalPoints = abilityCount*2;
         int remainingPoints = totalPoints;
-        const int pointMax = 4;
+        const int pointMax = 6;
 
         int* addOne(int a[abilityCount]){
             for(int i=0;i<abilityCount;i++){

@@ -84,7 +84,7 @@ bool AiEntity::update(double time, Level* level) {
         if(level->canSee(level->currentWorld->currentPlayer->pos, pos, level->currentWorld->currentPlayer->viewDistance)){
 
             level->renderMenuGame(lastMoveTime);
-            usleep(100 * 1000);
+            //usleep(100 * 1000);
         }
     }
 

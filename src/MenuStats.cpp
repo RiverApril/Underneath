@@ -48,11 +48,11 @@ namespace Ui {
         clrtobot();
         mvprintw(0, 0, (player->getName()+"'s Abilities: ").c_str());
         for(int i=0;i<abilityCount;i++){
-            mvprintw(i+2, 1, (string(abilityAbr[i])+": %2d  xp[%s] (%d/%d)").c_str(),
+            mvprintw(i+2, 1, (string(abilityAbr[i])+": %2d  xp[%s] (%.0f/%.0f)").c_str(),
                      player->levels.list[i],
                      DrawingUtility::makeBar((int)(player->xp.list[i]), (int)(player->nextLevelXp.list[i]), 5, '=', ' ').c_str(),
-                     (int)(player->xp.list[i]),
-                     (int)(player->nextLevelXp.list[i]));
+                     (player->xp.list[i]),
+                     (player->nextLevelXp.list[i]));
             ;
         }
     }

@@ -66,7 +66,7 @@ public:
     }
 
     virtual int heal(int amount){
-        int a =  Alive::heal(amount);
+        int a = Alive::heal(amount);
         gainXp(iCON, a/10.0);
         return a;
     }
@@ -79,15 +79,16 @@ public:
 
 
     void setDelays(){
-        moveDelay = 1-(*levels.SPD / *maxLevels.SPD);
-        healDelay = 20-(*levels.CON / (*maxLevels.CON/20));
+        moveDelay = 1.0-((double)(*levels.SPD) / *maxLevels.SPD);
+        healDelay = 20.0-((double)(*levels.CON) / (*maxLevels.CON/20.0));
         interactDelay = .1;
     }
 
     Abilities<int> levels;
-    Abilities<int> maxLevels = Abilities<int>(100, 100, 100, 100, 100, 100, 100);
     Abilities<double> xp;
     Abilities<double> nextLevelXp;
+	
+    Abilities<int> maxLevels = Abilities<int>(100, 100, 100, 100, 100, 100, 100);
     
     
 protected:

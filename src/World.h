@@ -29,7 +29,7 @@ public:
     Level* currentLevel;
     Player* currentPlayer;
     string name = "";
-    double worldTime = 0;
+    double worldTime = 0.0;
 
 };
 

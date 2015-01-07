@@ -10,6 +10,7 @@
 #define __Underneath__Abilities__
 
 #include "Global.h"
+#include "Utility.h"
 
 namespace AbilityDetails{
 
@@ -66,6 +67,8 @@ namespace AbilityDetails{
     };
 
 
+
+
 }
 
 using namespace AbilityDetails;
@@ -84,6 +87,7 @@ struct Abilities{
         list[iCON] = a[iCON];
         list[iWIS] = a[iWIS];
     }
+    
     Abilities(T str, T dex, T inte, T agi, T spd, T con, T wis){
         list[iSTR] = str;
         list[iDEX] = dex;
@@ -94,7 +98,7 @@ struct Abilities{
         list[iWIS] = wis;
     }
 
-    T list[7] = {0, 0, 0, 0, 0, 0, 0};
+    T list[abilityCount] = {0};
 
     T* STR = &list[iSTR]; //Melee Attack Power
     T* DEX = &list[iDEX]; //Ranged Attack Power
@@ -105,6 +109,18 @@ struct Abilities{
 
     T* CON = &list[iCON]; //Health Regeneration Speed
     T* WIS = &list[iWIS]; //Mana Regeneration Speed
+
+    void save(vector<unsigned char>* data){
+        for(int i=0;i<abilityCount;i++){
+            FileUtility::saveType<T>(data, list[i]);
+        }
+    }
+
+    void load(unsigned char* data, int* position){
+        for(int i=0;i<abilityCount;i++){
+            list[i] = FileUtility::loadType<T>(data, position);
+        }
+    }
 };
 
 #endif /* defined(__Underneath__Abilities__) */
