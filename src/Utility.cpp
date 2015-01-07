@@ -12,6 +12,20 @@ namespace FileUtility {
 
 
 
+
+    void saveDouble(vector<unsigned char>* data, double n){
+
+        union{
+            double d;
+            unsigned char b[sizeof(double)];
+        } uDoubleBytes;
+
+        uDoubleBytes.d = n;
+        for(int i=0;i<sizeof(double);i++){
+            data->push_back((unsigned char)(((uDoubleBytes.b[i]) >> (i*8)) & 0xFF));
+        }
+    }
+
     void saveInt(vector<unsigned char>* data, int n){
         data->push_back((unsigned char)((n >> 24) & 0xFF));
         data->push_back((unsigned char)((n >> 16) & 0xFF));
@@ -49,7 +63,18 @@ namespace FileUtility {
         }
     }
 
-	
+
+    double loadDouble(unsigned char* data, int* position){
+        union{
+            double d;
+            unsigned char b[sizeof(double)];
+        } uDoubleBytes;
+
+        for(int i=0;i<sizeof(double);i++){
+            uDoubleBytes.b[i] = ((unsigned char)loadUnsignedChar(data, position));
+        }
+        return uDoubleBytes.d;
+    }
 
     int loadInt(unsigned char* data, int* position){
         return ((loadUnsignedChar(data, position)<<24) |
@@ -106,6 +131,107 @@ namespace DrawingUtility {
             s+=i>=l?empty:filled;
         }
         return s;
+    }
+
+}
+
+namespace ParsingUtility {
+
+    int getNumberFromSymbol(char symbol){
+        if(symbol >= 48 && symbol <= 57){
+            return symbol - 48;
+        }else if(symbol >= 65 && symbol <= 90){
+            return symbol - 65 + 10;
+        }else if(symbol >= 97 && symbol <= 122){
+            return symbol - 97 + 10;
+        }else{
+            throw ParseException("Invalid symbol: '"+to_string(symbol)+"'");
+        }
+    }
+
+    double parseDouble(string s, int base, double defaultIfException){
+        try{
+            return parseDoubleUnstable(s, base);
+        }catch(ParseException){
+            return defaultIfException;
+        }
+    }
+
+    double parseDoubleUnstable(string s, int base){
+        if(base < 1 || base > 36){
+            throw ParseException("Base out of range: "+to_string(base));
+        }else{
+            bool addToLeft = true;
+            vector<int> left;
+            vector<int> right;
+            for(int i=0;i<s.length();i++){
+                if(s[i] == '.'){
+                    if(addToLeft){
+                        addToLeft = false;
+                    }else{
+                        throw ParseException("Too many decimal points.");
+                    }
+                }else{
+                    int n = getNumberFromSymbol(s[i]);
+                    if(n >= base){
+                        throw ParseException("Symbol too large for specified base.");
+                    }else{
+                        if(addToLeft){
+                            left.push_back(n);
+                        }else{
+                            right.push_back(n);
+                        }
+                    }
+                }
+            }
+            double final = 0;
+            int d = 0;
+            for(int i=(int)left.size()-1;i>=0;i--){
+                final += pow(base, d)*left[i];
+                d++;
+            }
+
+            d = -1;
+
+            for(int i=0;i<right.size();i++){
+                final += pow(base, d)*right[i];
+                d--;
+            }
+
+            return final;
+        }
+    }
+
+    int parseInt(string s, int base, int defaultIfException){
+        try{
+            return parseIntUnstable(s, base);
+        }catch(ParseException){
+            return defaultIfException;
+        }
+    }
+
+    int parseIntUnstable(string s, int base){
+        if(base < 1 || base > 36){
+            throw ParseException("Base out of range: "+to_string(base));
+        }else{
+            vector<int> left;
+            for(int i=0;i<s.length();i++){
+                int n = getNumberFromSymbol(s[i]);
+                if(n >= base){
+                    throw ParseException("Symbol too large for specified base.");
+                }else{
+                    left.push_back(n);
+                }
+            }
+            double final = 0;
+            int d = 0;
+            for(int i=(int)left.size()-1;i>=0;i--){
+                final += pow(base, d)*left[i];
+                d++;
+            }
+
+            return final;
+        }
     }
 
 }

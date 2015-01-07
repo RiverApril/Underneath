@@ -21,7 +21,7 @@ Entity::Entity() : Entity(' ', Point2Zero, Ui::C_WHITE){
 
 }
 
-Entity::Entity(char icon, Point2 startPos, Ui::color colorCode) {
+Entity::Entity(char icon, Point2 startPos, Ui::Color colorCode) {
     this->defaultIcon = icon;
     this->fgColorCode = colorCode;
     this->bgColorCode = Ui::C_BLACK;
@@ -65,7 +65,7 @@ bool Entity::tryToMoveRelative(Point2 p, Level* level) {
     return tryToMoveAbsalute(pos+p, level);
 }
 
-bool Entity::update(int tick, Level* level) {
+bool Entity::update(double time, Level* level) {
 
     bool u = false;
     
@@ -83,15 +83,15 @@ bool Entity::update(int tick, Level* level) {
     return u;
 }
 
-char Entity::getIcon(Point2 p, int tick, Level* level) {
+char Entity::getIcon(Point2 p, double time, Level* level) {
     return defaultIcon;
 }
 
-Ui::color Entity::getFgColorCode() {
+Ui::Color Entity::getFgColorCode() {
     return fgColorCode;
 }
 
-Ui::color Entity::getBgColorCode() {
+Ui::Color Entity::getBgColorCode() {
     return bgColorCode;
 }
 
@@ -173,7 +173,7 @@ Entity* Entity::loadNew(unsigned char* data, int* position){
             break;
 
         default:
-            throw FileUtility::ExceptionLoad("Entity type unknown: "+to_string(type));
+            throw FileUtility::FileExceptionLoad("Entity type unknown: "+to_string(type));
             return nullptr;
             break;
     }

@@ -11,6 +11,8 @@
 
 #include "Alive.h"
 #include "Weapon.h"
+#include "Spell.h"
+#include "Abilities.h"
 
 class Player : public Alive {
 
@@ -20,21 +22,25 @@ public:
 
     Player();
 
-    Player(string name, char icon, Point2 startPos, Ui::color colorCode);
+    Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities);
 
     ~Player();
 
-    bool update(int tick, Level* world);
+    bool update(double time, Level* world);
 
-    bool moveRelative(Point2 p, Level* level);
+    double moveRelative(Point2 p, Level* level);
 
-    bool moveAbsalute(Point2, Level* level);
+    double moveAbsalute(Point2, Level* level);
 
-    bool interact(Level* level, Point2 posToInteract, bool needToBeSolid);
+    double interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item);
 
-    bool interactWithTile(Level* level, int tid, Point2 posOfTile);
+    double interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item);
 
-    bool interactWithEntity(Level* level, Entity* e, Point2 posOfEntity);
+    double interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item);
+
+    double waitUntilHealed();
+
+    double useItem(Item* item);
 
 
     virtual int getEntityTypeId();
@@ -47,9 +53,64 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
+    virtual int hurt(int amount){
+        return Alive::hurt(amount);
+    }
+
+    virtual int hurt(Weapon* w, double time){
+        return Alive::hurt(w, time);
+    }
+
+    virtual int hurt(Spell* s, double time){
+        return Alive::hurt(s, time);
+    }
+
+    virtual int heal(int amount){
+        int a =  Alive::heal(amount);
+        gainXp(iCON, a/10.0);
+        return a;
+    }
+
+    virtual int healMana(int amount){
+        int a = Alive::heal(amount);
+        gainXp(iWIS, a/10.0);
+        return a;
+    }
+
+
+    void setDelays(){
+        moveDelay = 1-(*levels.SPD / *maxLevels.SPD);
+        healDelay = 20-(*levels.CON / (*maxLevels.CON/20));
+        interactDelay = .1;
+    }
+
+    Abilities<int> levels;
+    Abilities<int> maxLevels = Abilities<int>(100, 100, 100, 100, 100, 100, 100);
+    Abilities<double> xp;
+    Abilities<double> nextLevelXp;
     
     
 protected:
+
+    double moveDelay = 1;
+    double interactDelay = .1;
+    double waitDelay = 5;
+
+    double useDelay(Item* item);
+
+    void setNextLevelXp(int i){
+        nextLevelXp.list[i] = (pow(levels.list[i], 1.2)*2)+10;
+    }
+
+    void gainXp(int i, double amount){
+        xp.list[i] += amount;
+        int l = nextLevelXp.list[i];
+        if(xp.list[i] > l && levels.list[i] < maxLevels.list[i]-1){
+            xp.list[i] -= l;
+            levels.list[i] += 1;
+            setNextLevelXp(i);
+        }
+    }
 
 };
 

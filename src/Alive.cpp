@@ -15,7 +15,7 @@ Alive::Alive() : Alive("", ' ', Point2Zero, Ui::C_WHITE){
 
 }
 
-Alive::Alive(string name, char icon, Point2 startPos, Ui::color colorCode, int maxHp) : Entity(icon, startPos, colorCode){
+Alive::Alive(string name, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : Entity(icon, startPos, colorCode){
 
     this->name = name;
     this->maxHp = maxHp;
@@ -31,30 +31,37 @@ Alive::~Alive(){
 }
 
 
-bool Alive::update(int tick, Level* level) {
+bool Alive::update(double time, Level* level) {
 
     if(dead){
         level->removeEntity(this, true);
     }else{
-        if(regenTick>=10){
-            regenTick = 0;
+        while(lastHealTime+healDelay<=time){
             heal(1);
-        }else{
-            regenTick++;
+            lastHealTime += healDelay;
+        }
+        while(lastManaTime+manaDelay<=time){
+            healMana(1);
+            lastManaTime += manaDelay;
         }
 		
         forVector(effects, i){
             Effect e = effects[i];
 
-            switch(e.eId){
-                case effBleed:
-                case effFire:
-                    hurt(e.power);
-                    break;
+            if(e.lastTime+1 < time){
+                switch(e.eId){
+                    case effBleed:
+                    case effFire:
+                        hurt(e.power);
+                        break;
+                    case effRegen:
+                        heal(e.power);
+                        break;
+                }
+                e.lastTime = time;
             }
 
-            e.duration--;
-            if(e.duration==0){
+            if(time >= e.timeEnd){
                 effects.erase(effects.begin()+i);
                 i--;
                 continue;
@@ -62,14 +69,14 @@ bool Alive::update(int tick, Level* level) {
         }
     }
 
-    return Entity::update(tick, level);
+    return Entity::update(time, level);
 }
 
 void Alive::addEffect(Effect e){
     forVector(effects, i){
         Effect ei = effects[i];
         if(e.eId == ei.eId){
-            ei.duration = e.duration;
+            ei.timeEnd = e.timeEnd;
             ei.power = e.power;
             return;
         }
@@ -122,7 +129,6 @@ void Alive::save(vector<unsigned char>* data){
     FileUtility::saveInt(data, maxMp);
     FileUtility::saveInt(data, mp);
     FileUtility::saveInt(data, viewDistance);
-    FileUtility::saveInt(data, regenTick);
     FileUtility::saveString(data, name);
 
     //
@@ -141,8 +147,9 @@ void Alive::save(vector<unsigned char>* data){
     FileUtility::saveInt(data, (int)effects.size());
     for(Effect e : effects){
         FileUtility::saveInt(data, e.eId);
-        FileUtility::saveInt(data, e.duration);
+        FileUtility::saveDouble(data, e.timeEnd);
         FileUtility::saveInt(data, e.power);
+        FileUtility::saveDouble(data, e.lastTime);
     }
 }
 
@@ -154,7 +161,6 @@ void Alive::load(unsigned char* data, int* position){
     maxMp = FileUtility::loadInt(data, position);
     mp = FileUtility::loadInt(data, position);
     viewDistance = FileUtility::loadInt(data, position);
-    regenTick = FileUtility::loadInt(data, position);
     name = FileUtility::loadString(data, position);
 
     //
@@ -176,9 +182,10 @@ void Alive::load(unsigned char* data, int* position){
     size = FileUtility::loadInt(data, position);
     repeat(size, i){
         int eId = FileUtility::loadInt(data, position);
-        int duration = FileUtility::loadInt(data, position);
+        int timeEnd = FileUtility::loadDouble(data, position);
         int power = FileUtility::loadInt(data, position);
-        effects.push_back(Effect(eId, duration, power));
+        int lastTime = FileUtility::loadDouble(data, position);
+        effects.push_back(Effect(eId, timeEnd, power, lastTime));
     }
 }
 

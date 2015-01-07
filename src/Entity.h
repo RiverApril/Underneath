@@ -29,7 +29,7 @@ public:
 
     Entity();
 
-    Entity(char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY);
+    Entity(char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY);
 
     virtual ~Entity();
 
@@ -37,11 +37,11 @@ public:
 
     virtual bool tryToMoveRelative(Point2 p, Level* world);
     
-    virtual bool update(int tick, Level* level);
+    virtual bool update(double time, Level* level);
 
     //void setAndUnsetDisplayEntity(Level* level);
 
-    virtual char getIcon(Point2 p, int tick, Level* level);
+    virtual char getIcon(Point2 p, double time, Level* level);
 
     bool isSolid(){
         return solid;
@@ -51,8 +51,8 @@ public:
         return "NO_NAME";
     }
 
-    virtual Ui::color getFgColorCode();
-    virtual Ui::color getBgColorCode();
+    virtual Ui::Color getFgColorCode();
+    virtual Ui::Color getBgColorCode();
 
     virtual void save(vector<unsigned char>* data);
 
@@ -73,8 +73,8 @@ public:
 protected:
     char defaultIcon = '?';
     Point2 lastPos;
-    Ui::color fgColorCode;
-    Ui::color bgColorCode;
+    Ui::Color fgColorCode;
+    Ui::Color bgColorCode;
     bool updateIcon = true;
     bool solid = false;
 

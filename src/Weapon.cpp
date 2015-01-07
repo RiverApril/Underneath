@@ -13,6 +13,7 @@ void Weapon::save(vector<unsigned char>* data){
     Item::save(data);
     
     FileUtility::saveInt(data, baseDamage);
+    FileUtility::saveInt(data, damageType);
 
     FileUtility::saveInt(data, (int)enchantments.size());
     for(int i=0;i<enchantments.size();i++){
@@ -26,6 +27,7 @@ void Weapon::load(unsigned char* data, int* position){
     Item::load(data, position);
 
     baseDamage = FileUtility::loadInt(data, position);
+    damageType = FileUtility::loadInt(data, position);
 
     int size = FileUtility::loadInt(data, position);
     for(int i=0;i<size;i++){
@@ -50,6 +52,7 @@ Weapon* Weapon::clone(Weapon* oldE, Weapon* newE){
 
     newE->baseDamage = oldE->baseDamage;
     newE->enchantments = oldE->enchantments;
+    newE->damageType = oldE->damageType;
 
     
     return newE;

@@ -50,7 +50,7 @@ void debugf(string format, ...){
 
 namespace Ui {
 
-    const color COLOR_DEFAULT_ENTITY = C_LIGHT_RED;
+    const Color COLOR_DEFAULT_ENTITY = C_LIGHT_RED;
 
     unsigned long tick = 0;
 
@@ -114,7 +114,7 @@ namespace Ui {
         terminalSize.y = getmaxy(stdscr);
     }
 
-    void setColor(color fg, color bg, int attr) {
+    void setColor(Color fg, Color bg, int attr) {
         if(limitedColorMode){
             if(fg == 0x8){
                 fg = 0x7;

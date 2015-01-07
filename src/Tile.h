@@ -17,16 +17,17 @@ const TileFlag tileFlagSolid = 1 << 0;
 const TileFlag tileFlagTall = 1 << 1;
 const TileFlag tileFlagDoor = 1 << 2;
 const TileFlag tileFlagPathable = 1 << 3;
+const TileFlag tileFlagSecretPathable = 1 << 4;
 
 class Tile {
 public:
 
-    Tile(int index, char icon, Ui::color fgColor, Ui::color bgColor, TileFlag flags, Ui::color fgColorUnseen = Ui::C_DARK_GRAY, Ui::color bgColorUnseen = Ui::C_BLACK);
+    Tile(int index, char icon, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen = Ui::C_DARK_GRAY, Ui::Color bgColorUnseen = Ui::C_BLACK);
 
     char getIcon();
     int getIndex();
-    Ui::color getFgColor(bool inView);
-    Ui::color getBgColor(bool inView);
+    Ui::Color getFgColor(bool inView);
+    Ui::Color getBgColor(bool inView);
 
     bool isSolid() {
         return flags & tileFlagSolid;
@@ -43,10 +44,10 @@ public:
 private:
     char icon;
     int index;
-    Ui::color fgColor;
-    Ui::color bgColor;
-    Ui::color fgColorUnseen;
-    Ui::color bgColorUnseen;
+    Ui::Color fgColor;
+    Ui::Color bgColor;
+    Ui::Color fgColorUnseen;
+    Ui::Color bgColorUnseen;
     TileFlag flags;
 };
 
@@ -58,8 +59,8 @@ extern Tile* tileDoor;
 extern Tile* tileSecretDoor;
 extern Tile* tileOpenDoor;
 
-extern Tile* tileStairDown;
 extern Tile* tileStairUp;
+extern Tile* tileStairDown;
 
 extern Tile* tileEdge;
 extern Tile* tileUnset;

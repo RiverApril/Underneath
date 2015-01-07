@@ -1,23 +1,26 @@
 //
-//  MenuTempInv.cpp
+//  MenuInv.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/12/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuTempInv.h"
+#include "MenuInv.h"
 #include "Math.h"
 #include "ItemEntity.h"
+#include "Controls.h"
 
 namespace Ui {
 
-    MenuTempInv::MenuTempInv(Alive* alive, World* w) : Menu(){
+    MenuInv::MenuInv(Alive* alive, World* w, int* useItem) : Menu(){
         this->alive = alive;
         this->currentWorld = w;
+        this->useItem = useItem;
+        *useItem = -1;
     }
 
-    void MenuTempInv::handleInput(int in){
+    void MenuInv::handleInput(int in){
         switch (in) {
             case KEY_UP:
                 selected--;
@@ -48,9 +51,14 @@ namespace Ui {
                 break;
             }
 
+            case 'u':{
+                *useItem = selected;
+                closeThisMenu();
+                break;
+            }
+
             case KEY_ESCAPE:
-            case 'i':
-            case '\t':
+            case Key::inventory:
                 closeThisMenu();
                 break;
         }
@@ -62,7 +70,7 @@ namespace Ui {
         }
     }
 
-    void MenuTempInv::update() {
+    void MenuInv::update() {
         setColor(C_WHITE);
         int minI = Math::max(0, scrollOffset);
         int maxI = (int)alive->inventory.size() - scrollOffset;

@@ -1,30 +1,30 @@
 //
-//  MenuTempInv.h
+//  MenuStats.h
 //  Underneath
 //
-//  Created by Braeden Atlee on 11/12/14.
+//  Created by Braeden Atlee on 12/27/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__MenuTempInv__
-#define __Underneath__MenuTempInv__
+#ifndef __Underneath__MenuStats__
+#define __Underneath__MenuStats__
 
 #include "Menu.h"
 #include "Alive.h"
 #include "World.h"
 
 namespace Ui {
-    class MenuTempInv : public Menu {
+    class MenuStats : public Menu {
     public:
 
-        MenuTempInv(Alive* alive, World* w);
+        MenuStats(Player* player, World* w);
 
-        ~MenuTempInv() {}
+        ~MenuStats() {}
 
         void handleInput(int in);
         void update();
 
-        Alive* alive;
+        Player* player;
         World* currentWorld;
         int scrollOffset = 0;
         int selected = 0;
@@ -32,4 +32,4 @@ namespace Ui {
     };
 }
 
-#endif /* defined(__Underneath__MenuTempInv__) */
+#endif /* defined(__Underneath__MenuStats__) */

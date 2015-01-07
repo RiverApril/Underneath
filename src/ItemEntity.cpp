@@ -36,11 +36,8 @@ ItemEntity::~ItemEntity(){
 }
 
 
-bool ItemEntity::update(int tick, Level* level) {
-
-
-
-    return Entity::update(tick, level);
+bool ItemEntity::update(double time, Level* level) {
+    return Entity::update(time, level);
 }
 
 

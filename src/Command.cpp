@@ -7,7 +7,9 @@
 //
 
 #include "Command.h"
-
+#include "Alive.h"
+#include "MenuGame.h"
+#include "Utility.h"
 
 
 namespace Ui{
@@ -141,11 +143,45 @@ namespace Ui{
             return false;
         }
     };
+
+    struct CommandEffect : Command{
+        string help(){
+            return "Applies an effect to the player.";
+        }
+        string usage(){
+            return "effect <id> [duration] [power]";
+        }
+        string defaultName(){
+            return "effect";
+        }
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
+            MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
+            if(mg != nullptr){
+                Effect e = Effect(effBleed, mg->currentWorld->worldTime+10, 1);
+                if(arguments.size() > 0){
+                    e.eId = ParsingUtility::parseInt(arguments[0].c_str());
+                    if(arguments.size() > 1){
+                        e.timeEnd = mg->currentWorld->worldTime+ParsingUtility::parseInt(arguments[1].c_str());
+                    }
+                    if(arguments.size() > 2){
+                        e.power = ParsingUtility::parseInt(arguments[2].c_str());
+                    }
+                    mg->currentWorld->currentPlayer->addEffect(e);
+                    debug("Applied Effect: "+e.toString());
+                    return true;
+                }
+            }else{
+                debug("Must be in Game to apply.");
+            }
+            return false;
+        }
+    };
     
     void initCommandList(){
         commandList.push_back(new CommandHelp());
         commandList.push_back(new CommandEcho());
         commandList.push_back(new CommandDebug());
+        commandList.push_back(new CommandEffect());
     }
     
 }

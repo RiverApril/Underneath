@@ -128,6 +128,7 @@ extern Point2 Point2Left;
 extern Point2 Point2Right;
 extern Point2 Point2Up;
 extern Point2 Point2Down;
+extern Point2 Point2Neg1;
 
 
 #endif /* defined(__Underneath__Geometry__) */

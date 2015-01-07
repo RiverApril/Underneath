@@ -15,6 +15,11 @@
 #include "World.h"
 #include "Entity.h"
 #include "Geometry.h"
+#include "MenuGame.h"
+
+namespace Ui{
+    class MenuGame;
+}
 
 class Entity;
 
@@ -22,6 +27,19 @@ struct TileData{
     int8_t index = 0;
     bool explored = false;
     //Entity* entity = nullptr;
+};
+
+struct Stair{
+
+    Stair(Point2 p, bool up, string levelName){
+        this->p = p;
+        this->up = up;
+        this->levelName = levelName;
+    }
+
+    Point2 p = Point2(0, 0);
+    bool up = false;
+    string levelName = "";
 };
 
 class Level{
@@ -37,6 +55,8 @@ public:
     string getName(){
         return name;
     }
+
+    void renderMenuGame(double displayTime);
 
     //Entity* getDisplayEntity(Point2 p);
 
@@ -57,15 +77,15 @@ public:
 
     long entityCount();
 
-    bool canPathTo(Point2 from, Point2 to);
+    bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag);
 
-    vector<Point2> getPathTo(Point2 from, Point2 to);
+    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag);
 
-    Point2 generate(unsigned int seed);
+    Point2 generate(unsigned int seed, Point2 stairUpPos, string previousLevel);
 
-    template <typename T> void addEntitiesRandomly(T* e, int count);
+    template <typename T> void addEntitiesRandomly(Point2 start, T* e, int count);
 
-    bool update(int tick, Point2 viewPos);
+    bool update(double time, Point2 viewPos);
 
     //void setAndUnsetDisplayEntities();
 
@@ -83,6 +103,10 @@ public:
     vector<Entity*> entityList;
 
     World* currentWorld;
+
+    vector<Stair> stairList;
+
+    Ui::MenuGame* menuGame;
 
 private:
 

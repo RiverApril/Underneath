@@ -1,23 +1,23 @@
 //
-//  MenuTempMessage.h
+//  MenuMessage.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/25/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__MenuTempMessage__
-#define __Underneath__MenuTempMessage__
+#ifndef __Underneath__MenuMessage__
+#define __Underneath__MenuMessage__
 
 #include "Menu.h"
 
 namespace Ui {
-    class MenuTempMessage : public Menu {
+    class MenuMessage : public Menu {
     public:
 
-        MenuTempMessage(string message);
+        MenuMessage(string message);
 
-        ~MenuTempMessage() {}
+        ~MenuMessage() {}
 
         void handleInput(int in);
         void update();
@@ -28,4 +28,4 @@ namespace Ui {
     };
 }
 
-#endif /* defined(__Underneath__MenuTempMessage__) */
+#endif /* defined(__Underneath__MenuMessage__) */

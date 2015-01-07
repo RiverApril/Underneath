@@ -11,6 +11,7 @@
 
 #include "Entity.h"
 #include "Weapon.h"
+#include "Spell.h"
 #include "Math.h"
 
 
@@ -18,15 +19,28 @@ typedef int EffectId;
 
 const EffectId effFire = 0;
 const EffectId effBleed = 1;
+const EffectId effRegen = 2;
 
 struct Effect{
-    Effect(EffectId eId, int duration, int power){
-        this->eId = eId;
-        this->duration = duration;
-        this->power = power;
+
+    Effect(EffectId eId, double timeEnd, int power) : Effect(eId, timeEnd, power, 0){
+
     }
+
+    Effect(EffectId eId, double timeEnd, int power, double lastTime){
+        this->eId = eId;
+        this->timeEnd = timeEnd;
+        this->power = power;
+        this->lastTime = lastTime;
+    }
+
+    string toString(){
+        return "id:"+to_string(eId)+", timeEnd:"+to_string(timeEnd)+", power:"+to_string(power);
+    }
+
     EffectId eId = effFire;
-    int duration = 1;
+    double timeEnd;
+    double lastTime = 0;
     int power = 1;
 };
 
@@ -40,11 +54,11 @@ public:
 
     Alive();
 
-    Alive(string name, char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
+    Alive(string name, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
 
     ~Alive();
 
-    virtual bool update(int tick, Level* level);
+    virtual bool update(double time, Level* level);
 
     virtual string getName(){
         return name;
@@ -72,29 +86,33 @@ public:
         //pos.set(-1);
     }
 
-    int hurt(int amount){
+    virtual int hurt(int amount){
         hp -= amount;
         if(hp<=0){
             die();
         }
-        regenTick = 0;
         //debug(name+" hp: "+to_string(hp));
         return amount;
     }
 
-    int hurt(Weapon* w){
+    virtual int hurt(Spell* w, double time){
+        int d = Math::max((rand()%(w->baseDamage)) + (rand()%(w->baseDamage)), 1);
+        return hurt(d);
+    }
+
+    virtual int hurt(Weapon* w, double time){
         int d = Math::max((rand()%(w->baseDamage)) + (rand()%(w->baseDamage)), 1);
         for(Enchantment ench : w->enchantments){
             switch(ench.eId){
                 case enchBleed:
                     if(rand()%ench.chance == 0){
-                        addEffect(Effect(effBleed, ench.power*10, ench.power));
+                        addEffect(Effect(effBleed, time+(ench.power*10), ench.power));
                     }
                     break;
 
                 case enchFire:
                     if(rand()%ench.chance == 0){
-                        addEffect(Effect(effFire, ench.power*10, ench.power));
+                        addEffect(Effect(effFire, time+(ench.power*10), ench.power));
                     }
                     break;
             }
@@ -104,14 +122,30 @@ public:
 
     void addEffect(Effect e);
 
-    void heal(int amount){
+    virtual int heal(int amount){
         if(dead){
-            return;
+            return 0;
         }
         hp += amount;
         if(hp>maxHp){
+            int a = amount-(hp-maxHp);
             hp = maxHp;
+            return a;
         }
+        return amount;
+    }
+
+    virtual int healMana(int amount){
+        if(dead){
+            return 0;
+        }
+        mp += amount;
+        if(mp>maxMp){
+            int a = amount-(hp-maxHp);
+            mp = maxMp;
+            return a;
+        }
+        return amount;
     }
 
     virtual void save(vector<unsigned char>* data);
@@ -171,7 +205,12 @@ protected:
     int maxMp = 10;
     int mp = maxMp;
     bool dead = false;
-    int regenTick = 0;
+
+    double lastHealTime = 0;
+    double healDelay = 10;
+
+    double lastManaTime = 0;
+    double manaDelay = 10;
 
     Weapon* activeWeapon;
 

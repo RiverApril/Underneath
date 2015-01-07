@@ -9,13 +9,16 @@
 #include "Item.h"
 #include "Utility.h"
 #include "Weapon.h"
+#include "Spell.h"
 
 void Item::save(vector<unsigned char>* data){
     FileUtility::saveInt(data, getItemTypeId());
+    FileUtility::saveDouble(data, weight);
     FileUtility::saveString(data, name);
 }
 
 void Item::load(unsigned char* data, int* position){
+    weight = FileUtility::loadDouble(data, position);
     name = FileUtility::loadString(data, position);
 }
 
@@ -30,6 +33,7 @@ Item* Item::clone(Item* oldE, Item* newE){
     }
 
     newE->name = oldE->name;
+    newE->weight = oldE->weight;
 
     return newE;
 }
@@ -46,9 +50,12 @@ Item* Item::loadNew(unsigned char* data, int* position){
         case ITEM_TYPE_WEAPON:
             e = new Weapon();
             break;
+        case ITEM_TYPE_SPELL:
+            e = new Spell();
+            break;
             
         default:
-            throw FileUtility::ExceptionLoad("Item type unknown: "+to_string(type));
+            throw FileUtility::FileExceptionLoad("Item type unknown: "+to_string(type));
             return nullptr;
             break;
     }

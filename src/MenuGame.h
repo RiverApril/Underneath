@@ -23,16 +23,18 @@ namespace Ui {
         Point2 gameArea;
         Point2 borderSize = Point2(24, 4);
 
-        MenuGame(string worldName);
+        MenuGame(string worldName, Abilities<int> playerAbilities);
 
         ~MenuGame();
 
-        bool init(string worldName);
+        bool init(string worldName, Abilities<int> playerAbilities);
 
         bool openUi();
         void closeUi();
         void handleInput(int in);
         void update();
+
+        void render(double displayTime);
 
         void setGameAreaSize();
 
@@ -40,8 +42,7 @@ namespace Ui {
         void drawTileAt(Point2 p);
         void arrowMove(Point2 p);
 		
-        bool updateView;
-        bool timePassed;
+        double timePassed;
         Point2 viewPos;
         Point2 viewMoveSpeed;
 
@@ -49,6 +50,7 @@ namespace Ui {
 
         World* currentWorld;
         yesNo* saveAnswer = new yesNo(aUndefined);
+        int* useItem = new int(-1);
 
 
         int modePlayerControl = 0;

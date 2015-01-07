@@ -1,19 +1,20 @@
 //
-//  MenuPreGame.cpp
+//  MenuWorldSelect.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/3/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuPreGame.h"
+#include "MenuWorldSelect.h"
 #include "MenuMain.h"
 #include "MenuGame.h"
-#include "MenuTempYesNo.h"
+#include "MenuYesNo.h"
+#include "MenuPlayerSetup.h"
 
 namespace Ui {
 
-    bool MenuPreGame::openUi() {
+    bool MenuWorldSelect::openUi() {
         if(*deleteAnswer == aYes){
             WorldLoader::deleteWorld(name);
             *deleteAnswer = aUndefined;
@@ -24,11 +25,11 @@ namespace Ui {
         return true;
     }
 
-    void MenuPreGame::closeUi() {
+    void MenuWorldSelect::closeUi() {
 
     }
 
-    void MenuPreGame::handleInput(int in) {
+    void MenuWorldSelect::handleInput(int in) {
 
         move(selection+2, 0);
         clrtoeol();
@@ -38,14 +39,17 @@ namespace Ui {
                 switch (selection) {
                     case selPlay:
                         if(name.length() > 0){
-                            
-                        	openMenu(new MenuGame(name));
+                            if(WorldLoader::exists(name)){
+                                openMenu(new MenuGame(name, Abilities<int>()));
+                            }else{
+                                openMenu(new MenuPlayerSetup(name));
+                            }
                         }
                         break;
 
                     case selDel:
                         if(WorldLoader::exists(name)){
-                        	openMenu(new MenuTempYesNo("Are you sure you want to delete '"+name+"' ?", deleteAnswer, true));
+                        	openMenu(new MenuYesNo("Are you sure you want to delete '"+name+"' ?", deleteAnswer, true));
                 		}
                         break;
 
@@ -93,7 +97,7 @@ namespace Ui {
 
     }
 
-    void MenuPreGame::update() {
+    void MenuWorldSelect::update() {
 
         bool e = WorldLoader::exists(name);
 

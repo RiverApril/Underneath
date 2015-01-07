@@ -11,22 +11,29 @@
 
 #include "Global.h"
 
+typedef double Weight;
+
+static Weight weightPaper = .2;
+static Weight weightSpell = .5;
+
 class Level;
 
 const int ITEM_TYPE_ITEM = 0;
 const int ITEM_TYPE_WEAPON = 1;
+const int ITEM_TYPE_SPELL = 2;
 
 class Item {
 public:
 
     static Item* clone(Item* oldE, Item* newE);
 
-    Item() : Item("UNDEFINED"){
+    Item() : Item("UNDEFINED", 0){
         
     }
 
-    Item(string name){
+    Item(string name, Weight weight){
         this->name = name;
+        this->weight = weight;
     }
 
     virtual void save(vector<unsigned char>* data);
@@ -38,6 +45,7 @@ public:
     static Item* loadNew(unsigned char* data, int* position);
 
     string name;
+    Weight weight;
 
 };
 

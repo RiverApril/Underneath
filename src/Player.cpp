@@ -10,81 +10,116 @@
 #include "Level.h"
 #include "ItemEntity.h"
 
-Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE){
+
+Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()){
 
 }
 
-Player::Player(string name, char icon, Point2 startPos, Ui::color colorCode) : Alive(name, icon, startPos, colorCode) {
+Player::Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities) : Alive(name, icon, startPos, colorCode) {
+    levels = startAbilities;
+    setDelays();
+    for(int i=0;i<abilityCount;i++){
+        setNextLevelXp(i);
+    }
 }
 
 Player::~Player() {
 
 }
 
-bool Player::update(int tick, Level* level) {
+bool Player::update(double time, Level* level) {
     if(dead){
         level->currentWorld->currentPlayer = nullptr;
     }
-    return Alive::update(tick, level);
+    return Alive::update(time, level);
 }
 
-bool Player::moveAbsalute(Point2 p, Level* level){
+double Player::moveAbsalute(Point2 p, Level* level){
     if(tryToMoveAbsalute(p, level)){
-        return true;
+        gainXp(iSPD, .1);
+        return moveDelay;
     }else{
-        return interact(level, p, true);
+        return interact(level, p, true, activeWeapon);
     }
-    return false;
+    return 0;
 }
 
-bool Player::moveRelative(Point2 p, Level* level) {
+double Player::moveRelative(Point2 p, Level* level) {
     return moveAbsalute(p+pos, level);
 }
 
-bool Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid){
+double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item){
     int tid = level->indexAt(posToInteract);
     for(Entity* e : level->entityList){
         if(e->uniqueId != uniqueId){
             if(e->pos == posToInteract){
                 if(!needToBeSolid || e->isSolid()){
-                    if(interactWithEntity(level, e, posToInteract)){
-                        return true;
+                    double d = interactWithEntity(level, e, posToInteract, item);
+                    if(d>0){
+                        return d;
                     }
                 }
             }
         }
     }
-    return interactWithTile(level, tid, posToInteract);
+    return interactWithTile(level, tid, posToInteract, item);
 }
 
-bool Player::interactWithTile(Level* level, int tid, Point2 posOfTile){
+double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item){
 
-    if(tid == tileStairDown->getIndex()){
-		
-    }else if(tid == tileStairUp->getIndex()){
+    if(tid == tileStairDown->getIndex() || tid == tileStairUp->getIndex()){
+
+        for(Stair s : level->stairList){
+            if(s.p == posOfTile){
+                WorldLoader::changeLevel(level->currentWorld, s.p, s.levelName);
+                return interactDelay;
+            }
+        }
 
     }else if(tid == tileOpenDoor->getIndex()){
         if(posOfTile != pos){
-        	level->setTile(posOfTile, tileDoor);
+            level->setTile(posOfTile, tileDoor);
+            return interactDelay;
         }
     }else if(tileList[tid]->hasFlag(tileFlagDoor)){
         level->setTile(posOfTile, tileOpenDoor);
-        return true;
+        return interactDelay;
     }
 
-    return false;
+    return 0;
 }
 
-bool Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity){
+double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item){
 
     Alive* a = dynamic_cast<Alive*>(e);
     if(a != nullptr){
-        if(activeWeapon != nullptr){
-            print("Dealt "+to_string(a->hurt(activeWeapon))+" damage.");
+        if(item != nullptr){
+            Weapon* weapon = dynamic_cast<Weapon*>(item);
+            Spell* spell = dynamic_cast<Spell*>(item);
+            if(weapon != nullptr){
+                int d = a->hurt(weapon, level->currentWorld->worldTime);
+                print("Dealt "+to_string(d)+" damage.");
+                if(weapon->damageType == damMelee){
+                    gainXp(iSTR, 1);
+                }else if(weapon->damageType == damRanged){
+                    gainXp(iDEX, 1);
+                }
+                return useDelay(item);
+            }else if(spell != nullptr){
+                if(mp >= spell->manaCost){
+                    mp -= spell->manaCost;
+                    int d = a->hurt(spell, level->currentWorld->worldTime);
+                    print("Dealt "+to_string(d)+" damage.");
+                    gainXp(iINT, 1);
+                    return useDelay(item);
+                }
+                print("Not enough mana.");
+            }
+            return 0;
         }else{
-            print("No weapon eqiped.");
+            print("No item equiped.");
+            return 0;
         }
-        return true;
     }
 
     ItemEntity* ie = dynamic_cast<ItemEntity*>(e);
@@ -92,10 +127,16 @@ bool Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity){
         inventory.push_back(ie->getItem());
         level->removeEntity(e, true);
         print("Picked up item.");
-        return true;
+        return interactDelay;
     }
 
-    return false;
+    return 0;
+}
+
+double Player::waitUntilHealed(){
+    //TODO
+    debug("Not yet done, it just waits 5 time. It should wait until fully healed.");
+    return waitDelay;
 }
 
 
@@ -120,6 +161,20 @@ void Player::save(vector<unsigned char>* data){
 
 void Player::load(unsigned char* data, int* position){
     Alive::load(data, position);
+}
+
+double Player::useDelay(Item* item){
+    Spell* spell = dynamic_cast<Spell*>(item);
+    Weapon* weapon = dynamic_cast<Weapon*>(item);
+    double d = 0;
+    if(spell != nullptr){
+        return spell->castDelay;
+    }else if(weapon != nullptr){
+        d = weapon->weight/10;
+    }
+    gainXp(iAGI, 1.0 / 3.0);
+    return (1-(*levels.AGI / *maxLevels.AGI))+d;
+
 }
 
 

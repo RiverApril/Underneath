@@ -18,7 +18,7 @@ Level::Level(World* w, string n, Point2 s) {
     currentWorld = w;
     name = n;
     size = new Point2(s);
-    tileGrid = vector<vector<TileData>>(size->x, std::vector<TileData>(size->y));
+    tileGrid = vector<vector<TileData>>(size->x, vector<TileData>(size->y));
     
     for(int i=0;i<size->x;i++){
         for(int j=0;j<size->y;j++){
@@ -27,6 +27,9 @@ Level::Level(World* w, string n, Point2 s) {
             //tileGrid[i][j].entity = nullptr;
         }
     }
+
+    stairList = vector<Stair>();
+
 }
 
 Level::~Level() {
@@ -140,14 +143,20 @@ long Level::entityCount() {
     return entityList.size();
 }
 
-bool Level::update(int tick, Point2 viewPos) {
+bool Level::update(double time, Point2 viewPos) {
     bool u = false;
     for (size_t i=0; i<entityList.size(); i++) {
-        if(entityList.at(i)->update(tick, this)){
+        if(entityList.at(i)->update(time, this)){
             u = true;
         }
     }
     return u;
+}
+
+void Level::renderMenuGame(double displayTime){
+    if(menuGame!=nullptr){
+    	menuGame->render(displayTime);
+    }
 }
 
 /*void Level::setAndUnsetDisplayEntities(){
@@ -179,7 +188,7 @@ void Level::removeEntity(Entity* e, bool deleteEntity) {
     debug("Failed to Delete Entity: "+e->getName());
 }
 
-vector<Point2> Level::getPathTo(Point2 from, Point2 to){
+vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
 	vector<vector<int>> map = vector<vector<int>>(size->x, vector<int>(size->y));
 
     for(int i=0;i<size->x;i++){
@@ -226,7 +235,7 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to){
                     Point2 p = Point2(i+c.x, j+c.y);
                     if((abs(i)+abs(j)) == 1){
                     	if(inRange(p)){
-                        	if(tileAt(p)->hasFlag(tileFlagPathable)){
+                        	if(tileAt(p)->hasFlag(requiredFlag)){
                                 if(map[p.x][p.y] == -1){
                                     map[p.x][p.y] = map[c.x][c.y]+1;
                                     priorityQueue.push(p);
@@ -242,8 +251,8 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to){
     return vector<Point2>();
 }
 
-bool Level::canPathTo(Point2 from, Point2 to){
-    return !getPathTo(from, to).empty();
+bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
+    return !getPathTo(from, to, requiredFlag).empty();
 
     /*vector<vector<char>> map = vector<vector<char>>(size->x, vector<char>(size->y));
     for(int i=0;i<size->x;i++){
@@ -281,7 +290,7 @@ bool Level::canPathTo(Point2 from, Point2 to){
     return false;*/
 }
 
-Point2 Level::generate(unsigned int seed) {
+Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLevel) {
     srand(seed);
 
     for (int i=0; i<size->x; i++) {
@@ -298,26 +307,30 @@ Point2 Level::generate(unsigned int seed) {
     shared_ptr<vector<shared_ptr<LevelGenerator::Room>>> rooms = LevelGenerator::createRooms(1000, *size);
     LevelGenerator::makeRoomsAndPaths(rooms, this);
 
-    Point2 stairUpPos;
+    //Point2 stairUpPos = entrance;
     Point2 stairDownPos;
     int dist = (size->x+size->y) / 2;
     while(true){
         stairDownPos = findRandomOfType(tileFloor->getIndex());
-        stairUpPos = findRandomOfType(tileFloor->getIndex());
-        if((distanceSquared(stairUpPos, stairDownPos) > (dist*dist)) && canPathTo(stairUpPos, stairDownPos)){
+        //stairUpPos = findRandomOfType(tileFloor->getIndex());
+        if((distanceSquared(stairUpPos, stairDownPos) > (dist*dist)) && canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
             break;
         }else{
             dist--;
+            mvprintw(1, 0, ("dist: "+to_string(dist)+"   ").c_str());
+            refresh();
             if(dist < 1){
-                dist = 1;
+                return Point2Neg1;
             }
         }
     }
 
-    setTile(stairDownPos, tileStairDown);
     setTile(stairUpPos, tileStairUp);
+    setTile(stairDownPos, tileStairDown);
+    stairList.push_back(Stair(stairUpPos, true, previousLevel));
+    stairList.push_back(Stair(stairDownPos, false, "Floor"+to_string(stoi(name.substr(5))+1)));
 
-    vector<Point2> path = getPathTo(stairUpPos, stairDownPos);
+    vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
     for(Point2 pe : path){
         if(!tileAt(pe)->isSolid()){
         	setTile(pe, tileDebug1);
@@ -328,19 +341,19 @@ Point2 Level::generate(unsigned int seed) {
     AiEntity* rat = new AiEntity("Rat", aiMoveRandom | aiFleeFromPlayerDumb, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
     rat->viewDistance = 4;
 
-    addEntitiesRandomly(rat, (rand()%10)+20);
+    addEntitiesRandomly(stairUpPos, rat, (rand()%10)+20);
 
 
     AiEntity* goblin = new AiEntity ("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
-    goblin->setActiveWeapon(new Weapon(1, "Rusted Spear"));
+    goblin->setActiveWeapon(new Weapon(1, "Rusted Spear", weightSpear, damMelee));
 
-    addEntitiesRandomly(goblin, (rand()%80)+20);
+    addEntitiesRandomly(stairUpPos, goblin, (rand()%80)+20);
 
 
     AiEntity* troll = new AiEntity ("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-    troll->setActiveWeapon((new Weapon(3, "Spiked Club"))->addEnchantment(enchBleed, 10, 1));
+    troll->setActiveWeapon((new Weapon(3, "Spiked Club", weightClub, damMelee))->addEnchantment(enchBleed, 10, 1));
 
-    addEntitiesRandomly(troll, (rand()%100)+20);
+    addEntitiesRandomly(stairUpPos, troll, (rand()%100)+20);
 
 
     return stairUpPos;
@@ -348,13 +361,17 @@ Point2 Level::generate(unsigned int seed) {
     
 }
 
-template <typename T> void Level::addEntitiesRandomly(T* e, int count){
+template <typename T> void Level::addEntitiesRandomly(Point2 start, T* e, int count){
 
     for(int i=0;i<count;i++){
         T* r = T::clone(e, nullptr);
-        Point2 pp = Point2(findRandomWithoutFlag(tileFlagSolid));
-        r->pos = pp;
-        newEntity(r);
+        Point2 p = Point2(findRandomWithoutFlag(tileFlagSolid));
+        if(canPathTo(start, p, tileFlagPathable | tileFlagSecretPathable)){
+            r->pos = p;
+        	newEntity(r);
+        }else{
+            i--;
+        }
     }
 }
 

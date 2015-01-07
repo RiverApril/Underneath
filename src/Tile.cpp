@@ -9,7 +9,7 @@
 #include "Global.h"
 #include "Tile.h"
 
-Tile::Tile(int index, char icon, Ui::color fgColor, Ui::color bgColor, TileFlag flags, Ui::color fgColorUnseen, Ui::color bgColorUnseen) {
+Tile::Tile(int index, char icon, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen, Ui::Color bgColorUnseen) {
     this->index = index;
     this->icon = icon;
     tileList[index] = this;
@@ -30,11 +30,11 @@ int Tile::getIndex() {
     return index;
 }
 
-Ui::color Tile::getFgColor(bool inView) {
+Ui::Color Tile::getFgColor(bool inView) {
     return inView?fgColor:fgColorUnseen;
 }
 
-Ui::color Tile::getBgColor(bool inView) {
+Ui::Color Tile::getBgColor(bool inView) {
     return inView?bgColor:bgColorUnseen;
 }
 
@@ -50,8 +50,8 @@ Tile* tileDoor;
 Tile* tileSecretDoor;
 Tile* tileOpenDoor;
 
-Tile* tileStairDown;
 Tile* tileStairUp;
+Tile* tileStairDown;
 
 Tile* tileEdge;
 Tile* tileUnset;
@@ -69,7 +69,7 @@ void initTiles() {
 
     using namespace Ui;
 
-    color bg = C_BLACK;
+    Color bg = C_BLACK;
 
     tileFloor = new Tile(a++, '.', C_WHITE, bg, tileFlagPathable);
     tilePath = new Tile(a++, '.', C_LIGHT_GRAY, bg, tileFlagPathable);
@@ -78,12 +78,14 @@ void initTiles() {
                         C_BLACK, C_DARK_GRAY);
     tileDoor = new Tile(a++, '%', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable,
                         C_BLACK, C_DARK_GRAY);
-    tileSecretDoor = new Tile(a++, ' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor,
+    tileSecretDoor = new Tile(a++, ' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagSecretPathable,
                               C_BLACK, C_DARK_GRAY);
     tileOpenDoor = new Tile(a++, '/', C_WHITE, bg, tileFlagPathable);
 
-    tileStairDown = new Tile(a++, 'v',  C_LIGHT_GREEN, bg, tileFlagPathable);
+
     tileStairUp = new Tile(a++, '^',  C_LIGHT_GREEN, bg, tileFlagPathable);
+    tileStairDown = new Tile(a++, 'v',  C_LIGHT_GREEN, bg, tileFlagPathable);
+
 
     tileEdge = new Tile(a++, 'X',  C_LIGHT_RED, bg, tileFlagSolid | tileFlagTall);
     tileUnset = new Tile(a++, 'X',  C_LIGHT_MAGENTA, bg, tileFlagSolid | tileFlagTall);

@@ -63,7 +63,7 @@ namespace WorldLoader {
         return buffer;
     }
 
-    World* load(std::string name){
+    World* load(std::string name, string optionalStartLevel){
 
         try{
             debug("Loading World: "+name+"...");
@@ -84,7 +84,7 @@ namespace WorldLoader {
 
                 world = new World(name);
 
-                world->worldTime = FileUtility::loadUnsignedLong(data, position);
+                world->worldTime = FileUtility::loadDouble(data, position);
 
                 int levelCount = FileUtility::loadInt8Bit(data, position);
 
@@ -99,6 +99,9 @@ namespace WorldLoader {
                     levelName = FileUtility::loadString(data, position);
 
                     world->levels.push_back(levelName);
+                    if(levelName.compare(optionalStartLevel) == 0){
+                        currentLevelName = levelName;
+                    }
                 }
 
                 //levelName.lvl
@@ -148,7 +151,7 @@ namespace WorldLoader {
         	debug(world==nullptr?"Load Failed":"Loaded");
 
         	return world;
-        }catch(FileUtility::ExceptionLoad e){
+        }catch(FileUtility::FileExceptionLoad e){
             debug("Load Failed: "+e.description);
         }
         return nullptr;
@@ -176,7 +179,7 @@ namespace WorldLoader {
         if(fileWorldInfo != nullptr){
             vector<unsigned char>* data = new vector<unsigned char>();
 
-            FileUtility::saveUnsignedLong(data, loadedWorld->worldTime);
+            FileUtility::saveDouble(data, loadedWorld->worldTime);
 
             FileUtility::saveInt8Bit(data, (int8_t)loadedWorld->levels.size());
 
@@ -266,26 +269,35 @@ namespace WorldLoader {
         return false;
     }
 
-    World* create(std::string name){
+    World* create(std::string name, Abilities<int> playerAbilities){
 
         World* world = new World(name);
 
-        world->currentLevel = new Level(world, "startingFloor", Point2(300, 300));
-        Point2 p = world->currentLevel->generate(static_cast<unsigned int>(time(NULL)));
+        world->currentLevel = new Level(world, "Floor0", Point2(300, 300));
+
+        srand(static_cast<unsigned int>(time(NULL)));
+
+        Point2 start = Point2(rand()%world->currentLevel->getSize().x, rand()%world->currentLevel->getSize().y);
+
+        Point2 p;
+        do{
+        	p = world->currentLevel->generate(rand(), start, "");
+        }while(!(p.x > 0 && p.y > 0));
+
         world->levels.push_back(world->currentLevel->getName());
 
 
-        world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE);
-        world->currentPlayer->setActiveWeapon(new Weapon(3, "Training Sword"));
+        world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
+        world->currentPlayer->setActiveWeapon(new Weapon(3, "Training Sword", weightSmallSword, damMelee));
 
         for(int i=0;i<10;i++){
-        	world->currentPlayer->inventory.push_back(new Item("Test Item "+to_string(i)));
+        	world->currentPlayer->inventory.push_back(new Item("Test Item "+to_string(i), weightPaper));
         }
         
 
         world->currentLevel->newEntity(world->currentPlayer);
 
-        save(world);
+        //save(world);
 
         return world;
     }
@@ -305,7 +317,7 @@ namespace WorldLoader {
 
             int* position = new int(0);
 
-            FileUtility::loadUnsignedLong(data, position);
+            FileUtility::loadDouble(data, position);
             int levelCount = FileUtility::loadInt8Bit(data, position);
             FileUtility::loadString(data, position);
             FileUtility::loadInt(data, position);
@@ -331,5 +343,54 @@ namespace WorldLoader {
         debug("Deleted");
 
         return true;
+    }
+
+    bool changeLevel(World* world, Point2 entrance, string newName){
+
+        save(world);
+
+        for(string level : world->levels){
+            if(level == newName){
+                load(world->name, newName);
+                world->currentPlayer->pos = entrance;
+                return true;
+            }
+        }
+		/*
+        world->currentLevel = new Level(world, "Floor0", Point2(300, 300));
+
+        srand(static_cast<unsigned int>(time(NULL)));
+
+        Point2 start = Point2(rand()%world->currentLevel->getSize().x, rand()%world->currentLevel->getSize().y);
+
+        Point2 p = world->currentLevel->generate(rand(), start, "");
+        world->levels.push_back(world->currentLevel->getName());
+
+
+        world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE);
+        world->currentPlayer->setActiveWeapon(new Weapon(3, "Training Sword"));
+
+        for(int i=0;i<10;i++){
+            world->currentPlayer->inventory.push_back(new Item("Test Item "+to_string(i)));
+        }
+
+
+        world->currentLevel->newEntity(world->currentPlayer);
+        */
+
+        Level* newLevel = new Level(world, newName, world->currentLevel->getSize());
+
+		srand(static_cast<unsigned int>(time(NULL)));
+        newLevel->generate(rand(), entrance, "");
+        world->levels.push_back(newLevel->getName());
+
+        newLevel->newEntity(world->currentPlayer);
+
+        world->currentPlayer->pos = entrance;
+
+        world->currentLevel = newLevel;
+
+        return true;
+
     }
 }

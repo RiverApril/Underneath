@@ -8,7 +8,7 @@
 
 #include "MenuMain.h"
 #include "MenuGame.h"
-#include "MenuPreGame.h"
+#include "MenuWorldSelect.h"
 #include "Global.h"
 
 namespace Ui {
@@ -34,7 +34,7 @@ namespace Ui {
             case ' ':
                 switch (selection) {
                     case 0:
-                        openMenu(new MenuPreGame());
+                        openMenu(new MenuWorldSelect());
                         break;
 
                     case maxUiSelection:

@@ -14,7 +14,7 @@ AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE){
 
 }
 
-AiEntity::AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::color colorCode, int maxHp) : Alive(name, icon, startPos, colorCode, maxHp) {
+AiEntity::AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : Alive(name, icon, startPos, colorCode, maxHp) {
     this->ai = aiFlags;
 }
 
@@ -22,7 +22,7 @@ AiEntity::~AiEntity() {
     
 }
 
-void AiEntity::runAi(int tick, Level* level) {
+void AiEntity::runAi(double time, Level* level) {
 
     Point2 speed;
 
@@ -68,7 +68,7 @@ void AiEntity::runAi(int tick, Level* level) {
         if(ai & aiAttackPlayer){
             if(level->currentWorld->currentPlayer->pos == (pos+speed)){
             	if(activeWeapon != nullptr){
-                	level->currentWorld->currentPlayer->hurt(activeWeapon);
+                	level->currentWorld->currentPlayer->hurt(activeWeapon, time);
             	}
             }
         }
@@ -76,11 +76,20 @@ void AiEntity::runAi(int tick, Level* level) {
 
 }
 
-bool AiEntity::update(int tick, Level* level) {
+bool AiEntity::update(double time, Level* level) {
 
-    runAi(tick, level);
-    
-    return Alive::update(tick, level);
+    while(lastMoveTime+moveDelay<=time){
+        runAi(time, level);
+        lastMoveTime += moveDelay;
+        if(level->canSee(level->currentWorld->currentPlayer->pos, pos, level->currentWorld->currentPlayer->viewDistance)){
+
+            level->renderMenuGame(lastMoveTime);
+            usleep(100 * 1000);
+        }
+    }
+
+
+    return Alive::update(time, level);
 }
 
 AiEntity* AiEntity::clone(AiEntity* oldE, AiEntity* newE){

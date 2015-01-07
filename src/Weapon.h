@@ -30,10 +30,20 @@ struct Enchantment{
     int power = 1;
 };
 
+static Weight weightKnife = 1;
+static Weight weightSmallSword = 2;
+static Weight weightLargeSword = 4;
 
+static Weight weightSpear = 3;
+
+static Weight weightMace = 3;
+static Weight weightClub = 6;
 
 
 typedef int DamageType;
+const DamageType damMelee = 0;
+const DamageType damRanged = 1;
+const DamageType damMagic = 2;
 
 
 class Weapon : public Item{
@@ -42,12 +52,13 @@ public:
     static Weapon* clone(Weapon* oldE, Weapon* newE);
 
 
-    Weapon() : Weapon(0, "UNDEFINED"){
+    Weapon() : Weapon(0, "UNDEFINED", 1, damMelee){
 
     }
 
-    Weapon(int baseDamage, string name) : Item(name){
+    Weapon(int baseDamage, string name, Weight weight, DamageType damageType) : Item(name, weight){
         this->baseDamage = baseDamage;
+        this->damageType = damageType;
     }
 
     virtual void save(vector<unsigned char>* data);
@@ -68,6 +79,7 @@ public:
 
     int baseDamage = 1;
     vector<Enchantment> enchantments;
+    DamageType damageType = damMelee;
 };
 
 #endif /* defined(__Underneath__Weapon__) */

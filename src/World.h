@@ -13,6 +13,8 @@ class Player;
 class Level;
 
 #include "Global.h"
+#include "Geometry.h"
+#include "Player.h"
 
 class World {
 
@@ -27,17 +29,19 @@ public:
     Level* currentLevel;
     Player* currentPlayer;
     string name = "";
-    unsigned long worldTime = 0;
+    double worldTime = 0;
 
 };
 
 namespace WorldLoader {
     bool exists(std::string name);
-    World* load(std::string name);
+    World* load(std::string name, string optionalStartLevel = "");
     bool save(World* loadedWorld);
-    World* create(std::string name);
+    World* create(std::string name, Abilities<int> playerAbilities);
+    bool changeLevel(World* world, Point2 entrance, string newName);
     bool deleteWorld(std::string name);
     unsigned char* readData(FILE* file);
+
 }
 
 #include "Player.h"

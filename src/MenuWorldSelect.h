@@ -1,23 +1,23 @@
 //
-//  MenuPreGame.h
+//  MenuWorldSelect.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/3/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__MenuPreGame__
-#define __Underneath__MenuPreGame__
+#ifndef __Underneath__MenuWorldSelect__
+#define __Underneath__MenuWorldSelect__
 
 #include "Menu.h"
 
 namespace Ui {
-    class MenuPreGame : public Menu {
+    class MenuWorldSelect : public Menu {
     public:
 
-        MenuPreGame() : Menu() {}
+        MenuWorldSelect() : Menu() {}
 
-        ~MenuPreGame() {
+        ~MenuWorldSelect() {
             delete deleteAnswer;
         }
 
@@ -40,4 +40,4 @@ namespace Ui {
     };
 }
 
-#endif /* defined(__Underneath__MenuPreGame__) */
+#endif /* defined(__Underneath__MenuWorldSelect__) */

@@ -30,12 +30,12 @@ public:
 
     AiEntity();
 
-    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
+    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
 
     ~AiEntity();
 
-    void runAi(int tick, Level* level);
-    bool update(int tick, Level* level);
+    void runAi(double time, Level* level);
+    bool update(double time, Level* level);
 
 
     virtual void save(std::vector<unsigned char>* data);
@@ -49,6 +49,9 @@ protected:
     int ai = aiNone;
 
     Point2 lastKnownPlayerPos;
+
+    double lastMoveTime = 0;
+    double moveDelay = 1; //should varry
 };
 
 #endif /* defined(__Underneath__AiEntity__) */

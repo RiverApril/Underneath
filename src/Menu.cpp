@@ -146,8 +146,8 @@ namespace Ui {
                 if(consoleInputMode){
                     printConsole();
                 }else{
-                    move(Ui::terminalSize.y-defaultConsoleHeight, 0);
-                    clrtobot();
+                    //move(Ui::terminalSize.y-defaultConsoleHeight, 0);
+                    //clrtobot();
                 }
             }
 
