@@ -112,7 +112,7 @@ private:
 
     Point2* size;
 
-    vector<vector<TileData>> tileGrid;
+    vector<vector<TileData> > tileGrid;
 
     string name;
 };

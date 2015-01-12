@@ -328,7 +328,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     setTile(stairUpPos, tileStairUp);
     setTile(stairDownPos, tileStairDown);
     stairList.push_back(Stair(stairUpPos, true, previousLevel));
-    stairList.push_back(Stair(stairDownPos, false, "Floor"+to_string(stoi(name.substr(5))+1)));
+    stairList.push_back(Stair(stairDownPos, false, "Floor"+to_string(ParsingUtility::parseInt(name.substr(5))+1)));
 
     vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
     for(Point2 pe : path){

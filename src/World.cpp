@@ -9,9 +9,6 @@
 #include "World.h"
 #include "Utility.h"
 
-#include <sys/stat.h>
-#include <sys/types.h>
-
 
 World::World(string n){
     levels = vector<string>();

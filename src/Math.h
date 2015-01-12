@@ -11,7 +11,7 @@
 
 namespace Math {
 
-    constexpr const double pi = 3.14159265358979;
+    const double pi = 3.14159265358979;
 
     int distanceSquared(int ax, int ay, int bx, int by);
     int distanceSquared(int x, int y);

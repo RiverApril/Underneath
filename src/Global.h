@@ -10,19 +10,11 @@
 #define __Underneath__Global__
 
 #include <iostream>
+#include <sstream>
+#include <ostream>
 #include <vector>
 #include <queue>
 
-#include <ncurses.h>
-#undef COLOR_WHITE
-#undef COLOR_RED
-#undef COLOR_BLUE
-#undef COLOR_GREEN
-#undef COLOR_YELLOW
-#undef COLOR_MAGENTA
-#undef COLOR_CYAN
-#undef COLOR_BLUE
-#undef COLOR_BLACK
 
 #include <time.h>
 #include <locale.h>
@@ -33,13 +25,40 @@
 
 #include <stdio.h>
 
-#ifdef WINDOWS
-#include <direct.h>
-#define GetCurrentDir _getcwd
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#ifdef _WIN32
+    #include <memory>
+    #include <direct.h>
+    #include <stdint.h>
+    #include "curses.h"
+    extern int ESCDELAY;
+    #define GetCurrentDir _getcwd
+    int mkdir(const char *filename, int useless);
+    template <typename T>
+    std::string to_string(T a){
+        std::stringstream ss;
+        ss << a;
+        return ss.str();
+    }
+
 #else
-#include <unistd.h>
-#define GetCurrentDir getcwd
+	#include <unistd.h>
+	#include <ncurses.h>
+	#define GetCurrentDir getcwd
 #endif
+
+
+#undef COLOR_WHITE
+#undef COLOR_RED
+#undef COLOR_BLUE
+#undef COLOR_GREEN
+#undef COLOR_YELLOW
+#undef COLOR_MAGENTA
+#undef COLOR_CYAN
+#undef COLOR_BLUE
+#undef COLOR_BLACK
 
 
 #define forVector(list, i) for(size_t i=0;i<list.size();i++)
@@ -58,6 +77,7 @@ extern int nextUniqueId;
 
 extern string UnderneathDir;
 extern string WorldsDir;
+
 
 
 #endif /* defined(__Underneath__Global__) */

@@ -391,7 +391,7 @@ namespace Ui {
                         break;
                 }
                 setColor(color);
-                mvprintw(14+i, gameArea.x+1, (name+(eff.power==1?"":("("+std::to_string(eff.power)+")"))+": %d").c_str(), eff.power);
+                mvprintw(14+i, gameArea.x+1, (name+(eff.power==1?"":("("+to_string(eff.power)+")"))+": %d").c_str(), eff.power);
             }
 
         }else{

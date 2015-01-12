@@ -8,6 +8,13 @@
 
 #include "Global.h"
 
+#ifdef _WIN32
+    int ESCDELAY;
+    int mkdir(const char *filename, int useless){
+        return mkdir(filename);
+    }
+#endif
+
 char workingDirectory[FILENAME_MAX];
 
 bool running;

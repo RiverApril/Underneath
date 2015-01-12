@@ -10,7 +10,7 @@
 #include "MenuMain.h"
 #include "Tile.h"
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char** argv) {
 
 
     cout << endl << "Press enter to start Underneath..." << endl;

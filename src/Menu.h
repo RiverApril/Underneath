@@ -24,7 +24,7 @@ namespace Ui{
     class Menu {
     private:
 
-        static constexpr int defaultConsoleHeight = 8;
+        static const int defaultConsoleHeight = 8;
 
     public:
 
