@@ -76,7 +76,11 @@ using namespace AbilityDetails;
 template <typename T>
 struct Abilities{
 
-    Abilities(){}
+    Abilities(){
+        for(int i=0;i<abilityCount;i++){
+            list[i] = 0;
+        }
+    }
 
     Abilities(T a[abilityCount]){
         list[iSTR] = a[iSTR];
@@ -100,15 +104,19 @@ struct Abilities{
 
     T list[abilityCount] = {0};
 
-    T* STR = &list[iSTR]; //Melee Attack Power
-    T* DEX = &list[iDEX]; //Ranged Attack Power
-    T* INT = &list[iINT]; //Magic Attack Power
+    /*
+    
+    T* STR = *(&list+iSTR); //Melee Attack Power
+    T* DEX = *(&list+iDEX); //Ranged Attack Power
+    T* INT = *(&list+iINT); //Magic Attack Power
 
-    T* AGI = &list[iAGI]; //Dodge Chance & Attack Speed
-    T* SPD = &list[iSPD]; //Movement Speed
+    T* AGI = *(&list+iAGI); //Dodge Chance & Attack Speed
+    T* SPD = *(&list+iSPD); //Movement Speed
 
-    T* CON = &list[iCON]; //Health Regeneration Speed
-    T* WIS = &list[iWIS]; //Mana Regeneration Speed
+    T* CON = *(&list+iCON); //Health Regeneration Speed
+    T* WIS = *(&list+iWIS); //Mana Regeneration Speed
+
+    */
 
     void save(vector<unsigned char>* data){
         for(int i=0;i<abilityCount;i++){
@@ -120,6 +128,10 @@ struct Abilities{
         for(int i=0;i<abilityCount;i++){
             list[i] = FileUtility::loadType<T>(data, position);
         }
+    }
+
+    T operator[](size_t index){
+        return list[index];
     }
 };
 

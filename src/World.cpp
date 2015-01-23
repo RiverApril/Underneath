@@ -274,21 +274,24 @@ namespace WorldLoader {
 
         srand(static_cast<unsigned int>(time(NULL)));
 
-        Point2 start = Point2(rand()%world->currentLevel->getSize().x, rand()%world->currentLevel->getSize().y);
-
+        Point2 start;
         Point2 p;
         do{
+            start = Point2(rand()%world->currentLevel->getSize().x, rand()%world->currentLevel->getSize().y);
         	p = world->currentLevel->generate(rand(), start, "");
-        }while(!(p.x > 0 && p.y > 0));
+        }while(!(p.x >= 0 && p.y >= 0));
 
         world->levels.push_back(world->currentLevel->getName());
 
 
         world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
-        world->currentPlayer->setActiveWeapon(new Weapon(3, "Training Sword", weightSmallSword, damMelee));
+        world->currentPlayer->setActiveWeapon(new Weapon(3, "Training Sword", weightSmallSword));
+        world->currentPlayer->pickupItem(new Ranged(2, "Hunting Bow", weightSmallBow, 5));
 
         for(int i=0;i<10;i++){
-        	world->currentPlayer->inventory.push_back(new Item("Test Item "+to_string(i), weightPaper));
+            for(int j=0;j<5;j++){
+                world->currentPlayer->pickupItem(new Item("Test Item "+to_string(i), weightPaper));
+            }
         }
         
 

@@ -52,10 +52,13 @@ namespace Ui {
         yesNo* saveAnswer = new yesNo(aUndefined);
         int* useItem = new int(-1);
 
+        Point2 targetPosition = Point2Zero;
+
 
         int modePlayerControl = 0;
         int modeAdjustBorder = 1;
         int modeInterectChoose = 2;
+        int modeSelectTarget = 3;
         int mode = modePlayerControl;
 
     };

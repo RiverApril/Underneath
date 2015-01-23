@@ -16,6 +16,7 @@ AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE){
 
 AiEntity::AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : Alive(name, icon, startPos, colorCode, maxHp) {
     this->ai = aiFlags;
+    this->moveDelay = .9;
 }
 
 AiEntity::~AiEntity() {

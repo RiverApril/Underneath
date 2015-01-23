@@ -9,8 +9,13 @@
 #include "Command.h"
 #include "MenuMain.h"
 #include "Tile.h"
+#include "Math.h"
 
 int main(int argc, const char** argv) {
+
+    for(int i=0;i<100;i++){
+        cout << " " << Math::randomRange(.5, 1.5) << "  ";
+    }
 
 
     cout << endl << "Press enter to start Underneath..." << endl;

@@ -20,7 +20,8 @@ class Level;
 
 const int ITEM_TYPE_ITEM = 0;
 const int ITEM_TYPE_WEAPON = 1;
-const int ITEM_TYPE_SPELL = 2;
+const int ITEM_TYPE_RANGED = 2;
+const int ITEM_TYPE_SPELL = 3;
 
 class Item {
 public:
@@ -31,9 +32,10 @@ public:
         
     }
 
-    Item(string name, Weight weight){
+    Item(string name, Weight weight, int qty = 1){
         this->name = name;
         this->weight = weight;
+        this->qty = qty;
     }
 
     virtual void save(vector<unsigned char>* data);
@@ -44,8 +46,14 @@ public:
 
     static Item* loadNew(unsigned char* data, int* position);
 
+    virtual bool equalsExceptQty(Item* other){
+        return (name.compare(other->name)==0)
+        &&(weight == other->weight);
+    }
+
     string name;
     Weight weight;
+    int qty;
 
 };
 

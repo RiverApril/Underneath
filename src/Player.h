@@ -79,8 +79,8 @@ public:
 
 
     void setDelays(){
-        moveDelay = 1.0-((double)(*levels.SPD) / *maxLevels.SPD);
-        healDelay = 20.0-((double)(*levels.CON) / (*maxLevels.CON/20.0));
+        moveDelay = 1.0-((double)(levels[iSPD]) / maxLevels[iSPD]);
+        healDelay = 20.0-((double)(levels[iCON]) / (maxLevels[iCON]/20.0));
         interactDelay = .1;
     }
 
@@ -89,6 +89,34 @@ public:
     Abilities<double> nextLevelXp;
 	
     Abilities<int> maxLevels = Abilities<int>(100, 100, 100, 100, 100, 100, 100);
+
+    void gainXp(int i, double amount){
+        xp.list[i] += amount;
+        int l = nextLevelXp.list[i];
+        while(xp.list[i] > l && levels.list[i] < maxLevels.list[i]-1){
+            xp.list[i] -= l;
+            levels.list[i] += 1;
+            setNextLevelXp(i);
+            setDelays();
+        }
+    }
+
+    bool pickupItem(Item* newItem){
+        if(newItem != nullptr){
+            for(Item* i : inventory){
+                if(i->equalsExceptQty(newItem)){
+                    i->qty += newItem->qty;
+                    delete newItem;
+                    print("Picked up item and added to stack.");
+                    return true;
+                }
+            }
+            inventory.push_back(newItem);
+            print("Picked up item.");
+            return true;
+        }
+        return false;
+    }
     
     
 protected:
@@ -101,16 +129,6 @@ protected:
 
     void setNextLevelXp(int i){
         nextLevelXp.list[i] = (pow(levels.list[i], 1.2)*2)+10;
-    }
-
-    void gainXp(int i, double amount){
-        xp.list[i] += amount;
-        int l = nextLevelXp.list[i];
-        if(xp.list[i] > l && levels.list[i] < maxLevels.list[i]-1){
-            xp.list[i] -= l;
-            levels.list[i] += 1;
-            setNextLevelXp(i);
-        }
     }
 
 };

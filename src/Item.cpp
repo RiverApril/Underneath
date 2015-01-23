@@ -15,11 +15,13 @@ void Item::save(vector<unsigned char>* data){
     FileUtility::saveInt(data, getItemTypeId());
     FileUtility::saveDouble(data, weight);
     FileUtility::saveString(data, name);
+    FileUtility::saveInt(data, qty);
 }
 
 void Item::load(unsigned char* data, int* position){
     weight = FileUtility::loadDouble(data, position);
     name = FileUtility::loadString(data, position);
+    qty = FileUtility::loadInt(data, position);
 }
 
 int Item::getItemTypeId(){
@@ -49,6 +51,9 @@ Item* Item::loadNew(unsigned char* data, int* position){
             break;
         case ITEM_TYPE_WEAPON:
             e = new Weapon();
+            break;
+        case ITEM_TYPE_RANGED:
+            e = new Ranged();
             break;
         case ITEM_TYPE_SPELL:
             e = new Spell();

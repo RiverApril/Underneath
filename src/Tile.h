@@ -22,7 +22,7 @@ const TileFlag tileFlagSecretPathable = 1 << 4;
 class Tile {
 public:
 
-    Tile(int index, char icon, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen = Ui::C_DARK_GRAY, Ui::Color bgColorUnseen = Ui::C_BLACK);
+    Tile(char icon, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen = Ui::C_DARK_GRAY, Ui::Color bgColorUnseen = Ui::C_BLACK);
 
     char getIcon();
     int getIndex();
@@ -51,7 +51,7 @@ private:
     TileFlag flags;
 };
 
-extern Tile* tileList[20];
+extern vector<Tile*> tileList;
 extern Tile* tileFloor;
 extern Tile* tilePath;
 extern Tile* tileWall;

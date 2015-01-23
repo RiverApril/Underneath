@@ -101,6 +101,8 @@ public:
     void load(unsigned char* data, int*position);
 
     vector<Entity*> entityList;
+    vector<Entity*> deleteEntityList;
+    vector<Entity*> removeEntityList;
 
     World* currentWorld;
 
@@ -109,6 +111,7 @@ public:
     Ui::MenuGame* menuGame;
 
 private:
+    void actuallyRemoveEntity(Entity* e, bool deleteEntity);
 
     Point2* size;
 

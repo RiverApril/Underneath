@@ -55,6 +55,11 @@ struct Point2 {
         this->x = i;
         this->y = i;
     }
+
+    double xPlusY(){
+        return x+y;
+    }
+
     string toString();
 };
 

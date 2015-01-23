@@ -7,6 +7,7 @@
 //
 
 #include "Math.h"
+#include "Global.h"
 
 namespace Math {
 
@@ -22,6 +23,14 @@ namespace Math {
         int dy = abs(y);
 
         return dx*dx + dy*dy;
+    }
+
+    double randomRange(double min, double max){
+        if(min > max){
+            return randomRange(max, min);
+        }else{
+            return ((rand()/(double)RAND_MAX)*(max-min))+min;
+        }
     }
 
 }

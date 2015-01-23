@@ -30,6 +30,14 @@ namespace Ui {
         int selected = 0;
 
         int* useItem;
+
+
+        const int columnPrefixChar = 0;
+        const int columnName = 2;
+        const int columnQty = 20;
+        const int columnWeight = 25;
+        const int columnHitPoints = 30;
+        const int columnRange = 35;
         
     };
 }

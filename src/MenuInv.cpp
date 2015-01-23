@@ -10,6 +10,7 @@
 #include "Math.h"
 #include "ItemEntity.h"
 #include "Controls.h"
+#include "Utility.h"
 
 namespace Ui {
 
@@ -33,7 +34,11 @@ namespace Ui {
             case 'd':{
                 if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
                     Item* drop = alive->inventory[selected];
-                    alive->removeItem(alive->inventory[selected], false);
+                    if(alive->inventory[selected]->qty == 1){
+                    	alive->removeItem(alive->inventory[selected], false);
+                    }else{
+                        alive->inventory[selected]->qty -= 1;
+                    }
                     currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
                 }
                 break;
@@ -70,26 +75,56 @@ namespace Ui {
         }
     }
 
+
     void MenuInv::update() {
         setColor(C_WHITE);
         int minI = Math::max(0, scrollOffset);
         int maxI = (int)alive->inventory.size() - scrollOffset;
         move(0, 0);
         clrtobot();
-        mvprintw(0, 0, (alive->getName()+"'s Inventory: ").c_str());
-        mvhline(1, 0, '-', terminalSize.x);
+        int totalWeight = 0;
+        forVector(alive->inventory, i){
+            totalWeight += alive->inventory[i]->weight;
+        }
+        mvprintw(0, 0, "Inventory   Total Weight: %-3d", totalWeight);
+
+        setColor(C_BLACK, C_WHITE);
+		mvhline(selected+3, 0, ' ', terminalSize.x);
+        setColor(C_WHITE, C_BLACK);
+
+        mvprintw(1, columnPrefixChar, "");mvvline(1, columnPrefixChar-1, '|', terminalSize.y);
+        mvprintw(1, columnName, "Item");mvvline(1, columnName-1, '|', terminalSize.y);
+        mvprintw(1, columnQty, "Qty");mvvline(1, columnQty-1, '|', terminalSize.y);
+        mvprintw(1, columnWeight, "Wgt");mvvline(1, columnWeight-1, '|', terminalSize.y);
+        mvprintw(1, columnHitPoints, "Hp");mvvline(1, columnHitPoints-1, '|', terminalSize.y);
+        mvprintw(1, columnRange, "Rng");mvvline(1, columnRange-1, '|', terminalSize.y);
+
+        mvhline(2, 0, '-', terminalSize.x);
+        Item* item;
+        Weapon* weapon;
+        Ranged* ranged;
+        int y = 3;
         for(int i=minI;i<maxI;i++){
-            char prefix = ' ';
-            if(alive->inventory[i] == alive->getActiveWeapon()){
-                prefix = 'E';
-            }
+            item = alive->inventory[i];
+            weapon = dynamic_cast<Weapon*>(item);
+            ranged = dynamic_cast<Ranged*>(item);
             if(i == selected){
                 setColor(C_BLACK, C_WHITE);
             }
-            mvprintw(i+2, 0, ("%c %s"), prefix, alive->inventory[i]->name.c_str());
+            mvprintw(y, columnPrefixChar, "%c", item == alive->getActiveWeapon()?'E':' ');
+            mvprintw(y, columnName, item->name.c_str());
+            mvprintw(y, columnQty, "%4d", item->qty);
+            mvprintw(y, columnWeight, "%2.1f", item->weight);
+            if(weapon != nullptr){
+                mvprintw(y, columnHitPoints, "%4d", weapon->baseDamage);
+            }
+            if(ranged != nullptr){
+                mvprintw(y, columnRange, "%4d", ranged->range);
+            }
             if(i == selected){
                 setColor(C_WHITE, C_BLACK);
             }
+            y++;
         }
     }
 }

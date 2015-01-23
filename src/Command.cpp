@@ -94,7 +94,7 @@ namespace Ui{
                     if(s.length() > 0){
                         print(s);
                     }else{
-                        print("Unknown Command: "+name);
+                        print("Unknown Command: "+arguments[0]);
                     }
                     return false;
                 }
@@ -171,7 +171,41 @@ namespace Ui{
                     return true;
                 }
             }else{
-                debug("Must be in Game to apply.");
+                debug("Must be ingame to apply.");
+            }
+            return false;
+        }
+    };
+
+    struct CommandXp : Command{
+        string help(){
+            return "Gives the player XP in the given ability.";
+        }
+        string usage(){
+            return "xp <skill> <amount>";
+        }
+        string defaultName(){
+            return "effect";
+        }
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
+            MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
+            if(mg != nullptr){
+                if(arguments.size() == 2){
+                    int ability = ParsingUtility::parseInt(arguments[0]);
+                    int amount = ParsingUtility::parseInt(arguments[1]);
+                    if(ability < abilityCount){
+                        debug("Not an ability index. Must be smaller than "+to_string(abilityCount)+".");
+                        return false;
+                    }else{
+                        mg->currentWorld->currentPlayer->gainXp(ability, amount);
+                        debug("Added "+to_string(amount)+"XP to "+abilityNames[ability]);
+                        return true;
+                    }
+                }else{
+                    debug("Impropper use of command.");
+                }
+            }else{
+                debug("Must be ingame to add.");
             }
             return false;
         }
@@ -182,6 +216,7 @@ namespace Ui{
         commandList.push_back(new CommandEcho());
         commandList.push_back(new CommandDebug());
         commandList.push_back(new CommandEffect());
+        commandList.push_back(new CommandXp());
     }
     
 }

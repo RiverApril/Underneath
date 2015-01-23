@@ -10,21 +10,22 @@
 #define __Underneath__Spell__
 
 #include "Global.h"
-#include "Item.h"
+#include "Ranged.h"
 
 
-class Spell : public Item{
+class Spell : public Ranged {
 public:
 
     static Spell* clone(Spell* oldE, Spell* newE);
 
 
-    Spell() : Spell(0, "UNDEFINED", 0, 0, 0){
+    Spell() : Spell(0, "UNDEFINED", 0, 0, 0, 0){
 
     }
 
-    Spell(int baseDamage, string name, Weight weight, int manaCost, double castDelay) : Item(name, weight){
+    Spell(int baseDamage, string name, Weight weight, int manaCost, double castDelay, int range) : Ranged(baseDamage, name, weight, range){
         this->baseDamage = baseDamage;
+        this->damageType = damMagic;
         this->manaCost = manaCost;
         this->castDelay = castDelay;
     }
@@ -35,7 +36,14 @@ public:
 
     virtual int getItemTypeId();
 
-    int baseDamage = 0;
+    virtual bool equalsExceptQty(Item* other){
+        Spell* otherS = dynamic_cast<Spell*>(other);
+        return Ranged::equalsExceptQty(other)
+        &&(otherS != nullptr)
+        &&(manaCost == otherS->manaCost)
+        &&(castDelay == otherS->castDelay);
+    }
+
     int manaCost = 0;
     double castDelay = 1;
 };

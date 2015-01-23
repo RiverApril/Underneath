@@ -20,6 +20,7 @@ Player::Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abi
     setDelays();
     for(int i=0;i<abilityCount;i++){
         setNextLevelXp(i);
+        debug(to_string(levels.list[i]));
     }
 }
 
@@ -67,6 +68,11 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
 
 double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item){
 
+    if((pos + posOfTile).xPlusY() > 1){
+        print("You can't reach that!");
+        return 0;
+    }
+
     if(tid == tileStairDown->getIndex() || tid == tileStairUp->getIndex()){
 
         for(Stair s : level->stairList){
@@ -95,17 +101,17 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
     if(a != nullptr){
         if(item != nullptr){
             Weapon* weapon = dynamic_cast<Weapon*>(item);
+            Ranged* ranged = dynamic_cast<Ranged*>(item);
             Spell* spell = dynamic_cast<Spell*>(item);
-            if(weapon != nullptr){
-                int d = a->hurt(weapon, level->currentWorld->worldTime);
-                print("Dealt "+to_string(d)+" damage.");
-                if(weapon->damageType == damMelee){
-                    gainXp(iSTR, 1);
-                }else if(weapon->damageType == damRanged){
-                    gainXp(iDEX, 1);
+
+            if(ranged != nullptr){
+                if(distanceSquared(pos, posOfEntity) > ranged->range*ranged->range){
+                    print("Out of range!");
+                    return 0;
                 }
-                return useDelay(item);
-            }else if(spell != nullptr){
+            }
+
+            if(spell != nullptr){
                 if(mp >= spell->manaCost){
                     mp -= spell->manaCost;
                     int d = a->hurt(spell, level->currentWorld->worldTime);
@@ -115,6 +121,18 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
                 }
                 print("Not enough mana.");
             }
+
+            if(weapon != nullptr){
+                int d = a->hurt(weapon, level->currentWorld->worldTime);
+                print("Dealt "+to_string(d)+" damage.");
+                if(weapon->damageType == damMelee){
+                    gainXp(iSTR, 1);
+                }else if(weapon->damageType == damRanged){
+                    gainXp(iDEX, 1);
+                }
+                return useDelay(item);
+            }
+
             return 0;
         }else{
             print("No item equiped.");
@@ -124,9 +142,12 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
 
     ItemEntity* ie = dynamic_cast<ItemEntity*>(e);
     if(ie != nullptr){
-        inventory.push_back(ie->getItem());
+        Item* iei = ie->getItem();
+        if(pickupItem(iei)){
+            level->removeEntity(e, true);
+            return interactDelay;
+        }
         level->removeEntity(e, true);
-        print("Picked up item.");
         return interactDelay;
     }
 
@@ -178,9 +199,10 @@ double Player::useDelay(Item* item){
         return spell->castDelay;
     }else if(weapon != nullptr){
         d = weapon->weight/10;
+    }else{
+        d = .1;
     }
-    gainXp(iAGI, 1.0 / 3.0);
-    return (1-(*levels.AGI / *maxLevels.AGI))+d;
+    return (1-(levels[iAGI] / maxLevels[iAGI]))+d;
 
 }
 

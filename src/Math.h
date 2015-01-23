@@ -16,6 +16,8 @@ namespace Math {
     int distanceSquared(int ax, int ay, int bx, int by);
     int distanceSquared(int x, int y);
 
+    double randomRange(double min, double max);
+
     template <typename T> const T abs(const T a) {
         return (a<0)?-a:a;
     }

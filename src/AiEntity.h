@@ -44,6 +44,10 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
+    void setMoveDelay(double newDelay){
+        moveDelay = newDelay;
+    }
+
 
 protected:
     int ai = aiNone;

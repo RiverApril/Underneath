@@ -42,7 +42,7 @@ namespace Ui {
                             if(WorldLoader::exists(name)){
                                 openMenu(new MenuGame(name, Abilities<int>()));
                             }else{
-                                openMenu(new MenuPlayerSetup(name));
+                                openMenu(new MenuGame(name, Abilities<int>()));
                             }
                         }
                         break;

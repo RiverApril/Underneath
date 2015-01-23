@@ -86,10 +86,16 @@ namespace Ui{
             delete this;
 
         }
+
+        void closeAllMenus(){
+            markAllForClosure = true;
+            closeThisMenu();
+        }
         
     protected:
 
         bool printConsoleByDefault = true;
+        bool markAllForClosure = false;
         
     };
     

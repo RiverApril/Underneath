@@ -43,7 +43,7 @@ public:
 
 
 protected:
-    Item* item;
+    Item* item = nullptr;
     
 };
 

@@ -15,6 +15,7 @@
 #include "Math.h"
 #include "Utility.h"
 #include "Controls.h"
+#include "Ranged.h"
 
 
 namespace Ui {
@@ -74,7 +75,7 @@ namespace Ui {
     }
 
     bool MenuGame::openUi() {
-
+        debug("Open MenuGame Ui");
 
         if(*saveAnswer == aYes){
             WorldLoader::save(currentWorld);
@@ -122,15 +123,11 @@ namespace Ui {
     }
 
     void MenuGame::drawTileAt(Point2 p) {
+        Ui::Color fg = C_LIGHT_RED;
+        Ui::Color bg = C_BLACK;
+        char symbol = '?';
+        int attr = 0;
 
-        /*DEBUGGING:
-        if(currentWorld->currentLevel != nullptr){
-            Tile* tempTile = currentWorld->currentLevel->tileAt(p);
-            Ui::setColor(tempTile->getFgColor(true), tempTile->getBgColor(true));
-            addch(tempTile->getIcon());
-        }
-        return;
-        //////////*/
 
         bool inView = false;
         if(currentWorld->currentLevel != nullptr){
@@ -138,51 +135,72 @@ namespace Ui {
                 if(currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, p, currentWorld->currentPlayer->viewDistance)) {
                     currentWorld->currentLevel->setExplored(p, true);
                     inView = true;
-                }
-            }
-            if(!currentWorld->currentLevel->getExplored(p)) {
-                Ui::setColor(C_DARK_BLACK);
-                addch(' ');
-                return;
-            }
-            Tile* tempTile = currentWorld->currentLevel->tileAt(p);
+                }if(!currentWorld->currentLevel->getExplored(p)) {
+                    symbol = ' ';
+                }else{
+                    Tile* tempTile = currentWorld->currentLevel->tileAt(p);
 
-            if(currentWorld->currentLevel->inRange(p)) {
-                Entity* e = nullptr;
-                int d = INT16_MIN;
-                for(Entity* ei : currentWorld->currentLevel->entityList){
-                    if(ei->pos == p){
-                        int dd = ei->getRenderDepth();
-                        if(d < dd){
-                            e = ei;
-                            d = dd;
+                    fg = tempTile->getFgColor(inView);
+                    bg = tempTile->getBgColor(inView);
+                    symbol = tempTile->getIcon();
+
+                    if(currentWorld->currentLevel->inRange(p)) {
+                        Entity* e = nullptr;
+                        int d = INT16_MIN;
+                        for(Entity* ei : currentWorld->currentLevel->entityList){
+                            if(ei->pos == p){
+                                int dd = ei->getRenderDepth();
+                                if(d < dd){
+                                    e = ei;
+                                    d = dd;
+                                }
+                            }
+                        }
+                        if(e != nullptr) {
+
+                            if(inView) {
+                                if(currentWorld->currentPlayer == e && mode == modeInterectChoose){
+                                    fg = e->getBgColorCode();
+                                    bg = e->getFgColorCode();
+                                }else{
+                                    fg = e->getFgColorCode();
+                                    bg = e->getBgColorCode();
+                                }
+                                symbol = e->getIcon(p, (int)tick, currentWorld->currentLevel);
+                            }
+
                         }
                     }
                 }
-                if(e != nullptr) {
-
-                    if(inView) {
-                        if(currentWorld->currentPlayer == e && mode == modeInterectChoose){
-							Ui::setColor(e->getBgColorCode(), e->getFgColorCode());
-                        }else{
-                        	Ui::setColor(e->getFgColorCode(), e->getBgColorCode());
+                Ranged* ranged = dynamic_cast<Ranged*>(currentWorld->currentPlayer->getActiveWeapon());
+                if(ranged != nullptr){
+                    if(mode == modeSelectTarget){
+                        if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, p, ranged->range) && inView) {
+                            if(bg == C_BLACK){
+                                bg = C_DARK_RED;
+                            }
+                        }else if(p == targetPosition){
+                            bg = C_LIGHT_GRAY;
+                            attr = A_BLINK;
                         }
-                        addch(e->getIcon(p, (int)tick, currentWorld->currentLevel));
-                        return;
-                    }
 
+                    }
                 }
+
             }
-            Ui::setColor(tempTile->getFgColor(inView), tempTile->getBgColor(inView));
-            addch(tempTile->getIcon());
         }else{
-            Ui::setColor(C_LIGHT_MAGENTA);
-            addch('?');
+            fg = C_LIGHT_MAGENTA;
+            symbol = '?';
         }
+
+        setColor(fg, bg, attr);
+        addch(symbol);
     }
 
     void MenuGame::arrowMove(Point2 p){
-        if(mode == modeInterectChoose){
+        if(mode == modeSelectTarget){
+            targetPosition += p;
+        }if(mode == modeInterectChoose){
 
             Item* i = *useItem!=-1?(currentWorld->currentPlayer->inventory[*useItem]):currentWorld->currentPlayer->getActiveWeapon();
             
@@ -214,7 +232,7 @@ namespace Ui {
             case KEY_ESCAPE: //Escape
                 if(currentWorld->currentPlayer == nullptr){
                     WorldLoader::deleteWorld(currentWorld->name);
-                    closeThisMenu();
+                    closeAllMenus();
                 }else{
                     openMenu(new MenuYesNo("Do you want to save '"+currentWorld->name+"' ?", saveAnswer, true));
                 }
@@ -270,8 +288,19 @@ namespace Ui {
                         timePassed += currentWorld->currentPlayer->interact(currentWorld->currentLevel, currentWorld->currentPlayer->pos, false, currentWorld->currentPlayer->getActiveWeapon());
 
                         mode = modePlayerControl;
+                    }else if(mode == modeSelectTarget){
+                        timePassed += currentWorld->currentPlayer->interact(currentWorld->currentLevel, targetPosition, false, currentWorld->currentPlayer->getActiveWeapon());
+                        mode = modePlayerControl;
                     }else{
-                        mode = modeInterectChoose;
+                        Ranged* ranged = dynamic_cast<Ranged*>(currentWorld->currentPlayer->getActiveWeapon());
+                        if(ranged != nullptr){
+                            mode = modeSelectTarget;
+                            if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, targetPosition, ranged->range)){
+                            	targetPosition = currentWorld->currentPlayer->pos;
+                            }
+                        }else{
+                        	mode = modeInterectChoose;
+                        }
                     }
                     break;
 
@@ -359,12 +388,12 @@ namespace Ui {
             Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
             mvprintw(2, gameArea.x+1, "HP: %d/%d", hp, maxHp);
             addch(' ');
-            printw("%s", DrawingUtility::makeBar(hp, maxHp, terminalSize.x - getcurx(stdscr) - 2).c_str());
+            printw("%s", StringUtility::makeBar(hp, maxHp, terminalSize.x - getcurx(stdscr) - 2).c_str());
 
             Ui::setColor(C_DARK_CYAN);
             mvprintw(3, gameArea.x+1, "MP: %d/%d", mp, maxMp);
             addch(' ');
-            printw("%s", DrawingUtility::makeBar(mp, maxMp, terminalSize.x - getcurx(stdscr) - 2).c_str());
+            printw("%s", StringUtility::makeBar(mp, maxMp, terminalSize.x - getcurx(stdscr) - 2).c_str());
 
             if(currentWorld->currentPlayer->getActiveWeapon() != nullptr){
                 mvprintw(7, gameArea.x+1, "W: %s(%d)", currentWorld->currentPlayer->getActiveWeapon()->name.c_str(), currentWorld->currentPlayer->getActiveWeapon()->baseDamage);
@@ -391,7 +420,7 @@ namespace Ui {
                         break;
                 }
                 setColor(color);
-                mvprintw(14+i, gameArea.x+1, (name+(eff.power==1?"":("("+to_string(eff.power)+")"))+": %d").c_str(), eff.power);
+                mvprintw(14+i, gameArea.x+1, (name+" %s: %.2f").c_str(), ParsingUtility::intToRomanNumerals(eff.power).c_str(), eff.timeEnd-currentWorld->worldTime);
             }
 
         }else{

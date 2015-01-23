@@ -72,10 +72,12 @@ namespace FileUtility {
 
 }
 
-namespace DrawingUtility {
+namespace StringUtility {
 
 
-    string makeBar(int progress, int maxProgress, unsigned int size, char filled = '=', char empty = '-');
+    string makeBar(int progress, int maxProgress, size_t size, char filled = '=', char empty = '-');
+
+    string repeatString(string s, size_t qty);
 }
 
 namespace ParsingUtility {
@@ -96,6 +98,8 @@ namespace ParsingUtility {
     int parseInt(string s, int base = 10, int defaultIfException = 0);
 
     int parseIntUnstable(string s, int base = 10);
+
+    string intToRomanNumerals(int a);
 }
 
 

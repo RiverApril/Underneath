@@ -17,6 +17,10 @@ namespace Ui {
     
 
     void Menu::_openUi() {
+        if(markAllForClosure){
+            closeThisMenu();
+            return;
+        }
         if(openUi()){
         	update();
         	refresh();
@@ -24,6 +28,11 @@ namespace Ui {
     }
 
     void Menu::_closeUi(){
+        if(markAllForClosure){
+            if(surMenu != nullptr){
+                surMenu->markAllForClosure = true;
+            }
+        }
         closeUi();
     }
 

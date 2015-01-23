@@ -19,6 +19,7 @@ namespace Ui {
 
         ~MenuMain() {}
 
+        
         bool openUi();
         void closeUi();
         void handleInput(int in);

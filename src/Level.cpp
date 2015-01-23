@@ -145,10 +145,18 @@ long Level::entityCount() {
 
 bool Level::update(double time, Point2 viewPos) {
     bool u = false;
-    for (size_t i=0; i<entityList.size(); i++) {
-        if(entityList.at(i)->update(time, this)){
+    for (Entity* e : entityList) {
+        if(e->update(time, this)){
             u = true;
         }
+    }
+    while(removeEntityList.size() > 0){
+        actuallyRemoveEntity(removeEntityList[0], false);
+        removeEntityList.erase(removeEntityList.begin());
+    }
+    while(deleteEntityList.size() > 0){
+        actuallyRemoveEntity(deleteEntityList[0], true);
+        deleteEntityList.erase(deleteEntityList.begin());
     }
     return u;
 }
@@ -173,6 +181,13 @@ Entity* Level::newEntity(Entity* newE) {
 }
 
 void Level::removeEntity(Entity* e, bool deleteEntity) {
+    if(deleteEntity){
+        deleteEntityList.push_back(e);
+    }else{
+        removeEntityList.push_back(e);
+    }
+}
+void Level::actuallyRemoveEntity(Entity* e, bool deleteEntity){
     for(int i=0;i<entityList.size();i++){
         if(e->uniqueId == entityList[i]->uniqueId){
             entityList.erase(entityList.begin()+i);
@@ -185,7 +200,7 @@ void Level::removeEntity(Entity* e, bool deleteEntity) {
             return;
         }
     }
-    debug("Failed to Delete Entity: "+e->getName());
+    debug("Failed to Remove Entity: "+e->getName());
 }
 
 vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
@@ -293,19 +308,23 @@ bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
 Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLevel) {
     srand(seed);
 
-    for (int i=0; i<size->x; i++) {
-        for (int j=0; j<size->y; j++) {
-            tileGrid[i][j].index = tileUnset->getIndex();
-            tileGrid[i][j].explored = false;
-            //tileGrid[i][j].entity = nullptr;
-            if(i==0 || j==0 || i==(size->x-1) || j==(size->y-1)){
-                tileGrid[i][j].index = tileWall->getIndex();
+    do{
+
+        for (int i=0; i<size->x; i++) {
+            for (int j=0; j<size->y; j++) {
+                tileGrid[i][j].index = tileUnset->getIndex();
+                tileGrid[i][j].explored = false;
+                //tileGrid[i][j].entity = nullptr;
+                if(i==0 || j==0 || i==(size->x-1) || j==(size->y-1)){
+                    tileGrid[i][j].index = tileWall->getIndex();
+                }
             }
         }
-    }
 
-    shared_ptr<vector<shared_ptr<LevelGenerator::Room>>> rooms = LevelGenerator::createRooms(1000, *size);
-    LevelGenerator::makeRoomsAndPaths(rooms, this);
+        shared_ptr<vector<shared_ptr<LevelGenerator::Room>>> rooms = LevelGenerator::createRooms(1000, *size);
+        LevelGenerator::makeRoomsAndPaths(rooms, this);
+
+    }while(tileAt(stairUpPos)->hasFlag(tileFlagSolid));
 
     //Point2 stairUpPos = entrance;
     Point2 stairDownPos;
@@ -345,13 +364,14 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
 
     AiEntity* goblin = new AiEntity ("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
-    goblin->setActiveWeapon(new Weapon(1, "Rusted Spear", weightSpear, damMelee));
+    goblin->setActiveWeapon(new Weapon(1, "Rusted Spear", weightSpear));
+    goblin->setMoveDelay(Math::randomRange(.5, 1.2));
 
     addEntitiesRandomly(stairUpPos, goblin, (rand()%80)+20);
 
 
     AiEntity* troll = new AiEntity ("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-    troll->setActiveWeapon((new Weapon(3, "Spiked Club", weightClub, damMelee))->addEnchantment(enchBleed, 10, 1));
+    troll->setActiveWeapon((new Weapon(3, "Spiked Club", weightClub))->addEnchantment(enchBleed, 10, 1));
 
     addEntitiesRandomly(stairUpPos, troll, (rand()%100)+20);
 

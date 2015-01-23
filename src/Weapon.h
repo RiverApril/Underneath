@@ -12,6 +12,10 @@
 #include "Global.h"
 #include "Item.h"
 
+typedef int DamageType;
+const DamageType damMelee = 0;
+const DamageType damRanged = 1;
+const DamageType damMagic = 2;
 
 typedef int EnchantmentId;
 
@@ -30,6 +34,14 @@ struct Enchantment{
     int power = 1;
 };
 
+inline bool operator==(const Enchantment& a, const Enchantment& b){
+    return (a.eId == b.eId)&&(a.chance==b.chance)&&(a.power==b.power);
+}
+
+inline bool operator!=(const Enchantment& a, const Enchantment& b){
+    return !(a == b);
+}
+
 static Weight weightKnife = 1;
 static Weight weightSmallSword = 2;
 static Weight weightLargeSword = 4;
@@ -40,25 +52,24 @@ static Weight weightMace = 3;
 static Weight weightClub = 6;
 
 
-typedef int DamageType;
-const DamageType damMelee = 0;
-const DamageType damRanged = 1;
-const DamageType damMagic = 2;
+
+static Weight weightSmallBow = 2;
+static Weight weightLargeBow = 3;
 
 
-class Weapon : public Item{
+class Weapon : public Item {
 public:
 
     static Weapon* clone(Weapon* oldE, Weapon* newE);
 
 
-    Weapon() : Weapon(0, "UNDEFINED", 1, damMelee){
+    Weapon() : Weapon(0, "UNDEFINED", 0){
 
     }
 
-    Weapon(int baseDamage, string name, Weight weight, DamageType damageType) : Item(name, weight){
+    Weapon(int baseDamage, string name, Weight weight) : Item(name, weight){
         this->baseDamage = baseDamage;
-        this->damageType = damageType;
+        this->damageType = damMelee;
     }
 
     virtual void save(vector<unsigned char>* data);
@@ -77,9 +88,19 @@ public:
         return this;
     }
 
+    virtual bool equalsExceptQty(Item* other){
+        Weapon* otherW = dynamic_cast<Weapon*>(other);
+        return Item::equalsExceptQty(other)
+        &&(otherW != nullptr)
+        &&(baseDamage == otherW->baseDamage)
+        &&(damageType == otherW->damageType)
+        &&(enchantments == otherW->enchantments);
+    }
+
     int baseDamage = 1;
-    vector<Enchantment> enchantments;
     DamageType damageType = damMelee;
+    
+    vector<Enchantment> enchantments;
 };
 
 #endif /* defined(__Underneath__Weapon__) */

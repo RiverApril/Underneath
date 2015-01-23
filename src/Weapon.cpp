@@ -48,7 +48,7 @@ Weapon* Weapon::clone(Weapon* oldE, Weapon* newE){
         newE = new Weapon();
     }
 
-    Weapon::clone(oldE, newE);
+    Item::clone(oldE, newE);
 
     newE->baseDamage = oldE->baseDamage;
     newE->enchantments = oldE->enchantments;
