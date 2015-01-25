@@ -140,6 +140,18 @@ namespace StringUtility {
 
 }
 
+namespace VariableUtility {
+    
+    
+    template <typename T>
+    void swap(T& a, T& b){
+        T& temp = a;
+        b = a;
+        a = temp;
+    }
+    
+}
+
 namespace ParsingUtility {
 
     int getNumberFromSymbol(char symbol){

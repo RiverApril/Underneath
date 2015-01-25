@@ -39,8 +39,9 @@ namespace Ui {
         /*if(currentWorld->currentLevel != nullptr){
         	currentWorld->currentLevel->setAndUnsetDisplayEntities();
         }*/
-
-        currentWorld->currentLevel->menuGame = this;
+        if(initSuccess){
+            currentWorld->currentLevel->menuGame = this;
+        }
 
         viewUpdate();
 

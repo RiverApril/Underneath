@@ -80,6 +80,14 @@ namespace StringUtility {
     string repeatString(string s, size_t qty);
 }
 
+namespace VariableUtility {
+    
+    
+    template <typename T>
+    void swap(T& a, T& b);
+    
+}
+
 namespace ParsingUtility {
 
     struct ParseException{

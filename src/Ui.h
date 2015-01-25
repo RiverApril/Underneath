@@ -21,29 +21,29 @@ namespace Ui {
 
     typedef char Color;
 
-    const Color C_DARK_BLACK = 0x0; // white when background is black
-    const Color C_DARK_RED = 0x1;
-    const Color C_DARK_GREEN = 0x2;
-    const Color C_DARK_YELLOW = 0x3;
-    const Color C_DARK_BLUE = 0x4;
-    const Color C_DARK_MAGENTA = 0x5;
-    const Color C_DARK_CYAN = 0x6;
-    const Color C_DARK_WHITE = 0x7;
+    extern Color C_DARK_BLACK;
+    extern Color C_DARK_RED;
+    extern Color C_DARK_GREEN;
+    extern Color C_DARK_YELLOW;
+    extern Color C_DARK_BLUE;
+    extern Color C_DARK_MAGENTA;
+    extern Color C_DARK_CYAN;
+    extern Color C_DARK_WHITE;
 
-    const Color C_LIGHT_BLACK = 0x8;
-    const Color C_LIGHT_RED = 0x9;
-    const Color C_LIGHT_GREEN = 0xA;
-    const Color C_LIGHT_YELLOW = 0xB;
-    const Color C_LIGHT_BLUE = 0xC;
-    const Color C_LIGHT_MAGENTA = 0xD;
-    const Color C_LIGHT_CYAN = 0xE;
-    const Color C_LIGHT_WHITE = 0xF;
+    extern Color C_LIGHT_BLACK;
+    extern Color C_LIGHT_RED;
+    extern Color C_LIGHT_GREEN;
+    extern Color C_LIGHT_YELLOW;
+    extern Color C_LIGHT_BLUE;
+    extern Color C_LIGHT_MAGENTA;
+    extern Color C_LIGHT_CYAN;
+    extern Color C_LIGHT_WHITE;
 
-    const Color C_LIGHT_GRAY = C_DARK_WHITE;
-    const Color C_DARK_GRAY = C_LIGHT_BLACK;
+    extern Color C_LIGHT_GRAY;
+    extern Color C_DARK_GRAY;
 
-    const Color C_WHITE = C_LIGHT_WHITE;
-    const Color C_BLACK = C_DARK_BLACK;
+    extern Color C_WHITE;
+    extern Color C_BLACK;
 
 
 

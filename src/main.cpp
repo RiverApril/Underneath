@@ -13,13 +13,9 @@
 
 int main(int argc, const char** argv) {
 
-    for(int i=0;i<100;i++){
-        cout << " " << Math::randomRange(.5, 1.5) << "  ";
-    }
 
-
-    cout << endl << "Press enter to start Underneath..." << endl;
-    cin.ignore();
+    //cout << endl << "Press enter to start Underneath..." << endl;
+    //cin.ignore();
 
     if (!GetCurrentDir(workingDirectory, sizeof(workingDirectory))){
         return errno;
