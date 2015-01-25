@@ -11,8 +11,6 @@
 
 #include "Global.h"
 #include "Weapon.h"
-#include "IWeaponizable.h"
-
 
 class Ranged : public Weapon{
 public:
