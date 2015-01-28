@@ -17,3 +17,5 @@ Makefile
 /Release/
 */curses.h
 */panel.h
+*.lvl
+*/world.info
