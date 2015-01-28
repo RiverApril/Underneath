@@ -174,15 +174,19 @@ namespace Ui {
                     }
                 }
                 Ranged* ranged = dynamic_cast<Ranged*>(currentWorld->currentPlayer->getActiveWeapon());
-                if(ranged != nullptr){
+                if(ranged){
                     if(mode == modeSelectTarget){
+                        if(p == targetPosition){
+                            bg = C_LIGHT_GREEN;
+                            attr = A_BLINK;
+                        }
                         if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, p, ranged->range) && inView) {
+                            if(p == targetPosition){
+                                bg = C_LIGHT_RED;
+                            }
                             if(bg == C_BLACK){
                                 bg = C_DARK_RED;
                             }
-                        }else if(p == targetPosition){
-                            bg = C_LIGHT_GRAY;
-                            attr = A_BLINK;
                         }
 
                     }
@@ -290,11 +294,13 @@ namespace Ui {
 
                         mode = modePlayerControl;
                     }else if(mode == modeSelectTarget){
+
                         timePassed += currentWorld->currentPlayer->interact(currentWorld->currentLevel, targetPosition, false, currentWorld->currentPlayer->getActiveWeapon());
+
                         mode = modePlayerControl;
                     }else{
                         Ranged* ranged = dynamic_cast<Ranged*>(currentWorld->currentPlayer->getActiveWeapon());
-                        if(ranged != nullptr){
+                        if(ranged){
                             mode = modeSelectTarget;
                             if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, targetPosition, ranged->range)){
                             	targetPosition = currentWorld->currentPlayer->pos;
@@ -377,10 +383,10 @@ namespace Ui {
             p = currentWorld->currentPlayer->pos;
             mvprintw(0, gameArea.x+1, "%s", currentWorld->currentPlayer->getName().c_str());
 
-            const int hp = currentWorld->currentPlayer->getHp();
-            const int maxHp = currentWorld->currentPlayer->getMaxHp();
-            const int mp = currentWorld->currentPlayer->getMp();
-            const int maxMp = currentWorld->currentPlayer->getMaxMp();
+            const int hp = Math::roundToInt(currentWorld->currentPlayer->getHp());
+            const int maxHp = Math::roundToInt(currentWorld->currentPlayer->getMaxHp());
+            const int mp = Math::roundToInt(currentWorld->currentPlayer->getMp());
+            const int maxMp = Math::roundToInt(currentWorld->currentPlayer->getMaxMp());
 
             move(2, gameArea.x+1);
 
@@ -391,13 +397,13 @@ namespace Ui {
             addch(' ');
             printw("%s", StringUtility::makeBar(hp, maxHp, terminalSize.x - getcurx(stdscr) - 2).c_str());
 
-            Ui::setColor(C_DARK_CYAN);
+            Ui::setColor(C_LIGHT_BLUE);
             mvprintw(3, gameArea.x+1, "MP: %d/%d", mp, maxMp);
             addch(' ');
             printw("%s", StringUtility::makeBar(mp, maxMp, terminalSize.x - getcurx(stdscr) - 2).c_str());
 
             if(currentWorld->currentPlayer->getActiveWeapon() != nullptr){
-                mvprintw(7, gameArea.x+1, "W: %s(%d)", currentWorld->currentPlayer->getActiveWeapon()->name.c_str(), currentWorld->currentPlayer->getActiveWeapon()->baseDamage);
+                //mvprintw(7, gameArea.x+1, "W: %s(%3.1f)", currentWorld->currentPlayer->getActiveWeapon()->name.c_str(), currentWorld->currentPlayer->getActiveWeapon()->baseDamage);
             }
 
             for(int i=0;i<currentWorld->currentPlayer->effects.size();i++){

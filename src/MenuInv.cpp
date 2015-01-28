@@ -46,7 +46,7 @@ namespace Ui {
 
             case 'e':{
                 Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
-                if(weapon != nullptr){
+                if(weapon){
                     if(alive->getActiveWeapon() == weapon){
                         alive->setActiveWeapon(nullptr);
                     }else{
@@ -114,11 +114,11 @@ namespace Ui {
             mvprintw(y, columnPrefixChar, "%c", item == alive->getActiveWeapon()?'E':' ');
             mvprintw(y, columnName, item->name.c_str());
             mvprintw(y, columnQty, "%4d", item->qty);
-            mvprintw(y, columnWeight, "%2.1f", item->weight);
-            if(weapon != nullptr){
-                mvprintw(y, columnHitPoints, "%4d", weapon->baseDamage);
+            mvprintw(y, columnWeight+1, "%2.1f", item->weight);
+            if(weapon){
+                mvprintw(y, columnHitPoints+1, "%3.1f", weapon->baseDamage);
             }
-            if(ranged != nullptr){
+            if(ranged){
                 mvprintw(y, columnRange, "%4d", ranged->range);
             }
             if(i == selected){

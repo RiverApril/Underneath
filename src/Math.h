@@ -30,7 +30,7 @@ namespace Math {
         return (a>b)?a:b;
     }
 
-    int round(double a);
+    int roundToInt(double a);
 
 }
 

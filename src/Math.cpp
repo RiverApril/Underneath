@@ -33,4 +33,8 @@ namespace Math {
         }
     }
 
+    int roundToInt(double a){
+        return (int)round(a);
+    }
+
 }

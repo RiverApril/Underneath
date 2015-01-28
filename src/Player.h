@@ -53,35 +53,34 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual int hurt(int amount){
+    virtual double hurt(double amount){
         return Alive::hurt(amount);
     }
 
-    virtual int hurt(Weapon* w, double time){
+    virtual double hurt(Weapon* w, double time){
         return Alive::hurt(w, time);
     }
 
-    virtual int hurt(Spell* s, double time){
-        return Alive::hurt(s, time);
-    }
-
-    virtual int heal(int amount){
+    virtual double heal(double amount){
         int a = Alive::heal(amount);
         gainXp(iCON, a/10.0);
         return a;
     }
 
-    virtual int healMana(int amount){
+    virtual double healMana(double amount){
         int a = Alive::heal(amount);
         gainXp(iWIS, a/10.0);
         return a;
     }
 
 
-    void setDelays(){
+    void updateVariablesForAbilities(){
         moveDelay = 1.0-((double)(levels[iSPD]) / maxLevels[iSPD]);
         healDelay = 20.0-((double)(levels[iCON]) / (maxLevels[iCON]/20.0));
         interactDelay = .1;
+
+        maxHp = 30 + (((double)(levels[iCON]) / maxLevels[iCON]) * 1000);
+        maxMp = 30 + (((double)(levels[iWIS]) / maxLevels[iWIS]) * 1000);
     }
 
     Abilities<int> levels;
@@ -97,7 +96,7 @@ public:
             xp.list[i] -= l;
             levels.list[i] += 1;
             setNextLevelXp(i);
-            setDelays();
+            updateVariablesForAbilities();
         }
     }
 
@@ -107,12 +106,12 @@ public:
                 if(i->equalsExceptQty(newItem)){
                     i->qty += newItem->qty;
                     delete newItem;
-                    print("Picked up item and added to stack.");
+                    debug("Picked up item and added to stack.");
                     return true;
                 }
             }
             inventory.push_back(newItem);
-            print("Picked up item.");
+            debug("Picked up item.");
             return true;
         }
         return false;

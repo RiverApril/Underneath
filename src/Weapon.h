@@ -17,6 +17,7 @@ const DamageType damMelee = 0;
 const DamageType damRanged = 1;
 const DamageType damMagic = 2;
 
+
 typedef int EnchantmentId;
 
 const EnchantmentId enchFire = 0;
@@ -42,33 +43,21 @@ inline bool operator!=(const Enchantment& a, const Enchantment& b){
     return !(a == b);
 }
 
-static Weight weightKnife = 1;
-static Weight weightSmallSword = 2;
-static Weight weightLargeSword = 4;
-
-static Weight weightSpear = 3;
-
-static Weight weightMace = 3;
-static Weight weightClub = 6;
-
-
-
-static Weight weightSmallBow = 2;
-static Weight weightLargeBow = 3;
-
 
 class Weapon : public Item {
 public:
 
-    static Weapon* clone(Weapon* oldE, Weapon* newE);
+    static Weapon* clone(Weapon* oldE, Weapon* newE = nullptr);
 
 
-    Weapon() : Weapon(0, "UNDEFINED", 0){
+    Weapon() : Weapon(0, "UNDEFINED", 0, 0){
 
     }
 
-    Weapon(int baseDamage, string name, Weight weight) : Item(name, weight){
+    Weapon(double baseDamage, string name, Weight weight, double useDelay) : Item(name, weight){
         this->baseDamage = baseDamage;
+        this->useDelay = useDelay;
+
         this->damageType = damMelee;
     }
 
@@ -91,14 +80,16 @@ public:
     virtual bool equalsExceptQty(Item* other){
         Weapon* otherW = dynamic_cast<Weapon*>(other);
         return Item::equalsExceptQty(other)
-        &&(otherW != nullptr)
+        &&(otherW)
         &&(baseDamage == otherW->baseDamage)
         &&(damageType == otherW->damageType)
-        &&(enchantments == otherW->enchantments);
+        &&(enchantments == otherW->enchantments)
+        &&(useDelay == otherW->useDelay);
     }
 
-    int baseDamage = 1;
+    double baseDamage = 1;
     DamageType damageType = damMelee;
+    double useDelay = 1;
     
     vector<Enchantment> enchantments;
 };

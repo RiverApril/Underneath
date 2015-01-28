@@ -15,7 +15,8 @@ extern vector<string> consoleBuffer;
 
 void debug(string s);
 void debugf(string format, ...);
-void print(string s);
+void console(string s);
+void consolef(string format, ...);
 
 namespace Ui {
 

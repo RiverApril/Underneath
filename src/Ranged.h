@@ -18,11 +18,11 @@ public:
     static Ranged* clone(Ranged* oldE, Ranged* newE);
 
 
-    Ranged() : Ranged(0, "UNDEFINED", 0, 0){
+    Ranged() : Ranged(0, "UNDEFINED", 0, 0, 0){
 
     }
 
-    Ranged(int baseDamage, string name, Weight weight, int range) : Weapon(baseDamage, name, weight){
+    Ranged(int baseDamage, string name, Weight weight, double useDelay, int range) : Weapon(baseDamage, name, weight, useDelay){
         this->baseDamage = baseDamage;
         this->damageType = damRanged;
         this->range = range;
@@ -37,11 +37,11 @@ public:
     virtual bool equalsExceptQty(Item* other){
         Ranged* otherR = dynamic_cast<Ranged*>(other);
         return Weapon::equalsExceptQty(other)
-        &&(otherR != nullptr)
+        &&(otherR)
         &&(range == otherR->range);
     }
 
-    double range = 4;
+    int range = 4;
 };
 
 #endif /* defined(__Underneath__Ranged__) */

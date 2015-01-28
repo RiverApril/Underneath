@@ -13,14 +13,12 @@ void Spell::save(vector<unsigned char>* data){
     Ranged::save(data);
 
     FileUtility::saveInt(data, manaCost);
-    FileUtility::saveDouble(data, castDelay);
 }
 
 void Spell::load(unsigned char* data, int* position){
     Ranged::load(data, position);
 
     manaCost = FileUtility::loadInt(data, position);
-    castDelay = FileUtility::loadDouble(data, position);
 }
 
 int Spell::getItemTypeId(){
@@ -36,7 +34,6 @@ Spell* Spell::clone(Spell* oldE, Spell* newE){
     Ranged::clone(oldE, newE);
 
     newE->manaCost = oldE->manaCost;
-    newE->castDelay = oldE->castDelay;
 
 
     return newE;

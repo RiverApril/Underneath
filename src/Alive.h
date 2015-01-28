@@ -23,11 +23,11 @@ const EffectId effRegen = 2;
 
 struct Effect{
 
-    Effect(EffectId eId, double timeEnd, int power) : Effect(eId, timeEnd, power, 0){
+    Effect(EffectId eId, double timeEnd, double power) : Effect(eId, timeEnd, power, 0){
 
     }
 
-    Effect(EffectId eId, double timeEnd, int power, double lastTime){
+    Effect(EffectId eId, double timeEnd, double power, double lastTime){
         this->eId = eId;
         this->timeEnd = timeEnd;
         this->power = power;
@@ -41,7 +41,7 @@ struct Effect{
     EffectId eId = effFire;
     double timeEnd;
     double lastTime = 0;
-    int power = 1;
+    double power = 1;
 };
 
 
@@ -64,19 +64,19 @@ public:
         return name;
     }
 
-    int getHp(){
+    double getHp(){
         return hp;
     }
 
-    int getMaxHp(){
+    double getMaxHp(){
         return maxHp;
     }
 
-    int getMp(){
+    double getMp(){
         return mp;
     }
 
-    int getMaxMp(){
+    double getMaxMp(){
         return maxMp;
     }
 
@@ -86,7 +86,7 @@ public:
         //pos.set(-1);
     }
 
-    virtual int hurt(int amount){
+    virtual double hurt(double amount){
         hp -= amount;
         if(hp<=0){
             die();
@@ -95,13 +95,8 @@ public:
         return amount;
     }
 
-    virtual int hurt(Spell* w, double time){
-        int d = Math::max((rand()%(w->baseDamage)) + (rand()%(w->baseDamage)), 1);
-        return hurt(d);
-    }
-
-    virtual int hurt(Weapon* w, double time){
-        int d = Math::max((rand()%(w->baseDamage)) + (rand()%(w->baseDamage)), 1);
+    virtual double hurt(Weapon* w, double time){
+        double d = (((rand()/(double)RAND_MAX)*(w->baseDamage)) + ((rand()/(double)RAND_MAX)*(w->baseDamage))) / 2;
         for(Enchantment ench : w->enchantments){
             switch(ench.eId){
                 case enchBleed:
@@ -117,31 +112,32 @@ public:
                     break;
             }
         }
+        consolef("Hurt %s %.2f hp.", name.c_str(), d);
         return hurt(d);
     }
 
     void addEffect(Effect e);
 
-    virtual int heal(int amount){
+    virtual double heal(double amount){
         if(dead){
             return 0;
         }
         hp += amount;
         if(hp>maxHp){
-            int a = amount-(hp-maxHp);
+            double a = amount-(hp-maxHp);
             hp = maxHp;
             return a;
         }
         return amount;
     }
 
-    virtual int healMana(int amount){
+    virtual double healMana(double amount){
         if(dead){
             return 0;
         }
         mp += amount;
         if(mp>maxMp){
-            int a = amount-(hp-maxHp);
+            double a = amount-(hp-maxHp);
             mp = maxMp;
             return a;
         }
@@ -200,10 +196,10 @@ public:
 
 protected:
     string name;
-    int maxHp = 30;
-    int hp = maxHp;
-    int maxMp = 10;
-    int mp = maxMp;
+    double maxHp = 30;
+    double hp = maxHp;
+    double maxMp = 30;
+    double mp = maxMp;
     bool dead = false;
 
     double lastHealTime = 0;

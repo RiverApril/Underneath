@@ -12,6 +12,7 @@
 #include "Geometry.h"
 #include "Global.h"
 #include "LevelGenerator.h"
+#include "ItemGenerator.h"
 #include "Utility.h"
 
 Level::Level(World* w, string n, Point2 s) {
@@ -364,14 +365,14 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
 
     AiEntity* goblin = new AiEntity ("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
-    goblin->setActiveWeapon(new Weapon(1, "Rusted Spear", weightSpear));
+    goblin->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat1Shitty, damMelee, false));
     goblin->setMoveDelay(Math::randomRange(.5, 1.2));
 
     addEntitiesRandomly(stairUpPos, goblin, (rand()%80)+20);
 
 
     AiEntity* troll = new AiEntity ("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-    troll->setActiveWeapon((new Weapon(3, "Spiked Club", weightClub))->addEnchantment(enchBleed, 10, 1));
+    troll->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damMelee, false));
 
     addEntitiesRandomly(stairUpPos, troll, (rand()%100)+20);
 

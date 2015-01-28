@@ -17,7 +17,7 @@ Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()){
 
 Player::Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities) : Alive(name, icon, startPos, colorCode) {
     levels = startAbilities;
-    setDelays();
+    updateVariablesForAbilities();
     for(int i=0;i<abilityCount;i++){
         setNextLevelXp(i);
         debug(to_string(levels.list[i]));
@@ -68,8 +68,7 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
 
 double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item){
 
-    if((pos + posOfTile).xPlusY() > 1){
-        print("You can't reach that!");
+    if(distanceSquared(posOfTile, pos) > 1){
         return 0;
     }
 
@@ -98,33 +97,33 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
 double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item){
 
     Alive* a = dynamic_cast<Alive*>(e);
-    if(a != nullptr){
+    if(a){
         if(item != nullptr){
             Weapon* weapon = dynamic_cast<Weapon*>(item);
             Ranged* ranged = dynamic_cast<Ranged*>(item);
             Spell* spell = dynamic_cast<Spell*>(item);
 
-            if(ranged != nullptr){
+            if(ranged){
                 if(distanceSquared(pos, posOfEntity) > ranged->range*ranged->range){
-                    print("Out of range!");
+                    console("Out of range!");
                     return 0;
                 }
             }
 
-            if(spell != nullptr){
+            if(spell){
                 if(mp >= spell->manaCost){
                     mp -= spell->manaCost;
-                    int d = a->hurt(spell, level->currentWorld->worldTime);
-                    print("Dealt "+to_string(d)+" damage.");
+                    double d = a->hurt(spell, level->currentWorld->worldTime);
+                    console("Dealt "+to_string(d)+" damage.");
                     gainXp(iINT, 1);
                     return useDelay(item);
                 }
-                print("Not enough mana.");
+                console("Not enough mana.");
             }
 
-            if(weapon != nullptr){
-                int d = a->hurt(weapon, level->currentWorld->worldTime);
-                print("Dealt "+to_string(d)+" damage.");
+            if(weapon){
+                double d = a->hurt(weapon, level->currentWorld->worldTime);
+                console("Dealt "+to_string(d)+" damage.");
                 if(weapon->damageType == damMelee){
                     gainXp(iSTR, 1);
                 }else if(weapon->damageType == damRanged){
@@ -135,13 +134,13 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
 
             return 0;
         }else{
-            print("No item equiped.");
+            console("No item equiped.");
             return 0;
         }
     }
 
     ItemEntity* ie = dynamic_cast<ItemEntity*>(e);
-    if(ie != nullptr){
+    if(ie){
         Item* iei = ie->getItem();
         if(pickupItem(iei)){
             level->removeEntity(e, true);
@@ -192,13 +191,10 @@ void Player::load(unsigned char* data, int* position){
 }
 
 double Player::useDelay(Item* item){
-    Spell* spell = dynamic_cast<Spell*>(item);
     Weapon* weapon = dynamic_cast<Weapon*>(item);
     double d = 0;
-    if(spell != nullptr){
-        return spell->castDelay;
-    }else if(weapon != nullptr){
-        d = weapon->weight/10;
+    if(weapon){
+        return weapon->useDelay;
     }else{
         d = .1;
     }

@@ -13,9 +13,6 @@
 
 typedef double Weight;
 
-static Weight weightPaper = .2;
-static Weight weightSpell = .5;
-
 class Level;
 
 const int ITEM_TYPE_ITEM = 0;

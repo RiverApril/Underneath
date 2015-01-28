@@ -71,14 +71,14 @@ namespace Ui{
 
             switch(arguments.size()){
                 case 0:{
-                    print("Global Commands:");
+                    console("Global Commands:");
                     for(int i=0;i<commandList.size();i++){
-                        print("- "+commandList[i]->usage());
+                        console("- "+commandList[i]->usage());
                     }
                     string s = currentMenu->menuOnlyCommands();
                     if(s.length() > 0){
-                        print("Menu Commands:");
-                        print(s);
+                        console("Menu Commands:");
+                        console(s);
                     }
                     return true;
                 }
@@ -86,15 +86,15 @@ namespace Ui{
                 case 1:{
                     for(int i=0;i<commandList.size();i++){
                         if(commandList[i]->acceptableName(arguments[0])){
-                            print(commandList[i]->usage() + "  " + commandList[i]->help());
+                            console(commandList[i]->usage() + "  " + commandList[i]->help());
                             return true;
                         }
                     }
                     string s = currentMenu->menuOnlyCommandHelp(arguments[0]);
                     if(s.length() > 0){
-                        print(s);
+                        console(s);
                     }else{
-                        print("Unknown Command: "+arguments[0]);
+                        console("Unknown Command: "+arguments[0]);
                     }
                     return false;
                 }
@@ -117,7 +117,7 @@ namespace Ui{
         }
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
             if(argumentsRaw.length() > 0){
-                print(argumentsRaw);
+                console(argumentsRaw);
                 return true;
             }
             return false;
@@ -137,7 +137,7 @@ namespace Ui{
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
             if(argumentsRaw.length() == 0){
                 printDebugEnabled = !printDebugEnabled;
-                print("Debug "+string(printDebugEnabled?"Enabled":"Disabled")+".");
+                console("Debug "+string(printDebugEnabled?"Enabled":"Disabled")+".");
                 return true;
             }
             return false;
@@ -156,7 +156,7 @@ namespace Ui{
         }
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
             MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
-            if(mg != nullptr){
+            if(mg){
                 Effect e = Effect(effBleed, mg->currentWorld->worldTime+10, 1);
                 if(arguments.size() > 0){
                     e.eId = ParsingUtility::parseInt(arguments[0].c_str());
@@ -189,7 +189,7 @@ namespace Ui{
         }
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
             MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
-            if(mg != nullptr){
+            if(mg){
                 if(arguments.size() == 2){
                     int ability = ParsingUtility::parseInt(arguments[0]);
                     int amount = ParsingUtility::parseInt(arguments[1]);

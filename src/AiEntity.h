@@ -52,10 +52,13 @@ public:
 protected:
     int ai = aiNone;
 
-    Point2 lastKnownPlayerPos;
+    Point2 lastKnownTargetPos;
+    Alive* target = nullptr;
 
     double lastMoveTime = 0;
     double moveDelay = 1; //should varry
+
+    double lastAttackTime = 0;
 };
 
 #endif /* defined(__Underneath__AiEntity__) */

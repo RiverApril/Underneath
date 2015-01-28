@@ -23,11 +23,10 @@ public:
 
     }
 
-    Spell(int baseDamage, string name, Weight weight, int manaCost, double castDelay, int range) : Ranged(baseDamage, name, weight, range){
+    Spell(int baseDamage, string name, Weight weight, int manaCost, double useDelay, int range) : Ranged(baseDamage, name, weight, useDelay, range){
         this->baseDamage = baseDamage;
         this->damageType = damMagic;
         this->manaCost = manaCost;
-        this->castDelay = castDelay;
     }
 
     virtual void save(vector<unsigned char>* data);
@@ -39,13 +38,11 @@ public:
     virtual bool equalsExceptQty(Item* other){
         Spell* otherS = dynamic_cast<Spell*>(other);
         return Ranged::equalsExceptQty(other)
-        &&(otherS != nullptr)
-        &&(manaCost == otherS->manaCost)
-        &&(castDelay == otherS->castDelay);
+        &&(otherS)
+        &&(manaCost == otherS->manaCost);
     }
 
     int manaCost = 0;
-    double castDelay = 1;
 };
 
 #endif /* defined(__Underneath__Spell__) */

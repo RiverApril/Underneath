@@ -8,6 +8,7 @@
 
 #include "World.h"
 #include "Utility.h"
+#include "ItemGenerator.h"
 
 
 World::World(string n){
@@ -285,12 +286,12 @@ namespace WorldLoader {
 
 
         world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
-        world->currentPlayer->setActiveWeapon(new Weapon(3, "Training Sword", weightSmallSword));
-        world->currentPlayer->pickupItem(new Ranged(2, "Hunting Bow", weightSmallBow, 5));
+        world->currentPlayer->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damMelee, false));
+        world->currentPlayer->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damRanged, false));
 
         for(int i=0;i<10;i++){
             for(int j=0;j<5;j++){
-                world->currentPlayer->pickupItem(new Item("Test Item "+to_string(i), weightPaper));
+                world->currentPlayer->pickupItem(new Item("Test Item "+to_string(i), .1));
             }
         }
         

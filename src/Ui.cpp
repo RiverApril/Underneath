@@ -17,11 +17,11 @@ vector<string> consoleBuffer;
 
 void debug(string s){
     if(Ui::printDebugEnabled){
-    	print("DEBUG: "+s);
+    	console("DEBUG: "+s);
     }
 }
 
-void print(string s){
+void console(string s){
     if(s.find('\n') == string::npos){
 
         size_t lastI = 0;
@@ -45,6 +45,16 @@ void debugf(string format, ...){
     va_start(args, format);
     vsprintf(buff, format.c_str(), args);
     debug(buff);
+    va_end(args);
+}
+
+
+void consolef(string format, ...){
+    char buff[format.length()];
+    va_list args;
+    va_start(args, format);
+    vsprintf(buff, format.c_str(), args);
+    console(buff);
     va_end(args);
 }
 
