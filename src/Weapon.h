@@ -47,8 +47,32 @@ inline bool operator!=(const Enchantment& a, const Enchantment& b){
 class Weapon : public Item {
 public:
 
-    static Weapon* clone(Weapon* oldE, Weapon* newE = nullptr);
+    static string damageTypeToString(DamageType d){
+        switch(d){
+            case damMelee:
+                return "Melee";
+            case damRanged:
+                return "Ranged";
+            case damMagic:
+                return "Magic";
+            default:
+                return "Undefined";
+        }
+    }
 
+    static string enchantmentIdToString(EnchantmentId e){
+        switch(e){
+            case enchFire:
+                return "Fire";
+            case enchBleed:
+                return "Bleed";
+            default:
+                return "Undefined";
+        }
+    }
+
+
+    static Weapon* cloneUnsafe(Weapon* oldE, Weapon* newE = nullptr);
 
     Weapon() : Weapon(0, "UNDEFINED", 0, 0){
 
@@ -61,11 +85,13 @@ public:
         this->damageType = damMelee;
     }
 
+    virtual int getItemTypeId(){
+        return ITEM_TYPE_WEAPON;
+    }
+
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(unsigned char* data, int* position);
-
-    virtual int getItemTypeId();
 
     Weapon* addEnchantment(EnchantmentId eId, int chance, int power){
         enchantments.push_back(Enchantment(eId,chance ,power));
@@ -92,6 +118,8 @@ public:
     double useDelay = 1;
     
     vector<Enchantment> enchantments;
+
+protected:
 };
 
 #endif /* defined(__Underneath__Weapon__) */

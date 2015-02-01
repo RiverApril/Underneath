@@ -34,10 +34,10 @@ namespace Ui {
 
         const int columnPrefixChar = 0;
         const int columnName = 2;
-        const int columnQty = 30;
-        const int columnWeight = 35;
-        const int columnHitPoints = 40;
-        const int columnRange = 45;
+        const int columnQty = 39;
+        //const int columnWeight = 35;
+        //const int columnHitPoints = 35;
+        const int columnInfo = 40;
         
     };
 }

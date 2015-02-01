@@ -123,7 +123,7 @@ int Level::indexAt(Point2 p) {
     return tileEdge->getIndex();
 }
 
-bool Level::canSee(Point2 origin, Point2 test, int range){
+bool Level::canSee(Point2 origin, Point2 test, double range){
 
     if(Math::distanceSquared(origin.x, origin.y, test.x, test.y) > range*range){
         return false;
@@ -182,6 +182,7 @@ Entity* Level::newEntity(Entity* newE) {
 }
 
 void Level::removeEntity(Entity* e, bool deleteEntity) {
+    e->removed = true;
     if(deleteEntity){
         deleteEntityList.push_back(e);
     }else{
@@ -322,8 +323,13 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
             }
         }
 
-        shared_ptr<vector<shared_ptr<LevelGenerator::Room>>> rooms = LevelGenerator::createRooms(1000, *size);
+        vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(1000, *size);
         LevelGenerator::makeRoomsAndPaths(rooms, this);
+
+        for(int i=0;i<rooms->size();i++){
+            delete rooms->at(i);
+        }
+        delete rooms;
 
     }while(tileAt(stairUpPos)->hasFlag(tileFlagSolid));
 
@@ -385,7 +391,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 template <typename T> void Level::addEntitiesRandomly(Point2 start, T* e, int count){
 
     for(int i=0;i<count;i++){
-        T* r = T::clone(e, nullptr);
+        T* r = dynamic_cast<T*>(Entity::clone(e));
         Point2 p = Point2(findRandomWithoutFlag(tileFlagSolid));
         if(canPathTo(start, p, tileFlagPathable | tileFlagSecretPathable)){
             r->pos = p;

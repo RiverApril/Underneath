@@ -12,27 +12,18 @@
 void Ranged::save(vector<unsigned char>* data){
     Weapon::save(data);
 
-    FileUtility::saveInt(data, range);
+    FileUtility::saveDouble(data, range);
 }
 
 void Ranged::load(unsigned char* data, int* position){
     Weapon::load(data, position);
 
-    baseDamage = FileUtility::loadInt(data, position);
-    range = FileUtility::loadInt(data, position);
+    range = FileUtility::loadDouble(data, position);
 }
 
-int Ranged::getItemTypeId(){
-    return ITEM_TYPE_RANGED;
-}
+Ranged* Ranged::cloneUnsafe(Ranged* oldE, Ranged* newE){
 
-Ranged* Ranged::clone(Ranged* oldE, Ranged* newE){
-
-    if(newE == nullptr){
-        newE = new Ranged();
-    }
-
-    Weapon::clone(oldE, newE);
+    Weapon::cloneUnsafe(oldE, newE);
 
     newE->range = oldE->range;
 

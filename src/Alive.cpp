@@ -85,13 +85,9 @@ void Alive::addEffect(Effect e){
 }
 
 
-Alive* Alive::clone(Alive* oldE, Alive* newE){
+Alive* Alive::cloneUnsafe(Alive* oldE, Alive* newE){
 
-    if(newE == nullptr){
-        newE = new Alive();
-    }
-
-    Entity::clone(oldE, newE);
+    Entity::cloneUnsafe(oldE, newE);
 
     newE->name = oldE->name;
     newE->maxHp = oldE->maxHp;

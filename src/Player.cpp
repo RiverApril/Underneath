@@ -17,6 +17,7 @@ Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()){
 
 Player::Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities) : Alive(name, icon, startPos, colorCode) {
     levels = startAbilities;
+    viewDistance = 14;
     updateVariablesForAbilities();
     for(int i=0;i<abilityCount;i++){
         setNextLevelXp(i);
@@ -68,33 +69,36 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
 
 double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item){
 
-    if(distanceSquared(posOfTile, pos) > 1){
-        return 0;
-    }
+    if(distanceSquared(posOfTile, pos) <= 1){
 
-    if(tid == tileStairDown->getIndex() || tid == tileStairUp->getIndex()){
+        if(tid == tileStairDown->getIndex() || tid == tileStairUp->getIndex()){
 
-        for(Stair s : level->stairList){
-            if(s.p == posOfTile){
-                WorldLoader::changeLevel(level->currentWorld, s.p, s.levelName);
+            for(Stair s : level->stairList){
+                if(s.p == posOfTile){
+                    WorldLoader::changeLevel(level->currentWorld, s.p, s.levelName);
+                    return interactDelay;
+                }
+            }
+
+        }else if(tid == tileOpenDoor->getIndex()){
+            if(posOfTile != pos){
+                level->setTile(posOfTile, tileDoor);
                 return interactDelay;
             }
-        }
-
-    }else if(tid == tileOpenDoor->getIndex()){
-        if(posOfTile != pos){
-            level->setTile(posOfTile, tileDoor);
+        }else if(tileList[tid]->hasFlag(tileFlagDoor)){
+            level->setTile(posOfTile, tileOpenDoor);
             return interactDelay;
         }
-    }else if(tileList[tid]->hasFlag(tileFlagDoor)){
-        level->setTile(posOfTile, tileOpenDoor);
-        return interactDelay;
     }
 
     return 0;
 }
 
 double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item){
+
+    if(e->removed){
+        return 0;
+    }
 
     Alive* a = dynamic_cast<Alive*>(e);
     if(a){
@@ -139,15 +143,23 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
         }
     }
 
-    ItemEntity* ie = dynamic_cast<ItemEntity*>(e);
-    if(ie){
-        Item* iei = ie->getItem();
-        if(pickupItem(iei)){
+    if(distanceSquared(posOfEntity, pos) <= 1){
+
+        ItemEntity* ie = dynamic_cast<ItemEntity*>(e);
+
+        if(ie){
+            Item* iei = ie->getItem();
+            if(iei != nullptr){
+                debug("Picking up item: "+iei->name);
+                if(pickupItem(iei)){
+                    level->removeEntity(e, true);
+                    return interactDelay;
+                }
+            }
             level->removeEntity(e, true);
-            return interactDelay;
+            return 0;
         }
-        level->removeEntity(e, true);
-        return interactDelay;
+
     }
 
     return 0;
@@ -160,13 +172,9 @@ double Player::waitUntilHealed(){
 }
 
 
-Player* Player::clone(Player* oldE, Player* newE){
+Player* Player::cloneUnsafe(Player* oldE, Player* newE){
 
-    if(newE == nullptr){
-        newE = new Player();
-    }
-
-    Alive::clone(oldE, newE);
+    Alive::cloneUnsafe(oldE, newE);
 
     return newE;
 }

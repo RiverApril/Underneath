@@ -11,16 +11,16 @@
 
 namespace Math {
 
-    int distanceSquared(int ax, int ay, int bx, int by) {
-        int dx = abs(ax - bx);
-        int dy = abs(ay - by);
+    double distanceSquared(double ax, double ay, double bx, double by) {
+        double dx = abs(ax - bx);
+        double dy = abs(ay - by);
 
         return dx*dx + dy*dy;
     }
 
-    int distanceSquared(int x, int y) {
-        int dx = abs(x);
-        int dy = abs(y);
+    double distanceSquared(double x, double y) {
+        double dx = abs(x);
+        double dy = abs(y);
 
         return dx*dx + dy*dy;
     }

@@ -290,7 +290,8 @@ namespace WorldLoader {
         world->currentPlayer->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damRanged, false));
 
         for(int i=0;i<10;i++){
-            for(int j=0;j<5;j++){
+            int q = rand()%100;
+            for(int j=0;j<q;j++){
                 world->currentPlayer->pickupItem(new Item("Test Item "+to_string(i), .1));
             }
         }

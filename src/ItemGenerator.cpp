@@ -30,7 +30,7 @@ namespace ItemGenerator {
     Weapon* wShortSword = atl(new Weapon(1, "Short Sword", 1, 1));
     Weapon* wBattleAxe = atl(new Weapon(1.2, "Battle Axe", 1.2, 1.2));
     Weapon* wMase = atl(new Weapon(1.4, "Mase", 1.4, 1.4));
-    Weapon* wSpear = setDamageType(atl(new Ranged(1, "Spear", 2, 1.5, 1)), damMelee);
+    Weapon* wSpear = setDamageType(atl(new Ranged(1, "Spear", 2, 1.5, 1.8)), damMelee);
 
     Ranged* wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(2, "Recurve Bow", 1.8, 1.8, 8)));
     Ranged* wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(2, "Longbow", 2, 1.5, 10)));
@@ -61,16 +61,7 @@ namespace ItemGenerator {
             }
         }
 
-        Spell* s = dynamic_cast<Spell*>(w);
-        Ranged* r = dynamic_cast<Ranged*>(w);
-
-        if(s){
-            return Spell::clone(s, nullptr);
-        }else if(r){
-            return Ranged::clone(r, nullptr);
-        }else{
-            return Weapon::clone(w, nullptr);
-        }
+        return dynamic_cast<Weapon*>(w->clone(w));
 
     }
 

@@ -73,7 +73,7 @@ public:
     bool setTile(Point2 p, Tile* tile);
     int indexAt(Point2 p);
 
-    bool canSee(Point2 origin, Point2 test, int range);
+    bool canSee(Point2 origin, Point2 test, double range);
 
     long entityCount();
 

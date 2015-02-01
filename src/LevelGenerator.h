@@ -30,25 +30,28 @@ namespace LevelGenerator{
 
     struct Room{
         Room(){
-            entrances = make_shared<vector<shared_ptr<Entry> > >();
+            entrances = new vector<Entry*>();
         }
         ~Room(){
-            
+            for(int i=0;i<entrances->size();i++){
+                delete entrances->at(i);
+            }
+            delete entrances;
         }
         Point2 center;
         Point2 radius;
-        shared_ptr<vector<shared_ptr<Entry> > > entrances;
+        vector<Entry*>* entrances;
     };
 
     int getPathAndMaybeDoor();
 
-    extern bool roomsOverlap(shared_ptr<Room> a, shared_ptr<Room> b, int border);
+    extern bool roomsOverlap(Room* a, Room* b, int border);
 
-    extern shared_ptr<Room> createRoom(Point2 roomSize, shared_ptr<vector<shared_ptr<Room> > > presentRooms);
+    extern Room* createRoom(Point2 roomSize, vector<Room*>* presentRooms);
 
-    extern shared_ptr<vector<shared_ptr<Room> > > createRooms(int qty, Point2 roomSize);
+    extern vector<Room*>* createRooms(int qty, Point2 roomSize);
 
-    extern void makeRoomsAndPaths(shared_ptr<vector<shared_ptr<Room> > > rooms, Level* level);
+    extern void makeRoomsAndPaths(vector<Room*>* rooms, Level* level);
 
 }
 

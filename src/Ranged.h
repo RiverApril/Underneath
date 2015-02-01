@@ -15,24 +15,26 @@
 class Ranged : public Weapon{
 public:
 
-    static Ranged* clone(Ranged* oldE, Ranged* newE);
+    static Ranged* cloneUnsafe(Ranged* oldE, Ranged* newE);
 
 
     Ranged() : Ranged(0, "UNDEFINED", 0, 0, 0){
 
     }
 
-    Ranged(int baseDamage, string name, Weight weight, double useDelay, int range) : Weapon(baseDamage, name, weight, useDelay){
+    Ranged(int baseDamage, string name, Weight weight, double useDelay, double range) : Weapon(baseDamage, name, weight, useDelay){
         this->baseDamage = baseDamage;
         this->damageType = damRanged;
         this->range = range;
     }
 
+    virtual int getItemTypeId(){
+        return ITEM_TYPE_RANGED;
+    }
+
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(unsigned char* data, int* position);
-
-    virtual int getItemTypeId();
 
     virtual bool equalsExceptQty(Item* other){
         Ranged* otherR = dynamic_cast<Ranged*>(other);
@@ -41,7 +43,9 @@ public:
         &&(range == otherR->range);
     }
 
-    int range = 4;
+    double range = 4;
+
+protected:
 };
 
 #endif /* defined(__Underneath__Ranged__) */

@@ -11,16 +11,16 @@
 
 namespace LevelGenerator{
 
-    bool roomsOverlap(shared_ptr<Room> a, shared_ptr<Room> b, int border){
+    bool roomsOverlap(Room* a, Room* b, int border){
         return !(((a->center.x-a->radius.x-border) > (b->center.x+b->radius.x+border) ||
                   (b->center.x-b->radius.x-border) > (a->center.x+a->radius.x+border)) ||
                  ((a->center.y-a->radius.y-border) > (b->center.y+b->radius.y+border) ||
                   (b->center.y-b->radius.y-border) > (a->center.y+a->radius.y+border)));
     }
 
-    shared_ptr<Room> createRoom(Point2 roomSize, shared_ptr<vector<shared_ptr<Room>>> presentRooms){
+    Room* createRoom(Point2 roomSize, vector<Room*>* presentRooms){
         bool fit = false;
-        shared_ptr<Room> r = make_shared<Room>();
+        Room* r = new Room();
         int att = 0;
         while(!fit && att<100){
             att++;
@@ -42,7 +42,7 @@ namespace LevelGenerator{
             int ec = (rand()%4)+4;
             bool eL = false, eR = false, eU = false, eD = false;
             for(int i=0;i<ec || (!(eL && eR && eU && eD));i++){
-                shared_ptr<Entry> e = make_shared<Entry>();
+                Entry* e = new Entry();
                 e->direction = rand()%4;
                 if(e->direction == left) eL = true;
                 if(e->direction == right) eR = true;
@@ -70,10 +70,10 @@ namespace LevelGenerator{
         return r;
     }
 
-    shared_ptr<vector<shared_ptr<Room>>> createRooms(int qty, Point2 roomSize){
-        shared_ptr<vector<shared_ptr<Room>>> rooms = make_shared<vector<shared_ptr<Room>>>();
+    vector<Room*>* createRooms(int qty, Point2 roomSize){
+        vector<Room*>* rooms = new vector<Room*>();
         for(int i=0;i<qty;i++){
-            shared_ptr<Room> r = createRoom(roomSize, rooms);
+            Room* r = createRoom(roomSize, rooms);
             if(r->radius.x > 0 && r->radius.y > 0){
                 rooms->push_back(r);
             }
@@ -85,9 +85,9 @@ namespace LevelGenerator{
         return (rand()%30==0?(rand()%10==0?tileSecretDoor:tileDoor):tilePath)->getIndex();
     }
 
-    void makeRoomsAndPaths(shared_ptr<vector<shared_ptr<Room>>> rooms, Level* level){
+    void makeRoomsAndPaths(vector<Room*>* rooms, Level* level){
         for(int i=0;i<rooms->size();i++){
-            shared_ptr<Room> r = rooms->at(i);
+            Room* r = rooms->at(i);
             for(int j=-r->radius.x;j<=r->radius.x;j++){
                 level->setTile(Point2(r->center.x+j, r->center.y+r->radius.y), tileWall);
                 level->setTile(Point2(r->center.x+j, r->center.y-r->radius.y), tileWall);
@@ -103,20 +103,20 @@ namespace LevelGenerator{
             }
         }
         for(int i=0;i<rooms->size();i++){
-            shared_ptr<Room> r = rooms->at(i);
+            Room* r = rooms->at(i);
 
             for(int j=0;j<r->entrances->size();j++){
-                shared_ptr<Entry> e = r->entrances->at(j);
+                Entry* e = r->entrances->at(j);
 
                 for(int k=0;k<rooms->size();k++){
-                    shared_ptr<Room> ro = rooms->at(k);
+                    Room* ro = rooms->at(k);
 
                     if(r->center==ro->center){
                         continue;
                     }
 
                     for(int l=0;l<ro->entrances->size();l++){
-                        shared_ptr<Entry> eo = ro->entrances->at(l);
+                        Entry* eo = ro->entrances->at(l);
 
                         if((e->direction!=eo->direction)){
                             int ddif = 1;

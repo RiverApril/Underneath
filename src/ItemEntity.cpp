@@ -41,15 +41,11 @@ bool ItemEntity::update(double time, Level* level) {
 }
 
 
-ItemEntity* ItemEntity::clone(ItemEntity* oldE, ItemEntity* newE){
+ItemEntity* ItemEntity::cloneUnsafe(ItemEntity* oldE, ItemEntity* newE){
 
-    if(newE == nullptr){
-        newE = new ItemEntity();
-    }
+    Entity::cloneUnsafe(oldE, newE);
 
-    Entity::clone(oldE, newE);
-
-    newE->item = oldE->item;
+    newE->item = oldE->item->clone(oldE->item);
 
     return newE;
 

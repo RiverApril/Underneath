@@ -40,17 +40,9 @@ void Weapon::load(unsigned char* data, int* position){
     }
 }
 
-int Weapon::getItemTypeId(){
-    return ITEM_TYPE_WEAPON;
-}
+Weapon* Weapon::cloneUnsafe(Weapon* oldE, Weapon* newE){
 
-Weapon* Weapon::clone(Weapon* oldE, Weapon* newE){
-
-    if(newE == nullptr){
-        newE = new Weapon();
-    }
-
-    Item::clone(oldE, newE);
+    Item::cloneUnsafe(oldE, newE);
 
     newE->baseDamage = oldE->baseDamage;
     newE->enchantments = oldE->enchantments;

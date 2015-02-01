@@ -25,7 +25,9 @@ class Entity{
 
 public:
 
-    static Entity* clone(Entity* oldE, Entity* newE);
+    static Entity* cloneUnsafe(Entity* oldE, Entity* newE);
+
+    static Entity* clone(Entity* oldE);
 
     Entity();
 
@@ -70,6 +72,8 @@ public:
 
     Point2 pos;
 
+    bool removed = false;
+
 protected:
     char defaultIcon = '?';
     Point2 lastPos;
@@ -77,6 +81,9 @@ protected:
     Ui::Color bgColorCode;
     bool updateIcon = true;
     bool solid = false;
+
+    template<class Super, class Sub>
+    static Sub* makeNewAndClone(Super* oldT);
 
 };
 

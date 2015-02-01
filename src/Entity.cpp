@@ -96,11 +96,7 @@ Ui::Color Entity::getBgColorCode() {
 }
 
 
-Entity* Entity::clone(Entity* oldE, Entity* newE){
-
-    if(newE == nullptr){
-        newE = new Entity();
-    }
+Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE){
 
     newE->defaultIcon = oldE->defaultIcon;
     newE->pos = oldE->pos;
@@ -111,6 +107,44 @@ Entity* Entity::clone(Entity* oldE, Entity* newE){
     newE->solid = oldE->solid;
 
     return newE;
+}
+
+template<class Super, class Sub>
+Sub* Entity::makeNewAndClone(Super* oldT){
+    Sub* newT = new Sub();
+    return Sub::cloneUnsafe(dynamic_cast<Sub*>(oldT), newT);
+}
+
+Entity* Entity::clone(Entity* oldE){
+
+    int type = oldE->getEntityTypeId();
+
+    debug("Clone Entity of type: "+to_string(type));
+
+    switch (type) {
+        case ENTITY_TYPE_ENTITY:
+            return makeNewAndClone<Entity, Entity>(oldE);
+
+        case ENTITY_TYPE_ALIVE:
+            return makeNewAndClone<Entity, Alive>(oldE);
+
+        case ENTITY_TYPE_AIENTITY:
+            return makeNewAndClone<Entity, AiEntity>(oldE);
+
+        case ENTITY_TYPE_PLAYER:
+            return makeNewAndClone<Entity, Player>(oldE);
+
+        case ENTITY_TYPE_ITEMENTITY:
+            return makeNewAndClone<Entity, ItemEntity>(oldE);
+
+        default:
+            throw FileUtility::FileExceptionLoad("Entity type unknown: "+to_string(type));
+            return nullptr;
+            break;
+    }
+    
+    
+    
 }
 
 void Entity::save(vector<unsigned char>* data){

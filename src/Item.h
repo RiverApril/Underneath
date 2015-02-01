@@ -23,10 +23,10 @@ const int ITEM_TYPE_SPELL = 3;
 class Item {
 public:
 
-    static Item* clone(Item* oldE, Item* newE);
+    static Item* clone(Item* oldI);
 
     Item() : Item("UNDEFINED", 0){
-        
+
     }
 
     Item(string name, Weight weight, int qty = 1){
@@ -39,7 +39,9 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual int getItemTypeId();
+    virtual int getItemTypeId(){
+        return ITEM_TYPE_ITEM;
+    }
 
     static Item* loadNew(unsigned char* data, int* position);
 
@@ -51,6 +53,14 @@ public:
     string name;
     Weight weight;
     int qty;
+
+
+protected:
+
+    template<class Super, class Sub>
+    static Sub* makeNewAndClone(Super* oldT);
+
+    static Item* cloneUnsafe(Item* oldE, Item* newE);
 
 };
 

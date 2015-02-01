@@ -46,7 +46,7 @@ namespace Ui {
         setColor(C_WHITE);
         move(0, 0);
         clrtobot();
-        mvprintw(0, 0, (player->getName()+"'s Abilities: ").c_str());
+        mvprintw(0, 0, "Abilities: ");
         for(int i=0;i<abilityCount;i++){
             mvprintw(i+2, 1, (string(abilityAbr[i])+": %2d  xp[%s] (%.0f/%.0f)").c_str(),
                      player->levels.list[i],

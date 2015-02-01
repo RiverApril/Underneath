@@ -105,13 +105,9 @@ bool AiEntity::update(double time, Level* level) {
     return Alive::update(time, level);
 }
 
-AiEntity* AiEntity::clone(AiEntity* oldE, AiEntity* newE){
+AiEntity* AiEntity::cloneUnsafe(AiEntity* oldE, AiEntity* newE){
 
-    if(newE == nullptr){
-        newE = new AiEntity();
-    }
-
-    Alive::clone(oldE, newE);
+    Alive::cloneUnsafe(oldE, newE);
 
     newE->ai = oldE->ai;
     

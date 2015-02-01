@@ -24,20 +24,45 @@ void Item::load(unsigned char* data, int* position){
     qty = FileUtility::loadInt(data, position);
 }
 
-int Item::getItemTypeId(){
-    return ITEM_TYPE_ITEM;
-}
-
-Item* Item::clone(Item* oldE, Item* newE){
-
-    if(newE == nullptr){
-        newE = new Item();
-    }
+Item* Item::cloneUnsafe(Item* oldE, Item* newE){
 
     newE->name = oldE->name;
     newE->weight = oldE->weight;
 
     return newE;
+}
+
+template<class Super, class Sub>
+Sub* Item::makeNewAndClone(Super* oldT){
+    Sub* newT = new Sub();
+	return Sub::cloneUnsafe(dynamic_cast<Sub*>(oldT), newT);
+}
+
+Item* Item::clone(Item* oldI){
+
+    int type = oldI->getItemTypeId();
+
+    switch (type) {
+        case ITEM_TYPE_ITEM:
+            return makeNewAndClone<Item, Item>(oldI);
+
+        case ITEM_TYPE_WEAPON:
+            return makeNewAndClone<Item, Weapon>(oldI);
+
+        case ITEM_TYPE_RANGED:
+            return makeNewAndClone<Item, Ranged>(oldI);
+
+        case ITEM_TYPE_SPELL:
+            return makeNewAndClone<Item, Spell>(oldI);
+
+        default:
+            throw FileUtility::FileExceptionLoad("Item type unknown: "+to_string(type));
+            return nullptr;
+            break;
+    }
+
+
+
 }
 
 Item* Item::loadNew(unsigned char* data, int* position){

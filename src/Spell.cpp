@@ -21,17 +21,9 @@ void Spell::load(unsigned char* data, int* position){
     manaCost = FileUtility::loadInt(data, position);
 }
 
-int Spell::getItemTypeId(){
-    return ITEM_TYPE_SPELL;
-}
+Spell* Spell::cloneUnsafe(Spell* oldE, Spell* newE){
 
-Spell* Spell::clone(Spell* oldE, Spell* newE){
-
-    if(newE == nullptr){
-        newE = new Spell();
-    }
-
-    Ranged::clone(oldE, newE);
+    Ranged::cloneUnsafe(oldE, newE);
 
     newE->manaCost = oldE->manaCost;
 

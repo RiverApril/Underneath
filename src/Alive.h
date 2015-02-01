@@ -50,7 +50,7 @@ class Alive : public Entity{
 
 public:
 
-    static Alive* clone(Alive* oldE, Alive* newE);
+    static Alive* cloneUnsafe(Alive* oldE, Alive* newE);
 
     Alive();
 

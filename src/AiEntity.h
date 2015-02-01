@@ -26,7 +26,7 @@ class AiEntity : public Alive {
 
 public:
 
-    static AiEntity* clone(AiEntity* oldE, AiEntity* newE);
+    static AiEntity* cloneUnsafe(AiEntity* oldE, AiEntity* newE);
 
     AiEntity();
 

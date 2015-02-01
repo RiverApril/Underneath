@@ -16,8 +16,8 @@
 class Spell : public Ranged {
 public:
 
-    static Spell* clone(Spell* oldE, Spell* newE);
-
+    static Spell* cloneUnsafe(Spell* oldE, Spell* newE);
+    
 
     Spell() : Spell(0, "UNDEFINED", 0, 0, 0, 0){
 
@@ -29,11 +29,13 @@ public:
         this->manaCost = manaCost;
     }
 
+    virtual int getItemTypeId(){
+        return ITEM_TYPE_SPELL;
+    }
+
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(unsigned char* data, int* position);
-
-    virtual int getItemTypeId();
 
     virtual bool equalsExceptQty(Item* other){
         Spell* otherS = dynamic_cast<Spell*>(other);
@@ -43,6 +45,9 @@ public:
     }
 
     int manaCost = 0;
+
+protected:
+
 };
 
 #endif /* defined(__Underneath__Spell__) */

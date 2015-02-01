@@ -18,7 +18,7 @@ class Player : public Alive {
 
 public:
 
-    static Player* clone(Player* oldE, Player* newE);
+    static Player* cloneUnsafe(Player* oldE, Player* newE);
 
     Player();
 
@@ -104,7 +104,11 @@ public:
         if(newItem != nullptr){
             for(Item* i : inventory){
                 if(i->equalsExceptQty(newItem)){
+                    debug("i: "+i->name+"   newItem: "+newItem->name);
+                    debug("i qty: "+to_string(i->qty));
+                    debug("newItem qty: "+to_string(newItem->qty));
                     i->qty += newItem->qty;
+                    debug("i qty: "+to_string(i->qty));
                     delete newItem;
                     debug("Picked up item and added to stack.");
                     return true;
