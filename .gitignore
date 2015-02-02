@@ -18,5 +18,7 @@ Makefile
 */curses.h
 */panel.h
 *.lvl
+*.lvl.*
 */world.info
+worlds/*
 Underneath
