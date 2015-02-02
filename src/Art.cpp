@@ -18,6 +18,7 @@ namespace Arts{
     vector<Art*> artList;
 
     int artTitle;
+    int artScroll;
     int artKnife;
 
     void loadArts(){
@@ -25,6 +26,8 @@ namespace Arts{
             mkdir(ArtDir.c_str(), 0777);
 
             Arts::artTitle = Arts::loadNew(ArtDir+"/title");
+
+            Arts::artScroll = Arts::loadNew(ArtDir+"/scroll");
 
             Arts::artKnife = Arts::loadNew(ArtDir+"/knife");
             ItemGenerator::wKnife->artIndex = Arts::artKnife;
@@ -63,7 +66,7 @@ namespace Arts{
                     line += c;
                 }
             }while(c != EOF);
-            art->lines.push_back(line);
+            //art->lines.push_back(line);
             fclose(file);
         }else{
             throw FileUtility::FileExceptionLoad("Failed to load file: "+path);

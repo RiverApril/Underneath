@@ -34,6 +34,7 @@ namespace Arts{
     extern vector<Art*> artList;
 
     extern int artTitle;
+    extern int artScroll;
     extern int artKnife;
 
 }

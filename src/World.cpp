@@ -292,7 +292,9 @@ namespace WorldLoader {
         for(int i=0;i<10;i++){
             int q = rand()%100;
             for(int j=0;j<q;j++){
-                world->currentPlayer->pickupItem(new Item("Test Item "+to_string(i), .1));
+                Item* item = new Item("Test Item "+to_string(i), .1);
+                item->artIndex = Arts::artScroll;
+                world->currentPlayer->pickupItem(item);
             }
         }
         
