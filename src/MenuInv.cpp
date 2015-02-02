@@ -156,7 +156,7 @@ namespace Ui {
             setColor(C_DARK_GRAY, C_BLACK);
             if(item->artIndex > -1){
                 debug("draw art");
-                Art* art = Arts::artList[item->artIndex];
+                Art* art = Arts::getArt(item->artIndex);
                 Point2 artSize = art->getSize();
                 art->printAt(terminalSize - artSize - Point2One);
             }else{

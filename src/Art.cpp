@@ -17,33 +17,64 @@ namespace Arts{
 
     vector<Art*> artList;
 
+    Art* defaultArt;
+
     int artTitle;
+
     int artScroll;
+
     int artKnife;
+    int artShortSword;
+    int artLongSword;
+    int artMase;
+    int artSpear;
+    int artBattleAxe;
+
+    int artLongbow;
+    int artRecurveBow;
+    int artCrossbow;
 
     void loadArts(){
-        try{
-            mkdir(ArtDir.c_str(), 0777);
 
-            Arts::artTitle = Arts::loadNew(ArtDir+"/title");
+        mkdir(ArtDir.c_str(), 0777);
 
-            Arts::artScroll = Arts::loadNew(ArtDir+"/scroll");
+        defaultArt = new Art();
+        defaultArt->lines.push_back("Failed to load art.");
 
-            Arts::artKnife = Arts::loadNew(ArtDir+"/knife");
-            ItemGenerator::wKnife->artIndex = Arts::artKnife;
-            ItemGenerator::wMase->artIndex = Arts::artKnife;
-            ItemGenerator::wShortSword->artIndex = Arts::artKnife;
-            ItemGenerator::wSpear->artIndex = Arts::artKnife;
-            ItemGenerator::wBattleAxe->artIndex = Arts::artKnife;
-            ItemGenerator::wLongbow->artIndex = Arts::artKnife;
-            ItemGenerator::wRecurveBow->artIndex = Arts::artKnife;
-            ItemGenerator::wCrossbow->artIndex = Arts::artKnife;
+        Arts::artTitle = Arts::loadNew(ArtDir+"/title");
 
-            debug("Knife art index: "+to_string(ItemGenerator::wKnife->artIndex));
+        Arts::artScroll = Arts::loadNew(ArtDir+"/scroll");
 
-        }catch(FileUtility::FileExceptionLoad e){
-            console(e.description);
-        }
+        Arts::artKnife = Arts::loadNew(ArtDir+"/knife");
+        ItemGenerator::wKnife->artIndex = Arts::artKnife;
+
+        Arts::artShortSword = Arts::loadNew(ArtDir+"/shortsword");
+        ItemGenerator::wShortSword->artIndex = Arts::artShortSword;
+
+        Arts::artMase = Arts::loadNew(ArtDir+"/mase");
+        ItemGenerator::wMase->artIndex = Arts::artMase;
+
+        Arts::artSpear = Arts::loadNew(ArtDir+"/spear");
+        ItemGenerator::wSpear->artIndex = Arts::artSpear;
+
+        Arts::artBattleAxe = Arts::loadNew(ArtDir+"/battleaxe");
+        ItemGenerator::wBattleAxe->artIndex = Arts::artBattleAxe;
+
+        Arts::artLongSword = Arts::loadNew(ArtDir+"/longsword");
+        ItemGenerator::wLongSword->artIndex = Arts::artLongSword;
+
+        Arts::artLongbow = Arts::loadNew(ArtDir+"/longbow");
+        ItemGenerator::wLongbow->artIndex = Arts::artLongbow;
+
+        Arts::artRecurveBow = Arts::loadNew(ArtDir+"/recurvebow");
+        ItemGenerator::wRecurveBow->artIndex = Arts::artRecurveBow;
+
+        Arts::artCrossbow = Arts::loadNew(ArtDir+"/crossbow");
+        ItemGenerator::wCrossbow->artIndex = Arts::artCrossbow;
+
+        //TODO make the rest of the ascii art
+
+
     }
 
     int loadNew(string name, string ext, string dot){
@@ -69,10 +100,20 @@ namespace Arts{
             //art->lines.push_back(line);
             fclose(file);
         }else{
-            throw FileUtility::FileExceptionLoad("Failed to load file: "+path);
+            debug("Failed to load: "+path);
+            return -1;
         }
         artList.push_back(art);
         return ((int)artList.size())-1;
+    }
+
+
+    Art* getArt(int index){
+        if(index >= 0 && index < artList.size()){
+            return artList[index];
+        }else{
+            return defaultArt;
+        }
     }
 
 }

@@ -36,6 +36,7 @@ namespace ItemGenerator {
 
     extern Weapon* wKnife;
     extern Weapon* wShortSword;
+    extern Weapon* wLongSword;
     extern Weapon* wBattleAxe;
     extern Weapon* wMase;
     extern Weapon* wSpear;

@@ -75,6 +75,7 @@ extern bool running;
 
 extern int nextUniqueId;
 
+extern string CustomWorkingDirectory;
 extern string UnderneathDir;
 extern string WorldsDir;
 extern string ArtDir;

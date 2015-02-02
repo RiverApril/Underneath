@@ -31,11 +31,26 @@ namespace Arts{
 
     int loadNew(string name, string ext = "txt", string dot = ".");
 
+    Art* getArt(int index);
+
     extern vector<Art*> artList;
 
+    extern Art* defaultArt;
+
     extern int artTitle;
+
     extern int artScroll;
+    
     extern int artKnife;
+    extern int artShortSword;
+    extern int artLongSword;
+    extern int artMase;
+    extern int artSpear;
+    extern int artBattleAxe;
+
+    extern int artLongbow;
+    extern int artRecurveBow;
+    extern int artCrossbow;
 
 }
 

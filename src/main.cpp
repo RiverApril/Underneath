@@ -11,6 +11,7 @@
 #include "Tile.h"
 #include "Math.h"
 #include "Ranged.h"
+#include "Utility.h"
 
 int main(int argc, const char** argv) {
 
@@ -26,9 +27,16 @@ int main(int argc, const char** argv) {
 
 
     debug("Working Directory: "+(string(workingDirectory)));
-    UnderneathDir = "/Users/Nedearb/Documents/Files/Programming/cpp/Underneath";
+
+    CustomWorkingDirectory = FileUtility::readTextFile("Underneath/customWorkingDirectory.txt", "");
+	CustomWorkingDirectory = CustomWorkingDirectory.substr(0, CustomWorkingDirectory.find_last_of('/')+1);
+    UnderneathDir = CustomWorkingDirectory+"Underneath";
     WorldsDir = UnderneathDir+"/"+"worlds";
     ArtDir = UnderneathDir+"/"+"art";
+
+    if(CustomWorkingDirectory.length() > 0){
+    	debug("Custom Working Directory: "+CustomWorkingDirectory);
+    }
 
     initTiles();
 

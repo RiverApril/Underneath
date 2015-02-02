@@ -86,8 +86,8 @@ namespace Ui {
         printCenter(a++, " (          (                     (        ");
         printCenter(a++, "  )                                )       ");
         printCenter(a++, "                                  (        ");*/
-        Arts::artList[Arts::artTitle]->printCenter(a);
-        a+=Arts::artList[Arts::artTitle]->getSize().y;
+        Arts::getArt(Arts::artTitle)->printCenter(a);
+        a+=Arts::getArt(Arts::artTitle)->getSize().y;
         printCenter(a++, "%sPlay%s", selection==0?"- ":"  ", selection==0?" -":"  ");
         printCenter(a++, "%sExit%s", selection==1?"- ":"  ", selection==1?" -":"  ");
         

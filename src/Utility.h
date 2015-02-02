@@ -70,6 +70,8 @@ namespace FileUtility {
         return uTypeBytes.d;
     }
 
+    string readTextFile(string path, string defaultString = "");
+
 }
 
 namespace StringUtility {

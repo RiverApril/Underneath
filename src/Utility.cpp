@@ -117,6 +117,25 @@ namespace FileUtility {
         return l;
     }
 
+    string readTextFile(string path, string defaultString){
+        
+        FILE* file;
+        file = fopen(path.c_str(), "r");
+        if(file != NULL){
+            string s;
+            int c;
+            do{
+                c = fgetc(file);
+                s += c;
+            }while(c != EOF);
+
+            fclose(file);
+            return s;
+        }else{
+            return defaultString;
+        }
+    }
+
 }
 
 namespace StringUtility {

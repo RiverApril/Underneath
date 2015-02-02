@@ -28,6 +28,7 @@ namespace ItemGenerator {
 
     Weapon* wKnife = atl(new Weapon(.5, "Knife", 1, .5));
     Weapon* wShortSword = atl(new Weapon(1, "Short Sword", 1, 1));
+    Weapon* wLongSword = atl(new Weapon(1.5, "Long Sword", 1.5, 1.5));
     Weapon* wBattleAxe = atl(new Weapon(1.2, "Battle Axe", 1.2, 1.2));
     Weapon* wMase = atl(new Weapon(1.4, "Mase", 1.4, 1.4));
     Weapon* wSpear = setDamageType(atl(new Ranged(1, "Spear", 2, 1.5, 1.8)), damMelee);
