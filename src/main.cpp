@@ -15,34 +15,24 @@
 int main(int argc, const char** argv) {
 
 
-    //////
-
-    Item* original = new Ranged(1, "Ranged Weapon", 1, 1, 10);
-    cout << "Made Ranged* stored into Item*" << endl;
-    Item* cloned = Item::clone(original);
-    cout << "Cloned Ranged* stored in Item* to new Item* using Item::clone()" << endl;
-    Ranged* rOriginal = dynamic_cast<Ranged*>(original);
-    Ranged* rCloned = dynamic_cast<Ranged*>(cloned);
-    cout << "casted original range = " << rOriginal->range << endl;
-    cout << "casted cloned range = " << rCloned->range << endl;
-    
-    //////
-
-
-    cout << endl << "Press enter to start Underneath..." << endl;
-    cin.ignore();
-
     if (!GetCurrentDir(workingDirectory, sizeof(workingDirectory))){
         return errno;
     }
 
 
+    cout << endl << "Press enter to start Underneath..." << endl;
+    cin.ignore();
+
+
 
     debug("Working Directory: "+(string(workingDirectory)));
-    UnderneathDir = "Underneath";
-    WorldsDir = UnderneathDir+"/"+"Worlds";
+    UnderneathDir = "/Users/Nedearb/Documents/Files/Programming/cpp/Underneath";
+    WorldsDir = UnderneathDir+"/"+"worlds";
+    ArtDir = UnderneathDir+"/"+"art";
 
     initTiles();
+
+    Arts::loadArts();
 
     Ui::initNCurses();
 

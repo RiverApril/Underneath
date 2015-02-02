@@ -23,3 +23,4 @@ int nextUniqueId;
 
 string UnderneathDir;
 string WorldsDir;
+string ArtDir;

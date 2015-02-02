@@ -114,25 +114,37 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
                 }
             }
 
+            double x = 1;
+            if(weapon){
+                if(weapon->damageType == damMelee){
+                    x = (double)levels[iSTR] / (double)maxLevels[iSTR];
+                    gainXp(iSTR, 1);
+                }else if(weapon->damageType == damRanged){
+                    x = (double)levels[iDEX] / (double)maxLevels[iDEX];
+                    gainXp(iDEX, 1);
+                }else if(weapon->damageType == damMagic){
+                    x = (double)levels[iINT] / (double)maxLevels[iINT];
+                    gainXp(iINT, 1);
+                }
+            }
+
             if(spell){
                 if(mp >= spell->manaCost){
                     mp -= spell->manaCost;
-                    double d = a->hurt(spell, level->currentWorld->worldTime);
+
+                    double d = a->hurt(spell, level->currentWorld->worldTime, x+1);
                     console("Dealt "+to_string(d)+" damage.");
-                    gainXp(iINT, 1);
+
                     return useDelay(item);
                 }
                 console("Not enough mana.");
             }
 
             if(weapon){
-                double d = a->hurt(weapon, level->currentWorld->worldTime);
+
+                double d = a->hurt(weapon, level->currentWorld->worldTime, x+1);
                 console("Dealt "+to_string(d)+" damage.");
-                if(weapon->damageType == damMelee){
-                    gainXp(iSTR, 1);
-                }else if(weapon->damageType == damRanged){
-                    gainXp(iDEX, 1);
-                }
+
                 return useDelay(item);
             }
 

@@ -47,8 +47,8 @@ namespace Ui{
         virtual void handleInput(int i) {}
         virtual void update() {}
 
-        void printCenter(int y, string s, ...);
-        void printCenterOffset(int y, int xOff, string s, ...);
+        static void printCenter(int y, string s, ...);
+        static void printCenterOffset(int y, int xOff, string s, ...);
 
         bool menuOnlyExecute(string commandName, vector<string>arguments, string argumentsRaw){
             return false;

@@ -86,7 +86,8 @@ public:
         //pos.set(-1);
     }
 
-    virtual double hurt(double amount){
+    virtual double hurt(double amount, double damageMultiplier = 1){
+        amount *= damageMultiplier;
         hp -= amount;
         if(hp<=0){
             die();
@@ -95,7 +96,7 @@ public:
         return amount;
     }
 
-    virtual double hurt(Weapon* w, double time){
+    virtual double hurt(Weapon* w, double time, double damageMultiplier = 1){
         double d = (((rand()/(double)RAND_MAX)*(w->baseDamage)) + ((rand()/(double)RAND_MAX)*(w->baseDamage))) / 2;
         for(Enchantment ench : w->enchantments){
             switch(ench.eId){
@@ -113,7 +114,7 @@ public:
             }
         }
         consolef("Hurt %s %.2f hp.", name.c_str(), d);
-        return hurt(d);
+        return hurt(d, damageMultiplier);
     }
 
     void addEffect(Effect e);

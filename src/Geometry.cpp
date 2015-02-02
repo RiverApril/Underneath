@@ -18,6 +18,7 @@ Point2 Point2Left = Point2(-1, 0);
 Point2 Point2Right = Point2(1, 0);
 Point2 Point2Up = Point2(0, -1);
 Point2 Point2Down = Point2(0, 1);
+Point2 Point2One = Point2(1, 1);
 Point2 Point2Neg1 = Point2(-1, -1);
 
 Point2::Point2(int x, int y) {

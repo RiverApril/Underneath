@@ -16,18 +16,21 @@ void Item::save(vector<unsigned char>* data){
     FileUtility::saveDouble(data, weight);
     FileUtility::saveString(data, name);
     FileUtility::saveInt(data, qty);
+    FileUtility::saveInt(data, artIndex);
 }
 
 void Item::load(unsigned char* data, int* position){
     weight = FileUtility::loadDouble(data, position);
     name = FileUtility::loadString(data, position);
     qty = FileUtility::loadInt(data, position);
+    artIndex = FileUtility::loadInt(data, position);
 }
 
 Item* Item::cloneUnsafe(Item* oldE, Item* newE){
 
     newE->name = oldE->name;
     newE->weight = oldE->weight;
+    newE->artIndex = oldE->artIndex;
 
     return newE;
 }

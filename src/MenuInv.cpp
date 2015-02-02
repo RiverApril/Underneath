@@ -11,6 +11,7 @@
 #include "ItemEntity.h"
 #include "Controls.h"
 #include "Utility.h"
+#include "Art.h"
 
 namespace Ui {
 
@@ -152,7 +153,15 @@ namespace Ui {
 
             int a = 3;
 
-
+            setColor(C_DARK_GRAY, C_BLACK);
+            if(item->artIndex > -1){
+                debug("draw art");
+                Art* art = Arts::artList[item->artIndex];
+                Point2 artSize = art->getSize();
+                art->printAt(terminalSize - artSize - Point2One);
+            }else{
+                debug("did not draw art");
+            }
             setColor(C_WHITE, C_BLACK);
 
             mvprintw(a++, columnInfo, "Name: %s", item->name.c_str());

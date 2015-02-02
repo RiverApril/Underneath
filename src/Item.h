@@ -10,6 +10,7 @@
 #define __Underneath__Item__
 
 #include "Global.h"
+#include "Art.h"
 
 typedef double Weight;
 
@@ -47,12 +48,15 @@ public:
 
     virtual bool equalsExceptQty(Item* other){
         return (name.compare(other->name)==0)
-        &&(weight == other->weight);
+        &&(weight == other->weight)
+        &&(artIndex == other->artIndex);
     }
 
     string name;
     Weight weight;
     int qty;
+
+    int artIndex = -1;
 
 
 protected:

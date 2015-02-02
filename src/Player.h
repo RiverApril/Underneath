@@ -53,12 +53,12 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual double hurt(double amount){
-        return Alive::hurt(amount);
+    virtual double hurt(double amount, double damageMultiplier = 1){
+        return Alive::hurt(amount, damageMultiplier);
     }
 
-    virtual double hurt(Weapon* w, double time){
-        return Alive::hurt(w, time);
+    virtual double hurt(Weapon* w, double time, double damageMultiplier = 1){
+        return Alive::hurt(w, time, damageMultiplier);
     }
 
     virtual double heal(double amount){
@@ -104,18 +104,18 @@ public:
         if(newItem != nullptr){
             for(Item* i : inventory){
                 if(i->equalsExceptQty(newItem)){
-                    debug("i: "+i->name+"   newItem: "+newItem->name);
-                    debug("i qty: "+to_string(i->qty));
-                    debug("newItem qty: "+to_string(newItem->qty));
+                    //debug("i: "+i->name+"   newItem: "+newItem->name);
+                    //debug("i qty: "+to_string(i->qty));
+                    //debug("newItem qty: "+to_string(newItem->qty));
                     i->qty += newItem->qty;
-                    debug("i qty: "+to_string(i->qty));
+                    //debug("i qty: "+to_string(i->qty));
                     delete newItem;
-                    debug("Picked up item and added to stack.");
+                    //debug("Picked up item and added to stack.");
                     return true;
                 }
             }
             inventory.push_back(newItem);
-            debug("Picked up item.");
+            //debug("Picked up item.");
             return true;
         }
         return false;

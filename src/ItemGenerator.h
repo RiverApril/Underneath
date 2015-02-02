@@ -38,8 +38,11 @@ namespace ItemGenerator {
     extern Weapon* wShortSword;
     extern Weapon* wBattleAxe;
     extern Weapon* wMase;
-
     extern Weapon* wSpear;
+
+    extern Ranged* wRecurveBow;
+    extern Ranged* wLongbow;
+    extern Ranged* wCrossbow;
 
 
     extern vector<CombatLevel> combatLevelList;

@@ -13,6 +13,10 @@
 
 namespace Ui {
 
+    MenuMain::MenuMain() : Menu(){}
+
+    MenuMain::~MenuMain(){}
+
     bool MenuMain::openUi() {
         move(0, 0);
         clrtobot();
@@ -71,7 +75,7 @@ namespace Ui {
         int a = 2;
         
         setColor(C_WHITE);
-        printCenter(a++, "  _ _ ___ ___ ___ ___ ___ ___ ___ ___ ___  ");
+        /*printCenter(a++, "  _ _ ___ ___ ___ ___ ___ ___ ___ ___ ___  ");
         printCenter(a++, " | | |   |   \\ __|  _|   | __| _ |_ _| | | ");
         printCenter(a++, " | | | | | | | __| | | | | __|   || ||   | ");
         printCenter(a++, " |___|_|_|___/___|_| |_|_|___|_|_||_||_|_| ");
@@ -81,7 +85,9 @@ namespace Ui {
         printCenter(a++, "  )  (       )                     )       ");
         printCenter(a++, " (          (                     (        ");
         printCenter(a++, "  )                                )       ");
-        printCenter(a++, "                                  (        ");
+        printCenter(a++, "                                  (        ");*/
+        Arts::artList[Arts::artTitle]->printCenter(a);
+        a+=Arts::artList[Arts::artTitle]->getSize().y;
         printCenter(a++, "%sPlay%s", selection==0?"- ":"  ", selection==0?" -":"  ");
         printCenter(a++, "%sExit%s", selection==1?"- ":"  ", selection==1?" -":"  ");
         

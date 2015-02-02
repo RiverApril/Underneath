@@ -77,6 +77,7 @@ extern int nextUniqueId;
 
 extern string UnderneathDir;
 extern string WorldsDir;
+extern string ArtDir;
 
 
 

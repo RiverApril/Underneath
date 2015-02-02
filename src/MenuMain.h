@@ -10,14 +10,15 @@
 #define __Underneath__UiMenuMain__
 
 #include "Menu.h"
+#include "Art.h"
 
 namespace Ui {
     class MenuMain : public Menu {
     public:
 
-        MenuMain() : Menu() {}
+        MenuMain();
 
-        ~MenuMain() {}
+        ~MenuMain();
 
         
         bool openUi();

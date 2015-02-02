@@ -48,7 +48,8 @@ namespace Ui {
         clrtobot();
         mvprintw(0, 0, "Abilities: ");
         for(int i=0;i<abilityCount;i++){
-            mvprintw(i+2, 1, (string(abilityAbr[i])+": %2d  xp[%s] (%.0f/%.0f)").c_str(),
+            mvprintw(i+2, 1, "%s: %2d  xp[%s] (%.0f/%.0f)",
+                     string(abilityNamesRightAligned[i]).c_str(),
                      player->levels.list[i],
                      StringUtility::makeBar((int)(player->xp.list[i]), (int)(player->nextLevelXp.list[i]), 5, '=', ' ').c_str(),
                      (player->xp.list[i]),
