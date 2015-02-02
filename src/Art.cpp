@@ -103,6 +103,7 @@ namespace Arts{
             debug("Failed to load: "+path);
             return -1;
         }
+        art->calcSize();
         artList.push_back(art);
         return ((int)artList.size())-1;
     }
@@ -118,16 +119,19 @@ namespace Arts{
 
 }
 
-
-Point2 Art::getSize(){
-    Point2 p;
+Point2 Art::calcSize(){
     int w = 0;
     for(string line : lines){
         w = Math::max(w, (int)line.length());
     }
-    p.x = w;
-    p.y = (int)lines.size();
-    return p;
+    size.x = w;
+    size.y = (int)lines.size();
+    return size;
+}
+
+
+Point2 Art::getSize(){
+    return size;
 }
 
 void Art::printAt(Point2 pos){

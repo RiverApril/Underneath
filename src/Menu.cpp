@@ -8,6 +8,7 @@
 
 #include "Menu.h"
 #include "Command.h"
+#include "MenuMain.h"
 
 yesNo aYes = 'y';
 yesNo aNo = 'n';
@@ -17,7 +18,7 @@ namespace Ui {
     
 
     void Menu::_openUi() {
-        if(markAllForClosure){
+        if(markAllForClosure && !(dynamic_cast<MenuMain*>(this))){
             closeThisMenu();
             return;
         }
@@ -70,8 +71,8 @@ namespace Ui {
                     break;
 
                 case KEY_BACKSPACE:
-                case 8: //Backspace
-                case 127: //Delete
+                //case 8: //Backspace
+                //case 127: //Delete
                     if(consoleInput.length() > 0){
                         consoleInput = consoleInput.substr(0, consoleInput.length()-1);
                     }

@@ -16,12 +16,14 @@ struct Art{
 
     vector<string> lines;
 
+    Point2 calcSize();
     Point2 getSize();
 
     void printAt(Point2 pos);
 
     void printCenter(int y, int xOffset = 0);
-    
+
+    Point2 size;
     
 };
 

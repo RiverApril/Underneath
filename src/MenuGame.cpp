@@ -81,11 +81,11 @@ namespace Ui {
         if(*saveAnswer == aYes){
             WorldLoader::save(currentWorld);
             *saveAnswer = aUndefined;
-            closeThisMenu();
+            closeAllMenus();
             return false;
         }else if(*saveAnswer == aNo){
             *saveAnswer = aUndefined;
-            closeThisMenu();
+            closeAllMenus();
             return false;
         }
 
