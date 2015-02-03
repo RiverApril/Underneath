@@ -11,7 +11,9 @@
 
 #include "Menu.h"
 
-namespace Ui{
+using namespace Ui;
+
+namespace Commands{
 
     bool execute(string commandRaw, Menu* currentMenu);
 
@@ -40,6 +42,7 @@ namespace Ui{
     extern vector<Command*> commandList;
     
     void initCommandList();
+    void cleanup();
     
 }
 

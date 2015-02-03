@@ -23,7 +23,7 @@ Level::Level(World* w, string n, Point2 s) {
     
     for(int i=0;i<size->x;i++){
         for(int j=0;j<size->y;j++){
-            tileGrid[i][j].index = tileUnset->getIndex();
+            tileGrid[i][j].index = Tiles::tileUnset->getIndex();
             tileGrid[i][j].explored = false;
             //tileGrid[i][j].entity = nullptr;
         }
@@ -113,14 +113,14 @@ bool Level::setTile(Point2 p, Tile* tile) {
 }
 
 Tile* Level::tileAt(Point2 p) {
-    return getTile(indexAt(p));
+    return Tiles::getTile(indexAt(p));
 }
 
 int Level::indexAt(Point2 p) {
     if(inRange(p)) {
         return tileGrid[p.x][p.y].index;
     }
-    return tileEdge->getIndex();
+    return Tiles::tileEdge->getIndex();
 }
 
 bool Level::canSee(Point2 origin, Point2 test, double range){
@@ -314,11 +314,11 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
         for (int i=0; i<size->x; i++) {
             for (int j=0; j<size->y; j++) {
-                tileGrid[i][j].index = tileUnset->getIndex();
+                tileGrid[i][j].index = Tiles::tileUnset->getIndex();
                 tileGrid[i][j].explored = false;
                 //tileGrid[i][j].entity = nullptr;
                 if(i==0 || j==0 || i==(size->x-1) || j==(size->y-1)){
-                    tileGrid[i][j].index = tileWall->getIndex();
+                    tileGrid[i][j].index = Tiles::tileWall->getIndex();
                 }
             }
         }
@@ -337,7 +337,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     Point2 stairDownPos;
     int dist = (size->x+size->y) / 2;
     while(true){
-        stairDownPos = findRandomOfType(tileFloor->getIndex());
+        stairDownPos = findRandomOfType(Tiles::tileFloor->getIndex());
         //stairUpPos = findRandomOfType(tileFloor->getIndex());
         if((distanceSquared(stairUpPos, stairDownPos) > (dist*dist)) && canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
             break;
@@ -351,15 +351,15 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         }
     }
 
-    setTile(stairUpPos, tileStairUp);
-    setTile(stairDownPos, tileStairDown);
+    setTile(stairUpPos, Tiles::tileStairUp);
+    setTile(stairDownPos, Tiles::tileStairDown);
     stairList.push_back(Stair(stairUpPos, true, previousLevel));
     stairList.push_back(Stair(stairDownPos, false, "Floor"+to_string(ParsingUtility::parseInt(name.substr(5))+1)));
 
     vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
     for(Point2 pe : path){
         if(!tileAt(pe)->isSolid()){
-        	setTile(pe, tileDebug1);
+        	setTile(pe, Tiles::tileDebug1);
         }
     }
 

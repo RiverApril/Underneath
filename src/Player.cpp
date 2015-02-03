@@ -71,7 +71,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
 
     if(distanceSquared(posOfTile, pos) <= 1){
 
-        if(tid == tileStairDown->getIndex() || tid == tileStairUp->getIndex()){
+        if(tid == Tiles::tileStairDown->getIndex() || tid == Tiles::tileStairUp->getIndex()){
 
             for(Stair s : level->stairList){
                 if(s.p == posOfTile){
@@ -80,13 +80,13 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
                 }
             }
 
-        }else if(tid == tileOpenDoor->getIndex()){
+        }else if(tid == Tiles::tileOpenDoor->getIndex()){
             if(posOfTile != pos){
-                level->setTile(posOfTile, tileDoor);
+                level->setTile(posOfTile, Tiles::tileDoor);
                 return interactDelay;
             }
-        }else if(tileList[tid]->hasFlag(tileFlagDoor)){
-            level->setTile(posOfTile, tileOpenDoor);
+        }else if(Tiles::tileList[tid]->hasFlag(tileFlagDoor)){
+            level->setTile(posOfTile, Tiles::tileOpenDoor);
             return interactDelay;
         }
     }

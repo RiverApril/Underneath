@@ -56,7 +56,7 @@ protected:
     Alive* target = nullptr;
 
     double lastMoveTime = 0;
-    double moveDelay = 1; //should varry
+    double moveDelay = 1; //TODO should varry
 
     double lastAttackTime = 0;
 };

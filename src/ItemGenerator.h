@@ -56,6 +56,9 @@ namespace ItemGenerator {
     Weapon* createWeaponBase(DamageType d);
     Weapon* createWeapon(string name, CombatLevel combatLevel, DamageType damageType, bool enchanted);
 
+    void initWeaponsTemplates();
+    void cleanup();
+
 
 }
 

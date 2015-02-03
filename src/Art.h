@@ -30,6 +30,7 @@ struct Art{
 namespace Arts{
 
     void loadArts();
+    void cleanup();
 
     int loadNew(string name, string ext = "txt", string dot = ".");
 

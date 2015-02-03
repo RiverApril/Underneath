@@ -26,16 +26,35 @@ namespace ItemGenerator {
     //DamageMultiplier, Name, Weight, Use Delay
     //DamageMultiplier, Name, Weight, Use Delay, Range
 
-    Weapon* wKnife = atl(new Weapon(.5, "Knife", 1, .5));
-    Weapon* wShortSword = atl(new Weapon(1, "Short Sword", 1, 1));
-    Weapon* wLongSword = atl(new Weapon(1.5, "Long Sword", 1.5, 1.5));
-    Weapon* wBattleAxe = atl(new Weapon(1.2, "Battle Axe", 1.2, 1.2));
-    Weapon* wMase = atl(new Weapon(1.4, "Mase", 1.4, 1.4));
-    Weapon* wSpear = setDamageType(atl(new Ranged(1, "Spear", 2, 1.5, 1.8)), damMelee);
+    Weapon* wKnife;
+    Weapon* wShortSword;
+    Weapon* wLongSword;
+    Weapon* wBattleAxe;
+    Weapon* wMase;
+    Weapon* wSpear;
 
-    Ranged* wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(2, "Recurve Bow", 1.8, 1.8, 8)));
-    Ranged* wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(2, "Longbow", 2, 1.5, 10)));
-    Ranged* wCrossbow = dynamic_cast<Ranged*>(atl(new Ranged(1.5, "Crossbow", 2, 1, 6)));
+    Ranged* wRecurveBow;
+    Ranged* wLongbow;
+    Ranged* wCrossbow;
+
+    void initWeaponsTemplates(){
+        wKnife = atl(new Weapon(.5, "Knife", 1, .5));
+        wShortSword = atl(new Weapon(1, "Short Sword", 1, 1));
+        wLongSword = atl(new Weapon(1.5, "Long Sword", 1.5, 1.5));
+        wBattleAxe = atl(new Weapon(1.2, "Battle Axe", 1.2, 1.2));
+        wMase = atl(new Weapon(1.4, "Mase", 1.4, 1.4));
+        wSpear = setDamageType(atl(new Ranged(1, "Spear", 2, 1.5, 1.8)), damMelee);
+
+        wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(2, "Recurve Bow", 1.8, 1.8, 8)));
+        wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(2, "Longbow", 2, 1.5, 10)));
+        wCrossbow = dynamic_cast<Ranged*>(atl(new Ranged(1.5, "Crossbow", 2, 1, 6)));
+    }
+
+    void cleanup(){
+        for(Weapon* w : weaponList){
+            delete w;
+        }
+    }
 
 
 

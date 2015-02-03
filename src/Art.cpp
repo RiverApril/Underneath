@@ -77,6 +77,13 @@ namespace Arts{
 
     }
 
+    void cleanup(){
+        delete defaultArt;
+        for(Art* a : artList){
+            delete a;
+        }
+    }
+
     int loadNew(string name, string ext, string dot){
         string path = name+dot+ext;
 

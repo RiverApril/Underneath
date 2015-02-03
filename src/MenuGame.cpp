@@ -79,11 +79,19 @@ namespace Ui {
         debug("Open MenuGame Ui");
 
         if(*saveAnswer == aYes){
+
             WorldLoader::save(currentWorld);
+            delete currentWorld;
+            currentWorld = nullptr;
+
             *saveAnswer = aUndefined;
             closeAllMenus();
             return false;
         }else if(*saveAnswer == aNo){
+
+            delete currentWorld;
+            currentWorld = nullptr;
+
             *saveAnswer = aUndefined;
             closeAllMenus();
             return false;
@@ -237,6 +245,10 @@ namespace Ui {
             case KEY_ESCAPE: //Escape
                 if(currentWorld->currentPlayer == nullptr){
                     WorldLoader::deleteWorld(currentWorld->name);
+                    
+                    delete currentWorld;
+                    currentWorld = nullptr;
+
                     closeAllMenus();
                 }else{
                     openMenu(new MenuYesNo("Do you want to save '"+currentWorld->name+"' ?", saveAnswer, true));

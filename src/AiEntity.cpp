@@ -82,8 +82,10 @@ void AiEntity::runAi(double time, Level* level) {
             	}
             }
         }
-    }else if(speed != Point2Zero){
-        lastAttackTime = time;
+    }
+
+    while(lastAttackTime + activeWeapon->useDelay <= time){
+        lastAttackTime += activeWeapon->useDelay;
     }
 
 

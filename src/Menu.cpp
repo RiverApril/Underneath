@@ -82,7 +82,7 @@ namespace Ui {
                 case 13:
                 case '\n':
                     consoleInputMode = false;
-                    execute(consoleInput, this);
+                    Commands::execute(consoleInput, this);
                     consoleInput = "";
                     consoleScroll = 0;
                     break;

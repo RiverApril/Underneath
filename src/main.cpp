@@ -12,6 +12,7 @@
 #include "Math.h"
 #include "Ranged.h"
 #include "Utility.h"
+#include "ItemGenerator.h"
 
 int main(int argc, const char** argv) {
 
@@ -28,7 +29,7 @@ int main(int argc, const char** argv) {
 
     debug("Working Directory: "+(string(workingDirectory)));
 
-    CustomWorkingDirectory = FileUtility::readTextFile("Underneath/customWorkingDirectory.txt", "");
+    CustomWorkingDirectory = FileUtility::readTextFile("customUnderneathWorkingDirectory.txt", "");
 	CustomWorkingDirectory = CustomWorkingDirectory.substr(0, CustomWorkingDirectory.find_last_of('/')+1);
     UnderneathDir = CustomWorkingDirectory+"Underneath";
     WorldsDir = UnderneathDir+"/"+"worlds";
@@ -38,13 +39,12 @@ int main(int argc, const char** argv) {
     	debug("Custom Working Directory: "+CustomWorkingDirectory);
     }
 
-    initTiles();
-
+    Tiles::initTiles();
+    ItemGenerator::initWeaponsTemplates();
     Arts::loadArts();
-
     Ui::initNCurses();
+    Commands::initCommandList();
 
-    Ui::initCommandList();
 
 
     Ui::MenuMain* mainMenu = new Ui::MenuMain();
@@ -59,6 +59,11 @@ int main(int argc, const char** argv) {
     endwin();
 
     delete mainMenu;
+
+    Arts::cleanup();
+    Tiles::cleanup();
+    Commands::cleanup();
+    ItemGenerator::cleanup();
 
     return 0;
 }

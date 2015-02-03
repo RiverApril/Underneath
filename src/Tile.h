@@ -51,30 +51,34 @@ private:
     TileFlag flags;
 };
 
-extern vector<Tile*> tileList;
-extern Tile* tileFloor;
-extern Tile* tilePath;
-extern Tile* tileWall;
-extern Tile* tileDoor;
-extern Tile* tileSecretDoor;
-extern Tile* tileOpenDoor;
+namespace Tiles{
 
-extern Tile* tileStairUp;
-extern Tile* tileStairDown;
+    extern vector<Tile*> tileList;
+    extern Tile* tileFloor;
+    extern Tile* tilePath;
+    extern Tile* tileWall;
+    extern Tile* tileDoor;
+    extern Tile* tileSecretDoor;
+    extern Tile* tileOpenDoor;
 
-extern Tile* tileEdge;
-extern Tile* tileUnset;
+    extern Tile* tileStairUp;
+    extern Tile* tileStairDown;
 
-extern Tile* tileDebug1;
-extern Tile* tileDebug2;
-extern Tile* tileDebug3;
-extern Tile* tileDebug4;
-extern Tile* tileDebug5;
-extern Tile* tileDebug6;
+    extern Tile* tileEdge;
+    extern Tile* tileUnset;
+
+    extern Tile* tileDebug1;
+    extern Tile* tileDebug2;
+    extern Tile* tileDebug3;
+    extern Tile* tileDebug4;
+    extern Tile* tileDebug5;
+    extern Tile* tileDebug6;
 
 
-void initTiles();
-void deleteTiles();
-Tile* getTile(int index);
+    void initTiles();
+    void cleanup();
+    Tile* getTile(int index);
+
+}
 
 #endif /* defined(__Underneath__Tile__) */

@@ -56,13 +56,13 @@ int ItemEntity::getEntityTypeId(){
 }
 
 void ItemEntity::save(vector<unsigned char>* data){
-    item->save(data);
     Entity::save(data);
+    item->save(data);
 }
 
 void ItemEntity::load(unsigned char* data, int* position){
-    item = Item::loadNew(data, position);
     Entity::load(data, position);
+    item = Item::loadNew(data, position);
 }
 
 

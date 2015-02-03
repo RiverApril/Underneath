@@ -12,7 +12,7 @@
 #include "Utility.h"
 
 
-namespace Ui{
+namespace Commands{
 
 
     vector<Command*> commandList;
@@ -217,6 +217,12 @@ namespace Ui{
         commandList.push_back(new CommandDebug());
         commandList.push_back(new CommandEffect());
         commandList.push_back(new CommandXp());
+    }
+
+    void cleanup(){
+        for (Command* c : commandList) {
+            delete c;
+        }
     }
     
 }
