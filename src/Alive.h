@@ -209,7 +209,7 @@ protected:
     double lastManaTime = 0;
     double manaDelay = 10;
 
-    Weapon* activeWeapon;
+    Weapon* activeWeapon = nullptr;
 
 };
 

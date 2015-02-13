@@ -84,8 +84,14 @@ void AiEntity::runAi(double time, Level* level) {
         }
     }
 
-    while(lastAttackTime + activeWeapon->useDelay <= time){
-        lastAttackTime += activeWeapon->useDelay;
+    if(activeWeapon != nullptr){
+        while(lastAttackTime + activeWeapon->useDelay <= time){
+            lastAttackTime += activeWeapon->useDelay;
+        }
+    }else{
+        while(lastAttackTime + 1 <= time){
+            lastAttackTime += 1;
+        }
     }
 
 

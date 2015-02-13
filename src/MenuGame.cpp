@@ -134,7 +134,7 @@ namespace Ui {
     void MenuGame::drawTileAt(Point2 p) {
         Ui::Color fg = C_LIGHT_RED;
         Ui::Color bg = C_BLACK;
-        char symbol = '?';
+        char symbol = ' ';
         int attr = 0;
 
 
@@ -272,11 +272,15 @@ namespace Ui {
                 break;
 
             case Key::inventory:
-                openMenu(new MenuInv(currentWorld->currentPlayer, currentWorld, useItem));
+                if(currentWorld->currentPlayer != nullptr){
+                	openMenu(new MenuInv(currentWorld->currentPlayer, currentWorld, useItem));
+                }
                 break;
 
             case Key::stats:
-                openMenu(new MenuStats(currentWorld->currentPlayer, currentWorld));
+                if(currentWorld->currentPlayer != nullptr){
+                	openMenu(new MenuStats(currentWorld->currentPlayer, currentWorld));
+                }
                 break;
 
             case '\\':

@@ -307,8 +307,26 @@ bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
     return false;*/
 }
 
+void Level::genDebug(string s){
+    move(genDebugPos, 0);
+    clrtoeol();
+    mvprintw(genDebugPos, 0, s.c_str());
+    genDebugPos ++;
+
+    if(genDebugPos >= Ui::terminalSize.y){
+        genDebugPos = 1;
+        move(genDebugPos, 0);
+        clrtobot();
+    }
+    refresh();
+}
+
 Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLevel) {
+
+
     srand(seed);
+
+    int attemt = 0;
 
     do{
 
@@ -322,39 +340,50 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
                 }
             }
         }
+        genDebug("generating...  attemt #"+to_string(attemt));
+        attemt++;
+
 
         vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(1000, *size);
         LevelGenerator::makeRoomsAndPaths(rooms, this);
+
+        genDebug("generated");
 
         for(int i=0;i<rooms->size();i++){
             delete rooms->at(i);
         }
         delete rooms;
 
-    }while(tileAt(stairUpPos)->hasFlag(tileFlagSolid));
+
+    }while(tileAt(stairUpPos)->getIndex() != Tiles::tileFloor->getIndex());
 
     //Point2 stairUpPos = entrance;
     Point2 stairDownPos;
     int dist = (size->x+size->y) / 2;
+    attemt = 0;
     while(true){
+        genDebug("looking for exit location  attemt #"+to_string(attemt));
+        attemt++;
         stairDownPos = findRandomOfType(Tiles::tileFloor->getIndex());
         //stairUpPos = findRandomOfType(tileFloor->getIndex());
         if((distanceSquared(stairUpPos, stairDownPos) > (dist*dist)) && canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
             break;
         }else{
             dist--;
-            mvprintw(1, 0, ("dist: "+to_string(dist)+"   ").c_str());
-            refresh();
+            genDebug("distance between entance and exit: "+to_string(dist));
             if(dist < 1){
                 return Point2Neg1;
             }
         }
     }
 
+    genDebug("found path");
+
     setTile(stairUpPos, Tiles::tileStairUp);
     setTile(stairDownPos, Tiles::tileStairDown);
     stairList.push_back(Stair(stairUpPos, true, previousLevel));
     stairList.push_back(Stair(stairDownPos, false, "Floor"+to_string(ParsingUtility::parseInt(name.substr(5))+1)));
+    
 
     vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
     for(Point2 pe : path){
@@ -363,6 +392,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         }
     }
 
+    genDebug("adding entities...");
 
     AiEntity* rat = new AiEntity("Rat", aiMoveRandom | aiFleeFromPlayerDumb, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
     rat->viewDistance = 4;
@@ -381,6 +411,8 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     troll->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damMelee, false));
 
     addEntitiesRandomly(stairUpPos, troll, (rand()%100)+20);
+
+    genDebug("done");
 
 
     return stairUpPos;

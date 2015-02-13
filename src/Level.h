@@ -81,6 +81,8 @@ public:
 
     vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag);
 
+    void genDebug(string s);
+
     Point2 generate(unsigned int seed, Point2 stairUpPos, string previousLevel);
 
     template <typename T> void addEntitiesRandomly(Point2 start, T* e, int count);
@@ -118,6 +120,8 @@ private:
     vector<vector<TileData> > tileGrid;
 
     string name;
+
+    int genDebugPos;
 };
 
 
