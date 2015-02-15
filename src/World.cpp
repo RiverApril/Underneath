@@ -35,7 +35,7 @@ namespace WorldLoader {
         //world.info
         FILE* fileWorldInfo;
 
-        fileWorldInfo = std::fopen((dir+"world"+".info").c_str(), "rb");
+        fileWorldInfo = fopen((dir+"world"+".info").c_str(), "rb");
         if(fileWorldInfo != nullptr){
 			l = true;
 			fclose(fileWorldInfo);
@@ -184,11 +184,11 @@ namespace WorldLoader {
             FileUtility::saveString(data, loadedWorld->currentLevel->getName());
             FileUtility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
 
-            for(int j=0;j<loadedWorld->levels.size();j++){
+			for (size_t j = 0; j<loadedWorld->levels.size(); j++){
             	FileUtility::saveString(data, loadedWorld->levels.at(j));
             }
 
-            for(int j=0;j<data->size();j++){
+			for (size_t j = 0; j<data->size(); j++){
                 fputc(data->at(j), fileWorldInfo);
             }
 
@@ -214,7 +214,7 @@ namespace WorldLoader {
 
                 l->save(data);
 
-                for(int j=0;j<data->size();j++){
+                for(size_t j=0;j<data->size();j++){
                     fputc(data->at(j), fileLevel);
                 }
 

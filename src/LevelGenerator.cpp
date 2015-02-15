@@ -29,7 +29,7 @@ namespace LevelGenerator{
             r->center.x = (rand()%(roomSize.x-(r->radius.x*2)))+r->radius.x;
             r->center.y = (rand()%(roomSize.y-(r->radius.y*2)))+r->radius.y;
             fit = true;
-            for(int i=0;i<presentRooms->size();i++){
+			for (size_t i = 0; i<presentRooms->size(); i++){
                 if(roomsOverlap(presentRooms->at(i), r, 2)){
                     fit = false;
                     break;
@@ -86,7 +86,7 @@ namespace LevelGenerator{
     }
 
     void makeRoomsAndPaths(vector<Room*>* rooms, Level* level){
-        for(int i=0;i<rooms->size();i++){
+		for (size_t i = 0; i<rooms->size(); i++){
             Room* r = rooms->at(i);
             for(int j=-r->radius.x;j<=r->radius.x;j++){
                 level->setTile(Point2(r->center.x+j, r->center.y+r->radius.y), Tiles::tileWall);
@@ -102,20 +102,20 @@ namespace LevelGenerator{
                 }
             }
         }
-        for(int i=0;i<rooms->size();i++){
+		for (size_t i = 0; i<rooms->size(); i++){
             Room* r = rooms->at(i);
 
-            for(int j=0;j<r->entrances->size();j++){
+			for (size_t j = 0; j<r->entrances->size(); j++){
                 Entry* e = r->entrances->at(j);
 
-                for(int k=0;k<rooms->size();k++){
+				for (size_t k = 0; k<rooms->size(); k++){
                     Room* ro = rooms->at(k);
 
                     if(r->center==ro->center){
                         continue;
                     }
 
-                    for(int l=0;l<ro->entrances->size();l++){
+					for (size_t l = 0; l<ro->entrances->size(); l++){
                         Entry* eo = ro->entrances->at(l);
 
                         if((e->direction!=eo->direction)){

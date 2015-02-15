@@ -33,7 +33,7 @@ namespace LevelGenerator{
             entrances = new vector<Entry*>();
         }
         ~Room(){
-            for(int i=0;i<entrances->size();i++){
+			for (size_t i = 0; i<entrances->size(); i++){
                 delete entrances->at(i);
             }
             delete entrances;

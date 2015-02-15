@@ -34,11 +34,11 @@ public:
     }
 
     bool isTall() {
-        return flags & tileFlagTall;
+        return (flags & tileFlagTall) != 0;
     }
 
     bool hasFlag(TileFlag flag) {
-        return flags & flag;
+        return (flags & flag) != 0;
     }
 
 private:

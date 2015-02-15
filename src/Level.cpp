@@ -190,7 +190,7 @@ void Level::removeEntity(Entity* e, bool deleteEntity) {
     }
 }
 void Level::actuallyRemoveEntity(Entity* e, bool deleteEntity){
-    for(int i=0;i<entityList.size();i++){
+	for (size_t i = 0; i<entityList.size(); i++){
         if(e->uniqueId == entityList[i]->uniqueId){
             entityList.erase(entityList.begin()+i);
             debug("Removed Entity: "+e->getName());
@@ -308,6 +308,7 @@ bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
 }
 
 void Level::genDebug(string s){
+	Ui::setColor(Ui::C_WHITE);
     move(genDebugPos, 0);
     clrtoeol();
     mvprintw(genDebugPos, 0, s.c_str());
@@ -349,7 +350,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
         genDebug("generated");
 
-        for(int i=0;i<rooms->size();i++){
+		for (size_t i = 0; i<rooms->size(); i++){
             delete rooms->at(i);
         }
         delete rooms;
@@ -444,7 +445,7 @@ void Level::save(vector<unsigned char>* data){
         }
     }
     FileUtility::saveInt(data, (int)entityList.size());
-    for(int i=0;i<entityList.size();i++){
+	for (size_t i = 0; i<entityList.size(); i++){
         debug("Saving Entity: "+entityList[i]->getName()+"("+to_string(entityList[i]->getEntityTypeId())+")"+", Pos: "+entityList[i]->pos.toString());
         entityList[i]->save(data);
     }
