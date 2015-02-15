@@ -122,6 +122,13 @@ namespace Ui {
 
         limitedColorMode = COLORS<256;
 
+		if (limitedColorMode){
+			swap(C_DARK_RED, C_DARK_BLUE);
+			swap(C_LIGHT_RED, C_LIGHT_BLUE);
+			swap(C_DARK_CYAN, C_DARK_YELLOW);
+			swap(C_LIGHT_CYAN, C_LIGHT_YELLOW);
+		}
+
         initColorPairs();
 
         refresh();

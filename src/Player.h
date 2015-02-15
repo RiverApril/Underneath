@@ -62,13 +62,13 @@ public:
     }
 
     virtual double heal(double amount){
-        int a = Alive::heal(amount);
+		double a = Alive::heal(amount);
         gainXp(iCON, a/10.0);
         return a;
     }
 
     virtual double healMana(double amount){
-        int a = Alive::heal(amount);
+		double a = Alive::heal(amount);
         gainXp(iWIS, a/10.0);
         return a;
     }
@@ -91,7 +91,7 @@ public:
 
     void gainXp(int i, double amount){
         xp.list[i] += amount;
-        int l = nextLevelXp.list[i];
+		double l = nextLevelXp.list[i];
         while(xp.list[i] > l && levels.list[i] < maxLevels.list[i]-1){
             xp.list[i] -= l;
             levels.list[i] += 1;

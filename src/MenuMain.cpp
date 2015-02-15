@@ -95,11 +95,6 @@ namespace Ui {
         
         if(limitedColorMode) {
             mvaddstr(a, 0, "Limited Color Mode");
-            
-            swap(C_DARK_RED, C_DARK_BLUE);
-            swap(C_LIGHT_RED, C_LIGHT_BLUE);
-            swap(C_DARK_CYAN, C_DARK_YELLOW);
-            swap(C_LIGHT_CYAN, C_LIGHT_YELLOW);
         }
         
         a++;
