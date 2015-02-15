@@ -22,3 +22,7 @@ Makefile
 */world.info
 worlds/*
 Underneath
+*.opensdf
+*.sdf
+*.sln
+*.suo
