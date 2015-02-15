@@ -12,19 +12,19 @@
 #include "Global.h"
 #include "Utility.h"
 
+#define iSTR 0
+#define iDEX 1
+#define iINT 2
+
+#define iAGI 3
+#define iSPD 4
+
+#define iCON 5
+#define iWIS 6
+
+#define abilityCount 7
+
 namespace AbilityDetails{
-
-    static const int iSTR = 0;
-    static const int iDEX = 1;
-    static const int iINT = 2;
-
-    static const int iAGI = 3;
-    static const int iSPD = 4;
-
-    static const int iCON = 5;
-    static const int iWIS = 6;
-
-    static const int abilityCount = 7;
 
     static const string abilityAbr[abilityCount] = {
         "STR",
@@ -102,7 +102,7 @@ struct Abilities{
         list[iWIS] = wis;
     }
 
-    T list[abilityCount] = {0};
+    T list[abilityCount];
 
     /*
     

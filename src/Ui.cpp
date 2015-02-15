@@ -40,7 +40,7 @@ void console(string s){
 
 
 void debugf(string format, ...){
-    char buff[format.length()];
+    char buff[256];
     va_list args;
     va_start(args, format);
     vsprintf(buff, format.c_str(), args);
@@ -50,7 +50,7 @@ void debugf(string format, ...){
 
 
 void consolef(string format, ...){
-    char buff[format.length()];
+	char buff[256];
     va_list args;
     va_start(args, format);
     vsprintf(buff, format.c_str(), args);
