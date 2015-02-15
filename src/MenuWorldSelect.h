@@ -32,11 +32,11 @@ namespace Ui {
         yesNo* deleteAnswer = new yesNo(aUndefined);
 
     private:
-        static constexpr int selPlay = 0;
-        static constexpr int selDel = 1;
-        static constexpr int selBack = 2;
+        static const int selPlay = 0;
+		static const int selDel = 1;
+		static const int selBack = 2;
 
-        static constexpr int maxUiSelection = selBack;
+		static const int maxUiSelection = selBack;
     };
 }
 

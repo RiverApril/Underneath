@@ -37,9 +37,9 @@ namespace WorldLoader {
 
         fileWorldInfo = std::fopen((dir+"world"+".info").c_str(), "rb");
         if(fileWorldInfo != nullptr){
-            l = true;
+			l = true;
+			fclose(fileWorldInfo);
         }
-        fclose(fileWorldInfo);
         //
 
         //debug(l?"Yes ":"No ");
