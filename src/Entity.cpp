@@ -56,12 +56,8 @@ bool Entity::tryToMoveAbsalute(Point2 p, Level* level) {
     }
     return false;
 }
+
 bool Entity::tryToMoveRelative(Point2 p, Level* level) {
-    /*if(p.x != 0 && p.y != 0){
-        bool xx = tryToMoveRelative(Point2(p.x, 0), level);
-        bool yy = tryToMoveRelative(Point2(0, p.y), level);
-        return xx || yy;
-    }*/
     return tryToMoveAbsalute(pos+p, level);
 }
 

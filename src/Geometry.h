@@ -21,7 +21,13 @@ struct Point2 {
     bool operator==(const Point2 other);
     bool operator!=(const Point2 other);
 
-    
+    Point2 xOnly(){
+        return Point2(x, 0);
+    }
+
+    Point2 yOnly(){
+        return Point2(0, y);
+    }
 
     void set(const Point2 other);
 

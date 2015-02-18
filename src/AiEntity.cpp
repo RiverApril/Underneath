@@ -7,6 +7,7 @@
 //
 
 #include "AiEntity.h"
+#include "Math.h"
 #include "Utility.h"
 #include "Level.h"
 
@@ -59,27 +60,47 @@ void AiEntity::runAi(double time, Level* level) {
             }
         }
     }
-    if(ai & aiFollowPlayerSmart){
+    if(ai & aiFollowPlayerSmart || ai & aiStalkPlayerSmart){
         if(level->canSee(pos, target->pos, viewDistance)){
             lastKnownTargetPos = target->pos;
         }
         if(lastKnownTargetPos != Point2(-1, -1)){
-            speed.x = pos.x>lastKnownTargetPos.x?-1:(pos.x<lastKnownTargetPos.x?1:0);
-            speed.y = pos.y>lastKnownTargetPos.y?-1:(pos.y<lastKnownTargetPos.y?1:0);
+            Ranged* r = dynamic_cast<Ranged*>(activeWeapon);
+            if(r && (ai & aiStalkPlayerSmart) && (distanceSquared(target->pos, pos) < r->range)){
+                speed.x = 0;
+                speed.y = 0;
+            }else{
+            	speed.x = pos.x>lastKnownTargetPos.x?-1:(pos.x<lastKnownTargetPos.x?1:0);
+            	speed.y = pos.y>lastKnownTargetPos.y?-1:(pos.y<lastKnownTargetPos.y?1:0);
+            }
+
         }
 
     }
 
 
     if(!tryToMoveRelative(speed, level)){
+        bool attack = false;
         if(ai & aiAttackPlayer){
-            if(target->pos == (pos+speed)){
-            	if(activeWeapon != nullptr){
-                    while(lastAttackTime + activeWeapon->useDelay <= time){
-                		target->hurt(activeWeapon, time);
-                        lastAttackTime += activeWeapon->useDelay;
+            if(activeWeapon != nullptr){
+            	if(target->pos == (pos+speed)){
+                    attack = true;
+                }else{
+                    Ranged* r = dynamic_cast<Ranged*>(activeWeapon);
+                    if(r){
+                        if(level->canSee(pos, target->pos, Math::min(r->range, (double)viewDistance))){
+                            attack = true;
+                        }
+                        
                     }
-            	}
+                    
+                }
+            }
+        }
+        if(attack){
+            while(lastAttackTime + activeWeapon->useDelay <= time){
+                target->hurt(activeWeapon, time);
+                lastAttackTime += activeWeapon->useDelay;
             }
         }
     }
@@ -108,7 +129,6 @@ bool AiEntity::update(double time, Level* level) {
             //usleep(10 * 1000);
         }
     }
-
 
     return Alive::update(time, level);
 }

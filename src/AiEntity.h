@@ -19,6 +19,7 @@ const AiType aiFollowPlayerDumb = 1 << 1;
 const AiType aiAttackPlayer = 1 << 2;
 const AiType aiFleeFromPlayerDumb = 1 << 3;
 const AiType aiFollowPlayerSmart = 1 << 4;
+const AiType aiStalkPlayerSmart = 1 << 5;
 
 
 

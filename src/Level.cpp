@@ -140,6 +140,57 @@ bool Level::canSee(Point2 origin, Point2 test, double range){
     return true;
 }
 
+Entity* Level::getClosestVisableEntity(Point2 origin, double range, Entity* notMe){
+    Entity* closest = nullptr;
+    double lastDistSquared = size->xPlusY();
+    for(Entity* e : entityList){
+        if(e == notMe){
+            continue;
+        }
+        if(canSee(origin, e->pos, range)){
+            if(e != nullptr){
+                double temp = distanceSquared(origin, e->pos);
+                if(temp < lastDistSquared){
+                    closest = e;
+                    lastDistSquared = temp;
+                }
+            }
+        }
+    }
+    return closest;
+}
+
+vector<Entity*> Level::getAllVisableEntitiesSortedByNearest(Point2 origin, double range, Entity* notMe){
+    vector<Entity*> list;
+
+    for(Entity* e : entityList){
+        if(e == notMe){
+            continue;
+        }
+        if(canSee(origin, e->pos, range)){
+            if(e != nullptr){
+                list.push_back(e);
+            }
+        }
+    }
+
+    int n = (int)list.size();
+
+    for(int x=0; x<n; x++){
+        for(int y=0; y<n-1; y++){
+            if(distanceSquared(origin, list[y]->pos) > distanceSquared(origin, list[y+1]->pos)){
+                Entity* temp = list[y+1];
+                list[y+1] = list[y];
+                list[y] = temp;
+            }
+        }
+    }
+
+
+    return list;
+
+}
+
 long Level::entityCount() {
     return entityList.size();
 }
@@ -324,6 +375,8 @@ void Level::genDebug(string s){
 
 Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLevel) {
 
+    genDebugPos = 1;
+
 
     srand(seed);
 
@@ -411,7 +464,13 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     AiEntity* troll = new AiEntity ("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
     troll->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damMelee, false));
 
-    addEntitiesRandomly(stairUpPos, troll, (rand()%100)+20);
+    addEntitiesRandomly(stairUpPos, troll, (rand()%20)+20);
+
+
+    AiEntity* goblinArcher = new AiEntity ("Goblin Archer", aiStalkPlayerSmart | aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 20);
+    goblinArcher->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damRanged, false));
+
+    addEntitiesRandomly(stairUpPos, goblinArcher, (rand()%40)+20);
 
     genDebug("done");
 
@@ -421,10 +480,10 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     
 }
 
-template <typename T> void Level::addEntitiesRandomly(Point2 start, T* e, int count){
+void Level::addEntitiesRandomly(Point2 start, Entity* e, int count){
 
     for(int i=0;i<count;i++){
-        T* r = dynamic_cast<T*>(Entity::clone(e));
+        Entity* r = Entity::clone(e);
         Point2 p = Point2(findRandomWithoutFlag(tileFlagSolid));
         if(canPathTo(start, p, tileFlagPathable | tileFlagSecretPathable)){
             r->pos = p;

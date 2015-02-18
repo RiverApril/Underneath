@@ -73,6 +73,9 @@ public:
     bool setTile(Point2 p, Tile* tile);
     int indexAt(Point2 p);
 
+    Entity* getClosestVisableEntity(Point2 origin, double range, Entity* notMe = nullptr);
+    vector<Entity*> getAllVisableEntitiesSortedByNearest(Point2 origin, double range, Entity* notMe);
+
     bool canSee(Point2 origin, Point2 test, double range);
 
     long entityCount();
@@ -85,7 +88,7 @@ public:
 
     Point2 generate(unsigned int seed, Point2 stairUpPos, string previousLevel);
 
-    template <typename T> void addEntitiesRandomly(Point2 start, T* e, int count);
+    void addEntitiesRandomly(Point2 start, Entity* e, int count);
 
     bool update(double time, Point2 viewPos);
 
@@ -115,7 +118,7 @@ public:
 private:
     void actuallyRemoveEntity(Entity* e, bool deleteEntity);
 
-    Point2* size;
+    Point2* size;//TODO figure out if this needs to be a pointer
 
     vector<vector<TileData> > tileGrid;
 

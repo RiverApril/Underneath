@@ -98,7 +98,7 @@ Alive* Alive::cloneUnsafe(Alive* oldE, Alive* newE){
 
     int activeWeaponIndex = -1;
     forVector(oldE->inventory, i){
-        newE->inventory.push_back(oldE->inventory[i]);
+        newE->inventory.push_back(Item::clone(oldE->inventory[i]));
         if(oldE->inventory[i] == oldE->activeWeapon){
             activeWeaponIndex = (int)i;
         }
