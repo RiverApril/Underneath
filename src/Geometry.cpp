@@ -308,7 +308,7 @@ Vector2 Vector2::operator/( double other) {
 }
 
 int distanceSquared(Point2 a, Point2 b){
-    return Math::distanceSquared(a.x, a.y, b.x, b.y);
+    return (int)Math::distanceSquared(a.x, a.y, b.x, b.y);
 }
 
 

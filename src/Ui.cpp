@@ -137,10 +137,10 @@ namespace Ui {
 
     void initColorPairs() {
 
-        int a = 0;
+        short a = 0;
 
-        for(int i = 0; i<0x10; i++) {
-            for(int j = 0; j<0x10; j++) {
+        for(short i = 0; i<0x10; i++) {
+            for(short j = 0; j<0x10; j++) {
             	init_pair(a, j, i);
                 a++;
             }

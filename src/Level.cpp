@@ -19,11 +19,11 @@ Level::Level(World* w, string n, Point2 s) {
     currentWorld = w;
     name = n;
     size = new Point2(s);
-    tileGrid = vector<vector<TileData>>(size->x, vector<TileData>(size->y));
+    tileGrid = vector<vector<TileData>>((size_t)size->x, vector<TileData>((size_t)size->y));
     
-    for(int i=0;i<size->x;i++){
-        for(int j=0;j<size->y;j++){
-            tileGrid[i][j].index = Tiles::tileUnset->getIndex();
+    for(size_t i=0;i<(size_t)size->x;i++){
+        for(size_t j=0;j<(size_t)size->y;j++){
+            tileGrid[i][j].index = (int8_t)Tiles::tileUnset->getIndex();
             tileGrid[i][j].explored = false;
             //tileGrid[i][j].entity = nullptr;
         }
@@ -40,7 +40,7 @@ Level::~Level() {
 
 bool Level::getExplored(Point2 p) {
     if(inRange(p)) {
-    	return tileGrid[p.x][p.y].explored;
+    	return tileGrid[(size_t)p.x][(size_t)p.y].explored;
     }else{
         return false;
     }
@@ -48,7 +48,7 @@ bool Level::getExplored(Point2 p) {
 
 void Level::setExplored(Point2 p, bool a) {
     if(inRange(p)) {
-    	tileGrid[p.x][p.y].explored = a;
+    	tileGrid[(size_t)p.x][(size_t)p.y].explored = a;
     }
 }
 
@@ -102,7 +102,7 @@ Point2 Level::findRandomWithoutFlag(TileFlag flags){
 
 bool Level::setTile(Point2 p, int tile) {
     if(inRange(p)) {
-        tileGrid[p.x][p.y].index = tile;
+        tileGrid[(size_t)p.x][(size_t)p.y].index = (int8_t)tile;
         return true;
     }
     return false;
@@ -118,7 +118,7 @@ Tile* Level::tileAt(Point2 p) {
 
 int Level::indexAt(Point2 p) {
     if(inRange(p)) {
-        return tileGrid[p.x][p.y].index;
+        return tileGrid[(size_t)p.x][(size_t)p.y].index;
     }
     return Tiles::tileEdge->getIndex();
 }
@@ -186,10 +186,10 @@ vector<Entity*> Level::getAllVisableEntitiesSortedByNearest(Point2 origin, doubl
         }
     }
 
-    int n = (int)list.size();
+    size_t n = list.size();
 
-    for(int x=0; x<n; x++){
-        for(int y=0; y<n-1; y++){
+    for(size_t x=0; x<n; x++){
+        for(size_t y=0; y<n-1; y++){
             if(distanceSquared(origin, list[y]->pos) > distanceSquared(origin, list[y+1]->pos)){
                 Entity* temp = list[y+1];
                 list[y+1] = list[y];
@@ -203,7 +203,7 @@ vector<Entity*> Level::getAllVisableEntitiesSortedByNearest(Point2 origin, doubl
 
 }
 
-long Level::entityCount() {
+size_t Level::entityCount() {
     return entityList.size();
 }
 
@@ -255,7 +255,7 @@ void Level::removeEntity(Entity* e, bool deleteEntity) {
 void Level::actuallyRemoveEntity(Entity* e, bool deleteEntity){
 	for (size_t i = 0; i<entityList.size(); i++){
         if(e->uniqueId == entityList[i]->uniqueId){
-            entityList.erase(entityList.begin()+i);
+            entityList.erase(entityList.begin()+(long)i);
             debug("Removed Entity: "+e->getName());
             if(deleteEntity){
                 string n = e->getName();
@@ -269,10 +269,10 @@ void Level::actuallyRemoveEntity(Entity* e, bool deleteEntity){
 }
 
 vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
-	vector<vector<int>> map = vector<vector<int>>(size->x, vector<int>(size->y));
+	vector<vector<int>> map = vector<vector<int>>((size_t)size->x, vector<int>((size_t)size->y));
 
-    for(int i=0;i<size->x;i++){
-        for(int j=0;j<size->y;j++){
+    for(size_t i=0;i<(size_t)size->x;i++){
+        for(size_t j=0;j<(size_t)size->y;j++){
             map[i][j] = -1;
         }
     }
@@ -286,7 +286,7 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
         if(c == to){
             vector<Point2> path;
             Point2 l = to;
-            int v = map[to.x][to.y];
+            int v = map[(size_t)to.x][(size_t)to.y];
             while(v > 0){
                 bool leave = false;
                 for(int i=-1;i<=1 && !leave;i++){
@@ -294,8 +294,8 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
                         Point2 p = Point2(i+l.x, j+l.y);
                         if((abs(i)+abs(j)) == 1){
                         	if(inRange(p)){
-                                if(map[p.x][p.y] < v && map[p.x][p.y] != -1){
-                                    v = map[p.x][p.y];
+                                if(map[(size_t)p.x][(size_t)p.y] < v && map[(size_t)p.x][(size_t)p.y] != -1){
+                                    v = map[(size_t)p.x][(size_t)p.y];
                                     l = p;
                                     leave = true;
                                     path.push_back(l);
@@ -316,8 +316,8 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
                     if((abs(i)+abs(j)) == 1){
                     	if(inRange(p)){
                         	if(tileAt(p)->hasFlag(requiredFlag)){
-                                if(map[p.x][p.y] == -1){
-                                    map[p.x][p.y] = map[c.x][c.y]+1;
+                                if(map[(size_t)p.x][(size_t)p.y] == -1){
+                                    map[(size_t)p.x][(size_t)p.y] = map[(size_t)c.x][(size_t)c.y]+1;
                                     priorityQueue.push(p);
                                 }
                             }
@@ -396,13 +396,13 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
     do{
 
-        for (int i=0; i<size->x; i++) {
-            for (int j=0; j<size->y; j++) {
-                tileGrid[i][j].index = Tiles::tileUnset->getIndex();
+        for (size_t i=0; i<(size_t)size->x; i++) {
+            for (size_t j=0; j<(size_t)size->y; j++) {
+                tileGrid[i][j].index = (int8_t)Tiles::tileUnset->getIndex();
                 tileGrid[i][j].explored = false;
                 //tileGrid[i][j].entity = nullptr;
-                if(i==0 || j==0 || i==(size->x-1) || j==(size->y-1)){
-                    tileGrid[i][j].index = Tiles::tileWall->getIndex();
+                if(i==0 || j==0 || i==(size_t)(size->x-1) || j==(size_t)(size->y-1)){
+                    tileGrid[i][j].index = (int8_t)Tiles::tileWall->getIndex();
                 }
             }
         }
@@ -509,8 +509,8 @@ void Level::addEntitiesRandomly(Point2 start, Entity* e, int count){
 void Level::save(vector<unsigned char>* data){
     
     Point2::save(*size, data);
-    for(int i=0;i<size->x;i++){
-        for(int j=0;j<size->y;j++){
+    for(size_t i=0;i<(size_t)size->x;i++){
+        for(size_t j=0;j<(size_t)size->y;j++){
             FileUtility::saveInt8Bit(data, tileGrid[i][j].index);
             FileUtility::saveBool(data, tileGrid[i][j].explored);
         }
@@ -524,8 +524,8 @@ void Level::save(vector<unsigned char>* data){
 
 void Level::load(unsigned char* data, int* position){
 
-    for(int i=0;i<size->x;i++){
-        for(int j=0;j<size->y;j++){
+    for(size_t i=0;i<(size_t)size->x;i++){
+        for(size_t j=0;j<(size_t)size->y;j++){
             tileGrid[i][j].index = FileUtility::loadInt8Bit(data, position);
             tileGrid[i][j].explored = FileUtility::loadBool(data, position);
         }

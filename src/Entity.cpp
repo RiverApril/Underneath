@@ -152,13 +152,13 @@ void Entity::save(vector<unsigned char>* data){
 
     FileUtility::saveInt(data, uniqueId);
     
-    FileUtility::saveUnsignedChar(data, defaultIcon);
+    FileUtility::saveUnsignedChar(data, (unsigned char)defaultIcon);
     
     Point2::save(pos, data);
     Point2::save(lastPos, data);
     
-    FileUtility::saveUnsignedChar(data, fgColorCode);
-    FileUtility::saveUnsignedChar(data, bgColorCode);
+    FileUtility::saveUnsignedChar(data, (unsigned char)fgColorCode);
+    FileUtility::saveUnsignedChar(data, (unsigned char)bgColorCode);
     FileUtility::saveBool(data, solid);
 }
 
@@ -171,13 +171,13 @@ void Entity::load(unsigned char* data, int* position){
 
     uniqueId = FileUtility::loadInt(data, position);
 
-    defaultIcon = FileUtility::loadUnsignedChar(data, position);
+    defaultIcon = (char)FileUtility::loadUnsignedChar(data, position);
 
     pos = Point2::load(data, position);
     lastPos = Point2::load(data, position);
 
-    fgColorCode = FileUtility::loadUnsignedChar(data, position);
-    bgColorCode = FileUtility::loadUnsignedChar(data, position);
+    fgColorCode = (char)FileUtility::loadUnsignedChar(data, position);
+    bgColorCode = (char)FileUtility::loadUnsignedChar(data, position);
     solid = FileUtility::loadBool(data, position);
 
     updateIcon = true;

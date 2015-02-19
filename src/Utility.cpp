@@ -18,7 +18,7 @@ namespace FileUtility {
         } uDoubleBytes;
 
         uDoubleBytes.d = n;
-        for(int i=0;i<sizeof(double);i++){
+        for(size_t i=0;i<sizeof(double);i++){
             data->push_back((unsigned char)(((uDoubleBytes.b[i])/* >> (i*8)*/) & 0xFF));
         }
     }
@@ -53,9 +53,9 @@ namespace FileUtility {
     }
 
     void saveString(vector<unsigned char>* data, string n){
-        int count = (int)n.size();
-        saveInt(data, count);
-        for(int i=0;i<count;i++){
+        size_t count = n.size();
+        saveInt(data, (int)count);
+        for(size_t i=0;i<count;i++){
             saveUnsignedChar(data, (unsigned char)n[i]);
         }
     }
@@ -67,7 +67,7 @@ namespace FileUtility {
             unsigned char b[sizeof(double)];
         } uDoubleBytes;
 
-        for(int i=0;i<sizeof(double);i++){
+        for(size_t i=0;i<sizeof(double);i++){
             uDoubleBytes.b[i] = ((unsigned char)loadUnsignedChar(data, position));
         }
         return uDoubleBytes.d;
@@ -126,7 +126,7 @@ namespace FileUtility {
             int c;
             do{
                 c = fgetc(file);
-                s += c;
+                s += (char)c;
             }while(c != EOF);
 
             fclose(file);
@@ -142,8 +142,8 @@ namespace StringUtility {
 
     string makeBar(int progress, int maxProgress, size_t size, char filled, char empty){
         string s = "";
-        int l = (int)(((double)size/maxProgress)*progress);
-        for(int i=0;i<size;i++){
+        size_t l = (size_t)(((double)size/maxProgress)*progress);
+        for(size_t i=0;i<size;i++){
             s+=i>=l?empty:filled;
         }
         return s;
@@ -151,7 +151,7 @@ namespace StringUtility {
 
     string repeatString(string s, size_t qty){
         string v = "";
-        for(int i=0;i<qty;i++){
+        for(size_t i=0;i<qty;i++){
             v += s;
         }
         return v;
@@ -200,7 +200,7 @@ namespace ParsingUtility {
             bool addToLeft = true;
             vector<int> left;
             vector<int> right;
-            for(int i=0;i<s.length();i++){
+            for(size_t i=0;i<s.length();i++){
                 if(s[i] == '.'){
                     if(addToLeft){
                         addToLeft = false;
@@ -223,13 +223,13 @@ namespace ParsingUtility {
             double final = 0;
             int d = 0;
             for(int i=(int)left.size()-1;i>=0;i--){
-                final += pow(base, d)*left[i];
+                final += pow(base, d)*left[(size_t)i];
                 d++;
             }
 
             d = -1;
 
-            for(int i=0;i<right.size();i++){
+            for(size_t i=0;i<right.size();i++){
                 final += pow(base, d)*right[i];
                 d--;
             }
@@ -251,7 +251,7 @@ namespace ParsingUtility {
             throw ParseException("Base out of range: "+to_string(base));
         }else{
             vector<int> left;
-            for(int i=0;i<s.length();i++){
+            for(size_t i=0;i<s.length();i++){
                 int n = getNumberFromSymbol(s[i]);
                 if(n >= base){
                     throw ParseException("Symbol too large for specified base.");
@@ -259,10 +259,10 @@ namespace ParsingUtility {
                     left.push_back(n);
                 }
             }
-            double final = 0;
+            int final = 0;
             int d = 0;
             for(int i=(int)left.size()-1;i>=0;i--){
-                final += pow(base, d)*left[i];
+                final += pow(base, d)*left[(size_t)i];
                 d++;
             }
 

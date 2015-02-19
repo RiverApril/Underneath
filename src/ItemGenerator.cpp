@@ -76,7 +76,7 @@ namespace ItemGenerator {
     Weapon* createWeaponBase(DamageType d){
         Weapon* w = nullptr;
         while(w == nullptr){
-            int i = rand()%weaponList.size();
+            size_t i = ((size_t)rand())%weaponList.size();
             if(weaponList[i]->damageType == d){
                 w = weaponList[i];
             }

@@ -101,7 +101,7 @@ namespace Arts{
                     art->lines.push_back(line);
                     line = "";
                 }else{
-                    line += c;
+                    line += (char)c;
                 }
             }while(c != EOF);
             //art->lines.push_back(line);
@@ -117,8 +117,8 @@ namespace Arts{
 
 
     Art* getArt(int index){
-        if(index >= 0 && index < artList.size()){
-            return artList[index];
+        if(index >= 0 && (size_t)index < artList.size()){
+            return artList[(size_t)index];
         }else{
             return defaultArt;
         }
@@ -142,15 +142,15 @@ Point2 Art::getSize(){
 }
 
 void Art::printAt(Point2 pos){
-    for(int i=0;i<lines.size();i++){
-    	mvaddstr(pos.y+i, pos.x, lines[i].c_str());
+    for(size_t i=0;i<lines.size();i++){
+    	mvaddstr((size_t)pos.y+i, pos.x, lines[i].c_str());
     }
 }
 
 void Art::printCenter(int y, int xOffset){
     int w = getSize().x;
-    for(int i=0;i<lines.size();i++){
-        mvprintw(y+i, (Ui::terminalSize.x/2)-((int)(w-1)/2), lines[i].c_str());
+    for(size_t i=0;i<lines.size();i++){
+        mvprintw(y+(int)i, (Ui::terminalSize.x/2)-((int)(w-1)/2), lines[i].c_str());
     }
 }
 

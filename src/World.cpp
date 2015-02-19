@@ -53,7 +53,7 @@ namespace WorldLoader {
         rewind(file);
 
         unsigned char* buffer = new unsigned char[fileSize];
-        fread(buffer, fileSize, 1, file);
+        fread(buffer, (size_t)fileSize, 1, file);
         /*printf("Length: %ld\n", fileSize);
         for(int i=0;i<fileSize;i++){
             printf("%X, ", (int)buffer[i]);
@@ -131,7 +131,7 @@ namespace WorldLoader {
                 //
 
                 if(world->currentLevel != nullptr){
-                    for(int i=0;i<world->currentLevel->entityCount();i++){
+                    for(size_t i=0;i<world->currentLevel->entityCount();i++){
                         if(world->currentLevel->entityList[i]->uniqueId == playerUniqueId){
                             world->currentPlayer = dynamic_cast<Player*>(world->currentLevel->entityList[i]);
                         }
@@ -279,7 +279,7 @@ namespace WorldLoader {
         Point2 p;
         do{
             start = Point2(rand()%world->currentLevel->getSize().x, rand()%world->currentLevel->getSize().y);
-        	p = world->currentLevel->generate(rand(), start, "");
+        	p = world->currentLevel->generate((unsigned int)rand(), start, "");
         }while(!(p.x >= 0 && p.y >= 0));
 
         world->levels.push_back(world->currentLevel->getName());
@@ -385,7 +385,7 @@ namespace WorldLoader {
         Level* newLevel = new Level(world, newName, world->currentLevel->getSize());
 
 		srand(static_cast<unsigned int>(time(NULL)));
-        newLevel->generate(rand(), entrance, "");
+        newLevel->generate((unsigned int)rand(), entrance, "");
         world->levels.push_back(newLevel->getName());
 
         newLevel->newEntity(world->currentPlayer);

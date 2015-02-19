@@ -103,6 +103,6 @@ namespace Tiles{
     }
 
     Tile* getTile(int index) {
-        return tileList[index];
+        return tileList[(size_t)index];
     }
 }

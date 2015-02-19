@@ -85,7 +85,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
                 level->setTile(posOfTile, Tiles::tileDoor);
                 return interactDelay;
             }
-        }else if(Tiles::tileList[tid]->hasFlag(tileFlagDoor)){
+        }else if(Tiles::tileList[(size_t)tid]->hasFlag(tileFlagDoor)){
             level->setTile(posOfTile, Tiles::tileOpenDoor);
             return interactDelay;
         }

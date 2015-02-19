@@ -97,7 +97,7 @@ namespace Ui {
 
                 default:
                     if((in>=32 && in<=126)){
-                        consoleInput += in;
+                        consoleInput += (char)in;
                     }else{
                     	return false;
                     }
@@ -117,9 +117,9 @@ namespace Ui {
             if(((int)(consoleBuffer.size())-j) < 0){
                 break;
             }
-            auto p = consoleBuffer.size()-j+consoleScroll;
-            if(p < consoleBuffer.size()){
-                printw(consoleBuffer[p].c_str());
+            int p = ((int)consoleBuffer.size())-j+((int)consoleScroll);
+            if(p < (int)consoleBuffer.size()){
+                printw(consoleBuffer[(size_t)p].c_str());
             }
             j++;
         }

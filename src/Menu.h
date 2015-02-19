@@ -30,7 +30,7 @@ namespace Ui{
 
         Menu() {}
 
-        ~Menu() {
+        virtual ~Menu() {
             
         }
 

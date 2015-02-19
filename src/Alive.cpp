@@ -63,7 +63,7 @@ bool Alive::update(double time, Level* level) {
             }
 
             if(time >= e.timeEnd){
-                effects.erase(effects.begin()+i);
+                effects.erase(effects.begin()+(long)i);
                 i--;
                 continue;
             }
@@ -196,7 +196,7 @@ Alive* Alive::cloneUnsafe(Alive* oldE, Alive* newE){
         }
     }
     if(activeWeaponIndex != -1){
-    	newE->activeWeapon = dynamic_cast<Weapon*>(newE->inventory[activeWeaponIndex]);
+    	newE->activeWeapon = dynamic_cast<Weapon*>(newE->inventory[(size_t)activeWeaponIndex]);
     }
 
     newE->effects = oldE->effects;
@@ -261,7 +261,7 @@ void Alive::load(unsigned char* data, int* position){
 
     int activeWeaponIndex = FileUtility::loadInt(data, position);
     if(activeWeaponIndex != -1){
-    	activeWeapon = dynamic_cast<Weapon*>(inventory[activeWeaponIndex]);
+    	activeWeapon = dynamic_cast<Weapon*>(inventory[(size_t)activeWeaponIndex]);
     }else{
         activeWeapon = nullptr;
     }
@@ -270,9 +270,9 @@ void Alive::load(unsigned char* data, int* position){
     size = FileUtility::loadInt(data, position);
     repeat(size, i){
         int eId = FileUtility::loadInt(data, position);
-        int timeEnd = FileUtility::loadDouble(data, position);
-        int power = FileUtility::loadDouble(data, position);
-        int lastTime = FileUtility::loadDouble(data, position);
+        double timeEnd = FileUtility::loadDouble(data, position);
+        double power = FileUtility::loadDouble(data, position);
+        double lastTime = FileUtility::loadDouble(data, position);
         effects.push_back(Effect(eId, timeEnd, power, lastTime));
     }
 }

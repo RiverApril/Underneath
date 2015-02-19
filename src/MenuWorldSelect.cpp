@@ -90,7 +90,7 @@ namespace Ui {
 
             default:
                 if((in=='_') || (in>='0' && in<='9') || (in>='A' && in<='Z') || (in>='a' && in<='z')){
-                    name += in;
+                    name += (char)in;
                 }
                 break;
         }

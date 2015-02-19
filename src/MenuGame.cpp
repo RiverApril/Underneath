@@ -216,7 +216,7 @@ namespace Ui {
             targetPosition += p;
         }if(mode == modeInterectChoose){
 
-            Item* i = *useItem!=-1?(currentWorld->currentPlayer->inventory[*useItem]):currentWorld->currentPlayer->getActiveWeapon();
+            Item* i = *useItem!=-1?(currentWorld->currentPlayer->inventory[(size_t)*useItem]):currentWorld->currentPlayer->getActiveWeapon();
             
             timePassed += currentWorld->currentPlayer->interact(currentWorld->currentLevel, currentWorld->currentPlayer->pos+p, false, i);
 
@@ -421,7 +421,7 @@ namespace Ui {
 
             mvprintw(a, gameArea.x+1, "HP: %d/%d", hp, maxHp);
             Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
-            printw(" %s", StringUtility::makeBar(hp, maxHp, terminalSize.x - getcurx(stdscr) - 2).c_str());
+            printw(" %s", StringUtility::makeBar(hp, maxHp, (size_t)(terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);
 
             a++;
@@ -431,12 +431,12 @@ namespace Ui {
 
             mvprintw(a, gameArea.x+1, "MP: %d/%d", mp, maxMp);
             Ui::setColor(C_LIGHT_BLUE);
-            printw(" %s", StringUtility::makeBar(mp, maxMp, terminalSize.x - getcurx(stdscr) - 2).c_str());
+            printw(" %s", StringUtility::makeBar(mp, maxMp, (size_t)(terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);
 
             a++;
 
-            for(int i=0;i<currentWorld->currentPlayer->effects.size();i++){
+            for(size_t i=0;i<currentWorld->currentPlayer->effects.size();i++){
                 Effect eff = currentWorld->currentPlayer->effects[i];
                 string name = "EFFECT";
                 Ui::Color color = C_LIGHT_GREEN;
@@ -457,7 +457,7 @@ namespace Ui {
                         break;
                 }
                 setColor(color);
-                mvprintw(a, gameArea.x+1, (name+" %s: %.2f").c_str(), ParsingUtility::intToRomanNumerals(eff.power).c_str(), eff.timeEnd-currentWorld->worldTime);
+                mvprintw(a, gameArea.x+1, (name+" %d: %.2f").c_str(), (int)eff.power, eff.timeEnd-currentWorld->worldTime);
                 a++;
             }
 
@@ -476,7 +476,7 @@ namespace Ui {
 
             vector<Entity*> nearestEntities = currentWorld->currentLevel->getAllVisableEntitiesSortedByNearest(currentWorld->currentPlayer->pos, currentWorld->currentPlayer->viewDistance, currentWorld->currentPlayer);
 
-            for(int i=0; i<nearestEntities.size() && a<terminalSize.y; i++){
+            for(size_t i=0; i<nearestEntities.size() && a<terminalSize.y; i++){
                 Entity* nearestEntity = nearestEntities[i];
                 if(nearestEntity != nullptr){
                     Ui::setColor(C_WHITE);
@@ -492,7 +492,7 @@ namespace Ui {
                         const int maxHp = Math::roundToInt(aiEntity->getMaxHp());
                         mvprintw(a, gameArea.x+1, " HP: %d/%d", hp, maxHp);
                         Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
-                        printw(" %s", StringUtility::makeBar(hp, maxHp, terminalSize.x - getcurx(stdscr) - 2).c_str());
+                        printw(" %s", StringUtility::makeBar(hp, maxHp, (size_t)(terminalSize.x - getcurx(stdscr) - 2)).c_str());
                         Ui::setColor(C_WHITE);
                         a++;
                     }

@@ -26,8 +26,8 @@ namespace Commands{
 
         vector<string> arguments;
         string s;
-        int lastI = 0;
-        repeat(argumentsRaw.length(), i){
+        size_t lastI = 0;
+        for(size_t i = 0;i<argumentsRaw.length();i++){
             if(argumentsRaw[i] == ' '){
                 s = argumentsRaw.substr(lastI, i-lastI);
                 if(s.length() > 0){
@@ -72,7 +72,7 @@ namespace Commands{
             switch(arguments.size()){
                 case 0:{
                     console("Global Commands:");
-                    for(int i=0;i<commandList.size();i++){
+                    for(size_t i=0;i<commandList.size();i++){
                         console("- "+commandList[i]->usage());
                     }
                     string s = currentMenu->menuOnlyCommands();
@@ -84,7 +84,7 @@ namespace Commands{
                 }
 
                 case 1:{
-                    for(int i=0;i<commandList.size();i++){
+                    for(size_t i=0;i<commandList.size();i++){
                         if(commandList[i]->acceptableName(arguments[0])){
                             console(commandList[i]->usage() + "  " + commandList[i]->help());
                             return true;

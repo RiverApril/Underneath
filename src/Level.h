@@ -78,7 +78,7 @@ public:
 
     bool canSee(Point2 origin, Point2 test, double range, bool withWalls);
 
-    long entityCount();
+    size_t entityCount();
 
     bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag);
 

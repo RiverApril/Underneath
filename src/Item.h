@@ -36,6 +36,10 @@ public:
         this->qty = qty;
     }
 
+    virtual ~Item(){
+        
+    }
+
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(unsigned char* data, int* position);

@@ -20,6 +20,8 @@ namespace Commands{
     struct Command {
         Command(){}
 
+        virtual ~Command(){}
+
         virtual bool acceptableName(string name){
             return name.compare(defaultName()) == 0;
         }

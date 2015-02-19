@@ -41,7 +41,7 @@ namespace FileUtility {
 
         uTypeBytes.d = n;
 
-        for(int i=0;i<sizeof(T);i++){
+        for(size_t i=0;i<sizeof(T);i++){
             data->push_back((unsigned char)(((uTypeBytes.b[i])/* >> (i*8)*/) & 0xFF));
         }
     }
@@ -64,7 +64,7 @@ namespace FileUtility {
             unsigned char b[sizeof(T)];
         } uTypeBytes;
 
-        for(int i=0;i<sizeof(T);i++){
+        for(size_t i=0;i<sizeof(T);i++){
             uTypeBytes.b[i] = ((unsigned char)loadUnsignedChar(data, position));
         }
         return uTypeBytes.d;
@@ -94,7 +94,7 @@ namespace ParsingUtility {
 
     struct ParseException{
         ParseException(string reason){
-
+            this->reason = reason;
         }
         string reason;
     };

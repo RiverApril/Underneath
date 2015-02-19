@@ -33,14 +33,14 @@ namespace Ui {
                 break;
 
             case 'd':{
-                if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
+                if(alive->inventory.size() > 0 && (size_t)selected < alive->inventory.size()){
                     Item* drop;
-                    if(alive->inventory[selected]->qty == 1){
-                        drop = alive->inventory[selected];
-                    	alive->removeItem(alive->inventory[selected], false);
+                    if(alive->inventory[(size_t)selected]->qty == 1){
+                        drop = alive->inventory[(size_t)selected];
+                    	alive->removeItem(alive->inventory[(size_t)selected], false);
                     }else{
-                        alive->inventory[selected]->qty -= 1;
-                        drop = Item::clone(alive->inventory[selected]);
+                        alive->inventory[(size_t)selected]->qty -= 1;
+                        drop = Item::clone(alive->inventory[(size_t)selected]);
                         drop->qty = 1;
                     }
                     currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
@@ -49,17 +49,17 @@ namespace Ui {
             }
 
             case 'D':{
-                if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
+                if(alive->inventory.size() > 0 && (size_t)selected < alive->inventory.size()){
                     Item* drop;
-                    drop = alive->inventory[selected];
-                    alive->removeItem(alive->inventory[selected], false);
+                    drop = alive->inventory[(size_t)selected];
+                    alive->removeItem(alive->inventory[(size_t)selected], false);
                     currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
                 }
                 break;
             }
 
             case 'e':{
-                Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
+                Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[(size_t)selected]);
                 if(weapon){
                     if(alive->getActiveWeapon() == weapon){
                         alive->setActiveWeapon(nullptr);
@@ -84,7 +84,7 @@ namespace Ui {
         if(selected<0){
             selected = 0;
         }
-        if(selected >= alive->inventory.size()){
+        if((size_t)selected >= alive->inventory.size()){
             selected = (int)alive->inventory.size()-1;
         }
     }
@@ -120,7 +120,7 @@ namespace Ui {
         Spell* spell;
         int y = 3;
         for(int i=minI;i<maxI;i++){
-            item = alive->inventory[i];
+            item = alive->inventory[(size_t)i];
             weapon = dynamic_cast<Weapon*>(item);
             ranged = dynamic_cast<Ranged*>(item);
             spell = dynamic_cast<Spell*>(item);
@@ -144,7 +144,7 @@ namespace Ui {
             y++;
         }
 
-        item = alive->inventory[selected];
+        item = alive->inventory[(size_t)selected];
 
         if(item){
             weapon = dynamic_cast<Weapon*>(item);
