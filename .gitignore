@@ -10,7 +10,6 @@
 .settings/*
 .project
 /Debug/
-/build/*
 /dist/*
 /nbproject/*
 Makefile
@@ -26,3 +25,4 @@ Underneath
 *.sdf
 *.sln
 *.suo
+createBuild.bat
