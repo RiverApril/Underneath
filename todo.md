@@ -10,8 +10,6 @@ Todo List:
  [ ] Enemy generator
  [ ] Enemy difficulty should increase every dungeon level
 
-
 -Needs Testing:
  [ ] Dungeon levels deeper than the first floor
-
 
