@@ -3,7 +3,8 @@ Todo List:
 -Issues:
 
 
-
+-Possible Future Issues:
+ -Saveing/loading doubles as integers, or other type confusion.
 
 
 Completed:
