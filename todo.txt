@@ -1,0 +1,8 @@
+Todo List:
+
+
+
+
+Done:
+-Fix enemies not attacking you at all
+-Fix archers

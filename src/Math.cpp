@@ -37,4 +37,12 @@ namespace Math {
         return (int)round(a);
     }
 
+    int roundAwayFrom0(double a){
+        return a>0?(int)ceil(a):(int)floor(a);
+    }
+
+    int roundToward0(double a){
+        return a>0?(int)floor(a):(int)ceil(a);
+    }
+
 }

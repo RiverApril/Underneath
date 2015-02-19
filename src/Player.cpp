@@ -133,7 +133,7 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
                     mp -= spell->manaCost;
 
                     double d = a->hurt(spell, level->currentWorld->worldTime, x+1);
-                    console("Dealt "+to_string(d)+" damage.");
+                    consolef("Dealt %.2f damage.", d);
 
                     return useDelay(item);
                 }
@@ -143,7 +143,7 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
             if(weapon){
 
                 double d = a->hurt(weapon, level->currentWorld->worldTime, x+1);
-                console("Dealt "+to_string(d)+" damage.");
+                consolef("Dealt %.2f damage.", d);
 
                 return useDelay(item);
             }

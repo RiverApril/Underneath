@@ -178,7 +178,7 @@ namespace Ui {
             if(weapon){
                 mvprintw(a++, columnInfo, "Damage: %.2f", weapon->baseDamage);
                 mvprintw(a++, columnInfo, "Type: %s", Weapon::damageTypeToString(weapon->damageType).c_str());
-                mvprintw(a++, columnInfo, "Use Delay: %.2f", weapon->useDelay);
+                mvprintw(a++, columnInfo, "Use Delay: %.2f (d/t: %.2f)", weapon->useDelay, (weapon->baseDamage/weapon->useDelay));
                 if(ranged){
                     mvprintw(a++, columnInfo, "Range: %.2f", ranged->range);
                     if(spell){

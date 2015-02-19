@@ -32,6 +32,9 @@ namespace Math {
 
     int roundToInt(double a);
 
+    int roundAwayFrom0(double a);
+    int roundToward0(double a);
+
 }
 
 

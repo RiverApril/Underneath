@@ -123,7 +123,7 @@ int Level::indexAt(Point2 p) {
     return Tiles::tileEdge->getIndex();
 }
 
-bool Level::canSee(Point2 origin, Point2 test, double range){
+bool Level::canSee(Point2 origin, Point2 test, double range, bool withWalls){
 
     if(Math::distanceSquared(origin.x, origin.y, test.x, test.y) > range*range){
         return false;
@@ -131,8 +131,20 @@ bool Level::canSee(Point2 origin, Point2 test, double range){
 
     Vector2 step = ((test-origin)/((double)range));
 
+    Vector2 v;
+    Point2 p;
+
     for(double i=0;i<range;i+=.2){
-        if(tileAt(origin+((step*i).truncate()))->isTall()){
+
+        v = (step*i);
+
+        if(withWalls){
+            p = v.roundToward0();
+        }else{
+            p = v.roundAwayFrom0();
+        }
+
+        if(tileAt(origin+(p))->isTall()){
             return false;
         }
     }
@@ -147,7 +159,7 @@ Entity* Level::getClosestVisableEntity(Point2 origin, double range, Entity* notM
         if(e == notMe){
             continue;
         }
-        if(canSee(origin, e->pos, range)){
+        if(canSee(origin, e->pos, range, true)){
             if(e != nullptr){
                 double temp = distanceSquared(origin, e->pos);
                 if(temp < lastDistSquared){
@@ -167,7 +179,7 @@ vector<Entity*> Level::getAllVisableEntitiesSortedByNearest(Point2 origin, doubl
         if(e == notMe){
             continue;
         }
-        if(canSee(origin, e->pos, range)){
+        if(canSee(origin, e->pos, range, true)){
             if(e != nullptr){
                 list.push_back(e);
             }
@@ -462,12 +474,12 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
 
     AiEntity* troll = new AiEntity ("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-    troll->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damMelee, false));
+    troll->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damMelee, true));
 
     addEntitiesRandomly(stairUpPos, troll, (rand()%20)+20);
 
 
-    AiEntity* goblinArcher = new AiEntity ("Goblin Archer", aiStalkPlayerSmart | aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 20);
+    AiEntity* goblinArcher = new AiEntity ("Goblin Archer", aiStalkPlayerSmart | aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 10);
     goblinArcher->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damRanged, false));
 
     addEntitiesRandomly(stairUpPos, goblinArcher, (rand()%40)+20);

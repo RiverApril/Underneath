@@ -21,6 +21,8 @@ const AiType aiFleeFromPlayerDumb = 1 << 3;
 const AiType aiFollowPlayerSmart = 1 << 4;
 const AiType aiStalkPlayerSmart = 1 << 5;
 
+const int agroViewDistanceMultiplier = 3;
+
 
 
 class AiEntity : public Alive {
@@ -38,6 +40,9 @@ public:
     void runAi(double time, Level* level);
     bool update(double time, Level* level);
 
+    virtual double hurt(double amount, double damageMultiplier = 1);
+
+    virtual double hurt(Weapon* w, double time, double damageMultiplier = 1);
 
     virtual void save(std::vector<unsigned char>* data);
 
@@ -60,6 +65,8 @@ protected:
     double moveDelay = 1; //TODO should varry
 
     double lastAttackTime = 0;
+
+    bool agro = false;
 };
 
 #endif /* defined(__Underneath__AiEntity__) */

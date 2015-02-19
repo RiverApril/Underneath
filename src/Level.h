@@ -76,7 +76,7 @@ public:
     Entity* getClosestVisableEntity(Point2 origin, double range, Entity* notMe = nullptr);
     vector<Entity*> getAllVisableEntitiesSortedByNearest(Point2 origin, double range, Entity* notMe);
 
-    bool canSee(Point2 origin, Point2 test, double range);
+    bool canSee(Point2 origin, Point2 test, double range, bool withWalls);
 
     long entityCount();
 

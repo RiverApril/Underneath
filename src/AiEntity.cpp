@@ -26,6 +26,7 @@ AiEntity::~AiEntity() {
 
 void AiEntity::runAi(double time, Level* level) {
 
+
     if(target == nullptr){
         target = level->currentWorld->currentPlayer;
     }
@@ -41,8 +42,13 @@ void AiEntity::runAi(double time, Level* level) {
         	speed.y = (rand()%3-1);
         }
     }
+    bool canSeeTarget = level->canSee(pos, target->pos, agro?viewDistance*agroViewDistanceMultiplier:viewDistance, false);
+    if(!canSeeTarget && agro){
+        agro = false;
+    }
+
     if(ai & aiFollowPlayerDumb || ai & aiFleeFromPlayerDumb){
-        if(level->canSee(pos, target->pos, viewDistance)){
+        if(canSeeTarget){
 
             Point2 playerPos = target->pos;
 
@@ -60,13 +66,13 @@ void AiEntity::runAi(double time, Level* level) {
             }
         }
     }
-    if(ai & aiFollowPlayerSmart || ai & aiStalkPlayerSmart){
-        if(level->canSee(pos, target->pos, viewDistance)){
+    if((ai & aiFollowPlayerSmart) || (ai & aiStalkPlayerSmart)){
+        if(canSeeTarget){
             lastKnownTargetPos = target->pos;
         }
         if(lastKnownTargetPos != Point2(-1, -1)){
             Ranged* r = dynamic_cast<Ranged*>(activeWeapon);
-            if(r && (ai & aiStalkPlayerSmart) && (distanceSquared(target->pos, pos) < r->range)){
+            if(r && (ai & aiStalkPlayerSmart) && canSeeTarget && (distanceSquared(target->pos, pos) < (r->range * r->range))){
                 speed.x = 0;
                 speed.y = 0;
             }else{
@@ -78,17 +84,25 @@ void AiEntity::runAi(double time, Level* level) {
 
     }
 
+    bool moved = tryToMoveRelative(speed, level);
+    if(!moved){
+        moved = tryToMoveRelative(speed.xOnly(), level);
+        if(!moved){
+            moved = tryToMoveRelative(speed.yOnly(), level);
+        }
+    }
 
-    if(!tryToMoveRelative(speed, level)){
-        bool attack = false;
+    bool attack = false;
+    if(!moved){
         if(ai & aiAttackPlayer){
             if(activeWeapon != nullptr){
-            	if(target->pos == (pos+speed)){
+                if(distanceSquared(pos, target->pos) <= 1){
+                    
                     attack = true;
                 }else{
                     Ranged* r = dynamic_cast<Ranged*>(activeWeapon);
                     if(r){
-                        if(level->canSee(pos, target->pos, Math::min(r->range, (double)viewDistance))){
+                        if(level->canSee(pos, target->pos, Math::min(r->range, (double)viewDistance), false)){
                             attack = true;
                         }
                         
@@ -105,17 +119,29 @@ void AiEntity::runAi(double time, Level* level) {
         }
     }
 
-    if(activeWeapon != nullptr){
-        while(lastAttackTime + activeWeapon->useDelay <= time){
-            lastAttackTime += activeWeapon->useDelay;
-        }
-    }else{
-        while(lastAttackTime + 1 <= time){
-            lastAttackTime += 1;
+    if(!attack){
+        if(activeWeapon != nullptr){
+            while(lastAttackTime + activeWeapon->useDelay <= time){
+                lastAttackTime += activeWeapon->useDelay;
+            }
+        }else{
+            while(lastAttackTime + 1 <= time){
+                lastAttackTime += 1;
+            }
         }
     }
 
 
+}
+
+double AiEntity::hurt(double amount, double damageMultiplier){
+    agro = true;
+    return Alive::hurt(amount, damageMultiplier);
+}
+
+double AiEntity::hurt(Weapon* w, double time, double damageMultiplier){
+    agro = true;
+    return Alive::hurt(w, time, damageMultiplier);
 }
 
 bool AiEntity::update(double time, Level* level) {
@@ -123,7 +149,7 @@ bool AiEntity::update(double time, Level* level) {
     while(lastMoveTime+moveDelay<=time){
         runAi(time, level);
         lastMoveTime += moveDelay;
-        if(level->canSee(target->pos, pos, level->currentWorld->currentPlayer->viewDistance)){
+        if(level->canSee(target->pos, pos, level->currentWorld->currentPlayer->viewDistance, true)){
 
             level->renderMenuGame(lastMoveTime);
             //usleep(10 * 1000);
@@ -138,6 +164,7 @@ AiEntity* AiEntity::cloneUnsafe(AiEntity* oldE, AiEntity* newE){
     Alive::cloneUnsafe(oldE, newE);
 
     newE->ai = oldE->ai;
+    newE->agro = oldE->agro;
     
     return newE;
 }
@@ -149,6 +176,7 @@ int AiEntity::getEntityTypeId(){
 void AiEntity::save(std::vector<unsigned char>* data){
     Alive::save(data);
     FileUtility::saveInt(data, ai);
+    FileUtility::saveBool(data, agro);
     if(ai & aiFollowPlayerSmart){
         Point2::save(lastKnownTargetPos, data);
     }
@@ -157,6 +185,7 @@ void AiEntity::save(std::vector<unsigned char>* data){
 void AiEntity::load(unsigned char* data, int* position){
     Alive::load(data, position);
     ai = FileUtility::loadInt(data, position);
+    agro = FileUtility::loadBool(data, position);
     if(ai & aiFollowPlayerSmart){
         lastKnownTargetPos = Point2::load(data, position);
     }

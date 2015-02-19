@@ -114,10 +114,13 @@ struct Vector2 {
     double x,y;
 
     Vector2(double x, double y);
+    Vector2() : Vector2(0, 0){}
     bool operator==(const Vector2 other);
     bool operator!=(const Vector2 other);
     void set(const Vector2 other);
     void set(const Point2 other);
+    Point2 roundAwayFrom0();
+    Point2 roundToward0();
     Point2 truncate();
     Point2 round();
     Point2 ceil();

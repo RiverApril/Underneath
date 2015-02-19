@@ -86,114 +86,35 @@ public:
         //pos.set(-1);
     }
 
-    virtual double hurt(double amount, double damageMultiplier = 1){
-        amount *= damageMultiplier;
-        hp -= amount;
-        if(hp<=0){
-            die();
-        }
-        //debug(name+" hp: "+to_string(hp));
-        return amount;
-    }
+    virtual double hurt(double amount, double damageMultiplier = 1);
 
-    virtual double hurt(Weapon* w, double time, double damageMultiplier = 1){
-        double d = (((rand()/(double)RAND_MAX)*(w->baseDamage)) + ((rand()/(double)RAND_MAX)*(w->baseDamage))) / 2;
-        for(Enchantment ench : w->enchantments){
-            switch(ench.eId){
-                case enchBleed:
-                    if(rand()%ench.chance == 0){
-                        addEffect(Effect(effBleed, time+(ench.power*10), ench.power));
-                    }
-                    break;
-
-                case enchFire:
-                    if(rand()%ench.chance == 0){
-                        addEffect(Effect(effFire, time+(ench.power*10), ench.power));
-                    }
-                    break;
-            }
-        }
-        consolef("Hurt %s %.2f hp.", name.c_str(), d);
-        return hurt(d, damageMultiplier);
-    }
+    virtual double hurt(Weapon* w, double time, double damageMultiplier = 1);
 
     void addEffect(Effect e);
 
-    virtual double heal(double amount){
-        if(dead){
-            return 0;
-        }
-        hp += amount;
-        if(hp>maxHp){
-            double a = amount-(hp-maxHp);
-            hp = maxHp;
-            return a;
-        }
-        return amount;
-    }
+    virtual double heal(double amount);
 
-    virtual double healMana(double amount){
-        if(dead){
-            return 0;
-        }
-        mp += amount;
-        if(mp>maxMp){
-            double a = amount-(hp-maxHp);
-            mp = maxMp;
-            return a;
-        }
-        return amount;
-    }
+    virtual double healMana(double amount);
 
     virtual void save(vector<unsigned char>* data);
 
     virtual int getEntityTypeId();
 
     virtual void load(unsigned char* data, int* position);
-    
-    vector<Item*> inventory;
 
-    void setActiveWeapon(Weapon* newWeapon){
-
-        if(newWeapon == nullptr){
-            activeWeapon = nullptr;
-            return;
-        }
-        
-        for(Item* ie : inventory){
-            if(ie == newWeapon){
-                activeWeapon = dynamic_cast<Weapon*>(ie);
-                return;
-            }
-        }
-        inventory.push_back(newWeapon);
-        activeWeapon = newWeapon;
-    }
+    void setActiveWeapon(Weapon* newWeapon);
 
     Weapon* getActiveWeapon(){
         return activeWeapon;
     }
 
-    bool removeItem(Item* item, bool deleteItem){
-        forVector(inventory, i){
-            Item* ie = inventory[i];
-            if(ie == item){
-                if(activeWeapon == item){
-                    activeWeapon = nullptr;
-                }
-                inventory.erase(inventory.begin()+(long)i);
-                if(deleteItem){
-                    delete item;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
+    bool removeItem(Item* item, bool deleteItem);
+
+    vector<Item*> inventory;
 
     vector<Effect> effects;
 
-    int viewDistance = 8;
+    int viewDistance = 10;
 
 protected:
     string name;

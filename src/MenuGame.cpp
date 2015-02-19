@@ -11,6 +11,7 @@
 #include "MenuInv.h"
 #include "MenuStats.h"
 #include "MenuYesNo.h"
+#include "MenuDebug.h"
 #include "AiEntity.h"
 #include "Math.h"
 #include "Utility.h"
@@ -141,7 +142,7 @@ namespace Ui {
         bool inView = false;
         if(currentWorld->currentLevel != nullptr){
             if(currentWorld->currentPlayer != nullptr) {
-                if(currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, p, currentWorld->currentPlayer->viewDistance)) {
+                if(currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, p, currentWorld->currentPlayer->viewDistance, true)) {
                     currentWorld->currentLevel->setExplored(p, true);
                     inView = true;
                 }if(!currentWorld->currentLevel->getExplored(p)) {
@@ -188,7 +189,7 @@ namespace Ui {
                             bg = C_LIGHT_GREEN;
                             attr = A_BLINK;
                         }
-                        if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, p, ranged->range) && inView) {
+                        if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, p, ranged->range, false) && inView) {
                             if(p == targetPosition){
                                 bg = C_LIGHT_RED;
                             }
@@ -283,6 +284,12 @@ namespace Ui {
                 }
                 break;
 
+            case 'd':
+                if(currentWorld->currentPlayer != nullptr){
+                    openMenu(new MenuDebug(currentWorld));
+                }
+                break;
+
             case '\\':
                 if(mode == modeAdjustBorder){
                     mode = modePlayerControl;
@@ -318,7 +325,7 @@ namespace Ui {
                         Ranged* ranged = dynamic_cast<Ranged*>(currentWorld->currentPlayer->getActiveWeapon());
                         if(ranged){
                             mode = modeSelectTarget;
-                            if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, targetPosition, ranged->range)){
+                            if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, targetPosition, ranged->range, false)){
                             	targetPosition = currentWorld->currentPlayer->pos;
                             }
                         }else{

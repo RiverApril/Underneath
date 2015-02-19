@@ -7,6 +7,7 @@
 //
 
 #include "Ui.h"
+#include "Random.h"
 #include "ItemGenerator.h"
 
 namespace ItemGenerator {
@@ -45,9 +46,9 @@ namespace ItemGenerator {
         wMase = atl(new Weapon(1.4, "Mase", 1.4, 1.4));
         wSpear = setDamageType(atl(new Ranged(1, "Spear", 2, 1.5, 1.8)), damMelee);
 
-        wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(2, "Recurve Bow", 1.8, 1.8, 8)));
-        wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(2, "Longbow", 2, 1.5, 10)));
-        wCrossbow = dynamic_cast<Ranged*>(atl(new Ranged(1.5, "Crossbow", 2, 1, 6)));
+        wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(1, "Recurve Bow", 1.5, 1, 8)));
+        wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(.8, "Longbow", 2, .8, 10)));
+        wCrossbow = dynamic_cast<Ranged*>(atl(new Ranged(.6, "Crossbow", 2, .6, 6)));
     }
 
     void cleanup(){
@@ -88,19 +89,25 @@ namespace ItemGenerator {
     Weapon* createWeapon(string name, CombatLevel combatLevel, DamageType damageType, bool enchanted){
 
         Weapon* weapon = createWeaponBase(damageType);
+
         weapon->name = (name.size()>0?(name + " "):"") + combatLevel.name + " " + weapon->name;
         weapon->baseDamage *= combatLevel.multiplier;
         weapon->weight *= combatLevel.multiplier;
+
+        weapon->baseDamage *= Random::randDouble(.8, 1.2);
+        weapon->weight *= Random::randDouble(.6, 1.4);
+        weapon->useDelay *= Random::randDouble(.9, 1.1);
+
         if(weapon->damageType == damRanged){
             Ranged* ranged = dynamic_cast<Ranged*>(weapon);
             if(ranged){
-                debug("Multiplied range");
             	ranged->range *= combatLevel.multiplier;
             }
         }
 
         if(enchanted){
-			//TODO
+            int eid = rand()%2==0?enchBleed:enchFire;
+            weapon->addEnchantment(eid, 10, 1);
         }
         
         return weapon;

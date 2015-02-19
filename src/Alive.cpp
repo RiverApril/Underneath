@@ -9,6 +9,7 @@
 #include "Alive.h"
 #include "Utility.h"
 #include "Level.h"
+#include "Random.h"
 
 
 Alive::Alive() : Alive("", ' ', Point2Zero, Ui::C_WHITE){
@@ -72,6 +73,37 @@ bool Alive::update(double time, Level* level) {
     return Entity::update(time, level);
 }
 
+double Alive::hurt(double amount, double damageMultiplier){
+    amount *= damageMultiplier;
+    hp -= amount;
+    if(hp<=0){
+        die();
+    }
+    //debug(name+" hp: "+to_string(hp));
+    return amount;
+}
+
+double Alive::hurt(Weapon* w, double time, double damageMultiplier){
+    double d = w->baseDamage * Random::randDouble(.5, 1.5);
+    for(Enchantment ench : w->enchantments){
+        switch(ench.eId){
+            case enchBleed:
+                if(rand()%ench.chance == 0){
+                    addEffect(Effect(effBleed, time+(ench.power*10), ench.power));
+                }
+                break;
+
+            case enchFire:
+                if(rand()%ench.chance == 0){
+                    addEffect(Effect(effFire, time+(ench.power*10), ench.power));
+                }
+                break;
+        }
+    }
+    consolef("Hurt %s %.2f hp.", name.c_str(), d);
+    return hurt(d, damageMultiplier);
+}
+
 void Alive::addEffect(Effect e){
     forVector(effects, i){
         Effect ei = effects[i];
@@ -82,6 +114,66 @@ void Alive::addEffect(Effect e){
         }
     }
     effects.push_back(e);
+}
+
+double Alive::heal(double amount){
+    if(dead){
+        return 0;
+    }
+    hp += amount;
+    if(hp>maxHp){
+        double a = amount-(hp-maxHp);
+        hp = maxHp;
+        return a;
+    }
+    return amount;
+}
+
+double Alive::healMana(double amount){
+    if(dead){
+        return 0;
+    }
+    mp += amount;
+    if(mp>maxMp){
+        double a = amount-(hp-maxHp);
+        mp = maxMp;
+        return a;
+    }
+    return amount;
+}
+
+void Alive::setActiveWeapon(Weapon* newWeapon){
+
+    if(newWeapon == nullptr){
+        activeWeapon = nullptr;
+        return;
+    }
+
+    for(Item* ie : inventory){
+        if(ie == newWeapon){
+            activeWeapon = dynamic_cast<Weapon*>(ie);
+            return;
+        }
+    }
+    inventory.push_back(newWeapon);
+    activeWeapon = newWeapon;
+}
+
+bool Alive::removeItem(Item* item, bool deleteItem){
+    forVector(inventory, i){
+        Item* ie = inventory[i];
+        if(ie == item){
+            if(activeWeapon == item){
+                activeWeapon = nullptr;
+            }
+            inventory.erase(inventory.begin()+(long)i);
+            if(deleteItem){
+                delete item;
+            }
+            return true;
+        }
+    }
+    return false;
 }
 
 
