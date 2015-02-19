@@ -212,10 +212,10 @@ int Alive::getEntityTypeId(){
 void Alive::save(vector<unsigned char>* data){
     Entity::save(data);
     FileUtility::saveBool(data, dead);
-    FileUtility::saveInt(data, maxHp);
-    FileUtility::saveInt(data, hp);
-    FileUtility::saveInt(data, maxMp);
-    FileUtility::saveInt(data, mp);
+    FileUtility::saveDouble(data, maxHp);
+	FileUtility::saveDouble(data, hp);
+	FileUtility::saveDouble(data, maxMp);
+	FileUtility::saveDouble(data, mp);
     FileUtility::saveInt(data, viewDistance);
     FileUtility::saveString(data, name);
 
@@ -236,7 +236,7 @@ void Alive::save(vector<unsigned char>* data){
     for(Effect e : effects){
         FileUtility::saveInt(data, e.eId);
         FileUtility::saveDouble(data, e.timeEnd);
-        FileUtility::saveInt(data, e.power);
+		FileUtility::saveDouble(data, e.power);
         FileUtility::saveDouble(data, e.lastTime);
     }
 }
@@ -244,10 +244,10 @@ void Alive::save(vector<unsigned char>* data){
 void Alive::load(unsigned char* data, int* position){
     Entity::load(data, position);
     dead = FileUtility::loadBool(data, position);
-    maxHp = FileUtility::loadInt(data, position);
-    hp = FileUtility::loadInt(data, position);
-    maxMp = FileUtility::loadInt(data, position);
-    mp = FileUtility::loadInt(data, position);
+    maxHp = FileUtility::loadDouble(data, position);
+	hp = FileUtility::loadDouble(data, position);
+	maxMp = FileUtility::loadDouble(data, position);
+	mp = FileUtility::loadDouble(data, position);
     viewDistance = FileUtility::loadInt(data, position);
     name = FileUtility::loadString(data, position);
 
@@ -271,7 +271,7 @@ void Alive::load(unsigned char* data, int* position){
     repeat(size, i){
         int eId = FileUtility::loadInt(data, position);
         int timeEnd = FileUtility::loadDouble(data, position);
-        int power = FileUtility::loadInt(data, position);
+        int power = FileUtility::loadDouble(data, position);
         int lastTime = FileUtility::loadDouble(data, position);
         effects.push_back(Effect(eId, timeEnd, power, lastTime));
     }

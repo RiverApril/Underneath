@@ -1,8 +1,13 @@
 Todo List:
 
+-Issues:
 
 
 
-Done:
--Fix enemies not attacking you at all
--Fix archers
+
+
+Completed:
+-Issues:
+ -On Windows, time does not progress
+ -Enemies not attacking you at all
+ -Archers not working
