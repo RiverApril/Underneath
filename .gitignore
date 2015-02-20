@@ -27,3 +27,4 @@ Underneath
 *.suo
 createBuild.bat
 createBuild.command
+*.*~
