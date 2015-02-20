@@ -29,11 +29,11 @@ int main(int argc, const char** argv) {
 
     debug("Working Directory: "+(string(workingDirectory)));
 
-    CustomWorkingDirectory = FileUtility::readTextFile("customUnderneathWorkingDirectory.txt", "");
+    CustomWorkingDirectory = FileUtility::readTextFile("customUnderneathWorkingDirectory.txt", "./");
 	CustomWorkingDirectory = CustomWorkingDirectory.substr(0, CustomWorkingDirectory.find_last_of('/')+1);
-    UnderneathDir = CustomWorkingDirectory+"Underneath";
-    WorldsDir = UnderneathDir+"/"+"worlds";
-    ArtDir = UnderneathDir+"/"+"art";
+    UnderneathDir = CustomWorkingDirectory;
+    WorldsDir = UnderneathDir+"worlds";
+    ArtDir = UnderneathDir+"art";
 
     if(CustomWorkingDirectory.length() > 0){
     	debug("Custom Working Directory: "+CustomWorkingDirectory);
