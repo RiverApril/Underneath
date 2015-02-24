@@ -212,6 +212,27 @@ namespace LevelGenerator{
                 }
             }
         }
+        for(int i=0;i<level->getSize().x;i++){
+            for(int j=0;j<level->getSize().y;j++){
+                Tile* a = level->tileAt(Point2(i, j));
+                if(a->getIndex() == Tiles::tilePath->getIndex()){
+                    int walls = 0;
+                    for(int k=-1;k<=1;k++){
+                        for(int l=-1;l<=1;l++){
+                            if(!(k == 0 && l == 0)){
+                                if(level->indexAt(Point2(i+k, j+l)) == Tiles::tileWall->getIndex()){
+                                    walls++;
+                                }
+                            }
+                        }
+                    }
+                    if(walls == 7){
+                        level->setTile(Point2(i, j), Tiles::tileChest);
+                    }
+                }
+            }
+        }
+
         
         
     }

@@ -22,6 +22,7 @@ namespace Arts{
     int artTitle;
 
     int artScroll;
+    int artCoin;
 
     int artKnife;
     int artShortSword;
@@ -71,6 +72,9 @@ namespace Arts{
 
         Arts::artCrossbow = Arts::loadNew(ArtDir+"/crossbow");
         ItemGenerator::wCrossbow->artIndex = Arts::artCrossbow;
+
+        Arts::artCoin = Arts::loadNew(ArtDir+"/coin");
+        ItemGenerator::iCoin->artIndex = Arts::artCoin;
 
         //TODO make the rest of the ascii art
 

@@ -16,6 +16,8 @@
 #include "Entity.h"
 #include "Geometry.h"
 #include "MenuGame.h"
+#include "TEStair.h"
+#include "TEChest.h"
 
 namespace Ui{
     class MenuGame;
@@ -29,24 +31,11 @@ struct TileData{
     //Entity* entity = nullptr;
 };
 
-struct Stair{
-
-    Stair(Point2 p, bool up, string levelName){
-        this->p = p;
-        this->up = up;
-        this->levelName = levelName;
-    }
-
-    Point2 p = Point2(0, 0);
-    bool up = false;
-    string levelName = "";
-};
-
 class Level{
 
 public:
 
-    Level(World* w, string n, Point2 s);
+    Level(World* w, string n, Point2 s, int d);
     ~Level();
 
     bool getExplored(Point2 p);
@@ -88,8 +77,6 @@ public:
 
     Point2 generate(unsigned int seed, Point2 stairUpPos, string previousLevel);
 
-    void addEntitiesRandomly(Point2 start, Entity* e, int count);
-
     bool update(double time, Point2 viewPos);
 
     //void setAndUnsetDisplayEntities();
@@ -99,6 +86,10 @@ public:
 
     Point2 getSize(){
         return *size;
+    }
+
+    int getDifficulty(){
+        return difficulty;
     }
 
     void save(vector<unsigned char>*);
@@ -111,7 +102,7 @@ public:
 
     World* currentWorld;
 
-    vector<Stair> stairList;
+    vector<TileEntity*> tileEntityList;
 
     Ui::MenuGame* menuGame;
 
@@ -125,6 +116,8 @@ private:
     string name;
 
     int genDebugPos;
+
+    int difficulty = 1;
 };
 
 

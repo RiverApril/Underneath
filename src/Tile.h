@@ -18,6 +18,7 @@ const TileFlag tileFlagTall = 1 << 1;
 const TileFlag tileFlagDoor = 1 << 2;
 const TileFlag tileFlagPathable = 1 << 3;
 const TileFlag tileFlagSecretPathable = 1 << 4;
+const TileFlag tileFlagHasTileEntity = 1 << 5;
 
 class Tile {
 public:
@@ -63,6 +64,8 @@ namespace Tiles{
 
     extern Tile* tileStairUp;
     extern Tile* tileStairDown;
+
+    extern Tile* tileChest;
 
     extern Tile* tileEdge;
     extern Tile* tileUnset;

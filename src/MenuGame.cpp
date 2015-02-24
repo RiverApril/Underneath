@@ -509,7 +509,7 @@ namespace Ui {
 
         if(currentWorld->currentLevel != nullptr){
             Ui::setColor(C_DARK_GRAY);
-            mvprintw(gameArea.y, 0, "%d, %d  e: %d  p: %s", p.x, p.y, currentWorld->currentLevel->entityCount(), (currentWorld->currentPlayer == nullptr)?"null":"not null");
+            mvprintw(gameArea.y, 0, "%d, %d  e: %d  te: %d  p: %s", p.x, p.y, currentWorld->currentLevel->entityCount(), currentWorld->currentLevel->tileEntityList.size(), (currentWorld->currentPlayer == nullptr)?"null":"not null");
         }
 
 

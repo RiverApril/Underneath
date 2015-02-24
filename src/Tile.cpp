@@ -52,6 +52,7 @@ namespace Tiles{
 
     Tile* tileStairUp;
     Tile* tileStairDown;
+    Tile* tileChest;
 
     Tile* tileEdge;
     Tile* tileUnset;
@@ -81,8 +82,10 @@ namespace Tiles{
         tileOpenDoor = new Tile('/', C_WHITE, bg, tileFlagPathable);
 
 
-        tileStairUp = new Tile('^',  C_LIGHT_GREEN, bg, tileFlagPathable);
-        tileStairDown = new Tile('v',  C_LIGHT_GREEN, bg, tileFlagPathable);
+        tileStairUp = new Tile('^',  C_LIGHT_GREEN, bg, tileFlagPathable | tileFlagHasTileEntity);
+        tileStairDown = new Tile('v',  C_LIGHT_GREEN, bg, tileFlagPathable | tileFlagHasTileEntity);
+
+        tileChest = new Tile('+', C_LIGHT_GREEN, bg, tileFlagSolid | tileFlagHasTileEntity);
 
 
         tileEdge = new Tile('X',  C_LIGHT_RED, bg, tileFlagSolid | tileFlagTall);

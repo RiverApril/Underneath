@@ -17,22 +17,7 @@ namespace ItemGenerator {
 
     Weapon* setDamageType(Weapon* w, DamageType d);
 
-    struct CombatLevel {
-        double multiplier;
-        string name;
-        CombatLevel(double m, string n){
-            this->multiplier = m;
-            this->name = n;
-        }
-    };
-    extern CombatLevel combat0Abysmal;
-    extern CombatLevel combat1Shitty;
-    extern CombatLevel combat2Training;
-    extern CombatLevel combat3Basic;
-    extern CombatLevel combat4Apprentice;
-    extern CombatLevel combat5Skillful;
-    extern CombatLevel combat6Good;
-
+    extern Item* iCoin;
 
     extern Weapon* wKnife;
     extern Weapon* wShortSword;
@@ -46,15 +31,14 @@ namespace ItemGenerator {
     extern Ranged* wCrossbow;
 
 
-    extern vector<CombatLevel> combatLevelList;
+    extern map<int, string> combatLevelNameMap;
     extern vector<Weapon*> weaponList;
 
     Weapon* atl(Weapon* w);
-    CombatLevel atl(CombatLevel c);
 
 
     Weapon* createWeaponBase(DamageType d);
-    Weapon* createWeapon(string name, CombatLevel combatLevel, DamageType damageType, bool enchanted);
+    Weapon* createWeapon(string name, int difficulty, DamageType damageType, bool enchanted);
 
     void initWeaponsTemplates();
     void cleanup();

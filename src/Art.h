@@ -43,6 +43,7 @@ namespace Arts{
     extern int artTitle;
 
     extern int artScroll;
+    extern int artCoin;
     
     extern int artKnife;
     extern int artShortSword;

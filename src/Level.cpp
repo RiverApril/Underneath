@@ -15,9 +15,10 @@
 #include "ItemGenerator.h"
 #include "Utility.h"
 
-Level::Level(World* w, string n, Point2 s) {
+Level::Level(World* w, string n, Point2 s, int d) {
     currentWorld = w;
     name = n;
+    difficulty = d;
     size = new Point2(s);
     tileGrid = vector<vector<TileData>>((size_t)size->x, vector<TileData>((size_t)size->y));
     
@@ -29,12 +30,26 @@ Level::Level(World* w, string n, Point2 s) {
         }
     }
 
-    stairList = vector<Stair>();
+    tileEntityList = vector<TileEntity*>();
 
 }
 
 Level::~Level() {
     delete size;
+
+    while (entityList.size() > 0) {
+        delete entityList[0];
+    }
+    while (deleteEntityList.size() > 0) {
+        delete entityList[0];
+    }
+    while (removeEntityList.size() > 0) {
+        delete entityList[0];
+    }
+
+    while (tileEntityList.size() > 0) {
+        delete tileEntityList[0];
+    }
 }
 
 
@@ -404,6 +419,11 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
                 if(i==0 || j==0 || i==(size_t)(size->x-1) || j==(size_t)(size->y-1)){
                     tileGrid[i][j].index = (int8_t)Tiles::tileWall->getIndex();
                 }
+                if(tileGrid[i][j].index == (int8_t)Tiles::tileChest->getIndex()){
+                    TileEntity* te = new TEChest(Point2((int)i, (int)j));
+                    //te->addItem(ItemGenerator::createWeaponForLoot());
+                    tileEntityList.push_back(te);
+                }
             }
         }
         genDebug("generating...  attemt #"+to_string(attemt));
@@ -447,8 +467,14 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
     setTile(stairUpPos, Tiles::tileStairUp);
     setTile(stairDownPos, Tiles::tileStairDown);
-    stairList.push_back(Stair(stairUpPos, true, previousLevel));
-    stairList.push_back(Stair(stairDownPos, false, "Floor"+to_string(ParsingUtility::parseInt(name.substr(5))+1)));
+    if(previousLevel.size() > 0){
+    	tileEntityList.push_back(new TEStair(stairUpPos, true, previousLevel));
+    }
+    tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor"+to_string(ParsingUtility::parseInt(name.substr(5))+1)));
+
+    for(TileEntity* e : tileEntityList){
+        debugf("TileEntity id: %d", e->getTileEntityTypeId());
+    }
     
 
     vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
@@ -458,31 +484,85 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         }
     }
 
+    //return stairUpPos;
+
     genDebug("adding entities...");
 
-    AiEntity* rat = new AiEntity("Rat", aiMoveRandom | aiFleeFromPlayerDumb, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
-    rat->viewDistance = 4;
+    {
+        int count = (rand()%20)+10;
+        for(int i=0;i<count;i++){
 
-    addEntitiesRandomly(stairUpPos, rat, (rand()%10)+20);
+            AiEntity* e = new AiEntity("Rat", aiMoveRandom | aiFleeFromPlayerDumb, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
+            e->viewDistance = 6;
+            e->setMoveDelay(Math::randomRange(.5, 1.5));
+
+            Entity* r = Entity::clone(e);
+            Point2 p = Point2(findRandomWithoutFlag(tileFlagSolid));
+            if(canPathTo(stairUpPos, p, tileFlagPathable | tileFlagSecretPathable)){
+                r->pos = p;
+                newEntity(r);
+            }else{
+                i--;
+            }
+        }
+
+    }
 
 
-    AiEntity* goblin = new AiEntity ("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
-    goblin->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat1Shitty, damMelee, false));
-    goblin->setMoveDelay(Math::randomRange(.5, 1.2));
+    {
+        int count = (rand()%80)+20;
+        for(int i=0;i<count;i++){
+            AiEntity* e = new AiEntity ("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
+            e->setActiveWeapon(ItemGenerator::createWeapon("", difficulty, damMelee, false));
+            e->setMoveDelay(Math::randomRange(.5, 1.5));
 
-    addEntitiesRandomly(stairUpPos, goblin, (rand()%80)+20);
+            Entity* r = Entity::clone(e);
+            Point2 p = Point2(findRandomWithoutFlag(tileFlagSolid));
+            if(canPathTo(stairUpPos, p, tileFlagPathable | tileFlagSecretPathable)){
+                r->pos = p;
+                newEntity(r);
+            }else{
+                i--;
+            }
+        }
+    }
 
+    {
+        int count = (rand()%20)+20;
+        for(int i=0;i<count;i++){
+            AiEntity* e = new AiEntity ("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
+            e->setActiveWeapon(ItemGenerator::createWeapon("", difficulty, damMelee, true));
+            e->setMoveDelay(Math::randomRange(.5, 1.5));
 
-    AiEntity* troll = new AiEntity ("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-    troll->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damMelee, true));
+            Entity* r = Entity::clone(e);
+            Point2 p = Point2(findRandomWithoutFlag(tileFlagSolid));
+            if(canPathTo(stairUpPos, p, tileFlagPathable | tileFlagSecretPathable)){
+                r->pos = p;
+                newEntity(r);
+            }else{
+                i--;
+            }
+        }
+    }
 
-    addEntitiesRandomly(stairUpPos, troll, (rand()%20)+20);
+    {
+        int count = (rand()%40)+20;
+        for(int i=0;i<count;i++){
 
+            AiEntity* e = new AiEntity ("Goblin Archer", aiStalkPlayerSmart | aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 8);
+            e->setActiveWeapon(ItemGenerator::createWeapon("", difficulty, damRanged, false));
+            e->setMoveDelay(Math::randomRange(.5, 1.5));
 
-    AiEntity* goblinArcher = new AiEntity ("Goblin Archer", aiStalkPlayerSmart | aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 10);
-    goblinArcher->setActiveWeapon(ItemGenerator::createWeapon("", ItemGenerator::combat2Training, damRanged, false));
-
-    addEntitiesRandomly(stairUpPos, goblinArcher, (rand()%40)+20);
+            Entity* r = Entity::clone(e);
+            Point2 p = Point2(findRandomWithoutFlag(tileFlagSolid));
+            if(canPathTo(stairUpPos, p, tileFlagPathable | tileFlagSecretPathable)){
+                r->pos = p;
+                newEntity(r);
+            }else{
+                i--;
+            }
+        }
+    }
 
     genDebug("done");
 
@@ -492,23 +572,10 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     
 }
 
-void Level::addEntitiesRandomly(Point2 start, Entity* e, int count){
-
-    for(int i=0;i<count;i++){
-        Entity* r = Entity::clone(e);
-        Point2 p = Point2(findRandomWithoutFlag(tileFlagSolid));
-        if(canPathTo(start, p, tileFlagPathable | tileFlagSecretPathable)){
-            r->pos = p;
-        	newEntity(r);
-        }else{
-            i--;
-        }
-    }
-}
-
 void Level::save(vector<unsigned char>* data){
     
     Point2::save(*size, data);
+    FileUtility::saveInt(data, difficulty);
     for(size_t i=0;i<(size_t)size->x;i++){
         for(size_t j=0;j<(size_t)size->y;j++){
             FileUtility::saveInt8Bit(data, tileGrid[i][j].index);
@@ -519,6 +586,10 @@ void Level::save(vector<unsigned char>* data){
 	for (size_t i = 0; i<entityList.size(); i++){
         debug("Saving Entity: "+entityList[i]->getName()+"("+to_string(entityList[i]->getEntityTypeId())+")"+", Pos: "+entityList[i]->pos.toString());
         entityList[i]->save(data);
+    }
+    FileUtility::saveInt(data, (int)tileEntityList.size());
+    for (size_t i = 0; i<tileEntityList.size(); i++) {
+        tileEntityList[i]->save(data);
     }
 }
 
@@ -532,14 +603,17 @@ void Level::load(unsigned char* data, int* position){
     }
     debug("Loaded "+to_string(size->x)+" x "+to_string(size->y)+" Tiles");
 
-    debugf("Entity Count bytes: %X %X %X %X", data[*position], data[*position+1], data[*position+2], data[*position+3]);
-    debug("Entity Count 4th byte: "+to_string(data[*position+3]));
     int entityCount = FileUtility::loadInt(data, position);
     debug(to_string(entityCount)+" Entities to Load...");
-    for(int i=0;i<entityCount;i++){
+    for(int i=0; i<entityCount; i++){
         entityList.push_back(Entity::loadNew(data, position));
     }
     debug("Loaded "+to_string(entityCount)+" Entities");
+
+    int tileEntityCount = FileUtility::loadInt(data, position);
+    for (int i=0; i<tileEntityCount; i++) {
+        tileEntityList.push_back(TileEntity::loadNew(data, position));
+    }
 }
 
 

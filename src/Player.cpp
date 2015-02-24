@@ -71,12 +71,22 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
 
     if(distanceSquared(posOfTile, pos) <= 1){
 
-        if(tid == Tiles::tileStairDown->getIndex() || tid == Tiles::tileStairUp->getIndex()){
+        if(Tiles::tileList[(size_t)tid]->hasFlag(tileFlagHasTileEntity)){
 
-            for(Stair s : level->stairList){
-                if(s.p == posOfTile){
-                    WorldLoader::changeLevel(level->currentWorld, s.p, s.levelName);
-                    return interactDelay;
+            for(TileEntity* te : level->tileEntityList){
+                debugf("te's pos: %s", te->pos.toString().c_str());
+                if(te->pos == posOfTile){
+                    debugf("te type id: %d", te->getTileEntityTypeId());
+                    if(tid == Tiles::tileStairDown->getIndex() || tid == Tiles::tileStairUp->getIndex()){
+                        TEStair* s = dynamic_cast<TEStair*>(te);
+                        if(s){
+                            debugf("s->levelname: %s", s->levelName.c_str());
+                            WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
+                            return interactDelay;
+                        }
+                    }else if(tid == Tiles::tileChest->getIndex()){
+
+                    }
                 }
             }
 
