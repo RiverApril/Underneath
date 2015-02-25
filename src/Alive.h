@@ -35,7 +35,7 @@ struct Effect{
     }
 
     string toString(){
-        return "id:"+to_string((int)eId)+", timeEnd:"+to_string(timeEnd)+", power:"+to_string(power);
+        return "id:"+to_string(eId)+", timeEnd:"+to_string(timeEnd)+", power:"+to_string(power);
     }
 
     EffectId eId = effFire;

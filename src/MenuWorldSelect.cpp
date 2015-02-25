@@ -122,7 +122,7 @@ namespace Ui {
         clrtoeol();
         printCenter(3, name);
         setColor(C_WHITE, C_BLACK, A_BLINK);
-        printCenterOffset(3, (int)(name.length()/2)+1, "_");
+        printCenterOffset(3, (name.length()/2)+1, "_");
 
         refresh();
     }

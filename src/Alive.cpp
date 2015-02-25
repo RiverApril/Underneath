@@ -192,11 +192,11 @@ Alive* Alive::cloneUnsafe(Alive* oldE, Alive* newE){
     forVector(oldE->inventory, i){
         newE->inventory.push_back(Item::clone(oldE->inventory[i]));
         if(oldE->inventory[i] == oldE->activeWeapon){
-            activeWeaponIndex = (int)i;
+            activeWeaponIndex = i;
         }
     }
     if(activeWeaponIndex != -1){
-    	newE->activeWeapon = dynamic_cast<Weapon*>(newE->inventory[(size_t)activeWeaponIndex]);
+    	newE->activeWeapon = dynamic_cast<Weapon*>(newE->inventory[activeWeaponIndex]);
     }
 
     newE->effects = oldE->effects;
@@ -221,18 +221,18 @@ void Alive::save(vector<unsigned char>* data){
 
     //
     int activeWeaponIndex = -1;
-    FileUtility::saveInt(data, (int)inventory.size());
+    FileUtility::saveInt(data, inventory.size());
     forVector(inventory, i){
         Item* ie = inventory[i];
         ie->save(data);
         if(ie == activeWeapon){
-            activeWeaponIndex = (int)i;
+            activeWeaponIndex = i;
         }
     }
     FileUtility::saveInt(data, activeWeaponIndex);
     //
 
-    FileUtility::saveInt(data, (int)effects.size());
+    FileUtility::saveInt(data, effects.size());
     for(Effect e : effects){
         FileUtility::saveInt(data, e.eId);
         FileUtility::saveDouble(data, e.timeEnd);
@@ -255,13 +255,13 @@ void Alive::load(unsigned char* data, int* position){
     int size = FileUtility::loadInt(data, position);
     repeat(size, i){
         Item* item = Item::loadNew(data, position);
-        debug("Loaded item: "+item->name+"("+to_string(item->getItemTypeId())+")");
+        debug("Loaded item: "+item->getExtendedName()+"("+to_string(item->getItemTypeId())+")");
         inventory.push_back(item);
     }
 
     int activeWeaponIndex = FileUtility::loadInt(data, position);
     if(activeWeaponIndex != -1){
-    	activeWeapon = dynamic_cast<Weapon*>(inventory[(size_t)activeWeaponIndex]);
+    	activeWeapon = dynamic_cast<Weapon*>(inventory[activeWeaponIndex]);
     }else{
         activeWeapon = nullptr;
     }

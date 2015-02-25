@@ -71,7 +71,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
 
     if(distanceSquared(posOfTile, pos) <= 1){
 
-        if(Tiles::tileList[(size_t)tid]->hasFlag(tileFlagHasTileEntity)){
+        if(Tiles::tileList[tid]->hasFlag(tileFlagHasTileEntity)){
 
             for(TileEntity* te : level->tileEntityList){
                 debugf("te's pos: %s", te->pos.toString().c_str());
@@ -95,7 +95,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
                 level->setTile(posOfTile, Tiles::tileDoor);
                 return interactDelay;
             }
-        }else if(Tiles::tileList[(size_t)tid]->hasFlag(tileFlagDoor)){
+        }else if(Tiles::tileList[tid]->hasFlag(tileFlagDoor)){
             level->setTile(posOfTile, Tiles::tileOpenDoor);
             return interactDelay;
         }
@@ -172,7 +172,7 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
         if(ie){
             Item* iei = ie->getItem();
             if(iei != nullptr){
-                debug("Picking up item: "+iei->name);
+                debug("Picking up item: "+iei->getExtendedName());
                 if(pickupItem(iei)){
                     level->removeEntity(e, true);
                     return interactDelay;

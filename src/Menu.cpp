@@ -114,16 +114,16 @@ namespace Ui {
             move(i, 2);
             clrtoeol();
             move(i, 2);
-            if(((int)(consoleBuffer.size())-j) < 0){
+            if((((int)consoleBuffer.size())-j) < 0){
                 break;
             }
-            int p = ((int)consoleBuffer.size())-j+((int)consoleScroll);
-            if(p < (int)consoleBuffer.size()){
-                printw(consoleBuffer[(size_t)p].c_str());
+            int p = (consoleBuffer.size())-j+(consoleScroll);
+            if(p < consoleBuffer.size()){
+                printw(consoleBuffer[p].c_str());
             }
             j++;
         }
-        mvprintw(topY, 0, (consoleScroll > -((int)consoleBuffer.size())+(bottomY-topY))?"^":" ");
+        mvprintw(topY, 0, (consoleScroll > -(consoleBuffer.size())+(bottomY-topY))?"^":" ");
         mvprintw(bottomY-1, 0, (consoleScroll < 0)?"v":" ");
 
         move(bottomY, 2);
@@ -132,7 +132,7 @@ namespace Ui {
             Ui::setColor(C_DARK_GREEN);
             mvprintw(bottomY, 2, "> %s", consoleInput.c_str());
             Ui::setColor(C_LIGHT_GREEN, C_BLACK, A_BLINK);
-            mvprintw(bottomY, 4+(int)consoleInput.length(), "_");
+            mvprintw(bottomY, 4+consoleInput.length(), "_");
         }
     }
 
@@ -167,7 +167,7 @@ namespace Ui {
     }
     
     void Menu::printCenter(int y, string s, ...){
-        move(y, (terminalSize.x/2)-((int)(s.length()-1)/2));
+        move(y, (terminalSize.x/2)-((s.length()-1)/2));
         va_list args;
         va_start(args, s);
         vwprintw(stdscr, s.c_str(), args);
@@ -175,7 +175,7 @@ namespace Ui {
     }
     
     void Menu::printCenterOffset(int y, int xOff, string s, ...){
-        move(y, (terminalSize.x/2)-((int)(s.length()-1)/2)+xOff);
+        move(y, (terminalSize.x/2)-((s.length()-1)/2)+xOff);
         va_list args;
         va_start(args, s);
         vwprintw(stdscr, s.c_str(), args);

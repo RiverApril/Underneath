@@ -10,13 +10,13 @@
 #include "Utility.h"
 
 void Weapon::save(vector<unsigned char>* data){
-    Item::save(data);
+    MaterialItem::save(data);
     
     FileUtility::saveDouble(data, baseDamage);
     FileUtility::saveInt(data, damageType);
     FileUtility::saveDouble(data, useDelay);
 
-    FileUtility::saveInt(data, (int)enchantments.size());
+    FileUtility::saveInt(data, enchantments.size());
     for(size_t i=0;i<enchantments.size();i++){
         FileUtility::saveInt(data, enchantments[i].eId);
         FileUtility::saveInt(data, enchantments[i].chance);
@@ -25,7 +25,7 @@ void Weapon::save(vector<unsigned char>* data){
 }
 
 void Weapon::load(unsigned char* data, int* position){
-    Item::load(data, position);
+    MaterialItem::load(data, position);
 
     baseDamage = FileUtility::loadDouble(data, position);
     damageType = FileUtility::loadInt(data, position);
@@ -42,7 +42,7 @@ void Weapon::load(unsigned char* data, int* position){
 
 Weapon* Weapon::cloneUnsafe(Weapon* oldE, Weapon* newE){
 
-    Item::cloneUnsafe(oldE, newE);
+    MaterialItem::cloneUnsafe(oldE, newE);
 
     newE->baseDamage = oldE->baseDamage;
     newE->enchantments = oldE->enchantments;

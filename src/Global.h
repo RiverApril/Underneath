@@ -62,7 +62,7 @@
 #undef COLOR_BLACK
 
 
-#define forVector(list, i) for(size_t i=0;i<list.size();i++)
+#define forVector(list, i) for(int i=0;i<list.size();i++)
 
 #define repeat(n, i) for(int i=0;i<n;i++)
 

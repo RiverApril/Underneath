@@ -211,7 +211,7 @@ namespace Commands{
         }
     };
     
-    void initCommandList(){
+    void initCommands(){
         commandList.push_back(new CommandHelp());
         commandList.push_back(new CommandEcho());
         commandList.push_back(new CommandDebug());
@@ -219,7 +219,7 @@ namespace Commands{
         commandList.push_back(new CommandXp());
     }
 
-    void cleanup(){
+    void cleanupCommands(){
         for (Command* c : commandList) {
             delete c;
         }

@@ -12,7 +12,7 @@
 void TEChest::save(vector<unsigned char>* data){
     TileEntity::save(data);
 
-    FileUtility::saveInt(data, (int)inventory.size());
+    FileUtility::saveInt(data, inventory.size());
     forVector(inventory, i){
         inventory[i]->save(data);
     }

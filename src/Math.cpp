@@ -38,11 +38,11 @@ namespace Math {
     }
 
     int roundAwayFrom0(double a){
-        return a>0?(int)ceil(a):(int)floor(a);
+        return (int)(a>0?ceil(a):floor(a));
     }
 
     int roundToward0(double a){
-        return a>0?(int)floor(a):(int)ceil(a);
+        return (int)(a>0?floor(a):ceil(a));
     }
 
 }

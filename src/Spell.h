@@ -23,7 +23,7 @@ public:
 
     }
 
-    Spell(int baseDamage, string name, Weight weight, int manaCost, double useDelay, int range) : Ranged(baseDamage, name, weight, useDelay, range){
+    Spell(int baseDamage, string name, Weight weight, int manaCost, double useDelay, int range) : Ranged(materialNone, baseDamage, name, weight, useDelay, range){
         this->baseDamage = baseDamage;
         this->damageType = damMagic;
         this->manaCost = manaCost;

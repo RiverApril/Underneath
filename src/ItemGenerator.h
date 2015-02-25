@@ -30,18 +30,17 @@ namespace ItemGenerator {
     extern Ranged* wLongbow;
     extern Ranged* wCrossbow;
 
-
-    extern map<int, string> combatLevelNameMap;
+	
     extern vector<Weapon*> weaponList;
 
     Weapon* atl(Weapon* w);
 
 
     Weapon* createWeaponBase(DamageType d);
-    Weapon* createWeapon(string name, int difficulty, DamageType damageType, bool enchanted);
+    Weapon* createWeapon(string name, Material* material, DamageType damageType, bool enchanted);
 
-    void initWeaponsTemplates();
-    void cleanup();
+    void initItemTemplates();
+    void cleanupItemTemplates();
 
 
 }

@@ -18,11 +18,11 @@ public:
     static Ranged* cloneUnsafe(Ranged* oldE, Ranged* newE);
 
 
-    Ranged() : Ranged(0, "UNDEFINED", 0, 0, 0){
+    Ranged() : Ranged(materialNone, 0, "UNDEFINED", 0, 0, 0){
 
     }
 
-    Ranged(double baseDamage, string name, Weight weight, double useDelay, double range) : Weapon(baseDamage, name, weight, useDelay){
+    Ranged(Material* material, double baseDamage, string name, Weight weight, double useDelay, double range) : Weapon(material, baseDamage, name, weight, useDelay){
         this->baseDamage = baseDamage;
         this->damageType = damRanged;
         this->range = range;

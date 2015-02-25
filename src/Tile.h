@@ -79,7 +79,7 @@ namespace Tiles{
 
 
     void initTiles();
-    void cleanup();
+    void cleanupTiles();
     Tile* getTile(int index);
 
 }

@@ -33,14 +33,14 @@ namespace Ui {
                 break;
 
             case 'd':{
-                if(alive->inventory.size() > 0 && (size_t)selected < alive->inventory.size()){
+                if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
                     Item* drop;
-                    if(alive->inventory[(size_t)selected]->qty == 1){
-                        drop = alive->inventory[(size_t)selected];
-                    	alive->removeItem(alive->inventory[(size_t)selected], false);
+                    if(alive->inventory[selected]->qty == 1){
+                        drop = alive->inventory[selected];
+                    	alive->removeItem(alive->inventory[selected], false);
                     }else{
-                        alive->inventory[(size_t)selected]->qty -= 1;
-                        drop = Item::clone(alive->inventory[(size_t)selected]);
+                        alive->inventory[selected]->qty -= 1;
+                        drop = Item::clone(alive->inventory[selected]);
                         drop->qty = 1;
                     }
                     currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
@@ -49,17 +49,17 @@ namespace Ui {
             }
 
             case 'D':{
-                if(alive->inventory.size() > 0 && (size_t)selected < alive->inventory.size()){
+                if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
                     Item* drop;
-                    drop = alive->inventory[(size_t)selected];
-                    alive->removeItem(alive->inventory[(size_t)selected], false);
+                    drop = alive->inventory[selected];
+                    alive->removeItem(alive->inventory[selected], false);
                     currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
                 }
                 break;
             }
 
             case 'e':{
-                Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[(size_t)selected]);
+                Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
                 if(weapon){
                     if(alive->getActiveWeapon() == weapon){
                         alive->setActiveWeapon(nullptr);
@@ -84,8 +84,8 @@ namespace Ui {
         if(selected<0){
             selected = 0;
         }
-        if((size_t)selected >= alive->inventory.size()){
-            selected = (int)alive->inventory.size()-1;
+        if(selected >= alive->inventory.size()){
+            selected = alive->inventory.size()-1;
         }
     }
 
@@ -93,7 +93,7 @@ namespace Ui {
     void MenuInv::update() {
         setColor(C_WHITE);
         int minI = Math::max(0, scrollOffset);
-        int maxI = (int)alive->inventory.size() - scrollOffset;
+        int maxI = alive->inventory.size() - scrollOffset;
         move(0, 0);
         clrtobot();
         int totalWeight = 0;
@@ -120,7 +120,7 @@ namespace Ui {
         Spell* spell;
         int y = 3;
         for(int i=minI;i<maxI;i++){
-            item = alive->inventory[(size_t)i];
+            item = alive->inventory[i];
             weapon = dynamic_cast<Weapon*>(item);
             ranged = dynamic_cast<Ranged*>(item);
             spell = dynamic_cast<Spell*>(item);
@@ -128,7 +128,7 @@ namespace Ui {
                 setColor(C_BLACK, C_WHITE);
             }
             mvprintw(y, columnPrefixChar, "%c", item == alive->getActiveWeapon()?'E':' ');
-            mvprintw(y, columnName, item->name.c_str());
+            mvprintw(y, columnName, item->getExtendedName().c_str());
             mvprintw(y, columnQty-4, "%4s", (to_string(item->qty)).c_str());
             //mvprintw(y, columnWeight+1, "%2.1f", item->weight);
 
@@ -144,7 +144,7 @@ namespace Ui {
             y++;
         }
 
-        item = alive->inventory[(size_t)selected];
+        item = alive->inventory[selected];
 
         if(item){
             weapon = dynamic_cast<Weapon*>(item);
@@ -164,7 +164,7 @@ namespace Ui {
             }
             setColor(C_WHITE, C_BLACK);
 
-            mvprintw(a++, columnInfo, "Name: %s", item->name.c_str());
+            mvprintw(a++, columnInfo, "Name: %s", item->getExtendedName().c_str());
             if(item == alive->getActiveWeapon()){
                 mvprintw(terminalSize.y-1, columnInfo, "-Equipped");
             }else{

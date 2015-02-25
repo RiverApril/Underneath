@@ -11,7 +11,7 @@
 
 Tile::Tile(char icon, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen, Ui::Color bgColorUnseen) {
     this->icon = icon;
-    this->index = (int)Tiles::tileList.size();
+    this->index = Tiles::tileList.size();
     Tiles::tileList.push_back(this);
 
     this->fgColor = fgColor;
@@ -99,13 +99,13 @@ namespace Tiles{
         tileDebug6 = new Tile('6',  C_LIGHT_GREEN, bg, tileFlagPathable);
     }
 
-    void cleanup(){
+    void cleanupTiles(){
         for(Tile* tile : tileList){
             delete tile;
         }
     }
 
     Tile* getTile(int index) {
-        return tileList[(size_t)index];
+        return tileList[index];
     }
 }

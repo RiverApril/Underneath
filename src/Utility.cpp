@@ -54,7 +54,7 @@ namespace FileUtility {
 
     void saveString(vector<unsigned char>* data, string n){
         size_t count = n.size();
-        saveInt(data, (int)count);
+        saveInt(data, count);
         for(size_t i=0;i<count;i++){
             saveUnsignedChar(data, (unsigned char)n[i]);
         }
@@ -142,7 +142,7 @@ namespace StringUtility {
 
     string makeBar(int progress, int maxProgress, size_t size, char filled, char empty){
         string s = "";
-        size_t l = (size_t)(((double)size/maxProgress)*progress);
+        size_t l = (((double)size/maxProgress)*progress);
         for(size_t i=0;i<size;i++){
             s+=i>=l?empty:filled;
         }
@@ -222,8 +222,8 @@ namespace ParsingUtility {
             }
             double final = 0;
             int d = 0;
-            for(int i=(int)left.size()-1;i>=0;i--){
-                final += pow(base, d)*left[(size_t)i];
+            for(int i=left.size()-1;i>=0;i--){
+                final += pow(base, d)*left[i];
                 d++;
             }
 
@@ -261,8 +261,8 @@ namespace ParsingUtility {
             }
             int final = 0;
             int d = 0;
-            for(int i=(int)left.size()-1;i>=0;i--){
-                final += pow(base, d)*left[(size_t)i];
+            for(int i=left.size()-1;i>=0;i--){
+                final += pow(base, d)*left[i];
                 d++;
             }
 

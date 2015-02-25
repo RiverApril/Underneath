@@ -11,6 +11,7 @@
 
 #include "Global.h"
 #include "Item.h"
+#include "MaterialItem.h"
 
 typedef int DamageType;
 const DamageType damMelee = 0;
@@ -44,7 +45,7 @@ inline bool operator!=(const Enchantment& a, const Enchantment& b){
 }
 
 
-class Weapon : public Item {
+class Weapon : public MaterialItem {
 public:
 
     static string damageTypeToString(DamageType d){
@@ -74,11 +75,11 @@ public:
 
     static Weapon* cloneUnsafe(Weapon* oldE, Weapon* newE = nullptr);
 
-    Weapon() : Weapon(0, "UNDEFINED", 0, 0){
+    Weapon() : Weapon(materialNone, 0, "UNDEFINED", 0, 0){
 
     }
 
-    Weapon(double baseDamage, string name, Weight weight, double useDelay) : Item(name, weight){
+    Weapon(Material* material, double baseDamage, string name, Weight weight, double useDelay) : MaterialItem(material, name, weight){
         this->baseDamage = baseDamage;
         this->useDelay = useDelay;
 
@@ -105,7 +106,7 @@ public:
 
     virtual bool equalsExceptQty(Item* other){
         Weapon* otherW = dynamic_cast<Weapon*>(other);
-        return Item::equalsExceptQty(other)
+        return MaterialItem::equalsExceptQty(other)
         &&(otherW)
         &&(baseDamage == otherW->baseDamage)
         &&(damageType == otherW->damageType)

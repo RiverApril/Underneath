@@ -43,8 +43,8 @@ namespace Commands{
 
     extern vector<Command*> commandList;
     
-    void initCommandList();
-    void cleanup();
+    void initCommands();
+    void cleanupCommands();
     
 }
 

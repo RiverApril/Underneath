@@ -12,8 +12,7 @@
 
 namespace ItemGenerator {
 
-
-    map<int, string> combatLevelNameMap;
+	
     vector<Weapon*> weaponList;
 
     //DamageMultiplier, Name, Weight, Use Delay
@@ -32,31 +31,23 @@ namespace ItemGenerator {
     Ranged* wLongbow;
     Ranged* wCrossbow;
 
-    void initWeaponsTemplates(){
+    void initItemTemplates(){
 
         iCoin = new Item("Coin", .01);
 
-        wKnife = atl(new Weapon(.5, "Knife", 1, .5));
-        wShortSword = atl(new Weapon(1, "Short Sword", 1, 1));
-        wLongSword = atl(new Weapon(1.5, "Long Sword", 1.5, 1.5));
-        wBattleAxe = atl(new Weapon(1.2, "Battle Axe", 1.2, 1.2));
-        wMase = atl(new Weapon(1.4, "Mase", 1.4, 1.4));
-        wSpear = setDamageType(atl(new Ranged(1, "Spear", 2, 1.5, 1.8)), damMelee);
+        wKnife = atl(new Weapon(materialNone, .5, "Knife", 1, .5));
+        wShortSword = atl(new Weapon(materialNone, 1, "Short Sword", 1, 1));
+        wLongSword = atl(new Weapon(materialNone, 1.5, "Long Sword", 1.5, 1.5));
+        wBattleAxe = atl(new Weapon(materialNone, 1.2, "Battle Axe", 1.2, 1.2));
+        wMase = atl(new Weapon(materialNone, 1.4, "Mase", 1.4, 1.4));
+        wSpear = setDamageType(atl(new Ranged(materialNone, 1, "Spear", 2, 1.5, 1.8)), damMelee);
 
-        wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(.5, "Recurve Bow", 1.5, 1, 8)));
-        wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(.4, "Longbow", 2, .8, 10)));
-        wCrossbow = dynamic_cast<Ranged*>(atl(new Ranged(.3, "Crossbow", 2, .6, 6)));
-
-        combatLevelNameMap[0] = string("Shitty");
-        combatLevelNameMap[1] = string("Abysmal");
-        combatLevelNameMap[2] = string("Training");
-        combatLevelNameMap[3] = string("Basic");
-        combatLevelNameMap[4] = string("Apprentice");
-        combatLevelNameMap[5] = string("Sharp");
-        combatLevelNameMap[6] = string("Awesome");
+        wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .5, "Recurve Bow", 1.5, 1, 8)));
+        wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .4, "Longbow", 2, .8, 10)));
+        wCrossbow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .3, "Crossbow", 2, .6, 6)));
     }
 
-    void cleanup(){
+    void cleanupItemTemplates(){
         for(Weapon* w : weaponList){
             delete w;
         }
@@ -77,7 +68,7 @@ namespace ItemGenerator {
     Weapon* createWeaponBase(DamageType d){
         Weapon* w = nullptr;
         while(w == nullptr){
-            size_t i = ((size_t)rand())%weaponList.size();
+            size_t i = (rand())%weaponList.size();
             if(weaponList[i]->damageType == d){
                 w = weaponList[i];
             }
@@ -87,14 +78,15 @@ namespace ItemGenerator {
 
     }
 
-    Weapon* createWeapon(string name, int difficulty, DamageType damageType, bool enchanted){
+    Weapon* createWeapon(string name, Material* material, DamageType damageType, bool enchanted){
 
-        double combatLevelMultiplier = (difficulty+1) * 0.5;
-        string preName = combatLevelNameMap[difficulty];
+        double combatLevelMultiplier = (material->getMultipler()) * 0.5;
 
         Weapon* weapon = createWeaponBase(damageType);
 
-        weapon->name = (name.size()>0?(name + " "):"") + preName + " " + weapon->name;
+
+        weapon->material = material;
+        weapon->overrideName = name;
         weapon->baseDamage *= combatLevelMultiplier;
         weapon->weight *= combatLevelMultiplier;
 

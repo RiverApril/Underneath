@@ -37,8 +37,8 @@ namespace Ui {
         if(selected<0){
             selected = 0;
         }
-        if(selected >= (int)player->inventory.size()){
-            selected = (int)player->inventory.size()-1;
+        if(selected >= player->inventory.size()){
+            selected = player->inventory.size()-1;
         }
     }
 
@@ -51,7 +51,7 @@ namespace Ui {
             mvprintw(i+2, 1, "%s: %2d  xp[%s] (%.0f/%.0f)",
                      string(abilityNamesRightAligned[i]).c_str(),
                      player->levels.list[i],
-                     StringUtility::makeBar((int)(player->xp.list[i]), (int)(player->nextLevelXp.list[i]), 5, '=', ' ').c_str(),
+                     StringUtility::makeBar((player->xp.list[i]), (player->nextLevelXp.list[i]), 5, '=', ' ').c_str(),
                      (player->xp.list[i]),
                      (player->nextLevelXp.list[i]));
             ;

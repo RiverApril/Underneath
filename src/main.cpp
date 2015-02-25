@@ -40,11 +40,11 @@ int main(int argc, const char** argv) {
     }
 
     Tiles::initTiles();
-    ItemGenerator::initWeaponsTemplates();
+    ItemGenerator::initItemTemplates();
     Arts::loadArts();
     Ui::initNCurses();
-    Commands::initCommandList();
-
+    Commands::initCommands();
+    MaterialItem::initMaterials();
 
 
     Ui::MenuMain* mainMenu = new Ui::MenuMain();
@@ -60,10 +60,11 @@ int main(int argc, const char** argv) {
 
     delete mainMenu;
 
-    Arts::cleanup();
-    Tiles::cleanup();
-    Commands::cleanup();
-    ItemGenerator::cleanup();
+    Arts::cleanupArts();
+    Tiles::cleanupTiles();
+    Commands::cleanupCommands();
+    ItemGenerator::cleanupItemTemplates();
+
 
     return 0;
 }

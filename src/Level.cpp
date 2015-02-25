@@ -20,10 +20,10 @@ Level::Level(World* w, string n, Point2 s, int d) {
     name = n;
     difficulty = d;
     size = new Point2(s);
-    tileGrid = vector<vector<TileData>>((size_t)size->x, vector<TileData>((size_t)size->y));
+    tileGrid = vector<vector<TileData>>(size->x, vector<TileData>(size->y));
     
-    for(size_t i=0;i<(size_t)size->x;i++){
-        for(size_t j=0;j<(size_t)size->y;j++){
+    for(size_t i=0;i<size->x;i++){
+        for(size_t j=0;j<size->y;j++){
             tileGrid[i][j].index = (int8_t)Tiles::tileUnset->getIndex();
             tileGrid[i][j].explored = false;
             //tileGrid[i][j].entity = nullptr;
@@ -55,7 +55,7 @@ Level::~Level() {
 
 bool Level::getExplored(Point2 p) {
     if(inRange(p)) {
-    	return tileGrid[(size_t)p.x][(size_t)p.y].explored;
+    	return tileGrid[p.x][p.y].explored;
     }else{
         return false;
     }
@@ -63,7 +63,7 @@ bool Level::getExplored(Point2 p) {
 
 void Level::setExplored(Point2 p, bool a) {
     if(inRange(p)) {
-    	tileGrid[(size_t)p.x][(size_t)p.y].explored = a;
+    	tileGrid[p.x][p.y].explored = a;
     }
 }
 
@@ -117,7 +117,7 @@ Point2 Level::findRandomWithoutFlag(TileFlag flags){
 
 bool Level::setTile(Point2 p, int tile) {
     if(inRange(p)) {
-        tileGrid[(size_t)p.x][(size_t)p.y].index = (int8_t)tile;
+        tileGrid[p.x][p.y].index = (int8_t)tile;
         return true;
     }
     return false;
@@ -133,7 +133,7 @@ Tile* Level::tileAt(Point2 p) {
 
 int Level::indexAt(Point2 p) {
     if(inRange(p)) {
-        return tileGrid[(size_t)p.x][(size_t)p.y].index;
+        return tileGrid[p.x][p.y].index;
     }
     return Tiles::tileEdge->getIndex();
 }
@@ -284,10 +284,10 @@ void Level::actuallyRemoveEntity(Entity* e, bool deleteEntity){
 }
 
 vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
-	vector<vector<int>> map = vector<vector<int>>((size_t)size->x, vector<int>((size_t)size->y));
+	vector<vector<int>> map = vector<vector<int>>(size->x, vector<int>(size->y));
 
-    for(size_t i=0;i<(size_t)size->x;i++){
-        for(size_t j=0;j<(size_t)size->y;j++){
+    for(size_t i=0;i<size->x;i++){
+        for(size_t j=0;j<size->y;j++){
             map[i][j] = -1;
         }
     }
@@ -301,7 +301,7 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
         if(c == to){
             vector<Point2> path;
             Point2 l = to;
-            int v = map[(size_t)to.x][(size_t)to.y];
+            int v = map[to.x][to.y];
             while(v > 0){
                 bool leave = false;
                 for(int i=-1;i<=1 && !leave;i++){
@@ -309,8 +309,8 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
                         Point2 p = Point2(i+l.x, j+l.y);
                         if((abs(i)+abs(j)) == 1){
                         	if(inRange(p)){
-                                if(map[(size_t)p.x][(size_t)p.y] < v && map[(size_t)p.x][(size_t)p.y] != -1){
-                                    v = map[(size_t)p.x][(size_t)p.y];
+                                if(map[p.x][p.y] < v && map[p.x][p.y] != -1){
+                                    v = map[p.x][p.y];
                                     l = p;
                                     leave = true;
                                     path.push_back(l);
@@ -331,8 +331,8 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){
                     if((abs(i)+abs(j)) == 1){
                     	if(inRange(p)){
                         	if(tileAt(p)->hasFlag(requiredFlag)){
-                                if(map[(size_t)p.x][(size_t)p.y] == -1){
-                                    map[(size_t)p.x][(size_t)p.y] = map[(size_t)c.x][(size_t)c.y]+1;
+                                if(map[p.x][p.y] == -1){
+                                    map[p.x][p.y] = map[c.x][c.y]+1;
                                     priorityQueue.push(p);
                                 }
                             }
@@ -411,16 +411,16 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
     do{
 
-        for (size_t i=0; i<(size_t)size->x; i++) {
-            for (size_t j=0; j<(size_t)size->y; j++) {
+        for (size_t i=0; i<size->x; i++) {
+            for (size_t j=0; j<size->y; j++) {
                 tileGrid[i][j].index = (int8_t)Tiles::tileUnset->getIndex();
                 tileGrid[i][j].explored = false;
                 //tileGrid[i][j].entity = nullptr;
-                if(i==0 || j==0 || i==(size_t)(size->x-1) || j==(size_t)(size->y-1)){
+                if(i==0 || j==0 || i==(size->x-1) || j==(size->y-1)){
                     tileGrid[i][j].index = (int8_t)Tiles::tileWall->getIndex();
                 }
                 if(tileGrid[i][j].index == (int8_t)Tiles::tileChest->getIndex()){
-                    TileEntity* te = new TEChest(Point2((int)i, (int)j));
+                    TileEntity* te = new TEChest(Point2(i, j));
                     //te->addItem(ItemGenerator::createWeaponForLoot());
                     tileEntityList.push_back(te);
                 }
@@ -513,7 +513,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         int count = (rand()%80)+20;
         for(int i=0;i<count;i++){
             AiEntity* e = new AiEntity ("Goblin", aiFollowPlayerDumb | aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
-            e->setActiveWeapon(ItemGenerator::createWeapon("", difficulty, damMelee, false));
+            e->setActiveWeapon(ItemGenerator::createWeapon("", materialBone, damMelee, false));
             e->setMoveDelay(Math::randomRange(.5, 1.5));
 
             Entity* r = Entity::clone(e);
@@ -531,7 +531,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         int count = (rand()%20)+20;
         for(int i=0;i<count;i++){
             AiEntity* e = new AiEntity ("Troll", aiFollowPlayerSmart | aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-            e->setActiveWeapon(ItemGenerator::createWeapon("", difficulty, damMelee, true));
+            e->setActiveWeapon(ItemGenerator::createWeapon("", materialBone, damMelee, true));
             e->setMoveDelay(Math::randomRange(.5, 1.5));
 
             Entity* r = Entity::clone(e);
@@ -550,7 +550,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         for(int i=0;i<count;i++){
 
             AiEntity* e = new AiEntity ("Goblin Archer", aiStalkPlayerSmart | aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 8);
-            e->setActiveWeapon(ItemGenerator::createWeapon("", difficulty, damRanged, false));
+            e->setActiveWeapon(ItemGenerator::createWeapon("", materialBone, damRanged, false));
             e->setMoveDelay(Math::randomRange(.5, 1.5));
 
             Entity* r = Entity::clone(e);
@@ -576,18 +576,18 @@ void Level::save(vector<unsigned char>* data){
     
     Point2::save(*size, data);
     FileUtility::saveInt(data, difficulty);
-    for(size_t i=0;i<(size_t)size->x;i++){
-        for(size_t j=0;j<(size_t)size->y;j++){
+    for(size_t i=0;i<size->x;i++){
+        for(size_t j=0;j<size->y;j++){
             FileUtility::saveInt8Bit(data, tileGrid[i][j].index);
             FileUtility::saveBool(data, tileGrid[i][j].explored);
         }
     }
-    FileUtility::saveInt(data, (int)entityList.size());
+    FileUtility::saveInt(data, entityList.size());
 	for (size_t i = 0; i<entityList.size(); i++){
         debug("Saving Entity: "+entityList[i]->getName()+"("+to_string(entityList[i]->getEntityTypeId())+")"+", Pos: "+entityList[i]->pos.toString());
         entityList[i]->save(data);
     }
-    FileUtility::saveInt(data, (int)tileEntityList.size());
+    FileUtility::saveInt(data, tileEntityList.size());
     for (size_t i = 0; i<tileEntityList.size(); i++) {
         tileEntityList[i]->save(data);
     }
@@ -595,8 +595,8 @@ void Level::save(vector<unsigned char>* data){
 
 void Level::load(unsigned char* data, int* position){
 
-    for(size_t i=0;i<(size_t)size->x;i++){
-        for(size_t j=0;j<(size_t)size->y;j++){
+    for(size_t i=0;i<size->x;i++){
+        for(size_t j=0;j<size->y;j++){
             tileGrid[i][j].index = FileUtility::loadInt8Bit(data, position);
             tileGrid[i][j].explored = FileUtility::loadBool(data, position);
         }

@@ -49,6 +49,9 @@ Item* Item::clone(Item* oldI){
         case ITEM_TYPE_ITEM:
             return makeNewAndClone<Item, Item>(oldI);
 
+        case ITEM_TYPE_MATERIAL_ITEM:
+            return makeNewAndClone<Item, MaterialItem>(oldI);
+
         case ITEM_TYPE_WEAPON:
             return makeNewAndClone<Item, Weapon>(oldI);
 
@@ -76,6 +79,9 @@ Item* Item::loadNew(unsigned char* data, int* position){
     switch (type) {
         case ITEM_TYPE_ITEM:
             e = new Item();
+            break;
+        case ITEM_TYPE_MATERIAL_ITEM:
+            e = new MaterialItem();
             break;
         case ITEM_TYPE_WEAPON:
             e = new Weapon();

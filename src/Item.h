@@ -17,9 +17,10 @@ typedef double Weight;
 class Level;
 
 const int ITEM_TYPE_ITEM = 0;
-const int ITEM_TYPE_WEAPON = 1;
-const int ITEM_TYPE_RANGED = 2;
-const int ITEM_TYPE_SPELL = 3;
+const int ITEM_TYPE_MATERIAL_ITEM = 1;
+const int ITEM_TYPE_WEAPON = 2;
+const int ITEM_TYPE_RANGED = 3;
+const int ITEM_TYPE_SPELL = 4;
 
 class Item {
 public:
@@ -56,7 +57,14 @@ public:
         &&(artIndex == other->artIndex);
     }
 
-    string name;
+    virtual string getExtendedName(){
+        return name;
+    }
+
+    virtual void setBaseName(string baseName){
+        name = baseName;
+    }
+
     Weight weight;
     int qty;
 
@@ -64,6 +72,8 @@ public:
 
 
 protected:
+
+    string name;
 
     template<class Super, class Sub>
     static Sub* makeNewAndClone(Super* oldT);

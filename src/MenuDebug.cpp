@@ -47,7 +47,7 @@ namespace Ui {
         a++;
 
         for(Weapon* w : ItemGenerator::weaponList){
-            mvprintw(a, column0+1, "%s", w->name.c_str());
+            mvprintw(a, column0+1, "%s", w->getExtendedName().c_str());
             mvprintw(a, column1+1, "%2.2f", w->baseDamage);
             mvprintw(a, column2+1, "%2.2f", w->useDelay);
             mvprintw(a, column3+1, "%2.2f", w->baseDamage / w->useDelay);

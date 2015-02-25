@@ -266,11 +266,11 @@ void Vector2::set(Point2 other) {
 }
 
 Point2 Vector2::roundAwayFrom0() {
-    return Point2((int)Math::roundAwayFrom0(this->x), (int)Math::roundAwayFrom0(this->y));
+    return Point2(Math::roundAwayFrom0(this->x), Math::roundAwayFrom0(this->y));
 }
 
 Point2 Vector2::roundToward0() {
-    return Point2((int)Math::roundToward0(this->x), (int)Math::roundToward0(this->y));
+    return Point2(Math::roundToward0(this->x), Math::roundToward0(this->y));
 }
 
 Point2 Vector2::truncate() {

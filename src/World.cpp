@@ -53,10 +53,10 @@ namespace WorldLoader {
         rewind(file);
 
         unsigned char* buffer = new unsigned char[fileSize];
-        fread(buffer, (size_t)fileSize, 1, file);
+        fread(buffer, fileSize, 1, file);
         /*printf("Length: %ld\n", fileSize);
         for(int i=0;i<fileSize;i++){
-            printf("%X, ", (int)buffer[i]);
+            printf("%X, ", buffer[i]);
         }*/
         return buffer;
     }
@@ -331,8 +331,8 @@ namespace WorldLoader {
 
 
         world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
-        world->currentPlayer->setActiveWeapon(ItemGenerator::createWeapon("", world->currentLevel->getDifficulty(), damMelee, false));
-        world->currentPlayer->inventory.push_back(ItemGenerator::createWeapon("", world->currentLevel->getDifficulty(), damRanged, false));
+        world->currentPlayer->setActiveWeapon(ItemGenerator::createWeapon("", materialBone, damMelee, false));
+        world->currentPlayer->inventory.push_back(ItemGenerator::createWeapon("", materialBone, damRanged, false));
 
         world->currentPlayer->inventory.push_back(Item::clone(ItemGenerator::iCoin));
         
