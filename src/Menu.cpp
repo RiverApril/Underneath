@@ -15,6 +15,12 @@ yesNo aNo = 'n';
 yesNo aUndefined = '?';
 
 namespace Ui {
+
+    string colorCode(char c){
+        string s = "&";
+        s += c;
+        return s;
+    }
     
 
     void Menu::_openUi() {
@@ -71,8 +77,8 @@ namespace Ui {
                     break;
 
                 case KEY_BACKSPACE:
-                //case 8: //Backspace
-                //case 127: //Delete
+                case 8: //Backspace
+                case 127: //Delete
                     if(consoleInput.length() > 0){
                         consoleInput = consoleInput.substr(0, consoleInput.length()-1);
                     }
@@ -81,8 +87,9 @@ namespace Ui {
                 case KEY_ENTER:
                 case 13:
                 case '\n':
-                    consoleInputMode = false;
                     Commands::execute(consoleInput, this);
+                case KEY_ESCAPE:
+                    consoleInputMode = false;
                     consoleInput = "";
                     consoleScroll = 0;
                     break;
@@ -98,9 +105,8 @@ namespace Ui {
                 default:
                     if((in>=32 && in<=126)){
                         consoleInput += (char)in;
-                    }else{
-                    	return false;
                     }
+                    break;
             }
             return true;
         }
@@ -117,9 +123,79 @@ namespace Ui {
             if((((int)consoleBuffer.size())-j) < 0){
                 break;
             }
-            int p = (consoleBuffer.size())-j+(consoleScroll);
+            int p = ((int)consoleBuffer.size())-j+(consoleScroll);
             if(p < consoleBuffer.size()){
-                printw(consoleBuffer[p].c_str());
+                bool lookingForCode = false;
+                for(char c : consoleBuffer[p]){
+                    if(lookingForCode){
+                        lookingForCode = false;
+                        if(c == '&'){
+                            addch('&');
+                        }else{
+                            Color color = 0;
+                            switch (c) {
+                                case C_CODE_DARK_BLACK:
+                                    color = C_DARK_BLACK;
+                                    break;
+                                case C_CODE_DARK_RED:
+                                    color = C_DARK_RED;
+                                    break;
+                                case C_CODE_DARK_GREEN:
+                                    color = C_DARK_GREEN;
+                                    break;
+                                case C_CODE_DARK_YELLOW:
+                                    color = C_DARK_YELLOW;
+                                    break;
+                                case C_CODE_DARK_BLUE:
+                                    color = C_DARK_BLUE;
+                                    break;
+                                case C_CODE_DARK_MAGENTA:
+                                    color = C_DARK_MAGENTA;
+                                    break;
+                                case C_CODE_DARK_CYAN:
+                                    color = C_DARK_CYAN;
+                                    break;
+                                case C_CODE_DARK_WHITE:
+                                    color = C_DARK_WHITE;
+                                    break;
+                                case C_CODE_LIGHT_BLACK:
+                                    color = C_LIGHT_BLACK;
+                                    break;
+                                case C_CODE_LIGHT_RED:
+                                    color = C_LIGHT_RED;
+                                    break;
+                                case C_CODE_LIGHT_GREEN:
+                                    color = C_LIGHT_GREEN;
+                                    break;
+                                case C_CODE_LIGHT_YELLOW:
+                                    color = C_LIGHT_YELLOW;
+                                    break;
+                                case C_CODE_LIGHT_BLUE:
+                                    color = C_LIGHT_BLUE;
+                                    break;
+                                case C_CODE_LIGHT_MAGENTA:
+                                    color = C_LIGHT_MAGENTA;
+                                    break;
+                                case C_CODE_LIGHT_CYAN:
+                                    color = C_LIGHT_CYAN;
+                                    break;
+                                case C_CODE_LIGHT_WHITE:
+                                    color = C_LIGHT_WHITE;
+                                    break;
+                                    
+                                default:
+                                    color = C_WHITE;
+                                    break;
+                            }
+                            setColor(color);
+                        }
+                    }else if(c == '&'){
+                        lookingForCode = true;
+                    }else{
+                    	addch(c);
+                    }
+                }
+                setColor(C_WHITE);
             }
             j++;
         }
@@ -132,7 +208,7 @@ namespace Ui {
             Ui::setColor(C_DARK_GREEN);
             mvprintw(bottomY, 2, "> %s", consoleInput.c_str());
             Ui::setColor(C_LIGHT_GREEN, C_BLACK, A_BLINK);
-            mvprintw(bottomY, 4+consoleInput.length(), "_");
+            mvprintw(bottomY, 4+(int)consoleInput.length(), "_");
         }
     }
 
@@ -167,7 +243,7 @@ namespace Ui {
     }
     
     void Menu::printCenter(int y, string s, ...){
-        move(y, (terminalSize.x/2)-((s.length()-1)/2));
+        move(y, (terminalSize.x/2)-(((int)s.length()-1)/2));
         va_list args;
         va_start(args, s);
         vwprintw(stdscr, s.c_str(), args);
@@ -175,7 +251,7 @@ namespace Ui {
     }
     
     void Menu::printCenterOffset(int y, int xOff, string s, ...){
-        move(y, (terminalSize.x/2)-((s.length()-1)/2)+xOff);
+        move(y, (terminalSize.x/2)-(((int)s.length()-1)/2)+xOff);
         va_list args;
         va_start(args, s);
         vwprintw(stdscr, s.c_str(), args);

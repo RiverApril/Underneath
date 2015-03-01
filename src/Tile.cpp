@@ -11,7 +11,7 @@
 
 Tile::Tile(char icon, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen, Ui::Color bgColorUnseen) {
     this->icon = icon;
-    this->index = Tiles::tileList.size();
+    this->index = (int)Tiles::tileList.size();
     Tiles::tileList.push_back(this);
 
     this->fgColor = fgColor;

@@ -85,13 +85,17 @@ namespace Ui {
             selected = 0;
         }
         if(selected >= alive->inventory.size()){
-            selected = alive->inventory.size()-1;
+            selected = (int)alive->inventory.size()-1;
         }
     }
 
 
     void MenuInv::update() {
-        setColor(C_WHITE);
+
+		Ui::drawInventory(alive, selected, scrollOffset, "Inventory", alive->getActiveWeapon());
+
+
+        /*setColor(C_WHITE);
         int minI = Math::max(0, scrollOffset);
         int maxI = alive->inventory.size() - scrollOffset;
         move(0, 0);
@@ -195,7 +199,7 @@ namespace Ui {
                 }
             }
 
-        }
+        }*/
 
     }
 }

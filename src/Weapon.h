@@ -95,7 +95,7 @@ public:
     virtual void load(unsigned char* data, int* position);
 
     Weapon* addEnchantment(EnchantmentId eId, int chance, int power){
-        enchantments.push_back(Enchantment(eId,chance ,power));
+        enchantments.push_back(Enchantment(eId, chance ,power));
         return this;
     }
 

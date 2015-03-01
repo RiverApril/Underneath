@@ -54,7 +54,7 @@ namespace FileUtility {
 
     void saveString(vector<unsigned char>* data, string n){
         size_t count = n.size();
-        saveInt(data, count);
+        saveInt(data, (int)count);
         for(size_t i=0;i<count;i++){
             saveUnsignedChar(data, (unsigned char)n[i]);
         }
@@ -222,7 +222,7 @@ namespace ParsingUtility {
             }
             double final = 0;
             int d = 0;
-            for(int i=left.size()-1;i>=0;i--){
+            for(int i=(int)left.size()-1;i>=0;i--){
                 final += pow(base, d)*left[i];
                 d++;
             }
@@ -261,7 +261,7 @@ namespace ParsingUtility {
             }
             int final = 0;
             int d = 0;
-            for(int i=left.size()-1;i>=0;i--){
+            for(int i=(int)left.size()-1;i>=0;i--){
                 final += pow(base, d)*left[i];
                 d++;
             }

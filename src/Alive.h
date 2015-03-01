@@ -13,7 +13,9 @@
 #include "Weapon.h"
 #include "Spell.h"
 #include "Math.h"
+#include "Inventory.h"
 
+#define EFFECT_DELAY 1
 
 typedef int EffectId;
 
@@ -23,19 +25,15 @@ const EffectId effRegen = 2;
 
 struct Effect{
 
-    Effect(EffectId eId, double timeEnd, double power) : Effect(eId, timeEnd, power, 0){
-
-    }
-
-    Effect(EffectId eId, double timeEnd, double power, double lastTime){
+    Effect(EffectId eId, double timeEnd, double power, double currentTime){
         this->eId = eId;
         this->timeEnd = timeEnd;
         this->power = power;
-        this->lastTime = lastTime;
+        this->lastTime = currentTime;
     }
 
     string toString(){
-        return "id:"+to_string(eId)+", timeEnd:"+to_string(timeEnd)+", power:"+to_string(power);
+        return formatString("id: %d, timeEnd: %.2f, power: %.2f, lastTime: %.2f", eId, timeEnd, power, lastTime);
     }
 
     EffectId eId = effFire;
@@ -46,7 +44,7 @@ struct Effect{
 
 
 
-class Alive : public Entity{
+class Alive : public Entity, public Inventory{
 
 public:
 
@@ -110,7 +108,7 @@ public:
 
     bool removeItem(Item* item, bool deleteItem);
 
-    vector<Item*> inventory;
+    //vector<Item*> inventory;
 
     vector<Effect> effects;
 

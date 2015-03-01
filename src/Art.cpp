@@ -116,7 +116,7 @@ namespace Arts{
         }
         art->calcSize();
         artList.push_back(art);
-        return (artList.size())-1;
+        return ((int)artList.size())-1;
     }
 
 
@@ -136,7 +136,7 @@ Point2 Art::calcSize(){
         w = Math::max(w, (int)line.length());
     }
     size.x = w;
-    size.y = lines.size();
+    size.y = (int)lines.size();
     return size;
 }
 
@@ -153,7 +153,7 @@ void Art::printAt(Point2 pos){
 
 void Art::printCenter(int y, int xOffset){
     int w = getSize().x;
-    for(size_t i=0;i<lines.size();i++){
+    for(int i=0;i<lines.size();i++){
         mvprintw(y+i, (Ui::terminalSize.x/2)-((w-1)/2), lines[i].c_str());
     }
 }

@@ -16,7 +16,7 @@ void Weapon::save(vector<unsigned char>* data){
     FileUtility::saveInt(data, damageType);
     FileUtility::saveDouble(data, useDelay);
 
-    FileUtility::saveInt(data, enchantments.size());
+    FileUtility::saveInt(data, (int)enchantments.size());
     for(size_t i=0;i<enchantments.size();i++){
         FileUtility::saveInt(data, enchantments[i].eId);
         FileUtility::saveInt(data, enchantments[i].chance);

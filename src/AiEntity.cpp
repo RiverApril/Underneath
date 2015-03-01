@@ -10,6 +10,7 @@
 #include "Math.h"
 #include "Utility.h"
 #include "Level.h"
+#include "Verbalizer.h"
 
 AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE){
 
@@ -47,7 +48,7 @@ void AiEntity::runAi(double time, Level* level) {
         agro = false;
     }
 
-    if(ai & aiFollowPlayerDumb || ai & aiFleeFromPlayerDumb){
+    if(ai & aiFleeFromPlayer){
         if(canSeeTarget){
 
             Point2 playerPos = target->pos;
@@ -55,24 +56,22 @@ void AiEntity::runAi(double time, Level* level) {
             speed.x = pos.x>playerPos.x?-1:(pos.x<playerPos.x?1:0);
             speed.y = pos.y>playerPos.y?-1:(pos.y<playerPos.y?1:0);
 
-            if(ai & aiFleeFromPlayerDumb){
-                if(speed.x == 0){
-                    speed.x = rand()%2==0?1:-1;
-                }
-                if(speed.y == 0){
-                    speed.y = rand()%2==0?1:-1;
-                }
-                speed = speed*-1;
+            if(speed.x == 0){
+                speed.x = rand()%2==0?1:-1;
             }
+            if(speed.y == 0){
+                speed.y = rand()%2==0?1:-1;
+            }
+            speed = speed*-1;
         }
     }
-    if((ai & aiFollowPlayerSmart) || (ai & aiStalkPlayerSmart)){
+    if(ai & aiAttackPlayer){
         if(canSeeTarget){
             lastKnownTargetPos = target->pos;
         }
         if(lastKnownTargetPos != Point2(-1, -1)){
             Ranged* r = dynamic_cast<Ranged*>(activeWeapon);
-            if(r && (ai & aiStalkPlayerSmart) && canSeeTarget && (distanceSquared(target->pos, pos) < (r->range * r->range))){
+            if(r && canSeeTarget && (distanceSquared(target->pos, pos) < (r->range * r->range))){
                 speed.x = 0;
                 speed.y = 0;
             }else{
@@ -113,7 +112,8 @@ void AiEntity::runAi(double time, Level* level) {
         }
         if(attack){
             while(lastAttackTime + activeWeapon->useDelay <= time){
-                target->hurt(activeWeapon, time);
+                double d = target->hurt(activeWeapon, time);
+                Verbalizer::attack(this, target, activeWeapon, d);
                 lastAttackTime += activeWeapon->useDelay;
             }
         }
@@ -177,18 +177,14 @@ void AiEntity::save(std::vector<unsigned char>* data){
     Alive::save(data);
     FileUtility::saveInt(data, ai);
     FileUtility::saveBool(data, agro);
-    if(ai & aiFollowPlayerSmart){
-        Point2::save(lastKnownTargetPos, data);
-    }
+    Point2::save(lastKnownTargetPos, data);
 }
 
 void AiEntity::load(unsigned char* data, int* position){
     Alive::load(data, position);
     ai = FileUtility::loadInt(data, position);
     agro = FileUtility::loadBool(data, position);
-    if(ai & aiFollowPlayerSmart){
-        lastKnownTargetPos = Point2::load(data, position);
-    }
+    lastKnownTargetPos = Point2::load(data, position);
 }
 
 

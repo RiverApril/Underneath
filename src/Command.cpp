@@ -157,7 +157,7 @@ namespace Commands{
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
             MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
             if(mg){
-                Effect e = Effect(effBleed, mg->currentWorld->worldTime+10, 1);
+                Effect e = Effect(effBleed, mg->currentWorld->worldTime+10, 1, mg->currentWorld->worldTime);
                 if(arguments.size() > 0){
                     e.eId = ParsingUtility::parseInt(arguments[0].c_str());
                     if(arguments.size() > 1){

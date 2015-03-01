@@ -10,6 +10,8 @@
 #define __Underneath__Ui__
 
 #include "Geometry.h"
+#include "Inventory.h"
+#include "Weapon.h"
 
 extern vector<string> consoleBuffer;
 
@@ -17,6 +19,7 @@ void debug(string s);
 void debugf(string format, ...);
 void console(string s);
 void consolef(string format, ...);
+string formatString(string format, ...);
 
 namespace Ui {
 

@@ -12,16 +12,23 @@
 #include "Global.h"
 #include "Item.h"
 
+extern int useNone;
+extern int useArmor;
+extern int useBows;
+extern int useBlades;
+extern int useArmorAndWeapons;
+
 struct Material;
 
 extern vector<Material*> materialList;
 
 struct Material{
 
-    Material(int index, double multiplier, string name){
+    Material(int index, double multiplier, string name, int uses){
         this->index = index;
         this->multiplier = multiplier;
         this->name = name;
+        this->uses = uses;
         materialList[index] = this;
     }
 
@@ -37,15 +44,22 @@ struct Material{
         return multiplier;
     }
 
+    bool hasUse(int use){
+        return (uses & use)!=0;
+    }
+
 private:
+
     string name = "";
     int index = 0;
     double multiplier = 1;
+    int uses = useNone;
 
 };
 
 extern Material* materialNone;
 extern Material* materialLeather;
+extern Material* materialWood;
 extern Material* materialBone;
 extern Material* materialTin;
 extern Material* materialCopper;
@@ -67,20 +81,20 @@ public:
 
         int a = 0;
 
-        materialNone =       new Material(a++,  1, ""); // For stuff like Spells
-        materialLeather =    new Material(a++,  1, "Leather"); //Armor Only
-        materialWood =       new Material(a++,  1, "Wood"); //Bows Only
-        materialBone =       new Material(a++,  1, "Bone"); //Blades Only
-        materialTin =        new Material(a++,  0, "Tin"); //Crafting Only
-        materialCopper =     new Material(a++,  2, "Copper");
-        materialBronze =     new Material(a++,  3, "Bronze");
-        materialIron =       new Material(a++,  4, "Iron");
-        materialSteel =      new Material(a++,  5, "Steel");
-        materialObsidian =   new Material(a++,  6, "Obsidian"); //Blades Only
-        materialMythril =    new Material(a++,  7, "Mythril");
-        materialOrichalcum = new Material(a++,  8, "Orichalsum");
-        materialAdamant =    new Material(a++,  9, "Adamant");
-        materialEtherial =   new Material(a++, 10, "Etherial"); //Magicly Made
+        materialNone =       new Material(a++,  1, "", useNone); // For stuff like Spells
+        materialLeather =    new Material(a++,  1, "Leather", useArmor); //Armor Only
+        materialWood =       new Material(a++,  1, "Wood", useBows); //Bows Only
+        materialBone =       new Material(a++,  1, "Bone", useBlades); //Blades Only
+        materialTin =        new Material(a++,  0, "Tin", useNone); //Crafting Only
+        materialCopper =     new Material(a++,  2, "Copper", useArmorAndWeapons);
+        materialBronze =     new Material(a++,  3, "Bronze", useArmorAndWeapons);
+        materialIron =       new Material(a++,  4, "Iron", useArmorAndWeapons);
+        materialSteel =      new Material(a++,  5, "Steel",useArmorAndWeapons);
+        materialObsidian =   new Material(a++,  5.5, "Obsidian", useBlades); //Blades Only
+        materialMythril =    new Material(a++,  6, "Mythril", useArmorAndWeapons);
+        materialOrichalcum = new Material(a++,  7, "Orichalsum", useArmorAndWeapons);
+        materialAdamant =    new Material(a++,  8, "Adamant", useArmorAndWeapons);
+        materialEtherial =   new Material(a++,  9, "Etherial", useArmorAndWeapons);
     }
 
     static void cleanupMaterials(){
@@ -119,7 +133,7 @@ public:
     string overrideName = "";
 
     virtual string getExtendedName(){
-        return overrideName.size()>0?overrideName:((material > 0?material->getName():"")+" "+name);
+        return overrideName.size()>0?overrideName:((material->getName().size()>0?(material->getName()+" "+name):name));
     }
     
 protected:

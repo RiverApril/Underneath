@@ -34,6 +34,10 @@ public:
         return -1;
     }
 
+    virtual string getName(){
+        return item==nullptr?"Item":(item->getExtendedName());
+    }
+
     virtual Item* getItem(){
         return item;
     }

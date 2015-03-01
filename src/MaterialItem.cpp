@@ -9,10 +9,17 @@
 #include "MaterialItem.h"
 #include "Utility.h"
 
+int useNone = 0;
+int useArmor = 1 << 0;
+int useBows = 1 << 1;
+int useBlades = 1 << 2;
+int useArmorAndWeapons = useArmor | useBows | useBlades;
+
 vector<Material*> materialList;
 
 Material* materialNone;
 Material* materialLeather;
+Material* materialWood;
 Material* materialBone;
 Material* materialTin;
 Material* materialCopper;

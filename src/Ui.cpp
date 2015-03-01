@@ -58,6 +58,19 @@ void consolef(string format, ...){
     va_end(args);
 }
 
+string formatString(string format, ...){
+    string s = "";
+    
+    char buff[256];
+    va_list args;
+    va_start(args, format);
+    vsprintf(buff, format.c_str(), args);
+    s+=buff;
+    va_end(args);
+
+    return s;
+}
+
 namespace Ui {
 
     Color C_DARK_BLACK = 0x0; // white when background is black

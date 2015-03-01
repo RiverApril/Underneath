@@ -47,22 +47,23 @@ bool Alive::update(double time, Level* level) {
         }
 		
         forVector(effects, i){
-            Effect e = effects[i];
+            Effect* e = &effects[i];
 
-            if(e.lastTime+1 < time){
-                switch(e.eId){
+            while(e->lastTime+EFFECT_DELAY <= time){
+                switch(e->eId){
                     case effBleed:
                     case effFire:
-                        hurt(e.power);
+                        hurt(e->power);
                         break;
                     case effRegen:
-                        heal(e.power);
+                        heal(e->power);
                         break;
                 }
-                e.lastTime = time;
+                e->lastTime += EFFECT_DELAY;
             }
+            debug(e->toString());
 
-            if(time >= e.timeEnd){
+            if(time >= e->timeEnd){
                 effects.erase(effects.begin()+(long)i);
                 i--;
                 continue;
@@ -89,18 +90,18 @@ double Alive::hurt(Weapon* w, double time, double damageMultiplier){
         switch(ench.eId){
             case enchBleed:
                 if(rand()%ench.chance == 0){
-                    addEffect(Effect(effBleed, time+(ench.power*10), ench.power));
+                    addEffect(Effect(effBleed, time+(ench.power*10), ench.power, time));
                 }
                 break;
 
             case enchFire:
                 if(rand()%ench.chance == 0){
-                    addEffect(Effect(effFire, time+(ench.power*10), ench.power));
+                    addEffect(Effect(effFire, time+(ench.power*10), ench.power, time));
                 }
                 break;
         }
     }
-    consolef("Hurt %s %.2f hp.", name.c_str(), d);
+    //consolef("Hurt %s %.2f hp.", name.c_str(), d);
     return hurt(d, damageMultiplier);
 }
 
@@ -221,7 +222,7 @@ void Alive::save(vector<unsigned char>* data){
 
     //
     int activeWeaponIndex = -1;
-    FileUtility::saveInt(data, inventory.size());
+    FileUtility::saveInt(data, (int)inventory.size());
     forVector(inventory, i){
         Item* ie = inventory[i];
         ie->save(data);
@@ -232,7 +233,7 @@ void Alive::save(vector<unsigned char>* data){
     FileUtility::saveInt(data, activeWeaponIndex);
     //
 
-    FileUtility::saveInt(data, effects.size());
+    FileUtility::saveInt(data, (int)effects.size());
     for(Effect e : effects){
         FileUtility::saveInt(data, e.eId);
         FileUtility::saveDouble(data, e.timeEnd);

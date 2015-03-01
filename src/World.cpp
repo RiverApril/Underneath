@@ -331,8 +331,8 @@ namespace WorldLoader {
 
 
         world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
-        world->currentPlayer->setActiveWeapon(ItemGenerator::createWeapon("", materialBone, damMelee, false));
-        world->currentPlayer->inventory.push_back(ItemGenerator::createWeapon("", materialBone, damRanged, false));
+        world->currentPlayer->setActiveWeapon(ItemGenerator::createWeapon(world->currentLevel->getDifficulty(), damMelee));
+        //world->currentPlayer->inventory.push_back(ItemGenerator::createWeapon("", materialBone, damRanged, false));
 
         world->currentPlayer->inventory.push_back(Item::clone(ItemGenerator::iCoin));
         
@@ -348,13 +348,17 @@ namespace WorldLoader {
 
         save(world);
 
+        debugf("Looking for level %s...", newName.c_str());
+
         for(string level : world->levels){
             if(level == newName){
+                debug("Level found, loading...");
                 load(world->name, newName);
                 world->currentPlayer->pos = entrance;
                 return true;
             }
         }
+        debug("Level not found, creating a new one...");
 
         Level* newLevel = new Level(world, newName, world->currentLevel->getSize(), world->currentLevel->getDifficulty()+1);
 

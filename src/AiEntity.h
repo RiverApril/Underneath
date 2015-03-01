@@ -15,11 +15,8 @@ typedef int AiType;
 
 const AiType aiNone = 0;
 const AiType aiMoveRandom = 1 << 0;
-const AiType aiFollowPlayerDumb = 1 << 1;
-const AiType aiAttackPlayer = 1 << 2;
-const AiType aiFleeFromPlayerDumb = 1 << 3;
-const AiType aiFollowPlayerSmart = 1 << 4;
-const AiType aiStalkPlayerSmart = 1 << 5;
+const AiType aiAttackPlayer = 1 << 1;
+const AiType aiFleeFromPlayer = 1 << 2;
 
 const int agroViewDistanceMultiplier = 3;
 

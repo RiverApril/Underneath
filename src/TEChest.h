@@ -10,10 +10,9 @@
 #define __Underneath__TEChest__
 
 #include "TileEntity.h"
-#include "Item.h"
+#include "Inventory.h"
 
-
-struct TEChest : TileEntity{
+struct TEChest : public TileEntity, public Inventory{
 
     static TEChest* cloneUnsafe(TEChest* oldE, TEChest* newE);
 
@@ -33,8 +32,6 @@ struct TEChest : TileEntity{
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(unsigned char* data, int* position);
-
-    vector<Item*> inventory;
 };
 
 #endif /* defined(__Underneath__TEChest__) */

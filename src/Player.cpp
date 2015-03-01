@@ -9,6 +9,9 @@
 #include "Player.h"
 #include "Level.h"
 #include "ItemEntity.h"
+#include "MenuChest.h"
+#include "Verbalizer.h"
+
 
 
 Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()){
@@ -21,7 +24,6 @@ Player::Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abi
     updateVariablesForAbilities();
     for(int i=0;i<abilityCount;i++){
         setNextLevelXp(i);
-        debug(to_string(levels.list[i]));
     }
 }
 
@@ -74,18 +76,18 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
         if(Tiles::tileList[tid]->hasFlag(tileFlagHasTileEntity)){
 
             for(TileEntity* te : level->tileEntityList){
-                debugf("te's pos: %s", te->pos.toString().c_str());
+                //debugf("te's pos: %s", te->pos.toString().c_str());
                 if(te->pos == posOfTile){
-                    debugf("te type id: %d", te->getTileEntityTypeId());
+                    //debugf("te type id: %d", te->getTileEntityTypeId());
                     if(tid == Tiles::tileStairDown->getIndex() || tid == Tiles::tileStairUp->getIndex()){
                         TEStair* s = dynamic_cast<TEStair*>(te);
                         if(s){
-                            debugf("s->levelname: %s", s->levelName.c_str());
+                            //debugf("s->levelname: %s", s->levelName.c_str());
                             WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
                             return interactDelay;
                         }
                     }else if(tid == Tiles::tileChest->getIndex()){
-
+                        level->menuGame->openMenu(new Ui::MenuChest(dynamic_cast<TEChest*>(te), this, level->currentWorld));
                     }
                 }
             }
@@ -119,7 +121,7 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
 
             if(ranged){
                 if(distanceSquared(pos, posOfEntity) > ranged->range*ranged->range){
-                    console("Out of range!");
+                    console(Ui::colorCode(C_CODE_LIGHT_RED)+"Out of range!");
                     return 0;
                 }
             }
@@ -143,24 +145,27 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
                     mp -= spell->manaCost;
 
                     double d = a->hurt(spell, level->currentWorld->worldTime, x+1);
-                    consolef("Dealt %.2f damage.", d);
+                    Verbalizer::attack(this, a, spell, d);
+                    //consolef("Dealt %.2f damage.", d);
 
                     return useDelay(item);
                 }
-                console("Not enough mana.");
+                console(Ui::colorCode(C_CODE_LIGHT_RED)+"Not enough mana.");
+                return 0;
             }
 
             if(weapon){
 
                 double d = a->hurt(weapon, level->currentWorld->worldTime, x+1);
-                consolef("Dealt %.2f damage.", d);
+                Verbalizer::attack(this, a, weapon, d);
+                //consolef("Dealt %.2f damage.", d);
 
                 return useDelay(item);
             }
 
             return 0;
         }else{
-            console("No item equiped.");
+            console(Ui::colorCode(C_CODE_LIGHT_RED)+"No item equiped.");
             return 0;
         }
     }
@@ -172,8 +177,8 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
         if(ie){
             Item* iei = ie->getItem();
             if(iei != nullptr){
-                debug("Picking up item: "+iei->getExtendedName());
-                if(pickupItem(iei)){
+                //debug("Picking up item: "+iei->getExtendedName());
+                if(addItem(iei)){
                     level->removeEntity(e, true);
                     return interactDelay;
                 }

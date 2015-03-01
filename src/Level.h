@@ -13,7 +13,7 @@
 
 #include "Tile.h"
 #include "World.h"
-#include "Entity.h"
+#include "AiEntity.h"
 #include "Geometry.h"
 #include "MenuGame.h"
 #include "TEStair.h"
@@ -76,6 +76,8 @@ public:
     void genDebug(string s);
 
     Point2 generate(unsigned int seed, Point2 stairUpPos, string previousLevel);
+
+    void placeNewAiEntity(AiEntity* e, Point2 entrance);
 
     bool update(double time, Point2 viewPos);
 

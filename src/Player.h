@@ -100,7 +100,7 @@ public:
         }
     }
 
-    bool pickupItem(Item* newItem){
+    /*bool pickupItem(Item* newItem){
         if(newItem != nullptr){
             for(Item* i : inventory){
                 if(i->equalsExceptQty(newItem)){
@@ -119,7 +119,7 @@ public:
             return true;
         }
         return false;
-    }
+    }*/
     
     
 protected:

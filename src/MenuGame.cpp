@@ -457,7 +457,7 @@ namespace Ui {
                         break;
                 }
                 setColor(color);
-                mvprintw(a, gameArea.x+1, (name+" %d: %.2f").c_str(), (int)eff.power, eff.timeEnd-currentWorld->worldTime);
+                mvprintw(a, gameArea.x+1, (name+" %s: %.2f").c_str(), ParsingUtility::intToRomanNumerals((int)eff.power).c_str(), eff.timeEnd-currentWorld->worldTime);
                 a++;
             }
 
@@ -466,6 +466,8 @@ namespace Ui {
             Ui::setColor(C_WHITE);
 
             mvprintw(a, gameArea.x+1, "Time: %.2f", displayTime);
+            a++;
+            mvprintw(a, gameArea.x+1, "Time: %s", ParsingUtility::intToRomanNumerals((int)displayTime).c_str());
             //mvprintw(11, gameArea.x+1, "Tick: %d", tick);
 
             a++;
@@ -480,11 +482,11 @@ namespace Ui {
                 Entity* nearestEntity = nearestEntities[i];
                 if(nearestEntity != nullptr){
                     Ui::setColor(C_WHITE);
-                    mvprintw(a, gameArea.x+1, "%s (", nearestEntity->getName().c_str());
+                    mvprintw(a, gameArea.x+1, "%s [", nearestEntity->getName().c_str());
                     Ui::setColor(nearestEntity->getFgColorCode(), nearestEntity->getBgColorCode());
                     printw("%c", nearestEntity->getIcon(nearestEntity->pos, currentWorld->worldTime, currentWorld->currentLevel));
                     Ui::setColor(C_WHITE);
-                    printw(")");
+                    printw("]");
                     a++;
                     AiEntity* aiEntity = dynamic_cast<AiEntity*>(nearestEntity);
                     if(aiEntity){
@@ -509,7 +511,7 @@ namespace Ui {
 
         if(currentWorld->currentLevel != nullptr){
             Ui::setColor(C_DARK_GRAY);
-            mvprintw(gameArea.y, 0, "%d, %d  e: %d  te: %d  p: %s", p.x, p.y, currentWorld->currentLevel->entityCount(), currentWorld->currentLevel->tileEntityList.size(), (currentWorld->currentPlayer == nullptr)?"null":"not null");
+            mvprintw(gameArea.y, 0, "%d, %d  e: %d  te: %d  p: %s   %s", p.x, p.y, currentWorld->currentLevel->entityCount(), currentWorld->currentLevel->tileEntityList.size(), (currentWorld->currentPlayer == nullptr)?"null":"not null", currentWorld->currentLevel->getName().c_str());
         }
 
 

@@ -12,7 +12,7 @@
 #include "TileEntity.h"
 
 
-struct TEStair : TileEntity{
+struct TEStair : public TileEntity{
 
     static TEStair* cloneUnsafe(TEStair* oldE, TEStair* newE);
 
