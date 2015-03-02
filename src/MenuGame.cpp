@@ -280,19 +280,19 @@ namespace Ui {
                 }
                 break;
 
-            case Key::stats:
+			case Key::statsMenu:
                 if(currentWorld->currentPlayer != nullptr){
                 	openMenu(new MenuStats(currentWorld->currentPlayer, currentWorld));
                 }
                 break;
 
-            case 'd':
+			case Key::debugMenu:
                 if(currentWorld->currentPlayer != nullptr){
                     openMenu(new MenuDebug(currentWorld));
                 }
                 break;
 
-            case '\\':
+			case Key::adjustConsole:
                 if(mode == modeAdjustBorder){
                     mode = modePlayerControl;
                 }else{
@@ -336,15 +336,15 @@ namespace Ui {
                     }
                     break;
 
-                case 'r':{
-                    Point2 p = currentWorld->currentLevel->findRandomWithoutFlag(tileFlagSolid);
-                    timePassed += currentWorld->currentPlayer->moveAbsalute(p, currentWorld->currentLevel);
-                    break;
-                }
+				case Key::wait5:
+                    timePassed += 5;
+					break;
 
-                case 'h':
-                    timePassed += currentWorld->currentPlayer->waitUntilHealed();
-                    break;
+				case 'r':{
+					Point2 p = currentWorld->currentLevel->findRandomWithoutFlag(tileFlagSolid);
+					timePassed += currentWorld->currentPlayer->moveAbsalute(p, currentWorld->currentLevel);
+					break;
+				}
 
                 case '[':
                     currentWorld->currentPlayer->hurt(1);

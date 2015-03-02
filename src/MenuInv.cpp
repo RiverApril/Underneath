@@ -32,7 +32,7 @@ namespace Ui {
                 selected++;
                 break;
 
-            case 'd':{
+			case Key::drop:{
                 if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
                     Item* drop;
                     if(alive->inventory[selected]->qty == 1){
@@ -48,7 +48,7 @@ namespace Ui {
                 break;
             }
 
-            case 'D':{
+			case Key::dropAll:{
                 if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
                     Item* drop;
                     drop = alive->inventory[selected];
@@ -58,7 +58,7 @@ namespace Ui {
                 break;
             }
 
-            case 'e':{
+			case Key::equip:{
                 Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
                 if(weapon){
                     if(alive->getActiveWeapon() == weapon){
@@ -70,7 +70,7 @@ namespace Ui {
                 break;
             }
 
-            case 'u':{
+			case Key::use:{
                 *useItem = selected;
                 closeThisMenu();
 				return;

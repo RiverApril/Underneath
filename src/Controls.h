@@ -13,14 +13,26 @@
 
 namespace Key{
 
-    const int moveUp = KEY_UP;
-    const int moveDown = KEY_DOWN;
-    const int moveLeft = KEY_LEFT;
-    const int moveRight = KEY_RIGHT;
+	//In Game
+	const int moveUp = KEY_UP;
+	const int moveDown = KEY_DOWN;
+	const int moveLeft = KEY_LEFT;
+	const int moveRight = KEY_RIGHT;
+	const int interact = 'g';
+	const int adjustConsole = '\\';
+	const int wait5 = 'h';
 
+	//Open UI
     const int inventory = 'i';
-    const int stats = 's';
-    const int interact = 'g';
+	const int statsMenu = 's';
+	const int debugMenu = 'd';
+
+
+	//In inventory
+	const int drop = 'd';
+	const int dropAll = 'D';
+	const int equip = 'e';
+	const int use = 'u';
 
 }
 
