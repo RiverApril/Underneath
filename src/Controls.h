@@ -32,7 +32,7 @@ namespace Key{
 	const int drop = 'd';
 	const int dropAll = 'D';
 	const int equip = 'e';
-	const int use = 'u';
+	const int useOnWorld = 'u';
 
 }
 

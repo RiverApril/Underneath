@@ -10,6 +10,7 @@
 #include "Utility.h"
 #include "Weapon.h"
 #include "Spell.h"
+#include "Potion.h"
 
 void Item::save(vector<unsigned char>* data){
     FileUtility::saveInt(data, getItemTypeId());
@@ -59,7 +60,10 @@ Item* Item::clone(Item* oldI){
             return makeNewAndClone<Item, Ranged>(oldI);
 
         case ITEM_TYPE_SPELL:
-            return makeNewAndClone<Item, Spell>(oldI);
+			return makeNewAndClone<Item, Spell>(oldI);
+
+		case ITEM_TYPE_POTION:
+			return makeNewAndClone<Item, Potion>(oldI);
 
         default:
             throw FileUtility::FileExceptionLoad("Item type unknown: "+to_string(type));
@@ -91,7 +95,10 @@ Item* Item::loadNew(unsigned char* data, int* position){
             break;
         case ITEM_TYPE_SPELL:
             e = new Spell();
-            break;
+			break;
+		case ITEM_TYPE_POTION:
+			e = new Potion();
+			break;
             
         default:
             throw FileUtility::FileExceptionLoad("Item type unknown: "+to_string(type));

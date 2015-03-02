@@ -21,6 +21,7 @@ const int ITEM_TYPE_MATERIAL_ITEM = 1;
 const int ITEM_TYPE_WEAPON = 2;
 const int ITEM_TYPE_RANGED = 3;
 const int ITEM_TYPE_SPELL = 4;
+const int ITEM_TYPE_POTION = 5;
 
 class Item {
 public:

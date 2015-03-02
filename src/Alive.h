@@ -14,35 +14,7 @@
 #include "Spell.h"
 #include "Math.h"
 #include "Inventory.h"
-
-#define EFFECT_DELAY 1
-
-typedef int EffectId;
-
-const EffectId effFire = 0;
-const EffectId effBleed = 1;
-const EffectId effRegen = 2;
-
-struct Effect{
-
-    Effect(EffectId eId, double timeEnd, double power, double currentTime){
-        this->eId = eId;
-        this->timeEnd = timeEnd;
-        this->power = power;
-        this->lastTime = currentTime;
-    }
-
-    string toString(){
-        return formatString("id: %d, timeEnd: %.2f, power: %.2f, lastTime: %.2f", eId, timeEnd, power, lastTime);
-    }
-
-    EffectId eId = effFire;
-    double timeEnd;
-    double lastTime = 0;
-    double power = 1;
-};
-
-
+#include "Effect.h"
 
 class Alive : public Entity, public Inventory{
 

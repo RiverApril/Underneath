@@ -235,10 +235,7 @@ void Alive::save(vector<unsigned char>* data){
 
     FileUtility::saveInt(data, (int)effects.size());
     for(Effect e : effects){
-        FileUtility::saveInt(data, e.eId);
-        FileUtility::saveDouble(data, e.timeEnd);
-		FileUtility::saveDouble(data, e.power);
-        FileUtility::saveDouble(data, e.lastTime);
+		e.save(data);
     }
 }
 
@@ -270,11 +267,7 @@ void Alive::load(unsigned char* data, int* position){
 
     size = FileUtility::loadInt(data, position);
     repeat(size, i){
-        int eId = FileUtility::loadInt(data, position);
-        double timeEnd = FileUtility::loadDouble(data, position);
-        double power = FileUtility::loadDouble(data, position);
-        double lastTime = FileUtility::loadDouble(data, position);
-        effects.push_back(Effect(eId, timeEnd, power, lastTime));
+		effects.push_back(Effect(data, position));
     }
 }
 

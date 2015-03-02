@@ -70,7 +70,7 @@ namespace Ui {
                 break;
             }
 
-			case Key::use:{
+			case Key::useOnWorld:{
                 *useItem = selected;
                 closeThisMenu();
 				return;

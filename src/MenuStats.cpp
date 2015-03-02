@@ -30,7 +30,7 @@ namespace Ui {
                 break;
 
             case KEY_ESCAPE:
-            case Key::stats:
+            case Key::statsMenu:
                 closeThisMenu();
                 break;
         }

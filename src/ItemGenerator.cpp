@@ -101,9 +101,9 @@ namespace ItemGenerator {
             }
         }
 
-        int lootQty = rand()%5+1;
+        int weaponQty = rand()%5;
 
-        for(int i = 0; i < lootQty; i++){
+		for (int i = 0; i < weaponQty; i++){
             items.push_back(createWeapon(itemDifficulty));
         }
         
@@ -159,13 +159,13 @@ namespace ItemGenerator {
 
         Weapon* weapon = createWeaponBase(damageType);
 
-        weapon->baseDamage *= Random::randDouble(.8, 1.2);
+        //weapon->baseDamage *= Random::randDouble(.8, 1.2);
         //weapon->weight *= Random::randDouble(.6, 1.4);
         //weapon->useDelay *= Random::randDouble(.9, 1.1);
 
         weapon->material = material;
         weapon->baseDamage *= combatLevelMultiplier;
-        weapon->weight *= combatLevelMultiplier;
+        //weapon->weight *= combatLevelMultiplier;
 
         if(weapon->damageType == damRanged){
             Ranged* ranged = dynamic_cast<Ranged*>(weapon);
