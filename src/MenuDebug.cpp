@@ -19,7 +19,7 @@ namespace Ui {
         switch (in) {
             case KEY_ESCAPE:
                 closeThisMenu();
-                break;
+                return;
         }
     }
 

@@ -104,6 +104,7 @@ namespace Ui {
 
         if(!initSuccess){
             closeThisMenu();
+			return false;
         }
 
         setGameAreaSize();
@@ -251,6 +252,7 @@ namespace Ui {
                     currentWorld = nullptr;
 
                     closeAllMenus();
+					return;
                 }else{
                     openMenu(new MenuYesNo("Do you want to save '"+currentWorld->name+"' ?", saveAnswer, true));
                 }

@@ -55,11 +55,11 @@ namespace Ui {
         Point2 targetPosition = Point2Zero;
 
 
-        int modePlayerControl = 0;
-        int modeAdjustBorder = 1;
-        int modeInterectChoose = 2;
-        int modeSelectTarget = 3;
-        int mode = modePlayerControl;
+        const int modePlayerControl = 0;
+		const int modeAdjustBorder = 1;
+		const int modeInterectChoose = 2;
+		const int modeSelectTarget = 3;
+		int mode = modePlayerControl;
 
     };
 }

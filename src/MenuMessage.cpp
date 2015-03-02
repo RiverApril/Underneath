@@ -20,7 +20,7 @@ namespace Ui {
             case 13:
             case '\n':
                 closeThisMenu();
-                break;
+                return;
 
             default:
                 break;

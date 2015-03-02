@@ -73,20 +73,20 @@ namespace Ui {
             case 'u':{
                 *useItem = selected;
                 closeThisMenu();
-                break;
+				return;
             }
 
             case KEY_ESCAPE:
             case Key::inventory:
                 closeThisMenu();
-                break;
+                return;
         }
         if(selected<0){
             selected = 0;
         }
-        if(selected >= alive->inventory.size()){
-            selected = (int)alive->inventory.size()-1;
-        }
+		if (selected >= alive->inventory.size()){
+			selected = (int)alive->inventory.size() - 1;
+		}
     }
 
 

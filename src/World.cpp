@@ -299,9 +299,9 @@ namespace WorldLoader {
                 std::rename((dir+levelName+".lvl.backup").c_str(), (dir+levelName+".lvl.deleted").c_str());
             }
 
-            delete position;
+			delete position;
+			fclose(fileWorldInfo);
         }
-        fclose(fileWorldInfo);
         //
 
         std::remove((dir+"world"+".info").c_str());

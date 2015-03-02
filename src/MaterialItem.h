@@ -24,17 +24,18 @@ extern vector<Material*> materialList;
 
 struct Material{
 
-    Material(int index, double multiplier, string name, int uses){
-        this->index = index;
+    Material(double multiplier, string name, int uses){
         this->multiplier = multiplier;
         this->name = name;
         this->uses = uses;
-        materialList[index] = this;
-    }
 
-    int getIndex(){
-        return index;
-    }
+		this->index = materialList.size();
+        materialList.push_back(this);
+	}
+
+	int getIndex(){
+		return index;
+	}
 
     string getName(){
         return name;
@@ -77,24 +78,20 @@ class MaterialItem : public Item {
 public:
 
     static void initMaterials(){
-        materialList.resize(13);
-
-        int a = 0;
-
-        materialNone =       new Material(a++,  1, "", useNone); // For stuff like Spells
-        materialLeather =    new Material(a++,  1, "Leather", useArmor); //Armor Only
-        materialWood =       new Material(a++,  1, "Wood", useBows); //Bows Only
-        materialBone =       new Material(a++,  1, "Bone", useBlades); //Blades Only
-        materialTin =        new Material(a++,  0, "Tin", useNone); //Crafting Only
-        materialCopper =     new Material(a++,  2, "Copper", useArmorAndWeapons);
-        materialBronze =     new Material(a++,  3, "Bronze", useArmorAndWeapons);
-        materialIron =       new Material(a++,  4, "Iron", useArmorAndWeapons);
-        materialSteel =      new Material(a++,  5, "Steel",useArmorAndWeapons);
-        materialObsidian =   new Material(a++,  5.5, "Obsidian", useBlades); //Blades Only
-        materialMythril =    new Material(a++,  6, "Mythril", useArmorAndWeapons);
-        materialOrichalcum = new Material(a++,  7, "Orichalsum", useArmorAndWeapons);
-        materialAdamant =    new Material(a++,  8, "Adamant", useArmorAndWeapons);
-        materialEtherial =   new Material(a++,  9, "Etherial", useArmorAndWeapons);
+        materialNone =       new Material(1, "", useNone); // For stuff like Spells
+        materialLeather =    new Material(1, "Leather", useArmor); //Armor Only
+        materialWood =       new Material(1, "Wood", useBows); //Bows Only
+        materialBone =       new Material(1, "Bone", useBlades); //Blades Only
+        materialTin =        new Material(0, "Tin", useNone); //Crafting Only
+        materialCopper =     new Material(2, "Copper", useArmorAndWeapons);
+        materialBronze =     new Material(3, "Bronze", useArmorAndWeapons);
+        materialIron =       new Material(4, "Iron", useArmorAndWeapons);
+        materialSteel =      new Material(5, "Steel",useArmorAndWeapons);
+        materialObsidian =   new Material(5.5, "Obsidian", useBlades); //Blades Only
+        materialMythril =    new Material(6, "Mythril", useArmorAndWeapons);
+        materialOrichalcum = new Material(7, "Orichalsum", useArmorAndWeapons);
+        materialAdamant =    new Material(8, "Adamant", useArmorAndWeapons);
+        materialEtherial =   new Material(9, "Etherial", useArmorAndWeapons);
     }
 
     static void cleanupMaterials(){

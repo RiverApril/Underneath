@@ -71,7 +71,7 @@ namespace Ui {
             case KEY_ESCAPE:
             case Key::inventory:
                 closeThisMenu();
-                break;
+				return;
         }
         if(selected<0){
             selected = 0;
