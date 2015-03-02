@@ -25,6 +25,10 @@ struct TEChest : public TileEntity, public Inventory{
 
     }
 
+    virtual ~TEChest(){
+
+    }
+
     virtual int getTileEntityTypeId(){
         return TILE_ENTITY_TYPE_CHEST;
     }

@@ -37,19 +37,10 @@ Level::Level(World* w, string n, Point2 s, int d) {
 Level::~Level() {
     delete size;
 
-    while (entityList.size() > 0) {
-        delete entityList[0];
-    }
-    while (deleteEntityList.size() > 0) {
-        delete entityList[0];
-    }
-    while (removeEntityList.size() > 0) {
-        delete entityList[0];
-    }
-
-    while (tileEntityList.size() > 0) {
-        delete tileEntityList[0];
-    }
+    entityList.erase(entityList.begin(), entityList.end());
+    deleteEntityList.erase(deleteEntityList.begin(), deleteEntityList.end());
+    removeEntityList.erase(removeEntityList.begin(), removeEntityList.end());
+    tileEntityList.erase(tileEntityList.begin(), tileEntityList.end());
 }
 
 
@@ -230,11 +221,11 @@ bool Level::update(double time, Point2 viewPos) {
         }
     }
     while(removeEntityList.size() > 0){
-        actuallyRemoveEntity(removeEntityList[0], false);
+        actuallyRemoveEntityUnsafe(removeEntityList[0], false);
         removeEntityList.erase(removeEntityList.begin());
     }
     while(deleteEntityList.size() > 0){
-        actuallyRemoveEntity(deleteEntityList[0], true);
+        actuallyRemoveEntityUnsafe(deleteEntityList[0], true);
         deleteEntityList.erase(deleteEntityList.begin());
     }
     return u;
@@ -267,7 +258,7 @@ void Level::removeEntity(Entity* e, bool deleteEntity) {
         removeEntityList.push_back(e);
     }
 }
-void Level::actuallyRemoveEntity(Entity* e, bool deleteEntity){
+void Level::actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity){
 	for (size_t i = 0; i<entityList.size(); i++){
         if(e->uniqueId == entityList[i]->uniqueId){
             entityList.erase(entityList.begin()+(long)i);

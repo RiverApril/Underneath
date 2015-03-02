@@ -98,9 +98,7 @@ public:
     }
 
     static void cleanupMaterials(){
-        for(Material* m : materialList){
-            delete m;
-        }
+        materialList.erase(materialList.begin(), materialList.end());
     }
 
 

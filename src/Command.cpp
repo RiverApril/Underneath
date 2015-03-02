@@ -220,9 +220,7 @@ namespace Commands{
     }
 
     void cleanupCommands(){
-        for (Command* c : commandList) {
-            delete c;
-        }
+        commandList.erase(commandList.begin(), commandList.end());
     }
     
 }

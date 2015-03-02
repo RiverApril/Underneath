@@ -95,7 +95,7 @@ namespace ItemGenerator {
 
         int itemDifficulty = 1;
 
-        for(int i=0;i<difficulty;i++){
+        for(int i=0;i<difficulty*2;i++){
             if(rand()%10 == 0){
                 itemDifficulty++;
             }

@@ -26,6 +26,10 @@ struct TEStair : public TileEntity{
         this->levelName = levelName;
     }
 
+    virtual ~TEStair(){
+
+    }
+
     virtual int getTileEntityTypeId(){
         return TILE_ENTITY_TYPE_STAIR;
     }

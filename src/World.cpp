@@ -360,17 +360,25 @@ namespace WorldLoader {
         }
         debug("Level not found, creating a new one...");
 
-        Level* newLevel = new Level(world, newName, world->currentLevel->getSize(), world->currentLevel->getDifficulty()+1);
+        int newDifficulty = world->currentLevel->getDifficulty()+1;
+        Point2 newSize = world->currentLevel->getSize();
+        Player* newPlayer = dynamic_cast<Player*>(Player::clone(world->currentPlayer));
 
-		srand(static_cast<unsigned int>(time(NULL)));
-        newLevel->generate((unsigned int)rand(), entrance, world->currentLevel->getName());
-        world->levels.push_back(newLevel->getName());
+        world->currentLevel->actuallyRemoveEntityUnsafe(world->currentPlayer, true);
+        delete world->currentLevel;
+        world->currentLevel = nullptr;
 
-        newLevel->newEntity(world->currentPlayer);
+        Level* newLevel = new Level(world, newName, newSize, newDifficulty);
 
+        newLevel->generate((unsigned int)rand(), entrance, newName);
+
+        world->currentPlayer = newPlayer;
         world->currentPlayer->pos = entrance;
+        newLevel->newEntity(newPlayer);
 
+        world->levels.push_back(newLevel->getName());
         world->currentLevel = newLevel;
+
 
         return true;
 

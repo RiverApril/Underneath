@@ -83,6 +83,7 @@ namespace Arts{
 
     void cleanupArts(){
         delete defaultArt;
+        artList.erase(artList.begin(), artList.end());
         for(Art* a : artList){
             delete a;
         }

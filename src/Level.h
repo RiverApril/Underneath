@@ -85,6 +85,7 @@ public:
 
     Entity* newEntity(Entity* newE);
     void removeEntity(Entity* e, bool deleteEntity);
+    void actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity);
 
     Point2 getSize(){
         return *size;
@@ -109,7 +110,6 @@ public:
     Ui::MenuGame* menuGame;
 
 private:
-    void actuallyRemoveEntity(Entity* e, bool deleteEntity);
 
     Point2* size;//TODO figure out if this needs to be a pointer
 

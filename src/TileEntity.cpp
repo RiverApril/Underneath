@@ -17,7 +17,7 @@ void TileEntity::save(vector<unsigned char>* data){
 }
 
 void TileEntity::load(unsigned char* data, int* position){
-    Point2::load(data, position);
+    pos = Point2::load(data, position);
 }
 
 TileEntity* TileEntity::cloneUnsafe(TileEntity* oldE, TileEntity* newE){
