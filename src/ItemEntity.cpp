@@ -42,8 +42,8 @@ ItemEntity::~ItemEntity(){
 }
 
 
-bool ItemEntity::update(double time, Level* level) {
-    return Entity::update(time, level);
+bool ItemEntity::update(double deltaTime, double time, Level* level) {
+    return Entity::update(deltaTime, time, level);
 }
 
 

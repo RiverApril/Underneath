@@ -144,7 +144,7 @@ double AiEntity::hurt(Weapon* w, double time, double damageMultiplier){
     return Alive::hurt(w, time, damageMultiplier);
 }
 
-bool AiEntity::update(double time, Level* level) {
+bool AiEntity::update(double deltaTime, double time, Level* level) {
 
     while(lastMoveTime+moveDelay<=time){
         runAi(time, level);
@@ -156,7 +156,13 @@ bool AiEntity::update(double time, Level* level) {
         }
     }
 
-    return Alive::update(time, level);
+    if(dead){
+        int xp = rand()%(int)maxHp;
+        Verbalizer::defeatedEnemy(this, xp);
+        level->currentWorld->currentPlayer->gainXp(xp);
+    }
+
+    return Alive::update(deltaTime, time, level);
 }
 
 AiEntity* AiEntity::cloneUnsafe(AiEntity* oldE, AiEntity* newE){

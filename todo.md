@@ -2,7 +2,6 @@ Todo List:
 
 -Issues:
 
-
 -New Features:
 - [ ] Make defined Potions
 - [ ] Make defined Spells

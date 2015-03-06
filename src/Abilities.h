@@ -39,7 +39,7 @@ namespace AbilityDetails{
     static const string abilityNames[abilityCount] = {
         "Strength",
         "Dexterity",
-        "Inteligence",
+        "Intelligence",
         "Agility",
         "Speed",
         "Constitution",
@@ -47,23 +47,23 @@ namespace AbilityDetails{
     };
 
     static const string abilityNamesRightAligned[abilityCount] = {
-        "    Strength",
-        "   Dexterity",
-        " Inteligence",
-        "     Agility",
-        "       Speed",
-        "Constitution",
-        "      Wisdom"
+        "     Strength",
+        "    Dexterity",
+        " Intelligence",
+        "      Agility",
+        "        Speed",
+        " Constitution",
+        "       Wisdom"
     };
 
     static const string abilityInfo[abilityCount] = {
         "Strength: Affects Melee attack damage.",
         "Dexterity: Affects Ranged attack damage.",
-        "Inteligence: Affects Magic attack damage.",
+        "Intelligence: Affects Magic attack damage.",
         "Agility: Affects Dodge Chance and Attack Speed.",
         "Speed: Affects Movement Speed.",
-        "Constitution: Affects Health Regeneration Speed.",
-        "Wisdom: Affects Mana Regeneration Speed."
+        "Constitution: Affects Max Health and Regeneration Speed.",
+        "Wisdom: Affects Max Mana and Regeneration Speed."
     };
 
 

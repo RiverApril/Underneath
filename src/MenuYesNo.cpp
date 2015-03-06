@@ -45,6 +45,8 @@ namespace Ui {
 
     void MenuYesNo::update(){
         setColor(C_WHITE);
+        move(0, 0);
+        clrtobot();
         printCenter(terminalSize.y/2-2, question);
         printCenter(terminalSize.y/2, "  Y / N ?");
     }

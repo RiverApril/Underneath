@@ -79,12 +79,7 @@ public:
 
     }
 
-    Weapon(Material* material, double baseDamage, string name, Weight weight, double useDelay) : MaterialItem(material, name, weight){
-        this->baseDamage = baseDamage;
-        this->useDelay = useDelay;
-
-        this->damageType = damMelee;
-    }
+    Weapon(Material* material, double baseDamage, string name, Weight weight, double useDelay);
 
     virtual int getItemTypeId(){
         return ITEM_TYPE_WEAPON;

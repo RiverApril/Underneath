@@ -53,7 +53,8 @@ public:
     static Item* loadNew(unsigned char* data, int* position);
 
     virtual bool equalsExceptQty(Item* other){
-        return (name.compare(other->name)==0)
+        return getItemTypeId()==other->getItemTypeId()
+        &&(name.compare(other->name)==0)
         &&(weight == other->weight)
         &&(artIndex == other->artIndex);
     }

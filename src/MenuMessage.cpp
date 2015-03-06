@@ -29,6 +29,8 @@ namespace Ui {
 
     void MenuMessage::update(){
         setColor(C_WHITE);
+        move(0, 0);
+        clrtobot();
         printCenter(terminalSize.y/2-2, message);
         printCenter(terminalSize.y/2, "Press enter to continue...");
     }

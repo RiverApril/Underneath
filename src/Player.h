@@ -26,7 +26,7 @@ public:
 
     ~Player();
 
-    bool update(double time, Level* world);
+    bool update(double deltaTime, double time, Level* world);
 
     double moveRelative(Point2 p, Level* level);
 
@@ -54,51 +54,51 @@ public:
     virtual void load(unsigned char* data, int* position);
 
     virtual double hurt(double amount, double damageMultiplier = 1){
+        timeSinceHurt = 0;
         return Alive::hurt(amount, damageMultiplier);
     }
 
     virtual double hurt(Weapon* w, double time, double damageMultiplier = 1){
+        timeSinceHurt = 0;
+        double chance = (((double)abilities[iAGI] / maxAbilities[iAGI]) / 2);
+        if(rand() < (RAND_MAX*chance)){
+            return 0;
+        }
         return Alive::hurt(w, time, damageMultiplier);
     }
 
     virtual double heal(double amount){
+        debugf("heal %.2f", amount);
 		double a = Alive::heal(amount);
-        gainXp(iCON, a/10.0);
         return a;
     }
 
     virtual double healMana(double amount){
-		double a = Alive::heal(amount);
-        gainXp(iWIS, a/10.0);
+        debugf("heal mana %.2f", amount);
+		double a = Alive::healMana(amount);
         return a;
     }
 
 
     void updateVariablesForAbilities(){
-        moveDelay = 1.0-((double)(levels[iSPD]) / maxLevels[iSPD]);
-        healDelay = 20.0-((double)(levels[iCON]) / (maxLevels[iCON]/20.0));
+        moveDelay = 1.0-((double)(abilities[iSPD]) / maxAbilities[iSPD]);
+        healDelay = 20.0-((double)(abilities[iCON]) / (maxAbilities[iCON]/20.0));
+        manaDelay = 20.0-((double)(abilities[iWIS]) / (maxAbilities[iWIS]/20.0));
         interactDelay = .1;
 
-        maxHp = 30 + (((double)(levels[iCON]) / maxLevels[iCON]) * 1000);
-        maxMp = 30 + (((double)(levels[iWIS]) / maxLevels[iWIS]) * 1000);
+        maxHp = 100 + (((double)(abilities[iCON]) / maxAbilities[iCON]) * 1000);
+        maxMp = 100 + (((double)(abilities[iWIS]) / maxAbilities[iWIS]) * 1000);
     }
 
-    Abilities<int> levels;
-    Abilities<double> xp;
-    Abilities<double> nextLevelXp;
+    Abilities<int> abilities;
+    int abilityPoints = 0;
+    int level = 0;
+    double xp = 0;
+    double nextLevelXp = 0;
 	
-    Abilities<int> maxLevels = Abilities<int>(100, 100, 100, 100, 100, 100, 100);
+    Abilities<int> maxAbilities = Abilities<int>(100, 100, 100, 100, 100, 100, 100);
 
-    void gainXp(int i, double amount){
-        xp.list[i] += amount;
-		double l = nextLevelXp.list[i];
-        while(xp.list[i] > l && levels.list[i] < maxLevels.list[i]-1){
-            xp.list[i] -= l;
-            levels.list[i] += 1;
-            setNextLevelXp(i);
-            updateVariablesForAbilities();
-        }
-    }
+    void gainXp(double amount);
 
     /*bool pickupItem(Item* newItem){
         if(newItem != nullptr){
@@ -127,11 +127,13 @@ protected:
     double moveDelay = 1;
     double interactDelay = .1;
     double waitDelay = 5;
+    int timeSinceHurt = 0;
+    bool outOfCombatHealing = false;
 
     double useDelay(Item* item);
 
-    void setNextLevelXp(int i){
-        nextLevelXp.list[i] = (pow(levels.list[i], 1.2)*2)+10;
+    void setNextLevelXp(){
+        nextLevelXp = (pow(level, 1.2)*2)+20;
     }
 
 };

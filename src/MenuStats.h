@@ -19,15 +19,18 @@ namespace Ui {
 
         MenuStats(Player* player, World* w);
 
-        ~MenuStats() {}
+        ~MenuStats() {
+            delete shouldSpendPoint;
+        }
 
+        bool openUi();
         void handleInput(int in);
         void update();
 
         Player* player;
         World* currentWorld;
-        int scrollOffset = 0;
         int selected = 0;
+        yesNo* shouldSpendPoint = new yesNo(aUndefined);
         
     };
 }

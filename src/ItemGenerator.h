@@ -38,12 +38,14 @@ namespace ItemGenerator {
     Weapon* atl(Weapon* w);
 
 
-    vector<Item*> createLoots(int difficulty);
-    Weapon* createWeaponBase(DamageType d);
+    vector<Item*> createLootsRand(int difficulty);
+    Weapon* createWeaponBaseRand(DamageType d);
 
-    Weapon* createWeapon(int itemDifficulty);
-    Weapon* createWeapon(int itemDifficulty, DamageType damageType);
-    Weapon* createWeapon(Material* material, DamageType damageType, bool enchanted);
+    Weapon* createWeaponRand(int itemDifficulty);
+    Weapon* createWeaponRand(int itemDifficulty, DamageType damageType);
+    Weapon* createWeaponRand(Material* material, DamageType damageType, vector<Enchantment> enchs);
+
+    Weapon* cloneBalancedWeaponForMaterial(Weapon* weapon, Material* material);
     
 
     void initItemTemplates();

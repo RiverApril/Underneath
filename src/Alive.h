@@ -28,7 +28,7 @@ public:
 
     ~Alive();
 
-    virtual bool update(double time, Level* level);
+    virtual bool update(double deltaTime, double time, Level* level);
 
     virtual string getName(){
         return name;
@@ -95,10 +95,10 @@ protected:
     bool dead = false;
 
     double lastHealTime = 0;
-    double healDelay = 10;
+    double healDelay = 20;
 
     double lastManaTime = 0;
-    double manaDelay = 10;
+    double manaDelay = 20;
 
     Weapon* activeWeapon = nullptr;
 

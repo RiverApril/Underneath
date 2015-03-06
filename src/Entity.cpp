@@ -64,7 +64,7 @@ bool Entity::tryToMoveRelative(Point2 p, Level* level) {
     return tryToMoveAbsalute(pos+p, level);
 }
 
-bool Entity::update(double time, Level* level) {
+bool Entity::update(double deltaTime, double time, Level* level) {
 
     bool u = false;
     

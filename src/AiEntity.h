@@ -35,7 +35,7 @@ public:
     ~AiEntity();
 
     void runAi(double time, Level* level);
-    bool update(double time, Level* level);
+    bool update(double deltaTime, double time, Level* level);
 
     virtual double hurt(double amount, double damageMultiplier = 1);
 

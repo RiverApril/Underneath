@@ -16,7 +16,7 @@ yesNo aUndefined = '?';
 
 namespace Ui {
 
-    string colorCode(char c){
+    string colorCode(const char c){
         string s = "&";
         s += c;
         return s;
@@ -242,20 +242,30 @@ namespace Ui {
         
     }
     
-    void Menu::printCenter(int y, string s, ...){
-        move(y, (terminalSize.x/2)-(((int)s.length()-1)/2));
+    void Menu::printCenter(int y, string format, ...){
+        string s = "";
+
+        char buff[256];
         va_list args;
-        va_start(args, s);
-        vwprintw(stdscr, s.c_str(), args);
+        va_start(args, format);
+        vsprintf(buff, format.c_str(), args);
+        s+=buff;
         va_end(args);
+
+        mvprintw(y, (terminalSize.x/2)-(((int)s.length()-1)/2), s.c_str());
     }
     
-    void Menu::printCenterOffset(int y, int xOff, string s, ...){
-        move(y, (terminalSize.x/2)-(((int)s.length()-1)/2)+xOff);
+    void Menu::printCenterOffset(int y, int xOff, string format, ...){
+        string s = "";
+
+        char buff[256];
         va_list args;
-        va_start(args, s);
-        vwprintw(stdscr, s.c_str(), args);
+        va_start(args, format);
+        vsprintf(buff, format.c_str(), args);
+        s+=buff;
         va_end(args);
+
+        mvprintw(y, (terminalSize.x/2)-(((int)s.length()-1)/2)+xOff, s.c_str());
     }
     
 }

@@ -29,7 +29,7 @@ struct Material{
         this->name = name;
         this->uses = uses;
 
-		this->index = materialList.size();
+		this->index = (int)materialList.size();
         materialList.push_back(this);
 	}
 
@@ -124,10 +124,13 @@ public:
         &&(material == otherW->material);
     }
 
-    Material* material;
+    Material* material = nullptr;
     string overrideName = "";
 
     virtual string getExtendedName(){
+        if(material == nullptr){
+            return overrideName.size()>0?overrideName:name;
+        }
         return overrideName.size()>0?overrideName:((material->getName().size()>0?(material->getName()+" "+name):name));
     }
     

@@ -8,6 +8,15 @@
 
 #include "Weapon.h"
 #include "Utility.h"
+#include "Ui.h"
+
+Weapon::Weapon(Material* material, double baseDamage, string name, Weight weight, double useDelay) : MaterialItem(material, name, weight){
+    debugf("%s: %.2f", name.c_str(), baseDamage);
+    this->baseDamage = baseDamage;
+    this->useDelay = useDelay;
+
+    this->damageType = damMelee;
+}
 
 void Weapon::save(vector<unsigned char>* data){
     MaterialItem::save(data);

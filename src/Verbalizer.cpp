@@ -46,5 +46,24 @@ namespace Verbalizer {
 
     }
 
+    void defeatedEnemy(Alive* dead, int xpGained){
+        consolef("You have deafeated the %s%s%s and gained %s%d xp%s.",
+                 Ui::colorCode(C_CODE_LIGHT_BLUE).c_str(),
+                 dead->getName().c_str(),
+                 Ui::colorCode(C_CODE_WHITE).c_str(),
+                 Ui::colorCode(C_CODE_LIGHT_GREEN).c_str(),
+                 xpGained,
+                 Ui::colorCode(C_CODE_WHITE).c_str());
+    }
+
+    void leveledUp(Player* player){
+        consolef("%sLevel Up!%s You are now level %s%d%s.",
+                 Ui::colorCode(C_CODE_LIGHT_GREEN).c_str(),
+                 Ui::colorCode(C_CODE_WHITE).c_str(),
+                 Ui::colorCode(C_CODE_LIGHT_GREEN).c_str(),
+                 player->level,
+                 Ui::colorCode(C_CODE_WHITE).c_str());
+    }
+
 }
 

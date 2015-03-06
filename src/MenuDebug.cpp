@@ -13,6 +13,7 @@ namespace Ui {
 
     MenuDebug::MenuDebug(World* w) : Menu(){
         this->currentWorld = w;
+
     }
 
     void MenuDebug::handleInput(int in){
@@ -31,9 +32,9 @@ namespace Ui {
 
         int a = 0;
 
-        mvvline(a, column1, '|', terminalSize.y);
-        mvvline(a, column2, '|', terminalSize.y);
-        mvvline(a, column3, '|', terminalSize.y);
+        mvvline(a, column1-1, '|', terminalSize.y);
+        mvvline(a, column2-1, '|', terminalSize.y);
+        mvvline(a, column3-1, '|', terminalSize.y);
 
         mvprintw(a, column0, "Weapon");
         mvprintw(a, column1, "Damage");
@@ -47,10 +48,10 @@ namespace Ui {
         a++;
 
         for(Weapon* w : ItemGenerator::weaponList){
-            mvprintw(a, column0+1, "%s", w->getExtendedName().c_str());
-            mvprintw(a, column1+1, "%2.2f", w->baseDamage);
-            mvprintw(a, column2+1, "%2.2f", w->useDelay);
-            mvprintw(a, column3+1, "%2.2f", w->baseDamage / w->useDelay);
+            mvprintw(a, column0, "%s", w->getExtendedName().c_str());
+            mvprintw(a, column1, "%.2f", w->baseDamage);
+            mvprintw(a, column2, "%.2f", w->useDelay);
+            mvprintw(a, column3, "%.2f", w->baseDamage / w->useDelay);
             a++;
         }
 

@@ -24,7 +24,7 @@ public:
 
     ~ItemEntity();
 
-    virtual bool update(double time, Level* level);
+    virtual bool update(double deltaTime, double time, Level* level);
 
     virtual void save(vector<unsigned char>* data);
 

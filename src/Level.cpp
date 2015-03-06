@@ -13,6 +13,7 @@
 #include "Global.h"
 #include "LevelGenerator.h"
 #include "ItemGenerator.h"
+#include "EnemyGenerator.h"
 #include "Utility.h"
 
 Level::Level(World* w, string n, Point2 s, int d) {
@@ -213,10 +214,10 @@ size_t Level::entityCount() {
     return entityList.size();
 }
 
-bool Level::update(double time, Point2 viewPos) {
+bool Level::update(double deltaTime, double time, Point2 viewPos) {
     bool u = false;
     for (Entity* e : entityList) {
-        if(e->update(time, this)){
+        if(e->update(deltaTime, time, this)){
             u = true;
         }
     }
@@ -466,7 +467,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         for (int j=0; j<size->y; j++) {
             if(tileGrid[i][j].index == (int8_t)Tiles::tileChest->getIndex()){
                 TEChest* te = new TEChest(Point2(i, j));
-                te->addItems(ItemGenerator::createLoots(difficulty));
+                te->addItems(ItemGenerator::createLootsRand(difficulty));
                 tileEntityList.push_back(te);
             }
         }
@@ -495,52 +496,63 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
     genDebug("adding entities...");
 
+    /*
+
     {
+        AiEntity* e = new AiEntity("Rat", aiMoveRandom | aiFleeFromPlayer, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
+        e->viewDistance = 6;
+        e->setMoveDelay(Math::randomRange(.5, 1.5));
+
         int count = (rand()%20)+10;
         for(int i=0;i<count;i++){
 
-            AiEntity* e = new AiEntity("Rat", aiMoveRandom | aiFleeFromPlayer, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
-            e->viewDistance = 6;
-            e->setMoveDelay(Math::randomRange(.5, 1.5));
+            placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
 
-            placeNewAiEntity(e, stairUpPos);
         }
 
     }
 
 
     {
+        AiEntity* e = new AiEntity ("Goblin", aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
+        e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damMelee));
+        e->setMoveDelay(Math::randomRange(.5, 1.5));
+
         int count = (rand()%80)+20;
         for(int i=0;i<count;i++){
-            AiEntity* e = new AiEntity ("Goblin", aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
-            e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damMelee));
-            e->setMoveDelay(Math::randomRange(.5, 1.5));
-
-            placeNewAiEntity(e, stairUpPos);
+            placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
         }
     }
 
     {
+        AiEntity* e = new AiEntity ("Troll", aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
+        e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damMelee));
+        e->setMoveDelay(Math::randomRange(.5, 1.5));
+
         int count = (rand()%20)+20;
         for(int i=0;i<count;i++){
-            AiEntity* e = new AiEntity ("Troll", aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-            e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damMelee));
-            e->setMoveDelay(Math::randomRange(.5, 1.5));
-
-            placeNewAiEntity(e, stairUpPos);
+            placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
         }
     }
 
     {
+
+        AiEntity* e = new AiEntity ("Goblin Archer", aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 8);
+        e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damRanged));
+        e->setMoveDelay(Math::randomRange(.5, 1.5));
+
         int count = (rand()%40)+20;
         for(int i=0;i<count;i++){
 
-            AiEntity* e = new AiEntity ("Goblin Archer", aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 8);
-            e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damRanged));
-            e->setMoveDelay(Math::randomRange(.5, 1.5));
-
-            placeNewAiEntity(e, stairUpPos);
+            placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
         }
+    }
+     
+     */
+    //
+    int count = (rand()%200)+100;
+    for(int i=0;i<count;i++){
+        placeNewAiEntity(EnemyGenerator::makeRandomEntity(), stairUpPos);
     }
 
     genDebug("done");

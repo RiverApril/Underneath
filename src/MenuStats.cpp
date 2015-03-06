@@ -11,8 +11,22 @@
 #include "ItemEntity.h"
 #include "Controls.h"
 #include "Utility.h"
+#include "MenuYesNo.h"
+#include "MenuMessage.h"
 
 namespace Ui {
+
+    bool MenuStats::openUi() {
+        if(*shouldSpendPoint == aYes){
+
+            player->abilityPoints--;
+            player->abilities.list[selected]++;
+            player->updateVariablesForAbilities();
+
+            *shouldSpendPoint = aUndefined;
+        }
+        return true;
+    }
 
     MenuStats::MenuStats(Player* player, World* w) : Menu(){
         this->player = player;
@@ -29,6 +43,17 @@ namespace Ui {
                 selected++;
                 break;
 
+            case '\n':
+            case ' ':
+                if(player->abilityPoints > 0){
+                    if(player->abilities[selected] < player->maxAbilities[selected]){
+                        openMenu(new MenuYesNo(formatString("Are you sure you want to spend a skill point on %s?", abilityNames[selected].c_str()), shouldSpendPoint, true));
+                    }else{
+                        openMenu(new MenuMessage("Level Maxed."));
+                    }
+                }
+                break;
+
             case KEY_ESCAPE:
             case Key::statsMenu:
                 closeThisMenu();
@@ -37,8 +62,8 @@ namespace Ui {
         if(selected<0){
             selected = 0;
         }
-        if(selected >= player->inventory.size()){
-            selected = (int)player->inventory.size()-1;
+        if(selected >= abilityCount){
+            selected = abilityCount-1;
         }
     }
 
@@ -46,16 +71,28 @@ namespace Ui {
         setColor(C_WHITE);
         move(0, 0);
         clrtobot();
-        mvprintw(0, 0, "Abilities: ");
-        for(int i=0;i<abilityCount;i++){
-            mvprintw(i+2, 1, "%s: %2d  xp[%s] (%.0f/%.0f)",
-                     string(abilityNamesRightAligned[i]).c_str(),
-                     player->levels.list[i],
-                     StringUtility::makeBar((player->xp.list[i]), (player->nextLevelXp.list[i]), 5, '=', ' ').c_str(),
-                     (player->xp.list[i]),
-                     (player->nextLevelXp.list[i]));
-            ;
+        int a = 2;
+        printCenter(a++, "Level: %d", player->level);
+        printCenter(a++, "XP: %d / %d", (int)player->xp, (int)player->nextLevelXp);
+        printCenter(a++, "%s", StringUtility::makeBar((int)player->xp, (int)player->nextLevelXp, 20).c_str());
+        if(player->abilityPoints>0){
+        	printCenter(a++, "You have skill points to spend: %d", player->abilityPoints);
+        }else{
+            a++;
         }
+
+        a++;
+
+        for(int i = 0;i<abilityCount;i++){
+            if(i==selected){
+                setColor(C_BLACK, C_WHITE);
+            }
+            mvprintw(a++, 3, "%s: %3d", abilityNamesRightAligned[i].c_str(), player->abilities[i]);
+            if(i==selected){
+                setColor(C_WHITE);
+            }
+        }
+
     }
 }
 

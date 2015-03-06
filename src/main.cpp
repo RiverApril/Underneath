@@ -13,6 +13,8 @@
 #include "Ranged.h"
 #include "Utility.h"
 #include "ItemGenerator.h"
+#include "EnemyGenerator.h"
+#include "Level.h"
 
 int main(int argc, const char** argv) {
 
@@ -24,6 +26,7 @@ int main(int argc, const char** argv) {
 
     cout << endl << "Press enter to start Underneath..." << endl;
     cin.ignore();
+
 
 
 
@@ -45,6 +48,7 @@ int main(int argc, const char** argv) {
     Ui::initNCurses();
     Commands::initCommands();
     MaterialItem::initMaterials();
+    EnemyGenerator::initEnemies();
 
 
     Ui::MenuMain* mainMenu = new Ui::MenuMain();
@@ -60,6 +64,8 @@ int main(int argc, const char** argv) {
 
     delete mainMenu;
 
+    EnemyGenerator::cleanupEnemies();
+    MaterialItem::cleanupMaterials();
     Arts::cleanupArts();
     Tiles::cleanupTiles();
     Commands::cleanupCommands();

@@ -16,6 +16,11 @@ namespace Verbalizer {
 
     void attack(Alive* attacker, Alive* underAttack, Weapon* weapon, double damage);
 
+    // Alive* dead  lol
+    void defeatedEnemy(Alive* dead, int xpGained);
+
+    void leveledUp(Player* player);
+
 }
 
 #endif /* defined(__Underneath__Verbalizer__) */

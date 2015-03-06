@@ -38,19 +38,19 @@ namespace ItemGenerator {
 
         iCoin = new Item("Coin", .01);
 
-        wKnife = atl(new Weapon(materialNone, .5, "Knife", 1, .5));
+        wKnife = atl(new Weapon(materialNone, 0.75, "Knife", 1, 1));
         wShortSword = atl(new Weapon(materialNone, 1, "Short Sword", 1, 1));
-        wLongSword = atl(new Weapon(materialNone, 1.5, "Long Sword", 1.5, 1.5));
+        wLongSword = atl(new Weapon(materialNone, 1.5, "Long Sword", 1.5, 1.25));
         wBattleAxe = atl(new Weapon(materialNone, 1.2, "Battle Axe", 1.2, 1.2));
         wMase = atl(new Weapon(materialNone, 1.4, "Mase", 1.4, 1.4));
         wSpear = setDamageType(atl(new Ranged(materialNone, 1, "Spear", 2, 1.5, 1.8)), damMelee);
 
-        wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .5, "Recurve Bow", 1.5, 1, 8)));
-        wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .4, "Longbow", 2, .8, 10)));
-        wCrossbow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .3, "Crossbow", 2, .6, 6)));
+        wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .75, "Recurve Bow", 1.5, 1, 8)));
+        wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .6, "Longbow", 2, .8, 10)));
+        wCrossbow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .45, "Crossbow", 2, .6, 6)));
 
 
-        wCombatSpell = dynamic_cast<Spell*>(atl(new Spell(1, "Combat Spell", .1, 6, .2, 10)));
+        wCombatSpell = dynamic_cast<Spell*>(atl(new Spell(1, "Combat Spell", .1, 6, .5, 10)));
     }
 
     void cleanupItemTemplates(){
@@ -71,7 +71,7 @@ namespace ItemGenerator {
         return w;
     }
 
-    Weapon* createWeaponBase(DamageType d){
+    Weapon* createWeaponBaseRand(DamageType d){
         Weapon* w = nullptr;
         while(w == nullptr){
             size_t i = (rand())%weaponList.size();
@@ -84,7 +84,7 @@ namespace ItemGenerator {
 
     }
 
-    vector<Item*> createLoots(int difficulty){
+    vector<Item*> createLootsRand(int difficulty){
         vector<Item*> items;
 
         if(rand()%10!=0){
@@ -104,13 +104,13 @@ namespace ItemGenerator {
         int weaponQty = rand()%5;
 
 		for (int i = 0; i < weaponQty; i++){
-            items.push_back(createWeapon(itemDifficulty));
+            items.push_back(createWeaponRand(itemDifficulty));
         }
         
         return items;
     }
 	
-    Weapon* createWeapon(int itemDifficulty){
+    Weapon* createWeaponRand(int itemDifficulty){
         DamageType damageType = damMelee;
 
         if(rand()%2 == 0){
@@ -119,10 +119,10 @@ namespace ItemGenerator {
             damageType = damMagic;
         }
 
-        return createWeapon(itemDifficulty, damageType);
+        return createWeaponRand(itemDifficulty, damageType);
     }
 
-    Weapon* createWeapon(int itemDifficulty, DamageType damageType){
+    Weapon* createWeaponRand(int itemDifficulty, DamageType damageType){
 
 
         Material* material = materialNone;
@@ -150,41 +150,46 @@ namespace ItemGenerator {
             }
         }
 
-        return createWeapon(material, damageType, rand()%20==0);
+        return createWeaponRand(material, damageType, vector<Enchantment>());
     }
 
-    Weapon* createWeapon(Material* material, DamageType damageType, bool enchanted){
+    Weapon* createWeaponRand(Material* material, DamageType damageType, vector<Enchantment> enchs){
+
+
+        Weapon* weapon = createWeaponBaseRand(damageType);
+
+        weapon = cloneBalancedWeaponForMaterial(weapon, material);
+
+
+        for(Enchantment e : enchs){
+            weapon->addEnchantment(e);
+        }
+        
+        return weapon;
+    }
+
+    Weapon* cloneBalancedWeaponForMaterial(Weapon* base, Material* material){
+
+        Weapon* weapon = dynamic_cast<Weapon*>(Item::clone(base));
 
         double combatLevelMultiplier = (material->getMultipler()) * 0.5;
 
-        Weapon* weapon = createWeaponBase(damageType);
-
-        //weapon->baseDamage *= Random::randDouble(.8, 1.2);
-        //weapon->weight *= Random::randDouble(.6, 1.4);
-        //weapon->useDelay *= Random::randDouble(.9, 1.1);
-
         weapon->material = material;
-        weapon->baseDamage *= combatLevelMultiplier;
-        //weapon->weight *= combatLevelMultiplier;
+        weapon->baseDamage *= combatLevelMultiplier * 10;
+        weapon->weight *= 5;
 
         if(weapon->damageType == damRanged){
             Ranged* ranged = dynamic_cast<Ranged*>(weapon);
             if(ranged){
-            	ranged->range *= combatLevelMultiplier;
+                ranged->range *= combatLevelMultiplier * .5;
             }
         }
         if(weapon->damageType == damMagic){
             Spell* spell = dynamic_cast<Spell*>(weapon);
             if(spell){
-                spell->manaCost *= combatLevelMultiplier;
+                spell->manaCost *= combatLevelMultiplier * .8;
             }
         }
-
-        if(enchanted){
-            int eid = rand()%2==0?enchBleed:enchFire;
-            weapon->addEnchantment(eid, 10, 1);
-        }
-        
         return weapon;
     }
 

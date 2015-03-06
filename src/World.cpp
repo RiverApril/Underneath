@@ -331,7 +331,7 @@ namespace WorldLoader {
 
 
         world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
-        world->currentPlayer->setActiveWeapon(ItemGenerator::createWeapon(world->currentLevel->getDifficulty(), damMelee));
+        world->currentPlayer->setActiveWeapon(ItemGenerator::createWeaponRand(world->currentLevel->getDifficulty(), damMelee));
         //world->currentPlayer->inventory.push_back(ItemGenerator::createWeapon("", materialBone, damRanged, false));
 
         world->currentPlayer->inventory.push_back(Item::clone(ItemGenerator::iCoin));

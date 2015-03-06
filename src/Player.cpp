@@ -19,28 +19,43 @@ Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()){
 }
 
 Player::Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities) : Alive(name, icon, startPos, colorCode) {
-    levels = startAbilities;
+    abilities = startAbilities;
     viewDistance = 14;
     updateVariablesForAbilities();
     for(int i=0;i<abilityCount;i++){
-        setNextLevelXp(i);
+        setNextLevelXp();
     }
+    hp = maxHp;
+    mp = maxMp;
 }
 
 Player::~Player() {
 
 }
 
-bool Player::update(double time, Level* level) {
+bool Player::update(double deltaTime, double time, Level* level) {
     if(dead){
         level->currentWorld->currentPlayer = nullptr;
     }
-    return Alive::update(time, level);
+    if(timeSinceHurt > 10){
+        if(!outOfCombatHealing){
+            lastHealTime = time;
+            lastManaTime = time;
+            healDelay = .5;
+            manaDelay = .5;
+            outOfCombatHealing = true;
+        }
+    }else{
+        updateVariablesForAbilities();
+        outOfCombatHealing = false;
+    }
+    timeSinceHurt += deltaTime;
+
+    return Alive::update(deltaTime, time, level);
 }
 
 double Player::moveAbsalute(Point2 p, Level* level){
     if(tryToMoveAbsalute(p, level)){
-        gainXp(iSPD, .1);
         return moveDelay;
     }else{
         return interact(level, p, true, activeWeapon);
@@ -129,14 +144,11 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
             double x = 1;
             if(weapon){
                 if(weapon->damageType == damMelee){
-                    x = (double)levels[iSTR] / (double)maxLevels[iSTR];
-                    gainXp(iSTR, 1);
+                    x = (double)abilities[iSTR] / (double)maxAbilities[iSTR];
                 }else if(weapon->damageType == damRanged){
-                    x = (double)levels[iDEX] / (double)maxLevels[iDEX];
-                    gainXp(iDEX, 1);
+                    x = (double)abilities[iDEX] / (double)maxAbilities[iDEX];
                 }else if(weapon->damageType == damMagic){
-                    x = (double)levels[iINT] / (double)maxLevels[iINT];
-                    gainXp(iINT, 1);
+                    x = (double)abilities[iINT] / (double)maxAbilities[iINT];
                 }
             }
 
@@ -203,6 +215,14 @@ Player* Player::cloneUnsafe(Player* oldE, Player* newE){
 
     Alive::cloneUnsafe(oldE, newE);
 
+    newE->abilities = oldE->abilities;
+    newE->abilityPoints = oldE->abilityPoints;
+    newE->level = oldE->level;
+    newE->xp = oldE->xp;
+    newE->nextLevelXp = oldE->nextLevelXp;
+    newE->timeSinceHurt = oldE->timeSinceHurt;
+    newE->outOfCombatHealing = oldE->outOfCombatHealing;
+
     return newE;
 }
 
@@ -212,29 +232,49 @@ int Player::getEntityTypeId(){
 
 void Player::save(vector<unsigned char>* data){
     Alive::save(data);
-    levels.save(data);
-    xp.save(data);
-    nextLevelXp.save(data);
+    abilities.save(data);
+    FileUtility::saveInt(data, abilityPoints);
+    FileUtility::saveInt(data, level);
+    FileUtility::saveDouble(data, xp);
+    FileUtility::saveDouble(data, nextLevelXp);
+    FileUtility::saveInt(data, timeSinceHurt);
+    FileUtility::saveBool(data, outOfCombatHealing);
 
 }
 
 void Player::load(unsigned char* data, int* position){
     Alive::load(data, position);
-    levels.load(data, position);
-    xp.load(data, position);
-    nextLevelXp.load(data, position);
+    abilities.load(data, position);
+    abilityPoints = FileUtility::loadInt(data, position);
+    level = FileUtility::loadInt(data, position);
+    xp = FileUtility::loadDouble(data, position);
+    nextLevelXp = FileUtility::loadDouble(data, position);
+    timeSinceHurt = FileUtility::loadInt(data, position);
+    outOfCombatHealing = FileUtility::loadBool(data, position);
 }
 
 double Player::useDelay(Item* item){
     Weapon* weapon = dynamic_cast<Weapon*>(item);
     double d = 0;
     if(weapon){
-        return weapon->useDelay;
+        d = weapon->useDelay;
     }else{
-        d = .1;
+        d = 1;
     }
-    return (1-(levels[iAGI] / maxLevels[iAGI]))+d;
+    return d * (1-((double)abilities[iAGI] / maxAbilities[iAGI]));
 
+}
+
+void Player::gainXp(double amount){
+    xp += amount;
+    double l = nextLevelXp;
+    while(xp >= l){
+        xp -= l;
+        abilityPoints += 1;
+        level += 1;
+        setNextLevelXp();
+        Verbalizer::leveledUp(this);
+    }
 }
 
 

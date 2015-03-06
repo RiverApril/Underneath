@@ -179,10 +179,10 @@ namespace Commands{
 
     struct CommandXp : Command{
         string help(){
-            return "Gives the player XP in the given ability.";
+            return "Gives the player XP";
         }
         string usage(){
-            return "xp <skill> <amount>";
+            return "xp <amount>";
         }
         string defaultName(){
             return "effect";
@@ -190,17 +190,11 @@ namespace Commands{
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
             MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
             if(mg){
-                if(arguments.size() == 2){
-                    int ability = ParsingUtility::parseInt(arguments[0]);
-                    int amount = ParsingUtility::parseInt(arguments[1]);
-                    if(ability < abilityCount){
-                        debug("Not an ability index. Must be smaller than "+to_string(abilityCount)+".");
-                        return false;
-                    }else{
-                        mg->currentWorld->currentPlayer->gainXp(ability, amount);
-                        debug("Added "+to_string(amount)+"XP to "+abilityNames[ability]);
-                        return true;
-                    }
+                if(arguments.size() == 1){
+                    int amount = ParsingUtility::parseInt(arguments[0]);
+                    mg->currentWorld->currentPlayer->gainXp(amount);
+                    debug("Added "+to_string(amount)+"XP");
+                    return true;
                 }else{
                     debug("Impropper use of command.");
                 }

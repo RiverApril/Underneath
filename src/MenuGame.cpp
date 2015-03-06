@@ -373,8 +373,10 @@ namespace Ui {
         if(timePassed > 0) {
             currentWorld->worldTime += timePassed;
             timePassed = 0;
-            currentWorld->currentLevel->update(currentWorld->worldTime, viewPos);
+            currentWorld->currentLevel->update(currentWorld->worldTime - currentWorld->worldLastTime, currentWorld->worldTime, viewPos);
             render(currentWorld->worldTime);
+
+            currentWorld->worldLastTime = currentWorld->worldTime;
         }
         
     }
@@ -421,7 +423,7 @@ namespace Ui {
             move(a, gameArea.x+1);
             clrtoeol();
 
-            mvprintw(a, gameArea.x+1, "HP: %d/%d", hp, maxHp);
+            mvprintw(a, gameArea.x+1, "HP: %3d/%3d", hp, maxHp);
             Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
             printw(" %s", StringUtility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);
@@ -431,7 +433,7 @@ namespace Ui {
             move(a, gameArea.x+1);
             clrtoeol();
 
-            mvprintw(a, gameArea.x+1, "MP: %d/%d", mp, maxMp);
+            mvprintw(a, gameArea.x+1, "MP: %3d/%3d", mp, maxMp);
             Ui::setColor(C_LIGHT_BLUE);
             printw(" %s", StringUtility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);

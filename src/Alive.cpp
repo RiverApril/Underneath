@@ -32,16 +32,16 @@ Alive::~Alive(){
 }
 
 
-bool Alive::update(double time, Level* level) {
+bool Alive::update(double deltaTime, double time, Level* level) {
 
     if(dead){
         level->removeEntity(this, true);
     }else{
-        while(lastHealTime+healDelay<=time){
+        while(lastHealTime + healDelay <= time){
             heal(1);
             lastHealTime += healDelay;
         }
-        while(lastManaTime+manaDelay<=time){
+        while(lastManaTime + manaDelay <= time){
             healMana(1);
             lastManaTime += manaDelay;
         }
@@ -71,13 +71,13 @@ bool Alive::update(double time, Level* level) {
         }
     }
 
-    return Entity::update(time, level);
+    return Entity::update(deltaTime, time, level);
 }
 
 double Alive::hurt(double amount, double damageMultiplier){
     amount *= damageMultiplier;
     hp -= amount;
-    if(hp<=0){
+    if(hp<=0 && !dead){
         die();
     }
     //debug(name+" hp: "+to_string(hp));
@@ -136,7 +136,7 @@ double Alive::healMana(double amount){
     }
     mp += amount;
     if(mp>maxMp){
-        double a = amount-(hp-maxHp);
+        double a = amount-(mp-maxMp);
         mp = maxMp;
         return a;
     }

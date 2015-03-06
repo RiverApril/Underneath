@@ -79,7 +79,7 @@ public:
 
     void placeNewAiEntity(AiEntity* e, Point2 entrance);
 
-    bool update(double time, Point2 viewPos);
+    bool update(double deltaTime, double time, Point2 viewPos);
 
     //void setAndUnsetDisplayEntities();
 
