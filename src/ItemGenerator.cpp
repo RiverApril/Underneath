@@ -12,79 +12,72 @@
 
 namespace ItemGenerator {
 
-	
-    vector<Weapon*> weaponList;
-
-    //DamageMultiplier, Name, Weight, Use Delay
-    //DamageMultiplier, Name, Weight, Use Delay, Range
-    //DamageMultiplier, Name, Weight, Mana Cost, Use Delay, Range
-
     Item* iCoin;
 
-    Weapon* wKnife;
-    Weapon* wShortSword;
-    Weapon* wLongSword;
-    Weapon* wBattleAxe;
-    Weapon* wMase;
-    Weapon* wSpear;
+	
+    vector<WeaponBase> weaponList;
 
-    Ranged* wRecurveBow;
-    Ranged* wLongbow;
-    Ranged* wCrossbow;
+    WeaponBase wKnife;
+    WeaponBase wSword;
+    WeaponBase wAxe;
+    WeaponBase wMace;
+    WeaponBase wSpear;
 
-    Spell* wCombatSpell;
+    WeaponBase wBow;
+    WeaponBase wCrossbow;
+
+    WeaponBase wFireSpell;
+    WeaponBase wFrostSpell;
+    WeaponBase wShockSpell;
 
     void initItemTemplates(){
 
         iCoin = new Item("Coin", .01);
 
-        wKnife = atl(new Weapon(materialNone, 0.75, "Knife", 1, 1));
-        wShortSword = atl(new Weapon(materialNone, 1, "Short Sword", 1, 1));
-        wLongSword = atl(new Weapon(materialNone, 1.5, "Long Sword", 1.5, 1.25));
-        wBattleAxe = atl(new Weapon(materialNone, 1.2, "Battle Axe", 1.2, 1.2));
-        wMase = atl(new Weapon(materialNone, 1.4, "Mase", 1.4, 1.4));
-        wSpear = setDamageType(atl(new Ranged(materialNone, 1, "Spear", 2, 1.5, 1.8)), damMelee);
 
-        wRecurveBow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .75, "Recurve Bow", 1.5, 1, 8)));
-        wLongbow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .6, "Longbow", 2, .8, 10)));
-        wCrossbow = dynamic_cast<Ranged*>(atl(new Ranged(materialNone, .45, "Crossbow", 2, .6, 6)));
+        wKnife = atl(WeaponBase({"Knife", "Dagger", "Cleaver"}, 0.25, 0.5, damSharp).setWeight(1));
+        wSword = atl(WeaponBase({"Longsword", "Cutlass", "Katana", "Machete", "Gladius", "Scimitar", "Rapier", "Shortsword", "Broadsword", "Saber", "Claymore"}, 1, 1, damSharp).setWeight(2));
+        wAxe = atl(WeaponBase({"Axe", "Hatchet", "Battleaxe"}, 1.2, 1.2, damSharp));
+        wMace = atl(WeaponBase({"Mace", "Flail", "Hammer"}, 1.5, 1.5, damBlunt));
+        wSpear = atl(WeaponBase({"Spear", "Halberd"}, 1.3, 1.3, damPierce).ranged(1.8));
+
+        wBow = atl(WeaponBase({"Longbow", "Shortbow", "Recurve Bow"}, 1, 1, damPierce).ranged(20));
+        wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion", ""}, 1.2, 0.8, damPierce).ranged(10));
+
+        wFireSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .1, damFire).magical(8, 5));
+
+        wFrostSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .1, damIce).magical(8, 5));
+
+        wShockSpell = atl(WeaponBase({"Electrocute", "Shock", "Zap"}, 1, .1, damIce).magical(8, 5));
 
 
-        wCombatSpell = dynamic_cast<Spell*>(atl(new Spell(1, "Combat Spell", .1, 6, .5, 10)));
     }
 
     void cleanupItemTemplates(){
-        for(Weapon* w : weaponList){
-            delete w;
-        }
+        delete iCoin;
     }
 
-
-
-    Weapon* atl(Weapon* w){//add to list
+    WeaponBase atl(WeaponBase w){//add to list
         weaponList.push_back(w);
         return w;
     }
 
-    Weapon* setDamageType(Weapon* w, DamageType d){
-        w->damageType = d;
-        return w;
-    }
-
-    Weapon* createWeaponBaseRand(DamageType d){
-        Weapon* w = nullptr;
-        while(w == nullptr){
+    WeaponBase getRandWeaponBase(DamageType d){
+        while(true){
             size_t i = (rand())%weaponList.size();
-            if(weaponList[i]->damageType == d){
-                w = weaponList[i];
+            if(weaponList[i].damageType == d){
+                return weaponList[i];
             }
         }
 
-        return dynamic_cast<Weapon*>(w->clone(w));
-
     }
 
-    vector<Item*> createLootsRand(int difficulty){
+    WeaponBase getRandWeaponBase(){
+        size_t i = (rand())%weaponList.size();
+        return weaponList[i];
+    }
+
+    vector<Item*> createRandLoots(int difficulty){
         vector<Item*> items;
 
         if(rand()%10!=0){
@@ -109,88 +102,36 @@ namespace ItemGenerator {
         
         return items;
     }
-	
+
+    Weapon* createWeapon(WeaponBase base){
+        size_t ni = rand()%base.names.size();
+        string name = base.names[ni];
+
+        Weapon* w;
+
+        if(base.range != -1){
+            if(base.manaCost != -1){
+                w = new Spell();
+                ((Spell*)w)->manaCost = base.manaCost;
+                w->addEnchantment(Enchantment(effDamage, 10, 1, 6).setMeta(base.damageType));
+            }else{
+                w = new Ranged();
+            }
+            ((Ranged*)w)->range = base.range;
+        }else{
+            w = new Weapon();
+        }
+        w->baseDamage = base.damage;
+        w->useDelay = base.useDelay;
+        w->weight = base.weight;
+        w->name = name;
+        w->damageType = base.damageType;
+
+        return w;
+    }
+
     Weapon* createWeaponRand(int itemDifficulty){
-        DamageType damageType = damMelee;
-
-        if(rand()%2 == 0){
-            damageType = damRanged;
-        }else if(rand()%4 == 0){
-            damageType = damMagic;
-        }
-
-        return createWeaponRand(itemDifficulty, damageType);
-    }
-
-    Weapon* createWeaponRand(int itemDifficulty, DamageType damageType){
-
-
-        Material* material = materialNone;
-
-        if(damageType != damMagic){
-            bool materialExists = false;
-            for(Material* m : materialList){
-                if(((int)m->getMultipler()) == itemDifficulty){
-                    materialExists = true;
-                }
-            }
-            while(materialExists){
-                material = materialList[rand()%materialList.size()];
-                if(((int)material->getMultipler()) == itemDifficulty){
-                    if(damageType == damMelee && material->hasUse(useBlades)){
-                        break;
-                    }
-                    if(damageType == damRanged && material->hasUse(useBows)){
-                        break;
-                    }
-                }
-            }
-            if(!materialExists){
-                material = materialEtherial;
-            }
-        }
-
-        return createWeaponRand(material, damageType, vector<Enchantment>());
-    }
-
-    Weapon* createWeaponRand(Material* material, DamageType damageType, vector<Enchantment> enchs){
-
-
-        Weapon* weapon = createWeaponBaseRand(damageType);
-
-        weapon = cloneBalancedWeaponForMaterial(weapon, material);
-
-
-        for(Enchantment e : enchs){
-            weapon->addEnchantment(e);
-        }
-        
-        return weapon;
-    }
-
-    Weapon* cloneBalancedWeaponForMaterial(Weapon* base, Material* material){
-
-        Weapon* weapon = dynamic_cast<Weapon*>(Item::clone(base));
-
-        double combatLevelMultiplier = (material->getMultipler()) * 0.5;
-
-        weapon->material = material;
-        weapon->baseDamage *= combatLevelMultiplier * 10;
-        weapon->weight *= 5;
-
-        if(weapon->damageType == damRanged){
-            Ranged* ranged = dynamic_cast<Ranged*>(weapon);
-            if(ranged){
-                ranged->range *= combatLevelMultiplier * .5;
-            }
-        }
-        if(weapon->damageType == damMagic){
-            Spell* spell = dynamic_cast<Spell*>(weapon);
-            if(spell){
-                spell->manaCost *= combatLevelMultiplier * .8;
-            }
-        }
-        return weapon;
+        return createWeapon(getRandWeaponBase());
     }
 
 

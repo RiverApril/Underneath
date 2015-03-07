@@ -48,7 +48,7 @@ namespace Arts{
     extern int artKnife;
     extern int artShortSword;
     extern int artLongSword;
-    extern int artMase;
+    extern int artMace;
     extern int artSpear;
     extern int artBattleAxe;
 

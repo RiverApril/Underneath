@@ -47,7 +47,6 @@ int main(int argc, const char** argv) {
     Arts::loadArts();
     Ui::initNCurses();
     Commands::initCommands();
-    MaterialItem::initMaterials();
     EnemyGenerator::initEnemies();
 
 
@@ -65,7 +64,6 @@ int main(int argc, const char** argv) {
     delete mainMenu;
 
     EnemyGenerator::cleanupEnemies();
-    MaterialItem::cleanupMaterials();
     Arts::cleanupArts();
     Tiles::cleanupTiles();
     Commands::cleanupCommands();

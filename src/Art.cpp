@@ -52,8 +52,8 @@ namespace Arts{
         Arts::artShortSword = Arts::loadNew(ArtDir+"/shortsword");
         ItemGenerator::wShortSword->artIndex = Arts::artShortSword;
 
-        Arts::artMase = Arts::loadNew(ArtDir+"/mase");
-        ItemGenerator::wMase->artIndex = Arts::artMase;
+        Arts::artMase = Arts::loadNew(ArtDir+"/mace");
+        ItemGenerator::wMace->artIndex = Arts::artMase;
 
         Arts::artSpear = Arts::loadNew(ArtDir+"/spear");
         ItemGenerator::wSpear->artIndex = Arts::artSpear;

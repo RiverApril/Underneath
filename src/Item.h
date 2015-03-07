@@ -12,8 +12,6 @@
 #include "Global.h"
 #include "Art.h"
 
-typedef double Weight;
-
 class Level;
 
 const int ITEM_TYPE_ITEM = 0;
@@ -28,11 +26,11 @@ public:
 
     static Item* clone(Item* oldI);
 
-    Item() : Item("UNDEFINED", 0){
+    Item(){
 
     }
 
-    Item(string name, Weight weight, int qty = 1){
+    Item(string name, double weight, int qty = 1){
         this->name = name;
         this->weight = weight;
         this->qty = qty;
@@ -59,23 +57,15 @@ public:
         &&(artIndex == other->artIndex);
     }
 
-    virtual string getExtendedName(){
-        return name;
-    }
-
-    virtual void setBaseName(string baseName){
-        name = baseName;
-    }
-
-    Weight weight;
-    int qty;
+    double weight = 0;
+    int qty = 1;
 
     int artIndex = -1;
 
+    string name;
+
 
 protected:
-
-    string name;
 
     template<class Super, class Sub>
     static Sub* makeNewAndClone(Super* oldT);

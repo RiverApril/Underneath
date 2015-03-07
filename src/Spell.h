@@ -19,13 +19,14 @@ public:
     static Spell* cloneUnsafe(Spell* oldE, Spell* newE);
     
 
-    Spell() : Spell(0, "UNDEFINED", 0, 0, 0, 0){
+    Spell() : Ranged(){
 
     }
 
-    Spell(int baseDamage, string name, Weight weight, int manaCost, double useDelay, int range) : Ranged(materialNone, baseDamage, name, weight, useDelay, range){
+    Spell(int baseDamage, string name, double weight, int manaCost, double useDelay, int range) : Ranged(baseDamage, name, weight, useDelay, range){
+
         this->baseDamage = baseDamage;
-        this->damageType = damMagic;
+        this->damageType = damFire;
         this->manaCost = manaCost;
     }
 

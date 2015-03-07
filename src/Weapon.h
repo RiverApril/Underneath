@@ -11,75 +11,51 @@
 
 #include "Global.h"
 #include "Item.h"
-#include "MaterialItem.h"
+#include "Enchantment.h"
 
 typedef int DamageType;
-const DamageType damMelee = 0;
-const DamageType damRanged = 1;
-const DamageType damMagic = 2;
+const DamageType damSharp = 0;
+const DamageType damBlunt = 1;
+const DamageType damPierce = 2;
+const DamageType damFire = 3;
+const DamageType damIce = 4;
+const DamageType damShock = 5;
+const DamageType damPoison = 6;
+const DamageType damBlood = 7;
 
-
-typedef int EnchantmentId;
-
-const EnchantmentId enchFire = 0;
-const EnchantmentId enchBleed = 1;
-
-
-struct Enchantment{
-    Enchantment(EnchantmentId eId, int chance, int power){
-        this->eId = eId;
-        this->chance = chance;
-        this->power = power;
+static string damageTypeToString(DamageType d){
+    switch(d){
+        case damSharp:
+            return "Sharp";
+        case damBlunt:
+            return "Blunt";
+        case damFire:
+            return "Fire";
+        case damIce:
+            return "Ice";
+        case damShock:
+            return "Shock";
+        case damPoison:
+            return "Poison";
+        case damBlood:
+            return "Blood";
+        default:
+            return "Undefined";
     }
-    EnchantmentId eId = enchFire;
-    int chance = 1;
-    int power = 1;
-};
-
-inline bool operator==(const Enchantment& a, const Enchantment& b){
-    return (a.eId == b.eId)&&(a.chance==b.chance)&&(a.power==b.power);
-}
-
-inline bool operator!=(const Enchantment& a, const Enchantment& b){
-    return !(a == b);
 }
 
 
-class Weapon : public MaterialItem {
+class Weapon : public Item {
 public:
-
-    static string damageTypeToString(DamageType d){
-        switch(d){
-            case damMelee:
-                return "Melee";
-            case damRanged:
-                return "Ranged";
-            case damMagic:
-                return "Magic";
-            default:
-                return "Undefined";
-        }
-    }
-
-    static string enchantmentIdToString(EnchantmentId e){
-        switch(e){
-            case enchFire:
-                return "Fire";
-            case enchBleed:
-                return "Bleed";
-            default:
-                return "Undefined";
-        }
-    }
 
 
     static Weapon* cloneUnsafe(Weapon* oldE, Weapon* newE = nullptr);
 
-    Weapon() : Weapon(materialNone, 0, "UNDEFINED", 0, 0){
+    Weapon() : Item(){
 
     }
 
-    Weapon(Material* material, double baseDamage, string name, Weight weight, double useDelay);
+    Weapon(double baseDamage, string name, double weight, double useDelay);
 
     virtual int getItemTypeId(){
         return ITEM_TYPE_WEAPON;
@@ -101,7 +77,7 @@ public:
 
     virtual bool equalsExceptQty(Item* other){
         Weapon* otherW = dynamic_cast<Weapon*>(other);
-        return MaterialItem::equalsExceptQty(other)
+        return Item::equalsExceptQty(other)
         &&(otherW)
         &&(baseDamage == otherW->baseDamage)
         &&(damageType == otherW->damageType)
@@ -110,7 +86,7 @@ public:
     }
 
     double baseDamage = 1;
-    DamageType damageType = damMelee;
+    DamageType damageType = damSharp;
     double useDelay = 1;
     
     vector<Enchantment> enchantments;

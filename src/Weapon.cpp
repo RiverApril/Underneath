@@ -10,16 +10,16 @@
 #include "Utility.h"
 #include "Ui.h"
 
-Weapon::Weapon(Material* material, double baseDamage, string name, Weight weight, double useDelay) : MaterialItem(material, name, weight){
+Weapon::Weapon(double baseDamage, string name, double weight, double useDelay) : Item(name, weight){
     debugf("%s: %.2f", name.c_str(), baseDamage);
     this->baseDamage = baseDamage;
     this->useDelay = useDelay;
 
-    this->damageType = damMelee;
+    this->damageType = damSharp;
 }
 
 void Weapon::save(vector<unsigned char>* data){
-    MaterialItem::save(data);
+    Item::save(data);
     
     FileUtility::saveDouble(data, baseDamage);
     FileUtility::saveInt(data, damageType);
@@ -27,14 +27,15 @@ void Weapon::save(vector<unsigned char>* data){
 
     FileUtility::saveInt(data, (int)enchantments.size());
     for(size_t i=0;i<enchantments.size();i++){
-        FileUtility::saveInt(data, enchantments[i].eId);
-        FileUtility::saveInt(data, enchantments[i].chance);
-        FileUtility::saveInt(data, enchantments[i].power);
+        enchantments[i].save(data);
+        //FileUtility::saveInt(data, enchantments[i].eId);
+        //FileUtility::saveInt(data, enchantments[i].chance);
+        //FileUtility::saveInt(data, enchantments[i].power);
     }
 }
 
 void Weapon::load(unsigned char* data, int* position){
-    MaterialItem::load(data, position);
+    Item::load(data, position);
 
     baseDamage = FileUtility::loadDouble(data, position);
     damageType = FileUtility::loadInt(data, position);
@@ -42,16 +43,16 @@ void Weapon::load(unsigned char* data, int* position){
 
     int size = FileUtility::loadInt(data, position);
     for(int i=0;i<size;i++){
-        int eId = FileUtility::loadInt(data, position);
-        int chance = FileUtility::loadInt(data, position);
-        int power = FileUtility::loadInt(data, position);
-        enchantments.push_back(Enchantment(eId, chance, power));
+        //int eId = FileUtility::loadInt(data, position);
+        //int chance = FileUtility::loadInt(data, position);
+        //int power = FileUtility::loadInt(data, position);
+        enchantments.push_back(Enchantment(data, position));
     }
 }
 
 Weapon* Weapon::cloneUnsafe(Weapon* oldE, Weapon* newE){
 
-    MaterialItem::cloneUnsafe(oldE, newE);
+    Item::cloneUnsafe(oldE, newE);
 
     newE->baseDamage = oldE->baseDamage;
     newE->enchantments = oldE->enchantments;
