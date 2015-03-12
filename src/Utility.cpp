@@ -8,7 +8,8 @@
 
 #include "Utility.h"
 
-namespace FileUtility {
+
+namespace Utility {
 
     void saveDouble(vector<unsigned char>* data, double n){
 
@@ -136,9 +137,7 @@ namespace FileUtility {
         }
     }
 
-}
-
-namespace StringUtility {
+    //Strings
 
     string makeBar(int progress, int maxProgress, size_t size, char filled, char empty){
         string s = "";
@@ -157,21 +156,9 @@ namespace StringUtility {
         return v;
     }
 
-}
 
-namespace VariableUtility {
-    
-    
-    template <typename T>
-    void swap(T& a, T& b){
-        T& temp = a;
-        b = a;
-        a = temp;
-    }
-    
-}
 
-namespace ParsingUtility {
+    //Parsing
 
     int getNumberFromSymbol(char symbol){
         if(symbol >= 48 && symbol <= 57){

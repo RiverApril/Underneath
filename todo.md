@@ -4,7 +4,7 @@ Todo List:
 
 -New Features:
 - [ ] Make defined Potions
-- [ ] Make defined Spells
+- [ ] Make defined CombatSpells
 - [ ] Enemy loot drops
 - [ ] Enemy generator
 - [ ] Enemy difficulty should increase every dungeon level

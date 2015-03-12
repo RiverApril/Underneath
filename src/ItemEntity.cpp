@@ -22,12 +22,12 @@ ItemEntity::ItemEntity(Item* item, Point2 p) : Entity(' ', p, Ui::C_WHITE){
             defaultIcon = '*';
             break;
         case ITEM_TYPE_WEAPON:
-            defaultIcon = '\\';
+            defaultIcon = '^';
             break;
         case ITEM_TYPE_RANGED:
             defaultIcon = ')';
             break;
-        case ITEM_TYPE_SPELL:
+        case ITEM_TYPE_COMBAT_SPELL:
             defaultIcon = '~';
             break;
 

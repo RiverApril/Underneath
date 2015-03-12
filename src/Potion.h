@@ -18,19 +18,19 @@ public:
 
 	static Potion* cloneUnsafe(Potion* oldE, Potion* newE = nullptr);
 
-	Potion() : Potion("UNDEFINED", 0){
+	Potion() : Item(){
 
 	}
 
-	Potion(string name, Weight weight) : Item(name, weight){
+	Potion(string name, double weight) : Item(name, weight){
 
 	}
 	
-	Potion(Effect effect, string name, Weight weight) : Item(name, weight){
-		this->effects.push_back(effect);
+	Potion(Effect effect, string name, double weight) : Item(name, weight){
+        this->effects = {effect};
 	}
 
-	Potion(vector<Effect> effects, string name, Weight weight) : Item(name, weight){
+	Potion(vector<Effect> effects, string name, double weight) : Item(name, weight){
 		this->effects = effects;
 	}
 

@@ -11,7 +11,7 @@
 
 #include "Alive.h"
 #include "Weapon.h"
-#include "Spell.h"
+#include "CombatSpell.h"
 #include "Abilities.h"
 
 class Player : public Alive {
@@ -53,7 +53,7 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual double hurt(double amount, double damageMultiplier = 1){
+    virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1){
         timeSinceHurt = 0;
         return Alive::hurt(amount, damageMultiplier);
     }
@@ -82,8 +82,13 @@ public:
 
     void updateVariablesForAbilities(){
         moveDelay = 1.0-((double)(abilities[iSPD]) / maxAbilities[iSPD]);
-        healDelay = 20.0-((double)(abilities[iCON]) / (maxAbilities[iCON]/20.0));
-        manaDelay = 20.0-((double)(abilities[iWIS]) / (maxAbilities[iWIS]/20.0));
+        if(outOfCombatHealing){
+            healDelay = .5;
+            manaDelay = .5;
+        }else{
+        	healDelay = 20.0-((double)(abilities[iCON]) / (maxAbilities[iCON]/20.0));
+        	manaDelay = 20.0-((double)(abilities[iWIS]) / (maxAbilities[iWIS]/20.0));
+        }
         interactDelay = .1;
 
         maxHp = 100 + (((double)(abilities[iCON]) / maxAbilities[iCON]) * 1000);

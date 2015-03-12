@@ -49,32 +49,29 @@ bool Alive::update(double deltaTime, double time, Level* level) {
         forVector(effects, i){
             Effect* e = &effects[i];
 
-            while(e->lastTime+EFFECT_DELAY <= time){
+            if(e->timeLeft > 0){
+                e->timeLeft -= deltaTime;
                 switch(e->eId){
-                    case effBleed:
-                    case effFire:
-                        hurt(e->power);
+                    case effDamage:
+                        hurt((int)e->meta, e->power * deltaTime);
                         break;
-                    case effRegen:
-                        heal(e->power);
+                    case effHeal:
+                        heal(e->power * deltaTime);
                         break;
                 }
-                e->lastTime += EFFECT_DELAY;
-            }
-            debug(e->toString());
-
-            if(time >= e->timeEnd){
+            }else{
                 effects.erase(effects.begin()+(long)i);
                 i--;
                 continue;
             }
+            debug(e->toString());
         }
     }
 
     return Entity::update(deltaTime, time, level);
 }
 
-double Alive::hurt(double amount, double damageMultiplier){
+double Alive::hurt(DamageType damageType, double amount, double damageMultiplier){
     amount *= damageMultiplier;
     hp -= amount;
     if(hp<=0 && !dead){
@@ -87,30 +84,19 @@ double Alive::hurt(double amount, double damageMultiplier){
 double Alive::hurt(Weapon* w, double time, double damageMultiplier){
     double d = w->baseDamage * Random::randDouble(.5, 1.5);
     for(Enchantment ench : w->enchantments){
-        switch(ench.eId){
-            case enchBleed:
-                if(rand()%ench.chance == 0){
-                    addEffect(Effect(effBleed, time+(ench.power*10), ench.power, time));
-                }
-                break;
-
-            case enchFire:
-                if(rand()%ench.chance == 0){
-                    addEffect(Effect(effFire, time+(ench.power*10), ench.power, time));
-                }
-                break;
+        if(rand()%ench.chance == 0){
+            addEffect(Effect(ench.effectId, ench.time, ench.power).setMeta(ench.meta));
         }
     }
     //consolef("Hurt %s %.2f hp.", name.c_str(), d);
-    return hurt(d, damageMultiplier);
+    return hurt(w->damageType, d, damageMultiplier);
 }
 
 void Alive::addEffect(Effect e){
     forVector(effects, i){
         Effect ei = effects[i];
-        if(e.eId == ei.eId){
-            ei.timeEnd = e.timeEnd;
-            ei.power = e.power;
+        if(e.eId == ei.eId && ei.power == e.power && e.meta == ei.meta){
+            ei.timeLeft = max(e.timeLeft, ei.timeLeft);
             return;
         }
     }
@@ -212,17 +198,17 @@ int Alive::getEntityTypeId(){
 
 void Alive::save(vector<unsigned char>* data){
     Entity::save(data);
-    FileUtility::saveBool(data, dead);
-    FileUtility::saveDouble(data, maxHp);
-	FileUtility::saveDouble(data, hp);
-	FileUtility::saveDouble(data, maxMp);
-	FileUtility::saveDouble(data, mp);
-    FileUtility::saveInt(data, viewDistance);
-    FileUtility::saveString(data, name);
+    Utility::saveBool(data, dead);
+    Utility::saveDouble(data, maxHp);
+	Utility::saveDouble(data, hp);
+	Utility::saveDouble(data, maxMp);
+	Utility::saveDouble(data, mp);
+    Utility::saveInt(data, viewDistance);
+    Utility::saveString(data, name);
 
     //
     int activeWeaponIndex = -1;
-    FileUtility::saveInt(data, (int)inventory.size());
+    Utility::saveInt(data, (int)inventory.size());
     forVector(inventory, i){
         Item* ie = inventory[i];
         ie->save(data);
@@ -230,10 +216,10 @@ void Alive::save(vector<unsigned char>* data){
             activeWeaponIndex = i;
         }
     }
-    FileUtility::saveInt(data, activeWeaponIndex);
+    Utility::saveInt(data, activeWeaponIndex);
     //
 
-    FileUtility::saveInt(data, (int)effects.size());
+    Utility::saveInt(data, (int)effects.size());
     for(Effect e : effects){
 		e.save(data);
     }
@@ -241,23 +227,23 @@ void Alive::save(vector<unsigned char>* data){
 
 void Alive::load(unsigned char* data, int* position){
     Entity::load(data, position);
-    dead = FileUtility::loadBool(data, position);
-    maxHp = FileUtility::loadDouble(data, position);
-	hp = FileUtility::loadDouble(data, position);
-	maxMp = FileUtility::loadDouble(data, position);
-	mp = FileUtility::loadDouble(data, position);
-    viewDistance = FileUtility::loadInt(data, position);
-    name = FileUtility::loadString(data, position);
+    dead = Utility::loadBool(data, position);
+    maxHp = Utility::loadDouble(data, position);
+	hp = Utility::loadDouble(data, position);
+	maxMp = Utility::loadDouble(data, position);
+	mp = Utility::loadDouble(data, position);
+    viewDistance = Utility::loadInt(data, position);
+    name = Utility::loadString(data, position);
 
     //
-    int size = FileUtility::loadInt(data, position);
+    int size = Utility::loadInt(data, position);
     repeat(size, i){
         Item* item = Item::loadNew(data, position);
-        debug("Loaded item: "+item->getExtendedName()+"("+to_string(item->getItemTypeId())+")");
+        debug("Loaded item: "+item->name+"("+to_string(item->getItemTypeId())+")");
         inventory.push_back(item);
     }
 
-    int activeWeaponIndex = FileUtility::loadInt(data, position);
+    int activeWeaponIndex = Utility::loadInt(data, position);
     if(activeWeaponIndex != -1){
     	activeWeapon = dynamic_cast<Weapon*>(inventory[activeWeaponIndex]);
     }else{
@@ -265,7 +251,7 @@ void Alive::load(unsigned char* data, int* position){
     }
     //
 
-    size = FileUtility::loadInt(data, position);
+    size = Utility::loadInt(data, position);
     repeat(size, i){
 		effects.push_back(Effect(data, position));
     }

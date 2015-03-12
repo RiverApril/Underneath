@@ -120,13 +120,13 @@ struct Abilities{
 
     void save(vector<unsigned char>* data){
         for(int i=0;i<abilityCount;i++){
-            FileUtility::saveType<T>(data, list[i]);
+            Utility::saveType<T>(data, list[i]);
         }
     }
 
     void load(unsigned char* data, int* position){
         for(int i=0;i<abilityCount;i++){
-            list[i] = FileUtility::loadType<T>(data, position);
+            list[i] = Utility::loadType<T>(data, position);
         }
     }
 

@@ -12,7 +12,7 @@
 void TEChest::save(vector<unsigned char>* data){
     TileEntity::save(data);
 
-    FileUtility::saveInt(data, (int)inventory.size());
+    Utility::saveInt(data, (int)inventory.size());
     forVector(inventory, i){
         inventory[i]->save(data);
     }
@@ -22,7 +22,7 @@ void TEChest::save(vector<unsigned char>* data){
 void TEChest::load(unsigned char* data, int* position){
     TileEntity::load(data, position);
 
-    int size = FileUtility::loadInt(data, position);
+    int size = Utility::loadInt(data, position);
     repeat(size, i){
         inventory.push_back(Item::loadNew(data, position));
     }

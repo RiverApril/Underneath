@@ -23,11 +23,11 @@ namespace EnemyGenerator{
     void initEnemies(){
 
         eGoblinScout = new AiEntity ("Goblin Scout", aiAttackPlayer, 'g', Point2Zero, Ui::C_LIGHT_GREEN, 50);
-        eGoblinScout->setActiveWeapon(dynamic_cast<Weapon*>(Item::clone(ItemGenerator::wKnife)));
+        eGoblinScout->setActiveWeapon(ItemGenerator::createWeaponFromBase(ItemGenerator::wKnife, 0));
         eGoblinScout->setMoveDelay(.5);
 
         eGoblinWarrior = new AiEntity ("Goblin Warrior", aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 75);
-        eGoblinWarrior->setActiveWeapon(dynamic_cast<Weapon*>(Item::clone(ItemGenerator::wLongSword)));
+        eGoblinWarrior->setActiveWeapon(ItemGenerator::createWeaponFromBase(ItemGenerator::wSword, 0));
         eGoblinWarrior->setMoveDelay(.75);
 
         atl(eGoblinScout, 10);

@@ -82,19 +82,19 @@ namespace WorldLoader {
 
                 world = new World(name);
 
-                world->worldTime = FileUtility::loadDouble(data, position);
+                world->worldTime = Utility::loadDouble(data, position);
 
-                int levelCount = FileUtility::loadInt8Bit(data, position);
+                int levelCount = Utility::loadInt8Bit(data, position);
 
-                std::string currentLevelName = FileUtility::loadString(data, position);
-                int playerUniqueId = FileUtility::loadInt(data, position);
+                std::string currentLevelName = Utility::loadString(data, position);
+                int playerUniqueId = Utility::loadInt(data, position);
 
                 world->currentLevel = nullptr;
 
                 for(int i=0;i<levelCount;i++){
                     std::string levelName;
 
-                    levelName = FileUtility::loadString(data, position);
+                    levelName = Utility::loadString(data, position);
 
                     world->levels.push_back(levelName);
                     if(levelName.compare(optionalStartLevel) == 0){
@@ -115,7 +115,7 @@ namespace WorldLoader {
 
                     Point2 levelSize = Point2::load(levelData, levelPosition);
 
-                    int levelDifficulty = FileUtility::loadInt(levelData, levelPosition);
+                    int levelDifficulty = Utility::loadInt(levelData, levelPosition);
 
                     Level* level = new Level(world, currentLevelName, levelSize, levelDifficulty);
 
@@ -151,7 +151,7 @@ namespace WorldLoader {
         	debug(world==nullptr?"Load Failed":"Loaded");
 
         	return world;
-        }catch(FileUtility::FileExceptionLoad e){
+        }catch(Utility::FileExceptionLoad e){
             debug("Load Failed: "+e.description);
         }
         return nullptr;
@@ -179,15 +179,15 @@ namespace WorldLoader {
         if(fileWorldInfo != nullptr){
             vector<unsigned char>* data = new vector<unsigned char>();
 
-            FileUtility::saveDouble(data, loadedWorld->worldTime);
+            Utility::saveDouble(data, loadedWorld->worldTime);
 
-            FileUtility::saveInt8Bit(data, (int8_t)loadedWorld->levels.size());
+            Utility::saveInt8Bit(data, (int8_t)loadedWorld->levels.size());
 
-            FileUtility::saveString(data, loadedWorld->currentLevel->getName());
-            FileUtility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
+            Utility::saveString(data, loadedWorld->currentLevel->getName());
+            Utility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
 
 			for (size_t j = 0; j<loadedWorld->levels.size(); j++){
-            	FileUtility::saveString(data, loadedWorld->levels.at(j));
+            	Utility::saveString(data, loadedWorld->levels.at(j));
             }
 
 			for (size_t j = 0; j<data->size(); j++){
@@ -284,16 +284,16 @@ namespace WorldLoader {
 
             int* position = new int(0);
 
-            FileUtility::loadDouble(data, position);
-            int levelCount = FileUtility::loadInt8Bit(data, position);
-            FileUtility::loadString(data, position);
-            FileUtility::loadInt(data, position);
+            Utility::loadDouble(data, position);
+            int levelCount = Utility::loadInt8Bit(data, position);
+            Utility::loadString(data, position);
+            Utility::loadInt(data, position);
 
 
             for(int i=0;i<levelCount;i++){
                 std::string levelName;
 
-                levelName = FileUtility::loadString(data, position);
+                levelName = Utility::loadString(data, position);
 
                 std::remove((dir+levelName+".lvl").c_str());
                 std::rename((dir+levelName+".lvl.backup").c_str(), (dir+levelName+".lvl.deleted").c_str());
@@ -331,7 +331,7 @@ namespace WorldLoader {
 
 
         world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
-        world->currentPlayer->setActiveWeapon(ItemGenerator::createWeaponRand(world->currentLevel->getDifficulty(), damMelee));
+        world->currentPlayer->setActiveWeapon(ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromType(wepMelee, 0), 0));
         //world->currentPlayer->inventory.push_back(ItemGenerator::createWeapon("", materialBone, damRanged, false));
 
         world->currentPlayer->inventory.push_back(Item::clone(ItemGenerator::iCoin));

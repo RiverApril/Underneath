@@ -137,7 +137,7 @@ Entity* Entity::clone(Entity* oldE){
             return makeNewAndClone<Entity, ItemEntity>(oldE);
 
         default:
-            throw FileUtility::FileExceptionLoad("Entity type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Entity type unknown: "+to_string(type));
             return nullptr;
             break;
     }
@@ -147,19 +147,19 @@ Entity* Entity::clone(Entity* oldE){
 }
 
 void Entity::save(vector<unsigned char>* data){
-    FileUtility::saveInt(data, getEntityTypeId());
+    Utility::saveInt(data, getEntityTypeId());
 
 
-    FileUtility::saveInt(data, uniqueId);
+    Utility::saveInt(data, uniqueId);
     
-    FileUtility::saveUnsignedChar(data, (unsigned char)defaultIcon);
+    Utility::saveUnsignedChar(data, (unsigned char)defaultIcon);
     
     Point2::save(pos, data);
     Point2::save(lastPos, data);
     
-    FileUtility::saveUnsignedChar(data, (unsigned char)fgColorCode);
-    FileUtility::saveUnsignedChar(data, (unsigned char)bgColorCode);
-    FileUtility::saveBool(data, solid);
+    Utility::saveUnsignedChar(data, (unsigned char)fgColorCode);
+    Utility::saveUnsignedChar(data, (unsigned char)bgColorCode);
+    Utility::saveBool(data, solid);
 }
 
 int Entity::getEntityTypeId(){
@@ -169,16 +169,16 @@ int Entity::getEntityTypeId(){
 void Entity::load(unsigned char* data, int* position){
     //Entity::loadNew() loads the entityId
 
-    uniqueId = FileUtility::loadInt(data, position);
+    uniqueId = Utility::loadInt(data, position);
 
-    defaultIcon = (char)FileUtility::loadUnsignedChar(data, position);
+    defaultIcon = (char)Utility::loadUnsignedChar(data, position);
 
     pos = Point2::load(data, position);
     lastPos = Point2::load(data, position);
 
-    fgColorCode = (char)FileUtility::loadUnsignedChar(data, position);
-    bgColorCode = (char)FileUtility::loadUnsignedChar(data, position);
-    solid = FileUtility::loadBool(data, position);
+    fgColorCode = (char)Utility::loadUnsignedChar(data, position);
+    bgColorCode = (char)Utility::loadUnsignedChar(data, position);
+    solid = Utility::loadBool(data, position);
 
     updateIcon = true;
 }
@@ -186,7 +186,7 @@ void Entity::load(unsigned char* data, int* position){
 Entity* Entity::loadNew(unsigned char* data, int* position){
     Entity* e;
 
-    int type = FileUtility::loadInt(data, position);
+    int type = Utility::loadInt(data, position);
 
     switch (type) {
         case ENTITY_TYPE_ENTITY:
@@ -206,7 +206,7 @@ Entity* Entity::loadNew(unsigned char* data, int* position){
             break;
 
         default:
-            throw FileUtility::FileExceptionLoad("Entity type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Entity type unknown: "+to_string(type));
             return nullptr;
             break;
     }

@@ -121,13 +121,13 @@ namespace Ui {
         Item* item;
         Weapon* weapon;
         Ranged* ranged;
-        Spell* spell;
+        CombatSpell* spell;
         int y = 3;
         for(int i=minI;i<maxI;i++){
             item = alive->inventory[i];
             weapon = dynamic_cast<Weapon*>(item);
             ranged = dynamic_cast<Ranged*>(item);
-            spell = dynamic_cast<Spell*>(item);
+            spell = dynamic_cast<CombatSpell*>(item);
             if(i == selected){
                 setColor(C_BLACK, C_WHITE);
             }
@@ -153,7 +153,7 @@ namespace Ui {
         if(item){
             weapon = dynamic_cast<Weapon*>(item);
             ranged = dynamic_cast<Ranged*>(item);
-            spell = dynamic_cast<Spell*>(item);
+            spell = dynamic_cast<CombatSpell*>(item);
 
             int a = 3;
 

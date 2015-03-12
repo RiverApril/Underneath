@@ -12,7 +12,7 @@
 #include "TEChest.h"
 
 void TileEntity::save(vector<unsigned char>* data){
-    FileUtility::saveInt(data, getTileEntityTypeId());
+    Utility::saveInt(data, getTileEntityTypeId());
     Point2::save(pos, data);
 }
 
@@ -48,7 +48,7 @@ TileEntity* TileEntity::clone(TileEntity* oldI){
             return makeNewAndClone<TileEntity, TEChest>(oldI);
 
         default:
-            throw FileUtility::FileExceptionLoad("Tile Entity type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Tile Entity type unknown: "+to_string(type));
             return nullptr;
             break;
     }
@@ -60,7 +60,7 @@ TileEntity* TileEntity::clone(TileEntity* oldI){
 TileEntity* TileEntity::loadNew(unsigned char* data, int* position){
     TileEntity* e;
 
-    int type = FileUtility::loadInt(data, position);
+    int type = Utility::loadInt(data, position);
 
     switch (type) {
         case TILE_ENTITY_TYPE_NONE:
@@ -74,7 +74,7 @@ TileEntity* TileEntity::loadNew(unsigned char* data, int* position){
             break;
 
         default:
-            throw FileUtility::FileExceptionLoad("Tile Entity type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Tile Entity type unknown: "+to_string(type));
             return nullptr;
             break;
     }

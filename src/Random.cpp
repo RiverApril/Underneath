@@ -15,4 +15,6 @@ namespace Random {
         return min + ((rand() / (double)RAND_MAX) * (max-min));
     }
 
+
+
 }

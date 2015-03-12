@@ -39,7 +39,7 @@ namespace Verbalizer {
         Ui::colorCode(C_CODE_WHITE) + "damage to " +
         Ui::colorCode(C_CODE_LIGHT_BLUE) + underAttackString +
         Ui::colorCode(C_CODE_WHITE) + " with " + their + " " +
-        Ui::colorCode(C_CODE_LIGHT_RED) + weapon->getExtendedName();
+        Ui::colorCode(C_CODE_LIGHT_RED) + weapon->name;
 
         consolef(verbal, damage);
 

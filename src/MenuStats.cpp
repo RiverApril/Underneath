@@ -74,7 +74,7 @@ namespace Ui {
         int a = 2;
         printCenter(a++, "Level: %d", player->level);
         printCenter(a++, "XP: %d / %d", (int)player->xp, (int)player->nextLevelXp);
-        printCenter(a++, "%s", StringUtility::makeBar((int)player->xp, (int)player->nextLevelXp, 20).c_str());
+        printCenter(a++, "%s", Utility::makeBar((int)player->xp, (int)player->nextLevelXp, 20).c_str());
         if(player->abilityPoints>0){
         	printCenter(a++, "You have skill points to spend: %d", player->abilityPoints);
         }else{

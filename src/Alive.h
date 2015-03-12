@@ -11,7 +11,7 @@
 
 #include "Entity.h"
 #include "Weapon.h"
-#include "Spell.h"
+#include "CombatSpell.h"
 #include "Math.h"
 #include "Inventory.h"
 #include "Effect.h"
@@ -56,7 +56,7 @@ public:
         //pos.set(-1);
     }
 
-    virtual double hurt(double amount, double damageMultiplier = 1);
+    virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 
     virtual double hurt(Weapon* w, double time, double damageMultiplier = 1);
 

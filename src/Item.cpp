@@ -9,22 +9,22 @@
 #include "Item.h"
 #include "Utility.h"
 #include "Weapon.h"
-#include "Spell.h"
+#include "CombatSpell.h"
 #include "Potion.h"
 
 void Item::save(vector<unsigned char>* data){
-    FileUtility::saveInt(data, getItemTypeId());
-    FileUtility::saveDouble(data, weight);
-    FileUtility::saveString(data, name);
-    FileUtility::saveInt(data, qty);
-    FileUtility::saveInt(data, artIndex);
+    Utility::saveInt(data, getItemTypeId());
+    Utility::saveDouble(data, weight);
+    Utility::saveString(data, name);
+    Utility::saveInt(data, qty);
+    Utility::saveInt(data, artIndex);
 }
 
 void Item::load(unsigned char* data, int* position){
-    weight = FileUtility::loadDouble(data, position);
-    name = FileUtility::loadString(data, position);
-    qty = FileUtility::loadInt(data, position);
-    artIndex = FileUtility::loadInt(data, position);
+    weight = Utility::loadDouble(data, position);
+    name = Utility::loadString(data, position);
+    qty = Utility::loadInt(data, position);
+    artIndex = Utility::loadInt(data, position);
 }
 
 Item* Item::cloneUnsafe(Item* oldE, Item* newE){
@@ -50,23 +50,20 @@ Item* Item::clone(Item* oldI){
         case ITEM_TYPE_ITEM:
             return makeNewAndClone<Item, Item>(oldI);
 
-        case ITEM_TYPE_MATERIAL_ITEM:
-            return makeNewAndClone<Item, MaterialItem>(oldI);
-
         case ITEM_TYPE_WEAPON:
             return makeNewAndClone<Item, Weapon>(oldI);
 
         case ITEM_TYPE_RANGED:
             return makeNewAndClone<Item, Ranged>(oldI);
 
-        case ITEM_TYPE_SPELL:
-			return makeNewAndClone<Item, Spell>(oldI);
+        case ITEM_TYPE_COMBAT_SPELL:
+			return makeNewAndClone<Item, CombatSpell>(oldI);
 
 		case ITEM_TYPE_POTION:
 			return makeNewAndClone<Item, Potion>(oldI);
 
         default:
-            throw FileUtility::FileExceptionLoad("Item type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Item type unknown: "+to_string(type));
             return nullptr;
             break;
     }
@@ -78,14 +75,11 @@ Item* Item::clone(Item* oldI){
 Item* Item::loadNew(unsigned char* data, int* position){
     Item* e;
 
-    int type = FileUtility::loadInt(data, position);
+    int type = Utility::loadInt(data, position);
 
     switch (type) {
         case ITEM_TYPE_ITEM:
             e = new Item();
-            break;
-        case ITEM_TYPE_MATERIAL_ITEM:
-            e = new MaterialItem();
             break;
         case ITEM_TYPE_WEAPON:
             e = new Weapon();
@@ -93,15 +87,15 @@ Item* Item::loadNew(unsigned char* data, int* position){
         case ITEM_TYPE_RANGED:
             e = new Ranged();
             break;
-        case ITEM_TYPE_SPELL:
-            e = new Spell();
+        case ITEM_TYPE_COMBAT_SPELL:
+            e = new CombatSpell();
 			break;
 		case ITEM_TYPE_POTION:
 			e = new Potion();
 			break;
             
         default:
-            throw FileUtility::FileExceptionLoad("Item type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Item type unknown: "+to_string(type));
             return nullptr;
             break;
     }

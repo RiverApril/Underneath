@@ -467,7 +467,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         for (int j=0; j<size->y; j++) {
             if(tileGrid[i][j].index == (int8_t)Tiles::tileChest->getIndex()){
                 TEChest* te = new TEChest(Point2(i, j));
-                te->addItems(ItemGenerator::createLootsRand(difficulty));
+                te->addItems(ItemGenerator::createRandLoots(difficulty));
                 tileEntityList.push_back(te);
             }
         }
@@ -478,7 +478,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     if(previousLevel.size() > 0){
     	tileEntityList.push_back(new TEStair(stairUpPos, true, previousLevel));
     }
-    tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor"+to_string(ParsingUtility::parseInt(name.substr(5))+1)));
+    tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor"+to_string(Utility::parseInt(name.substr(5))+1)));
 
     for(TileEntity* e : tileEntityList){
         debugf("TileEntity id: %d", e->getTileEntityTypeId());
@@ -576,14 +576,14 @@ void Level::placeNewAiEntity(AiEntity* e, Point2 entrance){
 void Level::save(vector<unsigned char>* data){
 
     Point2::save(*size, data);
-    FileUtility::saveInt(data, difficulty);
+    Utility::saveInt(data, difficulty);
     for(size_t i=0;i<size->x;i++){
         for(size_t j=0;j<size->y;j++){
-            FileUtility::saveInt8Bit(data, tileGrid[i][j].index);
-            FileUtility::saveBool(data, tileGrid[i][j].explored);
+            Utility::saveInt8Bit(data, tileGrid[i][j].index);
+            Utility::saveBool(data, tileGrid[i][j].explored);
         }
     }
-    FileUtility::saveInt(data, (int)entityList.size());
+    Utility::saveInt(data, (int)entityList.size());
     debugf("Saving %d entities...", (int)entityList.size());
 	for (size_t i = 0; i<entityList.size(); i++){
         //debug("Saving Entity: "+entityList[i]->getName()+"("+to_string(entityList[i]->getEntityTypeId())+")"+", Pos: "+entityList[i]->pos.toString());
@@ -591,7 +591,7 @@ void Level::save(vector<unsigned char>* data){
     }
     debugf("%d Entities saved.", (int)entityList.size());
     debugf("Saving %d tile entities...", (int)tileEntityList.size());
-    FileUtility::saveInt(data, (int)tileEntityList.size());
+    Utility::saveInt(data, (int)tileEntityList.size());
     for (size_t i = 0; i<tileEntityList.size(); i++) {
         tileEntityList[i]->save(data);
     }
@@ -602,20 +602,20 @@ void Level::load(unsigned char* data, int* position){
 
     for(size_t i=0;i<size->x;i++){
         for(size_t j=0;j<size->y;j++){
-            tileGrid[i][j].index = FileUtility::loadInt8Bit(data, position);
-            tileGrid[i][j].explored = FileUtility::loadBool(data, position);
+            tileGrid[i][j].index = Utility::loadInt8Bit(data, position);
+            tileGrid[i][j].explored = Utility::loadBool(data, position);
         }
     }
     debug("Loaded "+to_string(size->x)+" x "+to_string(size->y)+" Tiles");
 
-    int entityCount = FileUtility::loadInt(data, position);
+    int entityCount = Utility::loadInt(data, position);
     debugf("%d Entities to Load...", entityCount);
     for(int i=0; i<entityCount; i++){
         entityList.push_back(Entity::loadNew(data, position));
     }
     debugf("Loaded %d entities", (int)entityList.size());
 
-    int tileEntityCount = FileUtility::loadInt(data, position);
+    int tileEntityCount = Utility::loadInt(data, position);
     debugf("%d Tile entities to Load...", tileEntityCount);
     for (int i=0; i<tileEntityCount; i++) {
         tileEntityList.push_back(TileEntity::loadNew(data, position));

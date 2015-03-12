@@ -347,7 +347,7 @@ namespace Ui {
 				}
 
                 case '[':
-                    currentWorld->currentPlayer->hurt(1);
+                    currentWorld->currentPlayer->hurt(damDebug, 1);
                     break;
 
                 case ']':
@@ -425,7 +425,7 @@ namespace Ui {
 
             mvprintw(a, gameArea.x+1, "HP: %3d/%3d", hp, maxHp);
             Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
-            printw(" %s", StringUtility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
+            printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);
 
             a++;
@@ -435,7 +435,7 @@ namespace Ui {
 
             mvprintw(a, gameArea.x+1, "MP: %3d/%3d", mp, maxMp);
             Ui::setColor(C_LIGHT_BLUE);
-            printw(" %s", StringUtility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
+            printw(" %s", Utility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);
 
             a++;
@@ -445,23 +445,24 @@ namespace Ui {
                 string name = "EFFECT";
                 Ui::Color color = C_LIGHT_GREEN;
                 switch (eff.eId) {
-                    case effBleed:
-                        name = "Bleed";
-                        color = C_LIGHT_RED;
+                    case effDamage:{
+                        name = Weapon::damageTypeName((int)eff.meta);
+                        color = Weapon::damageTypeColor((int)eff.meta);
                         break;
+                    }
 
-                    case effFire:
-                        name = "Fire";
-                        color = C_LIGHT_YELLOW;
-                        break;
-
-                    case effRegen:
-                        name = "Regen";
+                    case effHeal:
+                        name = "Heal";
                         color = C_LIGHT_GREEN;
+                        break;
+
+                    case effBuff:
+                        name = "Buff TODO";
+                        color = C_LIGHT_BLUE;
                         break;
                 }
                 setColor(color);
-                mvprintw(a, gameArea.x+1, (name+" %s: %.2f").c_str(), ParsingUtility::intToRomanNumerals((int)eff.power).c_str(), eff.timeEnd-currentWorld->worldTime);
+                mvprintw(a, gameArea.x+1, (name+" %s: %.2f").c_str(), Utility::intToRomanNumerals((int)eff.power).c_str(), eff.timeLeft);
                 a++;
             }
 
@@ -471,7 +472,7 @@ namespace Ui {
 
             mvprintw(a, gameArea.x+1, "Time: %.2f", displayTime);
             a++;
-            mvprintw(a, gameArea.x+1, "Time: %s", ParsingUtility::intToRomanNumerals((int)displayTime).c_str());
+            mvprintw(a, gameArea.x+1, "Time: %s", Utility::intToRomanNumerals((int)displayTime).c_str());
             //mvprintw(11, gameArea.x+1, "Tick: %d", tick);
 
             a++;
@@ -498,7 +499,7 @@ namespace Ui {
                         const int maxHp = Math::roundToInt(aiEntity->getMaxHp());
                         mvprintw(a, gameArea.x+1, " HP: %d/%d", hp, maxHp);
                         Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
-                        printw(" %s", StringUtility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
+                        printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
                         Ui::setColor(C_WHITE);
                         a++;
                     }

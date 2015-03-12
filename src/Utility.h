@@ -12,7 +12,7 @@
 #include "Global.h"
 
 
-namespace FileUtility {
+namespace Utility {
 
     struct FileExceptionLoad{
         FileExceptionLoad(string description){
@@ -72,25 +72,37 @@ namespace FileUtility {
 
     string readTextFile(string path, string defaultString = "");
 
-}
 
-namespace StringUtility {
+
 
 
     string makeBar(int progress, int maxProgress, size_t size, char filled = '=', char empty = '-');
 
     string repeatString(string s, size_t qty);
-}
 
-namespace VariableUtility {
+
+
     
     
     template <typename T>
-    void swap(T& a, T& b);
-    
-}
+    void swap(T& a, T& b){
+        T& temp = a;
+        b = a;
+        a = temp;
+    }
 
-namespace ParsingUtility {
+
+    template <typename T>
+    bool vectorContains(vector<T> v, T c){
+        for(T i : v){
+            if(c == i){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+
 
     struct ParseException{
         ParseException(string reason){

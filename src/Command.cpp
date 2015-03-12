@@ -149,7 +149,7 @@ namespace Commands{
             return "Applies an effect to the player.";
         }
         string usage(){
-            return "effect <id> [duration] [power]";
+            return "effect <id> [duration] [power] [meta]";
         }
         string defaultName(){
             return "effect";
@@ -157,14 +157,17 @@ namespace Commands{
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
             MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
             if(mg){
-                Effect e = Effect(effBleed, mg->currentWorld->worldTime+10, 1, mg->currentWorld->worldTime);
+                Effect e = Effect(effDamage, 10, 1);
                 if(arguments.size() > 0){
-                    e.eId = ParsingUtility::parseInt(arguments[0].c_str());
+                    e.eId = Utility::parseInt(arguments[0].c_str());
                     if(arguments.size() > 1){
-                        e.timeEnd = mg->currentWorld->worldTime+ParsingUtility::parseInt(arguments[1].c_str());
+                        e.timeLeft = Utility::parseInt(arguments[1].c_str());
                     }
                     if(arguments.size() > 2){
-                        e.power = ParsingUtility::parseInt(arguments[2].c_str());
+                        e.power = Utility::parseInt(arguments[2].c_str());
+                    }
+                    if(arguments.size() > 3){
+                        e.meta = Utility::parseDouble(arguments[3].c_str());
                     }
                     mg->currentWorld->currentPlayer->addEffect(e);
                     debug("Applied Effect: "+e.toString());
@@ -191,7 +194,7 @@ namespace Commands{
             MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
             if(mg){
                 if(arguments.size() == 1){
-                    int amount = ParsingUtility::parseInt(arguments[0]);
+                    int amount = Utility::parseInt(arguments[0]);
                     mg->currentWorld->currentPlayer->gainXp(amount);
                     debug("Added "+to_string(amount)+"XP");
                     return true;

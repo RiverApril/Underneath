@@ -9,9 +9,8 @@
 #ifndef __Underneath__Ui__
 #define __Underneath__Ui__
 
+#include "Global.h"
 #include "Geometry.h"
-#include "Inventory.h"
-#include "Weapon.h"
 
 extern vector<string> consoleBuffer;
 

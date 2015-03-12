@@ -18,7 +18,6 @@ AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE){
 
 AiEntity::AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : Alive(name, icon, startPos, colorCode, maxHp) {
     this->ai = aiFlags;
-    this->moveDelay = .9;
 }
 
 AiEntity::~AiEntity() {
@@ -134,7 +133,7 @@ void AiEntity::runAi(double time, Level* level) {
 
 }
 
-double AiEntity::hurt(double amount, double damageMultiplier){
+double AiEntity::hurt(DamageType damageType, double amount, double damageMultiplier){
     agro = true;
     return Alive::hurt(amount, damageMultiplier);
 }
@@ -181,15 +180,15 @@ int AiEntity::getEntityTypeId(){
 
 void AiEntity::save(std::vector<unsigned char>* data){
     Alive::save(data);
-    FileUtility::saveInt(data, ai);
-    FileUtility::saveBool(data, agro);
+    Utility::saveInt(data, ai);
+    Utility::saveBool(data, agro);
     Point2::save(lastKnownTargetPos, data);
 }
 
 void AiEntity::load(unsigned char* data, int* position){
     Alive::load(data, position);
-    ai = FileUtility::loadInt(data, position);
-    agro = FileUtility::loadBool(data, position);
+    ai = Utility::loadInt(data, position);
+    agro = Utility::loadBool(data, position);
     lastKnownTargetPos = Point2::load(data, position);
 }
 

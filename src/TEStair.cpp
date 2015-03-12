@@ -12,15 +12,15 @@
 void TEStair::save(vector<unsigned char>* data){
     TileEntity::save(data);
 
-    FileUtility::saveBool(data, up);
-    FileUtility::saveString(data, levelName);
+    Utility::saveBool(data, up);
+    Utility::saveString(data, levelName);
 }
 
 void TEStair::load(unsigned char* data, int* position){
     TileEntity::load(data, position);
 
-    up = FileUtility::loadBool(data, position);
-    levelName = FileUtility::loadString(data, position);
+    up = Utility::loadBool(data, position);
+    levelName = Utility::loadString(data, position);
 }
 
 TEStair* TEStair::cloneUnsafe(TEStair* oldE, TEStair* newE){

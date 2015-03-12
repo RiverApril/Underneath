@@ -37,7 +37,7 @@ public:
     void runAi(double time, Level* level);
     bool update(double deltaTime, double time, Level* level);
 
-    virtual double hurt(double amount, double damageMultiplier = 1);
+    virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 
     virtual double hurt(Weapon* w, double time, double damageMultiplier = 1);
 
@@ -59,7 +59,7 @@ protected:
     Alive* target = nullptr;
 
     double lastMoveTime = 0;
-    double moveDelay = 1; //TODO should varry
+    double moveDelay = 2; //TODO should vary
 
     double lastAttackTime = 0;
 

@@ -12,6 +12,13 @@
 #include "Global.h"
 #include "Item.h"
 #include "Enchantment.h"
+#include "Ui.h"
+
+typedef int WeaponType;
+
+const WeaponType wepMelee = 0;
+const WeaponType wepRanged = 1;
+const WeaponType wepMagic = 2;
 
 typedef int DamageType;
 const DamageType damSharp = 0;
@@ -22,31 +29,75 @@ const DamageType damIce = 4;
 const DamageType damShock = 5;
 const DamageType damPoison = 6;
 const DamageType damBlood = 7;
-
-static string damageTypeToString(DamageType d){
-    switch(d){
-        case damSharp:
-            return "Sharp";
-        case damBlunt:
-            return "Blunt";
-        case damFire:
-            return "Fire";
-        case damIce:
-            return "Ice";
-        case damShock:
-            return "Shock";
-        case damPoison:
-            return "Poison";
-        case damBlood:
-            return "Blood";
-        default:
-            return "Undefined";
-    }
-}
+const DamageType damDebug = 8;
 
 
 class Weapon : public Item {
 public:
+
+    static string damageTypeName(DamageType d){
+        switch(d){
+            case damSharp:
+                return "Sharp";
+            case damBlunt:
+                return "Blunt";
+            case damPierce:
+                return "Pierce";
+            case damFire:
+                return "Fire";
+            case damIce:
+                return "Ice";
+            case damShock:
+                return "Shock";
+            case damPoison:
+                return "Poison";
+            case damBlood:
+                return "Blood";
+            case damDebug:
+                return "Debug";
+            default:
+                return "Undefined";
+        }
+    }
+
+    static Ui::Color damageTypeColor(DamageType d){
+        switch(d){
+            case damSharp:
+                return Ui::C_LIGHT_GRAY;
+            case damBlunt:
+                return Ui::C_LIGHT_GRAY;
+            case damFire:
+                return Ui::C_LIGHT_YELLOW;
+            case damIce:
+                return Ui::C_LIGHT_CYAN;
+            case damShock:
+                return Ui::C_LIGHT_MAGENTA;
+            case damPoison:
+                return Ui::C_LIGHT_GREEN;
+            case damBlood:
+                return Ui::C_LIGHT_RED;
+            case damDebug:
+                return Ui::C_WHITE;
+            default:
+                return Ui::C_WHITE;
+        }
+    }
+    
+    static string enchantmentName(Enchantment e){
+        switch (e.effectId) {
+            case effDamage:
+                return damageTypeName((DamageType	)e.meta);
+
+            case effHeal:
+                return "Heal";
+
+            case effBuff:
+                return "Buff TODO";
+
+            default:
+                return "UNDEFINED";
+        }
+    }
 
 
     static Weapon* cloneUnsafe(Weapon* oldE, Weapon* newE = nullptr);
@@ -65,11 +116,6 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    Weapon* addEnchantment(EnchantmentId eId, int chance, int power){
-        enchantments.push_back(Enchantment(eId, chance ,power));
-        return this;
-    }
-
     Weapon* addEnchantment(Enchantment e){
         enchantments.push_back(e);
         return this;
@@ -87,6 +133,7 @@ public:
 
     double baseDamage = 1;
     DamageType damageType = damSharp;
+    WeaponType weaponType = wepMelee;
     double useDelay = 1;
     
     vector<Enchantment> enchantments;

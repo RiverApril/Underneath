@@ -26,19 +26,19 @@ Enchantment Enchantment::setMeta(double meta){
 }
 
 void Enchantment::save(vector<unsigned char>* data){
-    FileUtility::saveInt(data, effectId);
-    FileUtility::saveInt(data, chance);
-    FileUtility::saveDouble(data, power);
-    FileUtility::saveDouble(data, time);
-    FileUtility::saveDouble(data, meta);
+    Utility::saveInt(data, effectId);
+    Utility::saveInt(data, chance);
+    Utility::saveDouble(data, power);
+    Utility::saveDouble(data, time);
+    Utility::saveDouble(data, meta);
 }
 
 void Enchantment::load(unsigned char* data, int* position){
-    effectId = FileUtility::loadInt(data, position);
-    chance = FileUtility::loadInt(data, position);
-    power = FileUtility::loadDouble(data, position);
-    time = FileUtility::loadDouble(data, position);
-    meta = FileUtility::loadDouble(data, position);
+    effectId = Utility::loadInt(data, position);
+    chance = Utility::loadInt(data, position);
+    power = Utility::loadDouble(data, position);
+    time = Utility::loadDouble(data, position);
+    meta = Utility::loadDouble(data, position);
 }
 
 bool operator== (const Enchantment a, const Enchantment b){

@@ -17,13 +17,15 @@ typedef int EffectId;
 
 const EffectId effDamage = 0;
 const EffectId effHeal = 1;
-const EffectId effRegen = 2;
+const EffectId effBuff = 2;
 
 struct Effect{
 
     Effect(unsigned char* data, int* position);
 
-    Effect(EffectId eId, double timeEnd, double power, double currentTime);
+    Effect(EffectId eId, double timeLeft, double power);
+
+    Effect setMeta(double meta);
 
     string toString();
 
@@ -32,8 +34,7 @@ struct Effect{
     void load(unsigned char* data, int* position);
 
 	EffectId eId = effDamage;
-	double timeEnd = 0;
-	double lastTime = 0;
+	double timeLeft = 0;
     double power = 1;
     double meta = 0;
 };

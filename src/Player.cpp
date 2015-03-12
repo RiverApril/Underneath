@@ -41,13 +41,12 @@ bool Player::update(double deltaTime, double time, Level* level) {
         if(!outOfCombatHealing){
             lastHealTime = time;
             lastManaTime = time;
-            healDelay = .5;
-            manaDelay = .5;
             outOfCombatHealing = true;
+            updateVariablesForAbilities();
         }
     }else{
-        updateVariablesForAbilities();
         outOfCombatHealing = false;
+        updateVariablesForAbilities();
     }
     timeSinceHurt += deltaTime;
 
@@ -132,9 +131,10 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
         if(item != nullptr){
             Weapon* weapon = dynamic_cast<Weapon*>(item);
             Ranged* ranged = dynamic_cast<Ranged*>(item);
-            Spell* spell = dynamic_cast<Spell*>(item);
+            CombatSpell* spell = dynamic_cast<CombatSpell*>(item);
 
             if(ranged){
+
                 if(distanceSquared(pos, posOfEntity) > ranged->range*ranged->range){
                     console(Ui::colorCode(C_CODE_LIGHT_RED)+"Out of range!");
                     return 0;
@@ -143,11 +143,11 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
 
             double x = 1;
             if(weapon){
-                if(weapon->damageType == damMelee){
+                if(weapon->weaponType == wepMelee){
                     x = (double)abilities[iSTR] / (double)maxAbilities[iSTR];
-                }else if(weapon->damageType == damRanged){
+                }else if(weapon->weaponType == wepRanged){
                     x = (double)abilities[iDEX] / (double)maxAbilities[iDEX];
-                }else if(weapon->damageType == damMagic){
+                }else if(weapon->weaponType == wepMagic){
                     x = (double)abilities[iINT] / (double)maxAbilities[iINT];
                 }
             }
@@ -233,24 +233,24 @@ int Player::getEntityTypeId(){
 void Player::save(vector<unsigned char>* data){
     Alive::save(data);
     abilities.save(data);
-    FileUtility::saveInt(data, abilityPoints);
-    FileUtility::saveInt(data, level);
-    FileUtility::saveDouble(data, xp);
-    FileUtility::saveDouble(data, nextLevelXp);
-    FileUtility::saveInt(data, timeSinceHurt);
-    FileUtility::saveBool(data, outOfCombatHealing);
+    Utility::saveInt(data, abilityPoints);
+    Utility::saveInt(data, level);
+    Utility::saveDouble(data, xp);
+    Utility::saveDouble(data, nextLevelXp);
+    Utility::saveInt(data, timeSinceHurt);
+    Utility::saveBool(data, outOfCombatHealing);
 
 }
 
 void Player::load(unsigned char* data, int* position){
     Alive::load(data, position);
     abilities.load(data, position);
-    abilityPoints = FileUtility::loadInt(data, position);
-    level = FileUtility::loadInt(data, position);
-    xp = FileUtility::loadDouble(data, position);
-    nextLevelXp = FileUtility::loadDouble(data, position);
-    timeSinceHurt = FileUtility::loadInt(data, position);
-    outOfCombatHealing = FileUtility::loadBool(data, position);
+    abilityPoints = Utility::loadInt(data, position);
+    level = Utility::loadInt(data, position);
+    xp = Utility::loadDouble(data, position);
+    nextLevelXp = Utility::loadDouble(data, position);
+    timeSinceHurt = Utility::loadInt(data, position);
+    outOfCombatHealing = Utility::loadBool(data, position);
 }
 
 double Player::useDelay(Item* item){

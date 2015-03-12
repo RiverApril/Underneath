@@ -14,38 +14,39 @@ Effect::Effect(unsigned char* data, int* position){
     load(data, position);
 }
 
-Effect::Effect(EffectId eId, double timeEnd, double power, double currentTime){
+Effect::Effect(EffectId eId, double timeLeft, double power){
     this->eId = eId;
-    this->timeEnd = timeEnd;
+    this->timeLeft = timeLeft;
     this->power = power;
-    this->lastTime = currentTime;
+}
+
+Effect Effect::setMeta(double meta){
+    this->meta = meta;
+    return *this;
 }
 
 string Effect::toString(){
-    return formatString("id: %d, timeEnd: %.2f, power: %.2f, lastTime: %.2f", eId, timeEnd, power, lastTime);
+    return formatString("id: %d, timeLeft: %.2f, power: %.2f", eId, timeLeft, power);
 }
 
 void Effect::save(vector<unsigned char>* data){
-    FileUtility::saveInt(data, eId);
-    FileUtility::saveDouble(data, timeEnd);
-    FileUtility::saveDouble(data, power);
-    FileUtility::saveDouble(data, lastTime);
-    FileUtility::saveDouble(data, meta);
+    Utility::saveInt(data, eId);
+    Utility::saveDouble(data, timeLeft);
+    Utility::saveDouble(data, power);
+    Utility::saveDouble(data, meta);
 }
 
 void Effect::load(unsigned char* data, int* position){
-    eId = FileUtility::loadInt(data, position);
-    timeEnd = FileUtility::loadDouble(data, position);
-    power = FileUtility::loadDouble(data, position);
-    lastTime = FileUtility::loadDouble(data, position);
-    meta = FileUtility::loadDouble(data, position);
+    eId = Utility::loadInt(data, position);
+    timeLeft = Utility::loadDouble(data, position);
+    power = Utility::loadDouble(data, position);
+    meta = Utility::loadDouble(data, position);
 }
 
 bool operator== (const Effect a, const Effect b){
 	return a.eId == b.eId
-    && a.lastTime == b.lastTime
+    && a.timeLeft == b.timeLeft
     && a.power == b.power
-    && a.timeEnd == b.timeEnd
     && a.meta == b.meta;
 }
 

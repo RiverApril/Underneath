@@ -8,7 +8,7 @@
 
 #include "Inventory.h"
 #include "Ui.h"
-#include "Spell.h"
+#include "CombatSpell.h"
 #include "Math.h"
 
 
@@ -43,17 +43,17 @@ namespace Ui{
         Item* item;
         Weapon* weapon;
         Ranged* ranged;
-        Spell* spell;
+        CombatSpell* spell;
         int y = 3;
         for(int i=minI;i<maxI;i++){
             item = inv->inventory[i];
             weapon = dynamic_cast<Weapon*>(item);
             ranged = dynamic_cast<Ranged*>(item);
-            spell = dynamic_cast<Spell*>(item);
+            spell = dynamic_cast<CombatSpell*>(item);
             if(i == selected){
                 setColor(C_BLACK, C_WHITE);
             }
-            mvprintw(y, columnName, "%s%s", activeWeapon!=nullptr?(item == activeWeapon?"E ":"  "):"", item->getExtendedName().c_str());
+            mvprintw(y, columnName, "%s%s", activeWeapon!=nullptr?(item == activeWeapon?"E ":"  "):"", item->name.c_str());
             mvprintw(y, columnQty-4, "%4s", (to_string(item->qty)).c_str());
             //mvprintw(y, columnWeight+1, "%2.1f", item->weight);
 
@@ -75,7 +75,7 @@ namespace Ui{
             if(item){
                 weapon = dynamic_cast<Weapon*>(item);
                 ranged = dynamic_cast<Ranged*>(item);
-                spell = dynamic_cast<Spell*>(item);
+                spell = dynamic_cast<CombatSpell*>(item);
 
                 int a = 3;
 
@@ -90,7 +90,7 @@ namespace Ui{
                 }
                 setColor(C_WHITE, C_BLACK);
 
-                mvprintw(a++, columnInfo, "Name: %s", item->getExtendedName().c_str());
+                mvprintw(a++, columnInfo, "Name: %s", item->name.c_str());
                 if(item == activeWeapon){
                     mvprintw(terminalSize.y-1, columnInfo, "-Equipped");
                 }else{
@@ -103,7 +103,7 @@ namespace Ui{
                 mvprintw(a++, columnInfo, "Weight: %.2f", item->weight);
                 if(weapon){
                     mvprintw(a++, columnInfo, "Damage: %.2f", weapon->baseDamage);
-                    mvprintw(a++, columnInfo, "Type: %s", Weapon::damageTypeToString(weapon->damageType).c_str());
+                    mvprintw(a++, columnInfo, "Damage Type: %s", Weapon::damageTypeName(weapon->damageType).c_str());
                     mvprintw(a++, columnInfo, "Use Delay: %.2f (d/t: %.2f)", weapon->useDelay, (weapon->baseDamage/weapon->useDelay));
                     if(ranged){
                         mvprintw(a++, columnInfo, "Range: %.2f", ranged->range);
@@ -111,11 +111,11 @@ namespace Ui{
                             mvprintw(a++, columnInfo, "Mana Cost: %d (d/m: %.2f)", spell->manaCost, (spell->baseDamage/(double)spell->manaCost));
                         }
                     }
-                    if(weapon->enchantments.size() > 0){
+                    if(!spell && weapon->enchantments.size() > 0){
                         a++;
                         mvprintw(a++, columnInfo, "Enchantments: ");
                         for(Enchantment e : weapon->enchantments){
-                            mvprintw(a++, columnInfo, "   %s x%d (%d)", Weapon::enchantmentIdToString(e.eId).c_str(), e.power, e.chance);
+                            mvprintw(a++, columnInfo, "   %s x%d (1/%d for %.2f)", Weapon::enchantmentName(e).c_str(), e.power, e.chance, e.time);
                         }
                         a++;
                     }

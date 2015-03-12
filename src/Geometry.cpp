@@ -126,12 +126,12 @@ string Point2::toString() {
 }
 
 void Point2::save(Point2 p, vector<unsigned char>* data){
-    FileUtility::saveInt(data, p.x);
-    FileUtility::saveInt(data, p.y);
+    Utility::saveInt(data, p.x);
+    Utility::saveInt(data, p.y);
 }
 
 Point2 Point2::load(unsigned char* data, int* position){
-    return Point2(FileUtility::loadInt(data, position), FileUtility::loadInt(data, position));
+    return Point2(Utility::loadInt(data, position), Utility::loadInt(data, position));
 }
 
 //Point3:
@@ -230,13 +230,13 @@ string Point3::toString() {
 }
 
 void Point3::save(vector<unsigned char>* data){
-    FileUtility::saveInt(data, x);
-    FileUtility::saveInt(data, y);
-    FileUtility::saveInt(data, z);
+    Utility::saveInt(data, x);
+    Utility::saveInt(data, y);
+    Utility::saveInt(data, z);
 }
 
 Point3 Point3::load(unsigned char* data, int* position){
-    return Point3(FileUtility::loadInt(data, position), FileUtility::loadInt(data, position), FileUtility::loadInt(data, position));
+    return Point3(Utility::loadInt(data, position), Utility::loadInt(data, position), Utility::loadInt(data, position));
 }
 
 //Vector2:

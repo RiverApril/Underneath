@@ -47,31 +47,31 @@ namespace Arts{
         Arts::artScroll = Arts::loadNew(ArtDir+"/scroll");
 
         Arts::artKnife = Arts::loadNew(ArtDir+"/knife");
-        ItemGenerator::wKnife->artIndex = Arts::artKnife;
+        //ItemGenerator::wKnife->artIndex = Arts::artKnife;
 
         Arts::artShortSword = Arts::loadNew(ArtDir+"/shortsword");
-        ItemGenerator::wShortSword->artIndex = Arts::artShortSword;
+        //ItemGenerator::wShortSword->artIndex = Arts::artShortSword;
 
         Arts::artMase = Arts::loadNew(ArtDir+"/mace");
-        ItemGenerator::wMace->artIndex = Arts::artMase;
+        //ItemGenerator::wMace->artIndex = Arts::artMase;
 
         Arts::artSpear = Arts::loadNew(ArtDir+"/spear");
-        ItemGenerator::wSpear->artIndex = Arts::artSpear;
+        //ItemGenerator::wSpear->artIndex = Arts::artSpear;
 
         Arts::artBattleAxe = Arts::loadNew(ArtDir+"/battleaxe");
-        ItemGenerator::wBattleAxe->artIndex = Arts::artBattleAxe;
+        //ItemGenerator::wBattleAxe->artIndex = Arts::artBattleAxe;
 
         Arts::artLongSword = Arts::loadNew(ArtDir+"/longsword");
-        ItemGenerator::wLongSword->artIndex = Arts::artLongSword;
+        //ItemGenerator::wLongSword->artIndex = Arts::artLongSword;
 
         Arts::artLongbow = Arts::loadNew(ArtDir+"/longbow");
-        ItemGenerator::wLongbow->artIndex = Arts::artLongbow;
+        //ItemGenerator::wLongbow->artIndex = Arts::artLongbow;
 
         Arts::artRecurveBow = Arts::loadNew(ArtDir+"/recurvebow");
-        ItemGenerator::wRecurveBow->artIndex = Arts::artRecurveBow;
+        //ItemGenerator::wRecurveBow->artIndex = Arts::artRecurveBow;
 
         Arts::artCrossbow = Arts::loadNew(ArtDir+"/crossbow");
-        ItemGenerator::wCrossbow->artIndex = Arts::artCrossbow;
+        //ItemGenerator::wCrossbow->artIndex = Arts::artCrossbow;
 
         Arts::artCoin = Arts::loadNew(ArtDir+"/coin");
         ItemGenerator::iCoin->artIndex = Arts::artCoin;

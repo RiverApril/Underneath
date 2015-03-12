@@ -10,22 +10,42 @@
 #define __Underneath__ItemGenerator__
 
 
-#include "Spell.h"
+#include "CombatSpell.h"
 
 
 namespace ItemGenerator {
 
+    struct Condition{
+        
+        Condition(){}
+
+        Condition(vector<string> names, double damMin, double damMax, double udMin, double udMax, double wMin, double wMax, vector<WeaponType> weaponTypes){
+            this->names = names;
+            this->damage.x = damMin;
+            this->damage.y = damMax;
+            this->useDelay.x = udMin;
+            this->useDelay.y = udMax;
+            this->weight.x = wMin;
+            this->weight.y = wMax;
+            this->applicableWeaponTypes = weaponTypes;
+        }
+        vector<string> names = {""};
+        Vector2 damage;
+        Vector2 useDelay;
+        Vector2 weight;
+        vector<WeaponType> applicableWeaponTypes;
+    };
+
     struct WeaponBase{
 
-        WeaponBase(){
+        WeaponBase(){}
 
-        }
-
-        WeaponBase(vector<string> names, double damage, double useDelay, DamageType damageType){
+        WeaponBase(vector<string> names, double damage, double useDelay, DamageType damageType, WeaponType weaponType){
             this->names = names;
             this->damage = damage;
             this->useDelay = useDelay;
             this->damageType = damageType;
+            this->weaponType = weaponType;
         }
 
         WeaponBase ranged(double range){
@@ -46,15 +66,19 @@ namespace ItemGenerator {
 
         double damage = 0;
         double useDelay = 0;
-        double weight = 0;
+        double weight = 1;
         vector<string> names = {""};
         DamageType damageType = damSharp;
+        WeaponType weaponType = wepMelee;
         double range = -1;
         double manaCost = -1;
     };
 
+    Condition atl(Condition w);
     WeaponBase atl(WeaponBase w);
 
+
+    extern vector<Condition> conditionList;
     extern vector<WeaponBase> weaponList;
 
     extern Item* iCoin;
@@ -68,19 +92,27 @@ namespace ItemGenerator {
     extern WeaponBase wBow;
     extern WeaponBase wCrossbow;
 
-    extern WeaponBase wFireSpell;
-    extern WeaponBase wFrostSpell;
-    extern WeaponBase wShockSpell;
+    extern WeaponBase wFireCombatSpell;
+    extern WeaponBase wFrostCombatSpell;
+    extern WeaponBase wShockCombatSpell;
 
 
     vector<Item*> createRandLoots(int difficulty);
 
-    Weapon* createWeaponRand(int itemDifficulty);
+    Weapon* createRandWeapon(int itemDifficulty);
 
     WeaponBase getRandWeaponBase(DamageType d);
     WeaponBase getRandWeaponBase();
 
-    Weapon* createWeapon(WeaponBase);
+    Weapon* createWeaponFromBase(WeaponBase base, int itemDifficulty);
+
+    Weapon* createWeaponFromType(WeaponType w, int itemDifficulty);
+
+    Weapon* applyConditionToWeapon(Weapon* w, Condition c, int itemDifficulty, bool prependName = true);
+
+    Weapon* applyRandConditionToWeapon(Weapon * w, int itemDifficulty, bool prependName = true);
+
+    Weapon* createRandWeapon(int itemDifficulty);
     
 
     void initItemTemplates();

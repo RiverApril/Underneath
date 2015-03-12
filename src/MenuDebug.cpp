@@ -47,11 +47,11 @@ namespace Ui {
 
         a++;
 
-        for(Weapon* w : ItemGenerator::weaponList){
-            mvprintw(a, column0, "%s", w->getExtendedName().c_str());
-            mvprintw(a, column1, "%.2f", w->baseDamage);
-            mvprintw(a, column2, "%.2f", w->useDelay);
-            mvprintw(a, column3, "%.2f", w->baseDamage / w->useDelay);
+        for(ItemGenerator::WeaponBase w : ItemGenerator::weaponList){
+            mvprintw(a, column0, "%s", w.names[0].c_str());
+            mvprintw(a, column1, "%.2f", w.damage);
+            mvprintw(a, column2, "%.2f", w.useDelay);
+            mvprintw(a, column3, "%.2f", w.damage / w.useDelay);
             a++;
         }
 

@@ -12,7 +12,7 @@
 void Potion::save(vector<unsigned char>* data){
 	Item::save(data);
 
-	FileUtility::saveInt(data, (int)effects.size());
+	Utility::saveInt(data, (int)effects.size());
 	for (Effect e : effects){
 		e.save(data);
 	}
@@ -21,7 +21,7 @@ void Potion::save(vector<unsigned char>* data){
 void Potion::load(unsigned char* data, int* position){
 	Item::load(data, position);
 
-	int size = FileUtility::loadInt(data, position);
+	int size = Utility::loadInt(data, position);
 	effects.clear();
 	repeat(size, i){
 		effects.push_back(Effect(data, position));
