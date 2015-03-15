@@ -7,6 +7,182 @@
 //
 
 #include "LevelGenerator.h"
+#include "EnemyGenerator.h"
+
+
+Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLevel) {
+
+    genDebugPos = 1;
+
+
+    srand(seed);
+
+    int attemt = 0;
+
+    bool pathNotFound = false;
+
+    Point2 stairDownPos;
+
+    do{
+
+        do{
+
+            for (int i=0; i<size.x; i++) {
+                for (int j=0; j<size.y; j++) {
+                    tileGrid[i][j].index = (int8_t)Tiles::tileUnset->getIndex();
+                    tileGrid[i][j].explored = false;
+                    //tileGrid[i][j].entity = nullptr;
+                    if(i==0 || j==0 || i==(size.x-1) || j==(size.y-1)){
+                        tileGrid[i][j].index = (int8_t)Tiles::tileWall->getIndex();
+                    }
+                }
+            }
+            genDebug("generating...  attemt #"+to_string(attemt));
+            attemt++;
+
+
+            vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(stairUpPos, 1000, size);
+            LevelGenerator::makeRoomsAndPaths(rooms, this);
+
+            genDebug("generated");
+
+            for (size_t i = 0; i<rooms->size(); i++){
+                delete rooms->at(i);
+            }
+            delete rooms;
+
+
+        }while(tileAt(stairUpPos)->getIndex() != Tiles::tileFloor->getIndex());
+
+
+        pathNotFound = false;
+
+        int dist = (size.xPlusY()) / 2;
+        attemt = 0;
+        while(true){
+            genDebug("looking for exit location  attemt #"+to_string(attemt));
+            attemt++;
+            stairDownPos = findRandomOfType(Tiles::tileFloor->getIndex());
+            //stairUpPos = findRandomOfType(tileFloor->getIndex());
+            if((distanceSquared(stairUpPos, stairDownPos) > (dist*dist)) && canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
+                break;
+            }else{
+                dist--;
+                genDebug("distance between entance and exit: "+to_string(dist));
+                if(dist < ((size.xPlusY() / 2) / 10)){
+                    pathNotFound = true;
+                    break;
+                }
+            }
+        }
+
+    }while(pathNotFound);
+
+    genDebug("found path");
+
+    genDebug("Filling chests...");
+    for (int i=0; i<size.x; i++) {
+        for (int j=0; j<size.y; j++) {
+            if(tileGrid[i][j].index == (int8_t)Tiles::tileChest->getIndex()){
+                TEChest* te = new TEChest(Point2(i, j));
+                te->addItems(ItemGenerator::createRandLoots(difficulty));
+                tileEntityList.push_back(te);
+            }
+        }
+    }
+
+    setTile(stairUpPos, Tiles::tileStairUp);
+    setTile(stairDownPos, Tiles::tileStairDown);
+    if(previousLevel.size() > 0){
+        tileEntityList.push_back(new TEStair(stairUpPos, true, previousLevel));
+    }
+    tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor"+to_string(Utility::parseInt(name.substr(5))+1)));
+
+    for(TileEntity* e : tileEntityList){
+        debugf("TileEntity id: %d", e->getTileEntityTypeId());
+    }
+
+
+    vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
+    for(Point2 pe : path){
+        if(!tileAt(pe)->isSolid()){
+            setTile(pe, Tiles::tileDebug1);
+        }
+    }
+
+    //return stairUpPos;
+
+    genDebug("adding entities...");
+
+    /*
+
+     {
+     AiEntity* e = new AiEntity("Rat", aiMoveRandom | aiFleeFromPlayer, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
+     e->viewDistance = 6;
+     e->setMoveDelay(Math::randomRange(.5, 1.5));
+
+     int count = (rand()%20)+10;
+     for(int i=0;i<count;i++){
+
+     placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
+
+     }
+
+     }
+
+
+     {
+     AiEntity* e = new AiEntity ("Goblin", aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
+     e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damMelee));
+     e->setMoveDelay(Math::randomRange(.5, 1.5));
+
+     int count = (rand()%80)+20;
+     for(int i=0;i<count;i++){
+     placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
+     }
+     }
+
+     {
+     AiEntity* e = new AiEntity ("Troll", aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
+     e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damMelee));
+     e->setMoveDelay(Math::randomRange(.5, 1.5));
+
+     int count = (rand()%20)+20;
+     for(int i=0;i<count;i++){
+     placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
+     }
+     }
+
+     {
+
+     AiEntity* e = new AiEntity ("Goblin Archer", aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 8);
+     e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damRanged));
+     e->setMoveDelay(Math::randomRange(.5, 1.5));
+
+     int count = (rand()%40)+20;
+     for(int i=0;i<count;i++){
+
+     placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
+     }
+     }
+
+     */
+    //
+
+    EnemyGenerator::setIntervals(difficulty);
+
+    int count = (rand()%(200))+100;
+    for(int i=0;i<count;i++){
+        placeNewAiEntity(EnemyGenerator::makeRandomEntity(difficulty), stairUpPos);
+    }
+    
+    genDebug("done");
+    
+    
+    return stairUpPos;
+    
+    
+}
 
 
 namespace LevelGenerator{
@@ -18,7 +194,7 @@ namespace LevelGenerator{
                   (b->center.y-b->radius.y-border) > (a->center.y+a->radius.y+border)));
     }
 
-    Room* createRoom(Point2 roomSize, vector<Room*>* presentRooms){
+    Room* createRoom(Point2 roomSize, vector<Room*>* presentRooms, Point2 pos){
         bool fit = false;
         Room* r = new Room();
         int att = 0;
@@ -26,8 +202,13 @@ namespace LevelGenerator{
             att++;
             r->radius.x = (rand()%6)+3;
             r->radius.y = (rand()%6)+3;
-            r->center.x = (rand()%(roomSize.x-(r->radius.x*2)))+r->radius.x;
-            r->center.y = (rand()%(roomSize.y-(r->radius.y*2)))+r->radius.y;
+            if(pos == Point2Neg1){
+                r->center.x = (rand()%(roomSize.x-(r->radius.x*2)))+r->radius.x;
+                r->center.y = (rand()%(roomSize.y-(r->radius.y*2)))+r->radius.y;
+            }else{
+                r->center.x = pos.x;
+                r->center.y = pos.y;
+            }
             fit = true;
 			for (size_t i = 0; i<presentRooms->size(); i++){
                 if(roomsOverlap(presentRooms->at(i), r, 2)){
@@ -63,16 +244,18 @@ namespace LevelGenerator{
                     }
                 }
                 if(!tooClose){*/
-                    r->entrances->push_back(e);
+                r->entrances->push_back(e);
                 //}
             }
         }
         return r;
     }
 
-    vector<Room*>* createRooms(int qty, Point2 roomSize){
+    vector<Room*>* createRooms(Point2 startPos, int maxQty, Point2 roomSize){
         vector<Room*>* rooms = new vector<Room*>();
-        for(int i=0;i<qty;i++){
+        Room* centerRoom = createRoom(roomSize, rooms, startPos);
+        rooms->push_back(centerRoom);
+        for(int i=1;i<maxQty;i++){
             Room* r = createRoom(roomSize, rooms);
             if(r->radius.x > 0 && r->radius.y > 0){
                 rooms->push_back(r);

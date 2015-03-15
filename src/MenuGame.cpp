@@ -18,6 +18,9 @@
 #include "Controls.h"
 #include "Ranged.h"
 
+#define currentPlayer currentWorld->currentPlayer
+#define currentLevel currentWorld->currentLevel
+
 
 namespace Ui {
 
@@ -37,11 +40,11 @@ namespace Ui {
         viewPos = Point2Zero;
         viewMoveSpeed = Point2(2, 1);
 
-        /*if(currentWorld->currentLevel != nullptr){
-        	currentWorld->currentLevel->setAndUnsetDisplayEntities();
+        /*if(currentLevel != nullptr){
+        	currentLevel->setAndUnsetDisplayEntities();
         }*/
         if(initSuccess){
-            currentWorld->currentLevel->menuGame = this;
+            currentLevel->menuGame = this;
         }
 
         viewUpdate();
@@ -127,8 +130,8 @@ namespace Ui {
     void MenuGame::viewUpdate() {
         if(mode == modePlayerControl) {
             
-            if(currentWorld->currentPlayer != nullptr){
-                viewPos = currentWorld->currentPlayer->pos - (gameArea/2);
+            if(currentPlayer != nullptr){
+                viewPos = currentPlayer->pos - (gameArea/2);
             }
         }
     }
@@ -141,24 +144,24 @@ namespace Ui {
 
 
         bool inView = false;
-        if(currentWorld->currentLevel != nullptr){
-            if(currentWorld->currentPlayer != nullptr) {
-                if(currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, p, currentWorld->currentPlayer->viewDistance, true)) {
-                    currentWorld->currentLevel->setExplored(p, true);
+        if(currentLevel != nullptr){
+            if(currentPlayer != nullptr) {
+                if(currentLevel->canSee(currentPlayer->pos, p, currentPlayer->viewDistance, true)) {
+                    currentLevel->setExplored(p, true);
                     inView = true;
-                }if(!currentWorld->currentLevel->getExplored(p)) {
+                }if(!currentLevel->getExplored(p)) {
                     symbol = ' ';
                 }else{
-                    Tile* tempTile = currentWorld->currentLevel->tileAt(p);
+                    Tile* tempTile = currentLevel->tileAt(p);
 
                     fg = tempTile->getFgColor(inView);
                     bg = tempTile->getBgColor(inView);
                     symbol = tempTile->getIcon();
 
-                    if(currentWorld->currentLevel->inRange(p)) {
+                    if(currentLevel->inRange(p)) {
                         Entity* e = nullptr;
                         int d = INT16_MIN;
-                        for(Entity* ei : currentWorld->currentLevel->entityList){
+                        for(Entity* ei : currentLevel->entityList){
                             if(ei->pos == p){
                                 int dd = ei->getRenderDepth();
                                 if(d < dd){
@@ -170,27 +173,27 @@ namespace Ui {
                         if(e != nullptr) {
 
                             if(inView) {
-                                if(currentWorld->currentPlayer == e && mode == modeInterectChoose){
+                                if(currentPlayer == e && mode == modeInterectChoose){
                                     fg = e->getBgColorCode();
                                     bg = e->getFgColorCode();
                                 }else{
                                     fg = e->getFgColorCode();
                                     bg = e->getBgColorCode();
                                 }
-                                symbol = e->getIcon(p, tick, currentWorld->currentLevel);
+                                symbol = e->getIcon(p, tick, currentLevel);
                             }
 
                         }
                     }
                 }
-                Ranged* ranged = dynamic_cast<Ranged*>(currentWorld->currentPlayer->getActiveWeapon());
+                Ranged* ranged = dynamic_cast<Ranged*>(currentPlayer->getActiveWeapon());
                 if(ranged){
                     if(mode == modeSelectTarget){
                         if(p == targetPosition){
                             bg = C_LIGHT_GREEN;
                             attr = A_BLINK;
                         }
-                        if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, p, ranged->range, false) && inView) {
+                        if(!currentLevel->canSee(currentPlayer->pos, p, ranged->range, false) && inView) {
                             if(p == targetPosition){
                                 bg = C_LIGHT_RED;
                             }
@@ -199,6 +202,19 @@ namespace Ui {
                             }
                         }
 
+                    }else if(mode == modeJumpSelectTarget){
+                        if(p == targetPosition){
+                            bg = C_LIGHT_BLUE;
+                            attr = A_BLINK;
+                        }
+                        if(!currentLevel->canSee(currentPlayer->pos, p, ranged->range, false) && inView) {
+                            if(p == targetPosition){
+                                bg = C_LIGHT_RED;
+                            }
+                            if(bg == C_BLACK){
+                                bg = C_DARK_RED;
+                            }
+                        }
                     }
                 }
 
@@ -217,9 +233,9 @@ namespace Ui {
             targetPosition += p;
         }if(mode == modeInterectChoose){
 
-            Item* i = *useItem!=-1?(currentWorld->currentPlayer->inventory[*useItem]):currentWorld->currentPlayer->getActiveWeapon();
+            Item* i = *useItem!=-1?(currentPlayer->inventory[*useItem]):currentPlayer->getActiveWeapon();
             
-            timePassed += currentWorld->currentPlayer->interact(currentWorld->currentLevel, currentWorld->currentPlayer->pos+p, false, i);
+            timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos+p, false, i);
 
             *useItem = -1;
 
@@ -228,136 +244,152 @@ namespace Ui {
         }else if(mode == modeAdjustBorder){
             borderSize -= p;
             setGameAreaSize();
-        } else if(mode == modePlayerControl && currentWorld->currentPlayer != nullptr && currentWorld->currentLevel != nullptr){
+        } else if(mode == modePlayerControl && currentPlayer != nullptr && currentLevel != nullptr){
 
-            timePassed += currentWorld->currentPlayer->moveRelative(p, currentWorld->currentLevel);
+            timePassed += currentPlayer->moveRelative(p, currentLevel);
             
+        } else if(mode == modeJumpSelectTarget){
+            Point2 temp = Point2Zero;
+            if(targetEntity){
+            	temp = targetEntity->pos;
+            }else{
+                temp = currentPlayer->pos;
+            }
+            temp += p;
+            vector<Entity*> list = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, {currentPlayer, targetEntity}, temp, p);
+            if(list.size() > 0){
+                targetEntity = list[0];
+                targetPosition = targetEntity->pos;
+            }else if(!targetEntity){
+                mode = modePlayerControl;
+                targetEntity = nullptr;
+                targetPosition = Point2Zero;
+            }else{
+                targetPosition = targetEntity->pos;
+            }
         }
     }
 
     void MenuGame::handleInput(int in) {
-        switch (in) {
-            case KEY_RESIZE:
-                setGameAreaSize();
-                break;
+        if(in == KEY_RESIZE){
+            setGameAreaSize();
 
-            case ERR:
-                break;
+        }else if(in == ERR){
 
-            case KEY_ESCAPE: //Escape
-                if(currentWorld->currentPlayer == nullptr){
-                    WorldLoader::deleteWorld(currentWorld->name);
-                    
-                    delete currentWorld;
-                    currentWorld = nullptr;
-
-                    closeAllMenus();
-					return;
-                }else{
-                    openMenu(new MenuYesNo("Do you want to save '"+currentWorld->name+"' ?", saveAnswer, true));
-                }
-                break;
-
-            case Key::moveUp:
-                arrowMove(Point2Up);
-                break;
-
-            case Key::moveDown:
-                arrowMove(Point2Down);
-                break;
-
-            case Key::moveLeft:
-                arrowMove(Point2Left);
-                break;
-
-            case Key::moveRight:
-                arrowMove(Point2Right);
-                break;
-
-            case Key::inventory:
-                if(currentWorld->currentPlayer != nullptr){
-                	openMenu(new MenuInv(currentWorld->currentPlayer, currentWorld, useItem));
-                }
-                break;
-
-			case Key::statsMenu:
-                if(currentWorld->currentPlayer != nullptr){
-                	openMenu(new MenuStats(currentWorld->currentPlayer, currentWorld));
-                }
-                break;
-
-			case Key::debugMenu:
-                if(currentWorld->currentPlayer != nullptr){
-                    openMenu(new MenuDebug(currentWorld));
-                }
-                break;
-
-			case Key::adjustConsole:
-                if(mode == modeAdjustBorder){
-                    mode = modePlayerControl;
-                }else{
-                    mode = modeAdjustBorder;
-                }
-                break;
+        }else if(in == KEY_ESCAPE){
+            if(currentPlayer == nullptr){
+                WorldLoader::deleteWorld(currentWorld->name);
                 
-            case '\n':
-                if(!consoleInputMode){
-                    consoleInputMode = true;
-                }
-                break;
+                delete currentWorld;
+                currentWorld = nullptr;
 
-            default:
-                break;
+                closeAllMenus();
+                return;
+            }else{
+                openMenu(new MenuYesNo("Do you want to save '"+currentWorld->name+"' ?", saveAnswer, true));
+            }
+
+        }else if(in == Key::moveUp){
+            arrowMove(Point2Up);
+
+        }else if(in == Key::moveDown){
+            arrowMove(Point2Down);
+
+        }else if(in == Key::moveLeft){
+            arrowMove(Point2Left);
+
+        }else if(in == Key::moveRight){
+            arrowMove(Point2Right);
+
+        }else if(in == Key::inventory){
+            if(currentPlayer != nullptr){
+                openMenu(new MenuInv(currentPlayer, currentWorld, useItem));
+            }
+
+        }else if(in == Key::statsMenu){
+            if(currentPlayer != nullptr){
+                openMenu(new MenuStats(currentPlayer, currentWorld));
+            }
+
+        }else if(in == Key::debugMenu){
+            if(currentPlayer != nullptr){
+                openMenu(new MenuDebug(currentWorld));
+            }
+
+        }else if(in == Key::adjustConsole){
+            if(mode == modeAdjustBorder){
+                mode = modePlayerControl;
+            }else{
+                mode = modeAdjustBorder;
+            }
+
+        }else if(in == '\n'){
+            if(!consoleInputMode){
+                consoleInputMode = true;
+            }
+
         }
-        if(currentWorld != nullptr && currentWorld->currentPlayer != nullptr && currentWorld->currentLevel != nullptr){
-            switch (in) {
+        if(currentWorld != nullptr && currentPlayer != nullptr && currentLevel != nullptr){
+            if(mode == modeJumpSelectTarget && (in == 'f' || in == Key::interact)){
 
-                case Key::interact:
+                if(targetEntity){
+                    if(currentLevel->canSee(currentPlayer->pos, targetEntity->pos, currentPlayer->viewDistance, false)){
+                        timePassed += currentPlayer->interactWithEntity(currentLevel, targetEntity, targetEntity->pos, currentPlayer->getActiveWeapon());
+                    }
+                }
+
+                mode = modePlayerControl;
+                
+            }else if(in == 'f'){
+                Ranged* ranged = dynamic_cast<Ranged*>(currentPlayer->getActiveWeapon());
+                if(ranged && mode != modeJumpSelectTarget){
+                    mode = modeJumpSelectTarget;
+                    if(!targetEntity){
+                        arrowMove(Point2Zero);
+                    }else{
+                        if(currentLevel->canSee(currentPlayer->pos, targetEntity->pos, currentPlayer->viewDistance, false)){
+                            targetPosition = targetEntity->pos;
+                        }else{
+                            targetPosition = Point2Zero;
+                        }
+                    }
+                }
+
+            }else if(in == Key::interact){
                     if(mode == modeInterectChoose){
 
-                        timePassed += currentWorld->currentPlayer->interact(currentWorld->currentLevel, currentWorld->currentPlayer->pos, false, currentWorld->currentPlayer->getActiveWeapon());
+                        timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->getActiveWeapon());
 
                         mode = modePlayerControl;
                     }else if(mode == modeSelectTarget){
 
-                        timePassed += currentWorld->currentPlayer->interact(currentWorld->currentLevel, targetPosition, false, currentWorld->currentPlayer->getActiveWeapon());
+                        timePassed += currentPlayer->interact(currentLevel, targetPosition, false, currentPlayer->getActiveWeapon());
 
                         mode = modePlayerControl;
                     }else{
-                        Ranged* ranged = dynamic_cast<Ranged*>(currentWorld->currentPlayer->getActiveWeapon());
+                        Ranged* ranged = dynamic_cast<Ranged*>(currentPlayer->getActiveWeapon());
                         if(ranged){
                             mode = modeSelectTarget;
-                            if(!currentWorld->currentLevel->canSee(currentWorld->currentPlayer->pos, targetPosition, ranged->range, false)){
-                            	targetPosition = currentWorld->currentPlayer->pos;
+                            if(!currentLevel->canSee(currentPlayer->pos, targetPosition, ranged->range, false)){
+                            	targetPosition = currentPlayer->pos;
                             }
                         }else{
                         	mode = modeInterectChoose;
                         }
                     }
-                    break;
-
-				case Key::wait5:
+            }else if(in == Key::wait5){
                     timePassed += 5;
-					break;
 
-				case 'r':{
-					Point2 p = currentWorld->currentLevel->findRandomWithoutFlag(tileFlagSolid);
-					timePassed += currentWorld->currentPlayer->moveAbsalute(p, currentWorld->currentLevel);
-					break;
-				}
+            }else if(in == 'r'){
+                Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
+                timePassed += currentPlayer->moveAbsalute(p, currentLevel);
 
-                case '[':
-                    currentWorld->currentPlayer->hurt(damDebug, 1);
-                    break;
+            }else if(in == '['){
+                currentPlayer->hurt(damDebug, 1);
 
-                case ']':
-                    currentWorld->currentPlayer->heal(1);
-                    break;
+            }else if(in == ']'){
+                currentPlayer->heal(1);
 
-
-
-                default:
-                    break;
             }
         }
     }
@@ -373,7 +405,7 @@ namespace Ui {
         if(timePassed > 0) {
             currentWorld->worldTime += timePassed;
             timePassed = 0;
-            currentWorld->currentLevel->update(currentWorld->worldTime - currentWorld->worldLastTime, currentWorld->worldTime, viewPos);
+            currentLevel->update(currentWorld->worldTime - currentWorld->worldLastTime, currentWorld->worldTime, viewPos);
             render(currentWorld->worldTime);
 
             currentWorld->worldLastTime = currentWorld->worldTime;
@@ -408,15 +440,15 @@ namespace Ui {
 
         int a = 0;
 
-        if(currentWorld->currentPlayer != nullptr){
+        if(currentPlayer != nullptr){
 
-            p = currentWorld->currentPlayer->pos;
-            mvprintw(a, gameArea.x+1, "%s", currentWorld->currentPlayer->getName().c_str());
+            p = currentPlayer->pos;
+            mvprintw(a, gameArea.x+1, "%s", currentPlayer->getName().c_str());
 
-            const int hp = Math::roundToInt(currentWorld->currentPlayer->getHp());
-            const int maxHp = Math::roundToInt(currentWorld->currentPlayer->getMaxHp());
-            const int mp = Math::roundToInt(currentWorld->currentPlayer->getMp());
-            const int maxMp = Math::roundToInt(currentWorld->currentPlayer->getMaxMp());
+            const int hp = Math::roundToInt(currentPlayer->getHp());
+            const int maxHp = Math::roundToInt(currentPlayer->getMaxHp());
+            const int mp = Math::roundToInt(currentPlayer->getMp());
+            const int maxMp = Math::roundToInt(currentPlayer->getMaxMp());
 
             a++;
 
@@ -440,8 +472,8 @@ namespace Ui {
 
             a++;
 
-            for(size_t i=0;i<currentWorld->currentPlayer->effects.size();i++){
-                Effect eff = currentWorld->currentPlayer->effects[i];
+            for(size_t i=0;i<currentPlayer->effects.size();i++){
+                Effect eff = currentPlayer->effects[i];
                 string name = "EFFECT";
                 Ui::Color color = C_LIGHT_GREEN;
                 switch (eff.eId) {
@@ -481,7 +513,7 @@ namespace Ui {
             move(a, gameArea.x+1);
             clrtoeol();
 
-            vector<Entity*> nearestEntities = currentWorld->currentLevel->getAllVisableEntitiesSortedByNearest(currentWorld->currentPlayer->pos, currentWorld->currentPlayer->viewDistance, currentWorld->currentPlayer);
+            vector<Entity*> nearestEntities = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
 
             for(size_t i=0; i<nearestEntities.size() && a<terminalSize.y; i++){
                 Entity* nearestEntity = nearestEntities[i];
@@ -489,7 +521,7 @@ namespace Ui {
                     Ui::setColor(C_WHITE);
                     mvprintw(a, gameArea.x+1, "%s [", nearestEntity->getName().c_str());
                     Ui::setColor(nearestEntity->getFgColorCode(), nearestEntity->getBgColorCode());
-                    printw("%c", nearestEntity->getIcon(nearestEntity->pos, currentWorld->worldTime, currentWorld->currentLevel));
+                    printw("%c", nearestEntity->getIcon(nearestEntity->pos, currentWorld->worldTime, currentLevel));
                     Ui::setColor(C_WHITE);
                     printw("]");
                     a++;
@@ -514,9 +546,9 @@ namespace Ui {
         }
 
 
-        if(currentWorld->currentLevel != nullptr){
+        if(currentLevel != nullptr){
             Ui::setColor(C_DARK_GRAY);
-            mvprintw(gameArea.y, 0, "%d, %d  e: %d  te: %d  p: %s   %s", p.x, p.y, currentWorld->currentLevel->entityCount(), currentWorld->currentLevel->tileEntityList.size(), (currentWorld->currentPlayer == nullptr)?"null":"not null", currentWorld->currentLevel->getName().c_str());
+            mvprintw(gameArea.y, 0, "%d, %d  e: %d  te: %d  p: %s   %s", p.x, p.y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr)?"null":"not null", currentLevel->getName().c_str());
         }
 
 

@@ -26,6 +26,7 @@ namespace Commands{
             return name.compare(defaultName()) == 0;
         }
         virtual bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
+            console("WARNING: Command not overloading execute.");
             return false;
         }
 

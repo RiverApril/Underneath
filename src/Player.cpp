@@ -37,7 +37,7 @@ bool Player::update(double deltaTime, double time, Level* level) {
     if(dead){
         level->currentWorld->currentPlayer = nullptr;
     }
-    if(timeSinceHurt > 10){
+    if(timeSinceCombat > 10){
         if(!outOfCombatHealing){
             lastHealTime = time;
             lastManaTime = time;
@@ -48,7 +48,7 @@ bool Player::update(double deltaTime, double time, Level* level) {
         outOfCombatHealing = false;
         updateVariablesForAbilities();
     }
-    timeSinceHurt += deltaTime;
+    timeSinceCombat += deltaTime;
 
     return Alive::update(deltaTime, time, level);
 }
@@ -134,9 +134,11 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
             CombatSpell* spell = dynamic_cast<CombatSpell*>(item);
 
             if(ranged){
-
                 if(distanceSquared(pos, posOfEntity) > ranged->range*ranged->range){
                     console(Ui::colorCode(C_CODE_LIGHT_RED)+"Out of range!");
+                    return 0;
+                }else if(!level->canSee(pos, posOfEntity, viewDistance, false)){
+                    console(Ui::colorCode(C_CODE_LIGHT_RED)+"No line of sight!");
                     return 0;
                 }
             }
@@ -156,9 +158,9 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
                 if(mp >= spell->manaCost){
                     mp -= spell->manaCost;
 
-                    double d = a->hurt(spell, level->currentWorld->worldTime, x+1);
+                    timeSinceCombat = 0;
+                    double d = a->hurt(spell, x+1);
                     Verbalizer::attack(this, a, spell, d);
-                    //consolef("Dealt %.2f damage.", d);
 
                     return useDelay(item);
                 }
@@ -167,10 +169,9 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
             }
 
             if(weapon){
-
-                double d = a->hurt(weapon, level->currentWorld->worldTime, x+1);
+                timeSinceCombat = 0;
+                double d = a->hurt(weapon, x+1);
                 Verbalizer::attack(this, a, weapon, d);
-                //consolef("Dealt %.2f damage.", d);
 
                 return useDelay(item);
             }
@@ -220,7 +221,7 @@ Player* Player::cloneUnsafe(Player* oldE, Player* newE){
     newE->level = oldE->level;
     newE->xp = oldE->xp;
     newE->nextLevelXp = oldE->nextLevelXp;
-    newE->timeSinceHurt = oldE->timeSinceHurt;
+    newE->timeSinceCombat = oldE->timeSinceCombat;
     newE->outOfCombatHealing = oldE->outOfCombatHealing;
 
     return newE;
@@ -237,7 +238,7 @@ void Player::save(vector<unsigned char>* data){
     Utility::saveInt(data, level);
     Utility::saveDouble(data, xp);
     Utility::saveDouble(data, nextLevelXp);
-    Utility::saveInt(data, timeSinceHurt);
+    Utility::saveInt(data, timeSinceCombat);
     Utility::saveBool(data, outOfCombatHealing);
 
 }
@@ -249,7 +250,7 @@ void Player::load(unsigned char* data, int* position){
     level = Utility::loadInt(data, position);
     xp = Utility::loadDouble(data, position);
     nextLevelXp = Utility::loadDouble(data, position);
-    timeSinceHurt = Utility::loadInt(data, position);
+    timeSinceCombat = Utility::loadInt(data, position);
     outOfCombatHealing = Utility::loadBool(data, position);
 }
 

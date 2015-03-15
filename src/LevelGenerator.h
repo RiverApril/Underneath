@@ -47,9 +47,9 @@ namespace LevelGenerator{
 
     extern bool roomsOverlap(Room* a, Room* b, int border);
 
-    extern Room* createRoom(Point2 roomSize, vector<Room*>* presentRooms);
+    extern Room* createRoom(Point2 roomSize, vector<Room*>* presentRooms, Point2 pos = Point2Neg1);
 
-    extern vector<Room*>* createRooms(int qty, Point2 roomSize);
+    extern vector<Room*>* createRooms(Point2 startPos, int maxQty, Point2 roomSize);
 
     extern void makeRoomsAndPaths(vector<Room*>* rooms, Level* level);
 

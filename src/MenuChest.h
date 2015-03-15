@@ -29,6 +29,7 @@ namespace Ui {
         World* currentWorld;
         int scrollOffset = 0;
         int selected = 0;
+        bool selectedLeft = true;
 
 
         const int columnName = 1;

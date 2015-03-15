@@ -58,7 +58,7 @@ public:
 
     virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 
-    virtual double hurt(Weapon* w, double time, double damageMultiplier = 1);
+    virtual double hurt(Weapon* w, double damageMultiplier = 1);
 
     void addEffect(Effect e);
 

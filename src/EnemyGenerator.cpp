@@ -7,7 +7,6 @@
 //
 
 #include "EnemyGenerator.h"
-#include "ItemGenerator.h"
 
 
 namespace EnemyGenerator{
@@ -16,51 +15,54 @@ namespace EnemyGenerator{
 
     int total = 0;
 
-    AiEntity* eGoblinScout;
-    AiEntity* eGoblinWarrior;
-
 
     void initEnemies(){
 
-        eGoblinScout = new AiEntity ("Goblin Scout", aiAttackPlayer, 'g', Point2Zero, Ui::C_LIGHT_GREEN, 50);
-        eGoblinScout->setActiveWeapon(ItemGenerator::createWeaponFromBase(ItemGenerator::wKnife, 0));
-        eGoblinScout->setMoveDelay(.5);
+        atl(WeightedEnemy(100, "Goblin Scout", 'g', aiAttackPlayer, 50, ItemGenerator::wKnife, Ui::C_LIGHT_GREEN, 1.0));
 
-        eGoblinWarrior = new AiEntity ("Goblin Warrior", aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 75);
-        eGoblinWarrior->setActiveWeapon(ItemGenerator::createWeaponFromBase(ItemGenerator::wSword, 0));
-        eGoblinWarrior->setMoveDelay(.75);
+        atl(WeightedEnemy(50, "Goblin Warrier", 'w', aiAttackPlayer, 75, ItemGenerator::wSword, Ui::C_DARK_GREEN, 1.0));
 
-        atl(eGoblinScout, 10);
-        atl(eGoblinWarrior, 20);
+        atl(WeightedEnemy(50, "Goblin Archer", 'a', aiAttackPlayer, 25, ItemGenerator::wBow, Ui::C_LIGHT_GREEN, 1.0));
 
-        total = 0;
-        for(WeightedEnemy we : enemyWeightList){
-            we.interval = total;
-            total += we.weight;
-        }
+        atl(WeightedEnemy(20, "Troll", 't', aiAttackPlayer, 100, ItemGenerator::wMace, Ui::C_LIGHT_RED, 1.5, 1));
+
+        atl(WeightedEnemy(2, "Wraith", ' ', aiAttackPlayer, 200, ItemGenerator::wSword, Ui::C_BLACK, 2.0, 2));
+
+        
+
 
     }
 
     void cleanupEnemies(){
-        for(WeightedEnemy we : enemyWeightList){
-            delete we.e;
+
+    }
+
+    void atl(WeightedEnemy we){
+        enemyWeightList.push_back(we);
+    }
+
+    void setIntervals(int difficulty){
+        total = 0;
+        for(int i=0;i<enemyWeightList.size();i++){
+            total += (&enemyWeightList[i])->weight * ((&enemyWeightList[i])->difficultyWeightMulti * (difficulty+1));
+            (&enemyWeightList[i])->interval = total;
         }
     }
 
-    void atl(AiEntity* e, int weight){
-        enemyWeightList.push_back(WeightedEnemy(e, weight));
-    }
-
-    AiEntity* makeRandomEntity(){
+    AiEntity* makeRandomEntity(int difficulty){
+        
         int r = rand()%total;
         WeightedEnemy last = enemyWeightList[0];
         for(WeightedEnemy we : enemyWeightList){
             if(we.interval > r){
-                return last.e;
+                last = we;
+                break;
             }
-            last = we;
+            debugf("r: %d  total: %d  we's interval: %d", r, total, we.interval);
         }
-        return dynamic_cast<AiEntity*>(Entity::clone(enemyWeightList[0].e));
+        AiEntity* e = new AiEntity(last.name, last.ai, last.icon, Point2Zero, last.color, last.maxHp);
+        e->setActiveWeapon(ItemGenerator::createWeaponFromBase(last.weaponBase, difficulty+last.weaponDifficultyAdd));
+        return dynamic_cast<AiEntity*>(e);
     }
 
 }

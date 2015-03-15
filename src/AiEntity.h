@@ -30,7 +30,7 @@ public:
 
     AiEntity();
 
-    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
+    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 1);
 
     ~AiEntity();
 
@@ -39,7 +39,7 @@ public:
 
     virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 
-    virtual double hurt(Weapon* w, double time, double damageMultiplier = 1);
+    virtual double hurt(Weapon* w, double damageMultiplier = 1);
 
     virtual void save(std::vector<unsigned char>* data);
 

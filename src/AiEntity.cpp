@@ -12,7 +12,7 @@
 #include "Level.h"
 #include "Verbalizer.h"
 
-AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE){
+AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1){
 
 }
 
@@ -91,43 +91,36 @@ void AiEntity::runAi(double time, Level* level) {
     }
 
     bool attack = false;
-    if(!moved){
-        if(ai & aiAttackPlayer){
-            if(activeWeapon != nullptr){
-                if(distanceSquared(pos, target->pos) <= 1){
-                    
-                    attack = true;
-                }else{
-                    Ranged* r = dynamic_cast<Ranged*>(activeWeapon);
-                    if(r){
-                        if(level->canSee(pos, target->pos, Math::min(r->range, (double)viewDistance), false)){
-                            attack = true;
-                        }
-                        
+    if(ai & aiAttackPlayer){
+        if(activeWeapon != nullptr){
+            if(distanceSquared(pos, target->pos) <= 1){
+                attack = true;
+            }else{
+                Ranged* r = dynamic_cast<Ranged*>(activeWeapon);
+                if(r){
+                    if(level->canSee(pos, target->pos, Math::min(r->range, (double)viewDistance), false)){
+                        attack = true;
                     }
                     
                 }
-            }
-        }
-        if(attack){
-            while(lastAttackTime + activeWeapon->useDelay <= time){
-                double d = target->hurt(activeWeapon, time);
-                Verbalizer::attack(this, target, activeWeapon, d);
-                lastAttackTime += activeWeapon->useDelay;
+                
             }
         }
     }
-
-    if(!attack){
-        if(activeWeapon != nullptr){
-            while(lastAttackTime + activeWeapon->useDelay <= time){
-                lastAttackTime += activeWeapon->useDelay;
-            }
-        }else{
-            while(lastAttackTime + 1 <= time){
-                lastAttackTime += 1;
-            }
+    if(attack){
+        while(lastAttackTime + activeWeapon->useDelay <= time){
+            double d = target->hurt(activeWeapon);
+            Verbalizer::attack(this, target, activeWeapon, d);
+            lastAttackTime += activeWeapon->useDelay;
         }
+    }
+
+    if(activeWeapon != nullptr){
+        while(lastAttackTime + activeWeapon->useDelay <= time){
+            lastAttackTime += activeWeapon->useDelay;
+        }
+    }else{
+        lastAttackTime = time;
     }
 
 
@@ -135,12 +128,12 @@ void AiEntity::runAi(double time, Level* level) {
 
 double AiEntity::hurt(DamageType damageType, double amount, double damageMultiplier){
     agro = true;
-    return Alive::hurt(amount, damageMultiplier);
+    return Alive::hurt(damageType, amount, damageMultiplier);
 }
 
-double AiEntity::hurt(Weapon* w, double time, double damageMultiplier){
+double AiEntity::hurt(Weapon* w, double damageMultiplier){
     agro = true;
-    return Alive::hurt(w, time, damageMultiplier);
+    return Alive::hurt(w, damageMultiplier);
 }
 
 bool AiEntity::update(double deltaTime, double time, Level* level) {
@@ -170,6 +163,8 @@ AiEntity* AiEntity::cloneUnsafe(AiEntity* oldE, AiEntity* newE){
 
     newE->ai = oldE->ai;
     newE->agro = oldE->agro;
+    newE->lastMoveTime = oldE->lastMoveTime;
+    newE->lastAttackTime = oldE->lastAttackTime;
     
     return newE;
 }
@@ -182,6 +177,8 @@ void AiEntity::save(std::vector<unsigned char>* data){
     Alive::save(data);
     Utility::saveInt(data, ai);
     Utility::saveBool(data, agro);
+    Utility::saveDouble(data, lastMoveTime);
+    Utility::saveDouble(data, lastAttackTime);
     Point2::save(lastKnownTargetPos, data);
 }
 
@@ -189,6 +186,8 @@ void AiEntity::load(unsigned char* data, int* position){
     Alive::load(data, position);
     ai = Utility::loadInt(data, position);
     agro = Utility::loadBool(data, position);
+    lastMoveTime = Utility::loadDouble(data, position);
+    lastAttackTime = Utility::loadDouble(data, position);
     lastKnownTargetPos = Point2::load(data, position);
 }
 

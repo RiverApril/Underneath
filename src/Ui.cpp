@@ -22,20 +22,17 @@ void debug(string s){
 }
 
 void console(string s){
-    if(s.find('\n') == string::npos){
-
-        size_t lastI = 0;
-        for(size_t i=0;i<s.length();i++){
-            if(s[i] == '\n'){
-                consoleBuffer.push_back(s.substr(lastI, i-lastI));
-                lastI = i+1;
-            }
+    size_t lastI = 0;
+    for(size_t i=0;i<s.length();i++){
+        if(s[i] == '\n'){
+            consoleBuffer.push_back(s.substr(lastI+1, i-lastI));
+            lastI = i;
+        }else if(i-lastI > Ui::terminalSize.x - 4){
+            consoleBuffer.push_back(s.substr(lastI, i-lastI));
+            lastI = i;
         }
-        consoleBuffer.push_back(s.substr(lastI));
-
-    }else{
-    	consoleBuffer.push_back(s);
     }
+    consoleBuffer.push_back(s.substr(lastI));
 }
 
 

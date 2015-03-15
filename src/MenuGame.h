@@ -53,12 +53,14 @@ namespace Ui {
         int* useItem = new int(-1);
 
         Point2 targetPosition = Point2Zero;
+        Entity* targetEntity = nullptr;
 
 
         const int modePlayerControl = 0;
 		const int modeAdjustBorder = 1;
 		const int modeInterectChoose = 2;
-		const int modeSelectTarget = 3;
+        const int modeSelectTarget = 3;
+        const int modeJumpSelectTarget = 4;
 		int mode = modePlayerControl;
 
     };

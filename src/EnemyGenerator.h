@@ -9,16 +9,32 @@
 #ifndef __Underneath__EnemyGenerator__
 #define __Underneath__EnemyGenerator__
 
+#include "ItemGenerator.h"
 #include "AiEntity.h"
 
 namespace EnemyGenerator{
 
     struct WeightedEnemy{
-        WeightedEnemy(AiEntity* e, int weight){
-            this->e = e;
+        WeightedEnemy(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase weaponBase, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0){
             this->weight = weight;
+            this->name = name;
+            this->icon = icon;
+            this->ai = ai;
+            this->maxHp = maxHp;
+            this->weaponBase = weaponBase;
+            this->color = color;
+            this->difficultyWeightMulti = difficultyWeightMulti;
+
         }
-        AiEntity* e;
+        string name = "";
+        char icon = '?';
+        AiType ai = 0;
+        int maxHp = 10;
+        int color = Ui::C_LIGHT_RED;
+        ItemGenerator::WeaponBase weaponBase;
+        int weaponDifficultyAdd = 0;
+        double difficultyWeightMulti = 1;
+
         int weight = 0;
         int interval = 0;
     };
@@ -26,17 +42,16 @@ namespace EnemyGenerator{
     extern vector<WeightedEnemy> enemyWeightList;
 
     extern int total;
-
-    extern AiEntity* eGoblinScout;
-    extern AiEntity* eGoblinWarrior;
 	
     void initEnemies();
 
     void cleanupEnemies();
 
-    void atl(AiEntity* e, int weight);
+    void atl(WeightedEnemy we);
 
-    AiEntity* makeRandomEntity();
+    void setIntervals(int difficulty);
+
+    AiEntity* makeRandomEntity(int difficulty);
     
 }
 

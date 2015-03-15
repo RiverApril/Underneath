@@ -57,13 +57,13 @@ namespace AbilityDetails{
     };
 
     static const string abilityInfo[abilityCount] = {
-        "Strength: Affects Melee attack damage.",
-        "Dexterity: Affects Ranged attack damage.",
-        "Intelligence: Affects Magic attack damage.",
-        "Agility: Affects Dodge Chance and Attack Speed.",
-        "Speed: Affects Movement Speed.",
-        "Constitution: Affects Max Health and Regeneration Speed.",
-        "Wisdom: Affects Max Mana and Regeneration Speed."
+        "Affects Melee attack damage.",
+        "Affects Ranged attack damage.",
+        "Affects Magic attack damage.",
+        "Affects Dodge Chance and Attack Speed.",
+        "Affects Movement Speed.",
+        "Affects Max Health.",
+        "Affects Max Mana."
     };
 
 

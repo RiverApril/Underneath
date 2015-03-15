@@ -43,8 +43,8 @@ namespace ItemGenerator {
         wMace = atl(WeaponBase({"Mace", "Flail", "Hammer"}, 1.5, 1.5, damBlunt, wepMelee));
         wSpear = atl(WeaponBase({"Spear", "Halberd"}, 1.3, 1.3, damPierce, wepMelee).ranged(1.8).setWeight(2.5));
 
-        wBow = atl(WeaponBase({"Longbow", "Shortbow", "Recurve Bow"}, 1, 1, damPierce, wepRanged).ranged(20).setWeight(1.5));
-        wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, 1.2, 0.8, damPierce, wepRanged).ranged(10).setWeight(2));
+        wBow = atl(WeaponBase({"Longbow", "Shortbow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5));
+        wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2));
 
         wFireCombatSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .1, damFire, wepMagic).magical(8, 5).setWeight(.1));
         wFrostCombatSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .1, damIce, wepMagic).magical(8, 5).setWeight(.1));
@@ -53,7 +53,7 @@ namespace ItemGenerator {
 
         Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, 1, 1, {wepMelee, wepRanged}));
         Condition cNormal = atl(Condition({"Standard", "Normal", "Regular", "Stock"}, 1, 1, 1, 1, 1, 1, {wepMelee, wepRanged}));
-        Condition cForged = atl(Condition({"Forged", "Crafted"}, 1.2, 1.4, 1, 1, 1, 1, {wepMelee, wepRanged}));
+        Condition cForged = atl(Condition({"Forged", "Crafted"}, 1.4, 1.6, 1, 1, 1, 1, {wepMelee, wepRanged}));
         Condition cFortified = atl(Condition({"Fortified", "Strengthened", "Reinforced"}, 1.8, 2.2, 1.1, 1.1, 1.3, 1.6, {wepMelee, wepRanged}));
         Condition cHeavy = atl(Condition({"Heavy", "Overweight", "Obese", "Dense"}, 1, 1.1, 1.3, 1.5, 2, 3, {wepMelee, wepRanged}));
 
@@ -143,11 +143,12 @@ namespace ItemGenerator {
         w->useDelay = base.useDelay;
         w->weight = base.weight;
         w->name = name;
+        w->artIndex = Arts::getArtFromName(name);
         w->damageType = base.damageType;
         w->weaponType = base.weaponType;
 
         w->baseDamage *= ((itemDifficulty) * .25)+1;
-        w->baseDamage *= Random::randDouble(.9, 1.1);
+        w->baseDamage *= Random::randDouble(4, 6);
 
         return w;
     }
@@ -176,7 +177,7 @@ namespace ItemGenerator {
     }
 
     Weapon* createRandWeapon(int itemDifficulty){
-        WeaponType wType = Random::choose<WeaponType>(3, wepMelee, wepRanged, wepMagic);
+        WeaponType wType = rand()%3;
         WeaponBase base = getRandWeaponBase(wType);
         Weapon* w = createWeaponFromBase(base, itemDifficulty);
 

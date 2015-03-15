@@ -65,6 +65,8 @@ public:
     Entity* getClosestVisableEntity(Point2 origin, double range, Entity* notMe = nullptr);
     vector<Entity*> getAllVisableEntitiesSortedByNearest(Point2 origin, double range, Entity* notMe);
 
+    vector<Entity*> getAllVisableEntitiesSortedByNearest(Point2 origin, double range, vector<Entity*> notMes, Point2 nearestTo, Point2 inDirection);
+
     bool canSee(Point2 origin, Point2 test, double range, bool withWalls);
 
     size_t entityCount();
@@ -88,7 +90,7 @@ public:
     void actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity);
 
     Point2 getSize(){
-        return *size;
+        return size;
     }
 
     int getDifficulty(){
@@ -111,7 +113,7 @@ public:
 
 private:
 
-    Point2* size;//TODO figure out if this needs to be a pointer
+    Point2 size;
 
     vector<vector<TileData> > tileGrid;
 

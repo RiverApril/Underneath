@@ -23,63 +23,46 @@ namespace Ui {
     }
 
     void MenuInv::handleInput(int in){
-        switch (in) {
-            case KEY_UP:
-                selected--;
-                break;
-
-            case KEY_DOWN:
-                selected++;
-                break;
-
-			case Key::drop:{
-                if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
-                    Item* drop;
-                    if(alive->inventory[selected]->qty == 1){
-                        drop = alive->inventory[selected];
-                    	alive->removeItem(alive->inventory[selected], false);
-                    }else{
-                        alive->inventory[selected]->qty -= 1;
-                        drop = Item::clone(alive->inventory[selected]);
-                        drop->qty = 1;
-                    }
-                    currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
-                }
-                break;
-            }
-
-			case Key::dropAll:{
-                if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
-                    Item* drop;
+        if(in == Key::uiUp){
+            selected--;
+        }else if(in == Key::uiDown){
+            selected++;
+        }else if(in == Key::drop){
+            if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
+                Item* drop;
+                if(alive->inventory[selected]->qty == 1){
                     drop = alive->inventory[selected];
                     alive->removeItem(alive->inventory[selected], false);
-                    currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
+                }else{
+                    alive->inventory[selected]->qty -= 1;
+                    drop = Item::clone(alive->inventory[selected]);
+                    drop->qty = 1;
                 }
-                break;
+                currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
             }
-
-			case Key::equip:{
-                Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
-                if(weapon){
-                    if(alive->getActiveWeapon() == weapon){
-                        alive->setActiveWeapon(nullptr);
-                    }else{
-                        alive->setActiveWeapon(weapon);
-                    }
+        }else if(in == Key::dropAll){
+            if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
+                Item* drop;
+                drop = alive->inventory[selected];
+                alive->removeItem(alive->inventory[selected], false);
+                currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
+            }
+        }else if(in == Key::equip){
+            Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
+            if(weapon){
+                if(alive->getActiveWeapon() == weapon){
+                    alive->setActiveWeapon(nullptr);
+                }else{
+                    alive->setActiveWeapon(weapon);
                 }
-                break;
             }
-
-			case Key::useOnWorld:{
-                *useItem = selected;
-                closeThisMenu();
-				return;
-            }
-
-            case KEY_ESCAPE:
-            case Key::inventory:
-                closeThisMenu();
-                return;
+        }else if(in == Key::useOnWorld){
+            *useItem = selected;
+            closeThisMenu();
+            return;
+        }else if(in == KEY_ESCAPE || in == Key::inventory){
+            closeThisMenu();
+            return;
         }
         if(selected<0){
             selected = 0;
@@ -92,7 +75,7 @@ namespace Ui {
 
     void MenuInv::update() {
 
-		Ui::drawInventory(alive, selected, scrollOffset, "Inventory", alive->getActiveWeapon());
+		Ui::drawInventory(alive, "Player", selected, scrollOffset, alive->getActiveWeapon());
 
 
         /*setColor(C_WHITE);

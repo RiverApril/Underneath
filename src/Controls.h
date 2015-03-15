@@ -14,25 +14,37 @@
 namespace Key{
 
 	//In Game
-	const int moveUp = KEY_UP;
-	const int moveDown = KEY_DOWN;
-	const int moveLeft = KEY_LEFT;
-	const int moveRight = KEY_RIGHT;
-	const int interact = 'g';
-	const int adjustConsole = '\\';
-	const int wait5 = 'h';
+    extern int moveUp;
+    extern int moveDown;
+    extern int moveLeft;
+    extern int moveRight;
+    extern int interact;
+    extern int adjustConsole;
+    extern int wait5;
 
 	//Open UI
-    const int inventory = 'i';
-	const int statsMenu = 's';
-	const int debugMenu = 'd';
+    extern int inventory;
+    extern int statsMenu;
+    extern int debugMenu;
 
+
+
+    //In Ui
+    extern int uiUp;
+    extern int uiDown;
+    extern int uiLeft;
+    extern int uiRight;
 
 	//In inventory
-	const int drop = 'd';
-	const int dropAll = 'D';
-	const int equip = 'e';
-	const int useOnWorld = 'u';
+    extern int drop;
+    extern int dropAll;
+    extern int equip;
+    extern int useOnWorld;
+
+    //In chest
+    extern int take;
+    extern int takeStack;
+    extern int takeAll;
 
 }
 

@@ -10,6 +10,8 @@
 #include "Alive.h"
 #include "MenuGame.h"
 #include "Utility.h"
+#include "ItemGenerator.h"
+
 
 
 namespace Commands{
@@ -170,11 +172,11 @@ namespace Commands{
                         e.meta = Utility::parseDouble(arguments[3].c_str());
                     }
                     mg->currentWorld->currentPlayer->addEffect(e);
-                    debug("Applied Effect: "+e.toString());
+                    console("Applied Effect: "+e.toString());
                     return true;
                 }
             }else{
-                debug("Must be ingame to apply.");
+                console("Must be ingame to apply.");
             }
             return false;
         }
@@ -188,7 +190,7 @@ namespace Commands{
             return "xp <amount>";
         }
         string defaultName(){
-            return "effect";
+            return "xp";
         }
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
             MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
@@ -196,15 +198,65 @@ namespace Commands{
                 if(arguments.size() == 1){
                     int amount = Utility::parseInt(arguments[0]);
                     mg->currentWorld->currentPlayer->gainXp(amount);
-                    debug("Added "+to_string(amount)+"XP");
+                    console("Added "+to_string(amount)+"XP");
                     return true;
                 }else{
-                    debug("Impropper use of command.");
+                    console("Impropper use of command.");
                 }
             }else{
-                debug("Must be ingame to add.");
+                console("Must be ingame to add.");
             }
             return false;
+        }
+    };
+
+    struct CommandGive : Command{
+        string help(){
+            return "Gives an item to the player";
+        }
+        string usage(){
+            return "give <weaponType> <difficulty>";
+        }
+        string defaultName(){
+            return "give";
+        }
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
+            MenuGame* mg = dynamic_cast<MenuGame*>(currentMenu);
+            if(mg){
+                if(arguments.size() == 2){
+                    int wepType = Utility::parseInt(arguments[0]);
+                    int diff = Utility::parseInt(arguments[1]);
+                    Item* i = ItemGenerator::createWeaponFromType(wepType, diff);
+                    mg->currentWorld->currentPlayer->addItem(i);
+                    consolef("Item given to %s", mg->currentWorld->currentPlayer->Entity::getName().c_str());
+                    return true;
+                }else{
+                    console("Impropper use of command.");
+                }
+            }else{
+                console("Must be ingame to add.");
+            }
+            return false;
+        }
+    };
+
+    struct CommandNextKey : Command{
+        string help(){
+            return "Waits for a key and gives info about it";
+        }
+        string usage(){
+            return "nextkey";
+        }
+        string defaultName(){
+            return "nextkey";
+        }
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
+            setColor(C_WHITE);
+            move(0, 0);
+            addstr("Waiting for key...");
+            int in = getch();
+            consolef("Key pressed: int(%d)  char(%c)", (char)in, in);
+            return true;
         }
     };
     
@@ -214,6 +266,8 @@ namespace Commands{
         commandList.push_back(new CommandDebug());
         commandList.push_back(new CommandEffect());
         commandList.push_back(new CommandXp());
+        commandList.push_back(new CommandGive());
+        commandList.push_back(new CommandNextKey());
     }
 
     void cleanupCommands(){

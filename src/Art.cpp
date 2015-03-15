@@ -129,6 +129,12 @@ namespace Arts{
         }
     }
 
+
+
+    int getArtFromName(string name){
+        return -1;
+    }
+
 }
 
 Point2 Art::calcSize(){

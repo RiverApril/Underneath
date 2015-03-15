@@ -33,6 +33,8 @@ namespace Arts{
     void cleanupArts();
 
     int loadNew(string name, string ext = "txt", string dot = ".");
+    
+    int getArtFromName(string name);
 
     Art* getArt(int index);
 

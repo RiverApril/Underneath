@@ -11,11 +11,6 @@
 
 #include "Weapon.h"
 
-const int columnPrefixChar = 0;
-const int columnName = 1;
-const int columnQty = 39;
-const int columnInfo = 40;
-
 struct Inventory{
 
     Inventory(){
@@ -76,7 +71,7 @@ struct Inventory{
 };
 
 namespace Ui{
-    void drawInventory(Inventory* inv, int selected, int scrollOffset, string display, Weapon* activeWeapon = nullptr);
+    void drawInventory(Inventory* inventory, string invDisplayName, int selectedY, int scrollOffset, Weapon* activeWeapon = nullptr, Inventory* playerInv = nullptr, bool selectedLeft = true);
 }
 
 #endif /* defined(__Underneath__Inventory__) */

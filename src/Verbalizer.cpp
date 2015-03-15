@@ -16,8 +16,8 @@ namespace Verbalizer {
         Player* playerAttacker = dynamic_cast<Player*>(attacker);
         Player* playerUnderAttack = dynamic_cast<Player*>(underAttack);
 
-        string attackerString = attacker->getName();
-        string underAttackString = underAttack->getName();
+        string attackerString = Ui::colorCode(C_CODE_LIGHT_BLUE) + attacker->getName();
+        string underAttackString = Ui::colorCode(C_CODE_LIGHT_BLUE) + underAttack->getName();
         string deals = "deals";
         string their = "their";
         string theSpace = "The ";
@@ -32,12 +32,10 @@ namespace Verbalizer {
         if(playerUnderAttack){
             underAttackString = "you";
         }
-        string verbal = theSpace +
-        Ui::colorCode(C_CODE_LIGHT_BLUE) + attackerString +
+        string verbal = theSpace + attackerString +
         Ui::colorCode(C_CODE_WHITE) + " " + deals +
         Ui::colorCode(C_CODE_LIGHT_GREEN) + " %.2f " +
-        Ui::colorCode(C_CODE_WHITE) + "damage to " +
-        Ui::colorCode(C_CODE_LIGHT_BLUE) + underAttackString +
+        Ui::colorCode(C_CODE_WHITE) + "damage to " + underAttackString +
         Ui::colorCode(C_CODE_WHITE) + " with " + their + " " +
         Ui::colorCode(C_CODE_LIGHT_RED) + weapon->name;
 

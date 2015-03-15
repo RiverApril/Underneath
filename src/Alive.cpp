@@ -77,18 +77,16 @@ double Alive::hurt(DamageType damageType, double amount, double damageMultiplier
     if(hp<=0 && !dead){
         die();
     }
-    //debug(name+" hp: "+to_string(hp));
     return amount;
 }
 
-double Alive::hurt(Weapon* w, double time, double damageMultiplier){
-    double d = w->baseDamage * Random::randDouble(.5, 1.5);
+double Alive::hurt(Weapon* w, double damageMultiplier){
+    double d = w->baseDamage * Random::randDouble(.5, 1);
     for(Enchantment ench : w->enchantments){
         if(rand()%ench.chance == 0){
             addEffect(Effect(ench.effectId, ench.time, ench.power).setMeta(ench.meta));
         }
     }
-    //consolef("Hurt %s %.2f hp.", name.c_str(), d);
     return hurt(w->damageType, d, damageMultiplier);
 }
 

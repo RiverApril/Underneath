@@ -13,6 +13,9 @@
 #include "Utility.h"
 #include "Art.h"
 
+#define from (selectedLeft?(Inventory*)chest:(Inventory*)user)
+#define to (selectedLeft?(Inventory*)user:(Inventory*)chest)
+
 namespace Ui {
 
     MenuChest::MenuChest(TEChest* chest, Alive* user, World* w) : Menu(){
@@ -22,68 +25,74 @@ namespace Ui {
     }
 
     void MenuChest::handleInput(int in){
-        switch (in) {
-            case KEY_UP:
-                selected--;
-                break;
+        if(in == Key::uiLeft || in == Key::uiRight){
+            selectedLeft = !selectedLeft;
 
-            case KEY_DOWN:
-                selected++;
-                break;
+        }else if(in == Key::uiUp){
+            selected--;
 
-            case 't':
-            case 'e':{
-                if(chest->inventory.size() > 0 && selected < chest->inventory.size()){
-                    Item* take;
-                    if(chest->inventory[selected]->qty == 1){
-                        take = chest->inventory[selected];
-                        chest->removeItem(chest->inventory[selected], false);
+        }else if(in == Key::uiDown){
+            selected++;
+
+        }else if(in == Key::equip){
+            if(!selectedLeft){
+                Weapon* weapon = dynamic_cast<Weapon*>(user->inventory[selected]);
+                if(weapon){
+                    if(user->getActiveWeapon() == weapon){
+                        user->setActiveWeapon(nullptr);
                     }else{
-                        chest->inventory[selected]->qty -= 1;
-                        take = Item::clone(chest->inventory[selected]);
-                        take->qty = 1;
+                        user->setActiveWeapon(weapon);
                     }
-                    user->addItem(take);
-
-                }
-                break;
-            }
-
-            case 'T':
-            case 'E':{
-                if(chest->inventory.size() > 0 && selected < chest->inventory.size()){
-                    Item* take;
-                    take = chest->inventory[selected];
-                    chest->removeItem(chest->inventory[selected], false);
-
-                    user->addItem(take);
-                }
-                break;
-            }
-
-            case 'R':{
-                if(chest->inventory.size() > 0){
-                    user->addItems(chest->inventory);
-                    chest->removeAllItems(false);
                 }
             }
+            MenuChest::handleInput(Key::take);
 
-            case KEY_ESCAPE:
-            case Key::inventory:
-                closeThisMenu();
-				return;
+        }else if(in == Key::take){
+            if(from->inventory.size() > 0 && selected < from->inventory.size()){
+                Item* take;
+                if(from->inventory[selected]->qty == 1){
+                    take = from->inventory[selected];
+                    from->removeItem(from->inventory[selected], false);
+                }else{
+                    from->inventory[selected]->qty -= 1;
+                    take = Item::clone(from->inventory[selected]);
+                    take->qty = 1;
+                }
+                to->addItem(take);
+
+            }
+
+        }else if(in == Key::takeStack){
+            if(from->inventory.size() > 0 && selected < from->inventory.size()){
+                Item* take;
+                take = from->inventory[selected];
+                from->removeItem(from->inventory[selected], false);
+
+                to->addItem(take);
+            }
+
+        }else if(in == Key::takeAll){
+            if(from->inventory.size() > 0){
+                to->addItems(from->inventory);
+                from->removeAllItems(false);
+            }
+
+        }else if(in == KEY_ESCAPE || in == Key::inventory){
+            closeThisMenu();
+            return;
         }
+        
         if(selected<0){
             selected = 0;
         }
-        if(selected >= chest->inventory.size()){
-            selected = (int)chest->inventory.size()-1;
+        if(selected >= from->inventory.size()){
+            selected = (int)from->inventory.size()-1;
         }
     }
 
     void MenuChest::update() {
 
-        Ui::drawInventory(chest, selected, scrollOffset, "Chest");
+        Ui::drawInventory(chest, "Chest", selected, scrollOffset, user->getActiveWeapon(), user, selectedLeft);
         
     }
 }

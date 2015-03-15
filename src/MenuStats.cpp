@@ -34,30 +34,23 @@ namespace Ui {
     }
 
     void MenuStats::handleInput(int in){
-        switch (in) {
-            case KEY_UP:
-                selected--;
-                break;
+        if(in == Key::uiUp){
+            selected--;
 
-            case KEY_DOWN:
-                selected++;
-                break;
+        }else if(in == Key::uiDown){
+            selected++;
 
-            case '\n':
-            case ' ':
-                if(player->abilityPoints > 0){
-                    if(player->abilities[selected] < player->maxAbilities[selected]){
-                        openMenu(new MenuYesNo(formatString("Are you sure you want to spend a skill point on %s?", abilityNames[selected].c_str()), shouldSpendPoint, true));
-                    }else{
-                        openMenu(new MenuMessage("Level Maxed."));
-                    }
+        }else if(in == '\n' || in == ' '){
+            if(player->abilityPoints > 0){
+                if(player->abilities[selected] < player->maxAbilities[selected]){
+                    openMenu(new MenuYesNo(formatString("Are you sure you want to spend a skill point on %s?", abilityNames[selected].c_str()), shouldSpendPoint, true));
+                }else{
+                    openMenu(new MenuMessage("Level Maxed."));
                 }
-                break;
+            }
+        }else if(in == KEY_ESCAPE || in == Key::statsMenu){
+            closeThisMenu();
 
-            case KEY_ESCAPE:
-            case Key::statsMenu:
-                closeThisMenu();
-                break;
         }
         if(selected<0){
             selected = 0;
@@ -87,7 +80,7 @@ namespace Ui {
             if(i==selected){
                 setColor(C_BLACK, C_WHITE);
             }
-            mvprintw(a++, 3, "%s: %3d", abilityNamesRightAligned[i].c_str(), player->abilities[i]);
+            mvprintw(a++, 3, "%s: %3d   %s", abilityNamesRightAligned[i].c_str(), player->abilities[i], abilityInfo[i].c_str());
             if(i==selected){
                 setColor(C_WHITE);
             }

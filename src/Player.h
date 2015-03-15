@@ -54,27 +54,25 @@ public:
     virtual void load(unsigned char* data, int* position);
 
     virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1){
-        timeSinceHurt = 0;
-        return Alive::hurt(amount, damageMultiplier);
+        timeSinceCombat = 0;
+        return Alive::hurt(damageType, amount, damageMultiplier);
     }
 
-    virtual double hurt(Weapon* w, double time, double damageMultiplier = 1){
-        timeSinceHurt = 0;
+    virtual double hurt(Weapon* w, double damageMultiplier = 1){
+        timeSinceCombat = 0;
         double chance = (((double)abilities[iAGI] / maxAbilities[iAGI]) / 2);
         if(rand() < (RAND_MAX*chance)){
             return 0;
         }
-        return Alive::hurt(w, time, damageMultiplier);
+        return Alive::hurt(w, damageMultiplier);
     }
 
     virtual double heal(double amount){
-        debugf("heal %.2f", amount);
 		double a = Alive::heal(amount);
         return a;
     }
 
     virtual double healMana(double amount){
-        debugf("heal mana %.2f", amount);
 		double a = Alive::healMana(amount);
         return a;
     }
@@ -132,7 +130,7 @@ protected:
     double moveDelay = 1;
     double interactDelay = .1;
     double waitDelay = 5;
-    int timeSinceHurt = 0;
+    int timeSinceCombat = 0;
     bool outOfCombatHealing = false;
 
     double useDelay(Item* item);
