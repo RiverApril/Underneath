@@ -33,8 +33,6 @@ namespace Arts{
     void cleanupArts();
 
     int loadNew(string name, string ext = "txt", string dot = ".");
-    
-    int getArtFromName(string name);
 
     Art* getArt(int index);
 
@@ -44,15 +42,47 @@ namespace Arts{
 
     extern int artTitle;
 
-    extern int artScroll;
     extern int artCoin;
+
+    extern int artScroll;
+    extern int artScrollFire;
+    extern int artScrollFrost;
+    extern int artScrollShock;
+    extern int artScrollHand;
+    extern int artScrollHeal;
+    extern int artScrollPerson;
+
+    extern int artPotion1;
+    extern int artPotion2;
+    extern int artPotion3;
+    extern int artPotion4;
     
     extern int artKnife;
+    extern int artDagger;
+    extern int artCleaver;
+
+    extern int artLongsword;
+    extern int artCutlass;
+    extern int artKatana;
+    extern int artMachete;
+    extern int artGladius;
+    extern int artScimitar;
+    extern int artRapier;
     extern int artShortSword;
-    extern int artLongSword;
+    extern int artBroadsword;
+    extern int artSaber;
+    extern int artClaymore;
+
+    extern int artAxe;
+    extern int artDoubleAxe;
+    
     extern int artMace;
+    extern int artClub;
+    extern int artFlail;
+    extern int artWarHammer;
+
     extern int artSpear;
-    extern int artBattleAxe;
+    extern int artHalberd;
 
     extern int artLongbow;
     extern int artRecurveBow;

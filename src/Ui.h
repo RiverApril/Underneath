@@ -19,6 +19,10 @@ void debugf(string format, ...);
 void console(string s);
 void consolef(string format, ...);
 string formatString(string format, ...);
+string plural(string n);
+
+class Player;
+class Inventory;
 
 namespace Ui {
 
@@ -61,6 +65,9 @@ namespace Ui {
     void setTerminalSizeVar();
 
     void setColor(Color fg, Color bg = C_BLACK, int attr = 0);
+
+
+    void drawInventory(Player* player, int selectedY, int scrollOffset, Inventory* secondaryInv = nullptr, string invDisplayName = "", bool selectedLeft = true);
 
     extern unsigned long tick;
 

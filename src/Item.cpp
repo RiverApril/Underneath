@@ -8,6 +8,7 @@
 
 #include "Item.h"
 #include "Utility.h"
+#include "Equipable.h"
 #include "Weapon.h"
 #include "CombatSpell.h"
 #include "Potion.h"
@@ -50,6 +51,9 @@ Item* Item::clone(Item* oldI){
         case ITEM_TYPE_ITEM:
             return makeNewAndClone<Item, Item>(oldI);
 
+        case ITEM_TYPE_EQUIPABLE:
+            return makeNewAndClone<Item, Equipable>(oldI);
+
         case ITEM_TYPE_WEAPON:
             return makeNewAndClone<Item, Weapon>(oldI);
 
@@ -80,6 +84,9 @@ Item* Item::loadNew(unsigned char* data, int* position){
     switch (type) {
         case ITEM_TYPE_ITEM:
             e = new Item();
+            break;
+        case ITEM_TYPE_EQUIPABLE:
+            e = new Equipable();
             break;
         case ITEM_TYPE_WEAPON:
             e = new Weapon();

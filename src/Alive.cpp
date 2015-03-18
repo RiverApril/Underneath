@@ -33,7 +33,7 @@ Alive::~Alive(){
 
 
 bool Alive::update(double deltaTime, double time, Level* level) {
-
+    
     if(dead){
         level->removeEntity(this, true);
     }else{
@@ -56,7 +56,11 @@ bool Alive::update(double deltaTime, double time, Level* level) {
                         hurt((int)e->meta, e->power * deltaTime);
                         break;
                     case effHeal:
-                        heal(e->power * deltaTime);
+                        if(e->meta == 0){
+                            heal(e->power * deltaTime);
+                        }else if(e->meta == 1){
+                            healMana(e->power * deltaTime);
+                        }
                         break;
                 }
             }else{
@@ -73,6 +77,13 @@ bool Alive::update(double deltaTime, double time, Level* level) {
 
 double Alive::hurt(DamageType damageType, double amount, double damageMultiplier){
     amount *= damageMultiplier;
+
+    for(Weakness w : weaknesses){
+        if(w.damageType == damageType){
+            amount *= w.multiplier;
+        }
+    }
+    
     hp -= amount;
     if(hp<=0 && !dead){
         die();
@@ -145,20 +156,12 @@ void Alive::setActiveWeapon(Weapon* newWeapon){
 }
 
 bool Alive::removeItem(Item* item, bool deleteItem){
-    forVector(inventory, i){
-        Item* ie = inventory[i];
-        if(ie == item){
-            if(activeWeapon == item){
-                activeWeapon = nullptr;
-            }
-            inventory.erase(inventory.begin()+(long)i);
-            if(deleteItem){
-                delete item;
-            }
-            return true;
+    if(item){
+        if(item == activeWeapon){
+            setActiveWeapon(nullptr);
         }
     }
-    return false;
+    return Inventory::removeItem(item, deleteItem);
 }
 
 

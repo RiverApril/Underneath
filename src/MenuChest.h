@@ -17,7 +17,7 @@ namespace Ui {
     class MenuChest : public Menu {
     public:
 
-        MenuChest(TEChest* chest, Alive* user, World* w);
+        MenuChest(TEChest* chest, Player* user, World* w);
 
         ~MenuChest() {}
 
@@ -25,11 +25,11 @@ namespace Ui {
         void update();
 
         TEChest* chest;
-        Alive* user;
+        Player* user;
         World* currentWorld;
         int scrollOffset = 0;
         int selected = 0;
-        bool selectedLeft = true;
+        bool selectedLeft = false;
 
 
         const int columnName = 1;

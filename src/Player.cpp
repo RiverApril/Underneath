@@ -11,6 +11,8 @@
 #include "ItemEntity.h"
 #include "MenuChest.h"
 #include "Verbalizer.h"
+#include "Potion.h"
+#include "UtiitySpell.h"
 
 
 
@@ -67,20 +69,77 @@ double Player::moveRelative(Point2 p, Level* level) {
 }
 
 double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item){
-    int tid = level->indexAt(posToInteract);
-    for(Entity* e : level->entityList){
-        if(e->uniqueId != uniqueId){
-            if(e->pos == posToInteract){
-                if(!needToBeSolid || e->isSolid()){
-                    double d = interactWithEntity(level, e, posToInteract, item);
-                    if(d>0){
-                        return d;
+
+    if(containsItem(item) || !item){
+
+
+        Potion* p = dynamic_cast<Potion*>(item);
+        if(p){
+            for(Effect e : p->effects){
+                addEffect(e);
+            }
+            if(item->qty == 1){
+                removeItem(item, false);
+            }else{
+                item->qty -= 1;
+            }
+            return interactDelay;
+        }
+
+        UtilitySpell* s = dynamic_cast<UtilitySpell*>(item);
+        if(s){
+            int use = 0;
+            if(s->manaCost == -1){
+                use = 2;
+            }else if(mp >= s->manaCost){
+                mp -= s->manaCost;
+                use = 1;
+            }
+            if(use){
+                switch (s->spellEffect) {
+                    case spellRemoteUse:
+                        if(!interact(level, posToInteract, false, nullptr)){
+                            return 0;
+                        }
+                        break;
+                    case spellRelocate:
+                        if(posToInteract == pos){
+                            posToInteract = level->findRandomWithoutFlag(tileFlagSolid);
+                        }
+                        if(level->canPathTo(pos, posToInteract, tileFlagSecretPathable)){
+                        	pos = posToInteract;
+                        }
+                        break;
+                }
+                if(use == 2){
+                    if(item->qty == 1){
+                        removeItem(item, false);
+                    }else{
+                        item->qty -= 1;
+                    }
+                }
+                return interactDelay;
+            }
+        }
+
+
+
+        int tid = level->indexAt(posToInteract);
+        for(Entity* e : level->entityList){
+            if(e->uniqueId != uniqueId){
+                if(e->pos == posToInteract){
+                    if(!needToBeSolid || e->isSolid()){
+                        double d = interactWithEntity(level, e, posToInteract, item);
+                        if(d>0){
+                            return d;
+                        }
                     }
                 }
             }
         }
+        return interactWithTile(level, tid, posToInteract, item);
     }
-    return interactWithTile(level, tid, posToInteract, item);
+    return 0;
 }
 
 double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item){
@@ -211,7 +270,6 @@ double Player::waitUntilHealed(){
     return waitDelay;
 }
 
-
 Player* Player::cloneUnsafe(Player* oldE, Player* newE){
 
     Alive::cloneUnsafe(oldE, newE);
@@ -276,6 +334,18 @@ void Player::gainXp(double amount){
         setNextLevelXp();
         Verbalizer::leveledUp(this);
     }
+}
+
+void Player::setActiveWeapon(Weapon* newWeapon){
+    if(newWeapon){
+        for(int i=0;i<abilityCount;i++){
+            if(newWeapon->minimumAbilities[i] > abilities[i]){
+                return;
+            }
+        }
+    }
+
+    Alive::setActiveWeapon(newWeapon);
 }
 
 

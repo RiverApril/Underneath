@@ -11,6 +11,8 @@
 #include "Utility.h"
 #include "Level.h"
 #include "Verbalizer.h"
+#include "ItemGenerator.h"
+#include "ItemEntity.h"
 
 AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1){
 
@@ -151,7 +153,16 @@ bool AiEntity::update(double deltaTime, double time, Level* level) {
     if(dead){
         int xp = rand()%(int)maxHp;
         Verbalizer::defeatedEnemy(this, xp);
+
         level->currentWorld->currentPlayer->gainXp(xp);
+        
+        vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand()%5)==0?2:0, (rand()%5)==0?2:0);
+        if(rand()%5==0){
+            drops.push_back(Item::clone(activeWeapon));
+        }
+        for(Item* i : drops){
+            level->newEntity(new ItemEntity(i, pos));
+        }
     }
 
     return Alive::update(deltaTime, time, level);

@@ -102,7 +102,11 @@ namespace Ui {
         }
 
         if(*useItem != -1){
-            mode = modeInterectChoose;
+            if(currentPlayer->inventory[*useItem]->instantUse()){
+                timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->inventory[*useItem]);
+            }else{
+            	mode = modeInterectChoose;
+            }
         }
 
         if(!initSuccess){

@@ -332,9 +332,10 @@ namespace WorldLoader {
 
         world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
         world->currentPlayer->setActiveWeapon(ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromType(wepMelee, 0), 0));
+        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         //world->currentPlayer->inventory.push_back(ItemGenerator::createWeapon("", materialBone, damRanged, false));
-
-        world->currentPlayer->inventory.push_back(Item::clone(ItemGenerator::iCoin));
         
 
         world->currentLevel->newEntity(world->currentPlayer);

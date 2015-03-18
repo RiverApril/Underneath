@@ -271,7 +271,10 @@ namespace Commands{
     }
 
     void cleanupCommands(){
-        commandList.erase(commandList.begin(), commandList.end());
+        for(Command* c : commandList){
+            delete c;
+        }
+        commandList.clear();
     }
     
 }

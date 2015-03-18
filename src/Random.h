@@ -13,25 +13,6 @@ namespace Random{
 
     double randDouble(double min, double max);
 
-    template<typename T>
-    T choose(size_t count, ...){
-
-        size_t chosen = rand()%count;
-        size_t index = 0;
-
-        va_list args;
-        va_start(args, count);
-
-        if(index == chosen){
-            return va_arg(args, T);
-        }
-        index++;
-        
-        va_end(args);
-
-        return 0;
-    }
-
 
 }
 

@@ -15,6 +15,7 @@
 #include "Math.h"
 #include "Inventory.h"
 #include "Effect.h"
+#include "Weakness.h"
 
 class Alive : public Entity, public Inventory{
 
@@ -72,17 +73,26 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    void setActiveWeapon(Weapon* newWeapon);
+    
+    virtual void setActiveWeapon(Weapon* newWeapon);
 
     Weapon* getActiveWeapon(){
         return activeWeapon;
     }
 
-    bool removeItem(Item* item, bool deleteItem);
+    virtual bool removeItem(Item* item, bool deleteItem);
+
+    virtual void setTimes(double time){
+        lastHealTime = time;
+        lastManaTime = time;
+        Entity::setTimes(time);
+    }
 
     //vector<Item*> inventory;
 
     vector<Effect> effects;
+
+    vector<Weakness> weaknesses;
 
     int viewDistance = 10;
 

@@ -9,7 +9,7 @@
 #include "Weapon.h"
 #include "Utility.h"
 
-Weapon::Weapon(double baseDamage, string name, double weight, double useDelay) : Item(name, weight){
+Weapon::Weapon(double baseDamage, string name, double weight, double useDelay) : Equipable(name, weight){
     debugf("%s: %.2f", name.c_str(), baseDamage);
     this->baseDamage = baseDamage;
     this->useDelay = useDelay;
@@ -19,7 +19,7 @@ Weapon::Weapon(double baseDamage, string name, double weight, double useDelay) :
 }
 
 void Weapon::save(vector<unsigned char>* data){
-    Item::save(data);
+    Equipable::save(data);
     
     Utility::saveDouble(data, baseDamage);
     Utility::saveInt(data, damageType);
@@ -35,7 +35,7 @@ void Weapon::save(vector<unsigned char>* data){
 }
 
 void Weapon::load(unsigned char* data, int* position){
-    Item::load(data, position);
+    Equipable::load(data, position);
 
     baseDamage = Utility::loadDouble(data, position);
     damageType = Utility::loadInt(data, position);
@@ -52,7 +52,7 @@ void Weapon::load(unsigned char* data, int* position){
 
 Weapon* Weapon::cloneUnsafe(Weapon* oldE, Weapon* newE){
 
-    Item::cloneUnsafe(oldE, newE);
+    Equipable::cloneUnsafe(oldE, newE);
 
     newE->baseDamage = oldE->baseDamage;
     newE->enchantments = oldE->enchantments;

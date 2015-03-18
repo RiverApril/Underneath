@@ -15,8 +15,8 @@
 
 namespace Ui {
 
-    MenuInv::MenuInv(Alive* alive, World* w, int* useItem) : Menu(){
-        this->alive = alive;
+    MenuInv::MenuInv(Player* player, World* w, int* useItem) : Menu(){
+        this->player = player;
         this->currentWorld = w;
         this->useItem = useItem;
         *useItem = -1;
@@ -28,35 +28,35 @@ namespace Ui {
         }else if(in == Key::uiDown){
             selected++;
         }else if(in == Key::drop){
-            if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
+            if(player->inventory.size() > 0 && selected < player->inventory.size()){
                 Item* drop;
-                if(alive->inventory[selected]->qty == 1){
-                    drop = alive->inventory[selected];
-                    alive->removeItem(alive->inventory[selected], false);
+                if(player->inventory[selected]->qty == 1){
+                    drop = player->inventory[selected];
+                    player->removeItem(player->inventory[selected], false);
                 }else{
-                    alive->inventory[selected]->qty -= 1;
-                    drop = Item::clone(alive->inventory[selected]);
+                    player->inventory[selected]->qty -= 1;
+                    drop = Item::clone(player->inventory[selected]);
                     drop->qty = 1;
                 }
-                currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
+                currentWorld->currentLevel->newEntity(new ItemEntity(drop, player->pos));
             }
         }else if(in == Key::dropAll){
-            if(alive->inventory.size() > 0 && selected < alive->inventory.size()){
+            if(player->inventory.size() > 0 && selected < player->inventory.size()){
                 Item* drop;
-                drop = alive->inventory[selected];
-                alive->removeItem(alive->inventory[selected], false);
-                currentWorld->currentLevel->newEntity(new ItemEntity(drop, alive->pos));
+                drop = player->inventory[selected];
+                player->removeItem(player->inventory[selected], false);
+                currentWorld->currentLevel->newEntity(new ItemEntity(drop, player->pos));
             }
         }else if(in == Key::equip){
-            Weapon* weapon = dynamic_cast<Weapon*>(alive->inventory[selected]);
+            Weapon* weapon = dynamic_cast<Weapon*>(player->inventory[selected]);
             if(weapon){
-                if(alive->getActiveWeapon() == weapon){
-                    alive->setActiveWeapon(nullptr);
+                if(player->getActiveWeapon() == weapon){
+                    player->setActiveWeapon(nullptr);
                 }else{
-                    alive->setActiveWeapon(weapon);
+                    player->setActiveWeapon(weapon);
                 }
             }
-        }else if(in == Key::useOnWorld){
+        }else if(in == Key::use){
             *useItem = selected;
             closeThisMenu();
             return;
@@ -67,25 +67,25 @@ namespace Ui {
         if(selected<0){
             selected = 0;
         }
-		if (selected >= alive->inventory.size()){
-			selected = (int)alive->inventory.size() - 1;
+		if (selected >= player->inventory.size()){
+			selected = (int)player->inventory.size() - 1;
 		}
     }
 
 
     void MenuInv::update() {
 
-		Ui::drawInventory(alive, "Player", selected, scrollOffset, alive->getActiveWeapon());
+		Ui::drawInventory(player, selected, scrollOffset);
 
 
         /*setColor(C_WHITE);
         int minI = Math::max(0, scrollOffset);
-        int maxI = alive->inventory.size() - scrollOffset;
+        int maxI = player->inventory.size() - scrollOffset;
         move(0, 0);
         clrtobot();
         int totalWeight = 0;
-        forVector(alive->inventory, i){
-            totalWeight += alive->inventory[i]->weight * alive->inventory[i]->qty;
+        forVector(player->inventory, i){
+            totalWeight += player->inventory[i]->weight * player->inventory[i]->qty;
         }
         mvprintw(0, 0, "Inventory   Total Weight: %-3d", totalWeight);
 
@@ -107,14 +107,14 @@ namespace Ui {
         CombatSpell* spell;
         int y = 3;
         for(int i=minI;i<maxI;i++){
-            item = alive->inventory[i];
+            item = player->inventory[i];
             weapon = dynamic_cast<Weapon*>(item);
             ranged = dynamic_cast<Ranged*>(item);
             spell = dynamic_cast<CombatSpell*>(item);
             if(i == selected){
                 setColor(C_BLACK, C_WHITE);
             }
-            mvprintw(y, columnPrefixChar, "%c", item == alive->getActiveWeapon()?'E':' ');
+            mvprintw(y, columnPrefixChar, "%c", item == player->getActiveWeapon()?'E':' ');
             mvprintw(y, columnName, item->getExtendedName().c_str());
             mvprintw(y, columnQty-4, "%4s", (to_string(item->qty)).c_str());
             //mvprintw(y, columnWeight+1, "%2.1f", item->weight);
@@ -131,7 +131,7 @@ namespace Ui {
             y++;
         }
 
-        item = alive->inventory[selected];
+        item = player->inventory[selected];
 
         if(item){
             weapon = dynamic_cast<Weapon*>(item);
@@ -152,7 +152,7 @@ namespace Ui {
             setColor(C_WHITE, C_BLACK);
 
             mvprintw(a++, columnInfo, "Name: %s", item->getExtendedName().c_str());
-            if(item == alive->getActiveWeapon()){
+            if(item == player->getActiveWeapon()){
                 mvprintw(terminalSize.y-1, columnInfo, "-Equipped");
             }else{
                 mvprintw(terminalSize.y-1, columnInfo, "");

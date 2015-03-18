@@ -11,6 +11,7 @@
 
 
 #include "CombatSpell.h"
+#include "UtiitySpell.h"
 
 
 namespace ItemGenerator {
@@ -29,10 +30,18 @@ namespace ItemGenerator {
             this->weight.y = wMax;
             this->applicableWeaponTypes = weaponTypes;
         }
+
+        Condition magical(double minMana, double maxMana){
+            manaCost.x = minMana;
+            manaCost.y = maxMana;
+            return *this;
+        }
+
         vector<string> names = {""};
-        Vector2 damage;
-        Vector2 useDelay;
-        Vector2 weight;
+        Vector2 damage = Vector2One;
+        Vector2 useDelay = Vector2One;
+        Vector2 weight = Vector2One;
+        Vector2 manaCost = Vector2One;
         vector<WeaponType> applicableWeaponTypes;
     };
 
@@ -64,22 +73,63 @@ namespace ItemGenerator {
             return *this;
         }
 
+        WeaponBase setArts(vector<int> artIndecies){
+            this->arts = artIndecies;
+            return *this;
+        }
+
         double damage = 0;
         double useDelay = 0;
         double weight = 1;
         vector<string> names = {""};
+        vector<int> arts = {-1};
         DamageType damageType = damSharp;
         WeaponType weaponType = wepMelee;
         double range = -1;
         double manaCost = -1;
     };
 
-    Condition atl(Condition w);
+    struct PotionBase{
+        PotionBase(){}
+
+        PotionBase(vector<string> names, vector<EffectId> effIds, double timeMin, double timeMax, double powerMin, double powerMax, double meta){
+            this->names = names;
+            this->effIds = effIds;
+            this->time = Vector2(timeMin, timeMax);
+            this->power = Vector2(powerMin, powerMax);
+            this->meta = meta;
+        }
+
+        vector<string> names = {""};
+        vector<EffectId> effIds = {0};
+        Vector2 time = Vector2One;
+        Vector2 power = Vector2One;
+        double meta = 0;
+        
+    };
+
+    struct ScrollBase{
+        ScrollBase(){}
+
+        ScrollBase(vector<string> names, SpellEffect eff){
+            this->names = names;
+            this->eff = eff;
+        }
+
+        vector<string> names = {""};
+        SpellEffect eff = 0;
+    };
+
+    Condition atl(Condition c);
     WeaponBase atl(WeaponBase w);
+    PotionBase atl(PotionBase p);
+    ScrollBase atl(ScrollBase s);
 
 
     extern vector<Condition> conditionList;
     extern vector<WeaponBase> weaponList;
+    extern vector<PotionBase> potionList;
+    extern vector<ScrollBase> scrollList;
 
     extern Item* iCoin;
 
@@ -97,7 +147,9 @@ namespace ItemGenerator {
     extern WeaponBase wShockCombatSpell;
 
 
-    vector<Item*> createRandLoots(int difficulty);
+    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int altMaxQty);
+
+    Item* createRandAltLoot(int itemDifficulty);
 
     Weapon* createRandWeapon(int itemDifficulty);
 

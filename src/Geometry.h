@@ -145,5 +145,7 @@ extern Point2 Point2Down;
 extern Point2 Point2Neg1;
 extern Point2 Point2One;
 
+extern Vector2 Vector2One;
+
 
 #endif /* defined(__Underneath__Geometry__) */

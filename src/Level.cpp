@@ -36,10 +36,25 @@ Level::Level(World* w, string n, Point2 s, int d) {
 }
 
 Level::~Level() {
-    entityList.erase(entityList.begin(), entityList.end());
-    deleteEntityList.erase(deleteEntityList.begin(), deleteEntityList.end());
-    removeEntityList.erase(removeEntityList.begin(), removeEntityList.end());
-    tileEntityList.erase(tileEntityList.begin(), tileEntityList.end());
+    for(Entity* e : entityList){
+        delete e;
+    }
+    entityList.clear();
+    
+    for(Entity* e : deleteEntityList){
+        delete e;
+    }
+    deleteEntityList.clear();
+
+    for(Entity* e : removeEntityList){
+        delete e;
+    }
+    removeEntityList.clear();
+
+    for(TileEntity* e : tileEntityList){
+        delete e;
+    }
+    tileEntityList.clear();
 }
 
 
@@ -278,6 +293,7 @@ void Level::renderMenuGame(double displayTime){
 
 Entity* Level::newEntity(Entity* newE) {
     newE->uniqueId = nextUniqueId;
+    newE->setTimes(currentWorld->worldTime);
     nextUniqueId++;
     entityList.push_back(newE);
     return newE;
@@ -297,9 +313,8 @@ void Level::actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity){
             entityList.erase(entityList.begin()+(long)i);
             debug("Removed Entity: "+e->getName());
             if(deleteEntity){
-                string n = e->getName();
+                debug("Deleting Entity: "+e->getName());
                 delete e;
-                debug("Deleted Entity: "+n);
             }
             return;
         }

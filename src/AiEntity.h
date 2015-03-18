@@ -51,6 +51,12 @@ public:
         moveDelay = newDelay;
     }
 
+    virtual void setTimes(double time){
+        lastMoveTime = time;
+        lastAttackTime = time;
+        Alive::setTimes(time);
+    }
+
 
 protected:
     int ai = aiNone;
@@ -59,7 +65,7 @@ protected:
     Alive* target = nullptr;
 
     double lastMoveTime = 0;
-    double moveDelay = 2; //TODO should vary
+    double moveDelay = 1.5; //TODO should vary
 
     double lastAttackTime = 0;
 

@@ -10,7 +10,6 @@
 #include "Math.h"
 #include "Menu.h"
 #include "Utility.h"
-#include "ItemGenerator.h"
 
 
 namespace Arts{
@@ -21,18 +20,52 @@ namespace Arts{
 
     int artTitle;
 
-    int artScroll;
     int artCoin;
 
+    int artScroll;
+    int artScrollFire;
+    int artScrollFrost;
+    int artScrollShock;
+    int artScrollHand;
+    int artScrollHeal;
+    int artScrollPerson;
+
+    int artPotion1;
+    int artPotion2;
+    int artPotion3;
+    int artPotion4;
+
     int artKnife;
+    int artDagger;
+    int artCleaver;
+
+    int artLongsword;
+    int artCutlass;
+    int artKatana;
+    int artMachete;
+    int artGladius;
+    int artScimitar;
+    int artRapier;
     int artShortSword;
-    int artLongSword;
-    int artMase;
+    int artBroadsword;
+    int artSaber;
+    int artClaymore;
+
+    int artAxe;
+    int artDoubleAxe;
+
+    int artMace;
+    int artClub;
+    int artFlail;
+    int artWarHammer;
+
     int artSpear;
-    int artBattleAxe;
+    int artHalberd;
+
 
     int artLongbow;
     int artRecurveBow;
+
     int artCrossbow;
 
     void loadArts(){
@@ -45,48 +78,64 @@ namespace Arts{
         Arts::artTitle = Arts::loadNew(ArtDir+"/title");
 
         Arts::artScroll = Arts::loadNew(ArtDir+"/scroll");
+        Arts::artScrollFire = Arts::loadNew(ArtDir+"/scrollFire");
+        Arts::artScrollFrost = Arts::loadNew(ArtDir+"/scrollFrost");
+        Arts::artScrollShock = Arts::loadNew(ArtDir+"/scrollShock");
+        Arts::artScrollHand = Arts::loadNew(ArtDir+"/scrollHand");
+        Arts::artScrollHeal = Arts::loadNew(ArtDir+"/scrollHeal");
+        Arts::artScrollPerson = Arts::loadNew(ArtDir+"/scrollPerson");
+
+        Arts::artPotion1 = Arts::loadNew(ArtDir+"/potion1");
+        Arts::artPotion2 = Arts::loadNew(ArtDir+"/potion2");
+        Arts::artPotion3 = Arts::loadNew(ArtDir+"/potion3");
+        Arts::artPotion4 = Arts::loadNew(ArtDir+"/potion4");
 
         Arts::artKnife = Arts::loadNew(ArtDir+"/knife");
-        //ItemGenerator::wKnife->artIndex = Arts::artKnife;
+        Arts::artDagger = Arts::loadNew(ArtDir+"/dagger");
+        Arts::artCleaver = Arts::loadNew(ArtDir+"/cleaver");
 
+        Arts::artLongsword = Arts::loadNew(ArtDir+"/longsword");
+        Arts::artCutlass = Arts::loadNew(ArtDir+"/cutlass");
+        Arts::artKatana = Arts::loadNew(ArtDir+"/katana");
+        Arts::artMachete = Arts::loadNew(ArtDir+"/machete");
+        Arts::artGladius = Arts::loadNew(ArtDir+"/gladius");
+        Arts::artScimitar = Arts::loadNew(ArtDir+"/scimitar");
+        Arts::artRapier = Arts::loadNew(ArtDir+"/rapier");
         Arts::artShortSword = Arts::loadNew(ArtDir+"/shortsword");
-        //ItemGenerator::wShortSword->artIndex = Arts::artShortSword;
+        Arts::artBroadsword = Arts::loadNew(ArtDir+"/broadsword");
+        Arts::artSaber = Arts::loadNew(ArtDir+"/saber");
+        Arts::artClaymore = Arts::loadNew(ArtDir+"/claymore");
 
-        Arts::artMase = Arts::loadNew(ArtDir+"/mace");
-        //ItemGenerator::wMace->artIndex = Arts::artMase;
+
+        Arts::artAxe = Arts::loadNew(ArtDir+"/axe");
+        Arts::artDoubleAxe = Arts::loadNew(ArtDir+"/doubleaxe");
+
+        Arts::artMace = Arts::loadNew(ArtDir+"/mace");
+        Arts::artClub = Arts::loadNew(ArtDir+"/club");
+        Arts::artFlail = Arts::loadNew(ArtDir+"/flail");
+        Arts::artWarHammer = Arts::loadNew(ArtDir+"/warhammer");
 
         Arts::artSpear = Arts::loadNew(ArtDir+"/spear");
-        //ItemGenerator::wSpear->artIndex = Arts::artSpear;
+        Arts::artHalberd = Arts::loadNew(ArtDir+"/halberd");
 
-        Arts::artBattleAxe = Arts::loadNew(ArtDir+"/battleaxe");
-        //ItemGenerator::wBattleAxe->artIndex = Arts::artBattleAxe;
-
-        Arts::artLongSword = Arts::loadNew(ArtDir+"/longsword");
-        //ItemGenerator::wLongSword->artIndex = Arts::artLongSword;
 
         Arts::artLongbow = Arts::loadNew(ArtDir+"/longbow");
-        //ItemGenerator::wLongbow->artIndex = Arts::artLongbow;
 
         Arts::artRecurveBow = Arts::loadNew(ArtDir+"/recurvebow");
-        //ItemGenerator::wRecurveBow->artIndex = Arts::artRecurveBow;
 
         Arts::artCrossbow = Arts::loadNew(ArtDir+"/crossbow");
-        //ItemGenerator::wCrossbow->artIndex = Arts::artCrossbow;
 
         Arts::artCoin = Arts::loadNew(ArtDir+"/coin");
-        ItemGenerator::iCoin->artIndex = Arts::artCoin;
-
-        //TODO make the rest of the ascii art
 
 
     }
 
     void cleanupArts(){
         delete defaultArt;
-        artList.erase(artList.begin(), artList.end());
         for(Art* a : artList){
             delete a;
         }
+        artList.clear();
     }
 
     int loadNew(string name, string ext, string dot){
@@ -127,12 +176,6 @@ namespace Arts{
         }else{
             return defaultArt;
         }
-    }
-
-
-
-    int getArtFromName(string name){
-        return -1;
     }
 
 }

@@ -10,21 +10,21 @@
 #define __Underneath__MenuInv__
 
 #include "Menu.h"
-#include "Alive.h"
+#include "Player.h"
 #include "World.h"
 
 namespace Ui {
     class MenuInv : public Menu {
     public:
 
-        MenuInv(Alive* alive, World* w, int* useItem);
+        MenuInv(Player* player, World* w, int* useItem);
 
         ~MenuInv() {}
 
         void handleInput(int in);
         void update();
 
-        Alive* alive;
+        Player* player;
         World* currentWorld;
         int scrollOffset = 0;
         int selected = 0;

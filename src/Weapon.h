@@ -10,7 +10,7 @@
 #define __Underneath__Weapon__
 
 #include "Global.h"
-#include "Item.h"
+#include "Equipable.h"
 #include "Enchantment.h"
 #include "Ui.h"
 
@@ -32,7 +32,7 @@ const DamageType damBlood = 7;
 const DamageType damDebug = 8;
 
 
-class Weapon : public Item {
+class Weapon : public Equipable {
 public:
 
     static string damageTypeName(DamageType d){
@@ -82,11 +82,11 @@ public:
                 return Ui::C_WHITE;
         }
     }
-    
-    static string enchantmentName(Enchantment e){
-        switch (e.effectId) {
+
+    static string effectName(EffectId eid, double meta){
+        switch (eid) {
             case effDamage:
-                return damageTypeName((DamageType	)e.meta);
+                return damageTypeName((DamageType)meta);
 
             case effHeal:
                 return "Heal";
@@ -98,11 +98,15 @@ public:
                 return "UNDEFINED";
         }
     }
+    
+    static string enchantmentName(Enchantment e){
+        return effectName(e.effectId, e.meta);
+    }
 
 
     static Weapon* cloneUnsafe(Weapon* oldE, Weapon* newE = nullptr);
 
-    Weapon() : Item(){
+    Weapon() : Equipable(){
 
     }
 
@@ -116,6 +120,10 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
+    virtual bool instantUse(){
+        return false;
+    }
+
     Weapon* addEnchantment(Enchantment e){
         enchantments.push_back(e);
         return this;
@@ -123,12 +131,16 @@ public:
 
     virtual bool equalsExceptQty(Item* other){
         Weapon* otherW = dynamic_cast<Weapon*>(other);
-        return Item::equalsExceptQty(other)
+        return Equipable::equalsExceptQty(other)
         &&(otherW)
         &&(baseDamage == otherW->baseDamage)
         &&(damageType == otherW->damageType)
         &&(enchantments == otherW->enchantments)
         &&(useDelay == otherW->useDelay);
+    }
+
+    virtual bool canBeEquipedHere(EquipSlot e){
+        return e==slotWeapon;
     }
 
     double baseDamage = 1;

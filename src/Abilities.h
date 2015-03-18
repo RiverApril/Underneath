@@ -82,14 +82,16 @@ struct Abilities{
         }
     }
 
+    Abilities(T a){
+        for(int i=0;i<abilityCount;i++){
+            list[i] = a;
+        }
+    }
+
     Abilities(T a[abilityCount]){
-        list[iSTR] = a[iSTR];
-        list[iDEX] = a[iDEX];
-        list[iINT] = a[iINT];
-        list[iAGI] = a[iAGI];
-        list[iSPD] = a[iSPD];
-        list[iCON] = a[iCON];
-        list[iWIS] = a[iWIS];
+        for(int i=0;i<abilityCount;i++){
+            list[i] = a[i];
+        }
     }
     
     Abilities(T str, T dex, T inte, T agi, T spd, T con, T wis){
@@ -134,5 +136,15 @@ struct Abilities{
         return list[index];
     }
 };
+
+template <typename T>
+bool operator==(const Abilities<T> a, const Abilities<T> b){
+    return a.list == b.list;
+}
+
+template <typename T>
+bool operator!=(const Abilities<T> a, const Abilities<T> b){
+    return !(a==b);
+}
 
 #endif /* defined(__Underneath__Abilities__) */

@@ -64,6 +64,10 @@ public:
         return 0;
     }
 
+    virtual void setTimes(double time){
+
+    }
+
     virtual void load(unsigned char* data, int* position);
 
     static Entity* loadNew(unsigned char* data, int* position);

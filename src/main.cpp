@@ -43,8 +43,8 @@ int main(int argc, const char** argv) {
     }
 
     Tiles::initTiles();
-    ItemGenerator::initItemTemplates();
     Arts::loadArts();
+    ItemGenerator::initItemTemplates();
     Ui::initNCurses();
     Commands::initCommands();
     EnemyGenerator::initEnemies();

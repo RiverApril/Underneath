@@ -34,12 +34,13 @@ namespace EnemyGenerator{
         ItemGenerator::WeaponBase weaponBase;
         int weaponDifficultyAdd = 0;
         double difficultyWeightMulti = 1;
+        vector<Weakness> weaknesses;
 
         int weight = 0;
         int interval = 0;
     };
 
-    extern vector<WeightedEnemy> enemyWeightList;
+    extern vector<WeightedEnemy*> enemyWeightList;
 
     extern int total;
 	
@@ -47,7 +48,7 @@ namespace EnemyGenerator{
 
     void cleanupEnemies();
 
-    void atl(WeightedEnemy we);
+    WeightedEnemy* atl(WeightedEnemy* we);
 
     void setIntervals(int difficulty);
 

@@ -40,8 +40,6 @@ public:
 
     double waitUntilHealed();
 
-    double useItem(Item* item);
-
 
     virtual int getEntityTypeId();
 
@@ -76,6 +74,8 @@ public:
 		double a = Alive::healMana(amount);
         return a;
     }
+
+    virtual void setActiveWeapon(Weapon* newWeapon);
 
 
     void updateVariablesForAbilities(){
@@ -132,6 +132,8 @@ protected:
     double waitDelay = 5;
     int timeSinceCombat = 0;
     bool outOfCombatHealing = false;
+
+    Item* hotbar[10] = {nullptr};
 
     double useDelay(Item* item);
 

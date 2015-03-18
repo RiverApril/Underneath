@@ -13,12 +13,12 @@
 #include "Utility.h"
 #include "Art.h"
 
-#define from (selectedLeft?(Inventory*)chest:(Inventory*)user)
-#define to (selectedLeft?(Inventory*)user:(Inventory*)chest)
+#define from (selectedLeft?(Inventory*)user:(Inventory*)chest)
+#define to (selectedLeft?(Inventory*)chest:(Inventory*)user)
 
 namespace Ui {
 
-    MenuChest::MenuChest(TEChest* chest, Alive* user, World* w) : Menu(){
+    MenuChest::MenuChest(TEChest* chest, Player* user, World* w) : Menu(){
         this->chest = chest;
         this->user = user;
         this->currentWorld = w;
@@ -35,7 +35,7 @@ namespace Ui {
             selected++;
 
         }else if(in == Key::equip){
-            if(!selectedLeft){
+            if(selectedLeft){
                 Weapon* weapon = dynamic_cast<Weapon*>(user->inventory[selected]);
                 if(weapon){
                     if(user->getActiveWeapon() == weapon){
@@ -44,8 +44,9 @@ namespace Ui {
                         user->setActiveWeapon(weapon);
                     }
                 }
+            }else{
+                MenuChest::handleInput(Key::take);
             }
-            MenuChest::handleInput(Key::take);
 
         }else if(in == Key::take){
             if(from->inventory.size() > 0 && selected < from->inventory.size()){
@@ -92,7 +93,7 @@ namespace Ui {
 
     void MenuChest::update() {
 
-        Ui::drawInventory(chest, "Chest", selected, scrollOffset, user->getActiveWeapon(), user, selectedLeft);
+        Ui::drawInventory(user, selected, scrollOffset, chest, "Chest", selectedLeft);
         
     }
 }

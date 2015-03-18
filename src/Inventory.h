@@ -21,7 +21,7 @@ struct Inventory{
         
     }
 
-    void removeAllItems(bool deleteItem){
+    virtual void removeAllItems(bool deleteItem){
         while(inventory.size() > 0){
             Item* item = inventory[0];
             inventory.erase(inventory.begin());
@@ -31,7 +31,7 @@ struct Inventory{
         }
     }
 
-    bool removeItem(Item* item, bool deleteItem){
+    virtual bool removeItem(Item* item, bool deleteItem){
         forVector(inventory, i){
             Item* ie = inventory[i];
             if(ie == item){
@@ -39,6 +39,16 @@ struct Inventory{
                 if(deleteItem){
                     delete item;
                 }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    virtual bool containsItem(Item* item){
+        forVector(inventory, i){
+            Item* ie = inventory[i];
+            if(ie == item){
                 return true;
             }
         }
@@ -69,9 +79,5 @@ struct Inventory{
     vector<Item*> inventory;
 
 };
-
-namespace Ui{
-    void drawInventory(Inventory* inventory, string invDisplayName, int selectedY, int scrollOffset, Weapon* activeWeapon = nullptr, Inventory* playerInv = nullptr, bool selectedLeft = true);
-}
 
 #endif /* defined(__Underneath__Inventory__) */
