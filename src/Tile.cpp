@@ -45,14 +45,19 @@ namespace Tiles{
 
     Tile* tileFloor;
     Tile* tilePath;
+
     Tile* tileWall;
+    Tile* tilePonyWall;
+
     Tile* tileDoor;
     Tile* tileSecretDoor;
     Tile* tileOpenDoor;
 
     Tile* tileStairUp;
     Tile* tileStairDown;
+
     Tile* tileChest;
+    Tile* tileCrate;
 
     Tile* tileEdge;
     Tile* tileUnset;
@@ -73,8 +78,10 @@ namespace Tiles{
         tileFloor = new Tile('.', C_WHITE, bg, tileFlagPathable);
         tilePath = new Tile('.', C_LIGHT_GRAY, bg, tileFlagPathable);
 
-        tileWall = new Tile(' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall,
-                            C_BLACK, C_DARK_GRAY);
+        tileWall = new Tile(' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall, C_BLACK,
+                            C_DARK_GRAY);
+        tilePonyWall = new Tile('.', C_BLACK, C_LIGHT_GRAY, tileFlagSolid, C_BLACK, C_DARK_GRAY);
+
         tileDoor = new Tile('%', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable,
                             C_BLACK, C_DARK_GRAY);
         tileSecretDoor = new Tile(' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagSecretPathable,
@@ -86,6 +93,7 @@ namespace Tiles{
         tileStairDown = new Tile('v',  C_LIGHT_GREEN, bg, tileFlagPathable | tileFlagHasTileEntity);
 
         tileChest = new Tile('+', C_LIGHT_GREEN, bg, tileFlagSolid | tileFlagHasTileEntity);
+        tileCrate = new Tile('+', C_DARK_YELLOW, bg, tileFlagSolid | tileFlagHasTileEntity);
 
 
         tileEdge = new Tile('X',  C_LIGHT_RED, bg, tileFlagSolid | tileFlagTall);

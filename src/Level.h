@@ -89,12 +89,29 @@ public:
     void removeEntity(Entity* e, bool deleteEntity);
     void actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity);
 
+    void removeTileEntity(TileEntity* e);
+    void actuallyRemoveTileEntityUnsafe(TileEntity* e);
+
     Point2 getSize(){
         return size;
     }
 
     int getDifficulty(){
         return difficulty;
+    }
+
+    int countTilesAround(Point2 p, Tile* t){
+        int c = 0;
+        for(int i=-1;i<=1;i++){
+            for(int j=-1;j<=1;j++){
+                if( (!(i==0 && j==0)) && inRange(p + Point2(i, j))){
+                    if(tileAt(p + Point2(i, j))->getIndex() == t->getIndex()){
+                        c++;
+                    }
+                }
+            }
+        }
+        return c;
     }
 
     void save(vector<unsigned char>*);
@@ -108,6 +125,7 @@ public:
     World* currentWorld;
 
     vector<TileEntity*> tileEntityList;
+    vector<TileEntity*> deleteTileEntityList;
 
     Ui::MenuGame* menuGame;
 

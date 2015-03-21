@@ -276,6 +276,10 @@ bool Level::update(double deltaTime, double time, Point2 viewPos) {
         actuallyRemoveEntityUnsafe(deleteEntityList[0], true);
         deleteEntityList.erase(deleteEntityList.begin());
     }
+    while(deleteTileEntityList.size() > 0){
+        actuallyRemoveTileEntityUnsafe(deleteTileEntityList[0]);
+        deleteTileEntityList.erase(deleteTileEntityList.begin());
+    }
     return u;
 }
 
@@ -307,6 +311,11 @@ void Level::removeEntity(Entity* e, bool deleteEntity) {
         removeEntityList.push_back(e);
     }
 }
+
+void Level::removeTileEntity(TileEntity* e) {
+    deleteTileEntityList.push_back(e);
+}
+
 void Level::actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity){
 	for (size_t i = 0; i<entityList.size(); i++){
         if(e->uniqueId == entityList[i]->uniqueId){
@@ -320,6 +329,18 @@ void Level::actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity){
         }
     }
     debug("Failed to Remove Entity: "+e->getName());
+}
+
+void Level::actuallyRemoveTileEntityUnsafe(TileEntity* e){
+    for (size_t i = 0; i<tileEntityList.size(); i++){
+        if(e == tileEntityList[i]){
+            tileEntityList.erase(tileEntityList.begin()+(long)i);
+            debugf("Deleting Tile Entity: %d", e->getTileEntityTypeId());
+            delete e;
+            return;
+        }
+    }
+    debugf("Failed to Remove Tile Entity: %d", e->getTileEntityTypeId());
 }
 
 vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag){

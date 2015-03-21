@@ -31,6 +31,8 @@ struct Point2 {
 
     void set(const Point2 other);
 
+    void add(int x, int y);
+
     Point2 operator+(Point2 other);
     Point2 operator-(Point2 other);
     Point2 operator*(Point2 other);

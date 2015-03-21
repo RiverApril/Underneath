@@ -57,6 +57,10 @@ public:
         Alive::setTimes(time);
     }
 
+    virtual bool isHostile(){
+        return ai & aiAttackPlayer;
+    }
+
 
 protected:
     int ai = aiNone;

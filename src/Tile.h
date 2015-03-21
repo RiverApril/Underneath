@@ -57,7 +57,10 @@ namespace Tiles{
     extern vector<Tile*> tileList;
     extern Tile* tileFloor;
     extern Tile* tilePath;
+
     extern Tile* tileWall;
+    extern Tile* tilePonyWall;
+
     extern Tile* tileDoor;
     extern Tile* tileSecretDoor;
     extern Tile* tileOpenDoor;
@@ -66,6 +69,7 @@ namespace Tiles{
     extern Tile* tileStairDown;
 
     extern Tile* tileChest;
+    extern Tile* tileCrate;
 
     extern Tile* tileEdge;
     extern Tile* tileUnset;

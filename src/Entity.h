@@ -68,6 +68,10 @@ public:
 
     }
 
+    virtual bool isHostile(){
+        return false;
+    }
+
     virtual void load(unsigned char* data, int* position);
 
     static Entity* loadNew(unsigned char* data, int* position);

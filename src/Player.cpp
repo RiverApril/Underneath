@@ -70,7 +70,9 @@ double Player::moveRelative(Point2 p, Level* level) {
 
 double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item){
 
-    if(containsItem(item) || !item){
+
+
+    if(item == nullptr || containsItem(item)){
 
 
         Potion* p = dynamic_cast<Potion*>(item);
@@ -103,11 +105,13 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
                         }
                         break;
                     case spellRelocate:
+                        
                         if(posToInteract == pos){
                             posToInteract = level->findRandomWithoutFlag(tileFlagSolid);
                         }
-                        if(level->canPathTo(pos, posToInteract, tileFlagSecretPathable)){
-                        	pos = posToInteract;
+                        if(!moveAbsalute(posToInteract, level)){
+                            hurt(damSuffocation, maxHp*2);
+                            return 0;
                         }
                         break;
                 }
@@ -127,8 +131,8 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
         int tid = level->indexAt(posToInteract);
         for(Entity* e : level->entityList){
             if(e->uniqueId != uniqueId){
-                if(e->pos == posToInteract){
-                    if(!needToBeSolid || e->isSolid()){
+                if(!needToBeSolid || e->isSolid()){
+                	if(e->pos == posToInteract){
                         double d = interactWithEntity(level, e, posToInteract, item);
                         if(d>0){
                             return d;
@@ -144,8 +148,16 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
 
 double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item){
 
-    if(distanceSquared(posOfTile, pos) <= 1){
+    bool use = true;
 
+    Weapon* weapon = dynamic_cast<Weapon*>(item);
+    if(weapon){
+        if(distanceSquared(posOfTile, pos) > 1){
+            use = false;
+        }
+    }
+
+    if(use){
         if(Tiles::tileList[tid]->hasFlag(tileFlagHasTileEntity)){
 
             for(TileEntity* te : level->tileEntityList){
@@ -161,17 +173,29 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
                         }
                     }else if(tid == Tiles::tileChest->getIndex()){
                         level->menuGame->openMenu(new Ui::MenuChest(dynamic_cast<TEChest*>(te), this, level->currentWorld));
+                        return interactDelay;
+                    }else if(tid == Tiles::tileCrate->getIndex()){
+                        TEChest* c = dynamic_cast<TEChest*>(te);
+                        for(Item* i : c->inventory){
+                            level->newEntity(new ItemEntity(i, posOfTile));
+
+                        }
+                        level->removeTileEntity(c);
                     }
                 }
             }
 
-        }else if(tid == Tiles::tileOpenDoor->getIndex()){
+        }
+        if(tid == Tiles::tileOpenDoor->getIndex()){
             if(posOfTile != pos){
                 level->setTile(posOfTile, Tiles::tileDoor);
                 return interactDelay;
             }
         }else if(Tiles::tileList[tid]->hasFlag(tileFlagDoor)){
             level->setTile(posOfTile, Tiles::tileOpenDoor);
+            return interactDelay;
+        }else if(tid == Tiles::tileCrate->getIndex()){
+            level->setTile(posOfTile, Tiles::tileFloor);
             return interactDelay;
         }
     }
@@ -262,12 +286,6 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
     }
 
     return 0;
-}
-
-double Player::waitUntilHealed(){
-    //TODO
-    debug("Not yet done, it just waits 5 time. It should wait until fully healed.");
-    return waitDelay;
 }
 
 Player* Player::cloneUnsafe(Player* oldE, Player* newE){

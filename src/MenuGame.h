@@ -55,13 +55,17 @@ namespace Ui {
         Point2 targetPosition = Point2Zero;
         Entity* targetEntity = nullptr;
 
+        double itemToBeUsedRange = -1;
+        Item* itemToBeUsed = nullptr;
 
-        const int modePlayerControl = 0;
-		const int modeAdjustBorder = 1;
-		const int modeInterectChoose = 2;
-        const int modeSelectTarget = 3;
-        const int modeJumpSelectTarget = 4;
-		int mode = modePlayerControl;
+#define modePlayerControl 0
+#define modeAdjustBorder 1
+#define modeSelectDirection 2
+#define modeSelectPosition 3
+#define modeSelectEntity 4
+		int controlMode = modePlayerControl;
+
+        void changeMode(int newMode);
 
     };
 }

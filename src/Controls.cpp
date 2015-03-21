@@ -17,7 +17,7 @@ namespace Key{
     int moveRight = KEY_RIGHT;
     int interact = 'g';
     int adjustConsole = '\\';
-    int wait5 = 'h';
+    int waitUntilHealed = 'h';
 
     //Open UI
     int inventory = 'i';

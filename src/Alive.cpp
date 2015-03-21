@@ -62,8 +62,10 @@ bool Alive::update(double deltaTime, double time, Level* level) {
                             healMana(e->power * deltaTime);
                         }
                         break;
+
                 }
-            }else{
+            }
+            if(e->timeLeft <= 0){
                 effects.erase(effects.begin()+(long)i);
                 i--;
                 continue;

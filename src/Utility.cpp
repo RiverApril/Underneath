@@ -161,11 +161,11 @@ namespace Utility {
     //Parsing
 
     int getNumberFromSymbol(char symbol){
-        if(symbol >= 48 && symbol <= 57){
+        if(symbol >= 48 && symbol <= 57){ // 0 - 9
             return symbol - 48;
-        }else if(symbol >= 65 && symbol <= 90){
-            return symbol - 65 + 10;
-        }else if(symbol >= 97 && symbol <= 122){
+        }else if(symbol >= 65 && symbol <= 90){ // A - Z
+            return symbol - 65 + 10 + 26;
+        }else if(symbol >= 97 && symbol <= 122){ // a - z
             return symbol - 97 + 10;
         }else{
             throw ParseException("Invalid symbol: '"+to_string(symbol)+"'");
@@ -234,8 +234,8 @@ namespace Utility {
     }
 
     int parseIntUnstable(string s, int base){
-        if(base < 1 || base > 36){
-            throw ParseException("Base out of range: "+to_string(base));
+        if(base < 1 || base > 62){
+            throw ParseException("Base out of range (1-62): "+to_string(base));
         }else{
             vector<int> left;
             for(size_t i=0;i<s.length();i++){

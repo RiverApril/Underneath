@@ -20,7 +20,7 @@ namespace Key{
     extern int moveRight;
     extern int interact;
     extern int adjustConsole;
-    extern int wait5;
+    extern int waitUntilHealed;
 
 	//Open UI
     extern int inventory;

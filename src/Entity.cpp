@@ -41,9 +41,8 @@ bool Entity::tryToMoveAbsalute(Point2 p, Level* level) {
             if(e->uniqueId == uniqueId){
                 continue;
             }
-            if(e->pos == p){
-
-                if(e->isSolid()){
+            if(e->isSolid()){
+            	if(e->pos == p){
                     block = true;
                     break;
                 }

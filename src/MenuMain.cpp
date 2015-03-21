@@ -94,7 +94,7 @@ namespace Ui {
         a+=4;
         
         if(limitedColorMode) {
-            mvaddstr(a, 0, "Limited Color Mode");
+            mvaddstr(a, 0, "Limited Color Mode - HIGHLY suggest using a terminal with 256 colors (or at least 16)");
         }
         
         a++;

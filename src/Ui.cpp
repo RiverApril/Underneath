@@ -188,7 +188,7 @@ namespace Ui {
     void drawInventory(Player* player, int selectedY, int scrollOffset, Inventory* secondaryInv, string invDisplayName, bool selectedLeft){
 
         int columnX = 0;
-        int columnWidth = (terminalSize.x-30)/(player==nullptr?1:2);
+        int columnWidth = (terminalSize.x)/(secondaryInv==nullptr?2:3);
 
         Weapon* activeWeapon = player->getActiveWeapon();
 

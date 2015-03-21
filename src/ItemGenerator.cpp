@@ -51,7 +51,7 @@ namespace ItemGenerator {
 
 
         ScrollBase scrollRemoteUse = atl(ScrollBase({"Scroll of Telekinesis"}, spellRemoteUse));
-        ScrollBase scrollRelocate = atl(ScrollBase({"Scroll of Relocation", "Scroll of Teleportation"}, spellRelocate));
+        ScrollBase scrollRelocate = atl(ScrollBase({"Scroll of Relocation"}, spellRelocate));
 
 
 
@@ -308,6 +308,12 @@ namespace ItemGenerator {
         applyRandConditionToWeapon(w, itemDifficulty);
 
         return w;
+    }
+
+    Item* makeCoins(int qty){
+        Item* c = Item::clone(iCoin);
+        c->qty = qty;
+        return c;
     }
 
 

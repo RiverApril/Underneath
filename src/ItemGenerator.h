@@ -165,6 +165,8 @@ namespace ItemGenerator {
     Weapon* applyRandConditionToWeapon(Weapon * w, int itemDifficulty, bool prependName = true);
 
     Weapon* createRandWeapon(int itemDifficulty);
+
+    Item* makeCoins(int qty);
     
 
     void initItemTemplates();

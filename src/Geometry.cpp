@@ -41,6 +41,11 @@ void Point2::set(const Point2 other) {
     this->y = other.y;
 }
 
+void Point2::add(int x, int y) {
+    this->x += x;
+    this->y += y;
+}
+
 
 Point2 Point2::operator+( Point2 other) {
     return Point2(this->x+other.x, this->y+other.y);

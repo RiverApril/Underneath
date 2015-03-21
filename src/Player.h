@@ -38,8 +38,6 @@ public:
 
     double interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item);
 
-    double waitUntilHealed();
-
 
     virtual int getEntityTypeId();
 
@@ -129,7 +127,6 @@ protected:
 
     double moveDelay = 1;
     double interactDelay = .1;
-    double waitDelay = 5;
     int timeSinceCombat = 0;
     bool outOfCombatHealing = false;
 

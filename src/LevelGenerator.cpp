@@ -87,6 +87,16 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
                 TEChest* te = new TEChest(Point2(i, j));
                 te->addItems(ItemGenerator::createRandLoots(difficulty, difficulty * 100, 5, 1));
                 tileEntityList.push_back(te);
+            }else if(tileGrid[i][j].index == (int8_t)Tiles::tileCrate->getIndex()){
+                if(rand()%6 == 0){
+                	TEChest* te = new TEChest(Point2(i, j));
+                    te->addItem(ItemGenerator::makeCoins((rand()%30)+1));
+                    tileEntityList.push_back(te);
+                }else if(rand()%20 == 0){
+                    TEChest* te = new TEChest(Point2(i, j));
+                    te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 0, 1));
+                    tileEntityList.push_back(te);
+                }
             }
         }
     }
@@ -409,10 +419,45 @@ namespace LevelGenerator{
                             }
                         }
                     }
-                    if(walls == 7){
+                    if(walls == 7 && rand()%3==0){
                         level->setTile(Point2(i, j), Tiles::tileChest);
                     }
                 }
+            }
+        }
+
+        for(size_t i = 0; i<rooms->size(); i++){
+            Room* r = rooms->at(i);
+
+            Point2 inner = r->radius-1;
+
+            if(rand()%3 == 0){
+
+                for(int j = -inner.x; j <= inner.x; j++){
+                    for(int k = -inner.y; k <= inner.y; k++){
+                        int doors = level->countTilesAround(r->center + Point2(j, k), Tiles::tileDoor);
+                        if(doors == 0 && rand()%10==0){
+                            level->setTile(r->center + Point2(j, k), Tiles::tileCrate);
+                        }
+                    }
+                }
+            }
+
+            if(rand()%3 == 0){
+
+                Point2 inner = Point2(r->radius.x - ((rand()%r->radius.x) + 2), r->radius.y - ((rand()%r->radius.y) + 2));
+
+                int w = (((rand()%3==0)) && (inner.x==0 || inner.y==1))?Tiles::tilePonyWall->getIndex():Tiles::tileWall->getIndex();
+
+                if(inner.x >= 0 && inner.y >= 0){
+                    for(int j = -inner.x; j <= inner.x; j++){
+                        for(int k = -inner.y; k <= inner.y; k++){
+                            level->setTile(r->center + Point2(j, k), w);
+                        }
+                    }
+                }
+
+
             }
         }
 
