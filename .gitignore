@@ -30,3 +30,4 @@ createBuild.command
 createBuild.sh
 compile.sh
 *.*~
+*_BUILD
