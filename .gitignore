@@ -31,3 +31,4 @@ createBuild.sh
 compile.sh
 *.*~
 *_BUILD
+*.o

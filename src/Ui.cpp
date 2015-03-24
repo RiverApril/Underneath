@@ -232,7 +232,7 @@ namespace Ui {
                 }else{
                     displayName = formatString("%c  %d %s", pre, item->qty, plural(item->name).c_str());
                 }
-                mvprintw(y, columnX, "%*-s", columnWidth-1, displayName.c_str());
+                mvprintw(y, columnX, "%s", displayName.c_str());
 
             }
 

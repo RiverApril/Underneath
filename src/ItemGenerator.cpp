@@ -127,41 +127,47 @@ namespace ItemGenerator {
     vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int altMaxQty){
         vector<Item*> items;
 
-        Item* item = Item::clone(iCoin);
-        item->qty = goldMaxQty>0?(rand()%(goldMaxQty+1)):0;
-        items.push_back(item);
+        if(goldMaxQty > 0){
+            Item* item = Item::clone(iCoin);
+            item->qty = rand()%(goldMaxQty+1);
+            items.push_back(item);
+        }
         
+        if(wepMaxQty > 0){
+            int weaponQty = (rand()%(wepMaxQty+1));
 
-        int weaponQty = wepMaxQty>0?(rand()%(wepMaxQty+1)):0;
+            for (int i = 0; i < weaponQty; i++){
 
-        for (int i = 0; i < weaponQty; i++){
+                int itemDifficulty = 0;
 
-            int itemDifficulty = 0;
-
-            for(int i=0;i<difficulty;i++){
-                if(rand()%10 == 0){
-                    itemDifficulty++;
+                for(int i=0;i<difficulty;i++){
+                    if(rand()%10 == 0){
+                        itemDifficulty++;
+                    }
                 }
-            }
 
-            items.push_back(createRandWeapon(itemDifficulty));
+                items.push_back(createRandWeapon(itemDifficulty));
+            }
         }
 
-        int altQty = altMaxQty>0?(rand()%(altMaxQty+1)):0;
+        if(altMaxQty > 0){
 
-        for (int i = 0; i < altQty; i++){
+            int altQty = (rand()%(altMaxQty+1));
 
-            int itemDifficulty = 0;
+            for (int i = 0; i < altQty; i++){
 
-            for(int i=0;i<difficulty;i++){
-                if(rand()%10 == 0){
-                    itemDifficulty++;
+                int itemDifficulty = 0;
+
+                for(int i=0;i<difficulty;i++){
+                    if(rand()%10 == 0){
+                        itemDifficulty++;
+                    }
                 }
+
+                 items.push_back(createRandAltLoot(itemDifficulty));
             }
 
-            items.push_back(createRandAltLoot(itemDifficulty));
         }
-
         
         return items;
     }
