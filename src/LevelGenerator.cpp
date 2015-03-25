@@ -31,10 +31,6 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
                 for (int j=0; j<size.y; j++) {
                     tileGrid[i][j].index = (int8_t)Tiles::tileUnset->getIndex();
                     tileGrid[i][j].explored = false;
-                    //tileGrid[i][j].entity = nullptr;
-                    if(i==0 || j==0 || i==(size.x-1) || j==(size.y-1)){
-                        tileGrid[i][j].index = (int8_t)Tiles::tileWall->getIndex();
-                    }
                 }
             }
             genDebug("generating...  attemt #"+to_string(attemt));
@@ -185,13 +181,13 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     for(int i=0;i<count;i++){
         placeNewAiEntity(EnemyGenerator::makeRandomEntity(difficulty), stairUpPos);
     }
-    
+
     genDebug("done");
-    
-    
+
+
     return stairUpPos;
-    
-    
+
+
 }
 
 
@@ -461,8 +457,7 @@ namespace LevelGenerator{
             }
         }
 
-        
-        
+
+
     }
 }
-
