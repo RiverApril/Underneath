@@ -23,9 +23,11 @@ int main(int argc, const char** argv) {
         return errno;
     }
 
+    /*
     for(int i=0;i<256;i++){
         cout << i << ": " << (char)i << endl;
     }
+    */
 
 
     cout << endl << "Press enter to start Underneath..." << endl;
@@ -76,4 +78,3 @@ int main(int argc, const char** argv) {
 
     return 0;
 }
-

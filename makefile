@@ -7,7 +7,7 @@ TMP := $(SRCS:.cpp=.o)
 SRCSLASH := src/
 OBJSLASH := obj/
 OBJS := $(subst $(SRCSLASH),$(OBJSLASH),$(TMP))
-CPP_FLAGS := -std=c++11
+CPP_FLAGS := -g -std=c++11
 LIB_FLAGS := -lncurses
 
 all: $(NAME)
@@ -15,6 +15,8 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CPPC) $(CPP_FLAGS) $(OBJS) -o $(NAME) $(LIB_FLAGS)
+
+$(OBJSLASH)%.o: $(SRCSLASH)%.h
 
 $(OBJSLASH)%.o: $(SRCSLASH)%.cpp
 	$(CPPC) $(CPP_FLAGS) -c $< -o $@ $(LIB_FLAGS)

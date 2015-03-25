@@ -59,7 +59,7 @@ void consolef(string format, ...){
 
 string formatString(string format, ...){
     string s = "";
-    
+
     char buff[256];
     va_list args;
     va_start(args, format);
@@ -288,6 +288,9 @@ namespace Ui {
                             }
                         }
                     }
+                    setColor(C_LIGHT_RED);
+                    mvprintw(a++, columnX, "One Use");
+                    setColor(C_LIGHT_GRAY, C_BLACK);
                 }else if(utilitySpell){
                     switch (utilitySpell->spellEffect) {
                         case spellRemoteUse:
@@ -298,7 +301,7 @@ namespace Ui {
                             mvprintw(a++, columnX, "Transport to selected location");
                             mvprintw(a++, columnX, "or random location if already there.");
                             break;
-                            
+
                         default:
                             break;
                     }

@@ -132,7 +132,7 @@ namespace ItemGenerator {
             item->qty = rand()%(goldMaxQty+1);
             items.push_back(item);
         }
-        
+
         if(wepMaxQty > 0){
             int weaponQty = (rand()%(wepMaxQty+1));
 
@@ -168,7 +168,7 @@ namespace ItemGenerator {
             }
 
         }
-        
+
         return items;
     }
 
@@ -213,7 +213,7 @@ namespace ItemGenerator {
                     case spellRemoteUse:
                         utilitySpell->artIndex = Arts::artScrollHand;
                         break;
-                        
+
                     default:
                         utilitySpell->artIndex = Arts::artScroll;
                         break;
@@ -317,9 +317,12 @@ namespace ItemGenerator {
     }
 
     Item* makeCoins(int qty){
-        Item* c = Item::clone(iCoin);
-        c->qty = qty;
-        return c;
+        if(qty > 0){
+            Item* c = Item::clone(iCoin);
+            c->qty = qty;
+            return c;
+        }
+        return nullptr;
     }
 
 

@@ -35,6 +35,9 @@ public:
     }
 
     virtual string getName(){
+        if(removed){
+            return "Item Removed";
+        }
         return item==nullptr?"Null Item":(item->qty==1?item->name:(formatString("%d %s", item->qty, plural(item->name).c_str())));
     }
 
@@ -45,10 +48,9 @@ public:
     virtual void load(unsigned char* data, int* position);
 
 
-
 protected:
     Item* item = nullptr;
-    
+
 };
 
 #endif /* defined(__Underneath__ItemEntity__) */
