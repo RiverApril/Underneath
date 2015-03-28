@@ -206,8 +206,8 @@ namespace LevelGenerator{
         int att = 0;
         while(!fit && att<100){
             att++;
-            r->radius.x = (rand()%6)+3;
-            r->radius.y = (rand()%6)+3;
+            r->radius.x = ((rand()%2==0)?(rand()%6):(rand()%12))+3;
+            r->radius.y = ((rand()%2==0)?(rand()%6):(rand()%12))+3;
             if(pos == Point2Neg1){
                 r->center.x = (rand()%(roomSize.x-(r->radius.x*2)))+r->radius.x;
                 r->center.y = (rand()%(roomSize.y-(r->radius.y*2)))+r->radius.y;
@@ -427,37 +427,146 @@ namespace LevelGenerator{
 
             Point2 inner = r->radius-1;
 
-            if(rand()%3 == 0){
+            bool done = false;
 
-                for(int j = -inner.x; j <= inner.x; j++){
-                    for(int k = -inner.y; k <= inner.y; k++){
-                        int doors = level->countTilesAround(r->center + Point2(j, k), Tiles::tileDoor);
-                        if(doors == 0 && rand()%10==0){
-                            level->setTile(r->center + Point2(j, k), Tiles::tileCrate);
+
+            /*vector<Point2> doors;
+            for(int j = -r->radius.x; j<=r->radius.x; j++){
+                for(int k = -r->radius.y; k<=r->radius.y; k++){
+                    if(j == -r->radius.x || k == -r->radius.y || j == r->radius.x || k == r->radius.y){
+                        if(level->tileAt(r->center + Point2(j, k))->hasFlag(tileFlagDoor)){
+                            doors.push_back(Point2(j, k));
                         }
                     }
                 }
+            }*/
+
+
+            if(rand()%3 == 0 && r->radius.xPlusY() > 12){
+                generateMaze(level, r);
+                if(rand()%3 == 0){
+                    level->setTile(r->center, Tiles::tileChest);
+                }
+                done = true;
             }
 
-            if(rand()%3 == 0){
+            if(!done){
+                if(rand()%3 == 0){
 
-                Point2 inner = Point2(r->radius.x - ((rand()%r->radius.x) + 2), r->radius.y - ((rand()%r->radius.y) + 2));
-
-                int w = (((rand()%3==0)) && (inner.x==0 || inner.y==1))?Tiles::tilePonyWall->getIndex():Tiles::tileWall->getIndex();
-
-                if(inner.x >= 0 && inner.y >= 0){
                     for(int j = -inner.x; j <= inner.x; j++){
                         for(int k = -inner.y; k <= inner.y; k++){
-                            level->setTile(r->center + Point2(j, k), w);
+                            int doors = level->countTilesAround(r->center + Point2(j, k), Tiles::tileDoor);
+                            if(doors == 0 && rand()%10==0){
+                                level->setTile(r->center + Point2(j, k), Tiles::tileCrate);
+                            }
                         }
                     }
                 }
 
+                if(rand()%3 == 0){
 
+                    Point2 inner = Point2(r->radius.x - ((rand()%r->radius.x) + 2), r->radius.y - ((rand()%r->radius.y) + 2));
+
+                    int w = (((rand()%3==0)) && (inner.x==0 || inner.y==1))?Tiles::tilePonyWall->getIndex():Tiles::tileWall->getIndex();
+
+                    if(inner.x >= 0 && inner.y >= 0){
+                        for(int j = -inner.x; j <= inner.x; j++){
+                            for(int k = -inner.y; k <= inner.y; k++){
+                                level->setTile(r->center + Point2(j, k), w);
+                            }
+                        }
+                    }
+
+
+                }
             }
         }
 
 
 
     }
+
+
+    void generateMaze(Level* level, Room* room){
+
+        int w = (room->radius.x*2)-1;
+        int h = (room->radius.y*2)-1;
+
+        vector<vector<char>> grid = vector<vector<char>>(w, vector<char>(h));
+
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[0].size();j++){
+				grid[i][j] = 'u';
+            }
+        }
+
+        Point2 activePoint = room->radius;
+
+        grid[activePoint.x][activePoint.y] = 'v';
+
+        vector<Point2> backPath;
+
+        while(true){
+            vector<Point2> posibilities;
+
+            Point2 temp;
+            temp = (activePoint + Point2(-2, 0));
+            if(temp.inRange(0, 0, w-1, h-1) && grid[temp.x][temp.y] == 'u'){
+                posibilities.push_back(temp);
+            }
+            temp = (activePoint + Point2(2, 0));
+            if(temp.inRange(0, 0, w-1, h-1) && grid[temp.x][temp.y] == 'u'){
+                posibilities.push_back(temp);
+            }
+            temp = (activePoint + Point2(0, -2));
+            if(temp.inRange(0, 0, w-1, h-1) && grid[temp.x][temp.y] == 'u'){
+                posibilities.push_back(temp);
+            }
+            temp = (activePoint + Point2(0, 2));
+            if(temp.inRange(0, 0, w-1, h-1) && grid[temp.x][temp.y] == 'u'){
+                posibilities.push_back(temp);
+            }
+
+            Point2 chosen;
+
+            if(posibilities.size() == 0){
+                if(backPath.size() == 0){
+                    break;
+                }
+                activePoint = backPath.back();
+                backPath.pop_back();
+                continue;
+            }else{
+                chosen = posibilities[rand()%posibilities.size()]-activePoint;
+                backPath.push_back(activePoint);
+            }
+
+            Point2 chosenWall = (chosen/2)+activePoint;
+            Point2 chosenNext = chosen+activePoint;
+
+            if(grid[chosenNext.x][chosenNext.y] == 'u'){
+                grid[chosenWall.x][chosenWall.y] = 'v';
+                grid[chosenNext.x][chosenNext.y] = 'v';
+            }
+
+            activePoint = chosenNext;
+        }
+
+        for(int i=0;i<w;i++){
+            for(int j=0;j<h;j++){
+                Point2 p = Point2(i+1, j+1) - room->radius + room->center;
+                level->setTile(p, grid[i][j]=='v'?Tiles::tileFloor->getIndex():Tiles::tileWall->getIndex());
+                if(level->tileAt(p-Point2(-1, 0))->hasFlag(tileFlagDoor) ||
+                   level->tileAt(p-Point2(1, 0))->hasFlag(tileFlagDoor) ||
+                   level->tileAt(p-Point2(0, -1))->hasFlag(tileFlagDoor) ||
+                   level->tileAt(p-Point2(0, 1))->hasFlag(tileFlagDoor)){
+                    level->setTile(p, Tiles::tileFloor);
+                }
+            }
+        }
+
+
+    }
+
+
 }

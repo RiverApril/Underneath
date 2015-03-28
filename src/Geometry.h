@@ -29,6 +29,10 @@ struct Point2 {
         return Point2(0, y);
     }
 
+    bool inRange(int xMin, int yMin, int xMax, int yMax){
+        return x>=xMin && y>=yMin && x<=xMax && y<=yMax;
+    }
+
     void set(const Point2 other);
 
     void add(int x, int y);

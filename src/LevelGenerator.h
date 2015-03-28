@@ -53,6 +53,8 @@ namespace LevelGenerator{
 
     extern void makeRoomsAndPaths(vector<Room*>* rooms, Level* level);
 
+    extern void generateMaze(Level* level, Room* room);
+
 }
 
 #endif /* defined(__Underneath__LevelGenerator__) */
