@@ -401,6 +401,8 @@ namespace LevelGenerator{
                 }
             }
         }
+
+        /*  disabled chests in corners
         for(int i=0;i<level->getSize().x;i++){
             for(int j=0;j<level->getSize().y;j++){
                 Tile* a = level->tileAt(Point2(i, j));
@@ -421,48 +423,27 @@ namespace LevelGenerator{
                 }
             }
         }
+        */
 
-        for(size_t i = 0; i<rooms->size(); i++){
+        for(int i = 0; i<rooms->size(); i++){
             Room* r = rooms->at(i);
 
             Point2 inner = r->radius-1;
 
-            bool done = false;
+            bool addedWalls = false;
 
 
-            /*vector<Point2> doors;
-            for(int j = -r->radius.x; j<=r->radius.x; j++){
-                for(int k = -r->radius.y; k<=r->radius.y; k++){
-                    if(j == -r->radius.x || k == -r->radius.y || j == r->radius.x || k == r->radius.y){
-                        if(level->tileAt(r->center + Point2(j, k))->hasFlag(tileFlagDoor)){
-                            doors.push_back(Point2(j, k));
-                        }
+            if(!addedWalls){
+                if(rand()%3 == 0 && r->radius.xPlusY() > 12){
+                    generateMaze(level, r);
+                    if(rand()%3 == 0){
+                        level->setTile(r->center, Tiles::tileChest);
                     }
+                    addedWalls = true;
                 }
-            }*/
-
-
-            if(rand()%3 == 0 && r->radius.xPlusY() > 12){
-                generateMaze(level, r);
-                if(rand()%3 == 0){
-                    level->setTile(r->center, Tiles::tileChest);
-                }
-                done = true;
             }
 
-            if(!done){
-                if(rand()%3 == 0){
-
-                    for(int j = -inner.x; j <= inner.x; j++){
-                        for(int k = -inner.y; k <= inner.y; k++){
-                            int doors = level->countTilesAround(r->center + Point2(j, k), Tiles::tileDoor);
-                            if(doors == 0 && rand()%10==0){
-                                level->setTile(r->center + Point2(j, k), Tiles::tileCrate);
-                            }
-                        }
-                    }
-                }
-
+            if(!addedWalls){
                 if(rand()%3 == 0){
 
                     Point2 inner = Point2(r->radius.x - ((rand()%r->radius.x) + 2), r->radius.y - ((rand()%r->radius.y) + 2));
@@ -479,6 +460,47 @@ namespace LevelGenerator{
 
 
                 }
+            }
+
+            if(rand()%3 == 0){
+
+                for(int pass = 0; pass < 3; pass++){
+                    for(int j = -inner.x; j <= inner.x; j++){
+                        for(int k = -inner.y; k <= inner.y; k++){
+                            int doors = level->countTilesAround(r->center + Point2(j, k), Tiles::tileDoor);
+                            int walls = level->countTilesAround(r->center + Point2(j, k), Tiles::tileWall) + level->countTilesAround(r->center + Point2(j, k), Tiles::tilePonyWall);
+                            int crates = level->countTilesAround(r->center + Point2(j, k), Tiles::tileCrate);
+                            switch(pass){
+                                case 0:{
+                                    if(doors == 0 && walls > 0 && rand()%10==0){
+                                        level->setTile(r->center + Point2(j, k), Tiles::tileCrate);
+                                    }
+                                    break;
+                                }
+                                case 1:{
+                                    if(doors == 0 && crates == 1 && walls > 0 && rand()%2==0){
+                                        level->setTile(r->center + Point2(j, k), Tiles::tileTemp);
+                                    }
+                                    break;
+                                }
+                                case 2:{
+                                    if(doors == 0 && crates >= 2 && rand()%2==0){
+                                        level->setTile(r->center + Point2(j, k), Tiles::tileTemp);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    for(int j = -inner.x; j <= inner.x; j++){
+                        for(int k = -inner.y; k <= inner.y; k++){
+                            if(level->tileAt(r->center + Point2(j, k))->getIndex() == Tiles::tileTemp->getIndex()){
+                                level->setTile(r->center + Point2(j, k), Tiles::tileCrate);
+                            }
+                        }
+                    }
+                }
+                addedWalls = true;
             }
         }
 

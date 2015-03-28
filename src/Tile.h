@@ -81,6 +81,8 @@ namespace Tiles{
     extern Tile* tileDebug5;
     extern Tile* tileDebug6;
 
+    extern Tile* tileTemp;
+
 
     void initTiles();
     void cleanupTiles();

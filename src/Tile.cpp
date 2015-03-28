@@ -69,6 +69,8 @@ namespace Tiles{
     Tile* tileDebug5;
     Tile* tileDebug6;
 
+    Tile* tileTemp;
+
     void initTiles() {
 
         using namespace Ui;
@@ -105,6 +107,8 @@ namespace Tiles{
         tileDebug4 = new Tile('4',  C_LIGHT_GREEN, bg, tileFlagPathable);
         tileDebug5 = new Tile('5',  C_LIGHT_GREEN, bg, tileFlagPathable);
         tileDebug6 = new Tile('6',  C_LIGHT_GREEN, bg, tileFlagPathable);
+
+        tileTemp = new Tile('?',  C_LIGHT_RED, bg, tileFlagPathable);
     }
 
     void cleanupTiles(){
