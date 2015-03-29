@@ -66,10 +66,10 @@ bool Entity::tryToMoveRelative(Point2 p, Level* level) {
 bool Entity::update(double deltaTime, double time, Level* level) {
 
     bool u = false;
-    
+
 
     if(pos != lastPos || updateIcon) {
-        
+
         //setAndUnsetDisplayEntity(level);
 
         u = true;
@@ -140,9 +140,9 @@ Entity* Entity::clone(Entity* oldE){
             return nullptr;
             break;
     }
-    
-    
-    
+
+
+
 }
 
 void Entity::save(vector<unsigned char>* data){
@@ -150,12 +150,12 @@ void Entity::save(vector<unsigned char>* data){
 
 
     Utility::saveInt(data, uniqueId);
-    
+
     Utility::saveUnsignedChar(data, (unsigned char)defaultIcon);
-    
+
     Point2::save(pos, data);
     Point2::save(lastPos, data);
-    
+
     Utility::saveUnsignedChar(data, (unsigned char)fgColorCode);
     Utility::saveUnsignedChar(data, (unsigned char)bgColorCode);
     Utility::saveBool(data, solid);
@@ -215,6 +215,3 @@ Entity* Entity::loadNew(unsigned char* data, int* position){
 
     return e;
 }
-
-
-

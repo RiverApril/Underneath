@@ -14,6 +14,7 @@
 const int TILE_ENTITY_TYPE_NONE = 0;
 const int TILE_ENTITY_TYPE_STAIR = 1;
 const int TILE_ENTITY_TYPE_CHEST = 2;
+const int TILE_ENTITY_TYPE_MIMIC = 3;
 
 struct TileEntity{
 

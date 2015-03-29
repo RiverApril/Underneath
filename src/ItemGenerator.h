@@ -17,7 +17,7 @@
 namespace ItemGenerator {
 
     struct Condition{
-        
+
         Condition(){}
 
         Condition(vector<string> names, double damMin, double damMax, double udMin, double udMax, double wMin, double wMax, vector<WeaponType> weaponTypes){
@@ -105,7 +105,7 @@ namespace ItemGenerator {
         Vector2 time = Vector2One;
         Vector2 power = Vector2One;
         double meta = 0;
-        
+
     };
 
     struct ScrollBase{
@@ -146,6 +146,8 @@ namespace ItemGenerator {
     extern WeaponBase wFrostCombatSpell;
     extern WeaponBase wShockCombatSpell;
 
+    extern WeaponBase wNatural;
+
 
     vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int altMaxQty);
 
@@ -167,7 +169,7 @@ namespace ItemGenerator {
     Weapon* createRandWeapon(int itemDifficulty);
 
     Item* makeCoins(int qty);
-    
+
 
     void initItemTemplates();
     void cleanupItemTemplates();

@@ -15,29 +15,39 @@ namespace EnemyGenerator{
 
     int total = 0;
 
+    WeightedEnemy* goblinScout;
+    WeightedEnemy* goblinWarrier;
+    WeightedEnemy* goblinArcher;
+    WeightedEnemy* troll;
+    WeightedEnemy* wraith;
+    WeightedEnemy* mimic;
+
 
     void initEnemies(){
 
-        WeightedEnemy* goblinScout = atl(new WeightedEnemy(100, "Goblin Scout", 'g', aiAttackPlayer, 50, ItemGenerator::wKnife, Ui::C_LIGHT_GREEN, 1.0));
+        goblinScout = atl(new WeightedEnemy(100, "Goblin Scout", 'g', aiAttackPlayer, 50, ItemGenerator::wKnife, "", Ui::C_LIGHT_GREEN, 1.0));
         goblinScout->weaknesses.push_back(Weakness(damPoison, 2));
 
-        WeightedEnemy* goblinWarrier = atl(new WeightedEnemy(50, "Goblin Warrier", 'w', aiAttackPlayer, 75, ItemGenerator::wSword, Ui::C_DARK_GREEN, 1.0));
+        goblinWarrier = atl(new WeightedEnemy(50, "Goblin Warrier", 'w', aiAttackPlayer, 75, ItemGenerator::wSword, "", Ui::C_DARK_GREEN, 1.0));
         goblinWarrier->weaknesses.push_back(Weakness(damPoison, 2));
 
-        WeightedEnemy* goblinArcher = atl(new WeightedEnemy(50, "Goblin Archer", 'a', aiAttackPlayer, 25, ItemGenerator::wBow, Ui::C_LIGHT_GREEN, 1.0));
+        goblinArcher = atl(new WeightedEnemy(50, "Goblin Archer", 'a', aiAttackPlayer, 25, ItemGenerator::wBow, "", Ui::C_LIGHT_GREEN, 1.0));
         goblinArcher->weaknesses.push_back(Weakness(damPoison, 2));
 
-        WeightedEnemy* troll = atl(new WeightedEnemy(20, "Troll", 't', aiAttackPlayer, 100, ItemGenerator::wMace, Ui::C_LIGHT_RED, 1.5, 1));
+        troll = atl(new WeightedEnemy(20, "Troll", 't', aiAttackPlayer, 100, ItemGenerator::wMace, "", Ui::C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));
 
-        WeightedEnemy* wraith = atl(new WeightedEnemy(2, "Wraith", ' ', aiAttackPlayer, 200, ItemGenerator::wSword, Ui::C_BLACK, 2.0, 2));
+        wraith = atl(new WeightedEnemy(2, "Wraith", ' ', aiAttackPlayer, 200, ItemGenerator::wSword, "", Ui::C_BLACK, 2.0, 2));
         wraith->weaknesses.push_back(Weakness(damFire, 2));
         wraith->weaknesses.push_back(Weakness(damIce, 2));
         wraith->weaknesses.push_back(Weakness(damShock, 2));
         wraith->weaknesses.push_back(Weakness(damSharp, .5));
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
 
-        
+        mimic = new WeightedEnemy(0, "Mimic", '+', aiAttackPlayer, 75, ItemGenerator::wNatural, "Teeth", Ui::C_LIGHT_GREEN, 0);
+        mimic->weaknesses.push_back(Weakness(damFire, 4));
+
+
 
 
     }
@@ -62,8 +72,19 @@ namespace EnemyGenerator{
         }
     }
 
+    AiEntity* makeEntity(WeightedEnemy* we, int difficulty){
+        AiEntity* e = new AiEntity(we->name, we->ai, we->icon, Point2Zero, we->color, we->maxHp);
+        e->weaknesses = we->weaknesses;
+        Weapon* weapon = ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromBase(we->weaponBase, difficulty+we->weaponDifficultyAdd), difficulty/* don't make weapon multiplied because it may drop */);
+        if(we->weaponName.size() > 0){
+            weapon->name = we->weaponName;
+        }
+        e->setActiveWeapon(weapon);
+        return e;
+    }
+
     AiEntity* makeRandomEntity(int difficulty){
-        
+
         int r = rand()%total;
         WeightedEnemy* last = enemyWeightList[0];
         for(WeightedEnemy* we : enemyWeightList){
@@ -73,11 +94,7 @@ namespace EnemyGenerator{
             }
             debugf("r: %d  total: %d  we's interval: %d", r, total, we->interval);
         }
-        AiEntity* e = new AiEntity(last->name, last->ai, last->icon, Point2Zero, last->color, last->maxHp);
-        e->weaknesses = last->weaknesses;
-        e->setActiveWeapon(ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromBase(last->weaponBase, difficulty+last->weaponDifficultyAdd), difficulty/* don't make weapon multiplied because it may drop */));
-        return dynamic_cast<AiEntity*>(e);
+        return makeEntity(last, difficulty);
     }
 
 }
-

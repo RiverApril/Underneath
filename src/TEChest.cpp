@@ -38,5 +38,5 @@ TEChest* TEChest::cloneUnsafe(TEChest* oldE, TEChest* newE){
     }
 
     return newE;
-    
+
 }

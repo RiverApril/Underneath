@@ -44,7 +44,7 @@ namespace Tiles{
 
 
     Tile* tileFloor;
-    Tile* tilePath;
+    //Tile* tilePath;
 
     Tile* tileWall;
     Tile* tilePonyWall;
@@ -78,15 +78,15 @@ namespace Tiles{
         Color bg = C_BLACK;
 
         tileFloor = new Tile('.', C_WHITE, bg, tileFlagPathable);
-        tilePath = new Tile('.', C_LIGHT_GRAY, bg, tileFlagPathable);
+        //tilePath = new Tile('.', C_LIGHT_GRAY, bg, tileFlagPathable);
 
         tileWall = new Tile(' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall, C_BLACK,
                             C_DARK_GRAY);
         tilePonyWall = new Tile('.', C_BLACK, C_LIGHT_GRAY, tileFlagSolid, C_BLACK, C_DARK_GRAY);
 
-        tileDoor = new Tile('%', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable,
+        tileDoor = new Tile('%', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity,
                             C_BLACK, C_DARK_GRAY);
-        tileSecretDoor = new Tile(' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagSecretPathable,
+        tileSecretDoor = new Tile(' ', C_BLACK, C_LIGHT_GRAY, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagSecretPathable | tileFlagHasTileEntity,
                                   C_BLACK, C_DARK_GRAY);
         tileOpenDoor = new Tile('/', C_WHITE, bg, tileFlagPathable);
 

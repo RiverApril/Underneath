@@ -96,7 +96,7 @@ public:
     int level = 0;
     double xp = 0;
     double nextLevelXp = 0;
-	
+
     Abilities<int> maxAbilities = Abilities<int>(100, 100, 100, 100, 100, 100, 100);
 
     void gainXp(double amount);
@@ -121,8 +121,8 @@ public:
         }
         return false;
     }*/
-    
-    
+
+
 protected:
 
     double moveDelay = 1;

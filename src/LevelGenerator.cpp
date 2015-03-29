@@ -8,6 +8,7 @@
 
 #include "LevelGenerator.h"
 #include "EnemyGenerator.h"
+#include "TEMimic.h"
 
 
 Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLevel) {
@@ -76,22 +77,36 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
     genDebug("found path");
 
-    genDebug("Filling chests...");
+    genDebug("Adding tile Entities...");
     for (int i=0; i<size.x; i++) {
         for (int j=0; j<size.y; j++) {
+
+            if(tileGrid[i][j].index == (int8_t)Tiles::tileDoor->getIndex() || tileGrid[i][j].index == (int8_t)Tiles::tileSecretDoor->getIndex() || tileGrid[i][j].index == (int8_t)Tiles::tileChest->getIndex()){
+                if(rand()%25 == 0){
+                    TEMimic* te = new TEMimic(Point2(i, j));
+                    tileEntityList.push_back(te);
+                    continue;
+                }
+            }
+
             if(tileGrid[i][j].index == (int8_t)Tiles::tileChest->getIndex()){
                 TEChest* te = new TEChest(Point2(i, j));
                 te->addItems(ItemGenerator::createRandLoots(difficulty, difficulty * 100, 5, 1));
                 tileEntityList.push_back(te);
-            }else if(tileGrid[i][j].index == (int8_t)Tiles::tileCrate->getIndex()){
+                continue;
+            }
+
+            if(tileGrid[i][j].index == (int8_t)Tiles::tileCrate->getIndex()){
                 if(rand()%6 == 0){
                 	TEChest* te = new TEChest(Point2(i, j));
                     te->addItem(ItemGenerator::makeCoins((rand()%30)+1));
                     tileEntityList.push_back(te);
+                    continue;
                 }else if(rand()%20 == 0){
                     TEChest* te = new TEChest(Point2(i, j));
                     te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 0, 1));
                     tileEntityList.push_back(te);
+                    continue;
                 }
             }
         }
@@ -271,7 +286,7 @@ namespace LevelGenerator{
     }
 
     int getPathAndMaybeDoor(){
-        return (rand()%30==0?(rand()%10==0?Tiles::tileSecretDoor:Tiles::tileDoor):Tiles::tilePath)->getIndex();
+        return (rand()%30==0?(rand()%10==0?Tiles::tileSecretDoor:Tiles::tileDoor):Tiles::tileFloor)->getIndex();
     }
 
     void makeRoomsAndPaths(vector<Room*>* rooms, Level* level){

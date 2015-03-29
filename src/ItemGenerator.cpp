@@ -38,6 +38,8 @@ namespace ItemGenerator {
     WeaponBase wFrostCombatSpell;
     WeaponBase wShockCombatSpell;
 
+    WeaponBase wNatural;
+
     void initItemTemplates(){
 
         iCoin = new Item("Coin", .01);
@@ -68,6 +70,9 @@ namespace ItemGenerator {
         wFireCombatSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .1, damFire, wepMagic).magical(8, 1).setWeight(.1).setArts({Arts::artScrollFire}));
         wFrostCombatSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .1, damIce, wepMagic).magical(8, 1).setWeight(.1).setArts({Arts::artScrollFrost}));
         wShockCombatSpell = atl(WeaponBase({"Electrocute", "Shock", "Zap"}, 1, .1, damShock, wepMagic).magical(8, 1).setWeight(.1).setArts({Arts::artScrollShock}));
+
+
+        wNatural = atl(WeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee));
 
 
         Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, 1, 1, {wepMelee, wepRanged}));

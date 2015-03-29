@@ -1,7 +1,7 @@
 
 CPPC := g++
 RM := rm
-NAME := Underneath_BUILD
+NAME := Underneath_BUILD_LINUX64
 SRCS := $(wildcard src/*.cpp)
 TMP := $(SRCS:.cpp=.o)
 SRCSLASH := src/

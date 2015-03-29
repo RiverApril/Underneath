@@ -13,6 +13,7 @@
 #include "Verbalizer.h"
 #include "Potion.h"
 #include "UtiitySpell.h"
+#include "EnemyGenerator.h"
 
 
 
@@ -105,7 +106,7 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
                         }
                         break;
                     case spellRelocate:
-                        
+
                         if(posToInteract == pos){
                             posToInteract = level->findRandomWithoutFlag(tileFlagSolid);
                         }
@@ -164,23 +165,45 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
                 //debugf("te's pos: %s", te->pos.toString().c_str());
                 if(te->pos == posOfTile){
                     //debugf("te type id: %d", te->getTileEntityTypeId());
-                    if(tid == Tiles::tileStairDown->getIndex() || tid == Tiles::tileStairUp->getIndex()){
-                        TEStair* s = dynamic_cast<TEStair*>(te);
-                        if(s){
-                            //debugf("s->levelname: %s", s->levelName.c_str());
-                            WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
+                    switch(te->getTileEntityTypeId()){
+
+                        case TILE_ENTITY_TYPE_CHEST:{
+                            if(tid == Tiles::tileChest->getIndex()){
+                                level->menuGame->openMenu(new Ui::MenuChest(dynamic_cast<TEChest*>(te), this, level->currentWorld));
+                            }else if(tid == Tiles::tileCrate->getIndex()){
+                                TEChest* c = dynamic_cast<TEChest*>(te);
+                                for(Item* i : c->inventory){
+                                    level->newEntity(new ItemEntity(i, posOfTile));
+                                }
+                                level->removeTileEntity(c);
+                            }
                             return interactDelay;
                         }
-                    }else if(tid == Tiles::tileChest->getIndex()){
-                        level->menuGame->openMenu(new Ui::MenuChest(dynamic_cast<TEChest*>(te), this, level->currentWorld));
-                        return interactDelay;
-                    }else if(tid == Tiles::tileCrate->getIndex()){
-                        TEChest* c = dynamic_cast<TEChest*>(te);
-                        for(Item* i : c->inventory){
-                            level->newEntity(new ItemEntity(i, posOfTile));
 
+                        case TILE_ENTITY_TYPE_MIMIC:{
+                            AiEntity* e = EnemyGenerator::makeEntity(EnemyGenerator::mimic, level->getDifficulty());
+
+                            Tile* t = Tiles::getTile(tid);
+
+                            e->defaultIcon = t->getIcon();
+                            e->fgColorCode = t->getFgColor(true);
+                            e->bgColorCode = t->getBgColor(true);
+
+                            e->pos = posOfTile;
+
+                            level->newEntity(e);
+                            level->removeTileEntity(te);
+                            level->setTile(posOfTile, Tiles::tileFloor);
+                            return interactDelay;
                         }
-                        level->removeTileEntity(c);
+
+                        case TILE_ENTITY_TYPE_STAIR:{
+                            TEStair* s = dynamic_cast<TEStair*>(te);
+                            if(s){
+                                WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
+                                return interactDelay;
+                            }
+                        }
                     }
                 }
             }
@@ -365,5 +388,3 @@ void Player::setActiveWeapon(Weapon* newWeapon){
 
     Alive::setActiveWeapon(newWeapon);
 }
-
-

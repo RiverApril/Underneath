@@ -22,7 +22,7 @@ Level::Level(World* w, string n, Point2 s, int d) {
     difficulty = d;
     size = s;
     tileGrid = vector<vector<TileData>>(size.x, vector<TileData>(size.y));
-    
+
     for(size_t i=0;i<size.x;i++){
         for(size_t j=0;j<size.y;j++){
             tileGrid[i][j].index = (int8_t)Tiles::tileUnset->getIndex();
@@ -40,7 +40,7 @@ Level::~Level() {
         delete e;
     }
     entityList.clear();
-    
+
     for(Entity* e : deleteEntityList){
         delete e;
     }
@@ -521,6 +521,3 @@ void Level::load(unsigned char* data, int* position){
     }
     debugf("Loaded %d tile entities", (int)tileEntityList.size());
 }
-
-
-

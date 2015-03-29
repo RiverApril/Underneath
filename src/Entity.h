@@ -26,7 +26,7 @@ class Entity{
 public:
 
     static Entity* cloneUnsafe(Entity* oldE, Entity* newE);
-    
+
     static Entity* clone(Entity* oldE);
 
     Entity();
@@ -38,7 +38,7 @@ public:
     virtual bool tryToMoveAbsalute(Point2 p, Level* world);
 
     virtual bool tryToMoveRelative(Point2 p, Level* world);
-    
+
     virtual bool update(double deltaTime, double time, Level* level);
 
     //void setAndUnsetDisplayEntity(Level* level);
@@ -82,11 +82,12 @@ public:
 
     bool removed = false;
 
-protected:
     char defaultIcon = '?';
-    Point2 lastPos;
     Ui::Color fgColorCode;
     Ui::Color bgColorCode;
+
+protected:
+    Point2 lastPos;
     bool updateIcon = true;
     bool solid = false;
 

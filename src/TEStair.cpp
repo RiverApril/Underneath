@@ -31,5 +31,5 @@ TEStair* TEStair::cloneUnsafe(TEStair* oldE, TEStair* newE){
     newE->levelName = oldE->levelName;
 
     return newE;
-    
+
 }

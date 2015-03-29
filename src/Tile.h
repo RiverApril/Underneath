@@ -56,7 +56,7 @@ namespace Tiles{
 
     extern vector<Tile*> tileList;
     extern Tile* tileFloor;
-    extern Tile* tilePath;
+    //extern Tile* tilePath;
 
     extern Tile* tileWall;
     extern Tile* tilePonyWall;
