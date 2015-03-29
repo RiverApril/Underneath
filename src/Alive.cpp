@@ -33,7 +33,7 @@ Alive::~Alive(){
 
 
 bool Alive::update(double deltaTime, double time, Level* level) {
-    
+
     if(dead){
         level->removeEntity(this, true);
     }else{
@@ -45,7 +45,7 @@ bool Alive::update(double deltaTime, double time, Level* level) {
             healMana(1);
             lastManaTime += manaDelay;
         }
-		
+
         forVector(effects, i){
             Effect* e = &effects[i];
 
@@ -85,7 +85,7 @@ double Alive::hurt(DamageType damageType, double amount, double damageMultiplier
             amount *= w.multiplier;
         }
     }
-    
+
     hp -= amount;
     if(hp<=0 && !dead){
         die();
@@ -259,6 +259,3 @@ void Alive::load(unsigned char* data, int* position){
 		effects.push_back(Effect(data, position));
     }
 }
-
-
-

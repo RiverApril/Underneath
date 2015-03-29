@@ -25,8 +25,12 @@ int main(int argc, const char** argv) {
 
     /*
     for(int i=0;i<256;i++){
-        cout << i << ": " << (char)i << endl;
+        cout << "[" <<(char)i << "] ";
+        if(i%16 == 0){
+            cout << endl;
+        }
     }
+    cout << endl;
     */
 
 

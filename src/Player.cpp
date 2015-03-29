@@ -40,7 +40,7 @@ bool Player::update(double deltaTime, double time, Level* level) {
     if(dead){
         level->currentWorld->currentPlayer = nullptr;
     }
-    if(timeSinceCombat > 10){
+    if(timeSinceCombat > 30){
         if(!outOfCombatHealing){
             lastHealTime = time;
             lastManaTime = time;

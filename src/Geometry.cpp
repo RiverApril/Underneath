@@ -138,7 +138,9 @@ void Point2::save(Point2 p, vector<unsigned char>* data){
 }
 
 Point2 Point2::load(unsigned char* data, int* position){
-    return Point2(Utility::loadInt(data, position), Utility::loadInt(data, position));
+    int x = Utility::loadInt(data, position);
+    int y = Utility::loadInt(data, position);
+    return Point2(x, y);
 }
 
 //Point3:

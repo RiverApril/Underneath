@@ -232,23 +232,23 @@ namespace Ui {
     void MenuGame::arrowMove(Point2 p){
         if(controlMode == modeSelectPosition){
             targetPosition += p;
-        }if(controlMode == modeSelectDirection){
+        } else if(controlMode == modeSelectDirection){
 
             Item* i = *useItem!=-1?(currentPlayer->inventory[*useItem]):currentPlayer->getActiveWeapon();
-            
+
             timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos+p, false, i);
 
             *useItem = -1;
 
             changeMode(modePlayerControl);
 
-        }else if(controlMode == modeAdjustBorder){
+        } else if(controlMode == modeAdjustBorder){
             borderSize -= p;
             setGameAreaSize();
         } else if(controlMode == modePlayerControl && currentPlayer != nullptr && currentLevel != nullptr){
 
             timePassed += currentPlayer->moveRelative(p, currentLevel);
-            
+
         } else if(controlMode == modeSelectEntity){
             Point2 temp = Point2Zero;
             if(targetEntity){
@@ -276,16 +276,20 @@ namespace Ui {
         }else if(in == ERR){
 
         }else if(in == KEY_ESCAPE){
-            if(currentPlayer == nullptr){
-                WorldLoader::deleteWorld(currentWorld->name);
-                
-                delete currentWorld;
-                currentWorld = nullptr;
-
-                closeAllMenus();
-                return;
+            if(controlMode != modePlayerControl){
+                changeMode(modePlayerControl);
             }else{
-                openMenu(new MenuYesNo("Do you want to save '"+currentWorld->name+"' ?", saveAnswer, true));
+                if(currentPlayer == nullptr){
+                    WorldLoader::deleteWorld(currentWorld->name);
+
+                    delete currentWorld;
+                    currentWorld = nullptr;
+
+                    closeAllMenus();
+                    return;
+                }else{
+                    openMenu(new MenuYesNo("Do you want to save '"+currentWorld->name+"' ?", saveAnswer, true));
+                }
             }
 
         }else if(in == Key::moveUp){
@@ -338,7 +342,7 @@ namespace Ui {
                 }
 
                 changeMode(modePlayerControl);
-                
+
             }else if(/* DISABLED, deemed overpowered (part obove too)*/ (false) && in == 'f'){
                 Ranged* ranged = dynamic_cast<Ranged*>(currentPlayer->getActiveWeapon());
                 if(ranged && controlMode != modeSelectEntity){
@@ -441,7 +445,7 @@ namespace Ui {
 
             currentWorld->worldLastTime = currentWorld->worldTime;
         }
-        
+
     }
 
     void MenuGame::render(double displayTime) {
@@ -583,9 +587,9 @@ namespace Ui {
         }
 
 
-        
+
         printConsole(gameArea.y+1);
-        
+
         refresh();
     }
 
@@ -601,7 +605,7 @@ namespace Ui {
                 itemToBeUsed = nullptr;
                 targetEntity = nullptr;
                 break;
-                
+
             default:
                 break;
         }

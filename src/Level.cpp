@@ -485,7 +485,7 @@ void Level::save(vector<unsigned char>* data){
     Utility::saveInt(data, (int)entityList.size());
     debugf("Saving %d entities...", (int)entityList.size());
 	for (size_t i = 0; i<entityList.size(); i++){
-        //debug("Saving Entity: "+entityList[i]->getName()+"("+to_string(entityList[i]->getEntityTypeId())+")"+", Pos: "+entityList[i]->pos.toString());
+        debug("Saving Entity: "+entityList[i]->getName()+"("+to_string(entityList[i]->getEntityTypeId())+")"+", Pos: "+entityList[i]->pos.toString());
         entityList[i]->save(data);
     }
     debugf("%d Entities saved.", (int)entityList.size());

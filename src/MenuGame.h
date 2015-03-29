@@ -41,7 +41,7 @@ namespace Ui {
         void viewUpdate();
         void drawTileAt(Point2 p);
         void arrowMove(Point2 p);
-		
+
         double timePassed = 0;
         Point2 viewPos;
         Point2 viewMoveSpeed;

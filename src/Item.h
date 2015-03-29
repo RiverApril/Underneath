@@ -38,7 +38,7 @@ public:
     }
 
     virtual ~Item(){
-        
+
     }
 
     virtual void save(vector<unsigned char>* data);

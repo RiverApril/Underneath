@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "UtiitySpell.h"
+#include "UtilitySpell.h"
 #include "Utility.h"
 
 void UtilitySpell::save(vector<unsigned char>* data){
@@ -26,9 +26,9 @@ void UtilitySpell::load(unsigned char* data, int* position){
 UtilitySpell* UtilitySpell::cloneUnsafe(UtilitySpell* oldE, UtilitySpell* newE){
 
     Item::cloneUnsafe(oldE, newE);
-    
+
     newE->spellEffect = oldE->spellEffect;
-    
+
     return newE;
-    
+
 }

@@ -76,6 +76,9 @@ TileEntity* TileEntity::loadNew(unsigned char* data, int* position){
         case TILE_ENTITY_TYPE_CHEST:
             e = new TEChest();
             break;
+        case TILE_ENTITY_TYPE_MIMIC:
+            e = new TEMimic();
+            break;
 
         default:
             throw Utility::FileExceptionLoad("Tile Entity type unknown: "+to_string(type));

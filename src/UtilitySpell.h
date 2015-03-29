@@ -52,14 +52,14 @@ public:
                 (spellEffect == spellRemoteUse) || (spellEffect == spellRelocate)
                 );
     }
-    
+
     SpellEffect spellEffect = 0;
     int manaCost = 0;// -1 means one use without mana cost
-    
+
     virtual string getExtendedName(){
         return name;
     }
-    
+
 protected:
 };
 
