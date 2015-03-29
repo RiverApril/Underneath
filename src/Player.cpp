@@ -176,6 +176,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
                                     level->newEntity(new ItemEntity(i, posOfTile));
                                 }
                                 level->removeTileEntity(c);
+                                level->setTile(posOfTile, Tiles::tileFloor);
                             }
                             return interactDelay;
                         }

@@ -485,24 +485,26 @@ namespace LevelGenerator{
                             int doors = level->countTilesAround(r->center + Point2(j, k), Tiles::tileDoor);
                             int walls = level->countTilesAround(r->center + Point2(j, k), Tiles::tileWall) + level->countTilesAround(r->center + Point2(j, k), Tiles::tilePonyWall);
                             int crates = level->countTilesAround(r->center + Point2(j, k), Tiles::tileCrate);
-                            switch(pass){
-                                case 0:{
-                                    if(doors == 0 && walls > 0 && rand()%10==0){
-                                        level->setTile(r->center + Point2(j, k), Tiles::tileCrate);
+                            if(level->tileAt(r->center + Point2(j, k))->getIndex() == Tiles::tileFloor->getIndex()){
+                                switch(pass){
+                                    case 0:{
+                                        if(doors == 0 && walls > 0 && rand()%10==0){
+                                            level->setTile(r->center + Point2(j, k), Tiles::tileCrate);
+                                        }
+                                        break;
                                     }
-                                    break;
-                                }
-                                case 1:{
-                                    if(doors == 0 && crates == 1 && walls > 0 && rand()%2==0){
-                                        level->setTile(r->center + Point2(j, k), Tiles::tileTemp);
+                                    case 1:{
+                                        if(doors == 0 && crates == 1 && walls > 0 && rand()%2==0){
+                                            level->setTile(r->center + Point2(j, k), Tiles::tileTemp);
+                                        }
+                                        break;
                                     }
-                                    break;
-                                }
-                                case 2:{
-                                    if(doors == 0 && crates >= 2 && rand()%2==0){
-                                        level->setTile(r->center + Point2(j, k), Tiles::tileTemp);
+                                    case 2:{
+                                        if(doors == 0 && crates >= 2 && rand()%2==0){
+                                            level->setTile(r->center + Point2(j, k), Tiles::tileTemp);
+                                        }
+                                        break;
                                     }
-                                    break;
                                 }
                             }
                         }
