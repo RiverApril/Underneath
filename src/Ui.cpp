@@ -13,7 +13,7 @@
 #include "Player.h"
 #include "Math.h"
 #include "Potion.h"
-#include "UtiitySpell.h"
+#include "UtilitySpell.h"
 
 vector<string> consoleBuffer;
 
@@ -185,7 +185,26 @@ namespace Ui {
         attrset(COLOR_PAIR(fg + (bg*0x10)) | attr);
     }
 
-    void drawInventory(Player* player, int selectedY, int scrollOffset, Inventory* secondaryInv, string invDisplayName, bool selectedLeft){
+    int printMultiLineString(int y, int x, string s, int maxX){
+        int a = 0;
+        if(maxX == -1){
+            maxX = terminalSize.x;
+        }
+        int w = maxX - x;
+        for(int i=0;i<s.length();i+=w){
+            string ss = s.substr(i, w);
+            if(ss.length()>0){
+                if(ss[0] == ' '){
+                    ss = ss.substr(1);
+                }
+                mvprintw(y+a, x, ss.c_str());
+                a += 1;
+            }
+        }
+        return a;
+    }
+
+    void drawInventory(Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft){
 
         int columnX = 0;
         int columnWidth = (terminalSize.x)/(secondaryInv==nullptr?2:3);
@@ -195,8 +214,20 @@ namespace Ui {
         move(0, 0);
         clrtobot();
 
-        setColor(C_WHITE);
-        mvhline(1, 0, '-', terminalSize.x);
+
+        vector<Item*> inv = (selectedLeft?player:secondaryInv)->inventory;
+	if(inv.size() > 0){
+	    Item* item = inv[selectedY];
+	    if(item){
+		setColor(C_DARK_GRAY, C_BLACK);
+		if(item->artIndex > -1){
+		    Art* art = Arts::getArt(item->artIndex);
+		    Point2 artSize = art->getSize();
+		    art->printAt(terminalSize - artSize - Point2One);
+		}
+		setColor(C_WHITE, C_BLACK);
+            }
+	}
 
         for(int ii = 0; ii < (secondaryInv==nullptr?1:2); ii++){
             vector<Item*> inv = (ii==1?secondaryInv:player)->inventory;
@@ -204,20 +235,23 @@ namespace Ui {
             setColor(C_WHITE);
 
             columnX = (ii * columnWidth);
-            mvaddch(1, columnX+columnWidth-1, '+');
-            mvvline(2, columnX+columnWidth-1, '|', terminalSize.y-2);
+            //mvaddch(1, columnX+columnWidth-1, '+');
+            //mvvline(2, columnX+columnWidth-1, '|', terminalSize.y-2);
 
-            int minI = Math::max(0, scrollOffset);
-            int maxI = Math::min(minI+terminalSize.y-3, (int)inv.size());
+            int countI = terminalSize.y-3;
+            
+
+            int midI = (countI / 2)+selectedY;
+            int minI = Math::max(0, midI-countI);
+            int maxI = Math::min(midI+countI, (int)inv.size());
             if(((ii==0)!=selectedLeft)){
                 setColor(C_LIGHT_GRAY);
             }
             mvprintw(0, columnX, (ii==1?invDisplayName.c_str():"Player"));
 
-            int y = 1;
+            int y = 2;
 
             for(int i = minI; i < maxI; i++){
-                y++;
                 Item* item = inv[i];
 
                 setColor(((ii==0)==selectedLeft)?C_WHITE:C_LIGHT_GRAY);
@@ -225,14 +259,15 @@ namespace Ui {
                     setColor(C_BLACK, C_WHITE);
                 }
 
-                char pre = activeWeapon!=nullptr?(item == activeWeapon?'E':' '):' ';
+                char pre = activeWeapon!=nullptr?(item == activeWeapon?'E':'-'):'-';
                 string displayName;
                 if(item->qty == 1){
-                    displayName = formatString("%c  %s", pre, item->name.c_str());
+                    displayName = formatString("%s", item->name.c_str());
                 }else{
-                    displayName = formatString("%c  %d %s", pre, item->qty, plural(item->name).c_str());
+                    displayName = formatString("%d %s", item->qty, plural(item->name).c_str());
                 }
-                mvprintw(y, columnX, "%s", displayName.c_str());
+                mvprintw(y, columnX, "%c ", pre);
+                y += printMultiLineString(y, columnX+2, displayName, columnX+columnWidth-1);
 
             }
 
@@ -240,8 +275,6 @@ namespace Ui {
         }
 
         columnX += columnWidth;
-
-        vector<Item*> inv = (selectedLeft?player:secondaryInv)->inventory;
 
         if(inv.size() > 0){
             Item* item = inv[selectedY];
@@ -256,15 +289,7 @@ namespace Ui {
 
                 int a = 2;
 
-                setColor(C_DARK_GRAY, C_BLACK);
-                if(item->artIndex > -1){
-                    Art* art = Arts::getArt(item->artIndex);
-                    Point2 artSize = art->getSize();
-                    art->printAt(terminalSize - artSize - Point2One);
-                }
-                setColor(C_WHITE, C_BLACK);
-
-                mvprintw(a++, columnX, "Name: %s%s", item->name.c_str(), item->qty==1?"":(formatString(" x %d", item->qty).c_str()));
+                a += printMultiLineString(a, columnX, formatString("Name: %s%s", item->name.c_str(), item->qty==1?"":(formatString(" x %d", item->qty).c_str())));
                 if(item == activeWeapon){
                     mvprintw(terminalSize.y-1, columnX, "-Equipped");
                 }else{
@@ -274,32 +299,31 @@ namespace Ui {
                 setColor(C_LIGHT_GRAY, C_BLACK);
 
                 //mvprintw(a++, columnX, "Qty: %d", item->qty);
-                mvprintw(a++, columnX, "Weight: %.2f", item->weight);
+                a += printMultiLineString(a, columnX, formatString("Weight: %.2f", item->weight));
                 if(potion){
-                    mvprintw(a++, columnX, "Effects:");
+                    a += printMultiLineString(a, columnX, "Effects:");
                     if(potion->effects.size() == 0){
-                        mvprintw(a++, columnX, "   None");
+                        a += printMultiLineString(a, columnX, "   None");
                     }else{
                         for(Effect e : potion->effects){
                             if(e.timeLeft > 0){
-                            	mvprintw(a++, columnX, "   %s %.2f for %.2f", Weapon::effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft);
+                            	a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2f", Weapon::effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
                             }else{
-                                mvprintw(a++, columnX, "   %s %.2f", Weapon::effectName(e.eId, e.meta).c_str(), e.power);
+                                a += printMultiLineString(a, columnX, formatString("   %s %.2f", Weapon::effectName(e.eId, e.meta).c_str(), e.power));
                             }
                         }
                     }
                     setColor(C_LIGHT_RED);
-                    mvprintw(a++, columnX, "One Use");
+                    a += printMultiLineString(a, columnX, "One Use");
                     setColor(C_LIGHT_GRAY, C_BLACK);
                 }else if(utilitySpell){
                     switch (utilitySpell->spellEffect) {
                         case spellRemoteUse:
-                            mvprintw(a++, columnX, "Interact with tile or entity at a distance.");
+                            a += printMultiLineString(a, columnX, "Interact with tile or entity at a distance.");
                             break;
 
                         case spellRelocate:
-                            mvprintw(a++, columnX, "Transport to selected location");
-                            mvprintw(a++, columnX, "or random location if already there.");
+                            a += printMultiLineString(a, columnX, "Transport to selected location or random location if already there.");
                             break;
 
                         default:
@@ -307,33 +331,33 @@ namespace Ui {
                     }
                     if(utilitySpell->manaCost == -1){
                         setColor(C_LIGHT_RED);
-                        mvprintw(a++, columnX, "One Use");
+                        a += printMultiLineString(a, columnX, "One Use");
                         setColor(C_LIGHT_GRAY, C_BLACK);
                     }else{
-                        mvprintw(a++, columnX, "Mana Cost: %d", utilitySpell->manaCost);
+                        a += printMultiLineString(a, columnX, formatString("Mana Cost: %d", utilitySpell->manaCost));
                     }
                 }else if(weapon){
-                    mvprintw(a++, columnX, "Damage: %.2f", weapon->baseDamage);
-                    mvprintw(a++, columnX, "Damage Type: %s", Weapon::damageTypeName(weapon->damageType).c_str());
-                    mvprintw(a++, columnX, "Speed: %d%%", (int)(100/weapon->useDelay));
+                    a += printMultiLineString(a, columnX, formatString("Damage: %.2f", weapon->baseDamage));
+                    a += printMultiLineString(a, columnX, formatString("Damage Type: %s", Weapon::damageTypeName(weapon->damageType).c_str()));
+                    a += printMultiLineString(a, columnX, formatString("Speed: %d%%", (int)(100/weapon->useDelay)));
                     if(ranged){
-                        mvprintw(a++, columnX, "Range: %.2f", ranged->range);
+                        a += printMultiLineString(a, columnX, formatString("Range: %.2f", ranged->range));
                         if(spell){
-                            mvprintw(a++, columnX, "Mana Cost: %d", spell->manaCost);
+                            a += printMultiLineString(a, columnX, formatString("Mana Cost: %d", spell->manaCost));
                         }
                     }
                     if(!spell && weapon->enchantments.size() > 0){
                         a++;
-                        mvprintw(a++, columnX, "Enchantments:");
+                        a += printMultiLineString(a, columnX, formatString("Enchantments:"));
                         for(Enchantment e : weapon->enchantments){
-                            mvprintw(a++, columnX, "   %s x%d (1/%d for %.2f)", Weapon::enchantmentName(e).c_str(), e.power, e.chance, e.time);
+                            a += printMultiLineString(a, columnX, formatString("   %s x%d (1/%d for %.2f)", Weapon::enchantmentName(e).c_str(), e.power, e.chance, e.time));
                         }
                         a++;
                     }
 
-                    mvprintw(a++, columnX, "d/t: %.2f", (weapon->baseDamage/weapon->useDelay));
+                    a += printMultiLineString(a, columnX, formatString("d/t: %.2f", (weapon->baseDamage/weapon->useDelay)));
                     if(spell){
-                        mvprintw(a++, columnX, "d/m: %.2f", (spell->baseDamage/(double)spell->manaCost));
+                        a += printMultiLineString(a, columnX, formatString("d/m: %.2f", (spell->baseDamage/(double)spell->manaCost)));
                     }
 
                     int b = a;
@@ -342,7 +366,7 @@ namespace Ui {
 
                     for(int i=0;i<abilityCount;i++){
                         if(equipable->minimumAbilities[i] > 0){
-                            mvprintw(a++, columnX, "- %s", abilityAbr[i].c_str());
+                            a += printMultiLineString(a, columnX, formatString("- %s", abilityAbr[i].c_str()), terminalSize.x-4);
                             if(equipable->minimumAbilities[i] > player->abilities[i]){
                                 setColor(C_LIGHT_RED);
                             }
@@ -357,6 +381,21 @@ namespace Ui {
                 }
 
             }
+        }
+
+        setColor(C_WHITE);
+        mvhline(1, 0, '-', terminalSize.x);
+
+
+
+        for(int ii = 0; ii < (secondaryInv==nullptr?1:2); ii++){
+            vector<Item*> inv = (ii==1?secondaryInv:player)->inventory;
+
+            setColor(C_WHITE);
+
+            columnX = (ii * columnWidth);
+            mvaddch(1, columnX+columnWidth-1, '+');
+            mvvline(2, columnX+columnWidth-1, '|', terminalSize.y-2);
         }
 
         /*

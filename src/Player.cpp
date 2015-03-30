@@ -12,7 +12,7 @@
 #include "MenuChest.h"
 #include "Verbalizer.h"
 #include "Potion.h"
-#include "UtiitySpell.h"
+#include "UtilitySpell.h"
 #include "EnemyGenerator.h"
 
 

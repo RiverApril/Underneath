@@ -26,7 +26,7 @@ namespace Ui {
 
         Player* player;
         World* currentWorld;
-        int scrollOffset = 0;
+        //int scrollOffset = 0;
         int selected = 0;
 
         int* useItem;

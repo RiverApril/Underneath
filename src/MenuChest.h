@@ -27,7 +27,7 @@ namespace Ui {
         TEChest* chest;
         Player* user;
         World* currentWorld;
-        int scrollOffset = 0;
+        //int scrollOffset = 0;
         int selected = 0;
         bool selectedLeft = false;
 

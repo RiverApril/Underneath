@@ -93,7 +93,7 @@ namespace Ui {
 
     void MenuChest::update() {
 
-        Ui::drawInventory(user, selected, scrollOffset, chest, "Chest", selectedLeft);
+        Ui::drawInventory(user, selected/*, scrollOffset*/, chest, "Chest", selectedLeft);
         
     }
 }

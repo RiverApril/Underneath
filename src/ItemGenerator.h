@@ -11,7 +11,7 @@
 
 
 #include "CombatSpell.h"
-#include "UtiitySpell.h"
+#include "UtilitySpell.h"
 
 
 namespace ItemGenerator {

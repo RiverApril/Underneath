@@ -13,7 +13,6 @@
 #include "Art.h"
 #include "Entity.h"
 #include "Potion.h"
-#include "UtiitySpell.h"
 
 namespace ItemGenerator {
 
