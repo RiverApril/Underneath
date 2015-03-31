@@ -73,7 +73,7 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    
+
     virtual void setActiveWeapon(Weapon* newWeapon);
 
     Weapon* getActiveWeapon(){

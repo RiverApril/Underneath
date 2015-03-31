@@ -21,7 +21,7 @@ namespace Utility {
         string description;
     };
 
-    
+
 
 
 	void saveDouble(vector<unsigned char>* data, double n);
@@ -31,7 +31,7 @@ namespace Utility {
     void saveInt8Bit(vector<unsigned char>* data, int8_t n);
     void saveBool(vector<unsigned char>* data, bool n);
     void saveString(vector<unsigned char>* data, string n);
-    
+
     template <typename T>
     void saveType(vector<unsigned char>* data, T n){
         union{
@@ -82,8 +82,8 @@ namespace Utility {
 
 
 
-    
-    
+
+
     template <typename T>
     void swap(T& a, T& b){
         T& temp = a;
@@ -101,7 +101,7 @@ namespace Utility {
         }
         return false;
     }
-    
+
 
 
     struct ParseException{

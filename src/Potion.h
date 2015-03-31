@@ -25,7 +25,7 @@ public:
 	Potion(string name, double weight) : Item(name, weight){
 
 	}
-	
+
 	Potion(Effect effect, string name, double weight) : Item(name, weight){
         this->effects = {effect};
 	}

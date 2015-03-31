@@ -29,5 +29,5 @@ Ranged* Ranged::cloneUnsafe(Ranged* oldE, Ranged* newE){
 
 
     return newE;
-    
+
 }

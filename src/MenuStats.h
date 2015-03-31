@@ -31,7 +31,7 @@ namespace Ui {
         World* currentWorld;
         int selected = 0;
         yesNo* shouldSpendPoint = new yesNo(aUndefined);
-        
+
     };
 }
 

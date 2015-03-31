@@ -42,5 +42,5 @@ namespace Key{
     int take = 't';
     int takeStack = 'T';
     int takeAll = 'R';
-    
+
 }

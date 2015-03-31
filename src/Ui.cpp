@@ -239,7 +239,7 @@ namespace Ui {
             //mvvline(2, columnX+columnWidth-1, '|', terminalSize.y-2);
 
             int countI = terminalSize.y-3;
-            
+
 
             int midI = (countI / 2)+selectedY;
             int minI = Math::max(0, midI-countI);

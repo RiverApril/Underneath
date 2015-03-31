@@ -21,7 +21,7 @@ namespace Ui {
         s += c;
         return s;
     }
-    
+
 
     void Menu::_openUi() {
         if(markAllForClosure && !(dynamic_cast<MenuMain*>(this))){
@@ -182,7 +182,7 @@ namespace Ui {
                                 case C_CODE_LIGHT_WHITE:
                                     color = C_LIGHT_WHITE;
                                     break;
-                                    
+
                                 default:
                                     color = C_WHITE;
                                     break;
@@ -213,7 +213,7 @@ namespace Ui {
     }
 
     void Menu::_update() {
-        
+
         if(subMenu != nullptr){
             subMenu->_update();
         }else{
@@ -239,9 +239,9 @@ namespace Ui {
 
         }
 
-        
+
     }
-    
+
     void Menu::printCenter(int y, string format, ...){
         string s = "";
 
@@ -254,7 +254,7 @@ namespace Ui {
 
         mvprintw(y, (terminalSize.x/2)-(((int)s.length()-1)/2), s.c_str());
     }
-    
+
     void Menu::printCenterOffset(int y, int xOff, string format, ...){
         string s = "";
 
@@ -267,5 +267,5 @@ namespace Ui {
 
         mvprintw(y, (terminalSize.x/2)-(((int)s.length()-1)/2)+xOff, s.c_str());
     }
-    
+
 }

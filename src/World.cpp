@@ -124,11 +124,11 @@ namespace WorldLoader {
                     world->currentLevel = level;
 
                     delete levelData;
-                    
+
                     delete levelPosition;
-                    
+
                 }
-                
+
                 fclose(fileLevel);
                 //
 
@@ -241,14 +241,14 @@ namespace WorldLoader {
                 fileLevel = fopen((dir+(l->getName())+".lvl").c_str(), "wb");
                 if(fileLevel != nullptr){
                     std::vector<unsigned char>* data = new std::string();
-                    
+
 
                     l->save(data);
 
                     for(int j=0;j<data->size();j++){
                         fputc(data->at(j), fileLevel);
                     }
-                    
+
                     delete data;
                 }else{
                     failed = true;
@@ -306,9 +306,9 @@ namespace WorldLoader {
 
         std::remove((dir+"world"+".info").c_str());
         std::remove((dir+"world"+".info.backup").c_str());
-        
+
         debug("Deleted");
-        
+
         return true;
     }
 
@@ -336,7 +336,7 @@ namespace WorldLoader {
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         //world->currentPlayer->inventory.push_back(ItemGenerator::createWeapon("", materialBone, damRanged, false));
-        
+
 
         world->currentLevel->newEntity(world->currentPlayer);
 

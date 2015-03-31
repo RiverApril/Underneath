@@ -259,7 +259,7 @@ namespace Commands{
             return true;
         }
     };
-    
+
     void initCommands(){
         commandList.push_back(new CommandHelp());
         commandList.push_back(new CommandEcho());
@@ -276,5 +276,5 @@ namespace Commands{
         }
         commandList.clear();
     }
-    
+
 }

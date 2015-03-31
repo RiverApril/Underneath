@@ -23,8 +23,8 @@ namespace Ui {
         void update();
 
         string message;
-        
-        
+
+
     };
 }
 

@@ -82,7 +82,7 @@ namespace Ui {
             closeThisMenu();
             return;
         }
-        
+
         if(selected<0){
             selected = 0;
         }
@@ -94,6 +94,6 @@ namespace Ui {
     void MenuChest::update() {
 
         Ui::drawInventory(user, selected/*, scrollOffset*/, chest, "Chest", selectedLeft);
-        
+
     }
 }

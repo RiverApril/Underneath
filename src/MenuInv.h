@@ -38,7 +38,7 @@ namespace Ui {
         //const int columnWeight = 35;
         //const int columnHitPoints = 35;
         const int columnInfo = 40;
-        
+
     };
 }
 

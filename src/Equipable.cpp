@@ -30,9 +30,9 @@ Equipable* Equipable::cloneUnsafe(Equipable* oldE, Equipable* newE){
     Item::cloneUnsafe(oldE, newE);
 
     newE->minimumAbilities = oldE->minimumAbilities;
-    
+
     return newE;
-    
+
 }
 
 bool Equipable::equalsExceptQty(Item* other){
@@ -41,5 +41,3 @@ bool Equipable::equalsExceptQty(Item* other){
     &&(otherW)
     &&(otherW->minimumAbilities==minimumAbilities);
 }
-
-

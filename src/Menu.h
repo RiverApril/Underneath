@@ -57,7 +57,7 @@ namespace Ui{
         Menu() {}
 
         virtual ~Menu() {
-            
+
         }
 
         void _openUi();
@@ -87,7 +87,7 @@ namespace Ui{
         string menuOnlyCommandHelp(string name){
             return "";
         }
-        
+
         Menu* subMenu = nullptr;
         Menu* surMenu = nullptr;
 
@@ -117,14 +117,14 @@ namespace Ui{
             markAllForClosure = true;
             closeThisMenu();
         }
-        
+
     protected:
 
         bool printConsoleByDefault = true;
         bool markAllForClosure = false;
-        
+
     };
-    
+
 }
 
 #endif /* defined(__Underneath__Menu__) */

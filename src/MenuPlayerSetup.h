@@ -41,7 +41,7 @@ namespace Ui {
         int selection = 0;
 
         int abilityPoints[abilityCount];
-		
+
         static const int totalPoints = abilityCount*2;
         int remainingPoints = totalPoints;
         const int pointMax = 6;

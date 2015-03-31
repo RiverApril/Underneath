@@ -29,5 +29,5 @@ CombatSpell* CombatSpell::cloneUnsafe(CombatSpell* oldE, CombatSpell* newE){
 
 
     return newE;
-    
+
 }

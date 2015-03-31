@@ -207,6 +207,3 @@ void Art::printCenter(int y, int xOffset){
         mvprintw(y+i, (Ui::terminalSize.x/2)-((w-1)/2), lines[i].c_str());
     }
 }
-
-
-

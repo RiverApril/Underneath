@@ -24,7 +24,7 @@ namespace Ui {
     }
 
     void MenuMain::closeUi() {
-        
+
     }
 
     void MenuMain::handleInput(int in) {
@@ -71,9 +71,9 @@ namespace Ui {
     }
 
     void MenuMain::update() {
-        
+
         int a = 2;
-        
+
         setColor(C_WHITE);
         /*printCenter(a++, "  _ _ ___ ___ ___ ___ ___ ___ ___ ___ ___  ");
         printCenter(a++, " | | |   |   \\ __|  _|   | __| _ |_ _| | | ");
@@ -90,13 +90,13 @@ namespace Ui {
         a+=Arts::getArt(Arts::artTitle)->getSize().y;
         printCenter(a++, "%sPlay%s", selection==0?"- ":"  ", selection==0?" -":"  ");
         printCenter(a++, "%sExit%s", selection==1?"- ":"  ", selection==1?" -":"  ");
-        
+
         a+=4;
-        
+
         if(limitedColorMode) {
             mvaddstr(a, 0, "Limited Color Mode - HIGHLY suggest using a terminal with 256 colors (or at least 16)");
         }
-        
+
         a++;
 
         move(a++, 0);
@@ -170,8 +170,8 @@ namespace Ui {
         addstr(" L_CYAN");
         setColor(C_LIGHT_WHITE, C_WHITE);
         addstr(" L_WHITE");
-        
+
         refresh();
     }
-    
+
 }

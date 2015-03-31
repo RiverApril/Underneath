@@ -43,10 +43,10 @@ namespace Commands{
     };
 
     extern vector<Command*> commandList;
-    
+
     void initCommands();
     void cleanupCommands();
-    
+
 }
 
 #endif /* defined(__Underneath__Command__) */

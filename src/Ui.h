@@ -89,8 +89,8 @@ namespace Ui {
     extern int consoleScroll;
 
     extern bool printDebugEnabled;
-    
-    
+
+
 }
 
 #endif /* defined(__Underneath__Ui__) */

@@ -20,7 +20,7 @@ Weapon::Weapon(double baseDamage, string name, double weight, double useDelay) :
 
 void Weapon::save(vector<unsigned char>* data){
     Equipable::save(data);
-    
+
     Utility::saveDouble(data, baseDamage);
     Utility::saveInt(data, damageType);
     Utility::saveDouble(data, useDelay);
@@ -59,7 +59,7 @@ Weapon* Weapon::cloneUnsafe(Weapon* oldE, Weapon* newE){
     newE->damageType = oldE->damageType;
     newE->useDelay = oldE->useDelay;
 
-    
+
     return newE;
-    
+
 }

@@ -93,7 +93,7 @@ struct Abilities{
             list[i] = a[i];
         }
     }
-    
+
     Abilities(T str, T dex, T inte, T agi, T spd, T con, T wis){
         list[iSTR] = str;
         list[iDEX] = dex;
@@ -107,7 +107,7 @@ struct Abilities{
     T list[abilityCount];
 
     /*
-    
+
     T* STR = *(&list+iSTR); //Melee Attack Power
     T* DEX = *(&list+iDEX); //Ranged Attack Power
     T* INT = *(&list+iINT); //Magic Attack Power

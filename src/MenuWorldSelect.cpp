@@ -102,7 +102,7 @@ namespace Ui {
         bool e = WorldLoader::exists(name);
 
         setColor(C_WHITE);
-        
+
         printCenter(2, "Enter Name");
 
         printCenter(5, e?"  %sContinue%s  ":"%sCreate New%s",
@@ -116,7 +116,7 @@ namespace Ui {
         printCenter(8, "%sBack%s", selection==2?"- ":"  ",
                     selection==2?" -":"  ");
 
-		
+
         setColor(e?C_LIGHT_GREEN:C_LIGHT_YELLOW);
         move(3, 0);
         clrtoeol();
@@ -126,5 +126,5 @@ namespace Ui {
 
         refresh();
     }
-    
+
 }

@@ -101,7 +101,7 @@ public:
                 return "UNDEFINED";
         }
     }
-    
+
     static string enchantmentName(Enchantment e){
         return effectName(e.effectId, e.meta);
     }
@@ -150,7 +150,7 @@ public:
     DamageType damageType = damSharp;
     WeaponType weaponType = wepMelee;
     double useDelay = 1;
-    
+
     vector<Enchantment> enchantments;
 
 protected:

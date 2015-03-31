@@ -70,5 +70,3 @@ void ItemEntity::load(unsigned char* data, int* position){
     Entity::load(data, position);
     item = Item::loadNew(data, position);
 }
-
-

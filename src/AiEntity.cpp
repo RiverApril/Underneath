@@ -23,7 +23,7 @@ AiEntity::AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui
 }
 
 AiEntity::~AiEntity() {
-    
+
 }
 
 void AiEntity::runAi(double time, Level* level) {
@@ -103,9 +103,9 @@ void AiEntity::runAi(double time, Level* level) {
                     if(level->canSee(pos, target->pos, Math::min(r->range, (double)viewDistance), false)){
                         attack = true;
                     }
-                    
+
                 }
-                
+
             }
         }
     }
@@ -155,7 +155,7 @@ bool AiEntity::update(double deltaTime, double time, Level* level) {
         Verbalizer::defeatedEnemy(this, xp);
 
         level->currentWorld->currentPlayer->gainXp(xp);
-        
+
         vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand()%5)==0?2:0, (rand()%5)==0?2:0);
         if(rand()%5==0){
             drops.push_back(Item::clone(activeWeapon));
@@ -176,7 +176,7 @@ AiEntity* AiEntity::cloneUnsafe(AiEntity* oldE, AiEntity* newE){
     newE->agro = oldE->agro;
     newE->lastMoveTime = oldE->lastMoveTime;
     newE->lastAttackTime = oldE->lastAttackTime;
-    
+
     return newE;
 }
 
@@ -201,5 +201,3 @@ void AiEntity::load(unsigned char* data, int* position){
     lastAttackTime = Utility::loadDouble(data, position);
     lastKnownTargetPos = Point2::load(data, position);
 }
-
-

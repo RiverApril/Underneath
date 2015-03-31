@@ -24,7 +24,7 @@ struct Art{
     void printCenter(int y, int xOffset = 0);
 
     Point2 size;
-    
+
 };
 
 namespace Arts{
@@ -56,7 +56,7 @@ namespace Arts{
     extern int artPotion2;
     extern int artPotion3;
     extern int artPotion4;
-    
+
     extern int artKnife;
     extern int artDagger;
     extern int artCleaver;
@@ -75,7 +75,7 @@ namespace Arts{
 
     extern int artAxe;
     extern int artDoubleAxe;
-    
+
     extern int artMace;
     extern int artClub;
     extern int artFlail;

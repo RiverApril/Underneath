@@ -119,7 +119,7 @@ namespace Utility {
     }
 
     string readTextFile(string path, string defaultString){
-        
+
         FILE* file;
         file = fopen(path.c_str(), "r");
         if(file != NULL){
@@ -305,4 +305,3 @@ namespace Utility {
     }
 
 }
-

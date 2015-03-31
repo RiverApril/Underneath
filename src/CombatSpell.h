@@ -17,7 +17,7 @@ class CombatSpell : public Ranged {
 public:
 
     static CombatSpell* cloneUnsafe(CombatSpell* oldE, CombatSpell* newE);
-    
+
 
     CombatSpell() : Ranged(){
 

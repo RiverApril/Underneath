@@ -30,7 +30,7 @@ namespace Ui {
         void update();
 
         World* currentWorld;
-        
+
     };
 }
 

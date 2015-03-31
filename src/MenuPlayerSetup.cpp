@@ -25,7 +25,7 @@ namespace Ui {
 
     }
 
-    
+
 
     void MenuPlayerSetup::handleInput(int in) {
 
@@ -125,8 +125,8 @@ namespace Ui {
         if(selection < abilityCount){
         	printCenter(19, abilityInfo[selection]);
         }
-        
+
         refresh();
     }
-    
+
 }

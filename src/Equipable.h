@@ -48,7 +48,7 @@ public:
 
     Abilities<int> minimumAbilities = Abilities<int>(0);
 
-    
+
 protected:
 };
 
