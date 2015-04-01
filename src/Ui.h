@@ -66,6 +66,10 @@ namespace Ui {
 
     void setColor(Color fg, Color bg = C_BLACK, int attr = 0);
 
+    bool addChColor(char c, bool* lookingForCode);
+
+    int printMultiLineColoredString(int y, int x, string s, int maxX = -1);
+
     int printMultiLineString(int y, int x, string s, int maxX = -1);
 
     void drawInventory(Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv = nullptr, string invDisplayName = "", bool selectedLeft = true);

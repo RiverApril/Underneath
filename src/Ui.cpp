@@ -204,6 +204,102 @@ namespace Ui {
         return a;
     }
 
+    bool addChColor(char c, bool* lookingForCode){
+        if(*lookingForCode){
+            *lookingForCode = false;
+            if(c == '&'){
+                addch('&');
+                return true;
+            }else{
+                Color color = 0;
+                switch (c) {
+                    case C_CODE_DARK_BLACK:
+                        color = C_DARK_BLACK;
+                        break;
+                    case C_CODE_DARK_RED:
+                        color = C_DARK_RED;
+                        break;
+                    case C_CODE_DARK_GREEN:
+                        color = C_DARK_GREEN;
+                        break;
+                    case C_CODE_DARK_YELLOW:
+                        color = C_DARK_YELLOW;
+                        break;
+                    case C_CODE_DARK_BLUE:
+                        color = C_DARK_BLUE;
+                        break;
+                    case C_CODE_DARK_MAGENTA:
+                        color = C_DARK_MAGENTA;
+                        break;
+                    case C_CODE_DARK_CYAN:
+                        color = C_DARK_CYAN;
+                        break;
+                    case C_CODE_DARK_WHITE:
+                        color = C_DARK_WHITE;
+                        break;
+                    case C_CODE_LIGHT_BLACK:
+                        color = C_LIGHT_BLACK;
+                        break;
+                    case C_CODE_LIGHT_RED:
+                        color = C_LIGHT_RED;
+                        break;
+                    case C_CODE_LIGHT_GREEN:
+                        color = C_LIGHT_GREEN;
+                        break;
+                    case C_CODE_LIGHT_YELLOW:
+                        color = C_LIGHT_YELLOW;
+                        break;
+                    case C_CODE_LIGHT_BLUE:
+                        color = C_LIGHT_BLUE;
+                        break;
+                    case C_CODE_LIGHT_MAGENTA:
+                        color = C_LIGHT_MAGENTA;
+                        break;
+                    case C_CODE_LIGHT_CYAN:
+                        color = C_LIGHT_CYAN;
+                        break;
+                    case C_CODE_LIGHT_WHITE:
+                        color = C_LIGHT_WHITE;
+                        break;
+
+                    default:
+                        color = C_WHITE;
+                        break;
+                }
+                setColor(color);
+            }
+        }else if(c == '&'){
+            *lookingForCode = true;
+        }else{
+            addch(c);
+            return true;
+        }
+        return false;
+    }
+
+    int printMultiLineColoredString(int y, int x, string s, int maxX){
+        int a = 0;
+        int b = 0;
+        if(maxX == -1){
+            maxX = terminalSize.x;
+        }
+        move(y, x);
+        bool lookingForCode = false;
+        for(int i=0;i<s.length();i+=1){
+            if(!(s[i] == ' ' && b == 0)){
+                if(addChColor(s[i], &lookingForCode)){
+                	b++;
+                }
+            }
+            if(b > maxX-x){
+                b = 0;
+                a++;
+            }
+        }
+        setColor(C_WHITE);
+        return a;
+    }
+
     void drawInventory(Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft){
 
         int columnX = 0;
@@ -338,7 +434,12 @@ namespace Ui {
                         a += printMultiLineString(a, columnX, formatString("Mana Cost: %d", utilitySpell->manaCost));
                     }
                 }else if(weapon){
-                    a += printMultiLineString(a, columnX, formatString("Damage: %.2f", weapon->baseDamage));
+                    double x = player->calcDamageMultiplier(weapon);
+                    if(x == 1.0){
+						a += printMultiLineString(a, columnX, formatString("Damage: %.2f", weapon->baseDamage));
+                    }else{
+                    	a += printMultiLineString(a, columnX, formatString("Damage: %.2f (%.2f)", weapon->baseDamage, weapon->baseDamage * x));
+                    }
                     a += printMultiLineString(a, columnX, formatString("Damage Type: %s", Weapon::damageTypeName(weapon->damageType).c_str()));
                     a += printMultiLineString(a, columnX, formatString("Speed: %d%%", (int)(100/weapon->useDelay)));
                     if(ranged){
@@ -355,11 +456,12 @@ namespace Ui {
                         }
                         a++;
                     }
-
-                    a += printMultiLineString(a, columnX, formatString("d/t: %.2f", (weapon->baseDamage/weapon->useDelay)));
+                    setColor(C_LIGHT_CYAN);
+                    a += printMultiLineString(a, columnX, formatString("d/t: %.2f", ((weapon->baseDamage*x)/weapon->useDelay)));
                     if(spell){
-                        a += printMultiLineString(a, columnX, formatString("d/m: %.2f", (spell->baseDamage/(double)spell->manaCost)));
+                        a += printMultiLineString(a, columnX, formatString("d/m: %.2f", ((spell->baseDamage*x)/(double)spell->manaCost)));
                     }
+                    setColor(C_LIGHT_GRAY, C_BLACK);
 
                     int b = a;
                     a++;
@@ -410,7 +512,7 @@ namespace Ui {
         setColor(C_LIGHT_GREEN);
         mvprintw(0, terminalSize.x-15, "%3d/%3d", hp, maxHp);
         setColor(C_LIGHT_BLUE);
-        mvprintw(0, terminalSize.x-7, "%3d/%3d", hp, maxHp);
+        mvprintw(0, terminalSize.x-7, "%3d/%3d", mp, maxMp);
 
         /*
          setColor(C_WHITE);

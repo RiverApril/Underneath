@@ -143,7 +143,7 @@ public:
     }
 
     virtual bool canBeEquipedHere(EquipSlot e){
-        return e==slotWeapon;
+        return e==slotHand;
     }
 
     double baseDamage = 1;

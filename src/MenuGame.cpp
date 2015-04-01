@@ -494,22 +494,18 @@ namespace Ui {
             move(a, gameArea.x+1);
             clrtoeol();
 
-            mvprintw(a, gameArea.x+1, "HP: %3d/%3d", hp, maxHp);
+            a+= printMultiLineString(a, gameArea.x+1, formatString("HP: %3d/%3d", hp, maxHp));
             Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
             printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);
 
-            a++;
-
             move(a, gameArea.x+1);
             clrtoeol();
 
-            mvprintw(a, gameArea.x+1, "MP: %3d/%3d", mp, maxMp);
+            a+= printMultiLineString(a, gameArea.x+1, formatString("MP: %3d/%3d", mp, maxMp));
             Ui::setColor(C_LIGHT_BLUE);
             printw(" %s", Utility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);
-
-            a++;
 
             for(size_t i=0;i<currentPlayer->effects.size();i++){
                 Effect eff = currentPlayer->effects[i];
@@ -533,8 +529,7 @@ namespace Ui {
                         break;
                 }
                 setColor(color);
-                mvprintw(a, gameArea.x+1, (name+" %s: %.2f").c_str(), Utility::intToRomanNumerals((int)eff.power).c_str(), eff.timeLeft);
-                a++;
+                a += printMultiLineString(a, gameArea.x+1, formatString("%s %s: %.2f",name.c_str(), Utility::intToRomanNumerals((int)eff.power).c_str(), eff.timeLeft));
             }
 
             a++;
@@ -558,21 +553,24 @@ namespace Ui {
                 Entity* nearestEntity = nearestEntities[i];
                 if(nearestEntity != nullptr){
                     Ui::setColor(C_WHITE);
-                    mvprintw(a, gameArea.x+1, "%s [", nearestEntity->getName().c_str());
+
+
+                    a += printMultiLineString(a, gameArea.x+1, formatString("%s [", nearestEntity->getName().c_str()));
                     Ui::setColor(nearestEntity->getFgColorCode(), nearestEntity->getBgColorCode());
                     printw("%c", nearestEntity->getIcon(nearestEntity->pos, currentWorld->worldTime, currentLevel));
                     Ui::setColor(C_WHITE);
                     printw("]");
-                    a++;
+
+
+                    
                     AiEntity* aiEntity = dynamic_cast<AiEntity*>(nearestEntity);
                     if(aiEntity){
                         const int hp = Math::roundToInt(aiEntity->getHp());
                         const int maxHp = Math::roundToInt(aiEntity->getMaxHp());
-                        mvprintw(a, gameArea.x+1, " HP: %d/%d", hp, maxHp);
+                        a += printMultiLineString(a, gameArea.x+1, formatString(" HP: %d/%d", hp, maxHp));
                         Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
                         printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
                         Ui::setColor(C_WHITE);
-                        a++;
                     }
                     a++;
                 }

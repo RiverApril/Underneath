@@ -75,7 +75,7 @@ namespace EnemyGenerator{
     AiEntity* makeEntity(WeightedEnemy* we, int difficulty){
         AiEntity* e = new AiEntity(we->name, we->ai, we->icon, Point2Zero, we->color, we->maxHp);
         e->weaknesses = we->weaknesses;
-        Weapon* weapon = ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromBase(we->weaponBase, difficulty+we->weaponDifficultyAdd), difficulty/* don't make weapon multiplied because it may drop */);
+        Weapon* weapon = ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromBase(we->weaponBase, difficulty+we->weaponDifficultyAdd), difficulty);
         if(we->weaponName.size() > 0){
             weapon->name = we->weaponName;
         }

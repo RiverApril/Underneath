@@ -227,6 +227,20 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
     return 0;
 }
 
+double Player::calcDamageMultiplier(Weapon* weapon){
+    double x = 1;
+    if(weapon){
+        if(weapon->weaponType == wepMelee){
+            x = 1+(((double)abilities[iSTR] / (double)maxAbilities[iSTR]) * 10.0);
+        }else if(weapon->weaponType == wepRanged){
+            x = 1+(((double)abilities[iDEX] / (double)maxAbilities[iDEX]) * 10.0);
+        }else if(weapon->weaponType == wepMagic){
+            x = 1+(((double)abilities[iINT] / (double)maxAbilities[iINT]) * 10.0);
+        }
+    }
+    return x;
+}
+
 double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item){
 
     if(e->removed){
@@ -250,16 +264,7 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
                 }
             }
 
-            double x = 1;
-            if(weapon){
-                if(weapon->weaponType == wepMelee){
-                    x = (double)abilities[iSTR] / (double)maxAbilities[iSTR];
-                }else if(weapon->weaponType == wepRanged){
-                    x = (double)abilities[iDEX] / (double)maxAbilities[iDEX];
-                }else if(weapon->weaponType == wepMagic){
-                    x = (double)abilities[iINT] / (double)maxAbilities[iINT];
-                }
-            }
+            double x = calcDamageMultiplier(weapon);
 
             if(spell){
                 if(mp >= spell->manaCost){
@@ -277,7 +282,7 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
 
             if(weapon){
                 timeSinceCombat = 0;
-                double d = a->hurt(weapon, x+1);
+                double d = a->hurt(weapon, x);
                 Verbalizer::attack(this, a, weapon, d);
 
                 return useDelay(item);

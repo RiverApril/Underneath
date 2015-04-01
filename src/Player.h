@@ -38,6 +38,7 @@ public:
 
     double interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item);
 
+    double calcDamageMultiplier(Weapon* weapon);
 
     virtual int getEntityTypeId();
 

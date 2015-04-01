@@ -41,6 +41,15 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
             vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(stairUpPos, 1000, size);
             LevelGenerator::makeRoomsAndPaths(rooms, this);
 
+            for (int i=0; i<size.x; i++) {
+                setTile(Point2(i, 0), Tiles::tileWall);
+                setTile(Point2(i, size.y-1), Tiles::tileWall);
+            }
+            for (int j=0; j<size.y; j++) {
+                setTile(Point2(0, j), Tiles::tileWall);
+                setTile(Point2(size.x-1, j), Tiles::tileWall);
+            }
+
             genDebug("generated");
 
             for (size_t i = 0; i<rooms->size(); i++){
@@ -123,13 +132,13 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         debugf("TileEntity id: %d", e->getTileEntityTypeId());
     }
 
-
+	/*disabled debug path
     vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
     for(Point2 pe : path){
         if(!tileAt(pe)->isSolid()){
             setTile(pe, Tiles::tileDebug1);
         }
-    }
+    }*/
 
     //return stairUpPos;
 
@@ -417,11 +426,11 @@ namespace LevelGenerator{
             }
         }
 
-        /*  disabled chests in corners
+
         for(int i=0;i<level->getSize().x;i++){
             for(int j=0;j<level->getSize().y;j++){
                 Tile* a = level->tileAt(Point2(i, j));
-                if(a->getIndex() == Tiles::tilePath->getIndex()){
+                if(a->getIndex() == Tiles::tileFloor->getIndex()){
                     int walls = 0;
                     for(int k=-1;k<=1;k++){
                         for(int l=-1;l<=1;l++){
@@ -432,13 +441,13 @@ namespace LevelGenerator{
                             }
                         }
                     }
-                    if(walls == 7 && rand()%3==0){
+                    if(walls == 7 && rand()%30==0){
                         level->setTile(Point2(i, j), Tiles::tileChest);
                     }
                 }
             }
         }
-        */
+
 
         for(int i = 0; i<rooms->size(); i++){
             Room* r = rooms->at(i);

@@ -127,73 +127,7 @@ namespace Ui {
             if(p < consoleBuffer.size()){
                 bool lookingForCode = false;
                 for(char c : consoleBuffer[p]){
-                    if(lookingForCode){
-                        lookingForCode = false;
-                        if(c == '&'){
-                            addch('&');
-                        }else{
-                            Color color = 0;
-                            switch (c) {
-                                case C_CODE_DARK_BLACK:
-                                    color = C_DARK_BLACK;
-                                    break;
-                                case C_CODE_DARK_RED:
-                                    color = C_DARK_RED;
-                                    break;
-                                case C_CODE_DARK_GREEN:
-                                    color = C_DARK_GREEN;
-                                    break;
-                                case C_CODE_DARK_YELLOW:
-                                    color = C_DARK_YELLOW;
-                                    break;
-                                case C_CODE_DARK_BLUE:
-                                    color = C_DARK_BLUE;
-                                    break;
-                                case C_CODE_DARK_MAGENTA:
-                                    color = C_DARK_MAGENTA;
-                                    break;
-                                case C_CODE_DARK_CYAN:
-                                    color = C_DARK_CYAN;
-                                    break;
-                                case C_CODE_DARK_WHITE:
-                                    color = C_DARK_WHITE;
-                                    break;
-                                case C_CODE_LIGHT_BLACK:
-                                    color = C_LIGHT_BLACK;
-                                    break;
-                                case C_CODE_LIGHT_RED:
-                                    color = C_LIGHT_RED;
-                                    break;
-                                case C_CODE_LIGHT_GREEN:
-                                    color = C_LIGHT_GREEN;
-                                    break;
-                                case C_CODE_LIGHT_YELLOW:
-                                    color = C_LIGHT_YELLOW;
-                                    break;
-                                case C_CODE_LIGHT_BLUE:
-                                    color = C_LIGHT_BLUE;
-                                    break;
-                                case C_CODE_LIGHT_MAGENTA:
-                                    color = C_LIGHT_MAGENTA;
-                                    break;
-                                case C_CODE_LIGHT_CYAN:
-                                    color = C_LIGHT_CYAN;
-                                    break;
-                                case C_CODE_LIGHT_WHITE:
-                                    color = C_LIGHT_WHITE;
-                                    break;
-
-                                default:
-                                    color = C_WHITE;
-                                    break;
-                            }
-                            setColor(color);
-                        }
-                    }else if(c == '&'){
-                        lookingForCode = true;
-                    }else{
-                    	addch(c);
-                    }
+                    addChColor(c, &lookingForCode);
                 }
                 setColor(C_WHITE);
             }

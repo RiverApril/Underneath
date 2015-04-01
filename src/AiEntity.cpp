@@ -157,9 +157,9 @@ bool AiEntity::update(double deltaTime, double time, Level* level) {
         level->currentWorld->currentPlayer->gainXp(xp);
 
         vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand()%5)==0?2:0, (rand()%5)==0?2:0);
-        if(rand()%5==0){
-            drops.push_back(Item::clone(activeWeapon));
-        }
+        //if(rand()%5==0){
+            //drops.push_back(Item::clone(activeWeapon));
+        //}
         for(Item* i : drops){
             level->newEntity(new ItemEntity(i, pos));
         }

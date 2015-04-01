@@ -49,21 +49,24 @@ bool Alive::update(double deltaTime, double time, Level* level) {
         forVector(effects, i){
             Effect* e = &effects[i];
 
-            if(e->timeLeft > 0){
-                e->timeLeft -= deltaTime;
-                switch(e->eId){
-                    case effDamage:
-                        hurt((int)e->meta, e->power * deltaTime);
-                        break;
-                    case effHeal:
-                        if(e->meta == 0){
-                            heal(e->power * deltaTime);
-                        }else if(e->meta == 1){
-                            healMana(e->power * deltaTime);
-                        }
-                        break;
+            double m = (e->timeLeft==0)?1:deltaTime;
 
-                }
+            switch(e->eId){
+                case effDamage:
+                    hurt((int)e->meta, e->power * m);
+                    break;
+                case effHeal:
+                    if(e->meta == 0){
+                        heal(e->power * m);
+                    }else if(e->meta == 1){
+                        healMana(e->power * m);
+                    }
+                    break;
+
+            }
+
+        	if(e->timeLeft > 0){
+                e->timeLeft -= deltaTime;
             }
             if(e->timeLeft <= 0){
                 effects.erase(effects.begin()+(long)i);

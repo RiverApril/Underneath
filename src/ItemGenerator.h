@@ -11,6 +11,7 @@
 
 
 #include "CombatSpell.h"
+#include "Potion.h"
 #include "UtilitySpell.h"
 
 
@@ -167,6 +168,10 @@ namespace ItemGenerator {
     Weapon* applyRandConditionToWeapon(Weapon * w, int itemDifficulty, bool prependName = true);
 
     Weapon* createRandWeapon(int itemDifficulty);
+
+    Potion* createPotionFromBase(PotionBase pb, int itemDifficulty);
+
+    UtilitySpell* createScrollFromBase(ScrollBase sb);
 
     Item* makeCoins(int qty);
 

@@ -44,8 +44,8 @@ namespace ItemGenerator {
         iCoin = new Item("Coin", .01);
         iCoin->artIndex = Arts::artCoin;
 
-        PotionBase potionHealth = atl(PotionBase({"Health Potion"}, {effHeal}, 0, 0, 1, 100, 0));
-        PotionBase potionMana = atl(PotionBase({"Mana Potion"}, {effHeal}, 0, 0, 1, 100, 1));
+        PotionBase potionHealth = atl(PotionBase({"Health Potion"}, {effHeal}, 0, 0, 5, 100, 0));
+        PotionBase potionMana = atl(PotionBase({"Mana Potion"}, {effHeal}, 0, 0, 5, 100, 1));
 
         PotionBase potionRegen = atl(PotionBase({"Regeneration Potion"}, {effHeal}, 2, 20, 1, 10, 0));
         PotionBase potionManaRegen = atl(PotionBase({"Mana Regeneration Potion"}, {effHeal}, 2, 20, 1, 10, 1));
@@ -168,7 +168,7 @@ namespace ItemGenerator {
                     }
                 }
 
-                 items.push_back(createRandAltLoot(itemDifficulty));
+                items.push_back(createRandAltLoot(itemDifficulty));
             }
 
         }
@@ -176,53 +176,62 @@ namespace ItemGenerator {
         return items;
     }
 
+    Potion* createPotionFromBase(PotionBase pb, int itemDifficulty){
+        vector<Effect> effects;
+        double time = Random::randDouble(pb.time.x, pb.time.y);
+        double power = Random::randDouble(pb.power.x, pb.power.y);
+        for(EffectId effId : pb.effIds){
+            effects.push_back(Effect(effId, time, power * itemDifficulty));
+        }
+        Potion* potion = new Potion(effects, pb.names[rand()%pb.names.size()], .2);
+        switch (rand()%4) {
+            default:
+            case 0:
+                potion->artIndex = Arts::artPotion1;
+                break;
+            case 1:
+                potion->artIndex = Arts::artPotion2;
+                break;
+            case 2:
+                potion->artIndex = Arts::artPotion3;
+                break;
+            case 3:
+                potion->artIndex = Arts::artPotion4;
+                break;
+        }
+        return potion;
+    }
+
+    UtilitySpell* createScrollFromBase(ScrollBase sb){
+        UtilitySpell* utilitySpell = new UtilitySpell(sb.eff, -1, sb.names[rand()%sb.names.size()], .1);
+        switch (sb.eff) {
+            case spellRelocate:
+                utilitySpell->artIndex = Arts::artScrollPerson;
+                break;
+
+            case spellRemoteUse:
+                utilitySpell->artIndex = Arts::artScrollHand;
+                break;
+
+            default:
+                utilitySpell->artIndex = Arts::artScroll;
+                break;
+        }
+        return utilitySpell;
+    }
+
     Item* createRandAltLoot(int itemDifficulty){
         switch (rand()%2) {
             default:
             case 0:{
                 PotionBase pb = potionList[rand()%potionList.size()];
-                vector<Effect> effects;
-                double time = Random::randDouble(pb.time.x, pb.time.y);
-                double power = Random::randDouble(pb.power.x, pb.power.y);
-                for(EffectId effId : pb.effIds){
-                    effects.push_back(Effect(effId, time, power * itemDifficulty));
-                }
-                Potion* potion = new Potion(effects, pb.names[rand()%pb.names.size()], .2);
-                switch (rand()%4) {
-                    default:
-                    case 0:
-                        potion->artIndex = Arts::artPotion1;
-                        break;
-                    case 1:
-                        potion->artIndex = Arts::artPotion2;
-                        break;
-                    case 2:
-                        potion->artIndex = Arts::artPotion3;
-                        break;
-                    case 3:
-                        potion->artIndex = Arts::artPotion4;
-                        break;
-                }
-                return potion;
+                return createPotionFromBase(pb, itemDifficulty);
+
             }
 
             case 1:
                 ScrollBase sb = scrollList[rand()%scrollList.size()];
-                UtilitySpell* utilitySpell = new UtilitySpell(sb.eff, -1, sb.names[rand()%sb.names.size()], .1);
-                switch (sb.eff) {
-                    case spellRelocate:
-                        utilitySpell->artIndex = Arts::artScrollPerson;
-                        break;
-
-                    case spellRemoteUse:
-                        utilitySpell->artIndex = Arts::artScrollHand;
-                        break;
-
-                    default:
-                        utilitySpell->artIndex = Arts::artScroll;
-                        break;
-                }
-                return utilitySpell;
+                return createScrollFromBase(sb);
         }
     }
 
@@ -256,7 +265,7 @@ namespace ItemGenerator {
         w->damageType = base.damageType;
         w->weaponType = base.weaponType;
 
-        w->baseDamage *= ((itemDifficulty) * .5)+1;
+        w->baseDamage *= (itemDifficulty * .1)+1;
         w->baseDamage *= Random::randDouble(4.5, 5.5);
 
         return w;

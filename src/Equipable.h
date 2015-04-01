@@ -16,8 +16,11 @@
 typedef int EquipSlot;
 
 const EquipSlot slotNone = 0;
-const EquipSlot slotWeapon = 1;
-const EquipSlot slotArmor = 2;
+const EquipSlot slotHand = 1;
+const EquipSlot slotHead = 2;
+const EquipSlot slotBody = 3;
+const EquipSlot slotFeet = 4;
+const EquipSlot slotFinger = 5;
 
 
 class Equipable : public Item {
@@ -43,7 +46,7 @@ public:
     virtual bool equalsExceptQty(Item* other);
 
     virtual bool canBeEquipedHere(EquipSlot e){
-        return true;
+        return false;
     }
 
     Abilities<int> minimumAbilities = Abilities<int>(0);
