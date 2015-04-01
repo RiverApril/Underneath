@@ -34,6 +34,8 @@ public:
         return -1;
     }
 
+    virtual char getIcon(Point2 p, double time, Level* level);
+
     virtual string getName(){
         if(removed){
             return "Item Removed";

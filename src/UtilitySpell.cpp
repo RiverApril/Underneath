@@ -28,6 +28,7 @@ UtilitySpell* UtilitySpell::cloneUnsafe(UtilitySpell* oldE, UtilitySpell* newE){
     Item::cloneUnsafe(oldE, newE);
 
     newE->spellEffect = oldE->spellEffect;
+    newE->manaCost = oldE->manaCost;
 
     return newE;
 

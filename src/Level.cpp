@@ -263,9 +263,12 @@ size_t Level::entityCount() {
 
 bool Level::update(double deltaTime, double time, Point2 viewPos) {
     bool u = false;
-    for (Entity* e : entityList) {
-        if(e->update(deltaTime, time, this)){
-            u = true;
+    for (int i=0;i<entityList.size();i++) {
+        Entity* e = entityList[i];
+        if(!e->removed){
+            if(e->update(deltaTime, time, this)){
+                u = true;
+            }
         }
     }
     while(removeEntityList.size() > 0){
@@ -317,9 +320,9 @@ void Level::removeTileEntity(TileEntity* e) {
 }
 
 void Level::actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity){
-	for (size_t i = 0; i<entityList.size(); i++){
+	for (int i = 0; i<entityList.size(); i++){
         if(e->uniqueId == entityList[i]->uniqueId){
-            entityList.erase(entityList.begin()+(long)i);
+            entityList.erase(entityList.begin()+i);
             debug("Removed Entity: "+e->getName());
             if(deleteEntity){
                 debug("Deleting Entity: "+e->getName());

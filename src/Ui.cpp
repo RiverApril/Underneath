@@ -216,18 +216,18 @@ namespace Ui {
 
 
         vector<Item*> inv = (selectedLeft?player:secondaryInv)->inventory;
-	if(inv.size() > 0){
-	    Item* item = inv[selectedY];
-	    if(item){
-		setColor(C_DARK_GRAY, C_BLACK);
-		if(item->artIndex > -1){
-		    Art* art = Arts::getArt(item->artIndex);
-		    Point2 artSize = art->getSize();
-		    art->printAt(terminalSize - artSize - Point2One);
-		}
-		setColor(C_WHITE, C_BLACK);
+        if(inv.size() > 0){
+            Item* item = inv[selectedY];
+            if(item){
+                setColor(C_DARK_GRAY, C_BLACK);
+                if(item->artIndex > -1){
+                    Art* art = Arts::getArt(item->artIndex);
+                    Point2 artSize = art->getSize();
+                    art->printAt(terminalSize - artSize - Point2One);
+                }
+                setColor(C_WHITE, C_BLACK);
             }
-	}
+        }
 
         for(int ii = 0; ii < (secondaryInv==nullptr?1:2); ii++){
             vector<Item*> inv = (ii==1?secondaryInv:player)->inventory;
@@ -273,6 +273,7 @@ namespace Ui {
 
 
         }
+        setColor(C_WHITE, C_BLACK);
 
         columnX += columnWidth;
 
@@ -397,6 +398,19 @@ namespace Ui {
             mvaddch(1, columnX+columnWidth-1, '+');
             mvvline(2, columnX+columnWidth-1, '|', terminalSize.y-2);
         }
+
+        const int hp = Math::roundToInt(player->getHp());
+        const int maxHp = Math::roundToInt(player->getMaxHp());
+        const int mp = Math::roundToInt(player->getMp());
+        const int maxMp = Math::roundToInt(player->getMaxMp());
+
+        move(0, terminalSize.x-15);
+        clrtoeol();
+
+        setColor(C_LIGHT_GREEN);
+        mvprintw(0, terminalSize.x-15, "%3d/%3d", hp, maxHp);
+        setColor(C_LIGHT_BLUE);
+        mvprintw(0, terminalSize.x-7, "%3d/%3d", hp, maxHp);
 
         /*
          setColor(C_WHITE);

@@ -166,11 +166,15 @@ namespace Ui {
                         Entity* e = nullptr;
                         int d = INT16_MIN;
                         for(Entity* ei : currentLevel->entityList){
-                            if(ei->pos == p){
-                                int dd = ei->getRenderDepth();
-                                if(d < dd){
-                                    e = ei;
-                                    d = dd;
+                            if(ei){
+                                if(!ei->removed){
+                                    if(ei->pos == p){
+                                        int dd = ei->getRenderDepth();
+                                        if(d < dd){
+                                            e = ei;
+                                            d = dd;
+                                        }
+                                    }
                                 }
                             }
                         }
