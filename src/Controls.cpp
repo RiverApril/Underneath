@@ -36,7 +36,6 @@ namespace Key{
     int drop = 'd';
     int dropAll = 'D';
     int equip = 'e';
-    int use = 'u';
 
     //In chest
     int take = 't';

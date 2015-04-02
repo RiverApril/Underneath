@@ -88,8 +88,8 @@ public:
         }
         interactDelay = .1;
 
-        maxHp = 100 + (((double)(abilities[iCON]) / maxAbilities[iCON]) * 1000);
-        maxMp = 100 + (((double)(abilities[iWIS]) / maxAbilities[iWIS]) * 1000);
+        maxHp = 100 + (((double)(abilities[iCON]) / maxAbilities[iCON]) * 500);
+        maxMp = 100 + (((double)(abilities[iWIS]) / maxAbilities[iWIS]) * 500);
     }
 
     Abilities<int> abilities;

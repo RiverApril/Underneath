@@ -56,7 +56,7 @@ namespace Ui {
                     player->setActiveWeapon(weapon);
                 }
             }
-        }else if(in == Key::use){
+        }else if(in == Key::interact){
             *useItem = selected;
             closeThisMenu();
             return;

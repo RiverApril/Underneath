@@ -395,6 +395,7 @@ namespace Ui {
                 if(currentPlayer != nullptr){
                     if(currentPlayer->getHp() < currentPlayer->getMaxHp()){
                         unsigned char b = 1;
+                        timeout(20);
                         while(currentPlayer->getHp() < currentPlayer->getMaxHp() && b){
                             vector<Entity*> nearest = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
                             for(Entity* e : nearest){
@@ -410,7 +411,12 @@ namespace Ui {
                             }
                             timePassed = 1;
                             MenuGame::update();
+                            if(getch() != ERR){
+                                console("Wait canceled.");
+                                break;
+                            }
                         }
+                        timeout(-1);
                         if(currentPlayer->getHp() == currentPlayer->getMaxHp()){
                             console("Fully healed.");
                         }
