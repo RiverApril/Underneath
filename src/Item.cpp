@@ -68,16 +68,11 @@ Item* Item::clone(Item* oldI) {
         case ITEM_TYPE_POTION:
             return makeNewAndClone<Item, Potion>(oldI);
 
-<<<<<<< Updated upstream
-        case ITEM_TYPE_UTILITY_SPELL:
-            return makeNewAndClone<Item, UtilitySpell>(oldI);
-=======
 		case ITEM_TYPE_UTILITY_SPELL:
             return makeNewAndClone<Item, UtilitySpell>(oldI);
 
         case ITEM_TYPE_ITEMSPECIAL:
             return makeNewAndClone<Item, ItemSpecial>(oldI);
->>>>>>> Stashed changes
 
         default:
             throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));

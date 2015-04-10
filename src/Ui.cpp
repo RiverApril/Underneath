@@ -298,12 +298,7 @@ namespace Ui {
         setColor(C_WHITE);
         return a;
     }
-
-<<<<<<< Updated upstream
-    void drawInventory(Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft) {
-=======
-    void drawInventory(World* currentWorld, Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft){
->>>>>>> Stashed changes
+    void drawInventory(World* currentWorld, Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft) {
 
         int columnX = 0;
         int columnWidth = (terminalSize.x) / (secondaryInv == nullptr ? 2 : 3);
@@ -379,16 +374,7 @@ namespace Ui {
         if (inv.size() > 0) {
             Item* item = inv[selectedY];
 
-<<<<<<< Updated upstream
-            if (item) {
-                Equipable* equipable = dynamic_cast<Equipable*> (item);
-                Weapon* weapon = dynamic_cast<Weapon*> (item);
-                Ranged* ranged = dynamic_cast<Ranged*> (item);
-                CombatSpell* spell = dynamic_cast<CombatSpell*> (item);
-                Potion* potion = dynamic_cast<Potion*> (item);
-                UtilitySpell* utilitySpell = dynamic_cast<UtilitySpell*> (item);
-=======
-            if(item){
+            if(item) {
                 Equipable* equipable = dynamic_cast<Equipable*>(item);
                 Weapon* weapon = dynamic_cast<Weapon*>(item);
                 Ranged* ranged = dynamic_cast<Ranged*>(item);
@@ -396,7 +382,6 @@ namespace Ui {
                 Potion* potion = dynamic_cast<Potion*>(item);
                 UtilitySpell* utilitySpell = dynamic_cast<UtilitySpell*>(item);
                 ItemSpecial* itemSpecial = dynamic_cast<ItemSpecial*>(item);
->>>>>>> Stashed changes
 
                 int a = 2;
 

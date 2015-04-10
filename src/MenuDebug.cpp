@@ -17,16 +17,11 @@ namespace Ui {
 
     }
 
-<<<<<<< Updated upstream
-    void MenuDebug::handleInput(int in) {
-        switch (in) {
-            case KEY_ESCAPE:
-=======
+
     void MenuDebug::handleInput(int in){
         if(in == KEY_ESCAPE || in == Key::debugMenu){
->>>>>>> Stashed changes
-                closeThisMenu();
-                return;
+            closeThisMenu();
+            return;
         }
     }
 

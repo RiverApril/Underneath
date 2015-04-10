@@ -89,25 +89,18 @@ namespace Tiles {
         tileOpenDoor = new Tile('/', C_WHITE, bg, tileFlagPathable);
 
 
-<<<<<<< Updated upstream
-        tileStairUp = new Tile('^', C_LIGHT_GREEN, bg, tileFlagPathable | tileFlagHasTileEntity);
-        tileStairDown = new Tile('v', C_LIGHT_GREEN, bg, tileFlagPathable | tileFlagHasTileEntity);
-=======
+
         tileStairUp = new Tile('^',  C_LIGHT_GREEN, bg, tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
         tileStairDown = new Tile('v',  C_LIGHT_GREEN, bg, tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
->>>>>>> Stashed changes
 
         tileChest = new Tile('+', C_LIGHT_GREEN, bg, tileFlagSolid | tileFlagHasTileEntity);
         tileCrate = new Tile('+', C_DARK_YELLOW, bg, tileFlagSolid | tileFlagHasTileEntity);
 
 
-<<<<<<< Updated upstream
-        tileEdge = new Tile('X', C_LIGHT_RED, bg, tileFlagSolid | tileFlagTall);
-        tileUnset = new Tile('X', C_LIGHT_MAGENTA, bg, tileFlagSolid | tileFlagTall);
-=======
+        
         tileEdge = new Tile('X',  C_LIGHT_RED, bg, tileFlagSolid | tileFlagTall | tileFlagIndestructable);
         tileUnset = new Tile('X',  C_LIGHT_MAGENTA, bg, tileFlagSolid | tileFlagTall | tileFlagIndestructable);
->>>>>>> Stashed changes
+
 
         tileDebug1 = new Tile('1', C_LIGHT_GREEN, bg, tileFlagPathable);
         tileDebug2 = new Tile('2', C_LIGHT_GREEN, bg, tileFlagPathable);
