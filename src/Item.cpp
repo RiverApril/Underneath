@@ -13,6 +13,7 @@
 #include "CombatSpell.h"
 #include "Potion.h"
 #include "UtilitySpell.h"
+#include "ItemSpecial.h"
 
 void Item::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getItemTypeId());
@@ -67,8 +68,16 @@ Item* Item::clone(Item* oldI) {
         case ITEM_TYPE_POTION:
             return makeNewAndClone<Item, Potion>(oldI);
 
+<<<<<<< Updated upstream
         case ITEM_TYPE_UTILITY_SPELL:
             return makeNewAndClone<Item, UtilitySpell>(oldI);
+=======
+		case ITEM_TYPE_UTILITY_SPELL:
+            return makeNewAndClone<Item, UtilitySpell>(oldI);
+
+        case ITEM_TYPE_ITEMSPECIAL:
+            return makeNewAndClone<Item, ItemSpecial>(oldI);
+>>>>>>> Stashed changes
 
         default:
             throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));
@@ -107,6 +116,10 @@ Item* Item::loadNew(unsigned char* data, int* position) {
 
         case ITEM_TYPE_UTILITY_SPELL:
             e = new UtilitySpell();
+            break;
+
+        case ITEM_TYPE_ITEMSPECIAL:
+            e = new ItemSpecial();
             break;
 
         default:

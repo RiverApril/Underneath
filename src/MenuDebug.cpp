@@ -8,6 +8,7 @@
 
 #include "MenuDebug.h"
 #include "ItemGenerator.h"
+#include "Controls.h"
 
 namespace Ui {
 
@@ -16,9 +17,14 @@ namespace Ui {
 
     }
 
+<<<<<<< Updated upstream
     void MenuDebug::handleInput(int in) {
         switch (in) {
             case KEY_ESCAPE:
+=======
+    void MenuDebug::handleInput(int in){
+        if(in == KEY_ESCAPE || in == Key::debugMenu){
+>>>>>>> Stashed changes
                 closeThisMenu();
                 return;
         }

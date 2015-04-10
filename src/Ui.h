@@ -12,6 +12,8 @@
 #include "Global.h"
 #include "Geometry.h"
 
+class World;
+
 extern vector<string> consoleBuffer;
 
 void debug(string s);
@@ -72,7 +74,7 @@ namespace Ui {
 
     int printMultiLineString(int y, int x, string s, int maxX = -1);
 
-    void drawInventory(Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv = nullptr, string invDisplayName = "", bool selectedLeft = true);
+    void drawInventory(World* currentWorld, Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv = nullptr, string invDisplayName = "", bool selectedLeft = true);
 
     extern unsigned long tick;
 

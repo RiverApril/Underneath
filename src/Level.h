@@ -128,6 +128,8 @@ public:
 
     Ui::MenuGame* menuGame;
 
+    Point2 stairDownPos;
+
 private:
 
     Point2 size;

@@ -39,6 +39,9 @@ namespace Arts {
 
     extern Art* defaultArt;
 
+    extern vector<int> compassInList;
+    extern int compassOut;
+
     extern int artTitle;
 
     extern int artCoin;

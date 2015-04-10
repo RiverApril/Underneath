@@ -18,8 +18,9 @@ else
   endif
 endif
 
-CPPC := g++
-NAME := Underneath_BUILD_$(OSN)_$(ARCH)
+CPPC ?= g++
+PLATFORM ?= $(OSN)_$(ARCH)
+NAME := Underneath_BUILD_$(PLATFORM)
 SRCS := $(wildcard src/*.cpp)
 TMP := $(SRCS:.cpp=.o)
 SRCSLASH := src/

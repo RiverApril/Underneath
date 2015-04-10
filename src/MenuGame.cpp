@@ -392,10 +392,16 @@ namespace Ui {
                         changeMode(modeSelectDirection);
                         itemToBeUsed = currentPlayer->getActiveWeapon();
                     }
+<<<<<<< Updated upstream
                 }
             } else if (in == Key::waitUntilHealed) {
                 if (currentPlayer != nullptr) {
                     if (currentPlayer->getHp() < currentPlayer->getMaxHp()) {
+=======
+            }else if(in == Key::waitUntilHealed){
+                if(currentPlayer != nullptr){
+                    if(currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()){
+>>>>>>> Stashed changes
                         unsigned char b = 1;
                         timeout(20);
                         while (currentPlayer->getHp() < currentPlayer->getMaxHp() && b) {
@@ -419,11 +425,19 @@ namespace Ui {
                             }
                         }
                         timeout(-1);
+<<<<<<< Updated upstream
                         if (currentPlayer->getHp() == currentPlayer->getMaxHp()) {
                             console("Fully healed.");
                         }
                     } else {
                         console("Already at full health.");
+=======
+                        if(currentPlayer->getHp() == currentPlayer->getMaxHp() && currentPlayer->getMp() == currentPlayer->getMaxMp()){
+                            console("Fully healed.");
+                        }
+                    }else{
+                        console("Already at full health and mana.");
+>>>>>>> Stashed changes
                     }
                 }
 
@@ -431,7 +445,15 @@ namespace Ui {
                 Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
                 timePassed += currentPlayer->moveAbsalute(p, currentLevel);
 
+<<<<<<< Updated upstream
             } else if (in == '[') {
+=======
+            }else if(in == 'R'){
+                Point2 p = currentLevel->stairDownPos;
+                timePassed += currentPlayer->moveAbsalute(p, currentLevel);
+
+            }else if(in == '['){
+>>>>>>> Stashed changes
                 currentPlayer->hurt(damDebug, 1);
 
             } else if (in == ']') {

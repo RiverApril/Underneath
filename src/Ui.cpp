@@ -14,6 +14,7 @@
 #include "Math.h"
 #include "Potion.h"
 #include "UtilitySpell.h"
+#include "ItemSpecial.h"
 
 vector<string> consoleBuffer;
 
@@ -298,7 +299,11 @@ namespace Ui {
         return a;
     }
 
+<<<<<<< Updated upstream
     void drawInventory(Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft) {
+=======
+    void drawInventory(World* currentWorld, Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft){
+>>>>>>> Stashed changes
 
         int columnX = 0;
         int columnWidth = (terminalSize.x) / (secondaryInv == nullptr ? 2 : 3);
@@ -374,6 +379,7 @@ namespace Ui {
         if (inv.size() > 0) {
             Item* item = inv[selectedY];
 
+<<<<<<< Updated upstream
             if (item) {
                 Equipable* equipable = dynamic_cast<Equipable*> (item);
                 Weapon* weapon = dynamic_cast<Weapon*> (item);
@@ -381,6 +387,16 @@ namespace Ui {
                 CombatSpell* spell = dynamic_cast<CombatSpell*> (item);
                 Potion* potion = dynamic_cast<Potion*> (item);
                 UtilitySpell* utilitySpell = dynamic_cast<UtilitySpell*> (item);
+=======
+            if(item){
+                Equipable* equipable = dynamic_cast<Equipable*>(item);
+                Weapon* weapon = dynamic_cast<Weapon*>(item);
+                Ranged* ranged = dynamic_cast<Ranged*>(item);
+                CombatSpell* spell = dynamic_cast<CombatSpell*>(item);
+                Potion* potion = dynamic_cast<Potion*>(item);
+                UtilitySpell* utilitySpell = dynamic_cast<UtilitySpell*>(item);
+                ItemSpecial* itemSpecial = dynamic_cast<ItemSpecial*>(item);
+>>>>>>> Stashed changes
 
                 int a = 2;
 
@@ -479,6 +495,42 @@ namespace Ui {
                     if (c) {
                         mvprintw(b, columnX, "Requires: ");
                     }
+                }else if(itemSpecial){
+                    switch (itemSpecial->specialty) {
+                        case specialtyCompass:{
+                            int frame = 0;
+
+                            Point2 diff = player->pos - currentWorld->currentLevel->stairDownPos;
+
+                            double angle = 360 - ((atan2((double)diff.y, (double)-diff.x) * 180 / Math::pi) + 180);
+
+                            if((angle >= 0 && angle < 22.5) || (angle >= 337.5 && angle <= 360)){ //W
+                                frame = 1;
+                            }else if(angle >= 22.5 && angle < 67.5){//NW
+                                frame = 2;
+                            }else if(angle >= 67.5 && angle < 112.5){//N
+                                frame = 3;
+                            }else if(angle >= 112.5 && angle < 157.5){//NE
+                                frame = 4;
+                            }else if(angle >= 157.5 && angle < 202.5){//E
+                                frame = 5;
+                            }else if(angle >= 202.5 && angle < 247.5){//SE
+                                frame = 6;
+                            }else if(angle >= 247.5 && angle < 292.5){//S
+                                frame = 7;
+                            }else if(angle >= 292.5 && angle < 337.5){//SW
+                                frame = 8;
+                            }else{
+                                frame = 0;
+                            }
+                            
+                            consolef("%f", angle);
+                            
+                            
+                            Arts::getArt(Arts::compassInList[frame])->printAt(Point2(columnX, a));
+                            break;
+                        }
+                    }
                 }
 
             }
@@ -511,6 +563,8 @@ namespace Ui {
         mvprintw(0, terminalSize.x - 15, "%3d/%3d", hp, maxHp);
         setColor(C_LIGHT_BLUE);
         mvprintw(0, terminalSize.x - 7, "%3d/%3d", mp, maxMp);
+
+
 
         /*
          setColor(C_WHITE);

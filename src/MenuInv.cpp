@@ -74,7 +74,11 @@ namespace Ui {
 
     void MenuInv::update() {
 
+<<<<<<< Updated upstream
         Ui::drawInventory(player, selected/*, scrollOffset*/);
+=======
+		Ui::drawInventory(currentWorld, player, selected/*, scrollOffset*/);
+>>>>>>> Stashed changes
 
 
         /*setColor(C_WHITE);

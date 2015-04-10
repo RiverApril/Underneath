@@ -18,6 +18,9 @@ namespace Arts {
 
     Art* defaultArt;
 
+    vector<int> compassInList;
+    int compassOut;
+
     int artTitle;
 
     int artCoin;
@@ -126,6 +129,91 @@ namespace Arts {
         Arts::artCrossbow = Arts::loadNew(ArtDir + "/crossbow");
 
         Arts::artCoin = Arts::loadNew(ArtDir + "/coin");
+
+        Point2 compassInSize = Point2Neg1;
+
+        //Compass
+
+        {
+
+            int fullCompassIn = loadNew(ArtDir+"/compassInner");
+
+            Art* fullCompassInArt = getArt(fullCompassIn);
+
+            Point2 fullInSize = fullCompassInArt->getSize();
+
+            int w = 0;
+            int h = 0;
+
+            for(int i=0;i<fullInSize.x;i++){
+                if(fullCompassInArt->lines[0][i] == '#'){
+                    w++;
+                }else{
+                    compassInSize.x = w;
+                    break;
+                }
+            }
+
+            for(int j=0;j<fullInSize.y;j++){
+                if(fullCompassInArt->lines[j][0] == '#'){
+                    h++;
+                }else{
+                    compassInSize.y = h;
+                    break;
+                }
+            }
+
+            for(int j=compassInSize.y;j<fullInSize.y;j+=compassInSize.y){
+                Art* a = new Art();
+
+                for(int i=0;i<compassInSize.y;i++){
+                    a->lines.push_back(fullCompassInArt->lines[j+i]);
+                }
+
+                artList.push_back(a);
+                compassInList.push_back(((int)artList.size())-1);
+            }
+
+        }
+
+        //
+        {
+            int fullCompassOut = loadNew(ArtDir+"/compassOuter");
+
+            Art* fullCompassOutArt = getArt(fullCompassOut);
+
+            Point2 fullOutSize = fullCompassOutArt->getSize();
+
+            Point2 compassOffset;
+
+            for(int i=0;i<fullOutSize.x;i++){
+                if(fullCompassOutArt->lines[0][i] == '#'){
+                    compassOffset.x++;
+                }else{
+                    break;
+                }
+            }
+
+            for(int j=0;j<fullOutSize.y;j++){
+                if(fullCompassOutArt->lines[j][0] == '#'){
+                    compassOffset.y++;
+                }else{
+                    break;
+                }
+            }
+            Art* a = new Art();
+
+            for(int i=compassOffset.y;i<fullOutSize.y;i++){
+                a->lines.push_back(fullCompassOutArt->lines[i]);
+            }
+
+            artList.push_back(a);
+            compassOut = ((int)artList.size())-1;
+        }
+
+        //end
+
+
 
 
     }

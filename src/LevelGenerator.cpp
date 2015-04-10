@@ -21,7 +21,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
     bool pathNotFound = false;
 
-    Point2 stairDownPos;
+    stairDownPos = Point2Zero;
 
     do {
 

@@ -9,6 +9,7 @@
 #include "World.h"
 #include "Utility.h"
 #include "ItemGenerator.h"
+#include "ItemSpecial.h"
 
 World::World(string n) {
     levels = vector<string>();
@@ -331,10 +332,10 @@ namespace WorldLoader {
 
         world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
         world->currentPlayer->setActiveWeapon(ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromType(wepMelee, 0), 0));
+        world->currentPlayer->addItem(Item::clone(new ItemSpecial(specialtyCompass)));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        //world->currentPlayer->inventory.push_back(ItemGenerator::createWeapon("", materialBone, damRanged, false));
 
 
         world->currentLevel->newEntity(world->currentPlayer);
