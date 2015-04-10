@@ -15,12 +15,13 @@
 using namespace AbilityDetails;
 
 namespace Ui {
+
     class MenuPlayerSetup : public Menu {
     public:
 
         MenuPlayerSetup(string name) : Menu() {
             this->name = name;
-            for(int i=0;i<abilityCount;i++){
+            for (int i = 0; i < abilityCount; i++) {
                 abilityPoints[i] = 0;
             }
         }
@@ -42,12 +43,12 @@ namespace Ui {
 
         int abilityPoints[abilityCount];
 
-        static const int totalPoints = abilityCount*2;
+        static const int totalPoints = abilityCount * 2;
         int remainingPoints = totalPoints;
         const int pointMax = 6;
 
-        int* addOne(int a[abilityCount]){
-            for(int i=0;i<abilityCount;i++){
+        int* addOne(int a[abilityCount]) {
+            for (int i = 0; i < abilityCount; i++) {
                 a[i]++;
             }
             return a;
@@ -55,8 +56,8 @@ namespace Ui {
 
     private:
 
-        static const int selContinue = abilityCount+0;
-        static const int selBack = abilityCount+1;
+        static const int selContinue = abilityCount + 0;
+        static const int selBack = abilityCount + 1;
 
         static const int maxUiSelection = selBack;
     };

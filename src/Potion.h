@@ -16,44 +16,44 @@
 class Potion : public Item {
 public:
 
-	static Potion* cloneUnsafe(Potion* oldE, Potion* newE = nullptr);
+    static Potion* cloneUnsafe(Potion* oldE, Potion* newE = nullptr);
 
-	Potion() : Item(){
+    Potion() : Item() {
 
-	}
+    }
 
-	Potion(string name, double weight) : Item(name, weight){
+    Potion(string name, double weight) : Item(name, weight) {
 
-	}
+    }
 
-	Potion(Effect effect, string name, double weight) : Item(name, weight){
+    Potion(Effect effect, string name, double weight) : Item(name, weight) {
         this->effects = {effect};
-	}
+    }
 
-	Potion(vector<Effect> effects, string name, double weight) : Item(name, weight){
-		this->effects = effects;
-	}
+    Potion(vector<Effect> effects, string name, double weight) : Item(name, weight) {
+        this->effects = effects;
+    }
 
-	virtual int getItemTypeId(){
-		return ITEM_TYPE_POTION;
-	}
+    virtual int getItemTypeId() {
+        return ITEM_TYPE_POTION;
+    }
 
-	virtual void save(vector<unsigned char>* data);
+    virtual void save(vector<unsigned char>* data);
 
-	virtual void load(unsigned char* data, int* position);
+    virtual void load(unsigned char* data, int* position);
 
-	virtual bool equalsExceptQty(Item* other){
-		Potion* otherW = dynamic_cast<Potion*>(other);
-		return Item::equalsExceptQty(other)
-			&& (otherW)
-			&& (effects == otherW->effects);
-	}
+    virtual bool equalsExceptQty(Item* other) {
+        Potion* otherW = dynamic_cast<Potion*> (other);
+        return Item::equalsExceptQty(other)
+                && (otherW)
+                && (effects == otherW->effects);
+    }
 
-	vector<Effect> effects;
+    vector<Effect> effects;
 
-	virtual string getExtendedName(){
-		return name;
-	}
+    virtual string getExtendedName() {
+        return name;
+    }
 
 protected:
 };

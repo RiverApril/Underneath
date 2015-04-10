@@ -19,7 +19,7 @@
 int main(int argc, const char** argv) {
 
 
-    if (!GetCurrentDir(workingDirectory, sizeof(workingDirectory))){
+    if (!GetCurrentDir(workingDirectory, sizeof (workingDirectory))) {
         return errno;
     }
 
@@ -31,7 +31,7 @@ int main(int argc, const char** argv) {
         }
     }
     cout << endl;
-    */
+     */
 
 
     cout << endl << "Press enter to start Underneath..." << endl;
@@ -40,16 +40,16 @@ int main(int argc, const char** argv) {
 
 
 
-    debug("Working Directory: "+(string(workingDirectory)));
+    debug("Working Directory: " + (string(workingDirectory)));
 
     CustomWorkingDirectory = Utility::readTextFile("customUnderneathWorkingDirectory.txt", "./");
-	CustomWorkingDirectory = CustomWorkingDirectory.substr(0, CustomWorkingDirectory.find_last_of('/')+1);
+    CustomWorkingDirectory = CustomWorkingDirectory.substr(0, CustomWorkingDirectory.find_last_of('/') + 1);
     UnderneathDir = CustomWorkingDirectory;
-    WorldsDir = UnderneathDir+"worlds";
-    ArtDir = UnderneathDir+"art";
+    WorldsDir = UnderneathDir + "worlds";
+    ArtDir = UnderneathDir + "art";
 
-    if(CustomWorkingDirectory.length() > 0){
-    	debug("Custom Working Directory: "+CustomWorkingDirectory);
+    if (CustomWorkingDirectory.length() > 0) {
+        debug("Custom Working Directory: " + CustomWorkingDirectory);
     }
 
     Tiles::initTiles();

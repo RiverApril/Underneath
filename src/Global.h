@@ -30,24 +30,25 @@
 #include <sys/types.h>
 
 #ifdef _WIN32
-    #include <memory>
-    #include <direct.h>
-    #include <stdint.h>
-    #include "curses.h"
-    extern int ESCDELAY;
-    #define GetCurrentDir _getcwd
-    int mkdir(const char *filename, int useless);
-    template <typename T>
-    std::string to_string(T a){
-        std::stringstream ss;
-        ss << a;
-        return ss.str();
-    }
+#include <memory>
+#include <direct.h>
+#include <stdint.h>
+#include "curses.h"
+extern int ESCDELAY;
+#define GetCurrentDir _getcwd
+int mkdir(const char *filename, int useless);
+
+template <typename T>
+std::string to_string(T a) {
+    std::stringstream ss;
+    ss << a;
+    return ss.str();
+}
 
 #else
-	#include <unistd.h>
-	#include <ncurses.h>
-	#define GetCurrentDir getcwd
+#include <unistd.h>
+#include <ncurses.h>
+#define GetCurrentDir getcwd
 #endif
 
 

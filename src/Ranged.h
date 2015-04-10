@@ -12,23 +12,22 @@
 #include "Global.h"
 #include "Weapon.h"
 
-class Ranged : public Weapon{
+class Ranged : public Weapon {
 public:
 
     static Ranged* cloneUnsafe(Ranged* oldE, Ranged* newE);
 
-
-    Ranged() : Weapon(){
+    Ranged() : Weapon() {
 
     }
 
-    Ranged(double baseDamage, string name, double weight, double useDelay, double range) : Weapon(baseDamage, name, weight, useDelay){
+    Ranged(double baseDamage, string name, double weight, double useDelay, double range) : Weapon(baseDamage, name, weight, useDelay) {
         this->baseDamage = baseDamage;
         this->damageType = damPierce;
         this->range = range;
     }
 
-    virtual int getItemTypeId(){
+    virtual int getItemTypeId() {
         return ITEM_TYPE_RANGED;
     }
 
@@ -36,11 +35,11 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual bool equalsExceptQty(Item* other){
-        Ranged* otherR = dynamic_cast<Ranged*>(other);
+    virtual bool equalsExceptQty(Item* other) {
+        Ranged* otherR = dynamic_cast<Ranged*> (other);
         return Weapon::equalsExceptQty(other)
-        &&(otherR)
-        &&(range == otherR->range);
+                &&(otherR)
+                &&(range == otherR->range);
     }
 
     double range = 4;

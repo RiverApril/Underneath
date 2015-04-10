@@ -9,15 +9,15 @@
 #include "TEMimic.h"
 #include "Utility.h"
 
-void TEMimic::save(vector<unsigned char>* data){
+void TEMimic::save(vector<unsigned char>* data) {
     TileEntity::save(data);
 }
 
-void TEMimic::load(unsigned char* data, int* position){
+void TEMimic::load(unsigned char* data, int* position) {
     TileEntity::load(data, position);
 }
 
-TEMimic* TEMimic::cloneUnsafe(TEMimic* oldE, TEMimic* newE){
+TEMimic* TEMimic::cloneUnsafe(TEMimic* oldE, TEMimic* newE) {
 
     TileEntity::cloneUnsafe(oldE, newE);
 

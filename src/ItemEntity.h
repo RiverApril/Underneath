@@ -12,8 +12,7 @@
 #include "Entity.h"
 #include "Item.h"
 
-class ItemEntity : public Entity{
-
+class ItemEntity : public Entity {
 public:
 
     static ItemEntity* cloneUnsafe(ItemEntity* oldE, ItemEntity* newE);
@@ -30,20 +29,20 @@ public:
 
     virtual int getEntityTypeId();
 
-    virtual int getRenderDepth(){
+    virtual int getRenderDepth() {
         return -1;
     }
 
     virtual char getIcon(Point2 p, double time, Level* level);
 
-    virtual string getName(){
-        if(removed){
+    virtual string getName() {
+        if (removed) {
             return "Item Removed";
         }
-        return item==nullptr?"Null Item":(item->qty==1?item->name:(formatString("%d %s", item->qty, plural(item->name).c_str())));
+        return item == nullptr ? "Null Item" : (item->qty == 1 ? item->name : (formatString("%d %s", item->qty, plural(item->name).c_str())));
     }
 
-    virtual Item* getItem(){
+    virtual Item* getItem() {
         return item;
     }
 

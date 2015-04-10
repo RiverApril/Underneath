@@ -17,7 +17,6 @@ class Level;
 #include "Player.h"
 
 class World {
-
 public:
 
     World(std::string n);

@@ -12,10 +12,12 @@
 #include "Menu.h"
 
 namespace Ui {
+
     class MenuWorldSelect : public Menu {
     public:
 
-        MenuWorldSelect() : Menu() {}
+        MenuWorldSelect() : Menu() {
+        }
 
         ~MenuWorldSelect() {
             delete deleteAnswer;
@@ -33,10 +35,10 @@ namespace Ui {
 
     private:
         static const int selPlay = 0;
-		static const int selDel = 1;
-		static const int selBack = 2;
+        static const int selDel = 1;
+        static const int selBack = 2;
 
-		static const int maxUiSelection = selBack;
+        static const int maxUiSelection = selBack;
     };
 }
 

@@ -23,6 +23,7 @@ Point2 Point2Neg1 = Point2(-1, -1);
 Vector2 Vector2One = Vector2(1, 1);
 
 //Point2:
+
 Point2::Point2(int x, int y) {
     this->x = x;
     this->y = y;
@@ -46,98 +47,92 @@ void Point2::add(int x, int y) {
     this->y += y;
 }
 
-
-Point2 Point2::operator+( Point2 other) {
-    return Point2(this->x+other.x, this->y+other.y);
+Point2 Point2::operator+(Point2 other) {
+    return Point2(this->x + other.x, this->y + other.y);
 }
 
-Point2 Point2::operator-( Point2 other) {
-    return Point2(this->x-other.x, this->y-other.y);
+Point2 Point2::operator-(Point2 other) {
+    return Point2(this->x - other.x, this->y - other.y);
 }
 
-Point2 Point2::operator*( Point2 other) {
-    return Point2(this->x*other.x, this->y*other.y);
+Point2 Point2::operator*(Point2 other) {
+    return Point2(this->x * other.x, this->y * other.y);
 }
 
-Point2 Point2::operator/( Point2 other) {
-    return Point2(this->x/other.x, this->y/other.y);
+Point2 Point2::operator/(Point2 other) {
+    return Point2(this->x / other.x, this->y / other.y);
 }
-
 
 Point2* Point2::operator+=(Point2 other) {
-    this->x+=other.x;
-    this->y+=other.y;
+    this->x += other.x;
+    this->y += other.y;
     return this;
 }
 
 Point2* Point2::operator-=(Point2 other) {
-    this->x-=other.x;
-    this->y-=other.y;
+    this->x -= other.x;
+    this->y -= other.y;
     return this;
 }
 
-Point2* Point2::operator*=( Point2 other) {
-    this->x*=other.x;
-    this->y*=other.y;
+Point2* Point2::operator*=(Point2 other) {
+    this->x *= other.x;
+    this->y *= other.y;
     return this;
 }
 
-Point2* Point2::operator/=( Point2 other) {
-    this->x/=other.x;
-    this->y/=other.y;
+Point2* Point2::operator/=(Point2 other) {
+    this->x /= other.x;
+    this->y /= other.y;
     return this;
 }
-
 
 Point2 Point2::operator+(int other) {
-    return Point2(this->x+other, this->y+other);
+    return Point2(this->x + other, this->y + other);
 }
 
-Point2 Point2::operator-( int other) {
-    return Point2(this->x-other, this->y-other);
+Point2 Point2::operator-(int other) {
+    return Point2(this->x - other, this->y - other);
 }
 
-Point2 Point2::operator*( int other) {
-    return Point2(this->x*other, this->y*other);
+Point2 Point2::operator*(int other) {
+    return Point2(this->x*other, this->y * other);
 }
 
-Point2 Point2::operator/( int other) {
-    return Point2(this->x/other, this->y/other);
+Point2 Point2::operator/(int other) {
+    return Point2(this->x / other, this->y / other);
 }
-
 
 Point2 Point2::operator-() {
     return Point2(-this->x, -this->y);
 }
 
-
 Vector2 Point2::operator+(double other) {
-    return Vector2(this->x+other, this->y+other);
+    return Vector2(this->x + other, this->y + other);
 }
 
-Vector2 Point2::operator-( double other) {
-    return Vector2(this->x-other, this->y-other);
+Vector2 Point2::operator-(double other) {
+    return Vector2(this->x - other, this->y - other);
 }
 
-Vector2 Point2::operator*( double other) {
-    return Vector2(this->x*other, this->y*other);
+Vector2 Point2::operator*(double other) {
+    return Vector2(this->x*other, this->y * other);
 }
 
-Vector2 Point2::operator/( double other) {
-    return Vector2(this->x/other, this->y/other);
+Vector2 Point2::operator/(double other) {
+    return Vector2(this->x / other, this->y / other);
 }
-
 
 string Point2::toString() {
-    return to_string(x)+", "+to_string(y);
+    return to_string(x) + ", " + to_string(y);
 }
 
-void Point2::save(Point2 p, vector<unsigned char>* data){
+void Point2::save(Point2 p, vector<unsigned char>* data) {
     Utility::saveInt(data, p.x);
     Utility::saveInt(data, p.y);
 }
 
-Point2 Point2::load(unsigned char* data, int* position){
+Point2 Point2::load(unsigned char* data, int* position) {
     int x = Utility::loadInt(data, position);
     int y = Utility::loadInt(data, position);
     return Point2(x, y);
@@ -165,91 +160,85 @@ void Point3::set(const Point3 other) {
     this->z = other.z;
 }
 
-
-Point3 Point3::operator+( Point3 other) {
-    return Point3(this->x+other.x, this->y+other.y, this->z+other.z);
+Point3 Point3::operator+(Point3 other) {
+    return Point3(this->x + other.x, this->y + other.y, this->z + other.z);
 }
 
-Point3 Point3::operator-( Point3 other) {
-    return Point3(this->x-other.x, this->y-other.y, this->z-other.z);
+Point3 Point3::operator-(Point3 other) {
+    return Point3(this->x - other.x, this->y - other.y, this->z - other.z);
 }
 
-Point3 Point3::operator*( Point3 other) {
-    return Point3(this->x*other.x, this->y*other.y, this->z*other.z);
+Point3 Point3::operator*(Point3 other) {
+    return Point3(this->x * other.x, this->y * other.y, this->z * other.z);
 }
 
-Point3 Point3::operator/( Point3 other) {
-    return Point3(this->x/other.x, this->y/other.y, this->z/other.z);
+Point3 Point3::operator/(Point3 other) {
+    return Point3(this->x / other.x, this->y / other.y, this->z / other.z);
 }
-
 
 Point3* Point3::operator+=(Point3 other) {
-    this->x+=other.x;
-    this->y+=other.y;
-    this->z+=other.z;
+    this->x += other.x;
+    this->y += other.y;
+    this->z += other.z;
     return this;
 }
 
 Point3* Point3::operator-=(Point3 other) {
-    this->x-=other.x;
-    this->y-=other.y;
-    this->z-=other.z;
+    this->x -= other.x;
+    this->y -= other.y;
+    this->z -= other.z;
     return this;
 }
 
-Point3* Point3::operator*=( Point3 other) {
-    this->x*=other.x;
-    this->y*=other.y;
-    this->z*=other.z;
+Point3* Point3::operator*=(Point3 other) {
+    this->x *= other.x;
+    this->y *= other.y;
+    this->z *= other.z;
     return this;
 }
 
-Point3* Point3::operator/=( Point3 other) {
-    this->x/=other.x;
-    this->y/=other.y;
-    this->z/=other.z;
+Point3* Point3::operator/=(Point3 other) {
+    this->x /= other.x;
+    this->y /= other.y;
+    this->z /= other.z;
     return this;
 }
-
 
 Point3 Point3::operator+(int other) {
-    return Point3(this->x+other, this->y+other, this->z+other);
+    return Point3(this->x + other, this->y + other, this->z + other);
 }
 
-Point3 Point3::operator-( int other) {
-    return Point3(this->x-other, this->y-other, this->z-other);
+Point3 Point3::operator-(int other) {
+    return Point3(this->x - other, this->y - other, this->z - other);
 }
 
-Point3 Point3::operator*( int other) {
-    return Point3(this->x*other, this->y*other, this->z*other);
+Point3 Point3::operator*(int other) {
+    return Point3(this->x*other, this->y*other, this->z * other);
 }
 
-Point3 Point3::operator/( int other) {
-    return Point3(this->x/other, this->y/other, this->z/other);
+Point3 Point3::operator/(int other) {
+    return Point3(this->x / other, this->y / other, this->z / other);
 }
-
 
 Point3 Point3::operator-() {
     return Point3(-this->x, -this->y, -this->z);
 }
 
-
 string Point3::toString() {
-    return to_string(x)+", "+to_string(y)+", "+to_string(z);
+    return to_string(x) + ", " + to_string(y) + ", " + to_string(z);
 }
 
-void Point3::save(vector<unsigned char>* data){
+void Point3::save(vector<unsigned char>* data) {
     Utility::saveInt(data, x);
     Utility::saveInt(data, y);
     Utility::saveInt(data, z);
 }
 
-Point3 Point3::load(unsigned char* data, int* position){
+Point3 Point3::load(unsigned char* data, int* position) {
     return Point3(Utility::loadInt(data, position), Utility::loadInt(data, position), Utility::loadInt(data, position));
 }
 
 //Vector2:
-
 
 Vector2::Vector2(double x, double y) {
     this->x = x;
@@ -283,45 +272,41 @@ Point2 Vector2::roundToward0() {
 }
 
 Point2 Vector2::truncate() {
-    return Point2((int)(this->x), (int)(this->y));
+    return Point2((int) (this->x), (int) (this->y));
 }
 
 Point2 Vector2::round() {
-    return Point2((int)::round(this->x), (int)::round(this->y));
+    return Point2((int) ::round(this->x), (int) ::round(this->y));
 }
 
 Point2 Vector2::ceil() {
-    return Point2((int)::ceil(this->x), (int)::ceil(this->y));
+    return Point2((int) ::ceil(this->x), (int) ::ceil(this->y));
 }
 
 Point2 Vector2::floor() {
-    return Point2((int)::floor(this->x), (int)::floor(this->y));
+    return Point2((int) ::floor(this->x), (int) ::floor(this->y));
 }
-
-
 
 Vector2 Vector2::operator+(double other) {
-    return Vector2(this->x+other, this->y+other);
+    return Vector2(this->x + other, this->y + other);
 }
 
-Vector2 Vector2::operator-( double other) {
-    return Vector2(this->x-other, this->y-other);
+Vector2 Vector2::operator-(double other) {
+    return Vector2(this->x - other, this->y - other);
 }
 
-Vector2 Vector2::operator*( double other) {
-    return Vector2(this->x*other, this->y*other);
+Vector2 Vector2::operator*(double other) {
+    return Vector2(this->x*other, this->y * other);
 }
 
-Vector2 Vector2::operator/( double other) {
-    return Vector2(this->x/other, this->y/other);
+Vector2 Vector2::operator/(double other) {
+    return Vector2(this->x / other, this->y / other);
 }
 
-int distanceSquared(Point2 a, Point2 b){
-    return (int)Math::distanceSquared(a.x, a.y, b.x, b.y);
+int distanceSquared(Point2 a, Point2 b) {
+    return (int) Math::distanceSquared(a.x, a.y, b.x, b.y);
 }
-
-
 
 string Vector2::toString() {
-    return to_string(x)+", "+to_string(y);
+    return to_string(x) + ", " + to_string(y);
 }

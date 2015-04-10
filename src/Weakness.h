@@ -11,8 +11,9 @@
 
 #include "Weapon.h"
 
-struct Weakness{
-    Weakness(DamageType dam, double m){
+struct Weakness {
+
+    Weakness(DamageType dam, double m) {
         this->damageType = dam;
         this->multiplier = m;
     }

@@ -15,7 +15,7 @@
 namespace Ui {
 
     bool MenuWorldSelect::openUi() {
-        if(*deleteAnswer == aYes){
+        if (*deleteAnswer == aYes) {
             WorldLoader::deleteWorld(name);
             *deleteAnswer = aUndefined;
         }
@@ -31,26 +31,26 @@ namespace Ui {
 
     void MenuWorldSelect::handleInput(int in) {
 
-        move(selection+2, 0);
+        move(selection + 2, 0);
         clrtoeol();
 
         switch (in) {
             case '\n':
                 switch (selection) {
                     case selPlay:
-                        if(name.length() > 0){
-                            if(WorldLoader::exists(name)){
+                        if (name.length() > 0) {
+                            if (WorldLoader::exists(name)) {
                                 openMenu(new MenuGame(name, Abilities<int>()));
-                            }else{
+                            } else {
                                 openMenu(new MenuGame(name, Abilities<int>()));
                             }
                         }
                         break;
 
                     case selDel:
-                        if(WorldLoader::exists(name)){
-                        	openMenu(new MenuYesNo("Are you sure you want to delete '"+name+"' ?", deleteAnswer, true));
-                		}
+                        if (WorldLoader::exists(name)) {
+                            openMenu(new MenuYesNo("Are you sure you want to delete '" + name + "' ?", deleteAnswer, true));
+                        }
                         break;
 
                     case selBack:
@@ -64,14 +64,14 @@ namespace Ui {
 
             case KEY_UP:
                 selection--;
-                if(selection<0) {
+                if (selection < 0) {
                     selection = maxUiSelection;
                 }
                 break;
 
             case KEY_DOWN:
                 selection++;
-                if(selection>maxUiSelection) {
+                if (selection > maxUiSelection) {
                     selection = 0;
                 }
                 break;
@@ -83,14 +83,14 @@ namespace Ui {
             case KEY_BACKSPACE:
             case 8: //Backspace
             case 127: //Delete
-                if(name.length() > 0){
-                    name = name.substr(0, name.length()-1);
+                if (name.length() > 0) {
+                    name = name.substr(0, name.length() - 1);
                 }
                 break;
 
             default:
-                if((in=='_') || (in>='0' && in<='9') || (in>='A' && in<='Z') || (in>='a' && in<='z')){
-                    name += (char)in;
+                if ((in == '_') || (in >= '0' && in <= '9') || (in >= 'A' && in <= 'Z') || (in >= 'a' && in <= 'z')) {
+                    name += (char) in;
                 }
                 break;
         }
@@ -105,24 +105,24 @@ namespace Ui {
 
         printCenter(2, "Enter Name");
 
-        printCenter(5, e?"  %sContinue%s  ":"%sCreate New%s",
-                    selection==0?"- ":"  ", selection==0?" -":"  ");
+        printCenter(5, e ? "  %sContinue%s  " : "%sCreate New%s",
+                selection == 0 ? "- " : "  ", selection == 0 ? " -" : "  ");
 
-        setColor(e?C_LIGHT_RED:C_DARK_GRAY);
+        setColor(e ? C_LIGHT_RED : C_DARK_GRAY);
         printCenter(6, "%sDelete%s",
-                    selection==1?"- ":"  ", selection==1?" -":"  ");
+                selection == 1 ? "- " : "  ", selection == 1 ? " -" : "  ");
         setColor(C_WHITE);
 
-        printCenter(8, "%sBack%s", selection==2?"- ":"  ",
-                    selection==2?" -":"  ");
+        printCenter(8, "%sBack%s", selection == 2 ? "- " : "  ",
+                selection == 2 ? " -" : "  ");
 
 
-        setColor(e?C_LIGHT_GREEN:C_LIGHT_YELLOW);
+        setColor(e ? C_LIGHT_GREEN : C_LIGHT_YELLOW);
         move(3, 0);
         clrtoeol();
         printCenter(3, name);
         setColor(C_WHITE, C_BLACK, A_BLINK);
-        printCenterOffset(3, ((int)name.length()/2)+1, "_");
+        printCenterOffset(3, ((int) name.length() / 2) + 1, "_");
 
         refresh();
     }

@@ -12,8 +12,7 @@
 #include "Global.h"
 #include "Geometry.h"
 
-struct Art{
-
+struct Art {
     vector<string> lines;
 
     Point2 calcSize();
@@ -27,7 +26,7 @@ struct Art{
 
 };
 
-namespace Arts{
+namespace Arts {
 
     void loadArts();
     void cleanupArts();

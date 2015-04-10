@@ -25,8 +25,6 @@ namespace Ui {
 
     }
 
-
-
     void MenuPlayerSetup::handleInput(int in) {
 
         switch (in) {
@@ -38,7 +36,7 @@ namespace Ui {
                         break;
 
                     default:
-                        if(name.length() > 0 && remainingPoints == 0){
+                        if (name.length() > 0 && remainingPoints == 0) {
                             openMenu(new MenuGame(name, Abilities<int>(addOne(abilityPoints))));
                         }
                         break;
@@ -47,32 +45,32 @@ namespace Ui {
 
             case KEY_UP:
                 selection--;
-                if(selection<0) {
+                if (selection < 0) {
                     selection = maxUiSelection;
                 }
                 break;
 
             case KEY_DOWN:
                 selection++;
-                if(selection>maxUiSelection) {
+                if (selection > maxUiSelection) {
                     selection = 0;
                 }
                 break;
 
             case KEY_LEFT:
-                if(selection < abilityCount){
-                	if(abilityPoints[selection] > 0){
+                if (selection < abilityCount) {
+                    if (abilityPoints[selection] > 0) {
                         abilityPoints[selection]--;
                         remainingPoints++;
-                	}
+                    }
                 }
                 break;
             case KEY_RIGHT:
-                if(selection < abilityCount){
-                    if(remainingPoints > 0){
-                        if(abilityPoints[selection] < pointMax){
-                        	abilityPoints[selection]++;
-                        	remainingPoints--;
+                if (selection < abilityCount) {
+                    if (remainingPoints > 0) {
+                        if (abilityPoints[selection] < pointMax) {
+                            abilityPoints[selection]++;
+                            remainingPoints--;
                         }
                     }
                 }
@@ -85,12 +83,12 @@ namespace Ui {
 
     }
 
-    void MenuPlayerSetup::renderAbility(int y, int xOffset, int sel, int points, string name){
+    void MenuPlayerSetup::renderAbility(int y, int xOffset, int sel, int points, string name) {
 
-        setColor((selection==sel)?C_BLACK:C_WHITE, (selection==sel)?C_WHITE:C_BLACK);
-        printCenterOffset(y, xOffset, name+"  |");
-        for(int i=1;i<=pointMax;i++){
-            addch((i<=points)?'|':'.');
+        setColor((selection == sel) ? C_BLACK : C_WHITE, (selection == sel) ? C_WHITE : C_BLACK);
+        printCenterOffset(y, xOffset, name + "  |");
+        for (int i = 1; i <= pointMax; i++) {
+            addch((i <= points) ? '|' : '.');
         }
     }
 
@@ -104,26 +102,26 @@ namespace Ui {
 
 
         printCenter(5, "Remaining");
-        printCenterOffset(6, -(totalPoints/2), "");
-        for(int i=1;i<=totalPoints;i++){
-            addch((i<=remainingPoints)?'|':'-');
+        printCenterOffset(6, -(totalPoints / 2), "");
+        for (int i = 1; i <= totalPoints; i++) {
+            addch((i <= remainingPoints) ? '|' : '-');
         }
 
-        for(int i=0;i<abilityCount;i++){
-            renderAbility(8+i, -(pointMax/2), i, abilityPoints[i], abilityNamesRightAligned[i]);
+        for (int i = 0; i < abilityCount; i++) {
+            renderAbility(8 + i, -(pointMax / 2), i, abilityPoints[i], abilityNamesRightAligned[i]);
         }
 
 
         setColor(C_WHITE, C_BLACK);
 
-        printCenter(16, "%sContinue%s", selection==selContinue?"- ":"  ",
-                    selection==selContinue?" -":"  ");
+        printCenter(16, "%sContinue%s", selection == selContinue ? "- " : "  ",
+                selection == selContinue ? " -" : "  ");
 
-        printCenter(17, "%sBack%s", selection==selBack?"- ":"  ",
-                    selection==selBack?" -":"  ");
+        printCenter(17, "%sBack%s", selection == selBack ? "- " : "  ",
+                selection == selBack ? " -" : "  ");
 
-        if(selection < abilityCount){
-        	printCenter(19, abilityInfo[selection]);
+        if (selection < abilityCount) {
+            printCenter(19, abilityInfo[selection]);
         }
 
         refresh();

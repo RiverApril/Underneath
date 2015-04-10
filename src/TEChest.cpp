@@ -9,31 +9,33 @@
 #include "TEChest.h"
 #include "Utility.h"
 
-void TEChest::save(vector<unsigned char>* data){
+void TEChest::save(vector<unsigned char>* data) {
     TileEntity::save(data);
 
-    Utility::saveInt(data, (int)inventory.size());
-    forVector(inventory, i){
+    Utility::saveInt(data, (int) inventory.size());
+
+    forVector(inventory, i) {
         inventory[i]->save(data);
     }
 
 }
 
-void TEChest::load(unsigned char* data, int* position){
+void TEChest::load(unsigned char* data, int* position) {
     TileEntity::load(data, position);
 
     int size = Utility::loadInt(data, position);
-    repeat(size, i){
+
+    repeat(size, i) {
         inventory.push_back(Item::loadNew(data, position));
     }
 
 }
 
-TEChest* TEChest::cloneUnsafe(TEChest* oldE, TEChest* newE){
+TEChest* TEChest::cloneUnsafe(TEChest* oldE, TEChest* newE) {
 
     TileEntity::cloneUnsafe(oldE, newE);
 
-    forVector(oldE->inventory, i){
+    forVector(oldE->inventory, i) {
         newE->inventory.push_back(Item::clone(oldE->inventory[i]));
     }
 

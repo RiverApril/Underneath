@@ -21,8 +21,7 @@ const int ENTITY_TYPE_AIENTITY = 2;
 const int ENTITY_TYPE_PLAYER = 3;
 const int ENTITY_TYPE_ITEMENTITY = 4;
 
-class Entity{
-
+class Entity {
 public:
 
     static Entity* cloneUnsafe(Entity* oldE, Entity* newE);
@@ -45,11 +44,11 @@ public:
 
     virtual char getIcon(Point2 p, double time, Level* level);
 
-    bool isSolid(){
+    bool isSolid() {
         return solid;
     }
 
-    virtual string getName(){
+    virtual string getName() {
         return "NO_NAME";
     }
 
@@ -60,15 +59,15 @@ public:
 
     virtual int getEntityTypeId();
 
-    virtual int getRenderDepth(){
+    virtual int getRenderDepth() {
         return 0;
     }
 
-    virtual void setTimes(double time){
+    virtual void setTimes(double time) {
 
     }
 
-    virtual bool isHostile(){
+    virtual bool isHostile() {
         return false;
     }
 

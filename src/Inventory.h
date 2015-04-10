@@ -11,32 +11,33 @@
 
 #include "Weapon.h"
 
-struct Inventory{
+struct Inventory {
 
-    Inventory(){
-
-    }
-
-    virtual ~Inventory(){
+    Inventory() {
 
     }
 
-    virtual void removeAllItems(bool deleteItem){
-        while(inventory.size() > 0){
+    virtual ~Inventory() {
+
+    }
+
+    virtual void removeAllItems(bool deleteItem) {
+        while (inventory.size() > 0) {
             Item* item = inventory[0];
             inventory.erase(inventory.begin());
-            if(deleteItem){
+            if (deleteItem) {
                 delete item;
             }
         }
     }
 
-    virtual bool removeItem(Item* item, bool deleteItem){
-        forVector(inventory, i){
+    virtual bool removeItem(Item* item, bool deleteItem) {
+
+        forVector(inventory, i) {
             Item* ie = inventory[i];
-            if(ie == item){
-                inventory.erase(inventory.begin()+(long)i);
-                if(deleteItem){
+            if (ie == item) {
+                inventory.erase(inventory.begin()+(long) i);
+                if (deleteItem) {
                     delete item;
                 }
                 return true;
@@ -45,26 +46,27 @@ struct Inventory{
         return false;
     }
 
-    virtual bool containsItem(Item* item){
-        forVector(inventory, i){
+    virtual bool containsItem(Item* item) {
+
+        forVector(inventory, i) {
             Item* ie = inventory[i];
-            if(ie == item){
+            if (ie == item) {
                 return true;
             }
         }
         return false;
     }
 
-    virtual void addItems(vector<Item*> items){
-        for(Item* i : items){
+    virtual void addItems(vector<Item*> items) {
+        for (Item* i : items) {
             addItem(i);
         }
     }
 
-    virtual bool addItem(Item* newItem){
-        if(newItem != nullptr){
-            for(Item* i : inventory){
-                if(i->equalsExceptQty(newItem)){
+    virtual bool addItem(Item* newItem) {
+        if (newItem != nullptr) {
+            for (Item* i : inventory) {
+                if (i->equalsExceptQty(newItem)) {
                     i->qty += newItem->qty;
                     delete newItem;
                     return true;

@@ -14,7 +14,7 @@
 #include "Potion.h"
 #include "UtilitySpell.h"
 
-void Item::save(vector<unsigned char>* data){
+void Item::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getItemTypeId());
     Utility::saveDouble(data, weight);
     Utility::saveString(data, name);
@@ -22,14 +22,14 @@ void Item::save(vector<unsigned char>* data){
     Utility::saveInt(data, artIndex);
 }
 
-void Item::load(unsigned char* data, int* position){
+void Item::load(unsigned char* data, int* position) {
     weight = Utility::loadDouble(data, position);
     name = Utility::loadString(data, position);
     qty = Utility::loadInt(data, position);
     artIndex = Utility::loadInt(data, position);
 }
 
-Item* Item::cloneUnsafe(Item* oldE, Item* newE){
+Item* Item::cloneUnsafe(Item* oldE, Item* newE) {
 
     newE->name = oldE->name;
     newE->weight = oldE->weight;
@@ -39,12 +39,12 @@ Item* Item::cloneUnsafe(Item* oldE, Item* newE){
 }
 
 template<class Super, class Sub>
-Sub* Item::makeNewAndClone(Super* oldT){
+Sub* Item::makeNewAndClone(Super* oldT) {
     Sub* newT = new Sub();
-	return Sub::cloneUnsafe(dynamic_cast<Sub*>(oldT), newT);
+    return Sub::cloneUnsafe(dynamic_cast<Sub*> (oldT), newT);
 }
 
-Item* Item::clone(Item* oldI){
+Item* Item::clone(Item* oldI) {
 
     int type = oldI->getItemTypeId();
 
@@ -62,16 +62,16 @@ Item* Item::clone(Item* oldI){
             return makeNewAndClone<Item, Ranged>(oldI);
 
         case ITEM_TYPE_COMBAT_SPELL:
-			return makeNewAndClone<Item, CombatSpell>(oldI);
+            return makeNewAndClone<Item, CombatSpell>(oldI);
 
-		case ITEM_TYPE_POTION:
-			return makeNewAndClone<Item, Potion>(oldI);
+        case ITEM_TYPE_POTION:
+            return makeNewAndClone<Item, Potion>(oldI);
 
-		case ITEM_TYPE_UTILITY_SPELL:
-			return makeNewAndClone<Item, UtilitySpell>(oldI);
+        case ITEM_TYPE_UTILITY_SPELL:
+            return makeNewAndClone<Item, UtilitySpell>(oldI);
 
         default:
-            throw Utility::FileExceptionLoad("Item type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));
             return nullptr;
             break;
     }
@@ -80,7 +80,7 @@ Item* Item::clone(Item* oldI){
 
 }
 
-Item* Item::loadNew(unsigned char* data, int* position){
+Item* Item::loadNew(unsigned char* data, int* position) {
     Item* e;
 
     int type = Utility::loadInt(data, position);
@@ -100,17 +100,17 @@ Item* Item::loadNew(unsigned char* data, int* position){
             break;
         case ITEM_TYPE_COMBAT_SPELL:
             e = new CombatSpell();
-			break;
-		case ITEM_TYPE_POTION:
-			e = new Potion();
-			break;
+            break;
+        case ITEM_TYPE_POTION:
+            e = new Potion();
+            break;
 
-		case ITEM_TYPE_UTILITY_SPELL:
-			e = new UtilitySpell();
+        case ITEM_TYPE_UTILITY_SPELL:
+            e = new UtilitySpell();
             break;
 
         default:
-            throw Utility::FileExceptionLoad("Item type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));
             return nullptr;
             break;
     }

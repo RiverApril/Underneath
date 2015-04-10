@@ -63,7 +63,7 @@ namespace Ui {
 #define modeSelectDirection 2
 #define modeSelectPosition 3
 #define modeSelectEntity 4
-		int controlMode = modePlayerControl;
+        int controlMode = modePlayerControl;
 
         void changeMode(int newMode);
 

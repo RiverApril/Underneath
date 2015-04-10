@@ -10,25 +10,24 @@
 
 #include "Level.h"
 
-
-ItemEntity::ItemEntity() : ItemEntity(nullptr, Point2Zero){
+ItemEntity::ItemEntity() : ItemEntity(nullptr, Point2Zero) {
 
 }
 
-ItemEntity::ItemEntity(Item* item, Point2 p) : Entity(' ', p, Ui::C_WHITE){
+ItemEntity::ItemEntity(Item* item, Point2 p) : Entity(' ', p, Ui::C_WHITE) {
     this->item = item;
     defaultIcon = '*';
 }
 
-ItemEntity::~ItemEntity(){
+ItemEntity::~ItemEntity() {
 
 }
 
-char ItemEntity::getIcon(Point2 p, double time, Level* level){
-    if(removed){
+char ItemEntity::getIcon(Point2 p, double time, Level* level) {
+    if (removed) {
         return defaultIcon;
     }
-    if(!item){
+    if (!item) {
         return defaultIcon;
     }
     switch (item->getItemTypeId()) {
@@ -48,13 +47,11 @@ char ItemEntity::getIcon(Point2 p, double time, Level* level){
     }
 }
 
-
 bool ItemEntity::update(double deltaTime, double time, Level* level) {
     return Entity::update(deltaTime, time, level);
 }
 
-
-ItemEntity* ItemEntity::cloneUnsafe(ItemEntity* oldE, ItemEntity* newE){
+ItemEntity* ItemEntity::cloneUnsafe(ItemEntity* oldE, ItemEntity* newE) {
 
     Entity::cloneUnsafe(oldE, newE);
 
@@ -64,16 +61,16 @@ ItemEntity* ItemEntity::cloneUnsafe(ItemEntity* oldE, ItemEntity* newE){
 
 }
 
-int ItemEntity::getEntityTypeId(){
+int ItemEntity::getEntityTypeId() {
     return ENTITY_TYPE_ITEMENTITY;
 }
 
-void ItemEntity::save(vector<unsigned char>* data){
+void ItemEntity::save(vector<unsigned char>* data) {
     Entity::save(data);
     item->save(data);
 }
 
-void ItemEntity::load(unsigned char* data, int* position){
+void ItemEntity::load(unsigned char* data, int* position) {
     Entity::load(data, position);
     item = Item::loadNew(data, position);
 }

@@ -16,19 +16,18 @@ const int TILE_ENTITY_TYPE_STAIR = 1;
 const int TILE_ENTITY_TYPE_CHEST = 2;
 const int TILE_ENTITY_TYPE_MIMIC = 3;
 
-struct TileEntity{
-
+struct TileEntity {
     static TileEntity* clone(TileEntity* oldI);
 
-    TileEntity() : TileEntity(Point2Neg1){
+    TileEntity() : TileEntity(Point2Neg1) {
 
     }
 
-    TileEntity(Point2 pos){
+    TileEntity(Point2 pos) {
         this->pos = pos;
     }
 
-    virtual ~TileEntity(){
+    virtual ~TileEntity() {
 
     }
 
@@ -36,7 +35,7 @@ struct TileEntity{
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual int getTileEntityTypeId(){
+    virtual int getTileEntityTypeId() {
         return TILE_ENTITY_TYPE_NONE;
     }
 

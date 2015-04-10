@@ -20,10 +20,7 @@ const AiType aiFleeFromPlayer = 1 << 2;
 
 const int agroViewDistanceMultiplier = 3;
 
-
-
 class AiEntity : public Alive {
-
 public:
 
     static AiEntity* cloneUnsafe(AiEntity* oldE, AiEntity* newE);
@@ -47,17 +44,17 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    void setMoveDelay(double newDelay){
+    void setMoveDelay(double newDelay) {
         moveDelay = newDelay;
     }
 
-    virtual void setTimes(double time){
+    virtual void setTimes(double time) {
         lastMoveTime = time;
         lastAttackTime = time;
         Alive::setTimes(time);
     }
 
-    virtual bool isHostile(){
+    virtual bool isHostile() {
         return ai & aiAttackPlayer;
     }
 

@@ -10,14 +10,14 @@
 
 namespace Ui {
 
-    MenuYesNo::MenuYesNo(string question, yesNo* answer, bool canEscape) : Menu(){
+    MenuYesNo::MenuYesNo(string question, yesNo* answer, bool canEscape) : Menu() {
         this->question = question;
         this->answer = answer;
         this->canEscape = canEscape;
         *answer = aUndefined;
     }
 
-    void MenuYesNo::handleInput(int in){
+    void MenuYesNo::handleInput(int in) {
         switch (in) {
             case 'Y':
             case 'y':
@@ -32,7 +32,7 @@ namespace Ui {
                 break;
 
             case KEY_ESCAPE:
-                if(canEscape){
+                if (canEscape) {
                     *answer = aUndefined;
                     closeThisMenu();
                 }
@@ -43,11 +43,11 @@ namespace Ui {
         }
     }
 
-    void MenuYesNo::update(){
+    void MenuYesNo::update() {
         setColor(C_WHITE);
         move(0, 0);
         clrtobot();
-        printCenter(terminalSize.y/2-2, question);
-        printCenter(terminalSize.y/2, "  Y / N ?");
+        printCenter(terminalSize.y / 2 - 2, question);
+        printCenter(terminalSize.y / 2, "  Y / N ?");
     }
 }

@@ -9,19 +9,19 @@
 #include "Ranged.h"
 #include "Utility.h"
 
-void Ranged::save(vector<unsigned char>* data){
+void Ranged::save(vector<unsigned char>* data) {
     Weapon::save(data);
 
     Utility::saveDouble(data, range);
 }
 
-void Ranged::load(unsigned char* data, int* position){
+void Ranged::load(unsigned char* data, int* position) {
     Weapon::load(data, position);
 
     range = Utility::loadDouble(data, position);
 }
 
-Ranged* Ranged::cloneUnsafe(Ranged* oldE, Ranged* newE){
+Ranged* Ranged::cloneUnsafe(Ranged* oldE, Ranged* newE) {
 
     Weapon::cloneUnsafe(oldE, newE);
 

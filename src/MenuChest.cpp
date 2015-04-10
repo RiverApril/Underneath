@@ -18,43 +18,43 @@
 
 namespace Ui {
 
-    MenuChest::MenuChest(TEChest* chest, Player* user, World* w) : Menu(){
+    MenuChest::MenuChest(TEChest* chest, Player* user, World* w) : Menu() {
         this->chest = chest;
         this->user = user;
         this->currentWorld = w;
     }
 
-    void MenuChest::handleInput(int in){
-        if(in == Key::uiLeft || in == Key::uiRight){
+    void MenuChest::handleInput(int in) {
+        if (in == Key::uiLeft || in == Key::uiRight) {
             selectedLeft = !selectedLeft;
 
-        }else if(in == Key::uiUp){
+        } else if (in == Key::uiUp) {
             selected--;
 
-        }else if(in == Key::uiDown){
+        } else if (in == Key::uiDown) {
             selected++;
 
-        }else if(in == Key::equip){
-            if(selectedLeft){
-                Weapon* weapon = dynamic_cast<Weapon*>(user->inventory[selected]);
-                if(weapon){
-                    if(user->getActiveWeapon() == weapon){
+        } else if (in == Key::equip) {
+            if (selectedLeft) {
+                Weapon* weapon = dynamic_cast<Weapon*> (user->inventory[selected]);
+                if (weapon) {
+                    if (user->getActiveWeapon() == weapon) {
                         user->setActiveWeapon(nullptr);
-                    }else{
+                    } else {
                         user->setActiveWeapon(weapon);
                     }
                 }
-            }else{
+            } else {
                 MenuChest::handleInput(Key::take);
             }
 
-        }else if(in == Key::take){
-            if(from->inventory.size() > 0 && selected < from->inventory.size()){
+        } else if (in == Key::take) {
+            if (from->inventory.size() > 0 && selected < from->inventory.size()) {
                 Item* take;
-                if(from->inventory[selected]->qty == 1){
+                if (from->inventory[selected]->qty == 1) {
                     take = from->inventory[selected];
                     from->removeItem(from->inventory[selected], false);
-                }else{
+                } else {
                     from->inventory[selected]->qty -= 1;
                     take = Item::clone(from->inventory[selected]);
                     take->qty = 1;
@@ -63,8 +63,8 @@ namespace Ui {
 
             }
 
-        }else if(in == Key::takeStack){
-            if(from->inventory.size() > 0 && selected < from->inventory.size()){
+        } else if (in == Key::takeStack) {
+            if (from->inventory.size() > 0 && selected < from->inventory.size()) {
                 Item* take;
                 take = from->inventory[selected];
                 from->removeItem(from->inventory[selected], false);
@@ -72,22 +72,22 @@ namespace Ui {
                 to->addItem(take);
             }
 
-        }else if(in == Key::takeAll){
-            if(from->inventory.size() > 0){
+        } else if (in == Key::takeAll) {
+            if (from->inventory.size() > 0) {
                 to->addItems(from->inventory);
                 from->removeAllItems(false);
             }
 
-        }else if(in == KEY_ESCAPE || in == Key::inventory){
+        } else if (in == KEY_ESCAPE || in == Key::inventory) {
             closeThisMenu();
             return;
         }
 
-        if(selected<0){
+        if (selected < 0) {
             selected = 0;
         }
-        if(selected >= from->inventory.size()){
-            selected = (int)from->inventory.size()-1;
+        if (selected >= from->inventory.size()) {
+            selected = (int) from->inventory.size() - 1;
         }
     }
 

@@ -41,7 +41,7 @@ const char C_CODE_DARK_GRAY = C_CODE_LIGHT_BLACK;
 const char C_CODE_WHITE = C_CODE_LIGHT_WHITE;
 const char C_CODE_BLACK = C_CODE_DARK_BLACK;
 
-namespace Ui{
+namespace Ui {
 
     string colorCode(char c);
 
@@ -54,7 +54,8 @@ namespace Ui{
 
     public:
 
-        Menu() {}
+        Menu() {
+        }
 
         virtual ~Menu() {
 
@@ -66,32 +67,40 @@ namespace Ui{
         void _update();
         bool consoleHandleInput(int i);
 
-        void printConsole(int topY = Ui::terminalSize.y-defaultConsoleHeight, int bottomY = Ui::terminalSize.y-1);
+        void printConsole(int topY = Ui::terminalSize.y - defaultConsoleHeight, int bottomY = Ui::terminalSize.y - 1);
 
-        virtual bool openUi() {return true;}
-        virtual void closeUi() {}
-        virtual void handleInput(int i) {}
-        virtual void update() {}
+        virtual bool openUi() {
+            return true;
+        }
+
+        virtual void closeUi() {
+        }
+
+        virtual void handleInput(int i) {
+        }
+
+        virtual void update() {
+        }
 
         static void printCenter(int y, string s, ...);
         static void printCenterOffset(int y, int xOff, string s, ...);
 
-        bool menuOnlyExecute(string commandName, vector<string>arguments, string argumentsRaw){
+        bool menuOnlyExecute(string commandName, vector<string>arguments, string argumentsRaw) {
             return false;
         }
 
-        string menuOnlyCommands(){
+        string menuOnlyCommands() {
             return "";
         }
 
-        string menuOnlyCommandHelp(string name){
+        string menuOnlyCommandHelp(string name) {
             return "";
         }
 
         Menu* subMenu = nullptr;
         Menu* surMenu = nullptr;
 
-        void openMenu(Menu* newMenu){
+        void openMenu(Menu* newMenu) {
 
             this->_closeUi();
 
@@ -102,7 +111,7 @@ namespace Ui{
 
         }
 
-        void closeThisMenu(){
+        void closeThisMenu() {
             this->_closeUi();
 
             this->surMenu->subMenu = nullptr;
@@ -113,7 +122,7 @@ namespace Ui{
 
         }
 
-        void closeAllMenus(){
+        void closeAllMenus() {
             markAllForClosure = true;
             closeThisMenu();
         }

@@ -12,10 +12,11 @@
 #include "ItemGenerator.h"
 #include "AiEntity.h"
 
-namespace EnemyGenerator{
+namespace EnemyGenerator {
 
-    struct WeightedEnemy{
-        WeightedEnemy(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase weaponBase, string weaponNameZ, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0){
+    struct WeightedEnemy {
+
+        WeightedEnemy(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase weaponBase, string weaponNameZ, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0) {
             this->weight = weight;
             this->name = name;
             this->icon = icon;

@@ -22,20 +22,19 @@ const EquipSlot slotBody = 3;
 const EquipSlot slotFeet = 4;
 const EquipSlot slotFinger = 5;
 
-
 class Equipable : public Item {
 public:
 
 
     static Equipable* cloneUnsafe(Equipable* oldE, Equipable* newE = nullptr);
 
-    Equipable() : Item(){
+    Equipable() : Item() {
 
     }
 
     Equipable(string name, double weight);
 
-    virtual int getItemTypeId(){
+    virtual int getItemTypeId() {
         return ITEM_TYPE_EQUIPABLE;
     }
 
@@ -45,7 +44,7 @@ public:
 
     virtual bool equalsExceptQty(Item* other);
 
-    virtual bool canBeEquipedHere(EquipSlot e){
+    virtual bool canBeEquipedHere(EquipSlot e) {
         return false;
     }
 

@@ -19,20 +19,19 @@
 #include "TEStair.h"
 #include "TEChest.h"
 
-namespace Ui{
+namespace Ui {
     class MenuGame;
 }
 
 class Entity;
 
-struct TileData{
+struct TileData {
     int8_t index = 0;
     bool explored = false;
     //Entity* entity = nullptr;
 };
 
-class Level{
-
+class Level {
 public:
 
     Level(World* w, string n, Point2 s, int d);
@@ -41,7 +40,7 @@ public:
     bool getExplored(Point2 p);
     void setExplored(Point2 p, bool a);
 
-    string getName(){
+    string getName() {
         return name;
     }
 
@@ -92,20 +91,20 @@ public:
     void removeTileEntity(TileEntity* e);
     void actuallyRemoveTileEntityUnsafe(TileEntity* e);
 
-    Point2 getSize(){
+    Point2 getSize() {
         return size;
     }
 
-    int getDifficulty(){
+    int getDifficulty() {
         return difficulty;
     }
 
-    int countTilesAround(Point2 p, Tile* t){
+    int countTilesAround(Point2 p, Tile* t) {
         int c = 0;
-        for(int i=-1;i<=1;i++){
-            for(int j=-1;j<=1;j++){
-                if( (!(i==0 && j==0)) && inRange(p + Point2(i, j))){
-                    if(tileAt(p + Point2(i, j))->getIndex() == t->getIndex()){
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if ((!(i == 0 && j == 0)) && inRange(p + Point2(i, j))) {
+                    if (tileAt(p + Point2(i, j))->getIndex() == t->getIndex()) {
                         c++;
                     }
                 }

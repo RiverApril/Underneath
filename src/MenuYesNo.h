@@ -12,12 +12,14 @@
 #include "Menu.h"
 
 namespace Ui {
+
     class MenuYesNo : public Menu {
     public:
 
         MenuYesNo(string question, yesNo* answer, bool canEscape);
 
-        ~MenuYesNo() {}
+        ~MenuYesNo() {
+        }
 
         void handleInput(int in);
         void update();

@@ -11,8 +11,7 @@
 
 #include "Effect.h"
 
-struct Enchantment{
-
+struct Enchantment {
     Enchantment(unsigned char* data, int* position);
 
     Enchantment(EffectId effectId, int chance, double power, double time);
@@ -31,8 +30,8 @@ struct Enchantment{
     //if effectId is effDamage: meta is DamageType
 };
 
-bool operator== (const Enchantment a, const Enchantment b);
+bool operator==(const Enchantment a, const Enchantment b);
 
-bool operator!= (const Enchantment a, const Enchantment b);
+bool operator!=(const Enchantment a, const Enchantment b);
 
 #endif /* defined(__Underneath__Enchantment__) */

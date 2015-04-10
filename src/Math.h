@@ -19,15 +19,15 @@ namespace Math {
     double randomRange(double min, double max);
 
     template <typename T> const T abs(const T a) {
-        return (a<0)?-a:a;
+        return (a < 0) ? -a : a;
     }
 
     template <typename T> const T min(const T a, const T b) {
-        return (a<b)?a:b;
+        return (a < b) ? a : b;
     }
 
     template <typename T> const T max(const T a, const T b) {
-        return (a>b)?a:b;
+        return (a > b) ? a : b;
     }
 
     int roundToInt(double a);

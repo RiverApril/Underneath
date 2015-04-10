@@ -8,7 +8,7 @@
 
 #include "Controls.h"
 
-namespace Key{
+namespace Key {
 
     //In Game
     int moveUp = KEY_UP;

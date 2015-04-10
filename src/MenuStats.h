@@ -14,6 +14,7 @@
 #include "World.h"
 
 namespace Ui {
+
     class MenuStats : public Menu {
     public:
 

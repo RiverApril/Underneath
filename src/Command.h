@@ -13,31 +13,36 @@
 
 using namespace Ui;
 
-namespace Commands{
+namespace Commands {
 
     bool execute(string commandRaw, Menu* currentMenu);
 
     struct Command {
-        Command(){}
 
-        virtual ~Command(){}
+        Command() {
+        }
 
-        virtual bool acceptableName(string name){
+        virtual ~Command() {
+        }
+
+        virtual bool acceptableName(string name) {
             return name.compare(defaultName()) == 0;
         }
-        virtual bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu){
+
+        virtual bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
             console("WARNING: Command not overloading execute.");
             return false;
         }
 
-        virtual string help(){
+        virtual string help() {
             return "Undefined Command";
         }
 
-        virtual string usage(){
+        virtual string usage() {
             return "Undefined Command";
         }
-        virtual string defaultName(){
+
+        virtual string defaultName() {
             return "Undefined";
         }
     };

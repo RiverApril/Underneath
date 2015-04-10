@@ -9,7 +9,7 @@
 #ifndef __Underneath__Random__
 #define __Underneath__Random__
 
-namespace Random{
+namespace Random {
 
     double randDouble(double min, double max);
 

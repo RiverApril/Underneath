@@ -12,12 +12,14 @@
 #include "Menu.h"
 
 namespace Ui {
+
     class MenuMessage : public Menu {
     public:
 
         MenuMessage(string message);
 
-        ~MenuMessage() {}
+        ~MenuMessage() {
+        }
 
         void handleInput(int in);
         void update();

@@ -17,8 +17,7 @@
 #include "Effect.h"
 #include "Weakness.h"
 
-class Alive : public Entity, public Inventory{
-
+class Alive : public Entity, public Inventory {
 public:
 
     static Alive* cloneUnsafe(Alive* oldE, Alive* newE);
@@ -31,27 +30,27 @@ public:
 
     virtual bool update(double deltaTime, double time, Level* level);
 
-    virtual string getName(){
+    virtual string getName() {
         return name;
     }
 
-    double getHp(){
+    double getHp() {
         return hp;
     }
 
-    double getMaxHp(){
+    double getMaxHp() {
         return maxHp;
     }
 
-    double getMp(){
+    double getMp() {
         return mp;
     }
 
-    double getMaxMp(){
+    double getMaxMp() {
         return maxMp;
     }
 
-    virtual void die(){
+    virtual void die() {
         hp = 0;
         dead = true;
         //pos.set(-1);
@@ -76,13 +75,13 @@ public:
 
     virtual void setActiveWeapon(Weapon* newWeapon);
 
-    Weapon* getActiveWeapon(){
+    Weapon* getActiveWeapon() {
         return activeWeapon;
     }
 
     virtual bool removeItem(Item* item, bool deleteItem);
 
-    virtual void setTimes(double time){
+    virtual void setTimes(double time) {
         lastHealTime = time;
         lastManaTime = time;
         Entity::setTimes(time);

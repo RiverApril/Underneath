@@ -11,9 +11,9 @@
 
 #include "Global.h"
 
-namespace Key{
+namespace Key {
 
-	//In Game
+    //In Game
     extern int moveUp;
     extern int moveDown;
     extern int moveLeft;
@@ -22,7 +22,7 @@ namespace Key{
     extern int adjustConsole;
     extern int waitUntilHealed;
 
-	//Open UI
+    //Open UI
     extern int inventory;
     extern int statsMenu;
     extern int debugMenu;
@@ -35,7 +35,7 @@ namespace Key{
     extern int uiLeft;
     extern int uiRight;
 
-	//In inventory
+    //In inventory
     extern int drop;
     extern int dropAll;
     extern int equip;

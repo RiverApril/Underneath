@@ -24,7 +24,6 @@
 
 namespace Ui {
 
-
     MenuGame::MenuGame(string worldName, Abilities<int> playerAbilities) : Menu() {
 
         printConsoleByDefault = false;
@@ -41,9 +40,9 @@ namespace Ui {
         viewMoveSpeed = Point2(2, 1);
 
         /*if(currentLevel != nullptr){
-        	currentLevel->setAndUnsetDisplayEntities();
+                currentLevel->setAndUnsetDisplayEntities();
         }*/
-        if(initSuccess){
+        if (initSuccess) {
             currentLevel->menuGame = this;
         }
 
@@ -58,21 +57,21 @@ namespace Ui {
         delete useItem;
     }
 
-    bool MenuGame::init(string worldName, Abilities<int> playerAbilities){
+    bool MenuGame::init(string worldName, Abilities<int> playerAbilities) {
 
-        if(worldName.size() == 0){
+        if (worldName.size() == 0) {
             return false;
         }
 
-        if(WorldLoader::exists(worldName)){
+        if (WorldLoader::exists(worldName)) {
             currentWorld = WorldLoader::load(worldName);
-            if(currentWorld == nullptr){
+            if (currentWorld == nullptr) {
                 currentWorld = WorldLoader::create(worldName, playerAbilities);
             }
-        }else{
+        } else {
             currentWorld = WorldLoader::create(worldName, playerAbilities);
         }
-        if(currentWorld == nullptr){
+        if (currentWorld == nullptr) {
             return false;
         }
 
@@ -82,7 +81,7 @@ namespace Ui {
     bool MenuGame::openUi() {
         debug("Open MenuGame Ui");
 
-        if(*saveAnswer == aYes){
+        if (*saveAnswer == aYes) {
 
             WorldLoader::save(currentWorld);
             delete currentWorld;
@@ -91,7 +90,7 @@ namespace Ui {
             *saveAnswer = aUndefined;
             closeAllMenus();
             return false;
-        }else if(*saveAnswer == aNo){
+        } else if (*saveAnswer == aNo) {
 
             delete currentWorld;
             currentWorld = nullptr;
@@ -101,10 +100,10 @@ namespace Ui {
             return false;
         }
 
-        if(*useItem != -1){
-            if(currentPlayer->inventory[*useItem]->instantUse()){
+        if (*useItem != -1) {
+            if (currentPlayer->inventory[*useItem]->instantUse()) {
                 timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->inventory[*useItem]);
-            }else{
+            } else {
                 itemToBeUsedRange = 1000;
                 itemToBeUsed = currentPlayer->inventory[*useItem];
                 targetPosition = currentPlayer->pos;
@@ -112,9 +111,9 @@ namespace Ui {
             }
         }
 
-        if(!initSuccess){
+        if (!initSuccess) {
             closeThisMenu();
-			return false;
+            return false;
         }
 
         setGameAreaSize();
@@ -125,7 +124,7 @@ namespace Ui {
         return true;
     }
 
-    void MenuGame::closeUi(){
+    void MenuGame::closeUi() {
 
     }
 
@@ -135,8 +134,8 @@ namespace Ui {
     }
 
     void MenuGame::viewUpdate() {
-        if(currentPlayer != nullptr){
-            viewPos = currentPlayer->pos - (gameArea/2);
+        if (currentPlayer != nullptr) {
+            viewPos = currentPlayer->pos - (gameArea / 2);
         }
     }
 
@@ -148,29 +147,30 @@ namespace Ui {
 
 
         bool inView = false;
-        if(currentLevel != nullptr){
-            if(currentPlayer != nullptr) {
-                if(currentLevel->canSee(currentPlayer->pos, p, currentPlayer->viewDistance, true)) {
+        if (currentLevel != nullptr) {
+            if (currentPlayer != nullptr) {
+                if (currentLevel->canSee(currentPlayer->pos, p, currentPlayer->viewDistance, true)) {
                     currentLevel->setExplored(p, true);
                     inView = true;
-                }if(!currentLevel->getExplored(p)) {
+                }
+                if (!currentLevel->getExplored(p)) {
                     symbol = ' ';
-                }else{
+                } else {
                     Tile* tempTile = currentLevel->tileAt(p);
 
                     fg = tempTile->getFgColor(inView);
                     bg = tempTile->getBgColor(inView);
                     symbol = tempTile->getIcon();
 
-                    if(currentLevel->inRange(p)) {
+                    if (currentLevel->inRange(p)) {
                         Entity* e = nullptr;
                         int d = INT16_MIN;
-                        for(Entity* ei : currentLevel->entityList){
-                            if(ei){
-                                if(!ei->removed){
-                                    if(ei->pos == p){
+                        for (Entity* ei : currentLevel->entityList) {
+                            if (ei) {
+                                if (!ei->removed) {
+                                    if (ei->pos == p) {
                                         int dd = ei->getRenderDepth();
-                                        if(d < dd){
+                                        if (d < dd) {
                                             e = ei;
                                             d = dd;
                                         }
@@ -178,13 +178,13 @@ namespace Ui {
                                 }
                             }
                         }
-                        if(e != nullptr) {
+                        if (e != nullptr) {
 
-                            if(inView) {
-                                if(currentPlayer == e && controlMode == modeSelectDirection){
+                            if (inView) {
+                                if (currentPlayer == e && controlMode == modeSelectDirection) {
                                     fg = e->getBgColorCode();
                                     bg = e->getFgColorCode();
-                                }else{
+                                } else {
                                     fg = e->getFgColorCode();
                                     bg = e->getBgColorCode();
                                 }
@@ -194,29 +194,29 @@ namespace Ui {
                         }
                     }
                 }
-                if(controlMode == modeSelectEntity){
-                    if(p == targetPosition){
+                if (controlMode == modeSelectEntity) {
+                    if (p == targetPosition) {
                         bg = C_LIGHT_BLUE;
                         attr = A_BLINK;
                     }
-                    if(!currentLevel->canSee(currentPlayer->pos, p, itemToBeUsedRange, false) && inView) {
-                        if(p == targetPosition){
+                    if (!currentLevel->canSee(currentPlayer->pos, p, itemToBeUsedRange, false) && inView) {
+                        if (p == targetPosition) {
                             bg = C_LIGHT_RED;
                         }
-                        if(bg == C_BLACK){
+                        if (bg == C_BLACK) {
                             bg = C_DARK_RED;
                         }
                     }
-                }else if(controlMode == modeSelectPosition){
-                    if(p == targetPosition){
+                } else if (controlMode == modeSelectPosition) {
+                    if (p == targetPosition) {
                         bg = C_LIGHT_GREEN;
                         attr = A_BLINK;
                     }
-                    if(!currentLevel->canSee(currentPlayer->pos, p, itemToBeUsedRange, false) && inView) {
-                        if(p == targetPosition){
+                    if (!currentLevel->canSee(currentPlayer->pos, p, itemToBeUsedRange, false) && inView) {
+                        if (p == targetPosition) {
                             bg = C_LIGHT_RED;
                         }
-                        if(bg == C_BLACK){
+                        if (bg == C_BLACK) {
                             bg = C_DARK_RED;
                         }
                     }
@@ -224,7 +224,7 @@ namespace Ui {
                 }
 
             }
-        }else{
+        } else {
             fg = C_LIGHT_MAGENTA;
             symbol = '?';
         }
@@ -233,57 +233,59 @@ namespace Ui {
         addch(symbol);
     }
 
-    void MenuGame::arrowMove(Point2 p){
-        if(controlMode == modeSelectPosition){
+    void MenuGame::arrowMove(Point2 p) {
+        if (controlMode == modeSelectPosition) {
             targetPosition += p;
-        } else if(controlMode == modeSelectDirection){
+        } else if (controlMode == modeSelectDirection) {
 
-            Item* i = *useItem!=-1?(currentPlayer->inventory[*useItem]):currentPlayer->getActiveWeapon();
+            Item* i = *useItem != -1 ? (currentPlayer->inventory[*useItem]) : currentPlayer->getActiveWeapon();
 
-            timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos+p, false, i);
+            timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos + p, false, i);
 
             *useItem = -1;
 
             changeMode(modePlayerControl);
 
-        } else if(controlMode == modeAdjustBorder){
+        } else if (controlMode == modeAdjustBorder) {
             borderSize -= p;
             setGameAreaSize();
-        } else if(controlMode == modePlayerControl && currentPlayer != nullptr && currentLevel != nullptr){
+        } else if (controlMode == modePlayerControl && currentPlayer != nullptr && currentLevel != nullptr) {
 
             timePassed += currentPlayer->moveRelative(p, currentLevel);
 
-        } else if(controlMode == modeSelectEntity){
+        } else if (controlMode == modeSelectEntity) {
             Point2 temp = Point2Zero;
-            if(targetEntity){
-            	temp = targetEntity->pos;
-            }else{
+            if (targetEntity) {
+                temp = targetEntity->pos;
+            } else {
                 temp = currentPlayer->pos;
             }
             temp += p;
-            vector<Entity*> list = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, {currentPlayer, targetEntity}, temp, p);
-            if(list.size() > 0){
+            vector<Entity*> list = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, {
+                currentPlayer, targetEntity
+            }, temp, p);
+            if (list.size() > 0) {
                 targetEntity = list[0];
                 targetPosition = targetEntity->pos;
-            }else if(!targetEntity){
+            } else if (!targetEntity) {
                 changeMode(modePlayerControl);
-            }else{
+            } else {
                 targetPosition = targetEntity->pos;
             }
         }
     }
 
     void MenuGame::handleInput(int in) {
-        if(in == KEY_RESIZE){
+        if (in == KEY_RESIZE) {
             setGameAreaSize();
 
-        }else if(in == ERR){
+        } else if (in == ERR) {
 
-        }else if(in == KEY_ESCAPE){
-            if(controlMode != modePlayerControl){
+        } else if (in == KEY_ESCAPE) {
+            if (controlMode != modePlayerControl) {
                 changeMode(modePlayerControl);
-            }else{
-                if(currentPlayer == nullptr){
+            } else {
+                if (currentPlayer == nullptr) {
                     WorldLoader::deleteWorld(currentWorld->name);
 
                     delete currentWorld;
@@ -291,148 +293,148 @@ namespace Ui {
 
                     closeAllMenus();
                     return;
-                }else{
-                    openMenu(new MenuYesNo("Do you want to save '"+currentWorld->name+"' ?", saveAnswer, true));
+                } else {
+                    openMenu(new MenuYesNo("Do you want to save '" + currentWorld->name + "' ?", saveAnswer, true));
                 }
             }
 
-        }else if(in == Key::moveUp){
+        } else if (in == Key::moveUp) {
             arrowMove(Point2Up);
 
-        }else if(in == Key::moveDown){
+        } else if (in == Key::moveDown) {
             arrowMove(Point2Down);
 
-        }else if(in == Key::moveLeft){
+        } else if (in == Key::moveLeft) {
             arrowMove(Point2Left);
 
-        }else if(in == Key::moveRight){
+        } else if (in == Key::moveRight) {
             arrowMove(Point2Right);
 
-        }else if(in == Key::inventory){
-            if(currentPlayer != nullptr){
+        } else if (in == Key::inventory) {
+            if (currentPlayer != nullptr) {
                 openMenu(new MenuInv(currentPlayer, currentWorld, useItem));
             }
 
-        }else if(in == Key::statsMenu){
-            if(currentPlayer != nullptr){
+        } else if (in == Key::statsMenu) {
+            if (currentPlayer != nullptr) {
                 openMenu(new MenuStats(currentPlayer, currentWorld));
             }
 
-        }else if(in == Key::debugMenu){
-            if(currentPlayer != nullptr){
+        } else if (in == Key::debugMenu) {
+            if (currentPlayer != nullptr) {
                 openMenu(new MenuDebug(currentWorld));
             }
 
-        }else if(in == Key::adjustConsole){
-            if(controlMode == modeAdjustBorder){
+        } else if (in == Key::adjustConsole) {
+            if (controlMode == modeAdjustBorder) {
                 changeMode(modePlayerControl);
-            }else{
+            } else {
                 changeMode(modeAdjustBorder);
             }
 
-        }else if(in == '\n'){
-            if(!consoleInputMode){
+        } else if (in == '\n') {
+            if (!consoleInputMode) {
                 consoleInputMode = true;
             }
 
         }
-        if(currentWorld != nullptr && currentPlayer != nullptr && currentLevel != nullptr){
-            if(controlMode == modeSelectEntity && ((/* DISABLED, deemed overpowered (part below too) */ (false) && in == 'f') || in == Key::interact)){
+        if (currentWorld != nullptr && currentPlayer != nullptr && currentLevel != nullptr) {
+            if (controlMode == modeSelectEntity && ((/* DISABLED, deemed overpowered (part below too) */ (false) && in == 'f') || in == Key::interact)) {
 
-                if(targetEntity){
-                    if(currentLevel->canSee(currentPlayer->pos, targetEntity->pos, currentPlayer->viewDistance, false)){
+                if (targetEntity) {
+                    if (currentLevel->canSee(currentPlayer->pos, targetEntity->pos, currentPlayer->viewDistance, false)) {
                         timePassed += currentPlayer->interactWithEntity(currentLevel, targetEntity, targetEntity->pos, itemToBeUsed);
                     }
                 }
 
                 changeMode(modePlayerControl);
 
-            }else if(/* DISABLED, deemed overpowered (part obove too)*/ (false) && in == 'f'){
-                Ranged* ranged = dynamic_cast<Ranged*>(currentPlayer->getActiveWeapon());
-                if(ranged && controlMode != modeSelectEntity){
+            } else if (/* DISABLED, deemed overpowered (part obove too)*/ (false) && in == 'f') {
+                Ranged* ranged = dynamic_cast<Ranged*> (currentPlayer->getActiveWeapon());
+                if (ranged && controlMode != modeSelectEntity) {
                     itemToBeUsedRange = ranged->range;
                     itemToBeUsed = ranged;
                     changeMode(modeSelectEntity);
-                    if(!targetEntity){
+                    if (!targetEntity) {
                         arrowMove(Point2Zero);
-                    }else{
-                        if(currentLevel->canSee(currentPlayer->pos, targetEntity->pos, currentPlayer->viewDistance, false)){
+                    } else {
+                        if (currentLevel->canSee(currentPlayer->pos, targetEntity->pos, currentPlayer->viewDistance, false)) {
                             targetPosition = targetEntity->pos;
-                        }else{
+                        } else {
                             targetPosition = Point2Zero;
                         }
                     }
                 }
 
-            }else if(in == Key::interact){
-                    if(controlMode == modeSelectDirection){
+            } else if (in == Key::interact) {
+                if (controlMode == modeSelectDirection) {
 
-                        timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, itemToBeUsed);
+                    timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, itemToBeUsed);
 
-                        itemToBeUsed = nullptr;
-                        changeMode(modePlayerControl);
-                    }else if(controlMode == modeSelectPosition){
+                    itemToBeUsed = nullptr;
+                    changeMode(modePlayerControl);
+                } else if (controlMode == modeSelectPosition) {
 
-                        timePassed += currentPlayer->interact(currentLevel, targetPosition, false, itemToBeUsed);
+                    timePassed += currentPlayer->interact(currentLevel, targetPosition, false, itemToBeUsed);
 
 
-                        changeMode(modePlayerControl);
-                    }else{
-                        Ranged* ranged = dynamic_cast<Ranged*>(currentPlayer->getActiveWeapon());
-                        if(ranged){
-                            changeMode(modeSelectPosition);
-                            if(!currentLevel->canSee(currentPlayer->pos, targetPosition, ranged->range, false)){
-                            	targetPosition = currentPlayer->pos;
-                            }
-                            itemToBeUsedRange = ranged->range;
-                            itemToBeUsed = ranged;
-                        }else{
-                        	changeMode(modeSelectDirection);
-                            itemToBeUsed = currentPlayer->getActiveWeapon();
+                    changeMode(modePlayerControl);
+                } else {
+                    Ranged* ranged = dynamic_cast<Ranged*> (currentPlayer->getActiveWeapon());
+                    if (ranged) {
+                        changeMode(modeSelectPosition);
+                        if (!currentLevel->canSee(currentPlayer->pos, targetPosition, ranged->range, false)) {
+                            targetPosition = currentPlayer->pos;
                         }
+                        itemToBeUsedRange = ranged->range;
+                        itemToBeUsed = ranged;
+                    } else {
+                        changeMode(modeSelectDirection);
+                        itemToBeUsed = currentPlayer->getActiveWeapon();
                     }
-            }else if(in == Key::waitUntilHealed){
-                if(currentPlayer != nullptr){
-                    if(currentPlayer->getHp() < currentPlayer->getMaxHp()){
+                }
+            } else if (in == Key::waitUntilHealed) {
+                if (currentPlayer != nullptr) {
+                    if (currentPlayer->getHp() < currentPlayer->getMaxHp()) {
                         unsigned char b = 1;
                         timeout(20);
-                        while(currentPlayer->getHp() < currentPlayer->getMaxHp() && b){
+                        while (currentPlayer->getHp() < currentPlayer->getMaxHp() && b) {
                             vector<Entity*> nearest = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
-                            for(Entity* e : nearest){
-                                if(e->isHostile()){
+                            for (Entity* e : nearest) {
+                                if (e->isHostile()) {
                                     b = 0;
                                     console("A hostile is near!");
                                     break;
                                 }
                             }
-                            if(b == 1){
+                            if (b == 1) {
                                 b = 2;
                                 console("Waiting until fully healed...");
                             }
                             timePassed = 1;
                             MenuGame::update();
-                            if(getch() != ERR){
+                            if (getch() != ERR) {
                                 console("Wait canceled.");
                                 break;
                             }
                         }
                         timeout(-1);
-                        if(currentPlayer->getHp() == currentPlayer->getMaxHp()){
+                        if (currentPlayer->getHp() == currentPlayer->getMaxHp()) {
                             console("Fully healed.");
                         }
-                    }else{
+                    } else {
                         console("Already at full health.");
                     }
                 }
 
-            }else if(in == 'r'){
+            } else if (in == 'r') {
                 Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
                 timePassed += currentPlayer->moveAbsalute(p, currentLevel);
 
-            }else if(in == '['){
+            } else if (in == '[') {
                 currentPlayer->hurt(damDebug, 1);
 
-            }else if(in == ']'){
+            } else if (in == ']') {
                 currentPlayer->heal(1);
 
             }
@@ -441,13 +443,13 @@ namespace Ui {
 
     void MenuGame::update() {
 
-        if(currentWorld==nullptr){
+        if (currentWorld == nullptr) {
             return;
         }
 
         render(currentWorld->worldTime);
 
-        if(timePassed > 0) {
+        if (timePassed > 0) {
             currentWorld->worldTime += timePassed;
             timePassed = 0;
             currentLevel->update(currentWorld->worldTime - currentWorld->worldLastTime, currentWorld->worldTime, viewPos);
@@ -462,20 +464,20 @@ namespace Ui {
         viewUpdate();
         move(0, 0);
         clrtobot();
-        for(int j=0; j<gameArea.y; j++) {
+        for (int j = 0; j < gameArea.y; j++) {
             move(j, 0);
-            for(int i=0; i<gameArea.x; i++) {
-                drawTileAt(Point2(viewPos.x+i, viewPos.y+j));
+            for (int i = 0; i < gameArea.x; i++) {
+                drawTileAt(Point2(viewPos.x + i, viewPos.y + j));
             }
         }
-        setColor((controlMode == modeAdjustBorder)?C_BLACK:C_WHITE,
-                 (controlMode == modeAdjustBorder)?C_LIGHT_YELLOW:C_BLACK,
-                 (controlMode == modeAdjustBorder)?A_BLINK:0);
+        setColor((controlMode == modeAdjustBorder) ? C_BLACK : C_WHITE,
+                (controlMode == modeAdjustBorder) ? C_LIGHT_YELLOW : C_BLACK,
+                (controlMode == modeAdjustBorder) ? A_BLINK : 0);
 
-        for(int j=0; j<gameArea.y; j++) {
+        for (int j = 0; j < gameArea.y; j++) {
             mvaddch(j, gameArea.x, '|');
         }
-        for(int i=0; i<terminalSize.x; i++) {
+        for (int i = 0; i < terminalSize.x; i++) {
             mvaddch(gameArea.y, i, '-');
         }
         mvaddch(gameArea.y, gameArea.x, '+');
@@ -485,10 +487,10 @@ namespace Ui {
 
         int a = 0;
 
-        if(currentPlayer != nullptr){
+        if (currentPlayer != nullptr) {
 
             p = currentPlayer->pos;
-            mvprintw(a, gameArea.x+1, "%s", currentPlayer->getName().c_str());
+            mvprintw(a, gameArea.x + 1, "%s", currentPlayer->getName().c_str());
 
             const int hp = Math::roundToInt(currentPlayer->getHp());
             const int maxHp = Math::roundToInt(currentPlayer->getMaxHp());
@@ -497,30 +499,31 @@ namespace Ui {
 
             a++;
 
-            move(a, gameArea.x+1);
+            move(a, gameArea.x + 1);
             clrtoeol();
 
-            a+= printMultiLineString(a, gameArea.x+1, formatString("HP: %3d/%3d", hp, maxHp));
-            Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
+            a += printMultiLineString(a, gameArea.x + 1, formatString("HP: %3d/%3d", hp, maxHp));
+            Ui::setColor((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN);
             printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);
 
-            move(a, gameArea.x+1);
+            move(a, gameArea.x + 1);
             clrtoeol();
 
-            a+= printMultiLineString(a, gameArea.x+1, formatString("MP: %3d/%3d", mp, maxMp));
+            a += printMultiLineString(a, gameArea.x + 1, formatString("MP: %3d/%3d", mp, maxMp));
             Ui::setColor(C_LIGHT_BLUE);
             printw(" %s", Utility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
             Ui::setColor(C_WHITE);
 
-            for(size_t i=0;i<currentPlayer->effects.size();i++){
+            for (size_t i = 0; i < currentPlayer->effects.size(); i++) {
                 Effect eff = currentPlayer->effects[i];
                 string name = "EFFECT";
                 Ui::Color color = C_LIGHT_GREEN;
                 switch (eff.eId) {
-                    case effDamage:{
-                        name = Weapon::damageTypeName((int)eff.meta);
-                        color = Weapon::damageTypeColor((int)eff.meta);
+                    case effDamage:
+                    {
+                        name = Weapon::damageTypeName((int) eff.meta);
+                        color = Weapon::damageTypeColor((int) eff.meta);
                         break;
                     }
 
@@ -535,46 +538,46 @@ namespace Ui {
                         break;
                 }
                 setColor(color);
-                a += printMultiLineString(a, gameArea.x+1, formatString("%s %s: %.2f",name.c_str(), Utility::intToRomanNumerals((int)eff.power).c_str(), eff.timeLeft));
+                a += printMultiLineString(a, gameArea.x + 1, formatString("%s %s: %.2f", name.c_str(), Utility::intToRomanNumerals((int) eff.power).c_str(), eff.timeLeft));
             }
 
             a++;
 
             Ui::setColor(C_WHITE);
 
-            mvprintw(a, gameArea.x+1, "Time: %.2f", displayTime);
+            mvprintw(a, gameArea.x + 1, "Time: %.2f", displayTime);
             a++;
-            mvprintw(a, gameArea.x+1, "Time: %s", Utility::intToRomanNumerals((int)displayTime).c_str());
+            mvprintw(a, gameArea.x + 1, "Time: %s", Utility::intToRomanNumerals((int) displayTime).c_str());
             //mvprintw(11, gameArea.x+1, "Tick: %d", tick);
 
             a++;
             a++;
 
-            move(a, gameArea.x+1);
+            move(a, gameArea.x + 1);
             clrtoeol();
 
             vector<Entity*> nearestEntities = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
 
-            for(size_t i=0; i<nearestEntities.size() && a<terminalSize.y; i++){
+            for (size_t i = 0; i < nearestEntities.size() && a < terminalSize.y; i++) {
                 Entity* nearestEntity = nearestEntities[i];
-                if(nearestEntity != nullptr){
+                if (nearestEntity != nullptr) {
                     Ui::setColor(C_WHITE);
 
 
-                    a += printMultiLineString(a, gameArea.x+1, formatString("%s [", nearestEntity->getName().c_str()));
+                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s [", nearestEntity->getName().c_str()));
                     Ui::setColor(nearestEntity->getFgColorCode(), nearestEntity->getBgColorCode());
                     printw("%c", nearestEntity->getIcon(nearestEntity->pos, currentWorld->worldTime, currentLevel));
                     Ui::setColor(C_WHITE);
                     printw("]");
 
 
-                    
-                    AiEntity* aiEntity = dynamic_cast<AiEntity*>(nearestEntity);
-                    if(aiEntity){
+
+                    AiEntity* aiEntity = dynamic_cast<AiEntity*> (nearestEntity);
+                    if (aiEntity) {
                         const int hp = Math::roundToInt(aiEntity->getHp());
                         const int maxHp = Math::roundToInt(aiEntity->getMaxHp());
-                        a += printMultiLineString(a, gameArea.x+1, formatString(" HP: %d/%d", hp, maxHp));
-                        Ui::setColor((hp<(maxHp/3*2))?((hp<(maxHp/3))?C_LIGHT_RED:C_LIGHT_YELLOW):C_LIGHT_GREEN);
+                        a += printMultiLineString(a, gameArea.x + 1, formatString(" HP: %d/%d", hp, maxHp));
+                        Ui::setColor((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN);
                         printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
                         Ui::setColor(C_WHITE);
                     }
@@ -584,25 +587,25 @@ namespace Ui {
             }
 
 
-        }else{
-            printCenterOffset(gameArea.y/2, -(borderSize.x/2), "Game Over");
+        } else {
+            printCenterOffset(gameArea.y / 2, -(borderSize.x / 2), "Game Over");
         }
 
 
-        if(currentLevel != nullptr){
+        if (currentLevel != nullptr) {
             Ui::setColor(C_DARK_GRAY);
-            mvprintw(gameArea.y, 0, "%d, %d  e: %d  te: %d  p: %s   %s", p.x, p.y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr)?"null":"not null", currentLevel->getName().c_str());
+            mvprintw(gameArea.y, 0, "%d, %d  e: %d  te: %d  p: %s   %s", p.x, p.y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "null" : "not null", currentLevel->getName().c_str());
         }
 
 
 
-        printConsole(gameArea.y+1);
+        printConsole(gameArea.y + 1);
 
         refresh();
     }
 
-    void MenuGame::changeMode(int newMode){
-        if(newMode == controlMode){
+    void MenuGame::changeMode(int newMode) {
+        if (newMode == controlMode) {
             return;
         }
         switch (controlMode) {

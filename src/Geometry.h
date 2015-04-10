@@ -14,23 +14,25 @@
 struct Vector2;
 
 struct Point2 {
-    int x,y;
+    int x, y;
 
     Point2(int x, int y);
-    Point2() : Point2(0, 0){}
+
+    Point2() : Point2(0, 0) {
+    }
     bool operator==(const Point2 other);
     bool operator!=(const Point2 other);
 
-    Point2 xOnly(){
+    Point2 xOnly() {
         return Point2(x, 0);
     }
 
-    Point2 yOnly(){
+    Point2 yOnly() {
         return Point2(0, y);
     }
 
-    bool inRange(int xMin, int yMin, int xMax, int yMax){
-        return x>=xMin && y>=yMin && x<=xMax && y<=yMax;
+    bool inRange(int xMin, int yMin, int xMax, int yMax) {
+        return x >= xMin && y >= yMin && x <= xMax && y <= yMax;
     }
 
     void set(const Point2 other);
@@ -68,18 +70,20 @@ struct Point2 {
         this->y = i;
     }
 
-    double xPlusY(){
-        return x+y;
+    double xPlusY() {
+        return x + y;
     }
 
     string toString();
 };
 
 struct Point3 {
-    int x,y,z;
+    int x, y, z;
 
     Point3(int x, int y, int z);
-    Point3() : Point3(0, 0, 0){}
+
+    Point3() : Point3(0, 0, 0) {
+    }
     bool operator==(const Point3 other);
     bool operator!=(const Point3 other);
 
@@ -115,12 +119,13 @@ struct Point3 {
     string toString();
 };
 
-
 struct Vector2 {
-    double x,y;
+    double x, y;
 
     Vector2(double x, double y);
-    Vector2() : Vector2(0, 0){}
+
+    Vector2() : Vector2(0, 0) {
+    }
     bool operator==(const Vector2 other);
     bool operator!=(const Vector2 other);
     void set(const Vector2 other);

@@ -15,67 +15,66 @@
 
 namespace Ui {
 
-    MenuInv::MenuInv(Player* player, World* w, int* useItem) : Menu(){
+    MenuInv::MenuInv(Player* player, World* w, int* useItem) : Menu() {
         this->player = player;
         this->currentWorld = w;
         this->useItem = useItem;
         *useItem = -1;
     }
 
-    void MenuInv::handleInput(int in){
-        if(in == Key::uiUp){
+    void MenuInv::handleInput(int in) {
+        if (in == Key::uiUp) {
             selected--;
-        }else if(in == Key::uiDown){
+        } else if (in == Key::uiDown) {
             selected++;
-        }else if(in == Key::drop){
-            if(player->inventory.size() > 0 && selected < player->inventory.size()){
+        } else if (in == Key::drop) {
+            if (player->inventory.size() > 0 && selected < player->inventory.size()) {
                 Item* drop;
-                if(player->inventory[selected]->qty == 1){
+                if (player->inventory[selected]->qty == 1) {
                     drop = player->inventory[selected];
                     player->removeItem(player->inventory[selected], false);
-                }else{
+                } else {
                     player->inventory[selected]->qty -= 1;
                     drop = Item::clone(player->inventory[selected]);
                     drop->qty = 1;
                 }
                 currentWorld->currentLevel->newEntity(new ItemEntity(drop, player->pos));
             }
-        }else if(in == Key::dropAll){
-            if(player->inventory.size() > 0 && selected < player->inventory.size()){
+        } else if (in == Key::dropAll) {
+            if (player->inventory.size() > 0 && selected < player->inventory.size()) {
                 Item* drop;
                 drop = player->inventory[selected];
                 player->removeItem(player->inventory[selected], false);
                 currentWorld->currentLevel->newEntity(new ItemEntity(drop, player->pos));
             }
-        }else if(in == Key::equip){
-            Weapon* weapon = dynamic_cast<Weapon*>(player->inventory[selected]);
-            if(weapon){
-                if(player->getActiveWeapon() == weapon){
+        } else if (in == Key::equip) {
+            Weapon* weapon = dynamic_cast<Weapon*> (player->inventory[selected]);
+            if (weapon) {
+                if (player->getActiveWeapon() == weapon) {
                     player->setActiveWeapon(nullptr);
-                }else{
+                } else {
                     player->setActiveWeapon(weapon);
                 }
             }
-        }else if(in == Key::interact){
+        } else if (in == Key::interact) {
             *useItem = selected;
             closeThisMenu();
             return;
-        }else if(in == KEY_ESCAPE || in == Key::inventory){
+        } else if (in == KEY_ESCAPE || in == Key::inventory) {
             closeThisMenu();
             return;
         }
-        if(selected<0){
+        if (selected < 0) {
             selected = 0;
         }
-	if (selected >= player->inventory.size()){
-		selected = (int)player->inventory.size() - 1;
-	}
+        if (selected >= player->inventory.size()) {
+            selected = (int) player->inventory.size() - 1;
+        }
     }
-
 
     void MenuInv::update() {
 
-		Ui::drawInventory(player, selected/*, scrollOffset*/);
+        Ui::drawInventory(player, selected/*, scrollOffset*/);
 
 
         /*setColor(C_WHITE);
@@ -90,7 +89,7 @@ namespace Ui {
         mvprintw(0, 0, "Inventory   Total Weight: %-3d", totalWeight);
 
         setColor(C_BLACK, C_WHITE);
-		mvhline(selected+3, 0, ' ', terminalSize.x);
+                mvhline(selected+3, 0, ' ', terminalSize.x);
         setColor(C_WHITE, C_BLACK);
 
         mvprintw(1, columnPrefixChar, "");mvvline(1, columnPrefixChar-1, '|', terminalSize.y);
@@ -174,7 +173,7 @@ namespace Ui {
                 }
                 if(weapon->enchantments.size() > 0){
                     a++;
-                	mvprintw(a++, columnInfo, "Enchantments: ");
+                        mvprintw(a++, columnInfo, "Enchantments: ");
                     for(Enchantment e : weapon->enchantments){
                         mvprintw(a++, columnInfo, "   %s x%d (%d)", Weapon::enchantmentIdToString(e.eId).c_str(), e.power, e.chance);
                     }

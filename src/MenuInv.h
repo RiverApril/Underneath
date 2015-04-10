@@ -14,12 +14,14 @@
 #include "World.h"
 
 namespace Ui {
+
     class MenuInv : public Menu {
     public:
 
         MenuInv(Player* player, World* w, int* useItem);
 
-        ~MenuInv() {}
+        ~MenuInv() {
+        }
 
         void handleInput(int in);
         void update();

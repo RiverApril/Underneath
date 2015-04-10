@@ -27,17 +27,17 @@ public:
 
     static Item* clone(Item* oldI);
 
-    Item(){
+    Item() {
 
     }
 
-    Item(string name, double weight, int qty = 1){
+    Item(string name, double weight, int qty = 1) {
         this->name = name;
         this->weight = weight;
         this->qty = qty;
     }
 
-    virtual ~Item(){
+    virtual ~Item() {
 
     }
 
@@ -45,26 +45,26 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual int getItemTypeId(){
+    virtual int getItemTypeId() {
         return ITEM_TYPE_ITEM;
     }
 
     static Item* loadNew(unsigned char* data, int* position);
 
-    bool equals(Item* other){
-        return equalsExceptQty(other) && other->qty==qty;
+    bool equals(Item* other) {
+        return equalsExceptQty(other) && other->qty == qty;
     }
 
-    virtual bool instantUse(){
+    virtual bool instantUse() {
         return true;
     }
 
-    virtual bool equalsExceptQty(Item* other){
+    virtual bool equalsExceptQty(Item* other) {
         return other
-        &&getItemTypeId()==other->getItemTypeId()
-        &&(name.compare(other->name)==0)
-        &&(weight == other->weight)
-        &&(artIndex == other->artIndex);
+                && getItemTypeId() == other->getItemTypeId()
+                &&(name.compare(other->name) == 0)
+                &&(weight == other->weight)
+                &&(artIndex == other->artIndex);
     }
 
     double weight = 0;

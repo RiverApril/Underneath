@@ -15,25 +15,27 @@
 #include "Level.h"
 #include "Utility.h"
 
-namespace LevelGenerator{
+namespace LevelGenerator {
 
     const int left = 0;
     const int right = 1;
     const int up = 2;
     const int down = 3;
 
-    struct Entry{
+    struct Entry {
         int direction = 0;
         int x = 0;
         int y = 0;
     };
 
-    struct Room{
-        Room(){
+    struct Room {
+
+        Room() {
             entrances = new vector<Entry*>();
         }
-        ~Room(){
-			for (size_t i = 0; i<entrances->size(); i++){
+
+        ~Room() {
+            for (size_t i = 0; i < entrances->size(); i++) {
                 delete entrances->at(i);
             }
             delete entrances;

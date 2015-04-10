@@ -24,7 +24,7 @@
 
 #define abilityCount 7
 
-namespace AbilityDetails{
+namespace AbilityDetails {
 
     static const string abilityAbr[abilityCount] = {
         "STR",
@@ -74,27 +74,27 @@ namespace AbilityDetails{
 using namespace AbilityDetails;
 
 template <typename T>
-struct Abilities{
+struct Abilities {
 
-    Abilities(){
-        for(int i=0;i<abilityCount;i++){
+    Abilities() {
+        for (int i = 0; i < abilityCount; i++) {
             list[i] = 0;
         }
     }
 
-    Abilities(T a){
-        for(int i=0;i<abilityCount;i++){
+    Abilities(T a) {
+        for (int i = 0; i < abilityCount; i++) {
             list[i] = a;
         }
     }
 
-    Abilities(T a[abilityCount]){
-        for(int i=0;i<abilityCount;i++){
+    Abilities(T a[abilityCount]) {
+        for (int i = 0; i < abilityCount; i++) {
             list[i] = a[i];
         }
     }
 
-    Abilities(T str, T dex, T inte, T agi, T spd, T con, T wis){
+    Abilities(T str, T dex, T inte, T agi, T spd, T con, T wis) {
         list[iSTR] = str;
         list[iDEX] = dex;
         list[iINT] = inte;
@@ -118,33 +118,33 @@ struct Abilities{
     T* CON = *(&list+iCON); //Health Regeneration Speed
     T* WIS = *(&list+iWIS); //Mana Regeneration Speed
 
-    */
+     */
 
-    void save(vector<unsigned char>* data){
-        for(int i=0;i<abilityCount;i++){
+    void save(vector<unsigned char>* data) {
+        for (int i = 0; i < abilityCount; i++) {
             Utility::saveType<T>(data, list[i]);
         }
     }
 
-    void load(unsigned char* data, int* position){
-        for(int i=0;i<abilityCount;i++){
+    void load(unsigned char* data, int* position) {
+        for (int i = 0; i < abilityCount; i++) {
             list[i] = Utility::loadType<T>(data, position);
         }
     }
 
-    T operator[](size_t index){
+    T operator[](size_t index) {
         return list[index];
     }
 };
 
 template <typename T>
-bool operator==(const Abilities<T> a, const Abilities<T> b){
+bool operator==(const Abilities<T> a, const Abilities<T> b) {
     return a.list == b.list;
 }
 
 template <typename T>
-bool operator!=(const Abilities<T> a, const Abilities<T> b){
-    return !(a==b);
+bool operator!=(const Abilities<T> a, const Abilities<T> b) {
+    return !(a == b);
 }
 
 #endif /* defined(__Underneath__Abilities__) */

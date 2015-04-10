@@ -16,27 +16,26 @@ yesNo aUndefined = '?';
 
 namespace Ui {
 
-    string colorCode(const char c){
+    string colorCode(const char c) {
         string s = "&";
         s += c;
         return s;
     }
 
-
     void Menu::_openUi() {
-        if(markAllForClosure && !(dynamic_cast<MenuMain*>(this))){
+        if (markAllForClosure && !(dynamic_cast<MenuMain*> (this))) {
             closeThisMenu();
             return;
         }
-        if(openUi()){
-        	update();
-        	refresh();
+        if (openUi()) {
+            update();
+            refresh();
         }
     }
 
-    void Menu::_closeUi(){
-        if(markAllForClosure){
-            if(surMenu != nullptr){
+    void Menu::_closeUi() {
+        if (markAllForClosure) {
+            if (surMenu != nullptr) {
                 surMenu->markAllForClosure = true;
             }
         }
@@ -45,9 +44,9 @@ namespace Ui {
 
     void Menu::_handleInput(int in) {
 
-        if(subMenu != nullptr){
+        if (subMenu != nullptr) {
             subMenu->_handleInput(in);
-        }else{
+        } else {
             switch (in) {
                 case KEY_RESIZE:
                     setTerminalSizeVar();
@@ -55,7 +54,7 @@ namespace Ui {
                     clrtobot();
                     break;
             }
-            if(!consoleHandleInput(in)){
+            if (!consoleHandleInput(in)) {
                 switch (in) {
                     case '`':
                         consoleInputMode = true;
@@ -69,8 +68,8 @@ namespace Ui {
         }
     }
 
-    bool Menu::consoleHandleInput(int in){
-        if(consoleInputMode){
+    bool Menu::consoleHandleInput(int in) {
+        if (consoleInputMode) {
             switch (in) {
                 case '`':
                     consoleInputMode = false;
@@ -79,8 +78,8 @@ namespace Ui {
                 case KEY_BACKSPACE:
                 case 8: //Backspace
                 case 127: //Delete
-                    if(consoleInput.length() > 0){
-                        consoleInput = consoleInput.substr(0, consoleInput.length()-1);
+                    if (consoleInput.length() > 0) {
+                        consoleInput = consoleInput.substr(0, consoleInput.length() - 1);
                     }
                     break;
 
@@ -103,8 +102,8 @@ namespace Ui {
                     break;
 
                 default:
-                    if((in>=32 && in<=126)){
-                        consoleInput += (char)in;
+                    if ((in >= 32 && in <= 126)) {
+                        consoleInput += (char) in;
                     }
                     break;
             }
@@ -113,48 +112,48 @@ namespace Ui {
         return false;
     }
 
-    void Menu::printConsole(int topY, int bottomY){
+    void Menu::printConsole(int topY, int bottomY) {
         setColor(C_WHITE);
         int j = 1;
-        for(int i=bottomY-1;i>=topY;i--){
+        for (int i = bottomY - 1; i >= topY; i--) {
             move(i, 2);
             clrtoeol();
             move(i, 2);
-            if((((int)consoleBuffer.size())-j) < 0){
+            if ((((int) consoleBuffer.size()) - j) < 0) {
                 break;
             }
-            int p = ((int)consoleBuffer.size())-j+(consoleScroll);
-            if(p < consoleBuffer.size()){
+            int p = ((int) consoleBuffer.size()) - j + (consoleScroll);
+            if (p < consoleBuffer.size()) {
                 bool lookingForCode = false;
-                for(char c : consoleBuffer[p]){
+                for (char c : consoleBuffer[p]) {
                     addChColor(c, &lookingForCode);
                 }
                 setColor(C_WHITE);
             }
             j++;
         }
-        mvprintw(topY, 0, (consoleScroll > -(consoleBuffer.size())+(bottomY-topY))?"^":" ");
-        mvprintw(bottomY-1, 0, (consoleScroll < 0)?"v":" ");
+        mvprintw(topY, 0, (consoleScroll > -(consoleBuffer.size())+(bottomY - topY)) ? "^" : " ");
+        mvprintw(bottomY - 1, 0, (consoleScroll < 0) ? "v" : " ");
 
         move(bottomY, 2);
         clrtoeol();
-        if(consoleInputMode){
+        if (consoleInputMode) {
             Ui::setColor(C_DARK_GREEN);
             mvprintw(bottomY, 2, "> %s", consoleInput.c_str());
             Ui::setColor(C_LIGHT_GREEN, C_BLACK, A_BLINK);
-            mvprintw(bottomY, 4+(int)consoleInput.length(), "_");
+            mvprintw(bottomY, 4 + (int) consoleInput.length(), "_");
         }
     }
 
     void Menu::_update() {
 
-        if(subMenu != nullptr){
+        if (subMenu != nullptr) {
             subMenu->_update();
-        }else{
+        } else {
 
-            if(printConsoleByDefault){
-                if(!consoleInputMode){
-                    move(Ui::terminalSize.y-defaultConsoleHeight, 0);
+            if (printConsoleByDefault) {
+                if (!consoleInputMode) {
+                    move(Ui::terminalSize.y - defaultConsoleHeight, 0);
                     clrtobot();
                 }
             }
@@ -162,10 +161,10 @@ namespace Ui {
             update();
             tick++;
 
-            if(printConsoleByDefault){
-                if(consoleInputMode){
+            if (printConsoleByDefault) {
+                if (consoleInputMode) {
                     printConsole();
-                }else{
+                } else {
                     //move(Ui::terminalSize.y-defaultConsoleHeight, 0);
                     //clrtobot();
                 }
@@ -176,30 +175,30 @@ namespace Ui {
 
     }
 
-    void Menu::printCenter(int y, string format, ...){
+    void Menu::printCenter(int y, string format, ...) {
         string s = "";
 
         char buff[256];
         va_list args;
         va_start(args, format);
         vsprintf(buff, format.c_str(), args);
-        s+=buff;
+        s += buff;
         va_end(args);
 
-        mvprintw(y, (terminalSize.x/2)-(((int)s.length()-1)/2), s.c_str());
+        mvprintw(y, (terminalSize.x / 2)-(((int) s.length() - 1) / 2), s.c_str());
     }
 
-    void Menu::printCenterOffset(int y, int xOff, string format, ...){
+    void Menu::printCenterOffset(int y, int xOff, string format, ...) {
         string s = "";
 
         char buff[256];
         va_list args;
         va_start(args, format);
         vsprintf(buff, format.c_str(), args);
-        s+=buff;
+        s += buff;
         va_end(args);
 
-        mvprintw(y, (terminalSize.x/2)-(((int)s.length()-1)/2)+xOff, s.c_str());
+        mvprintw(y, (terminalSize.x / 2)-(((int) s.length() - 1) / 2) + xOff, s.c_str());
     }
 
 }

@@ -13,6 +13,7 @@
 #include "Art.h"
 
 namespace Ui {
+
     class MenuMain : public Menu {
     public:
 

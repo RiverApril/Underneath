@@ -12,25 +12,23 @@
 #include "Global.h"
 #include "Ranged.h"
 
-
 class CombatSpell : public Ranged {
 public:
 
     static CombatSpell* cloneUnsafe(CombatSpell* oldE, CombatSpell* newE);
 
-
-    CombatSpell() : Ranged(){
+    CombatSpell() : Ranged() {
 
     }
 
-    CombatSpell(int baseDamage, string name, double weight, int manaCost, double useDelay, int range) : Ranged(baseDamage, name, weight, useDelay, range){
+    CombatSpell(int baseDamage, string name, double weight, int manaCost, double useDelay, int range) : Ranged(baseDamage, name, weight, useDelay, range) {
 
         this->baseDamage = baseDamage;
         this->damageType = damFire;
         this->manaCost = manaCost;
     }
 
-    virtual int getItemTypeId(){
+    virtual int getItemTypeId() {
         return ITEM_TYPE_COMBAT_SPELL;
     }
 
@@ -38,11 +36,11 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual bool equalsExceptQty(Item* other){
-        CombatSpell* otherS = dynamic_cast<CombatSpell*>(other);
+    virtual bool equalsExceptQty(Item* other) {
+        CombatSpell* otherS = dynamic_cast<CombatSpell*> (other);
         return Ranged::equalsExceptQty(other)
-        &&(otherS)
-        &&(manaCost == otherS->manaCost);
+                &&(otherS)
+                &&(manaCost == otherS->manaCost);
     }
 
     int manaCost = 0;

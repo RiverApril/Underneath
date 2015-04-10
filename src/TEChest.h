@@ -12,24 +12,22 @@
 #include "TileEntity.h"
 #include "Inventory.h"
 
-struct TEChest : public TileEntity, public Inventory{
-
+struct TEChest : public TileEntity, public Inventory {
     static TEChest* cloneUnsafe(TEChest* oldE, TEChest* newE);
 
-
-    TEChest() : TEChest(Point2Neg1){
-
-    }
-
-    TEChest(Point2 pos) : TileEntity(pos){
+    TEChest() : TEChest(Point2Neg1) {
 
     }
 
-    virtual ~TEChest(){
+    TEChest(Point2 pos) : TileEntity(pos) {
 
     }
 
-    virtual int getTileEntityTypeId(){
+    virtual ~TEChest() {
+
+    }
+
+    virtual int getTileEntityTypeId() {
         return TILE_ENTITY_TYPE_CHEST;
     }
 

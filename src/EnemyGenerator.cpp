@@ -9,7 +9,7 @@
 #include "EnemyGenerator.h"
 
 
-namespace EnemyGenerator{
+namespace EnemyGenerator {
 
     vector<WeightedEnemy*> enemyWeightList;
 
@@ -22,8 +22,7 @@ namespace EnemyGenerator{
     WeightedEnemy* wraith;
     WeightedEnemy* mimic;
 
-
-    void initEnemies(){
+    void initEnemies() {
 
         goblinScout = atl(new WeightedEnemy(100, "Goblin Scout", 'g', aiAttackPlayer, 50, ItemGenerator::wKnife, "", Ui::C_LIGHT_GREEN, 1.0));
         goblinScout->weaknesses.push_back(Weakness(damPoison, 2));
@@ -52,43 +51,43 @@ namespace EnemyGenerator{
 
     }
 
-    void cleanupEnemies(){
-        for(WeightedEnemy* we : enemyWeightList){
+    void cleanupEnemies() {
+        for (WeightedEnemy* we : enemyWeightList) {
             delete we;
         }
         enemyWeightList.clear();
     }
 
-    WeightedEnemy* atl(WeightedEnemy* we){
+    WeightedEnemy* atl(WeightedEnemy* we) {
         enemyWeightList.push_back(we);
         return we;
     }
 
-    void setIntervals(int difficulty){
+    void setIntervals(int difficulty) {
         total = 0;
-        for(int i=0;i<enemyWeightList.size();i++){
-            total += enemyWeightList[i]->weight * enemyWeightList[i]->difficultyWeightMulti * (difficulty+1);
+        for (int i = 0; i < enemyWeightList.size(); i++) {
+            total += enemyWeightList[i]->weight * enemyWeightList[i]->difficultyWeightMulti * (difficulty + 1);
             enemyWeightList[i]->interval = total;
         }
     }
 
-    AiEntity* makeEntity(WeightedEnemy* we, int difficulty){
+    AiEntity* makeEntity(WeightedEnemy* we, int difficulty) {
         AiEntity* e = new AiEntity(we->name, we->ai, we->icon, Point2Zero, we->color, we->maxHp);
         e->weaknesses = we->weaknesses;
-        Weapon* weapon = ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromBase(we->weaponBase, difficulty+we->weaponDifficultyAdd), difficulty);
-        if(we->weaponName.size() > 0){
+        Weapon* weapon = ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromBase(we->weaponBase, difficulty + we->weaponDifficultyAdd), difficulty);
+        if (we->weaponName.size() > 0) {
             weapon->name = we->weaponName;
         }
         e->setActiveWeapon(weapon);
         return e;
     }
 
-    AiEntity* makeRandomEntity(int difficulty){
+    AiEntity* makeRandomEntity(int difficulty) {
 
-        int r = rand()%total;
+        int r = rand() % total;
         WeightedEnemy* last = enemyWeightList[0];
-        for(WeightedEnemy* we : enemyWeightList){
-            if(we->interval > r){
+        for (WeightedEnemy* we : enemyWeightList) {
+            if (we->interval > r) {
                 last = we;
                 break;
             }

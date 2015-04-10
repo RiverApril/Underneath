@@ -11,26 +11,23 @@
 
 #include "TileEntity.h"
 
-
-struct TEStair : public TileEntity{
-
+struct TEStair : public TileEntity {
     static TEStair* cloneUnsafe(TEStair* oldE, TEStair* newE);
 
-
-    TEStair() : TEStair(Point2Neg1, true, ""){
+    TEStair() : TEStair(Point2Neg1, true, "") {
 
     }
 
-    TEStair(Point2 pos, bool up, string levelName) : TileEntity(pos){
+    TEStair(Point2 pos, bool up, string levelName) : TileEntity(pos) {
         this->up = up;
         this->levelName = levelName;
     }
 
-    virtual ~TEStair(){
+    virtual ~TEStair() {
 
     }
 
-    virtual int getTileEntityTypeId(){
+    virtual int getTileEntityTypeId() {
         return TILE_ENTITY_TYPE_STAIR;
     }
 

@@ -12,16 +12,16 @@
 #include "TEChest.h"
 #include "TEMimic.h"
 
-void TileEntity::save(vector<unsigned char>* data){
+void TileEntity::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getTileEntityTypeId());
     Point2::save(pos, data);
 }
 
-void TileEntity::load(unsigned char* data, int* position){
+void TileEntity::load(unsigned char* data, int* position) {
     pos = Point2::load(data, position);
 }
 
-TileEntity* TileEntity::cloneUnsafe(TileEntity* oldE, TileEntity* newE){
+TileEntity* TileEntity::cloneUnsafe(TileEntity* oldE, TileEntity* newE) {
 
     newE->pos = oldE->pos;
 
@@ -29,12 +29,12 @@ TileEntity* TileEntity::cloneUnsafe(TileEntity* oldE, TileEntity* newE){
 }
 
 template<class Super, class Sub>
-Sub* TileEntity::makeNewAndClone(Super* oldT){
+Sub* TileEntity::makeNewAndClone(Super* oldT) {
     Sub* newT = new Sub();
-    return Sub::cloneUnsafe(dynamic_cast<Sub*>(oldT), newT);
+    return Sub::cloneUnsafe(dynamic_cast<Sub*> (oldT), newT);
 }
 
-TileEntity* TileEntity::clone(TileEntity* oldI){
+TileEntity* TileEntity::clone(TileEntity* oldI) {
 
     int type = oldI->getTileEntityTypeId();
 
@@ -52,7 +52,7 @@ TileEntity* TileEntity::clone(TileEntity* oldI){
             return makeNewAndClone<TileEntity, TEMimic>(oldI);
 
         default:
-            throw Utility::FileExceptionLoad("Tile Entity type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Tile Entity type unknown: " + to_string(type));
             return nullptr;
             break;
     }
@@ -61,7 +61,7 @@ TileEntity* TileEntity::clone(TileEntity* oldI){
 
 }
 
-TileEntity* TileEntity::loadNew(unsigned char* data, int* position){
+TileEntity* TileEntity::loadNew(unsigned char* data, int* position) {
     TileEntity* e;
 
     int type = Utility::loadInt(data, position);
@@ -81,7 +81,7 @@ TileEntity* TileEntity::loadNew(unsigned char* data, int* position){
             break;
 
         default:
-            throw Utility::FileExceptionLoad("Tile Entity type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Tile Entity type unknown: " + to_string(type));
             return nullptr;
             break;
     }

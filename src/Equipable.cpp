@@ -9,23 +9,23 @@
 #include "Equipable.h"
 #include "Utility.h"
 
-Equipable::Equipable(string name, double weight) : Item(name, weight){
+Equipable::Equipable(string name, double weight) : Item(name, weight) {
 
 }
 
-void Equipable::save(vector<unsigned char>* data){
+void Equipable::save(vector<unsigned char>* data) {
     Item::save(data);
 
     minimumAbilities.save(data);
 }
 
-void Equipable::load(unsigned char* data, int* position){
+void Equipable::load(unsigned char* data, int* position) {
     Item::load(data, position);
 
     minimumAbilities.load(data, position);
 }
 
-Equipable* Equipable::cloneUnsafe(Equipable* oldE, Equipable* newE){
+Equipable* Equipable::cloneUnsafe(Equipable* oldE, Equipable* newE) {
 
     Item::cloneUnsafe(oldE, newE);
 
@@ -35,9 +35,9 @@ Equipable* Equipable::cloneUnsafe(Equipable* oldE, Equipable* newE){
 
 }
 
-bool Equipable::equalsExceptQty(Item* other){
-    Equipable* otherW = dynamic_cast<Equipable*>(other);
+bool Equipable::equalsExceptQty(Item* other) {
+    Equipable* otherW = dynamic_cast<Equipable*> (other);
     return Item::equalsExceptQty(other)
-    &&(otherW)
-    &&(otherW->minimumAbilities==minimumAbilities);
+            &&(otherW)
+            &&(otherW->minimumAbilities == minimumAbilities);
 }

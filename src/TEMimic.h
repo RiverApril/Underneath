@@ -11,25 +11,22 @@
 
 #include "TileEntity.h"
 
-
-struct TEMimic : public TileEntity{
-
+struct TEMimic : public TileEntity {
     static TEMimic* cloneUnsafe(TEMimic* oldE, TEMimic* newE);
 
-
-    TEMimic() : TEMimic(Point2Neg1){
-
-    }
-
-    TEMimic(Point2 pos) : TileEntity(pos){
+    TEMimic() : TEMimic(Point2Neg1) {
 
     }
 
-    virtual ~TEMimic(){
+    TEMimic(Point2 pos) : TileEntity(pos) {
 
     }
 
-    virtual int getTileEntityTypeId(){
+    virtual ~TEMimic() {
+
+    }
+
+    virtual int getTileEntityTypeId() {
         return TILE_ENTITY_TYPE_MIMIC;
     }
 

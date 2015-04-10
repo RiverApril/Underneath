@@ -17,7 +17,7 @@
 #include "Utility.h"
 #include "Global.h"
 
-Entity::Entity() : Entity(' ', Point2Zero, Ui::C_WHITE){
+Entity::Entity() : Entity(' ', Point2Zero, Ui::C_WHITE) {
 
 }
 
@@ -35,20 +35,20 @@ Entity::~Entity() {
 }
 
 bool Entity::tryToMoveAbsalute(Point2 p, Level* level) {
-    if(!level->tileAt(p)->isSolid()) {
+    if (!level->tileAt(p)->isSolid()) {
         bool block = false;
-        for(Entity* e : level->entityList){
-            if(e->uniqueId == uniqueId){
+        for (Entity* e : level->entityList) {
+            if (e->uniqueId == uniqueId) {
                 continue;
             }
-            if(e->isSolid()){
-            	if(e->pos == p){
+            if (e->isSolid()) {
+                if (e->pos == p) {
                     block = true;
                     break;
                 }
             }
         }
-        if(!block){
+        if (!block) {
             pos = p;
             return true;
         }
@@ -57,10 +57,10 @@ bool Entity::tryToMoveAbsalute(Point2 p, Level* level) {
 }
 
 bool Entity::tryToMoveRelative(Point2 p, Level* level) {
-    if(p == Point2Zero){
+    if (p == Point2Zero) {
         return false;
     }
-    return tryToMoveAbsalute(pos+p, level);
+    return tryToMoveAbsalute(pos + p, level);
 }
 
 bool Entity::update(double deltaTime, double time, Level* level) {
@@ -68,7 +68,7 @@ bool Entity::update(double deltaTime, double time, Level* level) {
     bool u = false;
 
 
-    if(pos != lastPos || updateIcon) {
+    if (pos != lastPos || updateIcon) {
 
         //setAndUnsetDisplayEntity(level);
 
@@ -93,8 +93,7 @@ Ui::Color Entity::getBgColorCode() {
     return bgColorCode;
 }
 
-
-Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE){
+Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE) {
 
     newE->defaultIcon = oldE->defaultIcon;
     newE->pos = oldE->pos;
@@ -108,16 +107,16 @@ Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE){
 }
 
 template<class Super, class Sub>
-Sub* Entity::makeNewAndClone(Super* oldT){
+Sub* Entity::makeNewAndClone(Super* oldT) {
     Sub* newT = new Sub();
-    return Sub::cloneUnsafe(dynamic_cast<Sub*>(oldT), newT);
+    return Sub::cloneUnsafe(dynamic_cast<Sub*> (oldT), newT);
 }
 
-Entity* Entity::clone(Entity* oldE){
+Entity* Entity::clone(Entity* oldE) {
 
     int type = oldE->getEntityTypeId();
 
-    debug("Clone Entity of type: "+to_string(type));
+    debug("Clone Entity of type: " + to_string(type));
 
     switch (type) {
         case ENTITY_TYPE_ENTITY:
@@ -136,7 +135,7 @@ Entity* Entity::clone(Entity* oldE){
             return makeNewAndClone<Entity, ItemEntity>(oldE);
 
         default:
-            throw Utility::FileExceptionLoad("Entity type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Entity type unknown: " + to_string(type));
             return nullptr;
             break;
     }
@@ -145,44 +144,44 @@ Entity* Entity::clone(Entity* oldE){
 
 }
 
-void Entity::save(vector<unsigned char>* data){
+void Entity::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getEntityTypeId());
 
 
     Utility::saveInt(data, uniqueId);
 
-    Utility::saveUnsignedChar(data, (unsigned char)defaultIcon);
+    Utility::saveUnsignedChar(data, (unsigned char) defaultIcon);
 
     Point2::save(pos, data);
     Point2::save(lastPos, data);
 
-    Utility::saveUnsignedChar(data, (unsigned char)fgColorCode);
-    Utility::saveUnsignedChar(data, (unsigned char)bgColorCode);
+    Utility::saveUnsignedChar(data, (unsigned char) fgColorCode);
+    Utility::saveUnsignedChar(data, (unsigned char) bgColorCode);
     Utility::saveBool(data, solid);
 }
 
-int Entity::getEntityTypeId(){
+int Entity::getEntityTypeId() {
     return ENTITY_TYPE_ENTITY;
 }
 
-void Entity::load(unsigned char* data, int* position){
+void Entity::load(unsigned char* data, int* position) {
     //Entity::loadNew() loads the entityId
 
     uniqueId = Utility::loadInt(data, position);
 
-    defaultIcon = (char)Utility::loadUnsignedChar(data, position);
+    defaultIcon = (char) Utility::loadUnsignedChar(data, position);
 
     pos = Point2::load(data, position);
     lastPos = Point2::load(data, position);
 
-    fgColorCode = (char)Utility::loadUnsignedChar(data, position);
-    bgColorCode = (char)Utility::loadUnsignedChar(data, position);
+    fgColorCode = (char) Utility::loadUnsignedChar(data, position);
+    bgColorCode = (char) Utility::loadUnsignedChar(data, position);
     solid = Utility::loadBool(data, position);
 
     updateIcon = true;
 }
 
-Entity* Entity::loadNew(unsigned char* data, int* position){
+Entity* Entity::loadNew(unsigned char* data, int* position) {
     Entity* e;
 
     int type = Utility::loadInt(data, position);
@@ -205,13 +204,13 @@ Entity* Entity::loadNew(unsigned char* data, int* position){
             break;
 
         default:
-            throw Utility::FileExceptionLoad("Entity type unknown: "+to_string(type));
+            throw Utility::FileExceptionLoad("Entity type unknown: " + to_string(type));
             return nullptr;
             break;
     }
     e->load(data, position);
 
-    debug("Loaded Entity: "+e->getName()+"("+to_string(e->getEntityTypeId())+")"+", Pos: "+e->pos.toString());
+    debug("Loaded Entity: " + e->getName() + "(" + to_string(e->getEntityTypeId()) + ")" + ", Pos: " + e->pos.toString());
 
     return e;
 }

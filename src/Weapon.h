@@ -32,12 +32,11 @@ const DamageType damBlood = 7;
 const DamageType damDebug = 8;
 const DamageType damSuffocation = 9;
 
-
 class Weapon : public Equipable {
 public:
 
-    static string damageTypeName(DamageType d){
-        switch(d){
+    static string damageTypeName(DamageType d) {
+        switch (d) {
             case damSharp:
                 return "Sharp";
             case damBlunt:
@@ -63,8 +62,8 @@ public:
         }
     }
 
-    static Ui::Color damageTypeColor(DamageType d){
-        switch(d){
+    static Ui::Color damageTypeColor(DamageType d) {
+        switch (d) {
             case damSharp:
                 return Ui::C_LIGHT_GRAY;
             case damBlunt:
@@ -86,10 +85,10 @@ public:
         }
     }
 
-    static string effectName(EffectId eid, double meta){
+    static string effectName(EffectId eid, double meta) {
         switch (eid) {
             case effDamage:
-                return damageTypeName((DamageType)meta);
+                return damageTypeName((DamageType) meta);
 
             case effHeal:
                 return "Heal";
@@ -102,20 +101,20 @@ public:
         }
     }
 
-    static string enchantmentName(Enchantment e){
+    static string enchantmentName(Enchantment e) {
         return effectName(e.effectId, e.meta);
     }
 
 
     static Weapon* cloneUnsafe(Weapon* oldE, Weapon* newE = nullptr);
 
-    Weapon() : Equipable(){
+    Weapon() : Equipable() {
 
     }
 
     Weapon(double baseDamage, string name, double weight, double useDelay);
 
-    virtual int getItemTypeId(){
+    virtual int getItemTypeId() {
         return ITEM_TYPE_WEAPON;
     }
 
@@ -123,27 +122,27 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual bool instantUse(){
+    virtual bool instantUse() {
         return false;
     }
 
-    Weapon* addEnchantment(Enchantment e){
+    Weapon* addEnchantment(Enchantment e) {
         enchantments.push_back(e);
         return this;
     }
 
-    virtual bool equalsExceptQty(Item* other){
-        Weapon* otherW = dynamic_cast<Weapon*>(other);
+    virtual bool equalsExceptQty(Item* other) {
+        Weapon* otherW = dynamic_cast<Weapon*> (other);
         return Equipable::equalsExceptQty(other)
-        &&(otherW)
-        &&(baseDamage == otherW->baseDamage)
-        &&(damageType == otherW->damageType)
-        &&(enchantments == otherW->enchantments)
-        &&(useDelay == otherW->useDelay);
+                &&(otherW)
+                &&(baseDamage == otherW->baseDamage)
+                &&(damageType == otherW->damageType)
+                &&(enchantments == otherW->enchantments)
+                &&(useDelay == otherW->useDelay);
     }
 
-    virtual bool canBeEquipedHere(EquipSlot e){
-        return e==slotHand;
+    virtual bool canBeEquipedHere(EquipSlot e) {
+        return e == slotHand;
     }
 
     double baseDamage = 1;

@@ -15,34 +15,34 @@ namespace Math {
         double dx = abs(ax - bx);
         double dy = abs(ay - by);
 
-        return dx*dx + dy*dy;
+        return dx * dx + dy*dy;
     }
 
     double distanceSquared(double x, double y) {
         double dx = abs(x);
         double dy = abs(y);
 
-        return dx*dx + dy*dy;
+        return dx * dx + dy*dy;
     }
 
-    double randomRange(double min, double max){
-        if(min > max){
+    double randomRange(double min, double max) {
+        if (min > max) {
             return randomRange(max, min);
-        }else{
-            return ((rand()/(double)RAND_MAX)*(max-min))+min;
+        } else {
+            return ((rand() / (double) RAND_MAX)*(max - min))+min;
         }
     }
 
-    int roundToInt(double a){
-        return (int)round(a);
+    int roundToInt(double a) {
+        return (int) round(a);
     }
 
-    int roundAwayFrom0(double a){
-        return (int)(a>0?ceil(a):floor(a));
+    int roundAwayFrom0(double a) {
+        return (int) (a > 0 ? ceil(a) : floor(a));
     }
 
-    int roundToward0(double a){
-        return (int)(a>0?floor(a):ceil(a));
+    int roundToward0(double a) {
+        return (int) (a > 0 ? floor(a) : ceil(a));
     }
 
 }

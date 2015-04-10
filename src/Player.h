@@ -15,7 +15,6 @@
 #include "Abilities.h"
 
 class Player : public Alive {
-
 public:
 
     static Player* cloneUnsafe(Player* oldE, Player* newE);
@@ -42,7 +41,7 @@ public:
 
     virtual int getEntityTypeId();
 
-    virtual int getRenderDepth(){
+    virtual int getRenderDepth() {
         return 1;
     }
 
@@ -50,46 +49,45 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1){
+    virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1) {
         timeSinceCombat = 0;
         return Alive::hurt(damageType, amount, damageMultiplier);
     }
 
-    virtual double hurt(Weapon* w, double damageMultiplier = 1){
+    virtual double hurt(Weapon* w, double damageMultiplier = 1) {
         timeSinceCombat = 0;
-        double chance = (((double)abilities[iAGI] / maxAbilities[iAGI]) / 2);
-        if(rand() < (RAND_MAX*chance)){
+        double chance = (((double) abilities[iAGI] / maxAbilities[iAGI]) / 2);
+        if (rand() < (RAND_MAX * chance)) {
             return 0;
         }
         return Alive::hurt(w, damageMultiplier);
     }
 
-    virtual double heal(double amount){
-		double a = Alive::heal(amount);
+    virtual double heal(double amount) {
+        double a = Alive::heal(amount);
         return a;
     }
 
-    virtual double healMana(double amount){
-		double a = Alive::healMana(amount);
+    virtual double healMana(double amount) {
+        double a = Alive::healMana(amount);
         return a;
     }
 
     virtual void setActiveWeapon(Weapon* newWeapon);
 
-
-    void updateVariablesForAbilities(){
-        moveDelay = 1.0-((double)(abilities[iSPD]) / maxAbilities[iSPD]);
-        if(outOfCombatHealing){
+    void updateVariablesForAbilities() {
+        moveDelay = 1.0 - ((double) (abilities[iSPD]) / maxAbilities[iSPD]);
+        if (outOfCombatHealing) {
             healDelay = .5;
             manaDelay = .5;
-        }else{
-        	healDelay = 20.0-((double)(abilities[iCON]) / (maxAbilities[iCON]/20.0));
-        	manaDelay = 20.0-((double)(abilities[iWIS]) / (maxAbilities[iWIS]/20.0));
+        } else {
+            healDelay = 20.0 - ((double) (abilities[iCON]) / (maxAbilities[iCON] / 20.0));
+            manaDelay = 20.0 - ((double) (abilities[iWIS]) / (maxAbilities[iWIS] / 20.0));
         }
         interactDelay = .1;
 
-        maxHp = 100 + (((double)(abilities[iCON]) / maxAbilities[iCON]) * 500);
-        maxMp = 100 + (((double)(abilities[iWIS]) / maxAbilities[iWIS]) * 500);
+        maxHp = 100 + (((double) (abilities[iCON]) / maxAbilities[iCON]) * 500);
+        maxMp = 100 + (((double) (abilities[iWIS]) / maxAbilities[iWIS]) * 500);
     }
 
     Abilities<int> abilities;
@@ -135,8 +133,8 @@ protected:
 
     double useDelay(Item* item);
 
-    void setNextLevelXp(){
-        nextLevelXp = (pow(level, 1.2)*2)+20;
+    void setNextLevelXp() {
+        nextLevelXp = (pow(level, 1.2)*2) + 20;
     }
 
 };

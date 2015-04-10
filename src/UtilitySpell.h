@@ -22,16 +22,16 @@ public:
 
     static UtilitySpell* cloneUnsafe(UtilitySpell* oldE, UtilitySpell* newE = nullptr);
 
-    UtilitySpell() : Item(){
+    UtilitySpell() : Item() {
 
     }
 
-    UtilitySpell(SpellEffect spellEffect, int manaCost, string name, double weight) : Item(name, weight){
+    UtilitySpell(SpellEffect spellEffect, int manaCost, string name, double weight) : Item(name, weight) {
         this->spellEffect = spellEffect;
         this->manaCost = manaCost;
     }
 
-    virtual int getItemTypeId(){
+    virtual int getItemTypeId() {
         return ITEM_TYPE_UTILITY_SPELL;
     }
 
@@ -39,24 +39,24 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual bool equalsExceptQty(Item* other){
-        UtilitySpell* otherW = dynamic_cast<UtilitySpell*>(other);
+    virtual bool equalsExceptQty(Item* other) {
+        UtilitySpell* otherW = dynamic_cast<UtilitySpell*> (other);
         return Item::equalsExceptQty(other)
-        && (otherW)
-        && (spellEffect == otherW->spellEffect)
-        && (manaCost == otherW->manaCost);
+                && (otherW)
+                && (spellEffect == otherW->spellEffect)
+                && (manaCost == otherW->manaCost);
     }
 
-    virtual bool instantUse(){
+    virtual bool instantUse() {
         return !(
                 (spellEffect == spellRemoteUse) || (spellEffect == spellRelocate)
                 );
     }
 
     SpellEffect spellEffect = 0;
-    int manaCost = 0;// -1 means one use without mana cost
+    int manaCost = 0; // -1 means one use without mana cost
 
-    virtual string getExtendedName(){
+    virtual string getExtendedName() {
         return name;
     }
 

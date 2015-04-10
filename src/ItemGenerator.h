@@ -17,11 +17,12 @@
 
 namespace ItemGenerator {
 
-    struct Condition{
+    struct Condition {
 
-        Condition(){}
+        Condition() {
+        }
 
-        Condition(vector<string> names, double damMin, double damMax, double udMin, double udMax, double wMin, double wMax, vector<WeaponType> weaponTypes){
+        Condition(vector<string> names, double damMin, double damMax, double udMin, double udMax, double wMin, double wMax, vector<WeaponType> weaponTypes) {
             this->names = names;
             this->damage.x = damMin;
             this->damage.y = damMax;
@@ -32,7 +33,7 @@ namespace ItemGenerator {
             this->applicableWeaponTypes = weaponTypes;
         }
 
-        Condition magical(double minMana, double maxMana){
+        Condition magical(double minMana, double maxMana) {
             manaCost.x = minMana;
             manaCost.y = maxMana;
             return *this;
@@ -46,11 +47,12 @@ namespace ItemGenerator {
         vector<WeaponType> applicableWeaponTypes;
     };
 
-    struct WeaponBase{
+    struct WeaponBase {
 
-        WeaponBase(){}
+        WeaponBase() {
+        }
 
-        WeaponBase(vector<string> names, double damage, double useDelay, DamageType damageType, WeaponType weaponType){
+        WeaponBase(vector<string> names, double damage, double useDelay, DamageType damageType, WeaponType weaponType) {
             this->names = names;
             this->damage = damage;
             this->useDelay = useDelay;
@@ -58,23 +60,23 @@ namespace ItemGenerator {
             this->weaponType = weaponType;
         }
 
-        WeaponBase ranged(double range){
+        WeaponBase ranged(double range) {
             this->range = range;
             return *this;
         }
 
-        WeaponBase magical(double range, double manaCost){
+        WeaponBase magical(double range, double manaCost) {
             this->range = range;
             this->manaCost = manaCost;
             return *this;
         }
 
-        WeaponBase setWeight(double weight){
+        WeaponBase setWeight(double weight) {
             this->weight = weight;
             return *this;
         }
 
-        WeaponBase setArts(vector<int> artIndecies){
+        WeaponBase setArts(vector<int> artIndecies) {
             this->arts = artIndecies;
             return *this;
         }
@@ -90,10 +92,12 @@ namespace ItemGenerator {
         double manaCost = -1;
     };
 
-    struct PotionBase{
-        PotionBase(){}
+    struct PotionBase {
 
-        PotionBase(vector<string> names, vector<EffectId> effIds, double timeMin, double timeMax, double powerMin, double powerMax, double meta){
+        PotionBase() {
+        }
+
+        PotionBase(vector<string> names, vector<EffectId> effIds, double timeMin, double timeMax, double powerMin, double powerMax, double meta) {
             this->names = names;
             this->effIds = effIds;
             this->time = Vector2(timeMin, timeMax);
@@ -109,10 +113,12 @@ namespace ItemGenerator {
 
     };
 
-    struct ScrollBase{
-        ScrollBase(){}
+    struct ScrollBase {
 
-        ScrollBase(vector<string> names, SpellEffect eff){
+        ScrollBase() {
+        }
+
+        ScrollBase(vector<string> names, SpellEffect eff) {
             this->names = names;
             this->eff = eff;
         }

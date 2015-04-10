@@ -9,31 +9,32 @@
 #include "Potion.h"
 #include "Utility.h"
 
-void Potion::save(vector<unsigned char>* data){
-	Item::save(data);
+void Potion::save(vector<unsigned char>* data) {
+    Item::save(data);
 
-	Utility::saveInt(data, (int)effects.size());
-	for (Effect e : effects){
-		e.save(data);
-	}
+    Utility::saveInt(data, (int) effects.size());
+    for (Effect e : effects) {
+        e.save(data);
+    }
 }
 
-void Potion::load(unsigned char* data, int* position){
-	Item::load(data, position);
+void Potion::load(unsigned char* data, int* position) {
+    Item::load(data, position);
 
-	int size = Utility::loadInt(data, position);
-	effects.clear();
-	repeat(size, i){
-		effects.push_back(Effect(data, position));
-	}
+    int size = Utility::loadInt(data, position);
+    effects.clear();
+
+    repeat(size, i) {
+        effects.push_back(Effect(data, position));
+    }
 }
 
-Potion* Potion::cloneUnsafe(Potion* oldE, Potion* newE){
+Potion* Potion::cloneUnsafe(Potion* oldE, Potion* newE) {
 
-	Item::cloneUnsafe(oldE, newE);
+    Item::cloneUnsafe(oldE, newE);
 
-	newE->effects = oldE->effects;
+    newE->effects = oldE->effects;
 
-	return newE;
+    return newE;
 
 }

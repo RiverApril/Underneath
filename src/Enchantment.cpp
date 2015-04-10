@@ -9,23 +9,23 @@
 #include "Enchantment.h"
 #include "Utility.h"
 
-Enchantment::Enchantment(unsigned char* data, int* position){
+Enchantment::Enchantment(unsigned char* data, int* position) {
     load(data, position);
 }
 
-Enchantment::Enchantment(EffectId effectId, int chance, double power, double time){
+Enchantment::Enchantment(EffectId effectId, int chance, double power, double time) {
     this->effectId = effectId;
     this->chance = chance;
     this->power = power;
     this->time = time;
 }
 
-Enchantment Enchantment::setMeta(double meta){
+Enchantment Enchantment::setMeta(double meta) {
     this->meta = meta;
     return *this;
 }
 
-void Enchantment::save(vector<unsigned char>* data){
+void Enchantment::save(vector<unsigned char>* data) {
     Utility::saveInt(data, effectId);
     Utility::saveInt(data, chance);
     Utility::saveDouble(data, power);
@@ -33,7 +33,7 @@ void Enchantment::save(vector<unsigned char>* data){
     Utility::saveDouble(data, meta);
 }
 
-void Enchantment::load(unsigned char* data, int* position){
+void Enchantment::load(unsigned char* data, int* position) {
     effectId = Utility::loadInt(data, position);
     chance = Utility::loadInt(data, position);
     power = Utility::loadDouble(data, position);
@@ -41,13 +41,13 @@ void Enchantment::load(unsigned char* data, int* position){
     meta = Utility::loadDouble(data, position);
 }
 
-bool operator== (const Enchantment a, const Enchantment b){
+bool operator==(const Enchantment a, const Enchantment b) {
     return a.effectId == b.effectId
-    && a.chance == b.chance
-    && a.power == b.power
-    && a.time == b.time;
+            && a.chance == b.chance
+            && a.power == b.power
+            && a.time == b.time;
 }
 
-bool operator!= (const Enchantment a, const Enchantment b){
+bool operator!=(const Enchantment a, const Enchantment b) {
     return !(a == b);
 }

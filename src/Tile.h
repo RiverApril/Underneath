@@ -52,7 +52,7 @@ private:
     TileFlag flags;
 };
 
-namespace Tiles{
+namespace Tiles {
 
     extern vector<Tile*> tileList;
     extern Tile* tileFloor;

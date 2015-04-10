@@ -14,8 +14,9 @@
 
 namespace Utility {
 
-    struct FileExceptionLoad{
-        FileExceptionLoad(string description){
+    struct FileExceptionLoad {
+
+        FileExceptionLoad(string description) {
             this->description = description;
         }
         string description;
@@ -24,7 +25,7 @@ namespace Utility {
 
 
 
-	void saveDouble(vector<unsigned char>* data, double n);
+    void saveDouble(vector<unsigned char>* data, double n);
     void saveInt(vector<unsigned char>* data, int n);
     void saveUnsignedLong(vector<unsigned char>* data, unsigned long n);
     void saveUnsignedChar(vector<unsigned char>* data, unsigned char n);
@@ -33,22 +34,23 @@ namespace Utility {
     void saveString(vector<unsigned char>* data, string n);
 
     template <typename T>
-    void saveType(vector<unsigned char>* data, T n){
-        union{
+    void saveType(vector<unsigned char>* data, T n) {
+
+        union {
             T d;
-            unsigned char b[sizeof(T)];
+            unsigned char b[sizeof (T)];
         } uTypeBytes;
 
         uTypeBytes.d = n;
 
-        for(size_t i=0;i<sizeof(T);i++){
-            data->push_back((unsigned char)(((uTypeBytes.b[i])/* >> (i*8)*/) & 0xFF));
+        for (size_t i = 0; i<sizeof (T); i++) {
+            data->push_back((unsigned char) (((uTypeBytes.b[i])/* >> (i*8)*/) & 0xFF));
         }
     }
 
 
 
-	double loadDouble(unsigned char* data, int* position);
+    double loadDouble(unsigned char* data, int* position);
     int loadInt(unsigned char* data, int* position);
     unsigned long loadUnsignedLong(unsigned char* data, int* position);
     unsigned char loadUnsignedChar(unsigned char* data, int* position);
@@ -57,15 +59,15 @@ namespace Utility {
     string loadString(unsigned char* data, int* position);
 
     template <typename T>
-    T loadType(unsigned char* data, int* position){
+    T loadType(unsigned char* data, int* position) {
 
-        union{
+        union {
             T d;
-            unsigned char b[sizeof(T)];
+            unsigned char b[sizeof (T)];
         } uTypeBytes;
 
-        for(size_t i=0;i<sizeof(T);i++){
-            uTypeBytes.b[i] = ((unsigned char)loadUnsignedChar(data, position));
+        for (size_t i = 0; i<sizeof (T); i++) {
+            uTypeBytes.b[i] = ((unsigned char) loadUnsignedChar(data, position));
         }
         return uTypeBytes.d;
     }
@@ -80,32 +82,26 @@ namespace Utility {
 
     string repeatString(string s, size_t qty);
 
-
-
-
-
     template <typename T>
-    void swap(T& a, T& b){
+    void swap(T& a, T& b) {
         T& temp = a;
         b = a;
         a = temp;
     }
 
-
     template <typename T>
-    bool vectorContains(vector<T> v, T c){
-        for(T i : v){
-            if(c == i){
+    bool vectorContains(vector<T> v, T c) {
+        for (T i : v) {
+            if (c == i) {
                 return true;
             }
         }
         return false;
     }
 
+    struct ParseException {
 
-
-    struct ParseException{
-        ParseException(string reason){
+        ParseException(string reason) {
             this->reason = reason;
         }
         string reason;

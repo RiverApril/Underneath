@@ -10,11 +10,11 @@
 
 namespace Ui {
 
-    MenuMessage::MenuMessage(string message) : Menu(){
+    MenuMessage::MenuMessage(string message) : Menu() {
         this->message = message;
     }
 
-    void MenuMessage::handleInput(int in){
+    void MenuMessage::handleInput(int in) {
         switch (in) {
             case KEY_ENTER:
             case 13:
@@ -27,11 +27,11 @@ namespace Ui {
         }
     }
 
-    void MenuMessage::update(){
+    void MenuMessage::update() {
         setColor(C_WHITE);
         move(0, 0);
         clrtobot();
-        printCenter(terminalSize.y/2-2, message);
-        printCenter(terminalSize.y/2, "Press enter to continue...");
+        printCenter(terminalSize.y / 2 - 2, message);
+        printCenter(terminalSize.y / 2, "Press enter to continue...");
     }
 }

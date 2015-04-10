@@ -13,9 +13,11 @@
 
 namespace Ui {
 
-    MenuMain::MenuMain() : Menu(){}
+    MenuMain::MenuMain() : Menu() {
+    }
 
-    MenuMain::~MenuMain(){}
+    MenuMain::~MenuMain() {
+    }
 
     bool MenuMain::openUi() {
         move(0, 0);
@@ -30,7 +32,7 @@ namespace Ui {
     void MenuMain::handleInput(int in) {
         const int maxUiSelection = 1;
 
-        move(selection+2, 0);
+        move(selection + 2, 0);
         clrtoeol();
 
         switch (in) {
@@ -52,14 +54,14 @@ namespace Ui {
 
             case KEY_UP:
                 selection--;
-                if(selection<0) {
+                if (selection < 0) {
                     selection = maxUiSelection;
                 }
                 break;
 
             case KEY_DOWN:
                 selection++;
-                if(selection>maxUiSelection) {
+                if (selection > maxUiSelection) {
                     selection = 0;
                 }
                 break;
@@ -87,13 +89,13 @@ namespace Ui {
         printCenter(a++, "  )                                )       ");
         printCenter(a++, "                                  (        ");*/
         Arts::getArt(Arts::artTitle)->printCenter(a);
-        a+=Arts::getArt(Arts::artTitle)->getSize().y;
-        printCenter(a++, "%sPlay%s", selection==0?"- ":"  ", selection==0?" -":"  ");
-        printCenter(a++, "%sExit%s", selection==1?"- ":"  ", selection==1?" -":"  ");
+        a += Arts::getArt(Arts::artTitle)->getSize().y;
+        printCenter(a++, "%sPlay%s", selection == 0 ? "- " : "  ", selection == 0 ? " -" : "  ");
+        printCenter(a++, "%sExit%s", selection == 1 ? "- " : "  ", selection == 1 ? " -" : "  ");
 
-        a+=4;
+        a += 4;
 
-        if(limitedColorMode) {
+        if (limitedColorMode) {
             mvaddstr(a, 0, "Limited Color Mode - HIGHLY suggest using a terminal with 256 colors (or at least 16)");
         }
 

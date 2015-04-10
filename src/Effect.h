@@ -19,8 +19,7 @@ const EffectId effDamage = 0;
 const EffectId effHeal = 1;
 const EffectId effBuff = 2;
 
-struct Effect{
-
+struct Effect {
     Effect(unsigned char* data, int* position);
 
     Effect(EffectId eId, double timeLeft, double power);
@@ -33,14 +32,14 @@ struct Effect{
 
     void load(unsigned char* data, int* position);
 
-	EffectId eId = effDamage;
-	double timeLeft = 0;
+    EffectId eId = effDamage;
+    double timeLeft = 0;
     double power = 1;
     double meta = 0;
 };
 
-bool operator== (const Effect a, const Effect b);
+bool operator==(const Effect a, const Effect b);
 
-bool operator!= (const Effect a, const Effect b);
+bool operator!=(const Effect a, const Effect b);
 
 #endif /* defined(__Underneath__Effect__) */

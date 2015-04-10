@@ -9,21 +9,21 @@
 #include "TEStair.h"
 #include "Utility.h"
 
-void TEStair::save(vector<unsigned char>* data){
+void TEStair::save(vector<unsigned char>* data) {
     TileEntity::save(data);
 
     Utility::saveBool(data, up);
     Utility::saveString(data, levelName);
 }
 
-void TEStair::load(unsigned char* data, int* position){
+void TEStair::load(unsigned char* data, int* position) {
     TileEntity::load(data, position);
 
     up = Utility::loadBool(data, position);
     levelName = Utility::loadString(data, position);
 }
 
-TEStair* TEStair::cloneUnsafe(TEStair* oldE, TEStair* newE){
+TEStair* TEStair::cloneUnsafe(TEStair* oldE, TEStair* newE) {
 
     TileEntity::cloneUnsafe(oldE, newE);
 

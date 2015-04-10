@@ -9,21 +9,21 @@
 #include "UtilitySpell.h"
 #include "Utility.h"
 
-void UtilitySpell::save(vector<unsigned char>* data){
+void UtilitySpell::save(vector<unsigned char>* data) {
     Item::save(data);
 
     Utility::saveInt(data, spellEffect);
     Utility::saveInt(data, manaCost);
 }
 
-void UtilitySpell::load(unsigned char* data, int* position){
+void UtilitySpell::load(unsigned char* data, int* position) {
     Item::load(data, position);
 
     spellEffect = Utility::loadInt(data, position);
     manaCost = Utility::loadInt(data, position);
 }
 
-UtilitySpell* UtilitySpell::cloneUnsafe(UtilitySpell* oldE, UtilitySpell* newE){
+UtilitySpell* UtilitySpell::cloneUnsafe(UtilitySpell* oldE, UtilitySpell* newE) {
 
     Item::cloneUnsafe(oldE, newE);
 
