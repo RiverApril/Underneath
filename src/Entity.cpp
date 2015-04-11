@@ -11,6 +11,7 @@
 #include "AiEntity.h"
 #include "Player.h"
 #include "ItemEntity.h"
+#include "EntityTimeActivated.h"
 
 #include "Level.h"
 #include "Math.h"
@@ -65,20 +66,12 @@ bool Entity::tryToMoveRelative(Point2 p, Level* level) {
 
 bool Entity::update(double deltaTime, double time, Level* level) {
 
-    bool u = false;
-
-
-    if (pos != lastPos || updateIcon) {
-
-        //setAndUnsetDisplayEntity(level);
-
-        u = true;
+    if (pos != lastPos) {
         lastPos = pos;
-
-        updateIcon = false;
+        return true;
     }
 
-    return u;
+    return false;
 }
 
 char Entity::getIcon(Point2 p, double time, Level* level) {
@@ -100,7 +93,6 @@ Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE) {
     newE->lastPos = oldE->lastPos;
     newE->fgColorCode = oldE->fgColorCode;
     newE->bgColorCode = oldE->bgColorCode;
-    newE->updateIcon = oldE->updateIcon;
     newE->solid = oldE->solid;
 
     return newE;
@@ -133,6 +125,9 @@ Entity* Entity::clone(Entity* oldE) {
 
         case ENTITY_TYPE_ITEMENTITY:
             return makeNewAndClone<Entity, ItemEntity>(oldE);
+
+        case ENTITY_TYPE_TIME_ACTIVATED:
+            return makeNewAndClone<Entity, EntityTimeActivated>(oldE);
 
         default:
             throw Utility::FileExceptionLoad("Entity type unknown: " + to_string(type));
@@ -177,8 +172,6 @@ void Entity::load(unsigned char* data, int* position) {
     fgColorCode = (char) Utility::loadUnsignedChar(data, position);
     bgColorCode = (char) Utility::loadUnsignedChar(data, position);
     solid = Utility::loadBool(data, position);
-
-    updateIcon = true;
 }
 
 Entity* Entity::loadNew(unsigned char* data, int* position) {
@@ -201,6 +194,9 @@ Entity* Entity::loadNew(unsigned char* data, int* position) {
             break;
         case ENTITY_TYPE_ITEMENTITY:
             e = new ItemEntity();
+            break;
+        case ENTITY_TYPE_TIME_ACTIVATED:
+            e = new EntityTimeActivated();
             break;
 
         default:

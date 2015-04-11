@@ -10,6 +10,7 @@
 #include "Utility.h"
 #include "ItemGenerator.h"
 #include "ItemSpecial.h"
+#include "ItemTimeActivated.h"
 
 World::World(string n) {
     levels = vector<string>();
@@ -336,6 +337,8 @@ namespace WorldLoader {
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedBomb, 15, 1000, 5, 1), 10);
+        world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
 
 
         world->currentLevel->newEntity(world->currentPlayer);

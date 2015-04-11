@@ -31,6 +31,7 @@ const DamageType damPoison = 6;
 const DamageType damBlood = 7;
 const DamageType damDebug = 8;
 const DamageType damSuffocation = 9;
+const DamageType damExplosion = 10;
 
 class Weapon : public Equipable {
 public:
@@ -57,6 +58,8 @@ public:
                 return "Debug";
             case damSuffocation:
                 return "Suffocation";
+            case damExplosion:
+                return "Explosive";
             default:
                 return "Undefined";
         }
@@ -80,6 +83,8 @@ public:
                 return Ui::C_LIGHT_RED;
             case damDebug:
                 return Ui::C_WHITE;
+            case damExplosion:
+                return Ui::C_LIGHT_YELLOW;
             default:
                 return Ui::C_WHITE;
         }

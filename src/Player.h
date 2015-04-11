@@ -51,11 +51,17 @@ public:
 
     virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1) {
         timeSinceCombat = 0;
+        if(godMode){
+            return 0;
+        }
         return Alive::hurt(damageType, amount, damageMultiplier);
     }
 
     virtual double hurt(Weapon* w, double damageMultiplier = 1) {
         timeSinceCombat = 0;
+        if(godMode){
+            return 0;
+        }
         double chance = (((double) abilities[iAGI] / maxAbilities[iAGI]) / 2);
         if (rand() < (RAND_MAX * chance)) {
             return 0;

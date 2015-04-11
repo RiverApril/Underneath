@@ -77,6 +77,8 @@ extern bool running;
 
 extern int nextUniqueId;
 
+extern bool godMode;
+
 extern string CustomWorkingDirectory;
 extern string UnderneathDir;
 extern string WorldsDir;

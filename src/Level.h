@@ -99,6 +99,8 @@ public:
         return difficulty;
     }
 
+    void explode(Point2 pos, double radius, double attackPower, bool destroyTiles);
+
     int countTilesAround(Point2 p, Tile* t) {
         int c = 0;
         for (int i = -1; i <= 1; i++) {

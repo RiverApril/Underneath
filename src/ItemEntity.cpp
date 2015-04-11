@@ -7,7 +7,6 @@
 //
 
 #include "ItemEntity.h"
-
 #include "Level.h"
 
 ItemEntity::ItemEntity() : ItemEntity(nullptr, Point2Zero) {

@@ -103,12 +103,13 @@ namespace Ui {
         if (*useItem != -1) {
             if (currentPlayer->inventory[*useItem]->instantUse()) {
                 timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->inventory[*useItem]);
-            } else {
+            } else{
                 itemToBeUsedRange = 1000;
                 itemToBeUsed = currentPlayer->inventory[*useItem];
                 targetPosition = currentPlayer->pos;
                 changeMode(modeSelectPosition);
             }
+            *useItem = -1;
         }
 
         if (!initSuccess) {
@@ -238,11 +239,9 @@ namespace Ui {
             targetPosition += p;
         } else if (controlMode == modeSelectDirection) {
 
-            Item* i = *useItem != -1 ? (currentPlayer->inventory[*useItem]) : currentPlayer->getActiveWeapon();
+            Item* i = itemToBeUsed!=nullptr? itemToBeUsed : currentPlayer->getActiveWeapon();
 
             timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos + p, false, i);
-
-            *useItem = -1;
 
             changeMode(modePlayerControl);
 

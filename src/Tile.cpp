@@ -59,6 +59,8 @@ namespace Tiles {
     Tile* tileChest;
     Tile* tileCrate;
 
+    Tile* tileRubble;
+
     Tile* tileEdge;
     Tile* tileUnset;
 
@@ -96,6 +98,8 @@ namespace Tiles {
         tileChest = new Tile('+', C_LIGHT_GREEN, bg, tileFlagSolid | tileFlagHasTileEntity);
         tileCrate = new Tile('+', C_DARK_YELLOW, bg, tileFlagSolid | tileFlagHasTileEntity);
 
+
+        tileRubble = new Tile('#', C_LIGHT_GRAY, bg, tileFlagPathable, C_DARK_GRAY, bg);
 
         
         tileEdge = new Tile('X',  C_LIGHT_RED, bg, tileFlagSolid | tileFlagTall | tileFlagIndestructable);

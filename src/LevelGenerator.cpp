@@ -412,15 +412,11 @@ namespace LevelGenerator {
 
         for (int i = 0; i < level->getSize().x; i++) {
             for (int j = 0; j < level->getSize().y; j++) {
-                Tile* a = level->tileAt(Point2(i, j));
-                if (a->hasFlag(tileFlagPathable)) {
-                    for (int k = -1; k <= 1; k++) {
-                        for (int l = -1; l <= 1; l++) {
-                            if (level->indexAt(Point2(i + k, j + l)) == Tiles::tileUnset->getIndex()) {
-                                level->setTile(Point2(i + k, j + l), Tiles::tileWall);
-                            }
-                        }
-                    }
+                if (level->indexAt(Point2(i, j)) == Tiles::tileUnset->getIndex()) {
+                    level->setTile(Point2(i, j), Tiles::tileWall);
+                }
+                if(i == 0 || j == 0 || i == level->getSize().x-1 || j == level->getSize().y-1){
+                    level->setTile(Point2(i, j), Tiles::tileEdge);
                 }
             }
         }

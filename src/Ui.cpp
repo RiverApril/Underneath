@@ -15,6 +15,7 @@
 #include "Potion.h"
 #include "UtilitySpell.h"
 #include "ItemSpecial.h"
+#include "ItemTimeActivated.h"
 
 vector<string> consoleBuffer;
 
@@ -382,6 +383,7 @@ namespace Ui {
                 Potion* potion = dynamic_cast<Potion*>(item);
                 UtilitySpell* utilitySpell = dynamic_cast<UtilitySpell*>(item);
                 ItemSpecial* itemSpecial = dynamic_cast<ItemSpecial*>(item);
+                ItemTimeActivated* itemTimeActivated = dynamic_cast<ItemTimeActivated*>(item);
 
                 int a = 2;
 
@@ -517,6 +519,27 @@ namespace Ui {
                             break;
                         }
                     }
+                } else if(itemTimeActivated){
+                    switch (itemTimeActivated->timeActivatedType) {
+                        case timeActivatedWallBomb:
+                        case timeActivatedBomb:
+                            a += printMultiLineString(a, columnX, formatString("Damage: %.2f", itemTimeActivated->power));
+                            a += printMultiLineString(a, columnX, formatString("Radius: %.2f", itemTimeActivated->radius));
+                            a += printMultiLineString(a, columnX, formatString("Fuse: %.2f", itemTimeActivated->time));
+                            break;
+                    }
+                    switch (itemTimeActivated->timeActivatedType) {
+                        case timeActivatedWallBomb:
+                            setColor(C_LIGHT_RED);
+                            a += printMultiLineString(a, columnX, "Will destroy tiles.");
+                            break;
+                        case timeActivatedBomb:
+                            setColor(C_LIGHT_RED);
+                            a += printMultiLineString(a, columnX, "Will not destroy tiles.");
+                            break;
+                    }
+                    setColor(C_WHITE);
+
                 }
 
             }

@@ -14,6 +14,7 @@
 #include "Potion.h"
 #include "UtilitySpell.h"
 #include "ItemSpecial.h"
+#include "ItemTimeActivated.h"
 
 void Item::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getItemTypeId());
@@ -74,6 +75,9 @@ Item* Item::clone(Item* oldI) {
         case ITEM_TYPE_ITEMSPECIAL:
             return makeNewAndClone<Item, ItemSpecial>(oldI);
 
+        case ITEM_TYPE_TIME_ACTIVATED:
+            return makeNewAndClone<Item, ItemTimeActivated>(oldI);
+
         default:
             throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));
             return nullptr;
@@ -115,6 +119,10 @@ Item* Item::loadNew(unsigned char* data, int* position) {
 
         case ITEM_TYPE_ITEMSPECIAL:
             e = new ItemSpecial();
+            break;
+
+        case ITEM_TYPE_TIME_ACTIVATED:
+            e = new ItemTimeActivated();
             break;
 
         default:

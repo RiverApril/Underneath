@@ -20,6 +20,7 @@ const int ENTITY_TYPE_ALIVE = 1;
 const int ENTITY_TYPE_AIENTITY = 2;
 const int ENTITY_TYPE_PLAYER = 3;
 const int ENTITY_TYPE_ITEMENTITY = 4;
+const int ENTITY_TYPE_TIME_ACTIVATED = 5;
 
 class Entity {
 public:
@@ -87,7 +88,6 @@ public:
 
 protected:
     Point2 lastPos;
-    bool updateIcon = true;
     bool solid = false;
 
     template<class Super, class Sub>

@@ -22,6 +22,7 @@ const int ITEM_TYPE_COMBAT_SPELL = 4;
 const int ITEM_TYPE_POTION = 5;
 const int ITEM_TYPE_UTILITY_SPELL = 6;
 const int ITEM_TYPE_ITEMSPECIAL = 7;
+const int ITEM_TYPE_TIME_ACTIVATED = 8;
 
 class Item {
 public:

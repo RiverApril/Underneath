@@ -290,6 +290,27 @@ namespace Commands {
         }
     };
 
+    struct CommandGodMode : Command {
+
+        string help() {
+            return "Toggles God Mode";
+        }
+
+        string usage() {
+            return "godmode";
+        }
+
+        string defaultName() {
+            return "godmode";
+        }
+
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
+            godMode = !godMode;
+            consolef("God Mode %s", godMode?"Enabled":"Disabled");
+            return true;
+        }
+    };
+
     void initCommands() {
         commandList.push_back(new CommandHelp());
         commandList.push_back(new CommandEcho());
@@ -298,6 +319,7 @@ namespace Commands {
         commandList.push_back(new CommandXp());
         commandList.push_back(new CommandGive());
         commandList.push_back(new CommandNextKey());
+        commandList.push_back(new CommandGodMode());
     }
 
     void cleanupCommands() {

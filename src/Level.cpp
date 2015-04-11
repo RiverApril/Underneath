@@ -462,6 +462,31 @@ void Level::genDebug(string s) {
     refresh();
 }
 
+void Level::explode(Point2 pos, double radius, double attackPower, bool destroyTiles){
+    if(destroyTiles){
+        for(int i=-radius; i<=radius; i++){
+            for (int j=-radius; j<=radius; j++) {
+                if( ((i*i) + (j*j)) <= radius*radius){
+                    Point2 p = pos+Point2(i, j);
+                    if(!tileAt(p)->hasFlag(tileFlagIndestructable)){
+                        if(tileAt(p)->getIndex() != Tiles::tileFloor->getIndex() || rand()%4==0){
+                            setTile(p, Tiles::tileRubble);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    for (Entity* e : entityList) {
+        Alive* a = dynamic_cast<Alive*>(e);
+        if(a){
+            if(distanceSquared(a->pos, pos) <= radius*radius){
+                a->hurt(damExplosion, attackPower);
+            }
+        }
+    }
+}
+
 //Level::generate() is implemented in LevelGenerator.cpp
 
 void Level::placeNewAiEntity(AiEntity* e, Point2 entrance) {

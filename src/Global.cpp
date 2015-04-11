@@ -22,6 +22,8 @@ bool running;
 
 int nextUniqueId;
 
+bool godMode = false;
+
 string CustomWorkingDirectory;
 string UnderneathDir;
 string WorldsDir;

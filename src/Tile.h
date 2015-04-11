@@ -72,6 +72,8 @@ namespace Tiles {
     extern Tile* tileChest;
     extern Tile* tileCrate;
 
+    extern Tile* tileRubble;
+
     extern Tile* tileEdge;
     extern Tile* tileUnset;
 

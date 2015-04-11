@@ -14,6 +14,7 @@
 #include "Potion.h"
 #include "UtilitySpell.h"
 #include "EnemyGenerator.h"
+#include "EntityTimeActivated.h"
 
 Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()) {
 
@@ -87,6 +88,17 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
             return interactDelay;
         }
 
+        ItemTimeActivated* ita = dynamic_cast<ItemTimeActivated*>(item);
+        if(ita){
+            level->newEntity(new EntityTimeActivated(ita, posToInteract));
+            if (item->qty == 1) {
+                removeItem(item, true);
+            } else {
+                item->qty -= 1;
+            }
+            return interactDelay;
+        }
+
         UtilitySpell* s = dynamic_cast<UtilitySpell*> (item);
         if (s) {
             int use = 0;
@@ -104,7 +116,6 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
                         }
                         break;
                     case spellRelocate:
-
                         if (posToInteract == pos) {
                             posToInteract = level->findRandomWithoutFlag(tileFlagSolid);
                         }
@@ -116,7 +127,7 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
                 }
                 if (use == 2) {
                     if (item->qty == 1) {
-                        removeItem(item, false);
+                        removeItem(item, true);
                     } else {
                         item->qty -= 1;
                     }
