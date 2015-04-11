@@ -41,6 +41,7 @@ namespace Arts {
 
     extern vector<int> compassInList;
     extern int compassOut;
+    extern Point2 compassInOffset;
 
     extern int artTitle;
 

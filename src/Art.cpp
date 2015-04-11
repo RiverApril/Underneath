@@ -20,6 +20,7 @@ namespace Arts {
 
     vector<int> compassInList;
     int compassOut;
+    Point2 compassInOffset;
 
     int artTitle;
 
@@ -167,9 +168,12 @@ namespace Arts {
                 Art* a = new Art();
 
                 for(int i=0;i<compassInSize.y;i++){
-                    a->lines.push_back(fullCompassInArt->lines[j+i]);
+                    if(j+i < fullCompassInArt->lines.size()){
+                        a->lines.push_back(fullCompassInArt->lines[j+i]);
+                    }
                 }
-
+                
+                a->calcSize();
                 artList.push_back(a);
                 compassInList.push_back(((int)artList.size())-1);
             }
@@ -184,11 +188,9 @@ namespace Arts {
 
             Point2 fullOutSize = fullCompassOutArt->getSize();
 
-            Point2 compassOffset;
-
             for(int i=0;i<fullOutSize.x;i++){
                 if(fullCompassOutArt->lines[0][i] == '#'){
-                    compassOffset.x++;
+                    compassInOffset.x++;
                 }else{
                     break;
                 }
@@ -196,14 +198,14 @@ namespace Arts {
 
             for(int j=0;j<fullOutSize.y;j++){
                 if(fullCompassOutArt->lines[j][0] == '#'){
-                    compassOffset.y++;
+                    compassInOffset.y++;
                 }else{
                     break;
                 }
             }
             Art* a = new Art();
 
-            for(int i=compassOffset.y;i<fullOutSize.y;i++){
+            for(int i=compassInOffset.y;i<fullOutSize.y;i++){
                 a->lines.push_back(fullCompassOutArt->lines[i]);
             }
 

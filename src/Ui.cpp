@@ -512,7 +512,8 @@ namespace Ui {
                             consolef("%f", angle);
                             
                             
-                            Arts::getArt(Arts::compassInList[frame])->printAt(Point2(columnX, a));
+                            Arts::getArt(Arts::compassOut)->printAt(Point2(columnX, a));
+                            Arts::getArt(Arts::compassInList[frame])->printAt(Point2(columnX, a)+Arts::compassInOffset);
                             break;
                         }
                     }
