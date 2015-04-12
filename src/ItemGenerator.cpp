@@ -13,6 +13,7 @@
 #include "Art.h"
 #include "Entity.h"
 #include "Potion.h"
+#include "ItemTimeActivated.h"
 
 namespace ItemGenerator {
 
@@ -260,18 +261,21 @@ namespace ItemGenerator {
     }
 
     Item* createRandAltLoot(int itemDifficulty) {
-        switch (rand() % 2) {
+        switch (rand() % 3) {
             default:
-            case 0:
-            {
+            case 0:{
                 PotionBase pb = potionList[rand() % potionList.size()];
                 return createPotionFromBase(pb, itemDifficulty);
-
             }
 
-            case 1:
+            case 1:{
                 ScrollBase sb = scrollList[rand() % scrollList.size()];
                 return createScrollFromBase(sb);
+            }
+
+            case 2:{
+                return new ItemTimeActivated(rand()%10==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10), 1);
+            }
         }
     }
 

@@ -337,8 +337,9 @@ namespace WorldLoader {
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedBomb, 15, 1000, 5, 1), 10);
-        world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
+        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedBomb, 15, 1000, 5, 1), 10);
+        //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
 
 
         world->currentLevel->newEntity(world->currentPlayer);

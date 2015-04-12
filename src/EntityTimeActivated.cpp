@@ -33,7 +33,7 @@ char EntityTimeActivated::getIcon(Point2 p, double time, Level* level) {
     switch (timeActivatedType) {
         case timeActivatedBomb:
         case timeActivatedWallBomb:
-            return (timeLeft<=9 && timeLeft>=1)?(to_string((int)timeLeft)[0]):'!';
+            return (timeLeft<10)?(to_string((int)timeLeft)[0]):'!';
 
         default:
             return '!';
