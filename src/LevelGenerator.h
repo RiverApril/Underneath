@@ -38,6 +38,7 @@ namespace LevelGenerator {
             for (size_t i = 0; i < entrances->size(); i++) {
                 delete entrances->at(i);
             }
+            entrances->clear();
             delete entrances;
         }
         Point2 center;

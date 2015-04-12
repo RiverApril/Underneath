@@ -50,7 +50,7 @@ namespace Ui {
             }
         } else if (in == KEY_ESCAPE || in == Key::statsMenu) {
             closeThisMenu();
-
+            return;
         }
         if (selected < 0) {
             selected = 0;

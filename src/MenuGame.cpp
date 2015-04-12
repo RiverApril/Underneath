@@ -348,7 +348,7 @@ namespace Ui {
 
                 changeMode(modePlayerControl);
 
-            } else if (/* DISABLED, deemed overpowered (part obove too)*/ (false) && in == 'f') {
+            } else if (/* DISABLED, deemed overpowered (part above too)*/ (false) && in == 'f') {
                 Ranged* ranged = dynamic_cast<Ranged*> (currentPlayer->getActiveWeapon());
                 if (ranged && controlMode != modeSelectEntity) {
                     itemToBeUsedRange = ranged->range;
@@ -430,15 +430,22 @@ namespace Ui {
                 Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
                 timePassed += currentPlayer->moveAbsalute(p, currentLevel);
 
-            } else if(in == 'R') {
+            } else if (in == 'R') {
                 Point2 p = currentLevel->stairDownPos;
+                consolef("Stair Down: %s", p.toString().c_str());
                 timePassed += currentPlayer->moveAbsalute(p, currentLevel);
 
-            } else if(in == '[') {
+            } else if (in == '[') {
                 currentPlayer->hurt(damDebug, 1);
 
             } else if (in == ']') {
                 currentPlayer->heal(1);
+
+            } else if (in == '{') {
+                currentPlayer->hurt(damDebug, 10);
+
+            } else if (in == '}') {
+                currentPlayer->heal(10);
 
             }
         }

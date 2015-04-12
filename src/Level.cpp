@@ -55,6 +55,11 @@ Level::~Level() {
         delete e;
     }
     tileEntityList.clear();
+
+    for (TileEntity* e : deleteTileEntityList) {
+        delete e;
+    }
+    deleteTileEntityList.clear();
 }
 
 bool Level::getExplored(Point2 p) {
@@ -500,6 +505,7 @@ void Level::placeNewAiEntity(AiEntity* e, Point2 entrance) {
 void Level::save(vector<unsigned char>* data) {
 
     Point2::save(size, data);
+    Point2::save(stairDownPos, data);
     Utility::saveInt(data, difficulty);
     for (size_t i = 0; i < size.x; i++) {
         for (size_t j = 0; j < size.y; j++) {
@@ -523,6 +529,8 @@ void Level::save(vector<unsigned char>* data) {
 }
 
 void Level::load(unsigned char* data, int* position) {
+
+    stairDownPos = Point2::load(data, position);
 
     for (size_t i = 0; i < size.x; i++) {
         for (size_t j = 0; j < size.y; j++) {

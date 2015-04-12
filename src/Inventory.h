@@ -18,7 +18,7 @@ struct Inventory {
     }
 
     virtual ~Inventory() {
-
+        removeAllItems(true);
     }
 
     virtual void removeAllItems(bool deleteItem) {

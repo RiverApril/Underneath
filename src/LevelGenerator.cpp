@@ -45,6 +45,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
             for (size_t i = 0; i < rooms->size(); i++) {
                 delete rooms->at(i);
             }
+            rooms->clear();
             delete rooms;
 
 
@@ -279,6 +280,8 @@ namespace LevelGenerator {
             Room* r = createRoom(roomSize, rooms);
             if (r->radius.x > 0 && r->radius.y > 0) {
                 rooms->push_back(r);
+            }else{
+                delete r;
             }
         }
         return rooms;

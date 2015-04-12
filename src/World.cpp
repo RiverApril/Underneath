@@ -19,7 +19,12 @@ World::World(string n) {
 
 World::~World() {
 
+    if(currentLevel != nullptr){
+        delete currentLevel;
+    }
 
+    currentLevel = nullptr;
+    currentPlayer = nullptr;
 }
 
 namespace WorldLoader {
@@ -124,7 +129,7 @@ namespace WorldLoader {
 
                     world->currentLevel = level;
 
-                    delete levelData;
+                    delete[] levelData;
 
                     delete levelPosition;
 
@@ -141,7 +146,7 @@ namespace WorldLoader {
                     }
                 }
 
-                delete data;
+                delete[] data;
 
                 delete position;
             }
@@ -333,7 +338,7 @@ namespace WorldLoader {
 
         world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
         world->currentPlayer->setActiveWeapon(ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromType(wepMelee, 0), 0));
-        world->currentPlayer->addItem(Item::clone(new ItemSpecial(specialtyCompass)));
+        world->currentPlayer->addItem(new ItemSpecial(specialtyCompass));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));

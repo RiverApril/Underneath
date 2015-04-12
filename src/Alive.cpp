@@ -25,9 +25,7 @@ Alive::Alive(string name, char icon, Point2 startPos, Ui::Color colorCode, int m
 }
 
 Alive::~Alive() {
-    for (Item* i : inventory) {
-        delete i;
-    }
+    
 }
 
 bool Alive::update(double deltaTime, double time, Level* level) {
