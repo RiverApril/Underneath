@@ -469,9 +469,7 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
                 if( ((i*i) + (j*j)) <= radius*radius){
                     Point2 p = pos+Point2(i, j);
                     if(!tileAt(p)->hasFlag(tileFlagIndestructable)){
-                        if(tileAt(p)->getIndex() != Tiles::tileFloor->getIndex() || rand()%4==0){
-                            setTile(p, Tiles::tileRubble);
-                        }
+                        setTile(p, rand()%4==0?Tiles::tileFloor:Tiles::tileRubble);
                     }
                 }
             }

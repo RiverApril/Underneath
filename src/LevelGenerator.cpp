@@ -40,15 +40,6 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
             vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(stairUpPos, 1000, size);
             LevelGenerator::makeRoomsAndPaths(rooms, this);
 
-            for (int i = 0; i < size.x; i++) {
-                setTile(Point2(i, 0), Tiles::tileWall);
-                setTile(Point2(i, size.y - 1), Tiles::tileWall);
-            }
-            for (int j = 0; j < size.y; j++) {
-                setTile(Point2(0, j), Tiles::tileWall);
-                setTile(Point2(size.x - 1, j), Tiles::tileWall);
-            }
-
             genDebug("generated");
 
             for (size_t i = 0; i < rooms->size(); i++) {
@@ -314,6 +305,7 @@ namespace LevelGenerator {
                 }
             }
         }
+
         for (size_t i = 0; i < rooms->size(); i++) {
             Room* r = rooms->at(i);
 
@@ -406,17 +398,6 @@ namespace LevelGenerator {
                         }
 
                     }
-                }
-            }
-        }
-
-        for (int i = 0; i < level->getSize().x; i++) {
-            for (int j = 0; j < level->getSize().y; j++) {
-                if (level->indexAt(Point2(i, j)) == Tiles::tileUnset->getIndex()) {
-                    level->setTile(Point2(i, j), Tiles::tileWall);
-                }
-                if(i == 0 || j == 0 || i == level->getSize().x-1 || j == level->getSize().y-1){
-                    level->setTile(Point2(i, j), Tiles::tileEdge);
                 }
             }
         }
@@ -525,6 +506,17 @@ namespace LevelGenerator {
                     }
                 }
                 addedWalls = true;
+            }
+        }
+
+        for (int i = 0; i < level->getSize().x; i++) {
+            for (int j = 0; j < level->getSize().y; j++) {
+                if (level->indexAt(Point2(i, j)) == Tiles::tileUnset->getIndex()) {
+                    level->setTile(Point2(i, j), Tiles::tileWall);
+                }
+                if(i == 0 || j == 0 || i == level->getSize().x-1 || j == level->getSize().y-1){
+                    level->setTile(Point2(i, j), Tiles::tileEdge);
+                }
             }
         }
 

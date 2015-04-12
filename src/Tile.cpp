@@ -102,7 +102,7 @@ namespace Tiles {
         tileRubble = new Tile('#', C_LIGHT_GRAY, bg, tileFlagPathable, C_DARK_GRAY, bg);
 
         
-        tileEdge = new Tile('X',  C_LIGHT_RED, bg, tileFlagSolid | tileFlagTall | tileFlagIndestructable);
+        tileEdge = new Tile('.',  C_LIGHT_RED, C_WHITE, tileFlagSolid | tileFlagTall | tileFlagIndestructable);
         tileUnset = new Tile('X',  C_LIGHT_MAGENTA, bg, tileFlagSolid | tileFlagTall | tileFlagIndestructable);
 
 

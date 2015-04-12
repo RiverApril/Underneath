@@ -397,7 +397,7 @@ namespace Ui {
                     if(currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()){
                         unsigned char b = 1;
                         timeout(20);
-                        while (currentPlayer->getHp() < currentPlayer->getMaxHp() && b) {
+                        while ((currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()) && b) {
                             vector<Entity*> nearest = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
                             for (Entity* e : nearest) {
                                 if (e->isHostile()) {
