@@ -139,16 +139,19 @@ namespace Utility {
 
     //Strings
 
-    string makeBar(int progress, int maxProgress, size_t size, char filled, char empty) {
+    string makeBar(int progress, int maxProgress, int size, char filled, char empty) {
+        if(size <= 0){
+            return "";
+        }
         string s = "";
-        size_t l = (((double) size / maxProgress) * progress);
-        for (size_t i = 0; i < size; i++) {
+        int l = (((double) size / maxProgress) * progress);
+        for (int i = 0; i < size; i++) {
             s += i >= l ? empty : filled;
         }
         return s;
     }
 
-    string repeatString(string s, size_t qty) {
+    string repeatString(string s, int qty) {
         string v = "";
         for (size_t i = 0; i < qty; i++) {
             v += s;

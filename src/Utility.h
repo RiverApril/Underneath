@@ -78,7 +78,7 @@ namespace Utility {
 
 
 
-    string makeBar(int progress, int maxProgress, size_t size, char filled = '=', char empty = '-');
+    string makeBar(int progress, int maxProgress, int size, char filled = '=', char empty = '-');
 
     string repeatString(string s, size_t qty);
 
