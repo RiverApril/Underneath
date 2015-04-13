@@ -179,7 +179,7 @@ namespace Ui {
                                 }
                             }
                         }
-                        if (e != nullptr) {
+                        if (e) {
 
                             if (inView) {
                                 if (currentPlayer == e && controlMode == modeSelectDirection) {
@@ -189,7 +189,9 @@ namespace Ui {
                                     fg = e->getFgColorCode();
                                     bg = e->getBgColorCode();
                                 }
+
                                 symbol = e->getIcon(p, tick, currentLevel);
+
                             }
 
                         }
@@ -574,11 +576,10 @@ namespace Ui {
                     Ui::setColor(C_WHITE);
 
 
-                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s [", nearestEntity->getName().c_str()));
-                    Ui::setColor(nearestEntity->getFgColorCode(), nearestEntity->getBgColorCode());
-                    printw("%c", nearestEntity->getIcon(nearestEntity->pos, currentWorld->worldTime, currentLevel));
-                    Ui::setColor(C_WHITE);
-                    printw("]");
+                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("%s [%s%c%s]", nearestEntity->getName().c_str(), colorCode(nearestEntity->getFgColorCode(), nearestEntity->getBgColorCode()).c_str(), nearestEntity->getIcon(nearestEntity->pos, currentWorld->worldTime, currentLevel), colorCode(C_WHITE).c_str()));
+                    //printw("%c", );
+                    //Ui::setColor(C_WHITE);
+                    //printw("]");
 
 
 

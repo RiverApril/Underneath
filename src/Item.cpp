@@ -33,6 +33,7 @@ void Item::load(unsigned char* data, int* position) {
 
 Item* Item::cloneUnsafe(Item* oldE, Item* newE) {
 
+    newE->qty = oldE->qty;
     newE->name = oldE->name;
     newE->weight = oldE->weight;
     newE->artIndex = oldE->artIndex;
@@ -97,18 +98,23 @@ Item* Item::loadNew(unsigned char* data, int* position) {
         case ITEM_TYPE_ITEM:
             e = new Item();
             break;
+
         case ITEM_TYPE_EQUIPABLE:
             e = new Equipable();
             break;
+
         case ITEM_TYPE_WEAPON:
             e = new Weapon();
             break;
+
         case ITEM_TYPE_RANGED:
             e = new Ranged();
             break;
+
         case ITEM_TYPE_COMBAT_SPELL:
             e = new CombatSpell();
             break;
+            
         case ITEM_TYPE_POTION:
             e = new Potion();
             break;

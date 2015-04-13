@@ -183,7 +183,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
                             } else if (tid == Tiles::tileCrate->getIndex()) {
                                 TEChest* c = dynamic_cast<TEChest*> (te);
                                 for (Item* i : c->inventory) {
-                                    level->newEntity(new ItemEntity(i, posOfTile));
+                                    level->newEntity(new ItemEntity(Item::clone(i), posOfTile));
                                 }
                                 level->removeTileEntity(c);
                                 level->setTile(posOfTile, Tiles::tileFloor);
@@ -268,10 +268,10 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
 
             if (ranged) {
                 if (distanceSquared(pos, posOfEntity) > ranged->range * ranged->range) {
-                    console(Ui::colorCode(C_CODE_LIGHT_RED) + "Out of range!");
+                    console(Ui::colorCode(Ui::C_LIGHT_RED) + "Out of range!");
                     return 0;
                 } else if (!level->canSee(pos, posOfEntity, viewDistance, false)) {
-                    console(Ui::colorCode(C_CODE_LIGHT_RED) + "No line of sight!");
+                    console(Ui::colorCode(Ui::C_LIGHT_RED) + "No line of sight!");
                     return 0;
                 }
             }
@@ -288,7 +288,7 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
 
                     return useDelay(item);
                 }
-                console(Ui::colorCode(C_CODE_LIGHT_RED) + "Not enough mana.");
+                console(Ui::colorCode(Ui::C_LIGHT_RED) + "Not enough mana.");
                 return 0;
             }
 
@@ -302,7 +302,7 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
 
             return 0;
         } else {
-            console(Ui::colorCode(C_CODE_LIGHT_RED) + "No item equiped.");
+            console(Ui::colorCode(Ui::C_LIGHT_RED) + "No item equiped.");
             return 0;
         }
     }

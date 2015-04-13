@@ -17,7 +17,7 @@ extern yesNo aYes;
 extern yesNo aNo;
 extern yesNo aUndefined;
 
-const char C_CODE_DARK_BLACK = '0';
+/*const char C_CODE_DARK_BLACK = '0';
 const char C_CODE_DARK_RED = '1';
 const char C_CODE_DARK_GREEN = '2';
 const char C_CODE_DARK_YELLOW = '3';
@@ -39,11 +39,12 @@ const char C_CODE_LIGHT_GRAY = C_CODE_DARK_WHITE;
 const char C_CODE_DARK_GRAY = C_CODE_LIGHT_BLACK;
 
 const char C_CODE_WHITE = C_CODE_LIGHT_WHITE;
-const char C_CODE_BLACK = C_CODE_DARK_BLACK;
+const char C_CODE_BLACK = C_CODE_DARK_BLACK;*/
 
 namespace Ui {
 
-    string colorCode(char c);
+    //string colorCode(const char c);
+    string colorCode(const char fgc, const char bgc = C_BLACK);
 
     class Menu;
 

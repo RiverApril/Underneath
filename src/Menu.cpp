@@ -16,9 +16,16 @@ yesNo aUndefined = '?';
 
 namespace Ui {
 
-    string colorCode(const char c) {
+    /*string colorCode(const char c) {
         string s = "&";
         s += c;
+        s += C_BLACK;
+        return s;
+    }*/
+
+    string colorCode(const char fgc, const char bgc) {
+        string s = "&";
+        s += (char)(fgc | (bgc << 4));
         return s;
     }
 

@@ -68,6 +68,8 @@ namespace Ui {
 
     void setColor(Color fg, Color bg = C_BLACK, int attr = 0);
 
+    //Color codeToColor(char c);
+
     bool addChColor(char c, bool* lookingForCode);
 
     int printMultiLineColoredString(int y, int x, string s, int maxX = -1);

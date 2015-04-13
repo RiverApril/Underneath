@@ -204,6 +204,46 @@ namespace Ui {
         return a;
     }
 
+    /*Color codeToColor(char c){
+        switch (c) {
+            case C_CODE_DARK_BLACK:
+                return C_DARK_BLACK;
+            case C_CODE_DARK_RED:
+                return C_DARK_RED;
+            case C_CODE_DARK_GREEN:
+                return C_DARK_GREEN;
+            case C_CODE_DARK_YELLOW:
+                return C_DARK_YELLOW;
+            case C_CODE_DARK_BLUE:
+                return C_DARK_BLUE;
+            case C_CODE_DARK_MAGENTA:
+                return C_DARK_MAGENTA;
+            case C_CODE_DARK_CYAN:
+                return C_DARK_CYAN;
+            case C_CODE_DARK_WHITE:
+                return C_DARK_WHITE;
+            case C_CODE_LIGHT_BLACK:
+                return C_LIGHT_BLACK;
+            case C_CODE_LIGHT_RED:
+                return C_LIGHT_RED;
+            case C_CODE_LIGHT_GREEN:
+                return C_LIGHT_GREEN;
+            case C_CODE_LIGHT_YELLOW:
+                return C_LIGHT_YELLOW;
+            case C_CODE_LIGHT_BLUE:
+                return C_LIGHT_BLUE;
+            case C_CODE_LIGHT_MAGENTA:
+                return C_LIGHT_MAGENTA;
+            case C_CODE_LIGHT_CYAN:
+                return C_LIGHT_CYAN;
+            case C_CODE_LIGHT_WHITE:
+                return C_LIGHT_WHITE;
+
+            default:
+                return C_WHITE;
+        }
+    }*/
+
     bool addChColor(char c, bool* lookingForCode) {
         if (*lookingForCode) {
             *lookingForCode = false;
@@ -211,62 +251,9 @@ namespace Ui {
                 addch('&');
                 return true;
             } else {
-                Color color = 0;
-                switch (c) {
-                    case C_CODE_DARK_BLACK:
-                        color = C_DARK_BLACK;
-                        break;
-                    case C_CODE_DARK_RED:
-                        color = C_DARK_RED;
-                        break;
-                    case C_CODE_DARK_GREEN:
-                        color = C_DARK_GREEN;
-                        break;
-                    case C_CODE_DARK_YELLOW:
-                        color = C_DARK_YELLOW;
-                        break;
-                    case C_CODE_DARK_BLUE:
-                        color = C_DARK_BLUE;
-                        break;
-                    case C_CODE_DARK_MAGENTA:
-                        color = C_DARK_MAGENTA;
-                        break;
-                    case C_CODE_DARK_CYAN:
-                        color = C_DARK_CYAN;
-                        break;
-                    case C_CODE_DARK_WHITE:
-                        color = C_DARK_WHITE;
-                        break;
-                    case C_CODE_LIGHT_BLACK:
-                        color = C_LIGHT_BLACK;
-                        break;
-                    case C_CODE_LIGHT_RED:
-                        color = C_LIGHT_RED;
-                        break;
-                    case C_CODE_LIGHT_GREEN:
-                        color = C_LIGHT_GREEN;
-                        break;
-                    case C_CODE_LIGHT_YELLOW:
-                        color = C_LIGHT_YELLOW;
-                        break;
-                    case C_CODE_LIGHT_BLUE:
-                        color = C_LIGHT_BLUE;
-                        break;
-                    case C_CODE_LIGHT_MAGENTA:
-                        color = C_LIGHT_MAGENTA;
-                        break;
-                    case C_CODE_LIGHT_CYAN:
-                        color = C_LIGHT_CYAN;
-                        break;
-                    case C_CODE_LIGHT_WHITE:
-                        color = C_LIGHT_WHITE;
-                        break;
-
-                    default:
-                        color = C_WHITE;
-                        break;
-                }
-                setColor(color);
+                //setColor(codeToColor(c));
+                setColor(c & 0x0F, c >> 4);
+                return false;
             }
         } else if (c == '&') {
             *lookingForCode = true;
@@ -291,14 +278,16 @@ namespace Ui {
                     b++;
                 }
             }
-            if (b > maxX - x) {
+            if (b >= maxX - x) {
                 b = 0;
                 a++;
+                move(y+a, x);
             }
         }
         setColor(C_WHITE);
-        return a;
+        return a+(b==0?0:1);
     }
+
     void drawInventory(World* currentWorld, Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft) {
 
         int columnX = 0;
@@ -480,7 +469,7 @@ namespace Ui {
                         }
                     }
                     if (c) {
-                        mvprintw(b, columnX, "Requires: ");
+                        printMultiLineString(b, columnX, "Requires: ");
                     }
                 }else if(itemSpecial){
                     switch (itemSpecial->specialty) {
@@ -511,7 +500,7 @@ namespace Ui {
                                 frame = 0;
                             }
                             
-                            consolef("%f", angle);
+                            //consolef("%f", angle);
                             
                             
                             Arts::getArt(Arts::compassOut)->printAt(Point2(columnX, a));
