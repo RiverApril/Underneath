@@ -79,10 +79,11 @@ namespace ItemGenerator {
         wBow = atl(WeaponBase({"Longbow", "Bow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
         wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
 
-        wFireCombatSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .1, damFire, wepMagic).magical(8, 1).setWeight(.1).setArts({Arts::artScrollFire}));
-        wFrostCombatSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .1, damIce, wepMagic).magical(8, 1).setWeight(.1).setArts({Arts::artScrollFrost}));
-        wShockCombatSpell = atl(WeaponBase({"Electrocute", "Shock", "Zap"}, 1, .1, damShock, wepMagic).magical(8, 1).setWeight(.1).setArts({Arts::artScrollShock}));
+        wFireCombatSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
+        wFrostCombatSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
+        wShockCombatSpell = atl(WeaponBase({"Electrocute", "Shock", "Zap"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
 
+        
 
         wNatural = WeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee);
 
