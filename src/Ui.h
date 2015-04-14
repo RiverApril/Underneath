@@ -72,6 +72,8 @@ namespace Ui {
 
     bool addChColor(char c, bool* lookingForCode);
 
+    int stringLengthWithColored(string s);
+
     int printMultiLineColoredString(int y, int x, string s, int maxX = -1);
 
     int printMultiLineString(int y, int x, string s, int maxX = -1);

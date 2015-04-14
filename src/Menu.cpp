@@ -131,11 +131,15 @@ namespace Ui {
             }
             int p = ((int) consoleBuffer.size()) - j + (consoleScroll);
             if (p < consoleBuffer.size()) {
-                bool lookingForCode = false;
+                /*bool lookingForCode = false;
                 for (char c : consoleBuffer[p]) {
                     addChColor(c, &lookingForCode);
                 }
-                setColor(C_WHITE);
+                setColor(C_WHITE);*/
+                int len = stringLengthWithColored(consoleBuffer[p]) / (terminalSize.x - 2);
+                i -= len;
+                i -= printMultiLineColoredString(i, 2, consoleBuffer[p]) - 1;
+                i += len;
             }
             j++;
         }

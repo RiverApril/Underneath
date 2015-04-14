@@ -43,7 +43,12 @@ namespace Ui {
         } else if (in == '\n' || in == ' ') {
             if (player->abilityPoints > 0) {
                 if (player->abilities[selected] < player->maxAbilities[selected]) {
-                    openMenu(new MenuYesNo(formatString("Are you sure you want to spend a skill point on %s?", abilityNames[selected].c_str()), shouldSpendPoint, true));
+                    //openMenu(new MenuYesNo(formatString("Are you sure you want to spend a skill point on %s?", abilityNames[selected].c_str()), shouldSpendPoint, true));
+
+                    player->abilityPoints--;
+                    player->abilities.list[selected]++;
+                    player->updateVariablesForAbilities();
+
                 } else {
                     openMenu(new MenuMessage("Level Maxed."));
                 }

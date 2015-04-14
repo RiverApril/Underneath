@@ -87,8 +87,7 @@ namespace Tiles {
         tileFloor = new Tile('.', "floor", C_WHITE, bg, tileFlagPathable);
         //tilePath = new Tile('.', C_LIGHT_GRAY, bg, tileFlagPathable);
 
-        tileWall = new Tile(' ', "wall", C_BLACK, C_WHITE, tileFlagSolid | tileFlagTall, C_BLACK,
-                C_DARK_GRAY);
+        tileWall = new Tile(' ', "wall", C_BLACK, C_WHITE, tileFlagSolid | tileFlagTall, C_BLACK, C_DARK_GRAY);
         tilePonyWall = new Tile('.', "pony wall", C_BLACK, C_LIGHT_GRAY, tileFlagSolid, C_BLACK, C_DARK_GRAY);
 
         tileDoor = new Tile('%', "door", C_BLACK, C_WHITE, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity, C_BLACK, C_DARK_GRAY);
@@ -107,7 +106,7 @@ namespace Tiles {
         tileRubble = new Tile('#', "rubble", C_LIGHT_GRAY, bg, tileFlagPathable, C_DARK_GRAY, bg);
 
         
-        tileEdge = new Tile('.', "edge",  C_LIGHT_RED, C_WHITE, tileFlagSolid | tileFlagTall | tileFlagIndestructable);
+        tileEdge = new Tile('.', "edge",  C_LIGHT_RED, C_WHITE, tileFlagSolid | tileFlagTall | tileFlagIndestructable, C_BLACK, C_DARK_GRAY);
         tileUnset = new Tile('X', "unset",  C_LIGHT_MAGENTA, bg, tileFlagSolid | tileFlagTall | tileFlagIndestructable);
 
 

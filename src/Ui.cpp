@@ -26,7 +26,7 @@ void debug(string s) {
 }
 
 void console(string s) {
-    size_t lastI = 0;
+    /*size_t lastI = 0;
     for (size_t i = 0; i < s.length(); i++) {
         if (s[i] == '\n') {
             consoleBuffer.push_back(s.substr(lastI + 1, i - lastI));
@@ -36,7 +36,8 @@ void console(string s) {
             lastI = i;
         }
     }
-    consoleBuffer.push_back(s.substr(lastI));
+    consoleBuffer.push_back(s.substr(lastI));*/
+    consoleBuffer.push_back(s);
 }
 
 void debugf(string format, ...) {
@@ -264,6 +265,24 @@ namespace Ui {
         return false;
     }
 
+    int stringLengthWithColored(string s){
+        bool lookingForCode = false;
+        int l = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if(lookingForCode){
+                lookingForCode = false;
+                if(s[i] == '&'){
+                    l++;
+                }
+            }else if(s[i] == '&'){
+                lookingForCode = true;
+            }else{
+                l++;
+            }
+        }
+        return l;
+    }
+
     int printMultiLineColoredString(int y, int x, string s, int maxX) {
         int a = 0;
         int b = 0;
@@ -272,7 +291,7 @@ namespace Ui {
         }
         move(y, x);
         bool lookingForCode = false;
-        for (int i = 0; i < s.length(); i += 1) {
+        for (int i = 0; i < s.length(); i++) {
             if (!(s[i] == ' ' && b == 0)) {
                 if (addChColor(s[i], &lookingForCode)) {
                     b++;

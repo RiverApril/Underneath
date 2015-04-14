@@ -80,7 +80,7 @@ namespace Utility {
 
     string makeBar(int progress, int maxProgress, int size, char filled = '=', char empty = '-');
 
-    string repeatString(string s, size_t qty);
+    string repeatString(string s, int qty);
 
     template <typename T>
     void swap(T& a, T& b) {

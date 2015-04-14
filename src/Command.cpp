@@ -311,6 +311,26 @@ namespace Commands {
         }
     };
 
+    struct CommandClear : Command {
+
+        string help() {
+            return "Clears the console log";
+        }
+
+        string usage() {
+            return "clear";
+        }
+
+        string defaultName() {
+            return "clear";
+        }
+
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
+            consoleBuffer.clear();
+            return true;
+        }
+    };
+
     void initCommands() {
         commandList.push_back(new CommandHelp());
         commandList.push_back(new CommandEcho());
@@ -320,6 +340,7 @@ namespace Commands {
         commandList.push_back(new CommandGive());
         commandList.push_back(new CommandNextKey());
         commandList.push_back(new CommandGodMode());
+        commandList.push_back(new CommandClear());
     }
 
     void cleanupCommands() {

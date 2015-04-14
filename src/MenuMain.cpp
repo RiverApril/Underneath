@@ -30,12 +30,16 @@ namespace Ui {
     }
 
     void MenuMain::handleInput(int in) {
-        const int maxUiSelection = 1;
+        const int maxUiSelection = 2;
 
         move(selection + 2, 0);
         clrtoeol();
 
         switch (in) {
+            case KEY_ESCAPE:
+                running = false;
+                break;
+
             case '\n':
             case ' ':
                 switch (selection) {
@@ -43,7 +47,11 @@ namespace Ui {
                         openMenu(new MenuWorldSelect());
                         break;
 
-                    case maxUiSelection:
+                    case 1:
+                        //openMenu(new MenuSettings());
+                        break;
+
+                    case 2:
                         running = false;
                         break;
 
@@ -91,7 +99,12 @@ namespace Ui {
         Arts::getArt(Arts::artTitle)->printCenter(a);
         a += Arts::getArt(Arts::artTitle)->getSize().y;
         printCenter(a++, "%sPlay%s", selection == 0 ? "- " : "  ", selection == 0 ? " -" : "  ");
-        printCenter(a++, "%sExit%s", selection == 1 ? "- " : "  ", selection == 1 ? " -" : "  ");
+
+        setColor(C_DARK_GRAY);
+        printCenter(a++, "%sSettings%s", selection == 1 ? "- " : "  ", selection == 1 ? " -" : "  ");
+        setColor(C_BLACK);
+
+        printCenter(a++, "%sExit%s", selection == 2 ? "- " : "  ", selection == 2 ? " -" : "  ");
 
         a += 4;
 
