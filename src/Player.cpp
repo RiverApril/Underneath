@@ -392,6 +392,7 @@ void Player::gainXp(double amount) {
         level += 1;
         setNextLevelXp();
         Verbalizer::leveledUp(this);
+        leveledUp = true;
     }
 }
 

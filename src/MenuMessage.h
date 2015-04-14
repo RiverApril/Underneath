@@ -17,6 +17,7 @@ namespace Ui {
     public:
 
         MenuMessage(string message);
+        MenuMessage(vector<string> message);
 
         ~MenuMessage() {
         }
@@ -24,7 +25,7 @@ namespace Ui {
         void handleInput(int in);
         void update();
 
-        string message;
+        vector<string> message;
 
 
     };

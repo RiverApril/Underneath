@@ -12,6 +12,7 @@
 #include "MenuStats.h"
 #include "MenuYesNo.h"
 #include "MenuDebug.h"
+#include "MenuMessage.h"
 #include "AiEntity.h"
 #include "Math.h"
 #include "Utility.h"
@@ -468,6 +469,13 @@ namespace Ui {
             render(currentWorld->worldTime);
 
             currentWorld->worldLastTime = currentWorld->worldTime;
+        }
+
+        if(currentPlayer){
+            if(currentPlayer->leveledUp){
+                openMenu(new MenuMessage({"Level up!", "", string("Press [")+(char)(Key::statsMenu)+string("] to spend skill points.")}));
+                currentPlayer->leveledUp = false;
+            }
         }
 
     }

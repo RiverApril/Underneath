@@ -11,6 +11,10 @@
 namespace Ui {
 
     MenuMessage::MenuMessage(string message) : Menu() {
+        this->message = {message};
+    }
+
+    MenuMessage::MenuMessage(vector<string> message) : Menu() {
         this->message = message;
     }
 
@@ -31,7 +35,11 @@ namespace Ui {
         setColor(C_WHITE);
         move(0, 0);
         clrtobot();
-        printCenter(terminalSize.y / 2 - 2, message);
-        printCenter(terminalSize.y / 2, "Press enter to continue...");
+        int y = (int)(terminalSize.y - message.size()) / 2;
+        for(string line : message){
+        	printCenter(y++, line);
+        }
+        y+=2;
+        printCenter(y, "Press enter to continue...");
     }
 }

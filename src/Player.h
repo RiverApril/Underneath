@@ -125,7 +125,11 @@ public:
             return true;
         }
         return false;
-    }*/
+     }*/
+
+
+    //don't need to save
+    bool leveledUp = false;
 
 
 protected:
@@ -135,7 +139,8 @@ protected:
     int timeSinceCombat = 0;
     bool outOfCombatHealing = false;
 
-    Item* hotbar[10] = {nullptr};
+
+    //Item* hotbar[10] = {nullptr};
 
     double useDelay(Item* item);
 
