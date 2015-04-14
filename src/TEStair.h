@@ -31,6 +31,10 @@ struct TEStair : public TileEntity {
         return TILE_ENTITY_TYPE_STAIR;
     }
 
+    virtual string debugString(){
+        return pos.toString()+(up?" up '":" down '")+levelName+"'";
+    }
+
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(unsigned char* data, int* position);

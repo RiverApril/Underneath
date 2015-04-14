@@ -30,6 +30,10 @@ struct TEMimic : public TileEntity {
         return TILE_ENTITY_TYPE_MIMIC;
     }
 
+    virtual string debugString(){
+        return pos.toString();
+    }
+
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(unsigned char* data, int* position);

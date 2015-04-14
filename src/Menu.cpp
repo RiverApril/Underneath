@@ -10,9 +10,9 @@
 #include "Command.h"
 #include "MenuMain.h"
 
-yesNo aYes = 'y';
-yesNo aNo = 'n';
-yesNo aUndefined = '?';
+//yesNo aYes = 'y';
+//yesNo aNo = 'n';
+//yesNo aUndefined = '?';
 
 namespace Ui {
 

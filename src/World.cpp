@@ -375,12 +375,13 @@ namespace WorldLoader {
         Player* newPlayer = dynamic_cast<Player*> (Player::clone(world->currentPlayer));
 
         world->currentLevel->actuallyRemoveEntityUnsafe(world->currentPlayer, true);
+        string oldName = world->currentLevel->getName();
         delete world->currentLevel;
         world->currentLevel = nullptr;
 
         Level* newLevel = new Level(world, newName, newSize, newDifficulty);
 
-        newLevel->generate((unsigned int) rand(), entrance, newName);
+        newLevel->generate((unsigned int) rand(), entrance, oldName);
 
         world->currentPlayer = newPlayer;
         world->currentPlayer->pos = entrance;

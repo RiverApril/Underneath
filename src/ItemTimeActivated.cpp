@@ -18,10 +18,12 @@ ItemTimeActivated::ItemTimeActivated(TimeActivatedType timeActivatedType, double
     switch (timeActivatedType) {
         case timeActivatedBomb:
             name = "Harmful Bomb";
+            artIndex = Arts::artBomb;
             break;
 
         case timeActivatedWallBomb:
-			name = "Destructive Bomb";
+            name = "Destructive Bomb";
+            artIndex = Arts::artBomb;
             break;
 
         default:

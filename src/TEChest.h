@@ -31,6 +31,10 @@ struct TEChest : public TileEntity, public Inventory {
         return TILE_ENTITY_TYPE_CHEST;
     }
 
+    virtual string debugString(){
+        return pos.toString()+", items("+to_string(inventory.size())+")";
+    }
+
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(unsigned char* data, int* position);
