@@ -32,3 +32,4 @@ compile.sh
 *.*~
 *.o
 core
+settings.txt

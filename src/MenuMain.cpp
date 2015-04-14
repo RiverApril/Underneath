@@ -10,6 +10,8 @@
 #include "MenuGame.h"
 #include "MenuWorldSelect.h"
 #include "Global.h"
+#include "Controls.h"
+#include "MenuControls.h"
 
 namespace Ui {
 
@@ -35,47 +37,36 @@ namespace Ui {
         move(selection + 2, 0);
         clrtoeol();
 
-        switch (in) {
-            case KEY_ESCAPE:
-                running = false;
-                break;
+        if(in == KEY_ESCAPE){
+            running = false;
+        } else if(in == KEY_ENTER || in == '\n' || in == ' '){
+            switch (selection) {
+                case 0:
+                    openMenu(new MenuWorldSelect());
+                    break;
 
-            case '\n':
-            case ' ':
-                switch (selection) {
-                    case 0:
-                        openMenu(new MenuWorldSelect());
-                        break;
+                case 1:
+                    openMenu(new MenuControls());
+                    break;
 
-                    case 1:
-                        //openMenu(new MenuSettings());
-                        break;
+                case 2:
+                    running = false;
+                    break;
 
-                    case 2:
-                        running = false;
-                        break;
+                default:
+                    break;
+            }
+        }else if(in == Key::uiUp){
+            selection--;
+            if (selection < 0) {
+                selection = maxUiSelection;
+            }
 
-                    default:
-                        break;
-                }
-                break;
-
-            case KEY_UP:
-                selection--;
-                if (selection < 0) {
-                    selection = maxUiSelection;
-                }
-                break;
-
-            case KEY_DOWN:
-                selection++;
-                if (selection > maxUiSelection) {
-                    selection = 0;
-                }
-                break;
-
-            default:
-                break;
+        }else if(in == Key::uiDown){
+            selection++;
+            if (selection > maxUiSelection) {
+                selection = 0;
+            }
         }
 
     }
@@ -100,9 +91,9 @@ namespace Ui {
         a += Arts::getArt(Arts::artTitle)->getSize().y;
         printCenter(a++, "%sPlay%s", selection == 0 ? "- " : "  ", selection == 0 ? " -" : "  ");
 
-        setColor(C_DARK_GRAY);
-        printCenter(a++, "%sSettings%s", selection == 1 ? "- " : "  ", selection == 1 ? " -" : "  ");
-        setColor(C_BLACK);
+        //setColor(C_DARK_GRAY);
+        printCenter(a++, "%sControls%s", selection == 1 ? "- " : "  ", selection == 1 ? " -" : "  ");
+        //setColor(C_BLACK);
 
         printCenter(a++, "%sExit%s", selection == 2 ? "- " : "  ", selection == 2 ? " -" : "  ");
 

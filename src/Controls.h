@@ -11,6 +11,21 @@
 
 #include "Global.h"
 
+#define keyCatPlayer 1
+#define keyCatUi 2
+
+struct KeyBind{
+    int* key = nullptr;
+    int catagory = 0;
+    string name = "UNDEFINED";
+
+    KeyBind(string name, int* key, int catagory){
+        this->name = name;
+        this->key = key;
+        this->catagory = catagory;
+    }
+};
+
 namespace Key {
 
     //In Game
@@ -19,6 +34,7 @@ namespace Key {
     extern int moveLeft;
     extern int moveRight;
     extern int interact;
+    extern int inspect;
     extern int adjustConsole;
     extern int waitUntilHealed;
 
@@ -46,5 +62,9 @@ namespace Key {
     extern int takeAll;
 
 }
+
+extern vector<KeyBind> keybindings;
+
+extern vector<int> reservedKeys;
 
 #endif /* defined(__Underneath__Controls__) */

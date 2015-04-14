@@ -15,6 +15,7 @@
 #include "ItemGenerator.h"
 #include "EnemyGenerator.h"
 #include "Level.h"
+#include "Settings.h"
 
 int main(int argc, const char** argv) {
 
@@ -58,6 +59,7 @@ int main(int argc, const char** argv) {
     Ui::initNCurses();
     Commands::initCommands();
     EnemyGenerator::initEnemies();
+    Setting::loadSettings(UnderneathDir + "settings.txt");
 
 
     Ui::MenuMain* mainMenu = new Ui::MenuMain();
@@ -73,6 +75,7 @@ int main(int argc, const char** argv) {
 
     delete mainMenu;
 
+    Setting::saveSettings(UnderneathDir + "settings.txt");
     EnemyGenerator::cleanupEnemies();
     Arts::cleanupArts();
     Tiles::cleanupTiles();
