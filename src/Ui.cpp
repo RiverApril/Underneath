@@ -95,12 +95,6 @@ namespace Ui {
     Color C_LIGHT_CYAN = 0xE;
     Color C_LIGHT_WHITE = 0xF;
 
-    Color C_LIGHT_GRAY = C_DARK_WHITE;
-    Color C_DARK_GRAY = C_LIGHT_BLACK;
-
-    Color C_WHITE = C_LIGHT_WHITE;
-    Color C_BLACK = C_DARK_BLACK;
-
     unsigned long tick = 0;
 
     /*double ms = 0;
@@ -140,10 +134,14 @@ namespace Ui {
         limitedColorMode = COLORS < 256;
 
         if (limitedColorMode) {
-            swap(C_DARK_RED, C_DARK_BLUE);
-            swap(C_LIGHT_RED, C_LIGHT_BLUE);
-            swap(C_DARK_CYAN, C_DARK_YELLOW);
-            swap(C_LIGHT_CYAN, C_LIGHT_YELLOW);
+            C_LIGHT_BLACK = C_DARK_BLACK;
+            C_LIGHT_RED = C_DARK_RED;
+            C_LIGHT_GREEN = C_DARK_GREEN;
+            C_LIGHT_YELLOW = C_DARK_YELLOW;
+            C_LIGHT_BLUE = C_DARK_BLUE;
+            C_LIGHT_MAGENTA = C_DARK_MAGENTA;
+            C_LIGHT_CYAN = C_DARK_CYAN;
+            //C_LIGHT_WHITE = C_DARK_WHITE;
         }
 
         initColorPairs();
@@ -154,13 +152,28 @@ namespace Ui {
 
     void initColorPairs() {
 
-        short a = 0;
+        if(limitedColorMode){
 
-        for (short i = 0; i < 0x10; i++) {
-            for (short j = 0; j < 0x10; j++) {
-                init_pair(a, j, i);
-                a++;
+            short a = 0;
+
+            for (short i = 0; i < 0x8; i++) {
+                for (short j = 0; j < 0x8; j++) {
+                    init_pair(a, j, i);
+                    a++;
+                }
             }
+
+        }else{
+
+            short a = 0;
+
+            for (short i = 0; i < 0x10; i++) {
+                for (short j = 0; j < 0x10; j++) {
+                    init_pair(a, j, i);
+                    a++;
+                }
+            }
+
         }
 
     }
@@ -172,18 +185,20 @@ namespace Ui {
 
     void setColor(Color fg, Color bg, int attr) {
         if (limitedColorMode) {
-            if (fg == 0x8) {
-                fg = 0x7;
-            } else if (fg >= 0x8) {
-                fg -= 0x8;
+            if(fg == 0xF && bg == 0x0){
+                fg = 0x0;
+            }else{
+                if (fg >= 0x8) {
+                    fg -= 0x8;
+                }
+                if (bg >= 0x8) {
+                    bg -= 0x8;
+                }
             }
-            if (bg == 0x8) {
-                bg = 0x7;
-            } else if (bg >= 0x8) {
-                bg -= 0x8;
-            }
+            attrset(COLOR_PAIR(fg + (bg * 0x8)) | attr);
+        }else{
+            attrset(COLOR_PAIR(fg + (bg * 0x10)) | attr);
         }
-        attrset(COLOR_PAIR(fg + (bg * 0x10)) | attr);
     }
 
     int printMultiLineString(int y, int x, string s, int maxX) {

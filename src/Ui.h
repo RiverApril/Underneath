@@ -48,11 +48,10 @@ namespace Ui {
     extern Color C_LIGHT_CYAN;
     extern Color C_LIGHT_WHITE;
 
-    extern Color C_LIGHT_GRAY;
-    extern Color C_DARK_GRAY;
-
-    extern Color C_WHITE;
-    extern Color C_BLACK;
+#define C_LIGHT_GRAY C_DARK_WHITE
+#define C_DARK_GRAY C_LIGHT_BLACK
+#define C_WHITE C_LIGHT_WHITE
+#define C_BLACK C_DARK_BLACK
 
 
 
