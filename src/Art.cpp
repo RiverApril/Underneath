@@ -38,6 +38,8 @@ namespace Arts {
     int artPotion2;
     int artPotion3;
     int artPotion4;
+    
+    int artBomb;
 
     int artKnife;
     int artDagger;
@@ -93,6 +95,8 @@ namespace Arts {
         Arts::artPotion2 = Arts::loadNew(ArtDir + "/potion2");
         Arts::artPotion3 = Arts::loadNew(ArtDir + "/potion3");
         Arts::artPotion4 = Arts::loadNew(ArtDir + "/potion4");
+        
+        Arts::artBomb = Arts::loadNew(ArtDir + "/bomb");
 
         Arts::artKnife = Arts::loadNew(ArtDir + "/knife");
         Arts::artDagger = Arts::loadNew(ArtDir + "/dagger");

@@ -24,10 +24,11 @@ const TileFlag tileFlagIndestructable = 1 << 6;
 class Tile {
 public:
 
-    Tile(char icon, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen = Ui::C_DARK_GRAY, Ui::Color bgColorUnseen = Ui::C_BLACK);
+    Tile(char icon, string name, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen = Ui::C_DARK_GRAY, Ui::Color bgColorUnseen = Ui::C_BLACK);
 
     char getIcon();
     int getIndex();
+    string getName();
     Ui::Color getFgColor(bool inView);
     Ui::Color getBgColor(bool inView);
 
@@ -46,6 +47,7 @@ public:
 private:
     char icon;
     int index;
+    string name;
     Ui::Color fgColor;
     Ui::Color bgColor;
     Ui::Color fgColorUnseen;

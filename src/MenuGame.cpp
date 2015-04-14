@@ -135,8 +135,10 @@ namespace Ui {
     }
 
     void MenuGame::viewUpdate() {
-        if (currentPlayer != nullptr) {
-            viewPos = currentPlayer->pos - (gameArea / 2);
+        if(currentWorld != nullptr){
+            if (currentPlayer != nullptr) {
+                viewPos = currentPlayer->pos - (gameArea / 2);
+            }
         }
     }
 
@@ -449,6 +451,33 @@ namespace Ui {
             } else if (in == '}') {
                 currentPlayer->heal(10);
 
+            } else if (in == 'q') {
+                if(controlMode == modePlayerControl){
+                    changeMode(modeSelectPosition);
+                    itemToBeUsedRange = 1000;
+                    targetPosition = currentPlayer->pos;
+                } else if(controlMode == modeSelectPosition){
+                    changeMode(modePlayerControl);
+                    if(currentLevel->getExplored(targetPosition)){
+                        console("Tile: "+currentLevel->tileAt(targetPosition)->getName());
+                        if(currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance, true)){
+                            for(Entity* e : currentLevel->entityList){
+                                if(!e->removed && e->pos == targetPosition){
+                                    console("Entity("+to_string(e->getEntityTypeId())+"): "+e->getName());
+                                }
+                            }
+                            for(TileEntity* t : currentLevel->tileEntityList){
+                                if(t->pos == targetPosition){
+                                    console("Tile Entity("+to_string(t->getTileEntityTypeId())+"): "+t->debugString());
+                                }
+                            }
+                        }else{
+                            console("Tile not in view.");
+                        }
+                    }else{
+                        console("Tile unexplored.");
+                    }
+                }
             }
         }
     }

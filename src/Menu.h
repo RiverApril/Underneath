@@ -13,9 +13,9 @@
 
 typedef char yesNo;
 
-extern yesNo aYes;
-extern yesNo aNo;
-extern yesNo aUndefined;
+const yesNo aYes = 'y';
+const yesNo aNo = 'n';
+const yesNo aUndefined = '?';
 
 /*const char C_CODE_DARK_BLACK = '0';
 const char C_CODE_DARK_RED = '1';

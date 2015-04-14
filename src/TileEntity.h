@@ -43,6 +43,10 @@ struct TileEntity {
 
     Point2 pos = Point2(0, 0);
 
+    virtual string debugString(){
+        return pos.toString();
+    }
+
 
 protected:
 

@@ -59,6 +59,8 @@ namespace Arts {
     extern int artPotion2;
     extern int artPotion3;
     extern int artPotion4;
+    
+    extern int artBomb;
 
     extern int artKnife;
     extern int artDagger;
