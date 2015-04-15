@@ -72,7 +72,7 @@ public:
 
     bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag);
 
-    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag);
+    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0);
 
     void genDebug(string s);
 

@@ -20,9 +20,9 @@ namespace Ui {
 
     void MenuMessage::handleInput(int in) {
         switch (in) {
-            case KEY_ENTER:
-            case 13:
             case '\n':
+            case ' ':
+            case KEY_ESCAPE:
                 closeThisMenu();
                 return;
 

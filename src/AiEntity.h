@@ -62,7 +62,7 @@ public:
 protected:
     int ai = aiNone;
 
-    Point2 lastKnownTargetPos;
+    Point2 lastKnownTargetPos = Point2Neg1;
     Alive* target = nullptr;
 
     double lastMoveTime = 0;

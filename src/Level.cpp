@@ -350,7 +350,7 @@ void Level::actuallyRemoveTileEntityUnsafe(TileEntity* e) {
     debugf("Failed to Remove Tile Entity: %d", e->getTileEntityTypeId());
 }
 
-vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag) {
+vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag) {
     vector<vector<int>> map = vector<vector<int>>(size.x, vector<int>(size.y));
 
     for (size_t i = 0; i < size.x; i++) {
@@ -397,7 +397,7 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag) {
                     Point2 p = Point2(i + c.x, j + c.y);
                     if ((abs(i) + abs(j)) == 1) {
                         if (inRange(p)) {
-                            if (tileAt(p)->hasFlag(requiredFlag)) {
+                            if (tileAt(p)->hasFlag(requiredFlag) && !tileAt(p)->hasFlag(bannedFlag)) {
                                 if (map[p.x][p.y] == -1) {
                                     map[p.x][p.y] = map[c.x][c.y] + 1;
                                     priorityQueue.push(p);
@@ -496,7 +496,7 @@ void Level::placeNewAiEntity(AiEntity* e, Point2 entrance) {
     Point2 p;
     do {
         p = Point2(findRandomWithoutFlag(tileFlagSolid));
-    } while (!canPathTo(entrance, p, tileFlagPathable | tileFlagSecretPathable) && canSee(entrance, p, e->viewDistance, false));
+    } while (!canPathTo(entrance, p, tileFlagPathable | tileFlagSecretPathable) || canSee(entrance, p, e->viewDistance, false));
 
     e->pos = p;
     newEntity(e);

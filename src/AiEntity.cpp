@@ -70,14 +70,22 @@ void AiEntity::runAi(double time, Level* level) {
         if (canSeeTarget) {
             lastKnownTargetPos = target->pos;
         }
-        if (lastKnownTargetPos != Point2(-1, -1)) {
+        if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
+            //console("LKTP: "+lastKnownTargetPos.toString()+"  TP: "+target->pos.toString()+"  P: "+pos.toString());
             Ranged* r = dynamic_cast<Ranged*> (activeWeapon);
             if (r && canSeeTarget && (distanceSquared(target->pos, pos) < (r->range * r->range))) {
                 speed.x = 0;
                 speed.y = 0;
             } else {
-                speed.x = pos.x > lastKnownTargetPos.x ? -1 : (pos.x < lastKnownTargetPos.x ? 1 : 0);
-                speed.y = pos.y > lastKnownTargetPos.y ? -1 : (pos.y < lastKnownTargetPos.y ? 1 : 0);
+                //speed.x = pos.x > lastKnownTargetPos.x ? -1 : (pos.x < lastKnownTargetPos.x ? 1 : 0);
+                //speed.y = pos.y > lastKnownTargetPos.y ? -1 : (pos.y < lastKnownTargetPos.y ? 1 : 0);
+                vector<Point2> path = level->getPathTo(pos, lastKnownTargetPos, tileFlagPathable | tileFlagSecretPathable);
+                if(!path.empty()){
+                    console((path[0]-pos).toString());
+                    speed.x = pos.x > path[0].x ? -1 : (pos.x < path[0].x ? 1 : 0);
+                    speed.y = pos.y > path[0].y ? -1 : (pos.y < path[0].y ? 1 : 0);
+                }
+                
             }
 
         }
@@ -89,6 +97,18 @@ void AiEntity::runAi(double time, Level* level) {
         moved = tryToMoveRelative(speed.xOnly(), level);
         if (!moved) {
             moved = tryToMoveRelative(speed.yOnly(), level);
+        }
+    }
+    
+    if (ai & aiAttackPlayer) {
+        if(!moved && speed != Point2Zero){
+            if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
+                console("Failed to move");
+                if(!canSeeTarget && level->canSee(pos, lastKnownTargetPos, agro ? viewDistance * agroViewDistanceMultiplier : viewDistance, false)){
+                    console("Lost Target");
+                    lastKnownTargetPos = Point2Neg1;
+                }
+            }
         }
     }
 
