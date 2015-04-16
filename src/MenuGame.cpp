@@ -469,7 +469,8 @@ namespace Ui {
             } else if (in == 'R') {
                 Point2 p = currentLevel->stairDownPos;
                 consolef("Stair Down: %s", p.toString().c_str());
-                timePassed += currentPlayer->moveAbsalute(p, currentLevel);
+                //timePassed += currentPlayer->moveAbsalute(p, currentLevel);
+                currentPlayer->pos = p;
 
             } else if (in == '[') {
                 currentPlayer->hurt(damDebug, 1);

@@ -505,8 +505,9 @@ void Level::placeNewAiEntity(AiEntity* e, Point2 entrance) {
 void Level::save(vector<unsigned char>* data) {
 
     Point2::save(size, data);
-    Point2::save(stairDownPos, data);
     Utility::saveInt(data, difficulty);
+
+    Point2::save(stairDownPos, data);
     for (size_t i = 0; i < size.x; i++) {
         for (size_t j = 0; j < size.y; j++) {
             Utility::saveInt8Bit(data, tileGrid[i][j].index);
@@ -529,6 +530,10 @@ void Level::save(vector<unsigned char>* data) {
 }
 
 void Level::load(unsigned char* data, int* position) {
+
+    //these happen beforehand:
+    //load size
+    //load difficulty
 
     stairDownPos = Point2::load(data, position);
 
