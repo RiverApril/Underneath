@@ -28,7 +28,7 @@ class Inventory;
 
 namespace Ui {
 
-    typedef char Color;
+    typedef unsigned char Color;
 
     extern Color C_DARK_BLACK;
     extern Color C_DARK_RED;

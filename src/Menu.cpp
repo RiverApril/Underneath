@@ -23,9 +23,13 @@ namespace Ui {
         return s;
     }*/
 
-    string colorCode(const char fgc, const char bgc) {
+    string colorCode(const unsigned char fgc, const unsigned char bgc) {
         string s = "&";
-        s += (char)(fgc | (bgc << 4));
+        if(limitedColorMode){
+        	s += (unsigned char)(fgc | (bgc << 2));
+        }else{
+            s += (unsigned char)(fgc | (bgc << 4));
+        }
         return s;
     }
 

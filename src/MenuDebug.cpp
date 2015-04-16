@@ -30,6 +30,14 @@ namespace Ui {
         clrtobot();
         setColor(C_WHITE);
 
+        for(int i=0;i<16;i++){
+            for(int j=0;j<16;j++){
+                printMultiLineColoredString(i, j, colorCode(i, j)+"#");
+            }
+        }
+
+        /*
+
         int a = 0;
 
         mvvline(a, column1 - 1, '|', terminalSize.y);
@@ -53,7 +61,7 @@ namespace Ui {
             mvprintw(a, column2, "%.2f", w.useDelay);
             mvprintw(a, column3, "%.2f", w.damage / w.useDelay);
             a++;
-        }
+        }*/
 
     }
 

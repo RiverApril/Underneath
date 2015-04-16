@@ -263,12 +263,17 @@ namespace Ui {
     bool addChColor(char c, bool* lookingForCode) {
         if (*lookingForCode) {
             *lookingForCode = false;
-            if (c == '&') {
+            if (c == 0) {
                 addch('&');
                 return true;
             } else {
                 //setColor(codeToColor(c));
-                setColor(c & 0x0F, c >> 4);
+                unsigned char uc = (unsigned char)c;
+                if(limitedColorMode){
+                    setColor(uc & 0x8, uc >> 2);
+                }else{
+                	setColor(uc & 0xF, uc >> 4);
+                }
                 return false;
             }
         } else if (c == '&') {
@@ -286,7 +291,7 @@ namespace Ui {
         for (int i = 0; i < s.length(); i++) {
             if(lookingForCode){
                 lookingForCode = false;
-                if(s[i] == '&'){
+                if(s[i] == 0){
                     l++;
                 }
             }else if(s[i] == '&'){
