@@ -84,6 +84,8 @@ extern string UnderneathDir;
 extern string WorldsDir;
 extern string ArtDir;
 
+#define defaultTimeout 100
+
 
 
 #endif /* defined(__Underneath__Global__) */

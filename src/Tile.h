@@ -11,6 +11,7 @@
 
 #include "Global.h"
 #include "Ui.h"
+#include "Icon.h"
 
 typedef int TileFlag;
 const TileFlag tileFlagSolid = 1 << 0;
@@ -24,34 +25,42 @@ const TileFlag tileFlagIndestructable = 1 << 6;
 class Tile {
 public:
 
-    Tile(char icon, string name, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen = Ui::C_DARK_GRAY, Ui::Color bgColorUnseen = Ui::C_BLACK);
+    Tile(Icon* icon, string name, TileFlag flags, Icon* unseen);
 
-    char getIcon();
+    Tile(Icon* icon, string name, TileFlag flags);
+
+    ~Tile(){
+        delete icon;
+        delete iconUnseen;
+    }
+
+    Icon* getIcon(bool inView);
     int getIndex();
     string getName();
-    Ui::Color getFgColor(bool inView);
-    Ui::Color getBgColor(bool inView);
+    //Ui::Color getFgColor(bool inView);
+    //Ui::Color getBgColor(bool inView);
 
     bool isSolid() {
         return flags & tileFlagSolid;
     }
 
     bool isTall() {
-        return (flags & tileFlagTall) != 0;
+        return flags & tileFlagTall;
     }
 
     bool hasFlag(TileFlag flag) {
-        return (flags & flag) != 0;
+        return flags & flag;
     }
 
 private:
-    char icon;
+    Icon* icon;
+    Icon* iconUnseen;
     int index;
     string name;
-    Ui::Color fgColor;
-    Ui::Color bgColor;
-    Ui::Color fgColorUnseen;
-    Ui::Color bgColorUnseen;
+    //Ui::Color fgColor;
+    //Ui::Color bgColor;
+    //Ui::Color fgColorUnseen;
+    //Ui::Color bgColorUnseen;
     TileFlag flags;
 };
 

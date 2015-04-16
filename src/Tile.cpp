@@ -9,22 +9,21 @@
 #include "Global.h"
 #include "Tile.h"
 
-Tile::Tile(char icon, string name, Ui::Color fgColor, Ui::Color bgColor, TileFlag flags, Ui::Color fgColorUnseen, Ui::Color bgColorUnseen) {
+Tile::Tile(Icon* icon, string name, TileFlag flags, Icon* unseen) {
     this->icon = icon;
+    this->iconUnseen = unseen;
     this->name = name;
     this->index = (int) Tiles::tileList.size();
     Tiles::tileList.push_back(this);
 
-    this->fgColor = fgColor;
-    this->bgColor = bgColor;
-    this->fgColorUnseen = fgColorUnseen;
-    this->bgColorUnseen = bgColorUnseen;
-
     this->flags = flags;
 }
 
-char Tile::getIcon() {
-    return icon;
+Tile::Tile(Icon* icon, string name, TileFlag flags) : Tile(icon, name, flags, new BasicIcon(icon->getChar(0, Point2Neg1, nullptr), Ui::C_DARK_GRAY, Ui::C_BLACK)) {
+}
+
+Icon* Tile::getIcon(bool inView) {
+    return inView?icon:iconUnseen;
 }
 
 int Tile::getIndex() {
@@ -35,13 +34,13 @@ string Tile::getName() {
     return name;
 }
 
-Ui::Color Tile::getFgColor(bool inView) {
+/*Ui::Color Tile::getFgColor(bool inView) {
     return inView ? fgColor : fgColorUnseen;
 }
 
 Ui::Color Tile::getBgColor(bool inView) {
     return inView ? bgColor : bgColorUnseen;
-}
+}*/
 
 namespace Tiles {
 
@@ -84,40 +83,39 @@ namespace Tiles {
 
         Color bg = C_BLACK;
 
-        tileFloor = new Tile('.', "floor", C_WHITE, bg, tileFlagPathable);
-        //tilePath = new Tile('.', C_LIGHT_GRAY, bg, tileFlagPathable);
+        tileFloor = new Tile(new BasicIcon('.', C_WHITE, C_BLACK), "floor", tileFlagPathable);
 
-        tileWall = new Tile(' ', "wall", C_BLACK, C_WHITE, tileFlagSolid | tileFlagTall, C_BLACK, C_DARK_GRAY);
-        tilePonyWall = new Tile('.', "pony wall", C_BLACK, C_LIGHT_GRAY, tileFlagSolid, C_BLACK, C_DARK_GRAY);
+        tileWall = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "wall", tileFlagSolid | tileFlagTall, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
+        tilePonyWall = new Tile(new BasicIcon('.', C_BLACK, C_LIGHT_GRAY), "pony wall", tileFlagSolid, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
 
-        tileDoor = new Tile('%', "door", C_BLACK, C_WHITE, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity, C_BLACK, C_DARK_GRAY);
-        tileSecretDoor = new Tile(' ', "definitely a wall", C_BLACK, C_WHITE, tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagSecretPathable | tileFlagHasTileEntity, C_BLACK, C_DARK_GRAY);
-        tileOpenDoor = new Tile('/', "open door", C_WHITE, bg, tileFlagPathable);
-
+        tileDoor = new Tile(new BasicIcon('%', C_BLACK, C_WHITE), "door", tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity, new BasicIcon('%', C_BLACK, C_DARK_GRAY));
+        tileSecretDoor = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "definitely a wall", tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagSecretPathable | tileFlagHasTileEntity, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
+        tileOpenDoor = new Tile(new BasicIcon('/', C_WHITE, bg), "open door", tileFlagPathable);
 
 
-        tileStairUp = new Tile('^', "stair up",  C_LIGHT_GREEN, bg, tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
-        tileStairDown = new Tile('v', "stair down",  C_LIGHT_GREEN, bg, tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
 
-        tileChest = new Tile('+', "chest", C_LIGHT_GREEN, bg, tileFlagSolid | tileFlagHasTileEntity);
-        tileCrate = new Tile('+', "crate", C_DARK_YELLOW, bg, tileFlagSolid | tileFlagHasTileEntity);
+        tileStairUp = new Tile(new BasicIcon('^',  C_LIGHT_GREEN, bg), "stair up", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
+        tileStairDown = new Tile(new BasicIcon('v',  C_LIGHT_GREEN, bg), "stair down", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
+
+        tileChest = new Tile(new BasicIcon('+', C_LIGHT_GREEN, bg), "chest", tileFlagSolid | tileFlagHasTileEntity);
+        tileCrate = new Tile(new BasicIcon('+', C_DARK_YELLOW, bg), "crate", tileFlagSolid | tileFlagHasTileEntity);
 
 
-        tileRubble = new Tile('#', "rubble", C_LIGHT_GRAY, bg, tileFlagPathable, C_DARK_GRAY, bg);
+        tileRubble = new Tile(new BasicIcon('#', C_LIGHT_GRAY, bg), "rubble", tileFlagPathable, new BasicIcon('#', C_DARK_GRAY, bg));
 
         
-        tileEdge = new Tile('.', "edge",  C_LIGHT_RED, C_WHITE, tileFlagSolid | tileFlagTall | tileFlagIndestructable, C_BLACK, C_DARK_GRAY);
-        tileUnset = new Tile('X', "unset",  C_LIGHT_MAGENTA, bg, tileFlagSolid | tileFlagTall | tileFlagIndestructable);
+        tileEdge = new Tile(new BasicIcon('.',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon('.', C_BLACK, C_DARK_GRAY));
+        tileUnset = new Tile(new BasicIcon('X',  C_LIGHT_MAGENTA, bg), "unset", tileFlagSolid | tileFlagTall | tileFlagIndestructable);
 
 
-        tileDebug1 = new Tile('1', "debug 1", C_LIGHT_GREEN, bg, tileFlagPathable);
-        tileDebug2 = new Tile('2', "debug 2", C_LIGHT_GREEN, bg, tileFlagPathable);
-        tileDebug3 = new Tile('3', "debug 3", C_LIGHT_GREEN, bg, tileFlagPathable);
-        tileDebug4 = new Tile('4', "debug 4", C_LIGHT_GREEN, bg, tileFlagPathable);
-        tileDebug5 = new Tile('5', "debug 5", C_LIGHT_GREEN, bg, tileFlagPathable);
-        tileDebug6 = new Tile('6', "debug 6", C_LIGHT_GREEN, bg, tileFlagPathable);
+        tileDebug1 = new Tile(new BasicIcon('1', C_LIGHT_GREEN, bg), "debug 1", tileFlagPathable);
+        tileDebug2 = new Tile(new BasicIcon('2', C_LIGHT_GREEN, bg), "debug 2", tileFlagPathable);
+        tileDebug3 = new Tile(new BasicIcon('3', C_LIGHT_GREEN, bg), "debug 3", tileFlagPathable);
+        tileDebug4 = new Tile(new BasicIcon('4', C_LIGHT_GREEN, bg), "debug 4", tileFlagPathable);
+        tileDebug5 = new Tile(new BasicIcon('5', C_LIGHT_GREEN, bg), "debug 5", tileFlagPathable);
+        tileDebug6 = new Tile(new BasicIcon('6', C_LIGHT_GREEN, bg), "debug 6", tileFlagPathable);
 
-        tileTemp = new Tile('?', "temp", C_LIGHT_RED, bg, tileFlagPathable);
+        tileTemp = new Tile(new BasicIcon('?', C_LIGHT_RED, bg), "temp", tileFlagPathable);
     }
 
     void cleanupTiles() {

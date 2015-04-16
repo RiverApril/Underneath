@@ -22,10 +22,10 @@ Entity::Entity() : Entity(' ', Point2Zero, Ui::C_WHITE) {
 
 }
 
-Entity::Entity(char icon, Point2 startPos, Ui::Color colorCode) {
+Entity::Entity(char icon, Point2 startPos, Ui::Color color) {
     this->defaultIcon = icon;
-    this->fgColorCode = colorCode;
-    this->bgColorCode = Ui::C_BLACK;
+    this->fgColor = color;
+    this->bgColor = Ui::C_BLACK;
 
     pos = startPos;
     lastPos = startPos;
@@ -74,7 +74,7 @@ bool Entity::update(double deltaTime, double time, Level* level) {
     return false;
 }
 
-char Entity::getIcon(Point2 p, double time, Level* level) {
+/*char Entity::getIcon(Point2 p, double time, Level* level) {
     return defaultIcon;
 }
 
@@ -84,15 +84,15 @@ Ui::Color Entity::getFgColorCode() {
 
 Ui::Color Entity::getBgColorCode() {
     return bgColorCode;
-}
+}*/
 
 Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE) {
 
     newE->defaultIcon = oldE->defaultIcon;
     newE->pos = oldE->pos;
     newE->lastPos = oldE->lastPos;
-    newE->fgColorCode = oldE->fgColorCode;
-    newE->bgColorCode = oldE->bgColorCode;
+    newE->fgColor = oldE->fgColor;
+    newE->bgColor = oldE->bgColor;
     newE->solid = oldE->solid;
 
     return newE;
@@ -150,8 +150,8 @@ void Entity::save(vector<unsigned char>* data) {
     Point2::save(pos, data);
     Point2::save(lastPos, data);
 
-    Utility::saveUnsignedChar(data, (unsigned char) fgColorCode);
-    Utility::saveUnsignedChar(data, (unsigned char) bgColorCode);
+    Utility::saveUnsignedChar(data, (unsigned char) fgColor);
+    Utility::saveUnsignedChar(data, (unsigned char) bgColor);
     Utility::saveBool(data, solid);
 }
 
@@ -169,8 +169,8 @@ void Entity::load(unsigned char* data, int* position) {
     pos = Point2::load(data, position);
     lastPos = Point2::load(data, position);
 
-    fgColorCode = (char) Utility::loadUnsignedChar(data, position);
-    bgColorCode = (char) Utility::loadUnsignedChar(data, position);
+    fgColor = (char) Utility::loadUnsignedChar(data, position);
+    bgColor = (char) Utility::loadUnsignedChar(data, position);
     solid = Utility::loadBool(data, position);
 }
 

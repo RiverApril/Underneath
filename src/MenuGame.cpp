@@ -49,6 +49,7 @@ namespace Ui {
 
         viewUpdate();
 
+        spinyIcon = new AnimatedIcon({'-', '\\', '|', '/'}, 1, C_WHITE, C_BLACK);
 
     }
 
@@ -56,6 +57,7 @@ namespace Ui {
         delete currentWorld;
         delete saveAnswer;
         delete useItem;
+        delete spinyIcon;
     }
 
     bool MenuGame::init(string worldName, Abilities<int> playerAbilities) {
@@ -162,9 +164,11 @@ namespace Ui {
                 } else {
                     Tile* tempTile = currentLevel->tileAt(p);
 
-                    fg = tempTile->getFgColor(inView);
-                    bg = tempTile->getBgColor(inView);
-                    symbol = tempTile->getIcon();
+                    Icon* tempIcon = tempTile->getIcon(inView);
+
+                    fg = tempIcon->getFgColor(tick, p, currentLevel);
+                    bg = tempIcon->getBgColor(tick, p, currentLevel);
+                    symbol = tempIcon->getChar(tick, p, currentLevel);
 
                     if (currentLevel->inRange(p)) {
                         Entity* e = nullptr;
@@ -186,14 +190,14 @@ namespace Ui {
 
                             if (inView) {
                                 if (currentPlayer == e && controlMode == modeSelectDirection) {
-                                    fg = e->getBgColorCode();
-                                    bg = e->getFgColorCode();
+                                    fg = e->getBgColor(tick, p, currentLevel);
+                                    bg = e->getFgColor(tick, p, currentLevel);
                                 } else {
-                                    fg = e->getFgColorCode();
-                                    bg = e->getBgColorCode();
+                                    fg = e->getFgColor(tick, p, currentLevel);
+                                    bg = e->getBgColor(tick, p, currentLevel);
                                 }
 
-                                symbol = e->getIcon(p, tick, currentLevel);
+                                symbol = e->getChar(tick, p, currentLevel);
 
                             }
 
@@ -422,7 +426,7 @@ namespace Ui {
                                 break;
                             }
                         }
-                        timeout(-1);
+                        timeout(defaultTimeout);
                         if(currentPlayer->getHp() == currentPlayer->getMaxHp() && currentPlayer->getMp() == currentPlayer->getMaxMp()){
                             console("Fully healed.");
                         }
@@ -594,6 +598,9 @@ namespace Ui {
 
             Ui::setColor(C_WHITE);
 
+            mvprintw(a, gameArea.x + 1, "Tick [%c]: %d", spinyIcon->getChar(tick, Point2Neg1, currentLevel), tick);
+            a++;
+
             mvprintw(a, gameArea.x + 1, "Time: %.2f", displayTime);
             a++;
             mvprintw(a, gameArea.x + 1, "Time: %s", Utility::intToRomanNumerals((int) displayTime).c_str());
@@ -613,7 +620,7 @@ namespace Ui {
                     Ui::setColor(C_WHITE);
 
 
-                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("%s [%s%c%s]", nearestEntity->getName().c_str(), colorCode(nearestEntity->getFgColorCode(), nearestEntity->getBgColorCode()).c_str(), nearestEntity->getIcon(nearestEntity->pos, currentWorld->worldTime, currentLevel), colorCode(C_WHITE).c_str()));
+                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("%s [%s%c%s]", nearestEntity->getName().c_str(), colorCode(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)).c_str(), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), colorCode(C_WHITE).c_str()));
                     //printw("%c", );
                     //Ui::setColor(C_WHITE);
                     //printw("]");

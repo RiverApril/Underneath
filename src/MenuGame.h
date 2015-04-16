@@ -27,6 +27,8 @@ namespace Ui {
 
         ~MenuGame();
 
+        Icon* spinyIcon;
+
         bool init(string worldName, Abilities<int> playerAbilities);
 
         bool openUi();

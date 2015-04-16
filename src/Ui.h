@@ -9,8 +9,11 @@
 #ifndef __Underneath__Ui__
 #define __Underneath__Ui__
 
+#define escapeColorCode '\377'
+
 #include "Global.h"
 #include "Geometry.h"
+#include "Color.h"
 
 class World;
 
@@ -27,33 +30,6 @@ class Player;
 class Inventory;
 
 namespace Ui {
-
-    typedef unsigned char Color;
-
-    extern Color C_DARK_BLACK;
-    extern Color C_DARK_RED;
-    extern Color C_DARK_GREEN;
-    extern Color C_DARK_YELLOW;
-    extern Color C_DARK_BLUE;
-    extern Color C_DARK_MAGENTA;
-    extern Color C_DARK_CYAN;
-    extern Color C_DARK_WHITE;
-
-    extern Color C_LIGHT_BLACK;
-    extern Color C_LIGHT_RED;
-    extern Color C_LIGHT_GREEN;
-    extern Color C_LIGHT_YELLOW;
-    extern Color C_LIGHT_BLUE;
-    extern Color C_LIGHT_MAGENTA;
-    extern Color C_LIGHT_CYAN;
-    extern Color C_LIGHT_WHITE;
-
-#define C_LIGHT_GRAY C_DARK_WHITE
-#define C_DARK_GRAY C_LIGHT_BLACK
-#define C_WHITE C_LIGHT_WHITE
-#define C_BLACK C_DARK_BLACK
-
-
 
 
     extern const Color COLOR_DEFAULT_ENTITY;

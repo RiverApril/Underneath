@@ -77,24 +77,6 @@ string plural(string n) {
 
 namespace Ui {
 
-    Color C_DARK_BLACK = 0x0; // white when background is black
-    Color C_DARK_RED = 0x1;
-    Color C_DARK_GREEN = 0x2;
-    Color C_DARK_YELLOW = 0x3;
-    Color C_DARK_BLUE = 0x4;
-    Color C_DARK_MAGENTA = 0x5;
-    Color C_DARK_CYAN = 0x6;
-    Color C_DARK_WHITE = 0x7;
-
-    Color C_LIGHT_BLACK = 0x8;
-    Color C_LIGHT_RED = 0x9;
-    Color C_LIGHT_GREEN = 0xA;
-    Color C_LIGHT_YELLOW = 0xB;
-    Color C_LIGHT_BLUE = 0xC;
-    Color C_LIGHT_MAGENTA = 0xD;
-    Color C_LIGHT_CYAN = 0xE;
-    Color C_LIGHT_WHITE = 0xF;
-
     unsigned long tick = 0;
 
     /*double ms = 0;
@@ -127,7 +109,7 @@ namespace Ui {
         noecho();
         cbreak();
         curs_set(0);
-        timeout(-1);
+        timeout(defaultTimeout);
         ESCDELAY = 1;
 
 
@@ -263,11 +245,10 @@ namespace Ui {
     bool addChColor(char c, bool* lookingForCode) {
         if (*lookingForCode) {
             *lookingForCode = false;
-            if (c == 0) {
+            if (c == escapeColorCode) {
                 addch('&');
                 return true;
             } else {
-                //setColor(codeToColor(c));
                 unsigned char uc = (unsigned char)c;
                 if(limitedColorMode){
                     setColor(uc & 0x8, uc >> 2);
@@ -291,7 +272,7 @@ namespace Ui {
         for (int i = 0; i < s.length(); i++) {
             if(lookingForCode){
                 lookingForCode = false;
-                if(s[i] == 0){
+                if(s[i] == escapeColorCode){
                     l++;
                 }
             }else if(s[i] == '&'){

@@ -15,6 +15,7 @@
 #include "UtilitySpell.h"
 #include "EnemyGenerator.h"
 #include "EntityTimeActivated.h"
+#include "Icon.h"
 
 Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()) {
 
@@ -197,9 +198,12 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
 
                             Tile* t = Tiles::getTile(tid);
 
-                            e->defaultIcon = t->getIcon();
-                            e->fgColorCode = t->getFgColor(true);
-                            e->bgColorCode = t->getBgColor(true);
+                            //Icon* was saying it was private, no idea why.
+                            auto ti = t->getIcon(true);
+
+                            e->defaultIcon = ti->getChar(0, posOfTile, level);
+                            e->fgColor = ti->getFgColor(0, posOfTile, level);
+                            e->bgColor = ti->getBgColor(0, posOfTile, level);
 
                             e->pos = posOfTile;
 

@@ -12,6 +12,7 @@
 
 #include "Ui.h"
 #include "Geometry.h"
+#include "Icon.h"
 
 class Level;
 
@@ -22,7 +23,7 @@ const int ENTITY_TYPE_PLAYER = 3;
 const int ENTITY_TYPE_ITEMENTITY = 4;
 const int ENTITY_TYPE_TIME_ACTIVATED = 5;
 
-class Entity {
+class Entity : Icon {
 public:
 
     static Entity* cloneUnsafe(Entity* oldE, Entity* newE);
@@ -43,8 +44,6 @@ public:
 
     //void setAndUnsetDisplayEntity(Level* level);
 
-    virtual char getIcon(Point2 p, double time, Level* level);
-
     bool isSolid() {
         return solid;
     }
@@ -53,8 +52,17 @@ public:
         return "NO_NAME";
     }
 
-    virtual Ui::Color getFgColorCode();
-    virtual Ui::Color getBgColorCode();
+    virtual char getChar(unsigned long tick, Point2 pos, Level* lvl){
+        return defaultIcon;
+    }
+
+    virtual Ui::Color getFgColor(unsigned long tick, Point2 pos, Level* lvl){
+        return fgColor;
+    }
+
+    virtual Ui::Color getBgColor(unsigned long tick, Point2 pos, Level* lvl){
+        return bgColor;
+    }
 
     virtual void save(vector<unsigned char>* data);
 
@@ -83,8 +91,8 @@ public:
     bool removed = false;
 
     char defaultIcon = '?';
-    Ui::Color fgColorCode;
-    Ui::Color bgColorCode;
+    Ui::Color fgColor;
+    Ui::Color bgColor;
 
 protected:
     Point2 lastPos;
