@@ -132,6 +132,11 @@ public:
     bool leveledUp = false;
 
 
+    int xpForLevel(int l){
+        return (pow(l + 5, 2));
+    }
+
+
 protected:
 
     double moveDelay = 1;
@@ -145,7 +150,7 @@ protected:
     double useDelay(Item* item);
 
     void setNextLevelXp() {
-        nextLevelXp = (pow(level, 1.2)*2) + 20;
+        nextLevelXp = xpForLevel(level);
     }
 
 };

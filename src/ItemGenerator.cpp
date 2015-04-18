@@ -57,11 +57,11 @@ namespace ItemGenerator {
         PotionBase potionRegen = atl(PotionBase({"Regeneration Potion"},
         {
             effHeal
-        }, 2, 20, 1, 10, 0));
+        }, 2, 30, 1, 10, 0));
         PotionBase potionManaRegen = atl(PotionBase({"Mana Regeneration Potion"},
         {
             effHeal
-        }, 2, 20, 1, 10, 1));
+        }, 2, 30, 1, 10, 1));
 
 
         ScrollBase scrollRemoteUse = atl(ScrollBase({"Scroll of Telekinesis"}, spellRemoteUse));
@@ -262,21 +262,14 @@ namespace ItemGenerator {
     }
 
     Item* createRandAltLoot(int itemDifficulty) {
-        switch (rand() % 3) {
-            default:
-            case 0:{
-                PotionBase pb = potionList[rand() % potionList.size()];
-                return createPotionFromBase(pb, itemDifficulty);
-            }
-
-            case 1:{
-                ScrollBase sb = scrollList[rand() % scrollList.size()];
-                return createScrollFromBase(sb);
-            }
-
-            case 2:{
-                return new ItemTimeActivated(rand()%10==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10), 1);
-            }
+        if(rand()%4 != 0) {
+            PotionBase pb = potionList[rand() % potionList.size()];
+            return createPotionFromBase(pb, itemDifficulty);
+        } else if(rand()%3 != 0) {
+            ScrollBase sb = scrollList[rand() % scrollList.size()];
+            return createScrollFromBase(sb);
+        } else {
+            return new ItemTimeActivated(rand()%10==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10), 1);
         }
     }
 

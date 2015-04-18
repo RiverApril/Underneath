@@ -30,11 +30,15 @@ namespace Ui {
         clrtobot();
         setColor(C_WHITE);
 
-        for(int i=0;i<16;i++){
+        for(int i=0;i<terminalSize.y;i++){
+            mvprintw(i, 0, "%2d: %d", i, currentWorld->currentPlayer->xpForLevel(i));
+        }
+
+        /*for(int i=0;i<16;i++){
             for(int j=0;j<16;j++){
                 printMultiLineColoredString(i, j, colorCode(i, j)+"#");
             }
-        }
+        }*/
 
         /*
 

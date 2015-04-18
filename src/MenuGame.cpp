@@ -615,6 +615,8 @@ namespace Ui {
 
             vector<Entity*> nearestEntities = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
 
+            //consolef("Nearest Entity Count: %d", nearestEntities.size());
+
             for (size_t i = 0; i < nearestEntities.size() && a < terminalSize.y; i++) {
                 Entity* nearestEntity = nearestEntities[i];
                 if (nearestEntity != nullptr) {
@@ -649,8 +651,8 @@ namespace Ui {
 
 
         if (currentLevel != nullptr) {
-            Ui::setColor(C_DARK_GRAY);
-            mvprintw(gameArea.y, 0, "%d, %d  e: %d  te: %d  p: %s   %s", p.x, p.y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "null" : "not null", currentLevel->getName().c_str());
+            Ui::setColor(C_LIGHT_GRAY);
+            mvprintw(gameArea.y, 0, "%d, %d e:%d te:%d p:%s %s(%d)", p.x, p.y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "null" : "not null", currentLevel->getName().c_str(), currentLevel->getDifficulty());
         }
 
 
