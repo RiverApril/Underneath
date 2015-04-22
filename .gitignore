@@ -12,7 +12,6 @@
 /Debug/
 /dist/*
 /nbproject/*
-Makefile
 /Release/
 */curses.h
 */panel.h
