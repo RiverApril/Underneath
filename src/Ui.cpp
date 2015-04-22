@@ -127,6 +127,8 @@ namespace Ui {
         }
 
         initColorPairs();
+        
+        bkgd(getColorPair(C_WHITE, C_BLACK+7));
 
         refresh();
 
@@ -138,8 +140,8 @@ namespace Ui {
 
             short a = 0;
 
-            for (short i = 0; i < 0x8; i++) {
-                for (short j = 0; j < 0x8; j++) {
+            for (short i = 0; i < 0x08; i++) {
+                for (short j = 0; j < 0x08; j++) {
                     init_pair(a, j, i);
                     a++;
                 }
@@ -165,22 +167,24 @@ namespace Ui {
         terminalSize.y = getmaxy(stdscr);
     }
 
+    void setColor(Color fg) {
+        setColor(fg, C_BLACK, 0);
+    }
+
     void setColor(Color fg, Color bg, int attr) {
         if (limitedColorMode) {
-            if(fg == 0xF && bg == 0x0){
-                fg = 0x0;
-            }else{
-                if (fg >= 0x8) {
-                    fg -= 0x8;
-                }
-                if (bg >= 0x8) {
-                    bg -= 0x8;
-                }
+            if (fg >= 0x8) {
+                fg -= 0x8;
             }
-            attrset(COLOR_PAIR(fg + (bg * 0x8)) | attr);
-        }else{
-            attrset(COLOR_PAIR(fg + (bg * 0x10)) | attr);
+            if (bg >= 0x8) {
+                bg -= 0x8;
+            }
         }
+        attrset(getColorPair(fg, bg) | attr);
+    }
+    
+    int getColorPair(Color fg, Color bg){
+        return COLOR_PAIR(fg + (bg * (limitedColorMode?0x8:0x10)));
     }
 
     int printMultiLineString(int y, int x, string s, int maxX) {

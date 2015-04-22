@@ -41,7 +41,9 @@ namespace Ui {
 
     void setTerminalSizeVar();
 
-    void setColor(Color fg, Color bg = C_BLACK, int attr = 0);
+    void setColor(Color fg, Color bg, int attr = 0);
+    void setColor(Color fg);
+    int getColorPair(Color fg, Color bg);
 
     //Color codeToColor(char c);
 
