@@ -174,7 +174,7 @@ namespace ItemGenerator {
 
         if (goldMaxQty > 0) {
             Item* item = Item::clone(iCoin);
-            item->qty = rand() % (goldMaxQty + 1);
+            item->qty = (rand() % (goldMaxQty))+1;
             items.push_back(item);
         }
 
