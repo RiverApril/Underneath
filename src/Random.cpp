@@ -8,11 +8,17 @@
 
 #include "Global.h"
 #include "Random.h"
+#include "Geometry.h"
 
 namespace Random {
 
     double randDouble(double min, double max) {
         return min + ((rand() / (double) RAND_MAX) * (max - min));
+    }
+
+    int randomFromPoint(Point2 seed){
+        int pair = ((seed.x*seed.x) + (3*seed.x) + (2*seed.x*seed.y) + seed.y + (seed.y*seed.y))/2;
+        return ((pair)*1103515245+12345) % 2147483648;
     }
 
 

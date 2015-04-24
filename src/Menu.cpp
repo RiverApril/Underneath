@@ -28,8 +28,9 @@ namespace Ui {
         if(limitedColorMode){
             s += (unsigned char)((fgc & 0x8) | ((bgc & 0x8) << 2));
         }else{
-            s += (unsigned char)((fgc & 0x10) | ((bgc & 0x10) << 4));
+            s += (unsigned char)((fgc & 0xF) | ((bgc & 0xF) << 4));
         }
+        consolef("code: 0x%x, 0x%x, 0x%x", s[1], bgc, fgc);
         return s;
     }
 

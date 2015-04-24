@@ -70,9 +70,9 @@ public:
 
     size_t entityCount();
 
-    bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag);
+    bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0);
 
-    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0);
+    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = tileFlagAll);
 
     void genDebug(string s);
 

@@ -37,27 +37,37 @@ Level::Level(World* w, string n, Point2 s, int d) {
 
 Level::~Level() {
     for (Entity* e : entityList) {
-        delete e;
+        if(e){
+        	delete e;
+        }
     }
     entityList.clear();
 
     for (Entity* e : deleteEntityList) {
-        delete e;
+        if(e){
+        	delete e;
+        }
     }
     deleteEntityList.clear();
 
     for (Entity* e : removeEntityList) {
-        delete e;
+        if(e){
+        	delete e;
+        }
     }
     removeEntityList.clear();
 
     for (TileEntity* e : tileEntityList) {
-        delete e;
+        if(e){
+        	delete e;
+        }
     }
     tileEntityList.clear();
 
     for (TileEntity* e : deleteTileEntityList) {
-        delete e;
+        if(e){
+        	delete e;
+        }
     }
     deleteTileEntityList.clear();
 }
@@ -397,7 +407,7 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, T
                     Point2 p = Point2(i + c.x, j + c.y);
                     if ((abs(i) + abs(j)) == 1) {
                         if (inRange(p)) {
-                            if (tileAt(p)->hasFlag(requiredFlag) && !tileAt(p)->hasFlag(bannedFlag)) {
+                            if (tileAt(p)->hasFlag(requiredFlag) && tileAt(p)->doesNotHaveFlag(bannedFlag)) {
                                 if (map[p.x][p.y] == -1) {
                                     map[p.x][p.y] = map[c.x][c.y] + 1;
                                     priorityQueue.push(p);
@@ -413,8 +423,8 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, T
     return vector<Point2>();
 }
 
-bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag) {
-    return !getPathTo(from, to, requiredFlag).empty();
+bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag) {
+    return !getPathTo(from, to, requiredFlag, bannedFlag).empty();
 
     /*vector<vector<char>> map = vector<vector<char>>(size.x, vector<char>(size.y));
     for(int i=0;i<size.x;i++){
@@ -481,10 +491,14 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
         }
     }
     for (Entity* e : entityList) {
-        Alive* a = dynamic_cast<Alive*>(e);
-        if(a){
-            if(distanceSquared(a->pos, pos) <= radius*radius){
-                a->hurt(damExplosion, attackPower);
+        if(e){
+            if(!e->removed){
+                Alive* a = dynamic_cast<Alive*>(e);
+                if(a){
+                    if(distanceSquared(a->pos, pos) <= radius*radius){
+                        a->hurt(damExplosion, attackPower);
+                    }
+                }
             }
         }
     }

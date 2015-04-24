@@ -7,5 +7,9 @@
 //
 
 #include "Icon.h"
-#include "Level.h"
+#include "Random.h"
+
+char RandomIcon::getChar(unsigned long tick, Point2 pos, Level* lvl){
+    return i[Random::randomFromPoint(pos)%i.size()];
+}
 

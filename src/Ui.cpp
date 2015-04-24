@@ -127,8 +127,12 @@ namespace Ui {
         }
 
         initColorPairs();
-        
-        bkgd(getColorPair(C_WHITE, C_BLACK+7));
+
+        if(limitedColorMode){
+        	bkgd(getColorPair(C_WHITE, C_BLACK+7));
+        }else{
+            bkgd(getColorPair(C_WHITE, C_BLACK));
+        }
 
         refresh();
 
@@ -259,6 +263,7 @@ namespace Ui {
                 }else{
                 	setColor(uc & 0xF, uc >> 4);
                 }
+                consolef("uc:0x%x, msd:0x%x, lsd:0x%x", uc, uc & 0xF, uc >> 4);
                 return false;
             }
         } else if (c == '&') {

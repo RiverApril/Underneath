@@ -21,6 +21,7 @@ const TileFlag tileFlagPathable = 1 << 3;
 const TileFlag tileFlagSecretPathable = 1 << 4;
 const TileFlag tileFlagHasTileEntity = 1 << 5;
 const TileFlag tileFlagIndestructable = 1 << 6;
+const TileFlag tileFlagAll = 0xFFFFFFFF;
 
 class Tile {
 public:
@@ -50,6 +51,10 @@ public:
 
     bool hasFlag(TileFlag flag) {
         return flags & flag;
+    }
+
+    bool doesNotHaveFlag(TileFlag flag) {
+        return !(flags & flag);
     }
 
 private:

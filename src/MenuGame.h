@@ -60,6 +60,8 @@ namespace Ui {
         double itemToBeUsedRange = -1;
         Item* itemToBeUsed = nullptr;
 
+        vector<Entity*> nearestEntities;
+
 #define modePlayerControl 0
 #define modeAdjustBorder 1
 #define modeSelectDirection 2

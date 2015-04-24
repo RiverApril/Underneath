@@ -175,6 +175,52 @@ namespace Utility {
         }
     }
 
+    char getSymbolFromNumber(int number){
+        if(number >= 0 && number <= 9){
+            return (char)(number + 48);
+        }else if(number >= 10 && number <= 10 + 26){
+            return (char)(number - 10 + 65);
+        }else if(number >= 10 + 26 && number <= 10 + 26 + 26){
+            return (char)(number - 10 - 26 + 97);
+        }
+        throw ParseException("Number out of range: " + to_string(number));
+    }
+
+    string toString(int num, int base){
+        if(base < 1 || base > 62){
+            throw ParseException("Base out of range: " + to_string(base));
+        }else{
+            int maxDigit = 0;
+            for(int i=0;true;i++){
+                if(num < pow(base, i)){
+                    maxDigit = i-1;
+                    break;
+                }
+            }
+
+            vector<int> digitList= {};
+            int digitPos = 0;
+            for(int i=maxDigit;i>=0;i--){
+                int digit = pow(base, i);
+                digitList.push_back(0);
+                while(num > digit){
+                    num -= digit;
+                    digitList[digitPos] ++;
+                }
+                digitPos++;
+            }
+
+            string final = "";
+
+            for(int digit : digitList){
+                final += getSymbolFromNumber(digit);
+            }
+
+
+            return final;
+        }
+    }
+
     double parseDouble(string s, int base, double defaultIfException) {
         try {
             return parseDoubleUnstable(s, base);
@@ -184,7 +230,7 @@ namespace Utility {
     }
 
     double parseDoubleUnstable(string s, int base) {
-        if (base < 1 || base > 36) {
+        if (base < 1 || base > 62) {
             throw ParseException("Base out of range: " + to_string(base));
         } else {
             bool addToLeft = true;

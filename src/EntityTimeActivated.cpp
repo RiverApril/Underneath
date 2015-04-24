@@ -29,11 +29,11 @@ EntityTimeActivated::~EntityTimeActivated() {
 
 }
 
-char EntityTimeActivated::getIcon(Point2 p, double time, Level* level) {
+char EntityTimeActivated::getChar(unsigned long tick, Point2 pos, Level* lvl) {
     switch (timeActivatedType) {
         case timeActivatedBomb:
         case timeActivatedWallBomb:
-            return (timeLeft<10)?(to_string((int)timeLeft)[0]):'!';
+            return tick%4==0?'*':((timeLeft<10)?(to_string((int)timeLeft)[0]):'!');
 
         default:
             return '!';

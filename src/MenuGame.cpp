@@ -599,7 +599,7 @@ namespace Ui {
 
             Ui::setColor(C_WHITE);
 
-            mvprintw(a, gameArea.x + 1, "Tick [%c]: %d", spinyIcon->getChar(tick, Point2Neg1, currentLevel), tick);
+            mvprintw(a, gameArea.x + 1, "Tick [%c]: %s", spinyIcon->getChar(tick, Point2Neg1, currentLevel), Utility::toString((int)tick, 62).c_str());
             a++;
 
             mvprintw(a, gameArea.x + 1, "Time: %.2f", displayTime);
@@ -613,7 +613,7 @@ namespace Ui {
             move(a, gameArea.x + 1);
             clrtoeol();
 
-            vector<Entity*> nearestEntities = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
+            nearestEntities = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
 
             //consolef("Nearest Entity Count: %d", nearestEntities.size());
 
