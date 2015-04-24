@@ -255,9 +255,9 @@ namespace Ui {
             } else {
                 unsigned char uc = (unsigned char)c;
                 if(limitedColorMode){
-                    setColor(uc & 0x8, uc >> 2);
+                    setColor(uc & 0x7, (uc >> 2) & 0x7);
                 }else{
-                	setColor(uc & 0xF, uc >> 4);
+                    setColor(uc & 0xF, (uc >> 4) & 0xF);
                 }
                 return false;
             }

@@ -26,9 +26,9 @@ namespace Ui {
     string colorCode(const unsigned char fgc, const unsigned char bgc) {
         string s = "&";
         if(limitedColorMode){
-            s += (unsigned char)((fgc & 0x8) | ((bgc & 0x8) << 2));
+            s += (char)(unsigned char)(fgc | (bgc << 2));
         }else{
-            s += (unsigned char)((fgc & 0x10) | ((bgc & 0x10) << 4));
+            s += (char)(unsigned char)(fgc | (bgc << 4));
         }
         return s;
     }

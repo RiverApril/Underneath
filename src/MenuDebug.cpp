@@ -33,12 +33,6 @@ namespace Ui {
         /*for(int i=0;i<terminalSize.y;i++){
             mvprintw(i, 0, "%2d: %d", i, currentWorld->currentPlayer->xpForLevel(i));
         }*/
-
-        /*for(int i=0;i<0x10;i++){
-            for(int j=0;j<0x10;j++){
-                printMultiLineColoredString(i, j, colorCode(i, j)+"#");
-            }
-        }*/
         
         move(0, 0);
 
@@ -48,6 +42,12 @@ namespace Ui {
                 addch('#');
             }
             addch('\n');
+        }
+
+        for(int i=0;i<0x10;i++){
+            for(int j=0;j<0x10;j++){
+                printMultiLineColoredString(i, j+20, colorCode(i, j)+"#");
+            }
         }
 
         /*
