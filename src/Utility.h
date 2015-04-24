@@ -109,6 +109,10 @@ namespace Utility {
 
     int getNumberFromSymbol(char symbol);
 
+    char getSymbolFromNumber(int number);
+
+    string toString(int num, int base);
+
     double parseDouble(string s, int base = 10, double defaultIfException = 0);
 
     double parseDoubleUnstable(string s, int base = 10);

@@ -35,7 +35,7 @@ public:
         return -1;
     }
 
-    virtual char getIcon(Point2 p, double time, Level* level);
+    virtual char getChar(unsigned long tick, Point2 pos, Level* lvl);
 
     virtual string getName() {
         return name;

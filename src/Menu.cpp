@@ -30,6 +30,7 @@ namespace Ui {
         }else{
             s += (char)(unsigned char)(fgc | (bgc << 4));
         }
+        consolef("code: 0x%x, 0x%x, 0x%x", s[1], bgc, fgc);
         return s;
     }
 

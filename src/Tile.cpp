@@ -101,7 +101,7 @@ namespace Tiles {
         tileCrate = new Tile(new BasicIcon('+', C_DARK_YELLOW, bg), "crate", tileFlagSolid | tileFlagHasTileEntity);
 
 
-        tileRubble = new Tile(new BasicIcon('#', C_LIGHT_GRAY, bg), "rubble", tileFlagPathable, new BasicIcon('#', C_DARK_GRAY, bg));
+        tileRubble = new Tile(new RandomIcon({'#', '%', '&'}, C_LIGHT_GRAY, bg), "rubble", tileFlagPathable, new RandomIcon({'#', '%', '&'}, C_DARK_GRAY, bg));
 
         
         tileEdge = new Tile(new BasicIcon('.',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon('.', C_BLACK, C_DARK_GRAY));

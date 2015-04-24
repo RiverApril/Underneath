@@ -79,7 +79,7 @@ void AiEntity::runAi(double time, Level* level) {
             } else {
                 //speed.x = pos.x > lastKnownTargetPos.x ? -1 : (pos.x < lastKnownTargetPos.x ? 1 : 0);
                 //speed.y = pos.y > lastKnownTargetPos.y ? -1 : (pos.y < lastKnownTargetPos.y ? 1 : 0);
-                vector<Point2> path = level->getPathTo(pos, lastKnownTargetPos, tileFlagPathable | tileFlagSecretPathable);
+                vector<Point2> path = level->getPathTo(pos, lastKnownTargetPos, tileFlagAll, tileFlagSolid);
                 if(!path.empty()){
                     console((path[0]-pos).toString());
                     speed.x = pos.x > path[0].x ? -1 : (pos.x < path[0].x ? 1 : 0);
