@@ -39,7 +39,7 @@ namespace Ui {
 
         if(in == KEY_ESCAPE){
             running = false;
-        } else if(in == KEY_ENTER || in == '\n' || in == ' '){
+        } else if(in == '\n' || in == ' '){
             switch (selection) {
                 case 0:
                     openMenu(new MenuWorldSelect());

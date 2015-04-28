@@ -11,6 +11,7 @@
 #include "MenuGame.h"
 #include "MenuYesNo.h"
 #include "MenuPlayerSetup.h"
+#include "Controls.h"
 
 namespace Ui {
 
@@ -34,65 +35,49 @@ namespace Ui {
         move(selection + 2, 0);
         clrtoeol();
 
-        switch (in) {
-            case '\n':
-                switch (selection) {
-                    case selPlay:
-                        if (name.length() > 0) {
-                            if (WorldLoader::exists(name)) {
-                                openMenu(new MenuGame(name, Abilities<int>()));
-                            } else {
-                                openMenu(new MenuGame(name, Abilities<int>()));
-                            }
-                        }
-                        break;
-
-                    case selDel:
+        if(in == '\n'){
+            switch (selection) {
+                case selPlay:
+                    if (name.length() > 0) {
                         if (WorldLoader::exists(name)) {
-                            openMenu(new MenuYesNo("Are you sure you want to delete '" + name + "' ?", deleteAnswer, true));
+                            openMenu(new MenuGame(name, Abilities<int>()));
+                        } else {
+                            openMenu(new MenuGame(name, Abilities<int>()));
                         }
-                        break;
+                    }
+                    break;
 
-                    case selBack:
-                        closeThisMenu();
-                        break;
+                case selDel:
+                    if (WorldLoader::exists(name)) {
+                        openMenu(new MenuYesNo("Are you sure you want to delete '" + name + "' ?", deleteAnswer, true));
+                    }
+                    break;
 
-                    default:
-                        break;
-                }
-                break;
+                case selBack:
+                    closeThisMenu();
+                    break;
 
-            case KEY_UP:
-                selection--;
-                if (selection < 0) {
-                    selection = maxUiSelection;
-                }
-                break;
-
-            case KEY_DOWN:
-                selection++;
-                if (selection > maxUiSelection) {
-                    selection = 0;
-                }
-                break;
-
-            case 27:
-                closeThisMenu();
-                break;
-
-            case KEY_BACKSPACE:
-            case 8: //Backspace
-            case 127: //Delete
-                if (name.length() > 0) {
-                    name = name.substr(0, name.length() - 1);
-                }
-                break;
-
-            default:
-                if ((in == '_') || (in >= '0' && in <= '9') || (in >= 'A' && in <= 'Z') || (in >= 'a' && in <= 'z')) {
+                default:
+                    break;
+            }
+        }else if(in == Key::uiUp){
+            selection--;
+            if (selection < 0) {
+                selection = maxUiSelection;
+            }
+        }else if(in == Key::uiDown){
+            selection++;
+            if (selection > maxUiSelection) {
+                selection = 0;
+            }
+        }else if(in == KEY_ESCAPE){
+            closeThisMenu();
+        }else if(in == KEY_BACKSPACE || in == 8 || in == 127){
+            if (name.length() > 0) {
+                name = name.substr(0, name.length() - 1);
+            }
+        }else if ((in == '_') || (in >= '0' && in <= '9') || (in >= 'A' && in <= 'Z') || (in >= 'a' && in <= 'z')) {
                     name += (char) in;
-                }
-                break;
         }
 
     }

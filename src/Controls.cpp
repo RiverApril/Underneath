@@ -70,5 +70,5 @@ vector<KeyBind> keybindings = {
 };
 
 vector<int> reservedKeys = {
-    KEY_ESCAPE, 
+    KEY_ESCAPE, '\n'
 };
