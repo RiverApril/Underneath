@@ -72,14 +72,13 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-
-    virtual void setActiveWeapon(Weapon* newWeapon);
-
-    Weapon* getActiveWeapon() {
-        return activeWeapon;
+    virtual void setActiveWeapon(Weapon* newWeapon){
+        console("ERROR - SET ACTIVE WEAPON FOR ALIVE");
     }
 
-    virtual bool removeItem(Item* item, bool deleteItem);
+    virtual Weapon* getActiveWeapon(){
+        return nullptr;
+    }
 
     virtual void setTimes(double time) {
         lastHealTime = time;
@@ -108,8 +107,6 @@ protected:
 
     double lastManaTime = 0;
     double manaDelay = 20;
-
-    Weapon* activeWeapon = nullptr;
 
 };
 

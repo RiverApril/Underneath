@@ -13,102 +13,13 @@
 #include "Equipable.h"
 #include "Enchantment.h"
 #include "Ui.h"
+#include "DamageType.h"
 
-typedef int WeaponType;
-
-const WeaponType wepMelee = 0;
-const WeaponType wepRanged = 1;
-const WeaponType wepMagic = 2;
-
-typedef int DamageType;
-const DamageType damSharp = 0;
-const DamageType damBlunt = 1;
-const DamageType damPierce = 2;
-const DamageType damFire = 3;
-const DamageType damIce = 4;
-const DamageType damShock = 5;
-const DamageType damPoison = 6;
-const DamageType damBlood = 7;
-const DamageType damDebug = 8;
-const DamageType damSuffocation = 9;
-const DamageType damExplosion = 10;
+const vector<EquipSlot> bothHands = {slotHand1, slotHand2};
+const vector<EquipSlot> oneHand = {slotHand1};
 
 class Weapon : public Equipable {
 public:
-
-    static string damageTypeName(DamageType d) {
-        switch (d) {
-            case damSharp:
-                return "Sharp";
-            case damBlunt:
-                return "Blunt";
-            case damPierce:
-                return "Pierce";
-            case damFire:
-                return "Fire";
-            case damIce:
-                return "Ice";
-            case damShock:
-                return "Shock";
-            case damPoison:
-                return "Poison";
-            case damBlood:
-                return "Blood";
-            case damDebug:
-                return "Debug";
-            case damSuffocation:
-                return "Suffocation";
-            case damExplosion:
-                return "Explosive";
-            default:
-                return "Undefined";
-        }
-    }
-
-    static Ui::Color damageTypeColor(DamageType d) {
-        switch (d) {
-            case damSharp:
-                return Ui::C_LIGHT_GRAY;
-            case damBlunt:
-                return Ui::C_LIGHT_GRAY;
-            case damFire:
-                return Ui::C_LIGHT_YELLOW;
-            case damIce:
-                return Ui::C_LIGHT_CYAN;
-            case damShock:
-                return Ui::C_LIGHT_MAGENTA;
-            case damPoison:
-                return Ui::C_LIGHT_GREEN;
-            case damBlood:
-                return Ui::C_LIGHT_RED;
-            case damDebug:
-                return Ui::C_WHITE;
-            case damExplosion:
-                return Ui::C_LIGHT_YELLOW;
-            default:
-                return Ui::C_WHITE;
-        }
-    }
-
-    static string effectName(EffectId eid, double meta) {
-        switch (eid) {
-            case effDamage:
-                return damageTypeName((DamageType) meta);
-
-            case effHeal:
-                return "Heal";
-
-            case effBuff:
-                return "Buff TODO";
-
-            default:
-                return "UNDEFINED";
-        }
-    }
-
-    static string enchantmentName(Enchantment e) {
-        return effectName(e.effectId, e.meta);
-    }
 
 
     static Weapon* cloneUnsafe(Weapon* oldE, Weapon* newE = nullptr);
@@ -117,7 +28,7 @@ public:
 
     }
 
-    Weapon(double baseDamage, string name, double weight, double useDelay);
+    Weapon(double baseDamage, string name, double weight, double useDelay, bool twoHanded);
 
     virtual int getItemTypeId() {
         return ITEM_TYPE_WEAPON;
@@ -143,17 +54,27 @@ public:
                 &&(baseDamage == otherW->baseDamage)
                 &&(damageType == otherW->damageType)
                 &&(enchantments == otherW->enchantments)
-                &&(useDelay == otherW->useDelay);
+        		&&(useDelay == otherW->useDelay)
+        		&&(twoHanded == otherW->twoHanded);
     }
 
     virtual bool canBeEquipedHere(EquipSlot e) {
-        return e == slotHand;
+        return e==slotHand1 || (twoHanded?false:e==slotHand2);
+    }
+
+    virtual bool blocksSlot(EquipSlot blockMe, EquipSlot whenHere) {
+        return twoHanded?((whenHere == slotHand1 && blockMe == slotHand2)||(whenHere == slotHand2 && blockMe == slotHand1)):false;
+    }
+
+    virtual vector<EquipSlot> getViableSlots(){
+        return twoHanded?bothHands:oneHand;
     }
 
     double baseDamage = 1;
     DamageType damageType = damSharp;
     WeaponType weaponType = wepMelee;
     double useDelay = 1;
+    bool twoHanded = false;
 
     vector<Enchantment> enchantments;
 

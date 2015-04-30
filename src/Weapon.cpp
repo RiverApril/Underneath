@@ -9,13 +9,15 @@
 #include "Weapon.h"
 #include "Utility.h"
 
-Weapon::Weapon(double baseDamage, string name, double weight, double useDelay) : Equipable(name, weight) {
+Weapon::Weapon(double baseDamage, string name, double weight, double useDelay, bool twoHanded) : Equipable(name, weight) {
     debugf("%s: %.2f", name.c_str(), baseDamage);
     this->baseDamage = baseDamage;
     this->useDelay = useDelay;
 
     this->weaponType = wepMelee;
     this->damageType = damSharp;
+
+    this->twoHanded = twoHanded;
 }
 
 void Weapon::save(vector<unsigned char>* data) {
@@ -24,6 +26,7 @@ void Weapon::save(vector<unsigned char>* data) {
     Utility::saveDouble(data, baseDamage);
     Utility::saveInt(data, damageType);
     Utility::saveDouble(data, useDelay);
+    Utility::saveBool(data, twoHanded);
 
     Utility::saveInt(data, (int) enchantments.size());
     for (size_t i = 0; i < enchantments.size(); i++) {
@@ -40,6 +43,7 @@ void Weapon::load(unsigned char* data, int* position) {
     baseDamage = Utility::loadDouble(data, position);
     damageType = Utility::loadInt(data, position);
     useDelay = Utility::loadDouble(data, position);
+    twoHanded = Utility::loadBool(data, position);
 
     int size = Utility::loadInt(data, position);
     for (int i = 0; i < size; i++) {
@@ -58,6 +62,7 @@ Weapon* Weapon::cloneUnsafe(Weapon* oldE, Weapon* newE) {
     newE->enchantments = oldE->enchantments;
     newE->damageType = oldE->damageType;
     newE->useDelay = oldE->useDelay;
+    newE->twoHanded = oldE->twoHanded;
 
 
     return newE;

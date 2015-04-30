@@ -81,6 +81,32 @@ public:
 
     virtual void setActiveWeapon(Weapon* newWeapon);
 
+    virtual Weapon* getActiveWeapon() {
+        return dynamic_cast<Weapon*>(equipedItems[slotHand1]);
+    }
+
+    virtual Weapon* getSecondaryWeapon() {
+        return dynamic_cast<Weapon*>(equipedItems[slotHand2]);
+    }
+
+    EquipSlot getSlot(Equipable* e){
+        for(pair<EquipSlot, Equipable*> p : equipedItems){
+            if(p.second == e){
+                return p.first;
+            }
+        }
+        return slotNone;
+    }
+
+    virtual Equipable* getEquiped(EquipSlot slot) {
+        if(equipedItems.count(slot) <= 0){
+            return nullptr;
+        }
+        return equipedItems[slot];
+    }
+
+    virtual bool removeItem(Item* item, bool deleteItem);
+
     void updateVariablesForAbilities() {
         moveDelay = 1.0 - ((double) (abilities[iSPD]) / maxAbilities[iSPD]);
         if (outOfCombatHealing) {
@@ -105,6 +131,9 @@ public:
     Abilities<int> maxAbilities = Abilities<int>(100, 100, 100, 100, 100, 100, 100);
 
     void gainXp(double amount);
+
+    bool equipItem(Equipable* newItem);
+    bool equipItem(Equipable* newItem, EquipSlot slot);
 
     /*bool pickupItem(Item* newItem){
         if(newItem != nullptr){
@@ -143,6 +172,8 @@ protected:
     double interactDelay = .1;
     int timeSinceCombat = 0;
     bool outOfCombatHealing = false;
+
+    map<EquipSlot, Equipable*> equipedItems;
 
 
     //Item* hotbar[10] = {nullptr};

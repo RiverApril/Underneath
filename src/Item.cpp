@@ -15,6 +15,7 @@
 #include "UtilitySpell.h"
 #include "ItemSpecial.h"
 #include "ItemTimeActivated.h"
+#include "Armor.h"
 
 void Item::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getItemTypeId());
@@ -79,6 +80,9 @@ Item* Item::clone(Item* oldI) {
         case ITEM_TYPE_TIME_ACTIVATED:
             return makeNewAndClone<Item, ItemTimeActivated>(oldI);
 
+        case ITEM_TYPE_ARMOR:
+            return makeNewAndClone<Item, Armor>(oldI);
+
         default:
             throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));
             return nullptr;
@@ -129,6 +133,10 @@ Item* Item::loadNew(unsigned char* data, int* position) {
 
         case ITEM_TYPE_TIME_ACTIVATED:
             e = new ItemTimeActivated();
+            break;
+
+        case ITEM_TYPE_ARMOR:
+            e = new Armor();
             break;
 
         default:

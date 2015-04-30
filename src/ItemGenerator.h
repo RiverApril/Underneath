@@ -47,6 +47,33 @@ namespace ItemGenerator {
         vector<WeaponType> applicableWeaponTypes;
     };
 
+    struct DefenseRange{
+        DefenseRange(DamageType damageType, double amountMin, double amountMax){
+            this->damageType = damageType;
+            this->amountMin = amountMin;
+            this->amountMax = amountMax;
+        }
+        DamageType damageType;
+        double amountMin;
+        double amountMax;
+    };
+
+    struct ArmorBase{
+        ArmorBase(){
+        }
+
+        ArmorBase(vector<string> names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences, Point2 weight){
+            this->names = names;
+            this->viableSlots = viableSlots;
+            this->defences = defences;
+            this->weight = weight;
+        }
+        vector<string> names;
+        vector<EquipSlot> viableSlots;
+        vector<DefenseRange> defences;
+        Point2 weight;
+    };
+
     struct WeaponBase {
 
         WeaponBase() {
@@ -127,12 +154,14 @@ namespace ItemGenerator {
         SpellEffect eff = 0;
     };
 
+    ArmorBase atl(ArmorBase a);
     Condition atl(Condition c);
     WeaponBase atl(WeaponBase w);
     PotionBase atl(PotionBase p);
     ScrollBase atl(ScrollBase s);
 
 
+    extern vector<ArmorBase> armorList;
     extern vector<Condition> conditionList;
     extern vector<WeaponBase> weaponList;
     extern vector<PotionBase> potionList;

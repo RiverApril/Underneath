@@ -140,32 +140,6 @@ double Alive::healMana(double amount) {
     return amount;
 }
 
-void Alive::setActiveWeapon(Weapon* newWeapon) {
-
-    if (newWeapon == nullptr) {
-        activeWeapon = nullptr;
-        return;
-    }
-
-    for (Item* ie : inventory) {
-        if (ie == newWeapon) {
-            activeWeapon = dynamic_cast<Weapon*> (ie);
-            return;
-        }
-    }
-    inventory.push_back(newWeapon);
-    activeWeapon = newWeapon;
-}
-
-bool Alive::removeItem(Item* item, bool deleteItem) {
-    if (item) {
-        if (item == activeWeapon) {
-            setActiveWeapon(nullptr);
-        }
-    }
-    return Inventory::removeItem(item, deleteItem);
-}
-
 Alive* Alive::cloneUnsafe(Alive* oldE, Alive* newE) {
 
     Entity::cloneUnsafe(oldE, newE);
@@ -177,16 +151,8 @@ Alive* Alive::cloneUnsafe(Alive* oldE, Alive* newE) {
     newE->mp = oldE->mp;
     newE->viewDistance = oldE->viewDistance;
 
-    int activeWeaponIndex = -1;
-
     forVector(oldE->inventory, i) {
         newE->inventory.push_back(Item::clone(oldE->inventory[i]));
-        if (oldE->inventory[i] == oldE->activeWeapon) {
-            activeWeaponIndex = i;
-        }
-    }
-    if (activeWeaponIndex != -1) {
-        newE->activeWeapon = dynamic_cast<Weapon*> (newE->inventory[activeWeaponIndex]);
     }
 
     newE->effects = oldE->effects;
@@ -210,17 +176,17 @@ void Alive::save(vector<unsigned char>* data) {
     Utility::saveString(data, name);
 
     //
-    int activeWeaponIndex = -1;
+    //int activeWeaponIndex = -1;
     Utility::saveInt(data, (int) inventory.size());
 
     forVector(inventory, i) {
         Item* ie = inventory[i];
         ie->save(data);
-        if (ie == activeWeapon) {
-            activeWeaponIndex = i;
-        }
+        //if (ie == activeWeapon) {
+            //activeWeaponIndex = i;
+        //}
     }
-    Utility::saveInt(data, activeWeaponIndex);
+    //Utility::saveInt(data, activeWeaponIndex);
     //
 
     Utility::saveInt(data, (int) effects.size());
@@ -248,12 +214,12 @@ void Alive::load(unsigned char* data, int* position) {
         inventory.push_back(item);
     }
 
-    int activeWeaponIndex = Utility::loadInt(data, position);
+    /*int activeWeaponIndex = Utility::loadInt(data, position);
     if (activeWeaponIndex != -1) {
         activeWeapon = dynamic_cast<Weapon*> (inventory[activeWeaponIndex]);
     } else {
         activeWeapon = nullptr;
-    }
+    }*/
     //
 
     size = Utility::loadInt(data, position);

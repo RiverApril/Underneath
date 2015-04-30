@@ -20,6 +20,7 @@ namespace ItemGenerator {
     Item* iCoin;
 
 
+    vector<ArmorBase> armorList;
     vector<Condition> conditionList;
     vector<WeaponBase> weaponList;
     vector<PotionBase> potionList;
@@ -128,10 +129,20 @@ namespace ItemGenerator {
         }).magical(2.0, 4.0));
 
 
+        ArmorBase aLeatherChest = atl(ArmorBase({"Leather Cuirass"}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}, Point2(2, 5)));
+
+        ArmorBase aLeatherHelm = atl(ArmorBase({"Leather Coif"}, {slotHead}, {DefenseRange(damSharp, .01, .05), DefenseRange(damPierce, .01, .01)}, Point2(2, 5)));
+
+
     }
 
     void cleanupItemTemplates() {
         delete iCoin;
+    }
+
+    ArmorBase atl(ArmorBase a) {
+        armorList.push_back(a);
+        return a;
     }
 
     Condition atl(Condition c) {
@@ -290,6 +301,7 @@ namespace ItemGenerator {
                 w->addEnchantment(Enchantment(effDamage, 10, 1, 6).setMeta(base.damageType));
             } else {
                 w = new Ranged();
+                ((Ranged*) w)->twoHanded = true;
             }
             ((Ranged*) w)->range = base.range;
         } else {
@@ -305,6 +317,7 @@ namespace ItemGenerator {
 
         w->baseDamage *= (itemDifficulty * .1) + 1;
         w->baseDamage *= Random::randDouble(4.5, 5.5);
+
 
         return w;
     }

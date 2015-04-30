@@ -44,9 +44,21 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
+    virtual void setActiveWeapon(Weapon* newWeapon);
+
+    virtual Weapon* getActiveWeapon() {
+        return activeWeapon;
+    }
+
     void setMoveDelay(double newDelay) {
         moveDelay = newDelay;
     }
+
+    virtual bool removeItem(Item* item, bool deleteItem);
+
+    bool equipItem(Equipable* newItem);
+
+    bool equipItem(Equipable* newItem, EquipSlot slot);
 
     virtual void setTimes(double time) {
         lastMoveTime = time;
@@ -71,6 +83,8 @@ protected:
     double lastAttackTime = 0;
 
     bool agro = false;
+
+    Weapon* activeWeapon = nullptr;
 };
 
 #endif /* defined(__Underneath__AiEntity__) */

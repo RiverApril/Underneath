@@ -21,7 +21,7 @@ public:
 
     }
 
-    CombatSpell(int baseDamage, string name, double weight, int manaCost, double useDelay, int range) : Ranged(baseDamage, name, weight, useDelay, range) {
+    CombatSpell(int baseDamage, string name, double weight, int manaCost, double useDelay, int range, bool twoHanded) : Ranged(baseDamage, name, weight, useDelay, range, twoHanded) {
 
         this->baseDamage = baseDamage;
         this->damageType = damFire;

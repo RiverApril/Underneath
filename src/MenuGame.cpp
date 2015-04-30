@@ -374,7 +374,8 @@ namespace Ui {
                     }
                 }
 
-            } else if (in == Key::interact) {
+            } else if (in == Key::interact || in == Key::secondaryAttack) {
+                Weapon* wep = (in == Key::interact)?currentPlayer->getActiveWeapon():currentPlayer->getSecondaryWeapon();
                 if (controlMode == modeSelectDirection) {
 
                     timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, itemToBeUsed);
@@ -388,7 +389,7 @@ namespace Ui {
 
                     changeMode(modePlayerControl);
                 } else {
-                    Ranged* ranged = dynamic_cast<Ranged*> (currentPlayer->getActiveWeapon());
+                    Ranged* ranged = dynamic_cast<Ranged*> (wep);
                     if (ranged) {
                         changeMode(modeSelectPosition);
                         if (!currentLevel->canSee(currentPlayer->pos, targetPosition, ranged->range, false)) {
@@ -398,7 +399,7 @@ namespace Ui {
                         itemToBeUsed = ranged;
                     } else {
                         changeMode(modeSelectDirection);
-                        itemToBeUsed = currentPlayer->getActiveWeapon();
+                        itemToBeUsed = wep;
                     }
                 }
             } else if(in == Key::waitUntilHealed) {
@@ -573,24 +574,8 @@ namespace Ui {
                 Effect eff = currentPlayer->effects[i];
                 string name = "EFFECT";
                 Ui::Color color = C_LIGHT_GREEN;
-                switch (eff.eId) {
-                    case effDamage:
-                    {
-                        name = Weapon::damageTypeName((int) eff.meta);
-                        color = Weapon::damageTypeColor((int) eff.meta);
-                        break;
-                    }
-
-                    case effHeal:
-                        name = "Heal";
-                        color = C_LIGHT_GREEN;
-                        break;
-
-                    case effBuff:
-                        name = "Buff TODO";
-                        color = C_LIGHT_BLUE;
-                        break;
-                }
+                name = effectName(eff.eId, eff.meta);
+                color = effectColor(eff.eId, eff.meta);
                 setColor(color);
                 a += printMultiLineString(a, gameArea.x + 1, formatString("%s %s: %.2f", name.c_str(), Utility::intToRomanNumerals((int) eff.power).c_str(), eff.timeLeft));
             }

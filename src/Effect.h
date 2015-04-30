@@ -9,7 +9,7 @@
 #ifndef __Underneath__Effect__
 #define __Underneath__Effect__
 
-#include "Global.h"
+#include "DamageType.h"
 
 #define EFFECT_DELAY 1
 
@@ -17,7 +17,8 @@ typedef int EffectId;
 
 const EffectId effDamage = 0;
 const EffectId effHeal = 1;
-const EffectId effBuff = 2;
+const EffectId effBuffAttack = 2;
+const EffectId effBuffDefence = 3;
 
 struct Effect {
     Effect(unsigned char* data, int* position);
@@ -37,6 +38,44 @@ struct Effect {
     double power = 1;
     double meta = 0;
 };
+
+static string effectName(EffectId eid, double meta) {
+    switch (eid) {
+        case effDamage:
+            return damageTypeName((DamageType) meta);
+
+        case effHeal:
+            return "Heal";
+
+        case effBuffAttack:
+            return "Buff "+damageTypeName((DamageType) meta);
+
+        case effBuffDefence:
+            return "Resist "+damageTypeName((DamageType) meta);
+
+        default:
+            return "UNDEFINED";
+    }
+}
+
+static Ui::Color effectColor(EffectId eid, double meta) {
+    switch (eid) {
+        case effDamage:
+            return damageTypeColor((DamageType) meta);
+
+        case effHeal:
+            return Ui::C_LIGHT_GREEN;
+
+        case effBuffAttack:
+            return Ui::C_LIGHT_BLUE;
+
+        case effBuffDefence:
+            return Ui::C_LIGHT_MAGENTA;
+
+        default:
+            return Ui::C_LIGHT_GREEN;
+    }
+}
 
 bool operator==(const Effect a, const Effect b);
 

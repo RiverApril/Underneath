@@ -322,7 +322,8 @@ namespace Ui {
         int columnX = 0;
         int columnWidth = (terminalSize.x) / (secondaryInv == nullptr ? 2 : 3);
 
-        Weapon* activeWeapon = player->getActiveWeapon();
+        //Weapon* activeWeapon = player->getActiveWeapon();
+
 
         move(0, 0);
         clrtobot();
@@ -372,7 +373,13 @@ namespace Ui {
                     setColor(C_BLACK, C_WHITE);
                 }
 
-                char pre = activeWeapon != nullptr ? (item == activeWeapon ? 'E' : '-') : '-';
+                char pre = '-';
+
+                Equipable* equippable = dynamic_cast<Equipable*>(item);
+                if(equippable){
+                    EquipSlot slot = player->getSlot(equippable);
+                    pre = Equipable::equipSlotAbr(slot);
+                }
                 string displayName;
                 if (item->qty == 1) {
                     displayName = formatString("%s", item->name.c_str());
@@ -406,10 +413,40 @@ namespace Ui {
                 int a = 2;
 
                 a += printMultiLineString(a, columnX, formatString("Name: %s%s", item->name.c_str(), item->qty == 1 ? "" : (formatString(" x %d", item->qty).c_str())));
-                if (item == activeWeapon) {
-                    mvprintw(terminalSize.y - 1, columnX, "-Equipped");
-                } else {
-                    mvprintw(terminalSize.y - 1, columnX, "");
+                
+                if(equipable){
+
+                    vector<char> eqv;
+                    string eqs = "";
+
+                    for(EquipSlot slot : equipable->getViableSlots()){
+                        char c = Equipable::equipSlotAbr(slot);
+                        consolef("%d", slot);
+                        if(!Utility::vectorContains(eqv, c)){
+                            eqv.push_back(c);
+                            if(eqs.length() > 0){
+                                eqs += ", ";
+                            }
+                            bool twoHanded = false;
+                            if(weapon){
+                                twoHanded = weapon->twoHanded;
+                            }
+                            eqs += Equipable::equipSlotNameGeneric(slot, twoHanded);
+                        }
+                    }
+
+                    if(eqs.length() > 0){
+                        a += printMultiLineString(a, columnX, formatString("Equipable to %s", eqs.c_str()));
+                    }
+
+                    EquipSlot slot = player->getSlot(equipable);
+                    if(slot != slotNone){
+                        bool twoHanded = false;
+                        if(weapon){
+                            twoHanded = weapon->twoHanded;
+                        }
+                    	mvprintw(terminalSize.y - 1, columnX, "-Equipped to %s", Equipable::equipSlotName(slot, twoHanded).c_str());
+                    }
                 }
 
                 setColor(C_LIGHT_GRAY, C_BLACK);
@@ -423,9 +460,9 @@ namespace Ui {
                     } else {
                         for (Effect e : potion->effects) {
                             if (e.timeLeft > 0) {
-                                a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2f", Weapon::effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
+                                a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2f", effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
                             } else {
-                                a += printMultiLineString(a, columnX, formatString("   %s %.2f", Weapon::effectName(e.eId, e.meta).c_str(), e.power));
+                                a += printMultiLineString(a, columnX, formatString("   %s %.2f", effectName(e.eId, e.meta).c_str(), e.power));
                             }
                         }
                     }
@@ -459,7 +496,7 @@ namespace Ui {
                     } else {
                         a += printMultiLineString(a, columnX, formatString("Damage: %.2f (%.2f)", weapon->baseDamage, weapon->baseDamage * x));
                     }
-                    a += printMultiLineString(a, columnX, formatString("Damage Type: %s", Weapon::damageTypeName(weapon->damageType).c_str()));
+                    a += printMultiLineString(a, columnX, formatString("Damage Type: %s", damageTypeName(weapon->damageType).c_str()));
                     a += printMultiLineString(a, columnX, formatString("Speed: %d%%", (int) (100 / weapon->useDelay)));
                     if (ranged) {
                         a += printMultiLineString(a, columnX, formatString("Range: %.2f", ranged->range));
@@ -471,7 +508,7 @@ namespace Ui {
                         a++;
                         a += printMultiLineString(a, columnX, formatString("Enchantments:"));
                         for (Enchantment e : weapon->enchantments) {
-                            a += printMultiLineString(a, columnX, formatString("   %s x%d (1/%d for %.2f)", Weapon::enchantmentName(e).c_str(), e.power, e.chance, e.time));
+                            a += printMultiLineString(a, columnX, formatString("   %s x%d (1/%d for %.2f)", enchantmentName(e).c_str(), e.power, e.chance, e.time));
                         }
                         a++;
                     }

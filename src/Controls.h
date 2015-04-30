@@ -34,6 +34,7 @@ namespace Key {
     extern int moveLeft;
     extern int moveRight;
     extern int interact;
+    extern int secondaryAttack;
     extern int inspect;
     extern int adjustConsole;
     extern int waitUntilHealed;

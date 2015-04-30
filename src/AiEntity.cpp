@@ -197,6 +197,13 @@ AiEntity* AiEntity::cloneUnsafe(AiEntity* oldE, AiEntity* newE) {
     newE->lastMoveTime = oldE->lastMoveTime;
     newE->lastAttackTime = oldE->lastAttackTime;
 
+    forVector(oldE->inventory, i) {
+        if (oldE->inventory[i] == oldE->activeWeapon) {
+            newE->activeWeapon = dynamic_cast<Weapon*> (newE->inventory[i]);
+            break;
+        }
+    }
+
     return newE;
 }
 
@@ -211,6 +218,16 @@ void AiEntity::save(std::vector<unsigned char>* data) {
     Utility::saveDouble(data, lastMoveTime);
     Utility::saveDouble(data, lastAttackTime);
     Point2::save(lastKnownTargetPos, data);
+
+    int activeWeaponIndex = -1;
+
+    forVector(inventory, i) {
+        Item* ie = inventory[i];
+        if (ie == activeWeapon) {
+            activeWeaponIndex = i;
+        }
+    }
+    Utility::saveInt(data, activeWeaponIndex);
 }
 
 void AiEntity::load(unsigned char* data, int* position) {
@@ -220,4 +237,39 @@ void AiEntity::load(unsigned char* data, int* position) {
     lastMoveTime = Utility::loadDouble(data, position);
     lastAttackTime = Utility::loadDouble(data, position);
     lastKnownTargetPos = Point2::load(data, position);
+
+
+    int activeWeaponIndex = Utility::loadInt(data, position);
+    if (activeWeaponIndex != -1) {
+        activeWeapon = dynamic_cast<Weapon*> (inventory[activeWeaponIndex]);
+    } else {
+        activeWeapon = nullptr;
+    }
+
+}
+
+bool AiEntity::removeItem(Item* item, bool deleteItem) {
+    if (item) {
+        if (item == activeWeapon) {
+            setActiveWeapon(nullptr);
+        }
+    }
+    return Inventory::removeItem(item, deleteItem);
+}
+
+void AiEntity::setActiveWeapon(Weapon* newWeapon) {
+
+    if (newWeapon == nullptr) {
+        activeWeapon = nullptr;
+        return;
+    }
+
+    for (Item* ie : inventory) {
+        if (ie == newWeapon) {
+            activeWeapon = dynamic_cast<Weapon*> (ie);
+            return;
+        }
+    }
+    inventory.push_back(newWeapon);
+    activeWeapon = newWeapon;
 }

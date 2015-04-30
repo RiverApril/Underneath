@@ -48,12 +48,13 @@ namespace Ui {
                 currentWorld->currentLevel->newEntity(new ItemEntity(drop, player->pos));
             }
         } else if (in == Key::equip) {
-            Weapon* weapon = dynamic_cast<Weapon*> (player->inventory[selected]);
-            if (weapon) {
-                if (player->getActiveWeapon() == weapon) {
-                    player->setActiveWeapon(nullptr);
-                } else {
-                    player->setActiveWeapon(weapon);
+            Equipable* equipable = dynamic_cast<Equipable*> (player->inventory[selected]);
+            if (equipable) {
+                EquipSlot slot = player->getSlot(equipable);
+                if(slot){
+                    player->equipItem(nullptr, slot);
+                }else{
+                    player->equipItem(equipable);
                 }
             }
         } else if (in == Key::interact) {

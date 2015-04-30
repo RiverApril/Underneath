@@ -36,12 +36,13 @@ namespace Ui {
 
         } else if (in == Key::equip) {
             if (selectedLeft) {
-                Weapon* weapon = dynamic_cast<Weapon*> (user->inventory[selected]);
-                if (weapon) {
-                    if (user->getActiveWeapon() == weapon) {
-                        user->setActiveWeapon(nullptr);
-                    } else {
-                        user->setActiveWeapon(weapon);
+                Equipable* equipable = dynamic_cast<Equipable*> (user->inventory[selected]);
+                if (equipable) {
+                    EquipSlot slot = user->getSlot(equipable);
+                    if(slot){
+                        user->equipItem(nullptr, slot);
+                    }else{
+                        user->equipItem(equipable);
                     }
                 }
             } else {

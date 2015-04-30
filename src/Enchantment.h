@@ -30,6 +30,10 @@ struct Enchantment {
     //if effectId is effDamage: meta is DamageType
 };
 
+static string enchantmentName(Enchantment e) {
+    return effectName(e.effectId, e.meta);
+}
+
 bool operator==(const Enchantment a, const Enchantment b);
 
 bool operator!=(const Enchantment a, const Enchantment b);

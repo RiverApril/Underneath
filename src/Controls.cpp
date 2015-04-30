@@ -16,6 +16,7 @@ namespace Key {
     int moveLeft = KEY_LEFT;
     int moveRight = KEY_RIGHT;
     int interact = 'g';
+    int secondaryAttack = 'f';
     int inspect = 'q';
     int adjustConsole = '\\';
     int waitUntilHealed = 'h';
@@ -50,7 +51,8 @@ vector<KeyBind> keybindings = {
     KeyBind("Move Down", &Key::moveDown, keyCatPlayer),
     KeyBind("Move Left", &Key::moveLeft, keyCatPlayer),
     KeyBind("Move Right", &Key::moveRight, keyCatPlayer),
-    KeyBind("Interact / Use", &Key::interact, keyCatPlayer | keyCatUi),
+    KeyBind("Interact / Use / Attack", &Key::interact, keyCatPlayer | keyCatUi),
+    KeyBind("Secondary Attack", &Key::secondaryAttack, keyCatPlayer),
     KeyBind("Examine", &Key::inspect, keyCatPlayer),
     KeyBind("Heal", &Key::waitUntilHealed, keyCatPlayer),
     KeyBind("Open Inventory", &Key::inventory, keyCatPlayer | keyCatUi),
