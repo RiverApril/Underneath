@@ -129,9 +129,15 @@ namespace ItemGenerator {
         }).magical(2.0, 4.0));
 
 
-        ArmorBase aLeatherChest = atl(ArmorBase({"Leather Cuirass"}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}, Point2(2, 5)));
+        ArmorBase aLeatherChest = atl(ArmorBase({"Leather Cuirass"}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}, 3));
 
-        ArmorBase aLeatherHelm = atl(ArmorBase({"Leather Coif"}, {slotHead}, {DefenseRange(damSharp, .01, .05), DefenseRange(damPierce, .01, .01)}, Point2(2, 5)));
+        ArmorBase aLeatherHelm = atl(ArmorBase({"Leather Coif"}, {slotHead}, {DefenseRange(damSharp, .01, .06), DefenseRange(damPierce, .01, .03)}, 2));
+
+        ArmorBase aLeatherBoots = atl(ArmorBase({"Leather Boots"}, {slotFeet}, {DefenseRange(damSharp, .01, .04), DefenseRange(damPierce, .01, .02)}, 1.5));
+
+        ArmorBase aLeatherGloves = atl(ArmorBase({"Leather Gloves"}, {slotHands}, {DefenseRange(damSharp, .01, .03), DefenseRange(damPierce, .01, .02)}, 1));
+
+        ArmorBase aGoldenRing = atl(ArmorBase({"Golden Ring"}, {slotHands}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));
 
 
     }
@@ -180,7 +186,12 @@ namespace ItemGenerator {
         return weaponList[i];
     }
 
-    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int altMaxQty) {
+    ArmorBase getRandArmorBase() {
+        size_t i = (rand()) % armorList.size();
+        return armorList[i];
+    }
+
+    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty) {
         vector<Item*> items;
 
         if (goldMaxQty > 0) {
@@ -203,6 +214,23 @@ namespace ItemGenerator {
                 }
 
                 items.push_back(createRandWeapon(itemDifficulty));
+            }
+        }
+
+        if(armMaxQty > 0){
+            int armorQty = (rand() % (armMaxQty + 1));
+
+            for(int i = 0;i<armorQty;i++){
+
+                int itemDifficulty = 0;
+
+                for (int i = 0; i < difficulty; i++) {
+                    if (rand() % 10 == 0) {
+                        itemDifficulty++;
+                    }
+                }
+
+                items.push_back(createRandArmor(itemDifficulty));
             }
         }
 
@@ -322,6 +350,27 @@ namespace ItemGenerator {
         return w;
     }
 
+    Armor* createArmorFromBase(ArmorBase base, int itemDifficulty){
+        size_t ni = rand() % base.names.size();
+
+        Armor* a;
+
+        a = new Armor();
+
+        a->name = base.names[ni];
+        a->weight = base.weight;
+        a->viableSlots = base.viableSlots;
+        for(DefenseRange dr : base.defences){
+            if(rand() % dr.chance == 0){
+                Defense def = Defense(dr.damageType, Random::randDouble(dr.amountMin, dr.amountMax));
+                def.amount *= (itemDifficulty * .1) + 1;
+                a->defenses.push_back(def);
+            }
+        }
+
+        return a;
+    }
+
     Weapon* applyConditionToWeapon(Weapon* w, Condition c, int itemDifficulty, bool prependName) {
 
         if (prependName) {
@@ -376,6 +425,18 @@ namespace ItemGenerator {
         }
 
         applyRandConditionToWeapon(w, itemDifficulty);
+
+        return w;
+    }
+
+    Armor* createRandArmor(int itemDifficulty) {
+        ArmorBase base = getRandArmorBase();
+        Armor* w = createArmorFromBase(base, itemDifficulty);
+
+        w->minimumAbilities.list[iAGI] = pow(2, itemDifficulty) - 1;
+
+        //applyRandConditionToArmor(w, itemDifficulty);
+        //todo
 
         return w;
     }

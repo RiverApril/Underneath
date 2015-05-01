@@ -495,11 +495,12 @@ bool Player::equipItem(Equipable* newItem, EquipSlot slot){
         for(pair<EquipSlot, Equipable*> p : equipedItems){
             if(p.second){
                 if(p.second->blocksSlot(slot, p.first)){
-                    consolef("Other item blocks slot: %d", slot);
-                    return false;
+                    equipedItems[p.first] = nullptr;
                 }
             }
         }
+
+
 
         if(alreadyHave){
             equipedItems[slot] = dynamic_cast<Equipable*> (newItem);

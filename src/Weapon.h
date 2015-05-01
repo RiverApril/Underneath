@@ -15,8 +15,8 @@
 #include "Ui.h"
 #include "DamageType.h"
 
-const vector<EquipSlot> bothHands = {slotHand1, slotHand2};
-const vector<EquipSlot> oneHand = {slotHand1};
+const vector<EquipSlot> bothHands = {slotWep1, slotWep2};
+const vector<EquipSlot> oneHand = {slotWep1};
 
 class Weapon : public Equipable {
 public:
@@ -59,15 +59,15 @@ public:
     }
 
     virtual bool canBeEquipedHere(EquipSlot e) {
-        return e==slotHand1 || (twoHanded?false:e==slotHand2);
+        return e==slotWep1 || (twoHanded?false:e==slotWep2);
     }
 
     virtual bool blocksSlot(EquipSlot blockMe, EquipSlot whenHere) {
-        return twoHanded?((whenHere == slotHand1 && blockMe == slotHand2)||(whenHere == slotHand2 && blockMe == slotHand1)):false;
+        return twoHanded?((whenHere == slotWep1 && blockMe == slotWep2)||(whenHere == slotWep2 && blockMe == slotWep1)):false;
     }
 
     virtual vector<EquipSlot> getViableSlots(){
-        return twoHanded?bothHands:oneHand;
+        return twoHanded?oneHand:bothHands;
     }
 
     double baseDamage = 1;

@@ -92,6 +92,10 @@ public:
         return false;
     }
 
+    virtual vector<EquipSlot> getViableSlots(){
+        return viableSlots;
+    }
+
     vector<Defense> defenses;
     
     vector<Enchantment> enchantments;

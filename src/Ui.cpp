@@ -16,6 +16,7 @@
 #include "UtilitySpell.h"
 #include "ItemSpecial.h"
 #include "ItemTimeActivated.h"
+#include "Armor.h"
 
 vector<string> consoleBuffer;
 
@@ -203,7 +204,7 @@ namespace Ui {
                 if (ss[0] == ' ') {
                     ss = ss.substr(1);
                 }
-                mvprintw(y + a, x, ss.c_str());
+                mvprintw(y + a, x, "%s", ss.c_str());
                 a += 1;
             }
         }
@@ -402,6 +403,7 @@ namespace Ui {
 
             if(item) {
                 Equipable* equipable = dynamic_cast<Equipable*>(item);
+                Armor* armor = dynamic_cast<Armor*>(item);
                 Weapon* weapon = dynamic_cast<Weapon*>(item);
                 Ranged* ranged = dynamic_cast<Ranged*>(item);
                 CombatSpell* spell = dynamic_cast<CombatSpell*>(item);
@@ -413,19 +415,26 @@ namespace Ui {
                 int a = 2;
 
                 a += printMultiLineString(a, columnX, formatString("Name: %s%s", item->name.c_str(), item->qty == 1 ? "" : (formatString(" x %d", item->qty).c_str())));
+
+                setColor(C_LIGHT_GRAY, C_BLACK);
                 
                 if(equipable){
+                    //a+= printMultiLineString(a, columnX, "EQUIPABLE");
 
                     vector<char> eqv;
                     string eqs = "";
+                    string eqp = "";
 
-                    for(EquipSlot slot : equipable->getViableSlots()){
+                    vector<EquipSlot> vs = equipable->getViableSlots();
+
+                    for(EquipSlot slot : vs){
                         char c = Equipable::equipSlotAbr(slot);
-                        consolef("%d", slot);
                         if(!Utility::vectorContains(eqv, c)){
                             eqv.push_back(c);
                             if(eqs.length() > 0){
                                 eqs += ", ";
+                            }else{
+                                eqp = Equipable::equipSlotPreposition(slot);
                             }
                             bool twoHanded = false;
                             if(weapon){
@@ -435,9 +444,13 @@ namespace Ui {
                         }
                     }
 
+                    setColor(C_LIGHT_MAGENTA, C_BLACK);
+
                     if(eqs.length() > 0){
-                        a += printMultiLineString(a, columnX, formatString("Equipable to %s", eqs.c_str()));
+                        a += printMultiLineString(a, columnX, formatString("Equipable %s %s", eqp.c_str(), eqs.c_str()));
                     }
+
+                    setColor(C_LIGHT_GRAY, C_BLACK);
 
                     EquipSlot slot = player->getSlot(equipable);
                     if(slot != slotNone){
@@ -445,11 +458,9 @@ namespace Ui {
                         if(weapon){
                             twoHanded = weapon->twoHanded;
                         }
-                    	mvprintw(terminalSize.y - 1, columnX, "-Equipped to %s", Equipable::equipSlotName(slot, twoHanded).c_str());
+                        mvprintw(terminalSize.y - 1, columnX, "-Equipped %s %s", Equipable::equipSlotPreposition(slot).c_str(), Equipable::equipSlotName(slot, twoHanded).c_str());
                     }
                 }
-
-                setColor(C_LIGHT_GRAY, C_BLACK);
 
                 //mvprintw(a++, columnX, "Qty: %d", item->qty);
                 a += printMultiLineString(a, columnX, formatString("Weight: %.2f", item->weight));
@@ -489,6 +500,19 @@ namespace Ui {
                     } else {
                         a += printMultiLineString(a, columnX, formatString("Mana Cost: %d", utilitySpell->manaCost));
                     }
+                } else if(armor){
+                    for(Defense def : armor->defenses){
+                        a += printMultiLineString(a, columnX, formatString("%d%c resistance to %s", (int)(def.amount*100.0), '%', damageTypeName(def.damageType).c_str()));
+                    }
+                    if (armor->enchantments.size() > 0) {
+                        a++;
+                        a += printMultiLineString(a, columnX, formatString("Enchantments:"));
+                        for (Enchantment e : armor->enchantments) {
+                            a += printMultiLineString(a, columnX, formatString("   %s x%d (1/%d for %.2f)", enchantmentName(e).c_str(), e.power, e.chance, e.time));
+                        }
+                        a++;
+                    }
+
                 } else if (weapon) {
                     double x = player->calcDamageMultiplier(weapon);
                     if (x == 1.0) {

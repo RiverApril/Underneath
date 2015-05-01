@@ -82,11 +82,11 @@ public:
     virtual void setActiveWeapon(Weapon* newWeapon);
 
     virtual Weapon* getActiveWeapon() {
-        return dynamic_cast<Weapon*>(equipedItems[slotHand1]);
+        return dynamic_cast<Weapon*>(equipedItems[slotWep1]);
     }
 
     virtual Weapon* getSecondaryWeapon() {
-        return dynamic_cast<Weapon*>(equipedItems[slotHand2]);
+        return dynamic_cast<Weapon*>(equipedItems[slotWep2]);
     }
 
     EquipSlot getSlot(Equipable* e){

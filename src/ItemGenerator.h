@@ -13,6 +13,7 @@
 #include "CombatSpell.h"
 #include "Potion.h"
 #include "UtilitySpell.h"
+#include "Armor.h"
 
 
 namespace ItemGenerator {
@@ -48,21 +49,23 @@ namespace ItemGenerator {
     };
 
     struct DefenseRange{
-        DefenseRange(DamageType damageType, double amountMin, double amountMax){
+        DefenseRange(DamageType damageType, double amountMin, double amountMax, int chance = 1){
             this->damageType = damageType;
             this->amountMin = amountMin;
             this->amountMax = amountMax;
+            this->chance = chance;
         }
         DamageType damageType;
         double amountMin;
         double amountMax;
+        int chance;
     };
 
     struct ArmorBase{
         ArmorBase(){
         }
 
-        ArmorBase(vector<string> names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences, Point2 weight){
+        ArmorBase(vector<string> names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences, double weight){
             this->names = names;
             this->viableSlots = viableSlots;
             this->defences = defences;
@@ -71,7 +74,7 @@ namespace ItemGenerator {
         vector<string> names;
         vector<EquipSlot> viableSlots;
         vector<DefenseRange> defences;
-        Point2 weight;
+        double weight;
     };
 
     struct WeaponBase {
@@ -185,16 +188,21 @@ namespace ItemGenerator {
     extern WeaponBase wNatural;
 
 
-    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int altMaxQty);
+    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty);
 
     Item* createRandAltLoot(int itemDifficulty);
 
     Weapon* createRandWeapon(int itemDifficulty);
 
+    Armor* createRandArmor(int itemDifficulty);
+
     WeaponBase getRandWeaponBase(DamageType d);
     WeaponBase getRandWeaponBase();
+    ArmorBase getRandArmorBase();
 
     Weapon* createWeaponFromBase(WeaponBase base, int itemDifficulty);
+
+    Armor* createArmorFromBase(ArmorBase base, int itemDifficulty);
 
     Weapon* createWeaponFromType(WeaponType w, int itemDifficulty);
 
