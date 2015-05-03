@@ -137,7 +137,7 @@ namespace ItemGenerator {
 
         ArmorBase aLeatherGloves = atl(ArmorBase({"Leather Gloves"}, {slotHands}, {DefenseRange(damSharp, .01, .03), DefenseRange(damPierce, .01, .02)}, 1));
 
-        ArmorBase aGoldenRing = atl(ArmorBase({"Golden Ring"}, {slotHands}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));
+        ArmorBase aGoldenRing = atl(ArmorBase({"Golden Ring"}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));
 
 
     }
