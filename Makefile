@@ -1,3 +1,5 @@
+PROGRAM_NAME := $(shell basename $(CURDIR))
+
 ifdef SystemRoot
   RM := del /Q
   MKDIR := mkdir
@@ -20,7 +22,7 @@ endif
 
 CPPC ?= g++
 PLATFORM ?= $(OSN)_$(ARCH)
-NAME := Underneath_BUILD_$(PLATFORM)
+NAME := $(PROGRAM_NAME)_BUILD_$(PLATFORM)
 SRCS := $(wildcard src/*.cpp)
 TMP := $(SRCS:.cpp=.o)
 SRCSLASH := src/
