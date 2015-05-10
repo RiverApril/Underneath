@@ -45,6 +45,7 @@ namespace LevelGenerator {
         Point2 radius;
         vector<Entry*>* entrances;
     };
+    
 
     int getPathAndMaybeDoor();
 

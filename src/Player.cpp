@@ -353,6 +353,9 @@ Player* Player::cloneUnsafe(Player* oldE, Player* newE) {
         }
     }
 
+    newE->recalculateDefenses();
+    newE->updateVariablesForAbilities();
+
     return newE;
 }
 
@@ -403,6 +406,9 @@ void Player::load(unsigned char* data, int* position) {
         int index = Utility::loadInt(data, position);
         equipedItems[slot] = dynamic_cast<Equipable*>(inventory[index]);
     }
+
+    recalculateDefenses();
+    updateVariablesForAbilities();
 
 }
 
@@ -459,65 +465,93 @@ bool Player::equipItem(Equipable* newItem){
 
 bool Player::equipItem(Equipable* newItem, EquipSlot slot){
 
-    bool alreadyHave = false;
+    try{
 
-    for (Item* ie : inventory) {
-        if (ie == newItem) {
-            alreadyHave = true;
-            break;
-        }
-    }
+        bool alreadyHave = false;
 
-    if(newItem){
-
-        if(!alreadyHave){
-            inventory.push_back(newItem);
-            equipedItems[slot] = newItem;
-        }
-
-        if(slot == 0 || slot > slotMAX){
-            consolef("Slot out of range: %d", slot);
-            return false;
-        }
-
-        for (int i = 0; i < abilityCount; i++) {
-            if (newItem->minimumAbilities[i] > abilities[i]) {
-                consolef("Ability %s too high: %d", abilityAbr[i].c_str(), newItem->minimumAbilities[i]);
-                return false;
+        for (Item* ie : inventory) {
+            if (ie == newItem) {
+                alreadyHave = true;
+                break;
             }
         }
 
-        if(!newItem->canBeEquipedHere(slot)){
-            consolef("Cannot be equipped here: %d", slot);
-            return false;
-        }
+        if(newItem){
 
-        for(pair<EquipSlot, Equipable*> p : equipedItems){
-            if(p.second){
-                if(p.second->blocksSlot(slot, p.first)){
-                    equipedItems[p.first] = nullptr;
+            if(!alreadyHave){
+                inventory.push_back(newItem);
+                equipedItems[slot] = newItem;
+            }
+
+            if(slot == 0 || slot > slotMAX){
+                consolef("Slot out of range: %d", slot);
+                throw false;
+            }
+
+            for (int i = 0; i < abilityCount; i++) {
+                if (newItem->minimumAbilities[i] > abilities[i]) {
+                    consolef("Ability %s too high: %d", abilityAbr[i].c_str(), newItem->minimumAbilities[i]);
+                    throw false;
                 }
             }
+
+            if(!newItem->canBeEquipedHere(slot)){
+                consolef("Cannot be equipped here: %d", slot);
+                throw false;
+            }
+
+            for(pair<EquipSlot, Equipable*> p : equipedItems){
+                if(p.second){
+                    if(p.second->blocksSlot(slot, p.first)){
+                        equipedItems[p.first] = nullptr;
+                    }
+                }
+            }
+
+
+
+            if(alreadyHave){
+                equipedItems[slot] = dynamic_cast<Equipable*> (newItem);
+                throw true;
+            }else{
+                throw false;
+            }
+
+        } else {
+            equipedItems[slot] = nullptr;
+            throw true;
         }
-
-
-
-        if(alreadyHave){
-            equipedItems[slot] = dynamic_cast<Equipable*> (newItem);
-            return true;
-        }else{
-            return false;
+    }catch(bool changed){
+        if(changed){
+            recalculateDefenses();
         }
-
-    } else {
-        equipedItems[slot] = nullptr;
-        return true;
+        return changed;
     }
 
 }
 
 void Player::setActiveWeapon(Weapon* newWeapon) {
     equipItem(newWeapon);
+}
+
+void Player::recalculateDefenses(){
+
+    calculatedDefenses.clear();
+
+    for(pair<EquipSlot, Equipable*> p : equipedItems){
+        if(p.second){
+            Armor* armor = dynamic_cast<Armor*>(p.second);
+            if(armor){
+                for(Defense d : armor->defenses){
+                    if(calculatedDefenses.count(d.damageType)){
+                        calculatedDefenses[d.damageType] += d.amount;
+                    }else{
+                        calculatedDefenses[d.damageType] = d.amount;
+                    }
+                }
+            }
+        }
+    }
 }
 
 

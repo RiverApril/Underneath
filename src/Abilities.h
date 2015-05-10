@@ -57,13 +57,13 @@ namespace AbilityDetails {
     };
 
     static const string abilityInfo[abilityCount] = {
-        "Affects Melee attack damage.",
-        "Affects Ranged attack damage.",
-        "Affects Magic attack damage.",
-        "Affects Dodge Chance and Attack Speed.",
-        "Affects Movement Speed.",
-        "Affects Max Health.",
-        "Affects Max Mana."
+        "Melee attack damage.",
+        "Ranged attack damage.",
+        "Magic attack damage.",
+        "Dodge Chance and Attack Speed.",
+        "Movement Speed.",
+        "Max Health.",
+        "Max Mana."
     };
 
 

@@ -13,6 +13,7 @@
 #include "Weapon.h"
 #include "CombatSpell.h"
 #include "Abilities.h"
+#include "Armor.h"
 
 class Player : public Alive {
 public:
@@ -54,6 +55,9 @@ public:
         if(godMode){
             return 0;
         }
+
+        damageMultiplier *= getDefense(damageType);
+
         return Alive::hurt(damageType, amount, damageMultiplier);
     }
 
@@ -66,6 +70,9 @@ public:
         if (rand() < (RAND_MAX * chance)) {
             return 0;
         }
+
+        damageMultiplier *= getDefense(w->damageType);
+
         return Alive::hurt(w, damageMultiplier);
     }
 
@@ -165,8 +172,21 @@ public:
         return (pow(l + 5, 2));
     }
 
+    void recalculateDefenses();
+
+    double getDefense(DamageType damType){
+        if(calculatedDefenses.count(damType)){
+            return 1.0 - calculatedDefenses[damType];
+        }
+        return 1.0;
+    }
+
+    map<DamageType, double> calculatedDefenses;
+
+
 
 protected:
+
 
     double moveDelay = 1;
     double interactDelay = .1;

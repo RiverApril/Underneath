@@ -80,16 +80,27 @@ namespace Ui {
         }
 
         a++;
+        int b = a;
+
+        mvprintw(a++, 1, "Abilities:");
 
         for (int i = 0; i < abilityCount; i++) {
             if (i == selected) {
                 setColor(C_BLACK, C_WHITE);
             }
-            mvprintw(a++, 3, "%s: %3d   %s", abilityNamesRightAligned[i].c_str(), player->abilities[i], abilityInfo[i].c_str());
+            mvprintw(a++, 3, "%s: %3d", abilityNamesRightAligned[i].c_str(), player->abilities[i]);
             if (i == selected) {
                 setColor(C_WHITE);
             }
         }
+
+        mvprintw(b++, terminalSize.x/2 + 3, "Defenses:");
+
+        for (pair<DamageType, double> d : player->calculatedDefenses) {
+            mvprintw(b++, terminalSize.x/2 + 5, "%s: %d%%", damageTypeName(d.first).c_str(), (int)(d.second*100.0));
+        }
+
+        printCenter(terminalSize.y - 2, abilityInfo[selected]);
 
     }
 }
