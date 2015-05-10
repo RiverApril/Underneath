@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Command.h"
-#include "Alive.h"
-#include "MenuGame.h"
-#include "Utility.h"
-#include "ItemGenerator.h"
+#include "Command.hpp"
+#include "Alive.hpp"
+#include "MenuGame.hpp"
+#include "Utility.hpp"
+#include "ItemGenerator.hpp"
 
 
 

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "EntityTimeActivated.h"
-#include "Level.h"
+#include "EntityTimeActivated.hpp"
+#include "Level.hpp"
 
 EntityTimeActivated::EntityTimeActivated() : EntityTimeActivated("", 0, 1, 1, 2, Point2Zero) {
 

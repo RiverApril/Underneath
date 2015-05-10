@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuStats.h"
-#include "Math.h"
-#include "ItemEntity.h"
-#include "Controls.h"
-#include "Utility.h"
-#include "MenuYesNo.h"
-#include "MenuMessage.h"
+#include "MenuStats.hpp"
+#include "Math.hpp"
+#include "ItemEntity.hpp"
+#include "Controls.hpp"
+#include "Utility.hpp"
+#include "MenuYesNo.hpp"
+#include "MenuMessage.hpp"
 
 namespace Ui {
 

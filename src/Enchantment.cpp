@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Enchantment.h"
-#include "Utility.h"
+#include "Enchantment.hpp"
+#include "Utility.hpp"
 
 Enchantment::Enchantment(unsigned char* data, int* position) {
     load(data, position);

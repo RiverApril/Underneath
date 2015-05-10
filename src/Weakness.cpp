@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Weakness.h"
+#include "Weakness.hpp"
 
 void Weakness::save(vector<unsigned char>* data) {
     Utility::saveInt(data, damageType);

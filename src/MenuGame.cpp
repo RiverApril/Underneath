@@ -6,18 +6,18 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuGame.h"
-#include "MenuMain.h"
-#include "MenuInv.h"
-#include "MenuStats.h"
-#include "MenuYesNo.h"
-#include "MenuDebug.h"
-#include "MenuMessage.h"
-#include "AiEntity.h"
-#include "Math.h"
-#include "Utility.h"
-#include "Controls.h"
-#include "Ranged.h"
+#include "MenuGame.hpp"
+#include "MenuMain.hpp"
+#include "MenuInv.hpp"
+#include "MenuStats.hpp"
+#include "MenuYesNo.hpp"
+#include "MenuDebug.hpp"
+#include "MenuMessage.hpp"
+#include "AiEntity.hpp"
+#include "Math.hpp"
+#include "Utility.hpp"
+#include "Controls.hpp"
+#include "Ranged.hpp"
 
 #define currentPlayer currentWorld->currentPlayer
 #define currentLevel currentWorld->currentLevel

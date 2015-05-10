@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Ui.h"
-#include "MenuGame.h"
-#include "Entity.h"
-#include "AiEntity.h"
-#include "Player.h"
-#include "Math.h"
-#include "Potion.h"
-#include "UtilitySpell.h"
-#include "ItemSpecial.h"
-#include "ItemTimeActivated.h"
-#include "Armor.h"
+#include "Ui.hpp"
+#include "MenuGame.hpp"
+#include "Entity.hpp"
+#include "AiEntity.hpp"
+#include "Player.hpp"
+#include "Math.hpp"
+#include "Potion.hpp"
+#include "UtilitySpell.hpp"
+#include "ItemSpecial.hpp"
+#include "ItemTimeActivated.hpp"
+#include "Armor.hpp"
 
 vector<string> consoleBuffer;
 

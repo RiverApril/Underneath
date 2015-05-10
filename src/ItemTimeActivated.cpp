@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "ItemTimeActivated.h"
-#include "Utility.h"
+#include "ItemTimeActivated.hpp"
+#include "Utility.hpp"
 
 ItemTimeActivated::ItemTimeActivated(TimeActivatedType timeActivatedType, double time, double power, double radius, double weight) : Item("", weight){
     this->timeActivatedType = timeActivatedType;

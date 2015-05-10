@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Entity.h"
-#include "Alive.h"
-#include "AiEntity.h"
-#include "Player.h"
-#include "ItemEntity.h"
-#include "EntityTimeActivated.h"
+#include "Entity.hpp"
+#include "Alive.hpp"
+#include "AiEntity.hpp"
+#include "Player.hpp"
+#include "ItemEntity.hpp"
+#include "EntityTimeActivated.hpp"
 
-#include "Level.h"
-#include "Math.h"
-#include "Utility.h"
-#include "Global.h"
+#include "Level.hpp"
+#include "Math.hpp"
+#include "Utility.hpp"
+#include "Global.hpp"
 
 Entity::Entity() : Entity(' ', Point2Zero, Ui::C_WHITE) {
 

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "UtilitySpell.h"
-#include "Utility.h"
+#include "UtilitySpell.hpp"
+#include "Utility.hpp"
 
 void UtilitySpell::save(vector<unsigned char>* data) {
     Item::save(data);

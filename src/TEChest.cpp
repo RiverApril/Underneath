@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "TEChest.h"
-#include "Utility.h"
+#include "TEChest.hpp"
+#include "Utility.hpp"
 
 void TEChest::save(vector<unsigned char>* data) {
     TileEntity::save(data);

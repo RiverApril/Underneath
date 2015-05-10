@@ -6,16 +6,16 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Command.h"
-#include "MenuMain.h"
-#include "Tile.h"
-#include "Math.h"
-#include "Ranged.h"
-#include "Utility.h"
-#include "ItemGenerator.h"
-#include "EnemyGenerator.h"
-#include "Level.h"
-#include "Settings.h"
+#include "Command.hpp"
+#include "MenuMain.hpp"
+#include "Tile.hpp"
+#include "Math.hpp"
+#include "Ranged.hpp"
+#include "Utility.hpp"
+#include "ItemGenerator.hpp"
+#include "EnemyGenerator.hpp"
+#include "Level.hpp"
+#include "Settings.hpp"
 
 int main(int argc, const char** argv) {
 

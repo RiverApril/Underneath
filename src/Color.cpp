@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Color.h"
+#include "Color.hpp"
 
 namespace Ui {
 

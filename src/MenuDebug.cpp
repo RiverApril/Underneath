@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuDebug.h"
-#include "ItemGenerator.h"
-#include "Controls.h"
+#include "MenuDebug.hpp"
+#include "ItemGenerator.hpp"
+#include "Controls.hpp"
 
 namespace Ui {
 

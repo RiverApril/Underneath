@@ -6,14 +6,14 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Ui.h"
-#include "Random.h"
-#include "Utility.h"
-#include "ItemGenerator.h"
-#include "Art.h"
-#include "Entity.h"
-#include "Potion.h"
-#include "ItemTimeActivated.h"
+#include "Ui.hpp"
+#include "Random.hpp"
+#include "Utility.hpp"
+#include "ItemGenerator.hpp"
+#include "Art.hpp"
+#include "Entity.hpp"
+#include "Potion.hpp"
+#include "ItemTimeActivated.hpp"
 
 namespace ItemGenerator {
 
@@ -80,13 +80,13 @@ namespace ItemGenerator {
         wBow = atl(WeaponBase({"Longbow", "Bow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
         wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
 
-        wFireCombatSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
+        wFireCombatSpell = atl(WeaponBase({"Ignite", "Scor.hpp", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
         wFrostCombatSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
         wShockCombatSpell = atl(WeaponBase({"Electrocute", "Shock", "Zap"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
 
         
 
-        wNatural = WeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee);
+        wNatural = WeaponBase({"Tee.hpp", "Claws"}, 1, 1, damSharp, wepMelee);
 
 
         Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, 1, 1,

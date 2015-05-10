@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuChest.h"
-#include "Math.h"
-#include "ItemEntity.h"
-#include "Controls.h"
-#include "Utility.h"
-#include "Art.h"
+#include "MenuChest.hpp"
+#include "Math.hpp"
+#include "ItemEntity.hpp"
+#include "Controls.hpp"
+#include "Utility.hpp"
+#include "Art.hpp"
 
 #define from (selectedLeft?(Inventory*)user:(Inventory*)chest)
 #define to (selectedLeft?(Inventory*)chest:(Inventory*)user)

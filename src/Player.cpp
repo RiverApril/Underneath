@@ -6,16 +6,16 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Player.h"
-#include "Level.h"
-#include "ItemEntity.h"
-#include "MenuChest.h"
-#include "Verbalizer.h"
-#include "Potion.h"
-#include "UtilitySpell.h"
-#include "EnemyGenerator.h"
-#include "EntityTimeActivated.h"
-#include "Icon.h"
+#include "Player.hpp"
+#include "Level.hpp"
+#include "ItemEntity.hpp"
+#include "MenuChest.hpp"
+#include "Verbalizer.hpp"
+#include "Potion.hpp"
+#include "UtilitySpell.hpp"
+#include "EnemyGenerator.hpp"
+#include "EntityTimeActivated.hpp"
+#include "Icon.hpp"
 
 Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()) {
 

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Armor.h"
-#include "Utility.h"
+#include "Armor.hpp"
+#include "Utility.hpp"
 
 Armor::Armor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name, double weight) : Equipable(name, weight) {
     this->viableSlots = viableSlots;

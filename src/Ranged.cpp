@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Ranged.h"
-#include "Utility.h"
+#include "Ranged.hpp"
+#include "Utility.hpp"
 
 void Ranged::save(vector<unsigned char>* data) {
     Weapon::save(data);

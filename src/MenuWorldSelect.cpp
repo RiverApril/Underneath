@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuWorldSelect.h"
-#include "MenuMain.h"
-#include "MenuGame.h"
-#include "MenuYesNo.h"
-#include "MenuPlayerSetup.h"
-#include "Controls.h"
+#include "MenuWorldSelect.hpp"
+#include "MenuMain.hpp"
+#include "MenuGame.hpp"
+#include "MenuYesNo.hpp"
+#include "MenuPlayerSetup.hpp"
+#include "Controls.hpp"
 
 namespace Ui {
 

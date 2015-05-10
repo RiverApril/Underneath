@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Potion.h"
-#include "Utility.h"
+#include "Potion.hpp"
+#include "Utility.hpp"
 
 void Potion::save(vector<unsigned char>* data) {
     Item::save(data);

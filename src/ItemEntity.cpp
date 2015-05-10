@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "ItemEntity.h"
-#include "Level.h"
+#include "ItemEntity.hpp"
+#include "Level.hpp"
 
 ItemEntity::ItemEntity() : ItemEntity(nullptr, Point2Zero) {
 

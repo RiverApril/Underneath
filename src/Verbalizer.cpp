@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Verbalizer.h"
-#include "Menu.h"
+#include "Verbalizer.hpp"
+#include "Menu.hpp"
 
 namespace Verbalizer {
 

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Math.h"
-#include "Global.h"
+#include "Math.hpp"
+#include "Global.hpp"
 
 namespace Math {
 

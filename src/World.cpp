@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "World.h"
-#include "Utility.h"
-#include "ItemGenerator.h"
-#include "ItemSpecial.h"
-#include "ItemTimeActivated.h"
+#include "World.hpp"
+#include "Utility.hpp"
+#include "ItemGenerator.hpp"
+#include "ItemSpecial.hpp"
+#include "ItemTimeActivated.hpp"
 
 World::World(string n) {
     levels = vector<string>();

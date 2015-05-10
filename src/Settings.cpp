@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Settings.h"
-#include "Controls.h"
-#include "Ui.h"
-#include "Utility.h"
+#include "Settings.hpp"
+#include "Controls.hpp"
+#include "Ui.hpp"
+#include "Utility.hpp"
 
 namespace Setting{
 

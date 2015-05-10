@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Controls.h"
+#include "Controls.hpp"
 
 namespace Key {
 

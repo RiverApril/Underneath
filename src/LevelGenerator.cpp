@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "LevelGenerator.h"
-#include "EnemyGenerator.h"
-#include "TEMimic.h"
+#include "LevelGenerator.hpp"
+#include "EnemyGenerator.hpp"
+#include "TEMimic.hpp"
 
 Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLevel) {
 
@@ -75,7 +75,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
     } while (pathNotFound);
 
-    genDebug("found path");
+    genDebug("found pa.hpp");
 
     genDebug("Adding tile Entities...");
     for (int i = 0; i < size.x; i++) {

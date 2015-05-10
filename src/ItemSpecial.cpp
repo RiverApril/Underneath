@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "ItemSpecial.h"
-#include "Utility.h"
+#include "ItemSpecial.hpp"
+#include "Utility.hpp"
 
 ItemSpecial::ItemSpecial(SpecialType specialty) : Item("", .1){
     this->specialty = specialty;

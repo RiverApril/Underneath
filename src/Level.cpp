@@ -6,15 +6,15 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Level.h"
-#include "AiEntity.h"
-#include "Math.h"
-#include "Geometry.h"
-#include "Global.h"
-#include "LevelGenerator.h"
-#include "ItemGenerator.h"
-#include "EnemyGenerator.h"
-#include "Utility.h"
+#include "Level.hpp"
+#include "AiEntity.hpp"
+#include "Math.hpp"
+#include "Geometry.hpp"
+#include "Global.hpp"
+#include "LevelGenerator.hpp"
+#include "ItemGenerator.hpp"
+#include "EnemyGenerator.hpp"
+#include "Utility.hpp"
 
 Level::Level(World* w, string n, Point2 s, int d) {
     currentWorld = w;

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Equipable.h"
-#include "Utility.h"
+#include "Equipable.hpp"
+#include "Utility.hpp"
 
 Equipable::Equipable(string name, double weight) : Item(name, weight) {
 

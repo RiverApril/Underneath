@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Icon.h"
-#include "Random.h"
+#include "Icon.hpp"
+#include "Random.hpp"
 
 char RandomIcon::getChar(unsigned long tick, Point2 pos, Level* lvl){
     return i[Random::randomFromPoint(pos)%i.size()];

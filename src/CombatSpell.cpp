@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "CombatSpell.h"
-#include "Utility.h"
+#include "CombatSpell.hpp"
+#include "Utility.hpp"
 
 void CombatSpell::save(vector<unsigned char>* data) {
     Ranged::save(data);

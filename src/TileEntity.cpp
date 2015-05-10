@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "TileEntity.h"
-#include "Utility.h"
-#include "TEStair.h"
-#include "TEChest.h"
-#include "TEMimic.h"
+#include "TileEntity.hpp"
+#include "Utility.hpp"
+#include "TEStair.hpp"
+#include "TEChest.hpp"
+#include "TEMimic.hpp"
 
 void TileEntity::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getTileEntityTypeId());

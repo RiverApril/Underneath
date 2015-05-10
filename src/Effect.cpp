@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Effect.h"
-#include "Utility.h"
-#include "Ui.h"
+#include "Effect.hpp"
+#include "Utility.hpp"
+#include "Ui.hpp"
 
 Effect::Effect(unsigned char* data, int* position) {
     load(data, position);

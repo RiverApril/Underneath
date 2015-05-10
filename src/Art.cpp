@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Art.h"
-#include "Math.h"
-#include "Menu.h"
-#include "Utility.h"
+#include "Art.hpp"
+#include "Math.hpp"
+#include "Menu.hpp"
+#include "Utility.hpp"
 
 
 namespace Arts {

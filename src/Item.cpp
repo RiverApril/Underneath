@@ -6,16 +6,16 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Item.h"
-#include "Utility.h"
-#include "Equipable.h"
-#include "Weapon.h"
-#include "CombatSpell.h"
-#include "Potion.h"
-#include "UtilitySpell.h"
-#include "ItemSpecial.h"
-#include "ItemTimeActivated.h"
-#include "Armor.h"
+#include "Item.hpp"
+#include "Utility.hpp"
+#include "Equipable.hpp"
+#include "Weapon.hpp"
+#include "CombatSpell.hpp"
+#include "Potion.hpp"
+#include "UtilitySpell.hpp"
+#include "ItemSpecial.hpp"
+#include "ItemTimeActivated.hpp"
+#include "Armor.hpp"
 
 void Item::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getItemTypeId());

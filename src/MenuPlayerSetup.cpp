@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuPlayerSetup.h"
-#include "MenuMain.h"
-#include "MenuGame.h"
-#include "MenuYesNo.h"
-#include "Player.h"
+#include "MenuPlayerSetup.hpp"
+#include "MenuMain.hpp"
+#include "MenuGame.hpp"
+#include "MenuYesNo.hpp"
+#include "Player.hpp"
 
 namespace Ui {
 

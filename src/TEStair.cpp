@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "TEStair.h"
-#include "Utility.h"
+#include "TEStair.hpp"
+#include "Utility.hpp"
 
 void TEStair::save(vector<unsigned char>* data) {
     TileEntity::save(data);

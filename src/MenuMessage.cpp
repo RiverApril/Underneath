@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuMessage.h"
+#include "MenuMessage.hpp"
 
 namespace Ui {
 

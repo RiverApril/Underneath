@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Alive.h"
-#include "Utility.h"
-#include "Level.h"
-#include "Random.h"
+#include "Alive.hpp"
+#include "Utility.hpp"
+#include "Level.hpp"
+#include "Random.hpp"
 
 Alive::Alive() : Alive("", ' ', Point2Zero, Ui::C_WHITE) {
 

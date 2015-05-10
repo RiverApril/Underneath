@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuControls.h"
-#include "MenuMessage.h"
-#include "MenuYesNo.h"
-#include "Controls.h"
-#include "Settings.h"
+#include "MenuControls.hpp"
+#include "MenuMessage.hpp"
+#include "MenuYesNo.hpp"
+#include "Controls.hpp"
+#include "Settings.hpp"
 
 namespace Ui {
 

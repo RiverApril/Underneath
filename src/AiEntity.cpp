@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "AiEntity.h"
-#include "Math.h"
-#include "Utility.h"
-#include "Level.h"
-#include "Verbalizer.h"
-#include "ItemGenerator.h"
-#include "ItemEntity.h"
+#include "AiEntity.hpp"
+#include "Math.hpp"
+#include "Utility.hpp"
+#include "Level.hpp"
+#include "Verbalizer.hpp"
+#include "ItemGenerator.hpp"
+#include "ItemEntity.hpp"
 
 AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1) {
 

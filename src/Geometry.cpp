@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Geometry.h"
-#include "Math.h"
-#include "Utility.h"
-#include "Global.h"
+#include "Geometry.hpp"
+#include "Math.hpp"
+#include "Utility.hpp"
+#include "Global.hpp"
 
 
 Point2 Point2Zero = Point2(0, 0);

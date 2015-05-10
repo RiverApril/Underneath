@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "TEMimic.h"
-#include "Utility.h"
+#include "TEMimic.hpp"
+#include "Utility.hpp"
 
 void TEMimic::save(vector<unsigned char>* data) {
     TileEntity::save(data);

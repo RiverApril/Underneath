@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Global.h"
-#include "Random.h"
-#include "Geometry.h"
+#include "Global.hpp"
+#include "Random.hpp"
+#include "Geometry.hpp"
 
 namespace Random {
 

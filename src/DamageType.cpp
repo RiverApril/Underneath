@@ -6,4 +6,4 @@
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "DamageType.h"
+#include "DamageType.hpp"

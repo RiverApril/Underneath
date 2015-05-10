@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Weapon.h"
-#include "Utility.h"
+#include "Weapon.hpp"
+#include "Utility.hpp"
 
 Weapon::Weapon(double baseDamage, string name, double weight, double useDelay, bool twoHanded) : Equipable(name, weight) {
     debugf("%s: %.2f", name.c_str(), baseDamage);

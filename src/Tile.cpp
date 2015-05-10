@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Global.h"
-#include "Tile.h"
+#include "Global.hpp"
+#include "Tile.hpp"
 
 Tile::Tile(Icon* icon, string name, TileFlag flags, Icon* unseen) {
     this->icon = icon;

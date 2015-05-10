@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Menu.h"
-#include "Command.h"
-#include "MenuMain.h"
+#include "Menu.hpp"
+#include "Command.hpp"
+#include "MenuMain.hpp"
 
 //yesNo aYes = 'y';
 //yesNo aNo = 'n';

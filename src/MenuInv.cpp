@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "MenuInv.h"
-#include "Math.h"
-#include "ItemEntity.h"
-#include "Controls.h"
-#include "Utility.h"
-#include "Art.h"
+#include "MenuInv.hpp"
+#include "Math.hpp"
+#include "ItemEntity.hpp"
+#include "Controls.hpp"
+#include "Utility.hpp"
+#include "Art.hpp"
 
 namespace Ui {
 
