@@ -131,7 +131,7 @@ void AiEntity::runAi(double time, Level* level) {
     }
     if (attack) {
         while (lastAttackTime + activeWeapon->useDelay <= time) {
-            double d = target->hurt(activeWeapon);
+            double d = target->hurt(activeWeapon, getAttackMultiplierFromEffects());
             Verbalizer::attack(this, target, activeWeapon, d);
             lastAttackTime += activeWeapon->useDelay;
         }

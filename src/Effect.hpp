@@ -18,7 +18,7 @@ typedef int EffectId;
 const EffectId effDamage = 0;
 const EffectId effHeal = 1;
 const EffectId effBuffAttack = 2;
-const EffectId effBuffDefence = 3;
+const EffectId effBuffDefense = 3;
 
 struct Effect {
     Effect(unsigned char* data, int* position);
@@ -50,7 +50,7 @@ static string effectName(EffectId eid, double meta) {
         case effBuffAttack:
             return "Buff "+damageTypeName((DamageType) meta);
 
-        case effBuffDefence:
+        case effBuffDefense:
             return "Resist "+damageTypeName((DamageType) meta);
 
         default:
@@ -69,7 +69,7 @@ static Ui::Color effectColor(EffectId eid, double meta) {
         case effBuffAttack:
             return Ui::C_LIGHT_BLUE;
 
-        case effBuffDefence:
+        case effBuffDefense:
             return Ui::C_LIGHT_MAGENTA;
 
         default:

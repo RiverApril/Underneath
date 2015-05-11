@@ -58,6 +58,10 @@ bool Alive::update(double deltaTime, double time, Level* level) {
                         healMana(e->power * m);
                     }
                     break;
+                case effBuffAttack:
+                case effBuffDefense:
+                    //Applies on damage and hurt
+                    break;
 
             }
 
@@ -77,6 +81,9 @@ bool Alive::update(double deltaTime, double time, Level* level) {
 }
 
 double Alive::hurt(DamageType damageType, double amount, double damageMultiplier) {
+    
+    damageMultiplier *= getDefenseFromEffects(damageType);
+    
     amount *= damageMultiplier;
 
     for (Weakness w : weaknesses) {
@@ -99,6 +106,7 @@ double Alive::hurt(Weapon* w, double damageMultiplier) {
             addEffect(Effect(ench.effectId, ench.time, ench.power).setMeta(ench.meta));
         }
     }
+    
     return hurt(w->damageType, d, damageMultiplier);
 }
 

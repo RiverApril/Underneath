@@ -93,6 +93,18 @@ public:
     vector<Weakness> weaknesses;
 
     int viewDistance = 10;
+    
+    double getDefenseFromEffects(DamageType damType){
+        double d = 0;
+        for(Effect eff : effects){
+            if(eff.eId == effBuffDefense){
+                if((int)eff.meta == damType){
+                    d += eff.power;
+                }
+            }
+        }
+        return 1.0 - d;
+    }
 
 protected:
     string name;

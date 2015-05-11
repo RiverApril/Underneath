@@ -36,14 +36,14 @@ namespace EnemyGenerator {
         troll = atl(new WeightedEnemy(20, "Troll", 't', aiAttackPlayer, 100, ItemGenerator::wMace, "", Ui::C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));
 
-        wraith = atl(new WeightedEnemy(2, "Wrai.hpp", ' ', aiAttackPlayer, 200, ItemGenerator::wSword, "", Ui::C_BLACK, 2.0, 2));
+        wraith = atl(new WeightedEnemy(2, "Wraith", ' ', aiAttackPlayer, 200, ItemGenerator::wSword, "", Ui::C_BLACK, 2.0, 2));
         wraith->weaknesses.push_back(Weakness(damFire, 2));
         wraith->weaknesses.push_back(Weakness(damIce, 2));
         wraith->weaknesses.push_back(Weakness(damShock, 2));
         wraith->weaknesses.push_back(Weakness(damSharp, .5));
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
 
-        mimic = new WeightedEnemy(0, "Mimic", '+', aiAttackPlayer, 75, ItemGenerator::wNatural, "Tee.hpp", Ui::C_LIGHT_GREEN, 0);
+        mimic = new WeightedEnemy(0, "Mimic", '+', aiAttackPlayer, 75, ItemGenerator::wNatural, "Teeth", Ui::C_LIGHT_GREEN, 0);
         mimic->weaknesses.push_back(Weakness(damFire, 4));
 
 

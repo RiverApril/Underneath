@@ -69,6 +69,18 @@ public:
     virtual bool isHostile() {
         return ai & aiAttackPlayer;
     }
+    
+    double getAttackMultiplierFromEffects(DamageType damType){
+        double d = 1;
+        for(Effect eff : effects){
+            if(eff.eId == effBuffAttack){
+                if((int)eff.meta == damType){
+                    d += eff.power;
+                }
+            }
+        }
+        return d;
+    }
 
 
 protected:

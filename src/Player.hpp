@@ -180,6 +180,21 @@ public:
         }
         return 1.0;
     }
+    
+    double getAttackMultiplierFromEffectsAndArmor(DamageType damType){
+        double d = 1;
+        for(Effect eff : effects){
+            if(eff.eId == effBuffAttack){
+                if((int)eff.meta == damType){
+                    d += eff.power;
+                }
+            }
+        }
+        for(){
+            
+        }
+        return d;
+    }
 
     map<DamageType, double> calculatedDefenses;
 

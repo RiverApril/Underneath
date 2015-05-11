@@ -253,7 +253,7 @@ double Player::calcDamageMultiplier(Weapon* weapon) {
         } else if (weapon->weaponType == wepMagic) {
             x = 1 + (((double) abilities[iINT] / (double) maxAbilities[iINT]) * 10.0);
         }
-    }
+    }vrfwejhibferiqjfncewjk DAMAGE MULTIPLIER FROM EFFECTS AND ARMOR
     return x;
 }
 
