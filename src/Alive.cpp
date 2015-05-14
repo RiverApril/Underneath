@@ -82,7 +82,7 @@ bool Alive::update(double deltaTime, double time, Level* level) {
 
 double Alive::hurt(DamageType damageType, double amount, double damageMultiplier) {
     
-    damageMultiplier *= getDefenseFromEffects(damageType);
+    damageMultiplier *= getDefenseMultiplierFromEffects(damageType);
     
     amount *= damageMultiplier;
 

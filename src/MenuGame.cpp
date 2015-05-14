@@ -106,13 +106,18 @@ namespace Ui {
         if (*useItem != -1) {
             if (currentPlayer->inventory[*useItem]->instantUse()) {
                 timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->inventory[*useItem]);
+                int selected = *useItem;
+                *useItem = -1;
+                MenuInv* m = new MenuInv(currentPlayer, currentWorld, useItem);
+                m->selected = selected;
+                openMenu(m);
             } else{
                 itemToBeUsedRange = 1000;
                 itemToBeUsed = currentPlayer->inventory[*useItem];
                 targetPosition = currentPlayer->pos;
                 changeMode(modeSelectPosition);
+                *useItem = -1;
             }
-            *useItem = -1;
         }
 
         if (!initSuccess) {

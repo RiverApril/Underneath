@@ -10,6 +10,8 @@
 #include "EnemyGenerator.hpp"
 #include "TEMimic.hpp"
 
+
+
 Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLevel) {
 
     genDebugPos = 1;
@@ -75,7 +77,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
     } while (pathNotFound);
 
-    genDebug("found pa.hpp");
+    genDebug("found path");
 
     genDebug("Adding tile Entities...");
     for (int i = 0; i < size.x; i++) {
@@ -459,9 +461,43 @@ namespace LevelGenerator {
                                 level->setTile(r->center + Point2(j, k), w);
                             }
                         }
+                        addedWalls = true;
                     }
 
 
+                }
+            }
+
+            if(!addedWalls){
+                int doors = 0;
+                Point2 lastDoorLocation = Point2Neg1;
+                Utility::executeBorder(-r->radius, r->radius, [&r, &level, &doors, &lastDoorLocation](int x, int y){
+                    if(level->tileAt(r->center + Point2(x, y))->hasFlag(tileFlagDoor)){
+                        doors++;
+                        lastDoorLocation = r->center + Point2(x, y);
+                    }
+                });
+                /*for (int j = -r->radius.x; j <= r->radius.x; j++) {
+                    if(level->tileAt(Point2(j, -r->radius.y))->hasFlag(tileFlagDoor)){
+                        doors++;
+                    }
+                    if(level->tileAt(Point2(j, r->radius.y))->hasFlag(tileFlagDoor)){
+                        doors++;
+                    }
+                }
+                for (int k = -r->radius.y; k <= r->radius.y; k++) {
+                    if(level->tileAt(Point2(-r->radius.x, k))->hasFlag(tileFlagDoor)){
+                        doors++;
+                    }
+                    if(level->tileAt(Point2(r->radius.x, k))->hasFlag(tileFlagDoor)){
+                        doors++;
+                    }
+                }*/
+                if(doors == 1){
+                    if (rand() % 3 == 0) {
+                        level->setTile(r->center, Tiles::tileChest);
+                        level->setTile(lastDoorLocation, Tiles::tileSecretDoor);
+                    }
                 }
             }
 

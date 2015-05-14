@@ -10,6 +10,7 @@
 #define __Underneath__Utility__
 
 #include "Global.hpp"
+#include "Geometry.hpp"
 
 
 namespace Utility {
@@ -122,6 +123,10 @@ namespace Utility {
     int parseIntUnstable(string s, int base = 10);
 
     string intToRomanNumerals(int a);
+
+    void executeBorder(Point2 min, Point2 max, std::function<void(int, int)> process);
+
+    void executeGrid(Point2 min, Point2 max, std::function<void(int, int)> process);
 }
 
 

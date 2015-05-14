@@ -56,6 +56,9 @@ namespace Ui {
                 }else{
                     player->equipItem(equipable);
                 }
+            }else{
+                *useItem = selected;
+                closeThisMenu();
             }
         } else if (in == Key::interact) {
             *useItem = selected;
@@ -65,15 +68,16 @@ namespace Ui {
             closeThisMenu();
             return;
         }
+    }
+
+    void MenuInv::update() {
         if (selected < 0) {
             selected = 0;
         }
         if (selected >= player->inventory.size()) {
             selected = (int) player->inventory.size() - 1;
         }
-    }
 
-    void MenuInv::update() {
 		Ui::drawInventory(currentWorld, player, selected/*, scrollOffset*/);
 
 

@@ -264,7 +264,7 @@ namespace Ui {
                 }else{
                     setColor(uc & 0xF, (uc >> 4) & 0xF);
                 }
-                consolef("uc:0x%x, msd:0x%x, lsd:0x%x", uc, uc & 0xF, uc >> 4);
+                //consolef("uc:0x%x, msd:0x%x, lsd:0x%x", uc, uc & 0xF, uc >> 4);
                 return false;
             }
         } else if (c == '&') {

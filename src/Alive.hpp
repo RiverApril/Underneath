@@ -94,7 +94,7 @@ public:
 
     int viewDistance = 10;
     
-    double getDefenseFromEffects(DamageType damType){
+    double getDefenseMultiplierFromEffects(DamageType damType){
         double d = 0;
         for(Effect eff : effects){
             if(eff.eId == effBuffDefense){

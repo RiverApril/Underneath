@@ -1,5 +1,5 @@
 //
-//  Abilities.h
+//  Abilities.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 12/26/14.
@@ -37,7 +37,7 @@ namespace AbilityDetails {
     };
 
     static const string abilityNames[abilityCount] = {
-        "Streng.hpp",
+        "Strength",
         "Dexterity",
         "Intelligence",
         "Agility",
@@ -47,7 +47,7 @@ namespace AbilityDetails {
     };
 
     static const string abilityNamesRightAligned[abilityCount] = {
-        "     Streng.hpp",
+        "     Strength",
         "    Dexterity",
         " Intelligence",
         "      Agility",

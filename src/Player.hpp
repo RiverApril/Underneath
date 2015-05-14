@@ -56,7 +56,7 @@ public:
             return 0;
         }
 
-        damageMultiplier *= getDefense(damageType);
+        damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(damageType);
 
         return Alive::hurt(damageType, amount, damageMultiplier);
     }
@@ -71,7 +71,7 @@ public:
             return 0;
         }
 
-        damageMultiplier *= getDefense(w->damageType);
+        damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType);
 
         return Alive::hurt(w, damageMultiplier);
     }
@@ -174,11 +174,11 @@ public:
 
     void recalculateDefenses();
 
-    double getDefense(DamageType damType){
+    double getDefenseMultiplierFromArmor(DamageType damType){
         if(calculatedDefenses.count(damType)){
-            return 1.0 - calculatedDefenses[damType];
+            return calculatedDefenses[damType];
         }
-        return 1.0;
+        return 0;
     }
     
     double getAttackMultiplierFromEffectsAndArmor(DamageType damType){
@@ -190,8 +190,17 @@ public:
                 }
             }
         }
-        for(){
-            
+        for(pair<EquipSlot, Equipable*> p : equipedItems){
+            Armor* a = dynamic_cast<Armor*>(p.second);
+            if(a){
+                for(Enchantment e : a->enchantments){
+                    if(e.effectId == effBuffAttack){
+                        if((int)e.meta == damType){
+                            d += e.power;
+                        }
+                    }
+                }
+            }
         }
         return d;
     }

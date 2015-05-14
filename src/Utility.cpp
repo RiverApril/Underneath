@@ -392,4 +392,23 @@ namespace Utility {
         return s;
     }
 
+    void executeBorder(Point2 min, Point2 max, std::function<void(int, int)> process){
+        for(int i=min.x;i<=max.x;i++){
+            process(i, min.y);
+            process(i, max.y);
+        }
+        for(int i=min.y;i<=max.y;i++){
+            process(min.x, i);
+            process(max.x, i);
+        }
+    }
+
+    void executeGrid(Point2 min, Point2 max, std::function<void(int, int)> process){
+        for(int i=min.x;i<=max.x;i++){
+            for(int j=min.y;j<=max.y;j++){
+                process(i, j);
+            }
+        }
+    }
+
 }

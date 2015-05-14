@@ -83,6 +83,9 @@ namespace Ui {
             closeThisMenu();
             return;
         }
+    }
+
+    void MenuChest::update() {
 
         if (selected < 0) {
             selected = 0;
@@ -90,9 +93,6 @@ namespace Ui {
         if (selected >= from->inventory.size()) {
             selected = (int) from->inventory.size() - 1;
         }
-    }
-
-    void MenuChest::update() {
 
         Ui::drawInventory(currentWorld, user, selected/*, scrollOffset*/, chest, "Chest", selectedLeft);
 
