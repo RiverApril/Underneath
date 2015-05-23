@@ -449,13 +449,15 @@ bool Player::removeItem(Item* item, bool deleteItem) {
     return Inventory::removeItem(item, deleteItem);
 }
 
-bool Player::equipItem(Equipable* newItem){
+bool Player::equipItem(Equipable* newItem, bool forceDefaultSlot){
     if(newItem){
         vector<EquipSlot> vs = newItem->getViableSlots();
         if(vs.size() > 0){
-            for(EquipSlot slot : vs){
-                if(equipedItems[slot] == nullptr){
-                    return equipItem(newItem, slot);
+            if(!forceDefaultSlot){
+                for(EquipSlot slot : vs){
+                    if(equipedItems[slot] == nullptr){
+                        return equipItem(newItem, slot);
+                    }
                 }
             }
             return equipItem(newItem, vs[0]);

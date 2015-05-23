@@ -637,6 +637,10 @@ namespace Ui {
 
         } else {
             printCenterOffset(gameArea.y / 2, -(borderSize.x / 2), "Game Over");
+            printCenterOffset(gameArea.y / 2 + 3, -(borderSize.x / 2), "Press Escape to return to the Main Menu.");
+
+            //Art* a = Arts::getArt(Arts::artGameOver);
+            //a->printCenter((gameArea.y / 2)- ((int)a->lines.size()/2), -(borderSize.x / 2));
         }
 
 

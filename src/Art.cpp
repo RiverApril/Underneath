@@ -23,6 +23,7 @@ namespace Arts {
     Point2 compassInOffset;
 
     int artTitle;
+    int artGameOver;
 
     int artCoin;
 
@@ -82,6 +83,7 @@ namespace Arts {
         defaultArt->lines.push_back("Failed to load art.");
 
         Arts::artTitle = Arts::loadNew(ArtDir + "/title");
+        Arts::artGameOver = Arts::loadNew(ArtDir + "/gameover");
 
         Arts::artScroll = Arts::loadNew(ArtDir + "/scroll");
         Arts::artScrollFire = Arts::loadNew(ArtDir + "/scrollFire");
@@ -296,6 +298,6 @@ void Art::printAt(Point2 pos) {
 void Art::printCenter(int y, int xOffset) {
     int w = getSize().x;
     for (int i = 0; i < lines.size(); i++) {
-        mvprintw(y + i, (Ui::terminalSize.x / 2)-((w - 1) / 2), lines[i].c_str());
+        mvprintw(y + i, (Ui::terminalSize.x / 2)+xOffset-((w - 1) / 2), lines[i].c_str());
     }
 }

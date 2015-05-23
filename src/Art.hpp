@@ -44,6 +44,7 @@ namespace Arts {
     extern Point2 compassInOffset;
 
     extern int artTitle;
+    extern int artGameOver;
 
     extern int artCoin;
 

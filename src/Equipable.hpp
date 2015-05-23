@@ -13,7 +13,7 @@
 #include "Item.hpp"
 #include "Abilities.hpp"
 
-#define primaryLeftHand false
+//#define primaryLeftHand false
 
 typedef int EquipSlot;
 
@@ -38,7 +38,7 @@ public:
             case slotWep1:
                 return 'E';
             case slotWep2:
-                return 'E';
+                return 'e';
             case slotHands:
                 return 'G';
             case slotHead:
@@ -69,9 +69,9 @@ public:
         }
         switch (slot) {
             case slotWep1:
-                return primaryLeftHand?"Left Hand":"Right Hand";
+                return "Primary Hand";//primaryLeftHand?"Left Hand":"Right Hand";
             case slotWep2:
-                return primaryLeftHand?"Right Hand":"Left Hand";
+                return "Secondary Hand";//primaryLeftHand?"Right Hand":"Left Hand";
             case slotHands:
                 return "Hands";
             case slotHead:
@@ -123,9 +123,8 @@ public:
         }
         switch (slot) {
             case slotWep1:
-                return "Hand";
             case slotWep2:
-                return "Hand";
+                return "Wepon";
             case slotHands:
                 return "Hands";
             case slotHead:
@@ -135,11 +134,8 @@ public:
             case slotFeet:
                 return "Feet";
             case slotFinger1:
-                return "Finger";
             case slotFinger2:
-                return "Finger";
             case slotFinger3:
-                return "Finger";
             case slotFinger4:
                 return "Finger";
 

@@ -139,7 +139,7 @@ public:
 
     void gainXp(double amount);
 
-    bool equipItem(Equipable* newItem);
+    bool equipItem(Equipable* newItem, bool forceDefaultSlot = false);
     bool equipItem(Equipable* newItem, EquipSlot slot);
 
     /*bool pickupItem(Item* newItem){
