@@ -30,25 +30,25 @@
 #include <sys/types.h>
 
 #ifdef _WIN32
-#include <memory>
-#include <direct.h>
-#include <stdint.h>
-#include "curses.hpp"
-extern int ESCDELAY;
-#define GetCurrentDir _getcwd
-int mkdir(const char *filename, int useless);
+    #include <memory>
+    #include <direct.h>
+    #include <stdint.h>
+    #include "curses.hpp"
+    extern int ESCDELAY;
+    #define GetCurrentDir _getcwd
+    int mkdir(const char *filename, int useless);
 
-template <typename T>
-std::string to_string(T a) {
-    std::stringstream ss;
-    ss << a;
-    return ss.str();
-}
+    template <typename T>
+    std::string to_string(T a) {
+        std::stringstream ss;
+        ss << a;
+        return ss.str();
+    }
 
 #else
-#include <unistd.h>
-#include <ncurses.h>
-#define GetCurrentDir getcwd
+    #include <unistd.h>
+    #include <ncurses.h>
+    #define GetCurrentDir getcwd
 #endif
 
 
@@ -61,7 +61,6 @@ std::string to_string(T a) {
 #undef COLOR_CYAN
 #undef COLOR_BLUE
 #undef COLOR_BLACK
-
 
 #define forVector(list, i) for(int i=0;i<list.size();i++)
 

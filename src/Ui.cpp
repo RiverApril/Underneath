@@ -436,11 +436,7 @@ namespace Ui {
                             }else{
                                 eqp = Equipable::equipSlotPreposition(slot);
                             }
-                            bool twoHanded = false;
-                            if(weapon){
-                                twoHanded = weapon->twoHanded;
-                            }
-                            eqs += Equipable::equipSlotNameGeneric(slot, twoHanded);
+                            eqs += Equipable::equipSlotNameGeneric(slot);
                         }
                     }
 
@@ -454,11 +450,7 @@ namespace Ui {
 
                     EquipSlot slot = player->getSlot(equipable);
                     if(slot != slotNone){
-                        bool twoHanded = false;
-                        if(weapon){
-                            twoHanded = weapon->twoHanded;
-                        }
-                        mvprintw(terminalSize.y - 1, columnX, "-Equipped %s %s", Equipable::equipSlotPreposition(slot).c_str(), Equipable::equipSlotName(slot, twoHanded).c_str());
+                        mvprintw(terminalSize.y - 1, columnX, "-Equipped %s %s", Equipable::equipSlotPreposition(slot).c_str(), Equipable::equipSlotName(slot).c_str());
                     }
                 }
 

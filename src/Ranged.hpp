@@ -21,7 +21,7 @@ public:
 
     }
 
-    Ranged(double baseDamage, string name, double weight, double useDelay, double range, bool twoHanded) : Weapon(baseDamage, name, weight, useDelay, twoHanded) {
+    Ranged(double baseDamage, string name, double weight, double useDelay, double range) : Weapon(baseDamage, name, weight, useDelay) {
         this->baseDamage = baseDamage;
         this->damageType = damPierce;
         this->range = range;

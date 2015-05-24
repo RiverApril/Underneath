@@ -80,13 +80,13 @@ namespace ItemGenerator {
         wBow = atl(WeaponBase({"Longbow", "Bow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
         wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
 
-        wFireCombatSpell = atl(WeaponBase({"Ignite", "Scor.hpp", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
+        wFireCombatSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
         wFrostCombatSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
         wShockCombatSpell = atl(WeaponBase({"Electrocute", "Shock", "Zap"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
 
         
 
-        wNatural = WeaponBase({"Tee.hpp", "Claws"}, 1, 1, damSharp, wepMelee);
+        wNatural = WeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee);
 
 
         Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, 1, 1,
@@ -119,7 +119,7 @@ namespace ItemGenerator {
         {
             wepMagic
         }).magical(1.0, 1.0));
-        Condition cExpenciveMagic = atl(Condition({"Expencive", "Constly"}, 0.9, 1.0, 1, 1, 1, 1,
+        Condition cExpenciveMagic = atl(Condition({"Expencive", "Costly"}, 0.9, 1.0, 1, 1, 1, 1,
         {
             wepMagic
         }).magical(3.0, 5.0));
@@ -178,7 +178,7 @@ namespace ItemGenerator {
                 return weaponList[i];
             }
         }
-
+        return weaponList[0];
     }
 
     WeaponBase getRandWeaponBase() {
@@ -329,7 +329,6 @@ namespace ItemGenerator {
                 w->addEnchantment(Enchantment(effDamage, 10, 1, 6).setMeta(base.damageType));
             } else {
                 w = new Ranged();
-                ((Ranged*) w)->twoHanded = true;
             }
             ((Ranged*) w)->range = base.range;
         } else {
@@ -342,6 +341,7 @@ namespace ItemGenerator {
         w->artIndex = base.arts[arti];
         w->damageType = base.damageType;
         w->weaponType = base.weaponType;
+        w->enchantments = base.enchs;
 
         w->baseDamage *= (itemDifficulty * .1) + 1;
         w->baseDamage *= Random::randDouble(4.5, 5.5);

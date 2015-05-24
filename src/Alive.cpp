@@ -122,6 +122,15 @@ void Alive::addEffect(Effect e) {
     effects.push_back(e);
 }
 
+bool Alive::hasEffect(EffectId eid){
+    for(Effect e : effects) {
+        if(e.eId == eid){
+            return true;
+        }
+    }
+    return false;
+}
+
 double Alive::heal(double amount) {
     if (dead) {
         return 0;

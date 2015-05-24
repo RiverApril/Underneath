@@ -72,10 +72,10 @@ namespace Ui {
 
     void MenuInv::update() {
         if (selected < 0) {
-            selected = 0;
+            selected = (int) player->inventory.size() - 1;
         }
         if (selected >= player->inventory.size()) {
-            selected = (int) player->inventory.size() - 1;
+            selected = 0;
         }
 
 		Ui::drawInventory(currentWorld, player, selected/*, scrollOffset*/);

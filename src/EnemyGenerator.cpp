@@ -21,6 +21,7 @@ namespace EnemyGenerator {
     WeightedEnemy* troll;
     WeightedEnemy* wraith;
     WeightedEnemy* mimic;
+    WeightedEnemy* myconid;
 
     void initEnemies() {
 
@@ -42,6 +43,11 @@ namespace EnemyGenerator {
         wraith->weaknesses.push_back(Weakness(damShock, 2));
         wraith->weaknesses.push_back(Weakness(damSharp, .5));
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
+
+        ItemGenerator::WeaponBase myconidWepon = ItemGenerator::wNatural;
+        myconidWepon.enchs.push_back(Enchantment(effLSD, 5, 0, 50));
+        myconid = atl(new WeightedEnemy(50, "Myconid", 'm', aiAttackPlayer, 50, myconidWepon, "Finger", Ui::C_LIGHT_MAGENTA, 1.0));
+        myconid->weaknesses.push_back(Weakness(damFire, 4));
 
         mimic = new WeightedEnemy(0, "Mimic", '+', aiAttackPlayer, 75, ItemGenerator::wNatural, "Teeth", Ui::C_LIGHT_GREEN, 0);
         mimic->weaknesses.push_back(Weakness(damFire, 4));

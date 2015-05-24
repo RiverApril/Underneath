@@ -238,6 +238,13 @@ namespace Ui {
 
                 }
 
+
+                if(currentPlayer->hasEffect(effLSD)){
+                    fg = rand() % 16;
+                    if(bg != C_BLACK){
+                        bg = rand() % 16;
+                    }
+                }
             }
         } else {
             fg = C_LIGHT_MAGENTA;
@@ -513,7 +520,7 @@ namespace Ui {
 
         if(currentPlayer){
             if(currentPlayer->leveledUp){
-                openMenu(new MenuMessage({"Level up!", "", string("Press [")+(char)(Key::statsMenu)+string("] to spend skill points.")}));
+                openMenu(new MenuMessage({"Level up!", "", "", "", string("Press [")+(char)(Key::statsMenu)+string("] to spend skill points.")}));
                 currentPlayer->leveledUp = false;
             }
         }
@@ -582,7 +589,11 @@ namespace Ui {
                 name = effectName(eff.eId, eff.meta);
                 color = effectColor(eff.eId, eff.meta);
                 setColor(color);
-                a += printMultiLineString(a, gameArea.x + 1, formatString("%s %s: %.2f", name.c_str(), Utility::intToRomanNumerals((int) eff.power).c_str(), eff.timeLeft));
+                if(eff.power > 0){
+                	a += printMultiLineString(a, gameArea.x + 1, formatString("%s %s: %.2f", name.c_str(), Utility::intToRomanNumerals((int) eff.power).c_str(), eff.timeLeft));
+                }else{
+					a += printMultiLineString(a, gameArea.x + 1, formatString("%s: %.2f", name.c_str(), eff.timeLeft));
+                }
             }
 
             a++;
@@ -636,11 +647,12 @@ namespace Ui {
 
 
         } else {
-            printCenterOffset(gameArea.y / 2, -(borderSize.x / 2), "Game Over");
-            printCenterOffset(gameArea.y / 2 + 3, -(borderSize.x / 2), "Press Escape to return to the Main Menu.");
+            //printCenterOffset(gameArea.y / 2, -(borderSize.x / 2), "G a m e   O v e r");
+            //printCenterOffset(gameArea.y / 2 + 3, -(borderSize.x / 2), "Press Escape to return to the Main Menu.");
 
-            //Art* a = Arts::getArt(Arts::artGameOver);
-            //a->printCenter((gameArea.y / 2)- ((int)a->lines.size()/2), -(borderSize.x / 2));
+            Art* a = Arts::getArt(Arts::artGameOver);
+            a->printCenter((gameArea.y / 2) - ((int)a->lines.size()/2), -(borderSize.x / 2));
+            printCenterOffset(gameArea.y / 2 + 3 + ((int)a->lines.size()/2), -(borderSize.x / 2), "Press Escape to return to the Main Menu.");
         }
 
 

@@ -15,8 +15,7 @@
 #include "Ui.hpp"
 #include "DamageType.hpp"
 
-const vector<EquipSlot> bothHands = {slotWep1, slotWep2};
-const vector<EquipSlot> oneHand = {slotWep1};
+const vector<EquipSlot> weaponSlots = {slotWep1, slotWep2};
 
 class Weapon : public Equipable {
 public:
@@ -28,7 +27,7 @@ public:
 
     }
 
-    Weapon(double baseDamage, string name, double weight, double useDelay, bool twoHanded);
+    Weapon(double baseDamage, string name, double weight, double useDelay);
 
     virtual int getItemTypeId() {
         return ITEM_TYPE_WEAPON;
@@ -54,27 +53,17 @@ public:
                 &&(baseDamage == otherW->baseDamage)
                 &&(damageType == otherW->damageType)
                 &&(enchantments == otherW->enchantments)
-        		&&(useDelay == otherW->useDelay)
-        		&&(twoHanded == otherW->twoHanded);
-    }
-
-    virtual bool canBeEquipedHere(EquipSlot e) {
-        return e==slotWep1 || (twoHanded?false:e==slotWep2);
-    }
-
-    virtual bool blocksSlot(EquipSlot blockMe, EquipSlot whenHere) {
-        return twoHanded?((whenHere == slotWep1 && blockMe == slotWep2)||(whenHere == slotWep2 && blockMe == slotWep1)):false;
+        		&&(useDelay == otherW->useDelay);
     }
 
     virtual vector<EquipSlot> getViableSlots(){
-        return twoHanded?oneHand:bothHands;
+        return weaponSlots;
     }
 
     double baseDamage = 1;
     DamageType damageType = damSharp;
     WeaponType weaponType = wepMelee;
     double useDelay = 1;
-    bool twoHanded = false;
 
     vector<Enchantment> enchantments;
 

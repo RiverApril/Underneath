@@ -19,6 +19,7 @@ const EffectId effDamage = 0;
 const EffectId effHeal = 1;
 const EffectId effBuffAttack = 2;
 const EffectId effBuffDefense = 3;
+const EffectId effLSD = 4;
 
 struct Effect {
     Effect(unsigned char* data, int* position);
@@ -52,6 +53,9 @@ static string effectName(EffectId eid, double meta) {
 
         case effBuffDefense:
             return "Resist "+damageTypeName((DamageType) meta);
+
+        case effLSD:
+            return "Psychedelic";
 
         default:
             return "UNDEFINED";

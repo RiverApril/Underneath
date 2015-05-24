@@ -61,6 +61,7 @@ vector<KeyBind> keybindings = {
     KeyBind("Ui Down", &Key::uiDown, keyCatUi),
     KeyBind("Ui Left", &Key::uiLeft, keyCatUi),
     KeyBind("Ui Right", &Key::uiRight, keyCatUi),
+    KeyBind("Equip Item", &Key::equip, keyCatUi),
     KeyBind("Drop Item", &Key::drop, keyCatUi),
     KeyBind("Drop Stack", &Key::dropAll, keyCatUi),
     KeyBind("Transfer Item", &Key::take, keyCatUi),

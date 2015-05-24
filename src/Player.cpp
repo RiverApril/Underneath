@@ -201,7 +201,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
                             //Icon* was saying it was private, no idea why.
                             auto ti = t->getIcon(true);
 
-                            e->defaultIcon = ti->getChar(0, posOfTile, level);
+                            e->defaultIcon = 'M';//ti->getChar(0, posOfTile, level);
                             e->fgColor = ti->getFgColor(0, posOfTile, level);
                             e->bgColor = ti->getBgColor(0, posOfTile, level);
 

@@ -120,6 +120,7 @@ namespace ItemGenerator {
         WeaponType weaponType = wepMelee;
         double range = -1;
         double manaCost = -1;
+        vector<Enchantment> enchs;
     };
 
     struct PotionBase {

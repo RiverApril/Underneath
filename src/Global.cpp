@@ -9,11 +9,11 @@
 #include "Global.hpp"
 
 #ifdef _WIN32
-int ESCDELAY;
+    int ESCDELAY;
 
-int mkdir(const char *filename, int useless) {
-    return mkdir(filename);
-}
+    int mkdir(const char *filename, int useless) {
+        return mkdir(filename);
+    }
 #endif
 
 char workingDirectory[FILENAME_MAX];

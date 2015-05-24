@@ -62,6 +62,8 @@ public:
 
     void addEffect(Effect e);
 
+    bool hasEffect(EffectId eid);
+
     virtual double heal(double amount);
 
     virtual double healMana(double amount);
