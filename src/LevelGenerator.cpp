@@ -93,7 +93,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
             if (tileGrid[i][j].index == (int8_t) Tiles::tileChest->getIndex()) {
                 TEChest* te = new TEChest(Point2(i, j));
-                te->addItems(ItemGenerator::createRandLoots(difficulty, difficulty * 100, 5, 5, 1));
+                te->addItems(ItemGenerator::createRandLoots(difficulty, difficulty * 100, 5, 5, 5));
                 tileEntityList.push_back(te);
                 continue;
             }
@@ -104,7 +104,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
                     te->addItem(ItemGenerator::makeCoins((rand() % 30) + 1));
                     tileEntityList.push_back(te);
                     continue;
-                } else if (rand() % 20 == 0) {
+                } else if (rand() % 12 == 0) {
                     TEChest* te = new TEChest(Point2(i, j));
                     te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 0, 0, 1));
                     tileEntityList.push_back(te);

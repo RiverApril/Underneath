@@ -20,13 +20,12 @@ const EffectId effHeal = 1;
 const EffectId effBuffAttack = 2;
 const EffectId effBuffDefense = 3;
 const EffectId effLSD = 4;
+const EffectId effMemory = 5;
 
 struct Effect {
     Effect(unsigned char* data, int* position);
 
-    Effect(EffectId eId, double timeLeft, double power);
-
-    Effect setMeta(double meta);
+    Effect(EffectId eId, double timeLeft, double power, double meta = 0);
 
     string toString();
 
@@ -56,6 +55,9 @@ static string effectName(EffectId eid, double meta) {
 
         case effLSD:
             return "Psychedelic";
+
+        case effMemory:
+            return "Where am I?";
 
         default:
             return "UNDEFINED";

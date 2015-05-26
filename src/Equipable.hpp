@@ -97,7 +97,7 @@ public:
         switch (slot) {
             case slotWep1:
             case slotWep2:
-                return "in";
+                return "as";
 
             case slotHands:
             case slotHead:
@@ -118,7 +118,7 @@ public:
         switch (slot) {
             case slotWep1:
             case slotWep2:
-                return "Wepon";
+                return "Weapon";
             case slotHands:
                 return "Hands";
             case slotHead:

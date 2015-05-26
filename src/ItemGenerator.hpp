@@ -123,24 +123,33 @@ namespace ItemGenerator {
         vector<Enchantment> enchs;
     };
 
+    struct EffIdMeta {
+        EffIdMeta(EffectId id, double meta){
+            this->id = id;
+            this->meta = meta;
+        }
+        EffectId id;
+        double meta;
+    };
+
     struct PotionBase {
 
         PotionBase() {
         }
 
-        PotionBase(vector<string> names, vector<EffectId> effIds, double timeMin, double timeMax, double powerMin, double powerMax, double meta) {
+        PotionBase(vector<string> names, vector<EffIdMeta> effects, double timeMin, double timeMax, double powerMin, double powerMax, bool difficultyScales = true) {
             this->names = names;
-            this->effIds = effIds;
+            this->effects = effects;
             this->time = Vector2(timeMin, timeMax);
             this->power = Vector2(powerMin, powerMax);
-            this->meta = meta;
+            this->difficultyScales = difficultyScales;
         }
 
         vector<string> names = {""};
-        vector<EffectId> effIds = {0};
+        vector<EffIdMeta> effects = {};
         Vector2 time = Vector2One;
         Vector2 power = Vector2One;
-        double meta = 0;
+        bool difficultyScales;
 
     };
 

@@ -17,6 +17,19 @@ namespace Random {
 
     int randomFromPoint(Point2 seed);
 
+    template <typename T> const T choose(int count, ...) {
+        vector<T> options;
+        va_list args;
+        va_start(args, count);
+        for(int i=0;i<count;i++){
+            T a = va_arg(args, T);
+            options.push_back(a);
+        }
+        va_end(args);
+        int index = rand() % count;
+        return options[index];
+    }
+
 
 }
 

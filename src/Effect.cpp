@@ -14,15 +14,11 @@ Effect::Effect(unsigned char* data, int* position) {
     load(data, position);
 }
 
-Effect::Effect(EffectId eId, double timeLeft, double power) {
+Effect::Effect(EffectId eId, double timeLeft, double power, double meta) {
     this->eId = eId;
     this->timeLeft = timeLeft;
     this->power = power;
-}
-
-Effect Effect::setMeta(double meta) {
     this->meta = meta;
-    return *this;
 }
 
 string Effect::toString() {

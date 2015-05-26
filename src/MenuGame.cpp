@@ -238,6 +238,15 @@ namespace Ui {
 
                 }
 
+                if(currentPlayer->hasEffect(effMemory)){
+                    if(!inView){
+                        if(rand() % 1000 != 0){
+                            bg = C_BLACK;
+                            fg = C_BLACK;
+                            symbol = ' ';
+                        }
+                    }
+                }
 
                 if(currentPlayer->hasEffect(effLSD)){
                     fg = rand() % 16;

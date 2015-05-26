@@ -102,7 +102,7 @@ namespace Ui {
         if (limitedColorMode) {
             mvaddstr(a, 0, "Limited Color Mode - For best results use a terminal with 256 colors.");
         }
-
+		/*
         a++;
 
         move(a++, 0);
@@ -176,7 +176,7 @@ namespace Ui {
         addstr(" L_CYAN");
         setColor(C_LIGHT_WHITE, C_WHITE);
         addstr(" L_WHITE");
-
+		*/
         refresh();
     }
 

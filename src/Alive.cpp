@@ -103,7 +103,7 @@ double Alive::hurt(Weapon* w, double damageMultiplier) {
     double d = w->baseDamage * Random::randDouble(.5, 1);
     for (Enchantment ench : w->enchantments) {
         if (rand() % ench.chance == 0) {
-            addEffect(Effect(ench.effectId, ench.time, ench.power).setMeta(ench.meta));
+            addEffect(Effect(ench.effectId, ench.time, ench.power, ench.meta));
         }
     }
     

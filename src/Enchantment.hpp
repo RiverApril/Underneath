@@ -14,9 +14,7 @@
 struct Enchantment {
     Enchantment(unsigned char* data, int* position);
 
-    Enchantment(EffectId effectId, int chance, double power, double time);
-
-    Enchantment setMeta(double meta);
+    Enchantment(EffectId effectId, int chance, double power, double time, double meta = 0);
 
     void save(vector<unsigned char>* data);
 

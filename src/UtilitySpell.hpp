@@ -48,9 +48,7 @@ public:
     }
 
     virtual bool instantUse() {
-        return !(
-                (spellEffect == spellRemoteUse) || (spellEffect == spellRelocate)
-                );
+        return false;
     }
 
     SpellEffect spellEffect = 0;

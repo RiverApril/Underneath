@@ -421,14 +421,14 @@ namespace Ui {
                 if(equipable){
                     //a+= printMultiLineString(a, columnX, "EQUIPABLE");
 
-                    vector<char> eqv;
+                    vector<string> eqv;
                     string eqs = "";
                     string eqp = "";
 
                     vector<EquipSlot> vs = equipable->getViableSlots();
 
                     for(EquipSlot slot : vs){
-                        char c = Equipable::equipSlotAbr(slot);
+                        string c = Equipable::equipSlotNameGeneric(slot);
                         if(!Utility::vectorContains(eqv, c)){
                             eqv.push_back(c);
                             if(eqs.length() > 0){

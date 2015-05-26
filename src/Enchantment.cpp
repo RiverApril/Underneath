@@ -13,16 +13,12 @@ Enchantment::Enchantment(unsigned char* data, int* position) {
     load(data, position);
 }
 
-Enchantment::Enchantment(EffectId effectId, int chance, double power, double time) {
+Enchantment::Enchantment(EffectId effectId, int chance, double power, double time, double meta) {
     this->effectId = effectId;
     this->chance = chance;
     this->power = power;
     this->time = time;
-}
-
-Enchantment Enchantment::setMeta(double meta) {
     this->meta = meta;
-    return *this;
 }
 
 void Enchantment::save(vector<unsigned char>* data) {

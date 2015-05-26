@@ -46,23 +46,28 @@ namespace ItemGenerator {
         iCoin = new Item("Coin", .01);
         iCoin->artIndex = Arts::artCoin;
 
-        PotionBase potionHealth = atl(PotionBase({"Health Potion"},
-        {
-            effHeal
-        }, 0, 0, 5, 100, 0));
-        PotionBase potionMana = atl(PotionBase({"Mana Potion"},
-        {
-            effHeal
-        }, 0, 0, 5, 100, 1));
+        PotionBase potionHealth = atl(PotionBase({"Health Potion"}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100));
+        PotionBase potionMana = atl(PotionBase({"Mana Potion"}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100));
 
-        PotionBase potionRegen = atl(PotionBase({"Regeneration Potion"},
-        {
-            effHeal
-        }, 2, 30, 1, 10, 0));
-        PotionBase potionManaRegen = atl(PotionBase({"Mana Regeneration Potion"},
-        {
-            effHeal
-        }, 2, 30, 1, 10, 1));
+        PotionBase potionRegen = atl(PotionBase({"Regeneration Potion"}, {EffIdMeta(effHeal, 0)}, 2, 30, 1, 10));
+        PotionBase potionManaRegen = atl(PotionBase({"Mana Regeneration Potion"}, {EffIdMeta(effHeal, 1)}, 2, 30, 1, 10));
+
+        PotionBase potionPhysicalDefense = atl(PotionBase({"Physical Defense Potion"}, {
+            EffIdMeta(effBuffDefense, damPierce),
+            EffIdMeta(effBuffDefense, damSharp),
+        	EffIdMeta(effBuffDefense, damBlunt)
+        }, 4, 60, .1, 1, false));
+
+        PotionBase potionElementalDefense = atl(PotionBase({"Elemental Defense Potion"}, {
+            EffIdMeta(effBuffDefense, damFire),
+            EffIdMeta(effBuffDefense, damIce),
+            EffIdMeta(effBuffDefense, damShock)
+        }, 2, 30, .1, 1, false));
+
+        /*PotionBase potionOrganicDefense = atl(PotionBase({"Organic Defense Potion"}, {
+            EffIdMeta(effBuffDefense, damPoison),
+            EffIdMeta(effBuffDefense, damBlood)
+        }, 2, 30, .1, 1, false));*/
 
 
         ScrollBase scrollRemoteUse = atl(ScrollBase({"Scroll of Telekinesis"}, spellRemoteUse));
@@ -213,7 +218,12 @@ namespace ItemGenerator {
                     }
                 }
 
-                items.push_back(createRandWeapon(itemDifficulty));
+                Weapon* w = createRandWeapon(itemDifficulty);
+                if(rand() % 20 == 0){
+                    DamageType damType = Random::choose<DamageType>(5, damBlood, damPoison, damFire, damIce, damShock);
+                    w->addEnchantment(Enchantment(effDamage, Random::randDouble(10, 20), Random::randDouble(1, 10), Random::randDouble(2, 30), damType));
+                }
+                items.push_back(w);
             }
         }
 
@@ -260,8 +270,8 @@ namespace ItemGenerator {
         vector<Effect> effects;
         double time = Random::randDouble(pb.time.x, pb.time.y);
         double power = Random::randDouble(pb.power.x, pb.power.y);
-        for (EffectId effId : pb.effIds) {
-            effects.push_back(Effect(effId, time, power * itemDifficulty));
+        for (EffIdMeta eff : pb.effects) {
+            effects.push_back(Effect(eff.id, time, power * (pb.difficultyScales?itemDifficulty:1), eff.meta));
         }
         Potion* potion = new Potion(effects, pb.names[rand() % pb.names.size()], .2);
         switch (rand() % 4) {
@@ -301,7 +311,7 @@ namespace ItemGenerator {
     }
 
     Item* createRandAltLoot(int itemDifficulty) {
-        if(rand()%4 != 0) {
+        if(rand()%3 != 0) {
             PotionBase pb = potionList[rand() % potionList.size()];
             return createPotionFromBase(pb, itemDifficulty);
         } else if(rand()%3 != 0) {
@@ -326,7 +336,7 @@ namespace ItemGenerator {
             if (base.manaCost != -1) {
                 w = new CombatSpell();
                 ((CombatSpell*) w)->manaCost = (int) (base.manaCost * Random::randDouble(4.0, 12.0));
-                w->addEnchantment(Enchantment(effDamage, 10, 1, 6).setMeta(base.damageType));
+                w->addEnchantment(Enchantment(effDamage, 10, 1, 6, base.damageType));
             } else {
                 w = new Ranged();
             }
