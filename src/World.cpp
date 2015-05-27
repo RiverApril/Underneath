@@ -302,7 +302,8 @@ namespace WorldLoader {
                 levelName = Utility::loadString(data, position);
 
                 std::remove((dir + levelName + ".lvl").c_str());
-                std::rename((dir + levelName + ".lvl.backup").c_str(), (dir + levelName + ".lvl.deleted").c_str());
+                std::remove((dir + levelName + ".lvl.backup").c_str());
+                //std::rename((dir + levelName + ".lvl.backup").c_str(), (dir + levelName + ".lvl.deleted").c_str());
             }
 
             delete position;

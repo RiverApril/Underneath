@@ -10,6 +10,7 @@
 #include "Utility.hpp"
 #include "Level.hpp"
 #include "Random.hpp"
+#include "Verbalizer.hpp"
 
 Alive::Alive() : Alive("", ' ', Point2Zero, Ui::C_WHITE) {
 
@@ -50,6 +51,16 @@ bool Alive::update(double deltaTime, double time, Level* level) {
             switch (e->eId) {
                 case effDamage:
                     hurt((int) e->meta, e->power * m);
+                    switch ((DamageType)(int)e->meta) {
+                        case damBlood:
+                            if(level->indexAt(pos) == Tiles::tileFloor->getIndex()){
+                                level->setTile(pos, Tiles::tileBloodFloor);
+                            }
+                            break;
+                            
+                        default:
+                            break;
+                    }
                     break;
                 case effHeal:
                     if (e->meta == 0) {

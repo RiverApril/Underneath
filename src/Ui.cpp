@@ -318,6 +318,20 @@ namespace Ui {
         return a+(b==0?0:1);
     }
 
+    int printEnchantments(int a, vector<Enchantment> enchantments, int columnX){
+        if (enchantments.size() > 0) {
+            a++;
+            a += printMultiLineString(a, columnX, formatString("Enchantments:"));
+            for (Enchantment e : enchantments) {
+                setColor(effectColor(e.effectId, e.meta));
+                a += printMultiLineString(a, columnX, formatString("   %s %s (1/%d for %.2f)", enchantmentName(e).c_str(), Utility::intToRomanNumerals(e.power).c_str(), e.chance, e.time));
+
+            }
+            a++;
+        }
+        return a;
+    }
+
     void drawInventory(World* currentWorld, Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft) {
 
         int columnX = 0;
@@ -496,14 +510,8 @@ namespace Ui {
                     for(Defense def : armor->defenses){
                         a += printMultiLineString(a, columnX, formatString("%d%c resistance to %s", (int)(def.amount*100.0), '%', damageTypeName(def.damageType).c_str()));
                     }
-                    if (armor->enchantments.size() > 0) {
-                        a++;
-                        a += printMultiLineString(a, columnX, formatString("Enchantments:"));
-                        for (Enchantment e : armor->enchantments) {
-                            a += printMultiLineString(a, columnX, formatString("   %s x%d (1/%d for %.2f)", enchantmentName(e).c_str(), e.power, e.chance, e.time));
-                        }
-                        a++;
-                    }
+
+                    a = printEnchantments(a, armor->enchantments, columnX);
 
                 } else if (weapon) {
                     double x = player->calcDamageMultiplier(weapon);
@@ -520,13 +528,8 @@ namespace Ui {
                             a += printMultiLineString(a, columnX, formatString("Mana Cost: %d", spell->manaCost));
                         }
                     }
-                    if (!spell && weapon->enchantments.size() > 0) {
-                        a++;
-                        a += printMultiLineString(a, columnX, formatString("Enchantments:"));
-                        for (Enchantment e : weapon->enchantments) {
-                            a += printMultiLineString(a, columnX, formatString("   %s x%d (1/%d for %.2f)", enchantmentName(e).c_str(), e.power, e.chance, e.time));
-                        }
-                        a++;
+                    if (!spell) {
+                        a = printEnchantments(a, weapon->enchantments, columnX);
                     }
                     setColor(C_LIGHT_CYAN);
                     a += printMultiLineString(a, columnX, formatString("d/t: %.2f", ((weapon->baseDamage * x) / weapon->useDelay)));

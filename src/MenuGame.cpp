@@ -593,10 +593,8 @@ namespace Ui {
 
             for (size_t i = 0; i < currentPlayer->effects.size(); i++) {
                 Effect eff = currentPlayer->effects[i];
-                string name = "EFFECT";
-                Ui::Color color = C_LIGHT_GREEN;
-                name = effectName(eff.eId, eff.meta);
-                color = effectColor(eff.eId, eff.meta);
+                string name = effectName(eff.eId, eff.meta);
+                Ui::Color color = effectColor(eff.eId, eff.meta);
                 setColor(color);
                 if(eff.power > 0){
                 	a += printMultiLineString(a, gameArea.x + 1, formatString("%s %s: %.2f", name.c_str(), Utility::intToRomanNumerals((int) eff.power).c_str(), eff.timeLeft));

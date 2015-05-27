@@ -48,7 +48,7 @@ static string damageTypeName(DamageType d) {
         case damPoison:
             return "Poison";
         case damBlood:
-            return "Blood";
+            return "Bleed";
         case damDebug:
             return "Debug";
         case damSuffocation:

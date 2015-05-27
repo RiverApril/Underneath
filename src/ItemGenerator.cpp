@@ -219,9 +219,10 @@ namespace ItemGenerator {
                 }
 
                 Weapon* w = createRandWeapon(itemDifficulty);
-                if(rand() % 20 == 0){
+                if(rand() % 20 == 0 || true){
                     DamageType damType = Random::choose<DamageType>(5, damBlood, damPoison, damFire, damIce, damShock);
-                    w->addEnchantment(Enchantment(effDamage, Random::randDouble(10, 20), Random::randDouble(1, 10), Random::randDouble(2, 30), damType));
+                    Enchantment e = Enchantment(effDamage, (rand()%10)+10, Random::randDouble(1, 5), Random::randDouble(2, 30), damType);
+                    w->addEnchantment(e);
                 }
                 items.push_back(w);
             }

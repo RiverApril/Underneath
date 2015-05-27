@@ -41,7 +41,8 @@ bool operator==(const Enchantment a, const Enchantment b) {
     return a.effectId == b.effectId
             && a.chance == b.chance
             && a.power == b.power
-            && a.time == b.time;
+    		&& a.time == b.time
+    		&& a.meta == b.meta;
 }
 
 bool operator!=(const Enchantment a, const Enchantment b) {

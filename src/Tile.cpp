@@ -49,6 +49,7 @@ namespace Tiles {
 
     Tile* tileFloor;
     //Tile* tilePath;
+    Tile* tileBloodFloor;
 
     Tile* tileWall;
     Tile* tilePonyWall;
@@ -84,6 +85,7 @@ namespace Tiles {
         Color bg = C_BLACK;
 
         tileFloor = new Tile(new BasicIcon('.', C_WHITE, C_BLACK), "floor", tileFlagPathable);
+        tileBloodFloor = new Tile(new BasicIcon('.', C_LIGHT_RED, C_BLACK), "bloody floor", tileFlagPathable);
 
         tileWall = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "wall", tileFlagSolid | tileFlagTall, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
         tilePonyWall = new Tile(new BasicIcon('.', C_BLACK, C_LIGHT_GRAY), "pony wall", tileFlagSolid, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));

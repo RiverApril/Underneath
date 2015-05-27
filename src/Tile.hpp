@@ -72,7 +72,9 @@ private:
 namespace Tiles {
 
     extern vector<Tile*> tileList;
+
     extern Tile* tileFloor;
+    extern Tile* tileBloodFloor;
     //extern Tile* tilePath;
 
     extern Tile* tileWall;

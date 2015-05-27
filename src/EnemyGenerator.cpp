@@ -101,7 +101,7 @@ namespace EnemyGenerator {
                 last = we;
                 break;
             }
-            debugf("r: %d  total: %d  we's interval: %d", r, total, we->interval);
+            //debugf("r: %d  total: %d  we's interval: %d", r, total, we->interval);
         }
         return makeEntity(last, difficulty);
     }

@@ -121,9 +121,9 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     }
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor" + to_string(Utility::parseInt(name.substr(5)) + 1)));
 
-    for (TileEntity* e : tileEntityList) {
+    /*for (TileEntity* e : tileEntityList) {
         debugf("TileEntity id: %d", e->getTileEntityTypeId());
-    }
+    }*/
 
     /*disabled debug path
 vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
