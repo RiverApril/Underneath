@@ -84,7 +84,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
         for (int j = 0; j < size.y; j++) {
 
             if (tileGrid[i][j].index == (int8_t) Tiles::tileDoor->getIndex() || tileGrid[i][j].index == (int8_t) Tiles::tileSecretDoor->getIndex() || tileGrid[i][j].index == (int8_t) Tiles::tileChest->getIndex()) {
-                if (rand() % 25 == 0) {
+                if (rand() % 50 == 0) {
                     TEMimic* te = new TEMimic(Point2(i, j));
                     tileEntityList.push_back(te);
                     continue;
@@ -194,9 +194,21 @@ for(Point2 pe : path){
 
     EnemyGenerator::setIntervals(difficulty);
 
+    map<string, int> entitiesGenerated;
+
     int count = (rand() % (200)) + 100;
     for (int i = 0; i < count; i++) {
-        placeNewAiEntity(EnemyGenerator::makeRandomEntity(difficulty), stairUpPos);
+        AiEntity* e = EnemyGenerator::makeRandomEntity(difficulty);
+        if(entitiesGenerated.count(e->getName())){
+            entitiesGenerated[e->getName()]++;
+        }else{
+            entitiesGenerated[e->getName()] = 1;
+        }
+        placeNewAiEntity(e, stairUpPos);
+    }
+
+    for(pair<string, int> p : entitiesGenerated){
+        debugf("%s x%d", p.first.c_str(), p.second);
     }
 
     genDebug("done");

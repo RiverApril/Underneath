@@ -46,7 +46,7 @@ namespace EnemyGenerator {
 
         ItemGenerator::WeaponBase myconidWepon = ItemGenerator::wNatural;
         myconidWepon.damage *= .5;
-        myconidWepon.enchs.push_back(Enchantment(effLSD, 10, 0, 50));
+        myconidWepon.enchs.push_back(Enchantment(effLSD, 30, 0, 50));
         myconidWepon.enchs.push_back(Enchantment(effMemory, 10, 0, 100));
         myconid = atl(new WeightedEnemy(20, "Myconid", 'm', aiAttackPlayer, 50, myconidWepon, "Finger", Ui::C_LIGHT_MAGENTA, 1.0));
         myconid->weaknesses.push_back(Weakness(damFire, 4));
