@@ -15,6 +15,7 @@
 #include <vector>
 #include <queue>
 #include <map>
+#include <functional>
 
 
 #include <time.h>
