@@ -20,8 +20,8 @@ else
   endif
 endif
 
-CPPC ?= g++
-PLATFORM ?= $(OSN)_$(ARCH)
+CPPC := g++
+PLATFORM := $(OSN)_$(ARCH)
 NAME := $(PROGRAM_NAME)_BUILD_$(PLATFORM)
 SRCS := $(wildcard src/*.cpp)
 TMP := $(SRCS:.cpp=.o)
@@ -31,9 +31,15 @@ OBJS := $(subst $(SRCSLASH),$(OBJSLASH),$(TMP))
 CPP_FLAGS := -g -std=c++11
 LIB_FLAGS := -lncurses
 
+$(PROGRAM_NAME): $(NAME)
 
-all: $(NAME)
-#	echo $(OBJS)
+mingw32 : CPPC := i686-w64-mingw32-g++
+mingw32 : NAME := $(NAME)_MINGW32.exe
+mingw32 : CPP_FLAGS := -g -lstdc++ -std=c++11
+mingw32 : LIB_FLAGS := -lpdcurses -static-libgcc -static-libstdc++ -lpthread 
+
+
+all: clean $(NAME)
 
 $(NAME): $(OBJS)
 	$(CPPC) $(CPP_FLAGS) $(OBJS) -o $(NAME) $(LIB_FLAGS)
@@ -45,3 +51,6 @@ $(OBJSLASH)%.o: $(SRCSLASH)%.cpp
 clean:
 	@-$(RM) $(NAME)
 	@-$(RM) $(OBJS)
+
+mingw32: $(NAME)
+

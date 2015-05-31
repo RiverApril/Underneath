@@ -34,7 +34,7 @@
     #include <memory>
     #include <direct.h>
     #include <stdint.h>
-    #include "curses.hpp"
+    #include "curses.h"
     extern int ESCDELAY;
     #define GetCurrentDir _getcwd
     int mkdir(const char *filename, int useless);
