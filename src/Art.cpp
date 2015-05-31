@@ -82,60 +82,60 @@ namespace Arts {
         defaultArt = new Art();
         defaultArt->lines.push_back("Failed to load art.");
 
-        Arts::artTitle = Arts::loadNew(ArtDir + "/title");
-        Arts::artGameOver = Arts::loadNew(ArtDir + "/gameover");
+        Arts::artTitle = Arts::loadNew(ArtDir + "/", "title");
+        Arts::artGameOver = Arts::loadNew(ArtDir + "/", "gameover");
 
-        Arts::artScroll = Arts::loadNew(ArtDir + "/scroll");
-        Arts::artScrollFire = Arts::loadNew(ArtDir + "/scrollFire");
-        Arts::artScrollFrost = Arts::loadNew(ArtDir + "/scrollFrost");
-        Arts::artScrollShock = Arts::loadNew(ArtDir + "/scrollShock");
-        Arts::artScrollHand = Arts::loadNew(ArtDir + "/scrollHand");
-        Arts::artScrollHeal = Arts::loadNew(ArtDir + "/scrollHeal");
-        Arts::artScrollPerson = Arts::loadNew(ArtDir + "/scrollPerson");
+        Arts::artScroll = Arts::loadNew(ArtDir + "/", "scroll");
+        Arts::artScrollFire = Arts::loadNew(ArtDir + "/", "scrollFire");
+        Arts::artScrollFrost = Arts::loadNew(ArtDir + "/", "scrollFrost");
+        Arts::artScrollShock = Arts::loadNew(ArtDir + "/", "scrollShock");
+        Arts::artScrollHand = Arts::loadNew(ArtDir + "/", "scrollHand");
+        Arts::artScrollHeal = Arts::loadNew(ArtDir + "/", "scrollHeal");
+        Arts::artScrollPerson = Arts::loadNew(ArtDir + "/", "scrollPerson");
 
-        Arts::artPotion1 = Arts::loadNew(ArtDir + "/potion1");
-        Arts::artPotion2 = Arts::loadNew(ArtDir + "/potion2");
-        Arts::artPotion3 = Arts::loadNew(ArtDir + "/potion3");
-        Arts::artPotion4 = Arts::loadNew(ArtDir + "/potion4");
+        Arts::artPotion1 = Arts::loadNew(ArtDir + "/", "potion1");
+        Arts::artPotion2 = Arts::loadNew(ArtDir + "/", "potion2");
+        Arts::artPotion3 = Arts::loadNew(ArtDir + "/", "potion3");
+        Arts::artPotion4 = Arts::loadNew(ArtDir + "/", "potion4");
         
-        Arts::artBomb = Arts::loadNew(ArtDir + "/bomb");
+        Arts::artBomb = Arts::loadNew(ArtDir + "/", "bomb");
 
-        Arts::artKnife = Arts::loadNew(ArtDir + "/knife");
-        Arts::artDagger = Arts::loadNew(ArtDir + "/dagger");
-        Arts::artCleaver = Arts::loadNew(ArtDir + "/cleaver");
+        Arts::artKnife = Arts::loadNew(ArtDir + "/", "knife");
+        Arts::artDagger = Arts::loadNew(ArtDir + "/", "dagger");
+        Arts::artCleaver = Arts::loadNew(ArtDir + "/", "cleaver");
 
-        Arts::artLongsword = Arts::loadNew(ArtDir + "/longsword");
-        Arts::artCutlass = Arts::loadNew(ArtDir + "/cutlass");
-        Arts::artKatana = Arts::loadNew(ArtDir + "/katana");
-        Arts::artMachete = Arts::loadNew(ArtDir + "/machete");
-        Arts::artGladius = Arts::loadNew(ArtDir + "/gladius");
-        Arts::artScimitar = Arts::loadNew(ArtDir + "/scimitar");
-        Arts::artRapier = Arts::loadNew(ArtDir + "/rapier");
-        Arts::artShortSword = Arts::loadNew(ArtDir + "/shortsword");
-        Arts::artBroadsword = Arts::loadNew(ArtDir + "/broadsword");
-        Arts::artSaber = Arts::loadNew(ArtDir + "/saber");
-        Arts::artClaymore = Arts::loadNew(ArtDir + "/claymore");
-
-
-        Arts::artAxe = Arts::loadNew(ArtDir + "/axe");
-        Arts::artDoubleAxe = Arts::loadNew(ArtDir + "/doubleaxe");
-
-        Arts::artMace = Arts::loadNew(ArtDir + "/mace");
-        Arts::artClub = Arts::loadNew(ArtDir + "/club");
-        Arts::artFlail = Arts::loadNew(ArtDir + "/flail");
-        Arts::artWarHammer = Arts::loadNew(ArtDir + "/warhammer");
-
-        Arts::artSpear = Arts::loadNew(ArtDir + "/spear");
-        Arts::artHalberd = Arts::loadNew(ArtDir + "/halberd");
+        Arts::artLongsword = Arts::loadNew(ArtDir + "/", "longsword");
+        Arts::artCutlass = Arts::loadNew(ArtDir + "/", "cutlass");
+        Arts::artKatana = Arts::loadNew(ArtDir + "/", "katana");
+        Arts::artMachete = Arts::loadNew(ArtDir + "/", "machete");
+        Arts::artGladius = Arts::loadNew(ArtDir + "/", "gladius");
+        Arts::artScimitar = Arts::loadNew(ArtDir + "/", "scimitar");
+        Arts::artRapier = Arts::loadNew(ArtDir + "/", "rapier");
+        Arts::artShortSword = Arts::loadNew(ArtDir + "/", "shortsword");
+        Arts::artBroadsword = Arts::loadNew(ArtDir + "/", "broadsword");
+        Arts::artSaber = Arts::loadNew(ArtDir + "/", "saber");
+        Arts::artClaymore = Arts::loadNew(ArtDir + "/", "claymore");
 
 
-        Arts::artLongbow = Arts::loadNew(ArtDir + "/longbow");
+        Arts::artAxe = Arts::loadNew(ArtDir + "/", "axe");
+        Arts::artDoubleAxe = Arts::loadNew(ArtDir + "/", "doubleaxe");
 
-        Arts::artRecurveBow = Arts::loadNew(ArtDir + "/recurvebow");
+        Arts::artMace = Arts::loadNew(ArtDir + "/", "mace");
+        Arts::artClub = Arts::loadNew(ArtDir + "/", "club");
+        Arts::artFlail = Arts::loadNew(ArtDir + "/", "flail");
+        Arts::artWarHammer = Arts::loadNew(ArtDir + "/", "warhammer");
 
-        Arts::artCrossbow = Arts::loadNew(ArtDir + "/crossbow");
+        Arts::artSpear = Arts::loadNew(ArtDir + "/", "spear");
+        Arts::artHalberd = Arts::loadNew(ArtDir + "/", "halberd");
 
-        Arts::artCoin = Arts::loadNew(ArtDir + "/coin");
+
+        Arts::artLongbow = Arts::loadNew(ArtDir + "/", "longbow");
+
+        Arts::artRecurveBow = Arts::loadNew(ArtDir + "/", "recurvebow");
+
+        Arts::artCrossbow = Arts::loadNew(ArtDir + "/", "crossbow");
+
+        Arts::artCoin = Arts::loadNew(ArtDir + "/", "coin");
 
         Point2 compassInSize = Point2Neg1;
 
@@ -143,7 +143,7 @@ namespace Arts {
 
         {
 
-            int fullCompassIn = loadNew(ArtDir+"/compassInner");
+            int fullCompassIn = loadNew(ArtDir + "/", "compassInner");
 
             Art* fullCompassInArt = getArt(fullCompassIn);
 
@@ -188,7 +188,7 @@ namespace Arts {
 
         //
         {
-            int fullCompassOut = loadNew(ArtDir+"/compassOuter");
+            int fullCompassOut = loadNew(ArtDir + "/", "compassOuter");
 
             Art* fullCompassOutArt = getArt(fullCompassOut);
 
@@ -234,8 +234,8 @@ namespace Arts {
         artList.clear();
     }
 
-    int loadNew(string name, string ext, string dot) {
-        string path = name + dot + ext;
+    int loadNew(string location, string name, string ext, string dot) {
+        string path = location + name + dot + ext;
 
         Art* art = new Art();
 
@@ -258,6 +258,7 @@ namespace Arts {
             fclose(file);
         } else {
             debug("Failed to load: " + path);
+            
             return -1;
         }
         art->calcSize();

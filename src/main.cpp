@@ -24,19 +24,9 @@ int main(int argc, const char** argv) {
         return errno;
     }
 
-    /*
-    for(int i=0;i<256;i++){
-        cout << "[" <<(char)i << "] ";
-        if(i%16 == 0){
-            cout << endl;
-        }
-    }
-    cout << endl;
-    */
 
-
-    cout << endl << "Press enter to start Underneath..." << endl;
-    cin.ignore();
+    //cout << endl << "Press enter to start Underneath..." << endl;
+    //cin.ignore();
 
 
 

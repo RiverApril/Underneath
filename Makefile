@@ -38,8 +38,6 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CPPC) $(CPP_FLAGS) $(OBJS) -o $(NAME) $(LIB_FLAGS)
 
-$(OBJSLASH)%.o: $(SRCSLASH)%.h
-
 $(OBJSLASH)%.o: $(SRCSLASH)%.cpp
 	@$(MKDIR) -p $(OBJSLASH)
 	$(CPPC) $(CPP_FLAGS) -c $< -o $@
