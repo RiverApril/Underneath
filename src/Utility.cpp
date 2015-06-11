@@ -178,9 +178,9 @@ namespace Utility {
     char getSymbolFromNumber(int number){
         if(number >= 0 && number <= 9){
             return (char)(number + 48);
-        }else if(number >= 10 && number <= 10 + 26){
+        }else if(number >= 10 && number < 10 + 26){
             return (char)(number - 10 + 65);
-        }else if(number >= 10 + 26 && number <= 10 + 26 + 26){
+        }else if(number >= 10 + 26 && number < 10 + 26 + 26){
             return (char)(number - 10 - 26 + 97);
         }
         throw ParseException("Number out of range: " + to_string(number));
