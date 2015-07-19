@@ -9,13 +9,13 @@
 #include "Item.hpp"
 #include "Utility.hpp"
 #include "Equipable.hpp"
-#include "Weapon.hpp"
-#include "CombatSpell.hpp"
+#include "ItemWeapon.hpp"
+#include "ItemCombatSpell.hpp"
 #include "Potion.hpp"
-#include "UtilitySpell.hpp"
+#include "ItemUtilitySpell.hpp"
 #include "ItemSpecial.hpp"
 #include "ItemTimeActivated.hpp"
-#include "Armor.hpp"
+#include "ItemArmor.hpp"
 
 void Item::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getItemTypeId());
@@ -60,19 +60,19 @@ Item* Item::clone(Item* oldI) {
             return makeNewAndClone<Item, Equipable>(oldI);
 
         case ITEM_TYPE_WEAPON:
-            return makeNewAndClone<Item, Weapon>(oldI);
+            return makeNewAndClone<Item, ItemWeapon>(oldI);
 
         case ITEM_TYPE_RANGED:
             return makeNewAndClone<Item, Ranged>(oldI);
 
         case ITEM_TYPE_COMBAT_SPELL:
-            return makeNewAndClone<Item, CombatSpell>(oldI);
+            return makeNewAndClone<Item, ItemCombatSpell>(oldI);
 
         case ITEM_TYPE_POTION:
             return makeNewAndClone<Item, Potion>(oldI);
 
 		case ITEM_TYPE_UTILITY_SPELL:
-            return makeNewAndClone<Item, UtilitySpell>(oldI);
+            return makeNewAndClone<Item, ItemUtilitySpell>(oldI);
 
         case ITEM_TYPE_ITEMSPECIAL:
             return makeNewAndClone<Item, ItemSpecial>(oldI);
@@ -81,7 +81,7 @@ Item* Item::clone(Item* oldI) {
             return makeNewAndClone<Item, ItemTimeActivated>(oldI);
 
         case ITEM_TYPE_ARMOR:
-            return makeNewAndClone<Item, Armor>(oldI);
+            return makeNewAndClone<Item, ItemArmor>(oldI);
 
         default:
             throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));
@@ -108,7 +108,7 @@ Item* Item::loadNew(unsigned char* data, int* position) {
             break;
 
         case ITEM_TYPE_WEAPON:
-            e = new Weapon();
+            e = new ItemWeapon();
             break;
 
         case ITEM_TYPE_RANGED:
@@ -116,7 +116,7 @@ Item* Item::loadNew(unsigned char* data, int* position) {
             break;
 
         case ITEM_TYPE_COMBAT_SPELL:
-            e = new CombatSpell();
+            e = new ItemCombatSpell();
             break;
             
         case ITEM_TYPE_POTION:
@@ -124,7 +124,7 @@ Item* Item::loadNew(unsigned char* data, int* position) {
             break;
 
         case ITEM_TYPE_UTILITY_SPELL:
-            e = new UtilitySpell();
+            e = new ItemUtilitySpell();
             break;
 
         case ITEM_TYPE_ITEMSPECIAL:
@@ -136,7 +136,7 @@ Item* Item::loadNew(unsigned char* data, int* position) {
             break;
 
         case ITEM_TYPE_ARMOR:
-            e = new Armor();
+            e = new ItemArmor();
             break;
 
         default:

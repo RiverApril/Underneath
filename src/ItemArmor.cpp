@@ -1,23 +1,23 @@
 //
-//  Armor.cpp
+//  ItemArmor.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 4/29/15.
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Armor.hpp"
+#include "ItemArmor.hpp"
 #include "Utility.hpp"
 
-Armor::Armor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name, double weight) : Equipable(name, weight) {
+ItemArmor::ItemArmor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name, double weight) : Equipable(name, weight) {
     this->viableSlots = viableSlots;
     this->defenses = defenses;
 }
 
-Armor::Armor(EquipSlot viableSlot, vector<Defense> defenses, string name, double weight) : Armor(vector<EquipSlot>{viableSlot}, defenses, name, weight) {
+ItemArmor::ItemArmor(EquipSlot viableSlot, vector<Defense> defenses, string name, double weight) : ItemArmor(vector<EquipSlot>{viableSlot}, defenses, name, weight) {
 }
 
-void Armor::save(vector<unsigned char>* data) {
+void ItemArmor::save(vector<unsigned char>* data) {
     Equipable::save(data);
 
     Utility::saveInt(data, (int) enchantments.size());
@@ -36,7 +36,7 @@ void Armor::save(vector<unsigned char>* data) {
     }
 }
 
-void Armor::load(unsigned char* data, int* position) {
+void ItemArmor::load(unsigned char* data, int* position) {
     Equipable::load(data, position);
 
     int size = Utility::loadInt(data, position);
@@ -55,7 +55,7 @@ void Armor::load(unsigned char* data, int* position) {
     }
 }
 
-Armor* Armor::cloneUnsafe(Armor* oldE, Armor* newE) {
+ItemArmor* ItemArmor::cloneUnsafe(ItemArmor* oldE, ItemArmor* newE) {
 
     Equipable::cloneUnsafe(oldE, newE);
 

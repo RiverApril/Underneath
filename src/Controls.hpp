@@ -11,7 +11,7 @@
 
 #include "Global.hpp"
 
-#define keyCatPlayer 1
+#define keyCatEntityPlayer 1
 #define keyCatUi 2
 
 struct KeyBind{

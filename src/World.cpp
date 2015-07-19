@@ -24,7 +24,7 @@ World::~World() {
     }
 
     currentLevel = nullptr;
-    currentPlayer = nullptr;
+    currentEntity = nullptr;
 }
 
 namespace WorldLoader {
@@ -141,7 +141,7 @@ namespace WorldLoader {
                 if (world->currentLevel != nullptr) {
                     for (size_t i = 0; i < world->currentLevel->entityCount(); i++) {
                         if (world->currentLevel->entityList[i]->uniqueId == playerUniqueId) {
-                            world->currentPlayer = dynamic_cast<Player*> (world->currentLevel->entityList[i]);
+                            world->currentEntity = dynamic_cast<EntityPlayer*> (world->currentLevel->entityList[i]);
                         }
                     }
                 }
@@ -190,7 +190,7 @@ namespace WorldLoader {
             Utility::saveInt8Bit(data, (int8_t) loadedWorld->levels.size());
 
             Utility::saveString(data, loadedWorld->currentLevel->getName());
-            Utility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
+            Utility::saveInt(data, loadedWorld->currentEntity->uniqueId);
 
             for (size_t j = 0; j < loadedWorld->levels.size(); j++) {
                 Utility::saveString(data, loadedWorld->levels.at(j));
@@ -337,18 +337,18 @@ namespace WorldLoader {
         world->levels.push_back(world->currentLevel->getName());
 
 
-        world->currentPlayer = new Player(name, '@', p, Ui::C_WHITE, playerAbilities);
-        world->currentPlayer->setActiveWeapon(ItemGenerator::applyRandConditionToWeapon(ItemGenerator::createWeaponFromType(wepMelee, 0), 0));
-        world->currentPlayer->addItem(new ItemSpecial(specialtyCompass));
-        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedBomb, 15, 1000, 5, 1), 10);
-        //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
+        world->currentEntity = new EntityPlayer(name, '@', p, Ui::C_WHITE, playerAbilities);
+        world->currentEntity->setActiveItemWeapon(ItemGenerator::applyRandConditionToItemWeapon(ItemGenerator::createItemWeaponFromType(wepMelee, 0), 0));
+        world->currentEntity->addItem(new ItemSpecial(specialtyCompass));
+        world->currentEntity->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentEntity->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentEntity->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentEntity->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        //world->currentEntity->addItem(new ItemTimeActivated(timeActivatedBomb, 15, 1000, 5, 1), 10);
+        //world->currentEntity->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
 
 
-        world->currentLevel->newEntity(world->currentPlayer);
+        world->currentLevel->newEntity(world->currentEntity);
 
         //save(world);
 
@@ -365,7 +365,7 @@ namespace WorldLoader {
             if (level == newName) {
                 debug("Level found, loading...");
                 load(world->name, newName);
-                world->currentPlayer->pos = entrance;
+                world->currentEntity->pos = entrance;
                 return true;
             }
         }
@@ -373,9 +373,9 @@ namespace WorldLoader {
 
         int newDifficulty = world->currentLevel->getDifficulty() + 1;
         Point2 newSize = world->currentLevel->getSize();
-        Player* newPlayer = dynamic_cast<Player*> (Player::clone(world->currentPlayer));
+        EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentEntity));
 
-        world->currentLevel->actuallyRemoveEntityUnsafe(world->currentPlayer, true);
+        world->currentLevel->actuallyRemoveEntityUnsafe(world->currentEntity, true);
         string oldName = world->currentLevel->getName();
         delete world->currentLevel;
         world->currentLevel = nullptr;
@@ -384,9 +384,9 @@ namespace WorldLoader {
 
         newLevel->generate((unsigned int) rand(), entrance, oldName);
 
-        world->currentPlayer = newPlayer;
-        world->currentPlayer->pos = entrance;
-        newLevel->newEntity(newPlayer);
+        world->currentEntity = newEntityPlayer;
+        world->currentEntity->pos = entrance;
+        newLevel->newEntity(newEntityPlayer);
 
         world->levels.push_back(newLevel->getName());
         world->currentLevel = newLevel;

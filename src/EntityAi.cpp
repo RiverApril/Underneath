@@ -1,36 +1,36 @@
 //
-//  AiEntity.cpp
+//  EntityAi.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/18/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "AiEntity.hpp"
+#include "EntityAi.hpp"
 #include "Math.hpp"
 #include "Utility.hpp"
 #include "Level.hpp"
 #include "Verbalizer.hpp"
 #include "ItemGenerator.hpp"
-#include "ItemEntity.hpp"
+#include "EntityItem.hpp"
 
-AiEntity::AiEntity() : AiEntity("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1) {
+EntityAi::EntityAi() : EntityAi("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1) {
 
 }
 
-AiEntity::AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : Alive(name, icon, startPos, colorCode, maxHp) {
+EntityAi::EntityAi(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : EntityAlive(name, icon, startPos, colorCode, maxHp) {
     this->ai = aiFlags;
 }
 
-AiEntity::~AiEntity() {
+EntityAi::~EntityAi() {
 
 }
 
-void AiEntity::runAi(double time, Level* level) {
+void EntityAi::runAi(double time, Level* level) {
 
 
     if (target == nullptr) {
-        target = level->currentWorld->currentPlayer;
+        target = level->currentWorld->currentEntity;
     }
 
     Point2 speed;
@@ -49,7 +49,7 @@ void AiEntity::runAi(double time, Level* level) {
         agro = false;
     }
 
-    if (ai & aiFleeFromPlayer) {
+    if (ai & aiFleeFromEntityPlayer) {
         if (canSeeTarget) {
 
             Point2 playerPos = target->pos;
@@ -66,13 +66,13 @@ void AiEntity::runAi(double time, Level* level) {
             speed = speed*-1;
         }
     }
-    if (ai & aiAttackPlayer) {
+    if (ai & aiAttackEntityPlayer) {
         if (canSeeTarget) {
             lastKnownTargetPos = target->pos;
         }
         if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
             //debug("LKTP: "+lastKnownTargetPos.toString()+"  TP: "+target->pos.toString()+"  P: "+pos.toString());
-            Ranged* r = dynamic_cast<Ranged*> (activeWeapon);
+            Ranged* r = dynamic_cast<Ranged*> (activeItemWeapon);
             if (r && canSeeTarget && (distanceSquared(target->pos, pos) < (r->range * r->range))) {
                 speed.x = 0;
                 speed.y = 0;
@@ -82,8 +82,7 @@ void AiEntity::runAi(double time, Level* level) {
                 vector<Point2> path = level->getPathTo(pos, lastKnownTargetPos, tileFlagAll, tileFlagSolid);
                 if(!path.empty()){
                     debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
-                    speed.x = pos.x > path[0].x ? -1 : (pos.x < path[0].x ? 1 : 0);
-                    speed.y = pos.y > path[0].y ? -1 : (pos.y < path[0].y ? 1 : 0);
+                    speed = path[0]-pos;
                 }
                 
             }
@@ -97,7 +96,7 @@ void AiEntity::runAi(double time, Level* level) {
         moved = tryToMoveRelative(speed.xOnly(), level) || tryToMoveRelative(speed.yOnly(), level);
     }
     
-    if (ai & aiAttackPlayer) {
+    if (ai & aiAttackEntityPlayer) {
         if(!moved && speed != Point2Zero){
             if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
                 debug("Failed to move");
@@ -110,12 +109,12 @@ void AiEntity::runAi(double time, Level* level) {
     }
 
     bool attack = false;
-    if (ai & aiAttackPlayer) {
-        if (activeWeapon != nullptr) {
+    if (ai & aiAttackEntityPlayer) {
+        if (activeItemWeapon != nullptr) {
             if (distanceSquared(pos, target->pos) <= 1) {
                 attack = true;
             } else {
-                Ranged* r = dynamic_cast<Ranged*> (activeWeapon);
+                Ranged* r = dynamic_cast<Ranged*> (activeItemWeapon);
                 if (r) {
                     if (level->canSee(pos, target->pos, Math::min(r->range, (double) viewDistance), false)) {
                         attack = true;
@@ -127,16 +126,16 @@ void AiEntity::runAi(double time, Level* level) {
         }
     }
     if (attack) {
-        while (lastAttackTime + activeWeapon->useDelay <= time) {
-            double d = target->hurt(activeWeapon, getAttackMultiplierFromEffects(activeWeapon->damageType));
-            Verbalizer::attack(this, target, activeWeapon, d);
-            lastAttackTime += activeWeapon->useDelay;
+        while (lastAttackTime + activeItemWeapon->useDelay <= time) {
+            double d = target->hurt(activeItemWeapon, getAttackMultiplierFromEffects(activeItemWeapon->damageType));
+            Verbalizer::attack(this, target, activeItemWeapon, d);
+            lastAttackTime += activeItemWeapon->useDelay;
         }
     }
 
-    if (activeWeapon != nullptr) {
-        while (lastAttackTime + activeWeapon->useDelay <= time) {
-            lastAttackTime += activeWeapon->useDelay;
+    if (activeItemWeapon != nullptr) {
+        while (lastAttackTime + activeItemWeapon->useDelay <= time) {
+            lastAttackTime += activeItemWeapon->useDelay;
         }
     } else {
         lastAttackTime = time;
@@ -145,22 +144,22 @@ void AiEntity::runAi(double time, Level* level) {
 
 }
 
-double AiEntity::hurt(DamageType damageType, double amount, double damageMultiplier) {
+double EntityAi::hurt(DamageType damageType, double amount, double damageMultiplier) {
     agro = true;
-    return Alive::hurt(damageType, amount, damageMultiplier);
+    return EntityAlive::hurt(damageType, amount, damageMultiplier);
 }
 
-double AiEntity::hurt(Weapon* w, double damageMultiplier) {
+double EntityAi::hurt(ItemWeapon* w, double damageMultiplier) {
     agro = true;
-    return Alive::hurt(w, damageMultiplier);
+    return EntityAlive::hurt(w, damageMultiplier);
 }
 
-bool AiEntity::update(double deltaTime, double time, Level* level) {
+bool EntityAi::update(double deltaTime, double time, Level* level) {
 
     while (lastMoveTime + moveDelay <= time) {
         runAi(time, level);
         lastMoveTime += moveDelay;
-        if (level->canSee(target->pos, pos, level->currentWorld->currentPlayer->viewDistance, true)) {
+        if (level->canSee(target->pos, pos, level->currentWorld->currentEntity->viewDistance, true)) {
 
             level->renderMenuGame(lastMoveTime);
             //usleep(10 * 1000);
@@ -171,23 +170,23 @@ bool AiEntity::update(double deltaTime, double time, Level* level) {
         int xp = rand() % (int) maxHp;
         Verbalizer::defeatedEnemy(this, xp);
 
-        level->currentWorld->currentPlayer->gainXp(xp);
+        level->currentWorld->currentEntity->gainXp(xp);
 
         vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand() % 10) == 0 ? 1 : 0, (rand() % 10) == 0 ? 1 : 0, (rand() % 5) == 0 ? 2 : 0);
         //if(rand()%5==0){
-        //drops.push_back(Item::clone(activeWeapon));
+        //drops.push_back(Item::clone(activeItemWeapon));
         //}
         for (Item* i : drops) {
-            level->newEntity(new ItemEntity(i, pos));
+            level->newEntity(new EntityItem(i, pos));
         }
     }
 
-    return Alive::update(deltaTime, time, level);
+    return EntityAlive::update(deltaTime, time, level);
 }
 
-AiEntity* AiEntity::cloneUnsafe(AiEntity* oldE, AiEntity* newE) {
+EntityAi* EntityAi::cloneUnsafe(EntityAi* oldE, EntityAi* newE) {
 
-    Alive::cloneUnsafe(oldE, newE);
+    EntityAlive::cloneUnsafe(oldE, newE);
 
     newE->ai = oldE->ai;
     newE->agro = oldE->agro;
@@ -195,8 +194,8 @@ AiEntity* AiEntity::cloneUnsafe(AiEntity* oldE, AiEntity* newE) {
     newE->lastAttackTime = oldE->lastAttackTime;
 
     forVector(oldE->inventory, i) {
-        if (oldE->inventory[i] == oldE->activeWeapon) {
-            newE->activeWeapon = dynamic_cast<Weapon*> (newE->inventory[i]);
+        if (oldE->inventory[i] == oldE->activeItemWeapon) {
+            newE->activeItemWeapon = dynamic_cast<ItemWeapon*> (newE->inventory[i]);
             break;
         }
     }
@@ -204,31 +203,31 @@ AiEntity* AiEntity::cloneUnsafe(AiEntity* oldE, AiEntity* newE) {
     return newE;
 }
 
-int AiEntity::getEntityTypeId() {
+int EntityAi::getEntityTypeId() {
     return ENTITY_TYPE_AIENTITY;
 }
 
-void AiEntity::save(std::vector<unsigned char>* data) {
-    Alive::save(data);
+void EntityAi::save(std::vector<unsigned char>* data) {
+    EntityAlive::save(data);
     Utility::saveInt(data, ai);
     Utility::saveBool(data, agro);
     Utility::saveDouble(data, lastMoveTime);
     Utility::saveDouble(data, lastAttackTime);
     Point2::save(lastKnownTargetPos, data);
 
-    int activeWeaponIndex = -1;
+    int activeItemWeaponIndex = -1;
 
     forVector(inventory, i) {
         Item* ie = inventory[i];
-        if (ie == activeWeapon) {
-            activeWeaponIndex = i;
+        if (ie == activeItemWeapon) {
+            activeItemWeaponIndex = i;
         }
     }
-    Utility::saveInt(data, activeWeaponIndex);
+    Utility::saveInt(data, activeItemWeaponIndex);
 }
 
-void AiEntity::load(unsigned char* data, int* position) {
-    Alive::load(data, position);
+void EntityAi::load(unsigned char* data, int* position) {
+    EntityAlive::load(data, position);
     ai = Utility::loadInt(data, position);
     agro = Utility::loadBool(data, position);
     lastMoveTime = Utility::loadDouble(data, position);
@@ -236,37 +235,37 @@ void AiEntity::load(unsigned char* data, int* position) {
     lastKnownTargetPos = Point2::load(data, position);
 
 
-    int activeWeaponIndex = Utility::loadInt(data, position);
-    if (activeWeaponIndex != -1) {
-        activeWeapon = dynamic_cast<Weapon*> (inventory[activeWeaponIndex]);
+    int activeItemWeaponIndex = Utility::loadInt(data, position);
+    if (activeItemWeaponIndex != -1) {
+        activeItemWeapon = dynamic_cast<ItemWeapon*> (inventory[activeItemWeaponIndex]);
     } else {
-        activeWeapon = nullptr;
+        activeItemWeapon = nullptr;
     }
 
 }
 
-bool AiEntity::removeItem(Item* item, bool deleteItem) {
+bool EntityAi::removeItem(Item* item, bool deleteItem) {
     if (item) {
-        if (item == activeWeapon) {
-            setActiveWeapon(nullptr);
+        if (item == activeItemWeapon) {
+            setActiveItemWeapon(nullptr);
         }
     }
     return Inventory::removeItem(item, deleteItem);
 }
 
-void AiEntity::setActiveWeapon(Weapon* newWeapon) {
+void EntityAi::setActiveItemWeapon(ItemWeapon* newItemWeapon) {
 
-    if (newWeapon == nullptr) {
-        activeWeapon = nullptr;
+    if (newItemWeapon == nullptr) {
+        activeItemWeapon = nullptr;
         return;
     }
 
     for (Item* ie : inventory) {
-        if (ie == newWeapon) {
-            activeWeapon = dynamic_cast<Weapon*> (ie);
+        if (ie == newItemWeapon) {
+            activeItemWeapon = dynamic_cast<ItemWeapon*> (ie);
             return;
         }
     }
-    inventory.push_back(newWeapon);
-    activeWeapon = newWeapon;
+    inventory.push_back(newItemWeapon);
+    activeItemWeapon = newItemWeapon;
 }

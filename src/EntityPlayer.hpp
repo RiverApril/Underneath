@@ -1,30 +1,30 @@
 //
-//  Player.h
+//  EntityPlayer.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/18/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__Player__
-#define __Underneath__Player__
+#ifndef __Underneath__EntityPlayer__
+#define __Underneath__EntityPlayer__
 
-#include "Alive.hpp"
-#include "Weapon.hpp"
-#include "CombatSpell.hpp"
+#include "EntityAlive.hpp"
+#include "ItemWeapon.hpp"
+#include "ItemCombatSpell.hpp"
 #include "Abilities.hpp"
-#include "Armor.hpp"
+#include "ItemArmor.hpp"
 
-class Player : public Alive {
+class EntityPlayer : public EntityAlive {
 public:
 
-    static Player* cloneUnsafe(Player* oldE, Player* newE);
+    static EntityPlayer* cloneUnsafe(EntityPlayer* oldE, EntityPlayer* newE);
 
-    Player();
+    EntityPlayer();
 
-    Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities);
+    EntityPlayer(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities);
 
-    ~Player();
+    ~EntityPlayer();
 
     bool update(double deltaTime, double time, Level* world);
 
@@ -38,7 +38,7 @@ public:
 
     double interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item);
 
-    double calcDamageMultiplier(Weapon* weapon);
+    double calcDamageMultiplier(ItemWeapon* weapon);
 
     virtual int getEntityTypeId();
 
@@ -56,12 +56,12 @@ public:
             return 0;
         }
 
-        damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(damageType);
+        damageMultiplier *= 1.0 - getDefenseMultiplierFromItemArmor(damageType);
 
-        return Alive::hurt(damageType, amount, damageMultiplier);
+        return EntityAlive::hurt(damageType, amount, damageMultiplier);
     }
 
-    virtual double hurt(Weapon* w, double damageMultiplier = 1) {
+    virtual double hurt(ItemWeapon* w, double damageMultiplier = 1) {
         timeSinceCombat = 0;
         if(godMode){
             return 0;
@@ -71,29 +71,29 @@ public:
             return 0;
         }
 
-        damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType);
+        damageMultiplier *= 1.0 - getDefenseMultiplierFromItemArmor(w->damageType);
 
-        return Alive::hurt(w, damageMultiplier);
+        return EntityAlive::hurt(w, damageMultiplier);
     }
 
     virtual double heal(double amount) {
-        double a = Alive::heal(amount);
+        double a = EntityAlive::heal(amount);
         return a;
     }
 
     virtual double healMana(double amount) {
-        double a = Alive::healMana(amount);
+        double a = EntityAlive::healMana(amount);
         return a;
     }
 
-    virtual void setActiveWeapon(Weapon* newWeapon);
+    virtual void setActiveItemWeapon(ItemWeapon* newItemWeapon);
 
-    virtual Weapon* getActiveWeapon() {
-        return dynamic_cast<Weapon*>(equipedItems[slotWep1]);
+    virtual ItemWeapon* getActiveItemWeapon() {
+        return dynamic_cast<ItemWeapon*>(equipedItems[slotWep1]);
     }
 
-    virtual Weapon* getSecondaryWeapon() {
-        return dynamic_cast<Weapon*>(equipedItems[slotWep2]);
+    virtual ItemWeapon* getSecondaryItemWeapon() {
+        return dynamic_cast<ItemWeapon*>(equipedItems[slotWep2]);
     }
 
     EquipSlot getSlot(Equipable* e){
@@ -174,14 +174,14 @@ public:
 
     void recalculateDefenses();
 
-    double getDefenseMultiplierFromArmor(DamageType damType){
+    double getDefenseMultiplierFromItemArmor(DamageType damType){
         if(calculatedDefenses.count(damType)){
             return calculatedDefenses[damType];
         }
         return 0;
     }
     
-    double getAttackMultiplierFromEffectsAndArmor(DamageType damType){
+    double getAttackMultiplierFromEffectsAndItemArmor(DamageType damType){
         double d = 1;
         for(Effect eff : effects){
             if(eff.eId == effBuffAttack){
@@ -191,7 +191,7 @@ public:
             }
         }
         for(pair<EquipSlot, Equipable*> p : equipedItems){
-            Armor* a = dynamic_cast<Armor*>(p.second);
+            ItemArmor* a = dynamic_cast<ItemArmor*>(p.second);
             if(a){
                 for(Enchantment e : a->enchantments){
                     if(e.effectId == effBuffAttack){
@@ -230,4 +230,4 @@ protected:
 
 };
 
-#endif /* defined(__Underneath__Player__) */
+#endif /* defined(__Underneath__EntityPlayer__) */

@@ -8,14 +8,14 @@
 
 #include "MenuInv.hpp"
 #include "Math.hpp"
-#include "ItemEntity.hpp"
+#include "EntityItem.hpp"
 #include "Controls.hpp"
 #include "Utility.hpp"
 #include "Art.hpp"
 
 namespace Ui {
 
-    MenuInv::MenuInv(Player* player, World* w, int* useItem) : Menu() {
+    MenuInv::MenuInv(EntityPlayer* player, World* w, int* useItem) : Menu() {
         this->player = player;
         this->currentWorld = w;
         this->useItem = useItem;
@@ -38,14 +38,14 @@ namespace Ui {
                     drop = Item::clone(player->inventory[selected]);
                     drop->qty = 1;
                 }
-                currentWorld->currentLevel->newEntity(new ItemEntity(drop, player->pos));
+                currentWorld->currentLevel->newEntity(new EntityItem(drop, player->pos));
             }
         } else if (in == Key::dropAll) {
             if (player->inventory.size() > 0 && selected < player->inventory.size()) {
                 Item* drop;
                 drop = player->inventory[selected];
                 player->removeItem(player->inventory[selected], false);
-                currentWorld->currentLevel->newEntity(new ItemEntity(drop, player->pos));
+                currentWorld->currentLevel->newEntity(new EntityItem(drop, player->pos));
             }
         } else if (in == Key::equip) {
             Equipable* equipable = dynamic_cast<Equipable*> (player->inventory[selected]);
@@ -105,19 +105,19 @@ namespace Ui {
 
         mvhline(2, 0, '-', terminalSize.x);
         Item* item;
-        Weapon* weapon;
+        ItemWeapon* weapon;
         Ranged* ranged;
-        CombatSpell* spell;
+        ItemCombatSpell* spell;
         int y = 3;
         for(int i=minI;i<maxI;i++){
             item = player->inventory[i];
-            weapon = dynamic_cast<Weapon*>(item);
+            weapon = dynamic_cast<ItemWeapon*>(item);
             ranged = dynamic_cast<Ranged*>(item);
-            spell = dynamic_cast<CombatSpell*>(item);
+            spell = dynamic_cast<ItemCombatSpell*>(item);
             if(i == selected){
                 setColor(C_BLACK, C_WHITE);
             }
-            mvprintw(y, columnPrefixChar, "%c", item == player->getActiveWeapon()?'E':' ');
+            mvprintw(y, columnPrefixChar, "%c", item == player->getActiveItemWeapon()?'E':' ');
             mvprintw(y, columnName, item->getExtendedName().c_str());
             mvprintw(y, columnQty-4, "%4s", (to_string(item->qty)).c_str());
             //mvprintw(y, columnWeight+1, "%2.1f", item->weight);
@@ -137,9 +137,9 @@ namespace Ui {
         item = player->inventory[selected];
 
         if(item){
-            weapon = dynamic_cast<Weapon*>(item);
+            weapon = dynamic_cast<ItemWeapon*>(item);
             ranged = dynamic_cast<Ranged*>(item);
-            spell = dynamic_cast<CombatSpell*>(item);
+            spell = dynamic_cast<ItemCombatSpell*>(item);
 
             int a = 3;
 
@@ -155,7 +155,7 @@ namespace Ui {
             setColor(C_WHITE, C_BLACK);
 
             mvprintw(a++, columnInfo, "Name: %s", item->getExtendedName().c_str());
-            if(item == player->getActiveWeapon()){
+            if(item == player->getActiveItemWeapon()){
                 mvprintw(terminalSize.y-1, columnInfo, "-Equipped");
             }else{
                 mvprintw(terminalSize.y-1, columnInfo, "");
@@ -167,7 +167,7 @@ namespace Ui {
             mvprintw(a++, columnInfo, "Weight: %.2f", item->weight);
             if(weapon){
                 mvprintw(a++, columnInfo, "Damage: %.2f", weapon->baseDamage);
-                mvprintw(a++, columnInfo, "Type: %s", Weapon::damageTypeToString(weapon->damageType).c_str());
+                mvprintw(a++, columnInfo, "Type: %s", ItemWeapon::damageTypeToString(weapon->damageType).c_str());
                 mvprintw(a++, columnInfo, "Use Delay: %.2f (d/t: %.2f)", weapon->useDelay, (weapon->baseDamage/weapon->useDelay));
                 if(ranged){
                     mvprintw(a++, columnInfo, "Range: %.2f", ranged->range);
@@ -179,7 +179,7 @@ namespace Ui {
                     a++;
                         mvprintw(a++, columnInfo, "Enchantments: ");
                     for(Enchantment e : weapon->enchantments){
-                        mvprintw(a++, columnInfo, "   %s x%d (%d)", Weapon::enchantmentIdToString(e.eId).c_str(), e.power, e.chance);
+                        mvprintw(a++, columnInfo, "   %s x%d (%d)", ItemWeapon::enchantmentIdToString(e.eId).c_str(), e.power, e.chance);
                     }
                     a++;
                 }

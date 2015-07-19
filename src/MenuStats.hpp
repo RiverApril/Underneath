@@ -10,7 +10,7 @@
 #define __Underneath__MenuStats__
 
 #include "Menu.hpp"
-#include "Alive.hpp"
+#include "EntityAlive.hpp"
 #include "World.hpp"
 
 namespace Ui {
@@ -18,7 +18,7 @@ namespace Ui {
     class MenuStats : public Menu {
     public:
 
-        MenuStats(Player* player, World* w);
+        MenuStats(EntityPlayer* player, World* w);
 
         ~MenuStats() {
             delete shouldSpendPoint;
@@ -28,7 +28,7 @@ namespace Ui {
         void handleInput(int in);
         void update();
 
-        Player* player;
+        EntityPlayer* player;
         World* currentWorld;
         int selected = 0;
         yesNo* shouldSpendPoint = new yesNo(aUndefined);

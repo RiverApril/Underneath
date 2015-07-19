@@ -13,10 +13,10 @@ namespace Verbalizer {
 
     using namespace Ui;
 
-    void attack(Alive* attacker, Alive* underAttack, Weapon* weapon, double damage) {
+    void attack(EntityAlive* attacker, EntityAlive* underAttack, ItemWeapon* weapon, double damage) {
 
-        Player* playerAttacker = dynamic_cast<Player*> (attacker);
-        Player* playerUnderAttack = dynamic_cast<Player*> (underAttack);
+        EntityPlayer* playerAttacker = dynamic_cast<EntityPlayer*> (attacker);
+        EntityPlayer* playerUnderAttack = dynamic_cast<EntityPlayer*> (underAttack);
 
         string attackerString = Ui::colorCode(C_LIGHT_BLUE) + attacker->getName();
         string underAttackString = Ui::colorCode(C_LIGHT_BLUE) + underAttack->getName();
@@ -46,7 +46,7 @@ namespace Verbalizer {
 
     }
 
-    void defeatedEnemy(Alive* dead, int xpGained) {
+    void defeatedEnemy(EntityAlive* dead, int xpGained) {
         consolef("You have deafeated the %s%s%s and gained %s%d xp%s.",
                 Ui::colorCode(C_LIGHT_BLUE).c_str(),
                 dead->getName().c_str(),
@@ -56,7 +56,7 @@ namespace Verbalizer {
                 Ui::colorCode(C_WHITE).c_str());
     }
 
-    void leveledUp(Player* player) {
+    void leveledUp(EntityPlayer* player) {
         consolef("%sLevel Up!%s You are now level %s%d%s.",
                 Ui::colorCode(C_LIGHT_GREEN).c_str(),
                 Ui::colorCode(C_WHITE).c_str(),

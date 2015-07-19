@@ -9,14 +9,14 @@
 #include "Ui.hpp"
 #include "MenuGame.hpp"
 #include "Entity.hpp"
-#include "AiEntity.hpp"
-#include "Player.hpp"
+#include "EntityAi.hpp"
+#include "EntityPlayer.hpp"
 #include "Math.hpp"
 #include "Potion.hpp"
-#include "UtilitySpell.hpp"
+#include "ItemUtilitySpell.hpp"
 #include "ItemSpecial.hpp"
 #include "ItemTimeActivated.hpp"
-#include "Armor.hpp"
+#include "ItemArmor.hpp"
 
 vector<string> consoleBuffer;
 
@@ -332,12 +332,12 @@ namespace Ui {
         return a;
     }
 
-    void drawInventory(World* currentWorld, Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft) {
+    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft) {
 
         int columnX = 0;
         int columnWidth = (terminalSize.x) / (secondaryInv == nullptr ? 2 : 3);
 
-        //Weapon* activeWeapon = player->getActiveWeapon();
+        //ItemWeapon* activeItemWeapon = player->getActiveItemWeapon();
 
 
         move(0, 0);
@@ -376,7 +376,7 @@ namespace Ui {
             if (((ii == 0) != selectedLeft)) {
                 setColor(C_LIGHT_GRAY);
             }
-            mvprintw(0, columnX, (ii == 1 ? invDisplayName.c_str() : "Player"));
+            mvprintw(0, columnX, (ii == 1 ? invDisplayName.c_str() : "EntityPlayer"));
 
             int y = 2;
 
@@ -417,12 +417,12 @@ namespace Ui {
 
             if(item) {
                 Equipable* equipable = dynamic_cast<Equipable*>(item);
-                Armor* armor = dynamic_cast<Armor*>(item);
-                Weapon* weapon = dynamic_cast<Weapon*>(item);
+                ItemArmor* armor = dynamic_cast<ItemArmor*>(item);
+                ItemWeapon* weapon = dynamic_cast<ItemWeapon*>(item);
                 Ranged* ranged = dynamic_cast<Ranged*>(item);
-                CombatSpell* spell = dynamic_cast<CombatSpell*>(item);
+                ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(item);
                 Potion* potion = dynamic_cast<Potion*>(item);
-                UtilitySpell* utilitySpell = dynamic_cast<UtilitySpell*>(item);
+                ItemUtilitySpell* utilitySpell = dynamic_cast<ItemUtilitySpell*>(item);
                 ItemSpecial* itemSpecial = dynamic_cast<ItemSpecial*>(item);
                 ItemTimeActivated* itemTimeActivated = dynamic_cast<ItemTimeActivated*>(item);
 
@@ -674,19 +674,19 @@ namespace Ui {
 
          mvhline(2, 0, '-', terminalSize.x);
          Item* item;
-         Weapon* weapon;
+         ItemWeapon* weapon;
          Ranged* ranged;
-         CombatSpell* spell;
+         ItemCombatSpell* spell;
          int y = 3;
          for(int i=minI;i<maxI;i++){
          item = inv->inventory[i];
-         weapon = dynamic_cast<Weapon*>(item);
+         weapon = dynamic_cast<ItemWeapon*>(item);
          ranged = dynamic_cast<Ranged*>(item);
-         spell = dynamic_cast<CombatSpell*>(item);
+         spell = dynamic_cast<ItemCombatSpell*>(item);
          if(i == selected){
          setColor(C_BLACK, C_WHITE);
          }
-         char pre = activeWeapon!=nullptr?(item == activeWeapon?'E':' '):' ';
+         char pre = activeItemWeapon!=nullptr?(item == activeItemWeapon?'E':' '):' ';
          string displayName;
          if(item->qty > 1){
          displayName = formatString("%c  %d x %s", pre, item->qty, item->name.c_str());
@@ -713,9 +713,9 @@ namespace Ui {
          item = inv->inventory[selected];
 
          if(item){
-         weapon = dynamic_cast<Weapon*>(item);
+         weapon = dynamic_cast<ItemWeapon*>(item);
          ranged = dynamic_cast<Ranged*>(item);
-         spell = dynamic_cast<CombatSpell*>(item);
+         spell = dynamic_cast<ItemCombatSpell*>(item);
 
          int a = 3;
 
@@ -731,7 +731,7 @@ namespace Ui {
          setColor(C_WHITE, C_BLACK);
 
          mvprintw(a++, columnInfo, "Name: %s", item->name.c_str());
-         if(item == activeWeapon){
+         if(item == activeItemWeapon){
          mvprintw(terminalSize.y-1, columnInfo, "-Equipped");
          }else{
          mvprintw(terminalSize.y-1, columnInfo, "");
@@ -743,7 +743,7 @@ namespace Ui {
          mvprintw(a++, columnInfo, "Weight: %.2f", item->weight);
          if(weapon){
          mvprintw(a++, columnInfo, "Damage: %.2f", weapon->baseDamage);
-         mvprintw(a++, columnInfo, "Damage Type: %s", Weapon::damageTypeName(weapon->damageType).c_str());
+         mvprintw(a++, columnInfo, "Damage Type: %s", ItemWeapon::damageTypeName(weapon->damageType).c_str());
          mvprintw(a++, columnInfo, "Use Delay: %.2f (d/t: %.2f)", weapon->useDelay, (weapon->baseDamage/weapon->useDelay));
          if(ranged){
          mvprintw(a++, columnInfo, "Range: %.2f", ranged->range);
@@ -755,7 +755,7 @@ namespace Ui {
          a++;
          mvprintw(a++, columnInfo, "Enchantments: ");
          for(Enchantment e : weapon->enchantments){
-         mvprintw(a++, columnInfo, "   %s x%d (1/%d for %.2f)", Weapon::enchantmentName(e).c_str(), e.power, e.chance, e.time);
+         mvprintw(a++, columnInfo, "   %s x%d (1/%d for %.2f)", ItemWeapon::enchantmentName(e).c_str(), e.power, e.chance, e.time);
          }
          a++;
          }

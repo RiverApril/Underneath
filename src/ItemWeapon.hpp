@@ -1,13 +1,13 @@
 //
-//  Weapon.h
+//  ItemWeapon.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/11/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__Weapon__
-#define __Underneath__Weapon__
+#ifndef __Underneath__ItemWeapon__
+#define __Underneath__ItemWeapon__
 
 #include "Global.hpp"
 #include "Equipable.hpp"
@@ -17,17 +17,17 @@
 
 const vector<EquipSlot> weaponSlots = {slotWep1, slotWep2};
 
-class Weapon : public Equipable {
+class ItemWeapon : public Equipable {
 public:
 
 
-    static Weapon* cloneUnsafe(Weapon* oldE, Weapon* newE = nullptr);
+    static ItemWeapon* cloneUnsafe(ItemWeapon* oldE, ItemWeapon* newE = nullptr);
 
-    Weapon() : Equipable() {
+    ItemWeapon() : Equipable() {
 
     }
 
-    Weapon(double baseDamage, string name, double weight, double useDelay);
+    ItemWeapon(double baseDamage, string name, double weight, double useDelay);
 
     virtual int getItemTypeId() {
         return ITEM_TYPE_WEAPON;
@@ -41,13 +41,13 @@ public:
         return false;
     }
 
-    Weapon* addEnchantment(Enchantment e) {
+    ItemWeapon* addEnchantment(Enchantment e) {
         enchantments.push_back(e);
         return this;
     }
 
     virtual bool equalsExceptQty(Item* other) {
-        Weapon* otherW = dynamic_cast<Weapon*> (other);
+        ItemWeapon* otherW = dynamic_cast<ItemWeapon*> (other);
         return Equipable::equalsExceptQty(other)
                 &&(otherW)
                 &&(baseDamage == otherW->baseDamage)
@@ -62,7 +62,7 @@ public:
 
     double baseDamage = 1;
     DamageType damageType = damSharp;
-    WeaponType weaponType = wepMelee;
+    ItemWeaponType weaponType = wepMelee;
     double useDelay = 1;
 
     vector<Enchantment> enchantments;
@@ -70,4 +70,4 @@ public:
 protected:
 };
 
-#endif /* defined(__Underneath__Weapon__) */
+#endif /* defined(__Underneath__ItemWeapon__) */

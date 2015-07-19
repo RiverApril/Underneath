@@ -1,22 +1,22 @@
 //
-//  Alive.cpp
+//  EntityAlive.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/2/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Alive.hpp"
+#include "EntityAlive.hpp"
 #include "Utility.hpp"
 #include "Level.hpp"
 #include "Random.hpp"
 #include "Verbalizer.hpp"
 
-Alive::Alive() : Alive("", ' ', Point2Zero, Ui::C_WHITE) {
+EntityAlive::EntityAlive() : EntityAlive("", ' ', Point2Zero, Ui::C_WHITE) {
 
 }
 
-Alive::Alive(string name, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : Entity(icon, startPos, colorCode) {
+EntityAlive::EntityAlive(string name, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : Entity(icon, startPos, colorCode) {
 
     this->name = name;
     this->maxHp = maxHp;
@@ -25,13 +25,16 @@ Alive::Alive(string name, char icon, Point2 startPos, Ui::Color colorCode, int m
 
 }
 
-Alive::~Alive() {
+EntityAlive::~EntityAlive() {
     
 }
 
-bool Alive::update(double deltaTime, double time, Level* level) {
+bool EntityAlive::update(double deltaTime, double time, Level* level) {
 
     if (dead) {
+        if(level->tileAt(pos)->hasFlag(tileFlagReplaceable)){
+            level->setTile(pos, Tiles::tileCorpse);
+        }
         level->removeEntity(this, true);
     } else {
         while (lastHealTime + healDelay <= time) {
@@ -53,13 +56,18 @@ bool Alive::update(double deltaTime, double time, Level* level) {
                     hurt((int) e->meta, e->power * m);
                     switch ((DamageType)(int)e->meta) {
                         case damBlood:
-                            if(level->indexAt(pos) == Tiles::tileFloor->getIndex()){
+                            if(level->tileAt(pos)->hasFlag(tileFlagReplaceable)){
                                 level->setTile(pos, Tiles::tileBloodFloor);
                             }
                             break;
                             
                         default:
                             break;
+                    }
+                    if(rand() % 20 == 0){
+                        if(level->tileAt(pos)->hasFlag(tileFlagReplaceable)){
+                            level->setTile(pos, Tiles::tileBloodFloor);
+                        }
                     }
                     break;
                 case effHeal:
@@ -91,7 +99,7 @@ bool Alive::update(double deltaTime, double time, Level* level) {
     return Entity::update(deltaTime, time, level);
 }
 
-double Alive::hurt(DamageType damageType, double amount, double damageMultiplier) {
+double EntityAlive::hurt(DamageType damageType, double amount, double damageMultiplier) {
     
     damageMultiplier *= getDefenseMultiplierFromEffects(damageType);
     
@@ -110,7 +118,7 @@ double Alive::hurt(DamageType damageType, double amount, double damageMultiplier
     return amount;
 }
 
-double Alive::hurt(Weapon* w, double damageMultiplier) {
+double EntityAlive::hurt(ItemWeapon* w, double damageMultiplier) {
     double d = w->baseDamage * Random::randDouble(.5, 1);
     for (Enchantment ench : w->enchantments) {
         if (rand() % ench.chance == 0) {
@@ -121,7 +129,7 @@ double Alive::hurt(Weapon* w, double damageMultiplier) {
     return hurt(w->damageType, d, damageMultiplier);
 }
 
-void Alive::addEffect(Effect e) {
+void EntityAlive::addEffect(Effect e) {
 
     forVector(effects, i) {
         Effect ei = effects[i];
@@ -133,7 +141,7 @@ void Alive::addEffect(Effect e) {
     effects.push_back(e);
 }
 
-bool Alive::hasEffect(EffectId eid){
+bool EntityAlive::hasEffect(EffectId eid){
     for(Effect e : effects) {
         if(e.eId == eid){
             return true;
@@ -142,7 +150,7 @@ bool Alive::hasEffect(EffectId eid){
     return false;
 }
 
-double Alive::heal(double amount) {
+double EntityAlive::heal(double amount) {
     if (dead) {
         return 0;
     }
@@ -155,7 +163,7 @@ double Alive::heal(double amount) {
     return amount;
 }
 
-double Alive::healMana(double amount) {
+double EntityAlive::healMana(double amount) {
     if (dead) {
         return 0;
     }
@@ -168,7 +176,7 @@ double Alive::healMana(double amount) {
     return amount;
 }
 
-Alive* Alive::cloneUnsafe(Alive* oldE, Alive* newE) {
+EntityAlive* EntityAlive::cloneUnsafe(EntityAlive* oldE, EntityAlive* newE) {
 
     Entity::cloneUnsafe(oldE, newE);
 
@@ -189,11 +197,11 @@ Alive* Alive::cloneUnsafe(Alive* oldE, Alive* newE) {
 
 }
 
-int Alive::getEntityTypeId() {
+int EntityAlive::getEntityTypeId() {
     return ENTITY_TYPE_ALIVE;
 }
 
-void Alive::save(vector<unsigned char>* data) {
+void EntityAlive::save(vector<unsigned char>* data) {
     Entity::save(data);
     Utility::saveBool(data, dead);
     Utility::saveDouble(data, maxHp);
@@ -204,17 +212,17 @@ void Alive::save(vector<unsigned char>* data) {
     Utility::saveString(data, name);
 
     //
-    //int activeWeaponIndex = -1;
+    //int activeItemWeaponIndex = -1;
     Utility::saveInt(data, (int) inventory.size());
 
     forVector(inventory, i) {
         Item* ie = inventory[i];
         ie->save(data);
-        //if (ie == activeWeapon) {
-            //activeWeaponIndex = i;
+        //if (ie == activeItemWeapon) {
+            //activeItemWeaponIndex = i;
         //}
     }
-    //Utility::saveInt(data, activeWeaponIndex);
+    //Utility::saveInt(data, activeItemWeaponIndex);
     //
 
     Utility::saveInt(data, (int) effects.size());
@@ -223,7 +231,7 @@ void Alive::save(vector<unsigned char>* data) {
     }
 }
 
-void Alive::load(unsigned char* data, int* position) {
+void EntityAlive::load(unsigned char* data, int* position) {
     Entity::load(data, position);
     dead = Utility::loadBool(data, position);
     maxHp = Utility::loadDouble(data, position);
@@ -242,11 +250,11 @@ void Alive::load(unsigned char* data, int* position) {
         inventory.push_back(item);
     }
 
-    /*int activeWeaponIndex = Utility::loadInt(data, position);
-    if (activeWeaponIndex != -1) {
-        activeWeapon = dynamic_cast<Weapon*> (inventory[activeWeaponIndex]);
+    /*int activeItemWeaponIndex = Utility::loadInt(data, position);
+    if (activeItemWeaponIndex != -1) {
+        activeItemWeapon = dynamic_cast<ItemWeapon*> (inventory[activeItemWeaponIndex]);
     } else {
-        activeWeapon = nullptr;
+        activeItemWeapon = nullptr;
     }*/
     //
 

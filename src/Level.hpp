@@ -13,7 +13,7 @@
 
 #include "Tile.hpp"
 #include "World.hpp"
-#include "AiEntity.hpp"
+#include "EntityAi.hpp"
 #include "Geometry.hpp"
 #include "MenuGame.hpp"
 #include "TEStair.hpp"
@@ -78,7 +78,7 @@ public:
 
     Point2 generate(unsigned int seed, Point2 stairUpPos, string previousLevel);
 
-    void placeNewAiEntity(AiEntity* e, Point2 entrance);
+    void placeNewEntityAi(EntityAi* e, Point2 entrance);
 
     bool update(double deltaTime, double time, Point2 viewPos);
 

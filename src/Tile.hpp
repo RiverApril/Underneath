@@ -21,6 +21,7 @@ const TileFlag tileFlagPathable = 1 << 3;
 const TileFlag tileFlagSecretPathable = 1 << 4;
 const TileFlag tileFlagHasTileEntity = 1 << 5;
 const TileFlag tileFlagIndestructable = 1 << 6;
+const TileFlag tileFlagReplaceable = 1 << 7;
 const TileFlag tileFlagAll = 0xFFFFFFFF;
 
 class Tile {
@@ -91,6 +92,7 @@ namespace Tiles {
     extern Tile* tileCrate;
 
     extern Tile* tileRubble;
+    extern Tile* tileCorpse;
 
     extern Tile* tileEdge;
     extern Tile* tileUnset;

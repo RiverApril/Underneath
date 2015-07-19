@@ -8,7 +8,7 @@
 
 #include "MenuStats.hpp"
 #include "Math.hpp"
-#include "ItemEntity.hpp"
+#include "EntityItem.hpp"
 #include "Controls.hpp"
 #include "Utility.hpp"
 #include "MenuYesNo.hpp"
@@ -28,7 +28,7 @@ namespace Ui {
         return true;
     }
 
-    MenuStats::MenuStats(Player* player, World* w) : Menu() {
+    MenuStats::MenuStats(EntityPlayer* player, World* w) : Menu() {
         this->player = player;
         this->currentWorld = w;
     }

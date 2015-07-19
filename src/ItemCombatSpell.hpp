@@ -1,27 +1,27 @@
 //
-//  CombatSpell.h
+//  ItemCombatSpell.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 12/16/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__CombatSpell__
-#define __Underneath__CombatSpell__
+#ifndef __Underneath__ItemCombatSpell__
+#define __Underneath__ItemCombatSpell__
 
 #include "Global.hpp"
 #include "Ranged.hpp"
 
-class CombatSpell : public Ranged {
+class ItemCombatSpell : public Ranged {
 public:
 
-    static CombatSpell* cloneUnsafe(CombatSpell* oldE, CombatSpell* newE);
+    static ItemCombatSpell* cloneUnsafe(ItemCombatSpell* oldE, ItemCombatSpell* newE);
 
-    CombatSpell() : Ranged() {
+    ItemCombatSpell() : Ranged() {
 
     }
 
-    CombatSpell(int baseDamage, string name, double weight, int manaCost, double useDelay, int range) : Ranged(baseDamage, name, weight, useDelay, range) {
+    ItemCombatSpell(int baseDamage, string name, double weight, int manaCost, double useDelay, int range) : Ranged(baseDamage, name, weight, useDelay, range) {
 
         this->baseDamage = baseDamage;
         this->damageType = damFire;
@@ -37,7 +37,7 @@ public:
     virtual void load(unsigned char* data, int* position);
 
     virtual bool equalsExceptQty(Item* other) {
-        CombatSpell* otherS = dynamic_cast<CombatSpell*> (other);
+        ItemCombatSpell* otherS = dynamic_cast<ItemCombatSpell*> (other);
         return Ranged::equalsExceptQty(other)
                 &&(otherS)
                 &&(manaCost == otherS->manaCost);
@@ -49,4 +49,4 @@ protected:
 
 };
 
-#endif /* defined(__Underneath__CombatSpell__) */
+#endif /* defined(__Underneath__ItemCombatSpell__) */

@@ -20,26 +20,26 @@ namespace ItemGenerator {
     Item* iCoin;
 
 
-    vector<ArmorBase> armorList;
+    vector<ItemArmorBase> armorList;
     vector<Condition> conditionList;
-    vector<WeaponBase> weaponList;
+    vector<ItemWeaponBase> weaponList;
     vector<PotionBase> potionList;
     vector<ScrollBase> scrollList;
 
-    WeaponBase wKnife;
-    WeaponBase wSword;
-    WeaponBase wAxe;
-    WeaponBase wMace;
-    WeaponBase wSpear;
+    ItemWeaponBase wKnife;
+    ItemWeaponBase wSword;
+    ItemWeaponBase wAxe;
+    ItemWeaponBase wMace;
+    ItemWeaponBase wSpear;
 
-    WeaponBase wBow;
-    WeaponBase wCrossbow;
+    ItemWeaponBase wBow;
+    ItemWeaponBase wCrossbow;
 
-    WeaponBase wFireCombatSpell;
-    WeaponBase wFrostCombatSpell;
-    WeaponBase wShockCombatSpell;
+    ItemWeaponBase wFireItemCombatSpell;
+    ItemWeaponBase wFrostItemCombatSpell;
+    ItemWeaponBase wShockItemCombatSpell;
 
-    WeaponBase wNatural;
+    ItemWeaponBase wNatural;
 
     void initItemTemplates() {
 
@@ -76,22 +76,22 @@ namespace ItemGenerator {
 
 
 
-        wKnife = atl(WeaponBase({"Knife", "Dagger", "Cleaver"}, 0.25, 0.5, damSharp, wepMelee).setWeight(1).setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver}));
-        wSword = atl(WeaponBase({"Longsword", "Cutlass", "Katana", "Machete", "Gladius", "Scimitar", "Rapier", "Short Sword", "Broadsword", "Saber", "Claymore"}, 1, 1, damSharp, wepMelee).setWeight(2).setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore}));
-        wAxe = atl(WeaponBase({"Axe", "Hatchet", "Double Axe"}, 1.2, 1.2, damSharp, wepMelee).setWeight(2).setArts({Arts::artAxe, Arts::artAxe, Arts::artDoubleAxe}));
-        wMace = atl(WeaponBase({"Mace", "Club", "Flail", "War Hammer", "Mallet"}, 1.5, 1.5, damBlunt, wepMelee).setArts({Arts::artMace, Arts::artClub, Arts::artFlail, Arts::artWarHammer, Arts::artWarHammer}));
-        wSpear = atl(WeaponBase({"Spear", "Halberd"}, 1.3, 1.3, damPierce, wepMelee).ranged(1.8).setWeight(2.5).setArts({Arts::artSpear, Arts::artHalberd}));
+        wKnife = atl(ItemWeaponBase({"Knife", "Dagger", "Cleaver"}, 0.25, 0.5, damSharp, wepMelee).setWeight(1).setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver}));
+        wSword = atl(ItemWeaponBase({"Longsword", "Cutlass", "Katana", "Machete", "Gladius", "Scimitar", "Rapier", "Short Sword", "Broadsword", "Saber", "Claymore"}, 1, 1, damSharp, wepMelee).setWeight(2).setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore}));
+        wAxe = atl(ItemWeaponBase({"Axe", "Hatchet", "Double Axe"}, 1.2, 1.2, damSharp, wepMelee).setWeight(2).setArts({Arts::artAxe, Arts::artAxe, Arts::artDoubleAxe}));
+        wMace = atl(ItemWeaponBase({"Mace", "Club", "Flail", "War Hammer", "Mallet"}, 1.5, 1.5, damBlunt, wepMelee).setArts({Arts::artMace, Arts::artClub, Arts::artFlail, Arts::artWarHammer, Arts::artWarHammer}));
+        wSpear = atl(ItemWeaponBase({"Spear", "Halberd"}, 1.3, 1.3, damPierce, wepMelee).ranged(1.8).setWeight(2.5).setArts({Arts::artSpear, Arts::artHalberd}));
 
-        wBow = atl(WeaponBase({"Longbow", "Bow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
-        wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
+        wBow = atl(ItemWeaponBase({"Longbow", "Bow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
+        wCrossbow = atl(ItemWeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
 
-        wFireCombatSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
-        wFrostCombatSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
-        wShockCombatSpell = atl(WeaponBase({"Electrocute", "Shock", "Zap"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
+        wFireItemCombatSpell = atl(ItemWeaponBase({"Ignite", "Scorch", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
+        wFrostItemCombatSpell = atl(ItemWeaponBase({"Freeze", "Chill"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
+        wShockItemCombatSpell = atl(ItemWeaponBase({"Electrocute", "Shock", "Zap"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
 
         
 
-        wNatural = WeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee);
+        wNatural = ItemWeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee);
 
 
         Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, 1, 1,
@@ -134,15 +134,15 @@ namespace ItemGenerator {
         }).magical(2.0, 4.0));
 
 
-        ArmorBase aLeatherChest = atl(ArmorBase({"Leather Cuirass"}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}, 3));
+        ItemArmorBase aLeatherChest = atl(ItemArmorBase({"Leather Cuirass"}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}, 3));
 
-        ArmorBase aLeatherHelm = atl(ArmorBase({"Leather Coif"}, {slotHead}, {DefenseRange(damSharp, .01, .06), DefenseRange(damPierce, .01, .03)}, 2));
+        ItemArmorBase aLeatherHelm = atl(ItemArmorBase({"Leather Coif"}, {slotHead}, {DefenseRange(damSharp, .01, .06), DefenseRange(damPierce, .01, .03)}, 2));
 
-        ArmorBase aLeatherBoots = atl(ArmorBase({"Leather Boots"}, {slotFeet}, {DefenseRange(damSharp, .01, .04), DefenseRange(damPierce, .01, .02)}, 1.5));
+        ItemArmorBase aLeatherBoots = atl(ItemArmorBase({"Leather Boots"}, {slotFeet}, {DefenseRange(damSharp, .01, .04), DefenseRange(damPierce, .01, .02)}, 1.5));
 
-        ArmorBase aLeatherGloves = atl(ArmorBase({"Leather Gloves"}, {slotHands}, {DefenseRange(damSharp, .01, .03), DefenseRange(damPierce, .01, .02)}, 1));
+        ItemArmorBase aLeatherGloves = atl(ItemArmorBase({"Leather Gloves"}, {slotHands}, {DefenseRange(damSharp, .01, .03), DefenseRange(damPierce, .01, .02)}, 1));
 
-        ArmorBase aGoldenRing = atl(ArmorBase({"Golden Ring"}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));
+        ItemArmorBase aGoldenRing = atl(ItemArmorBase({"Golden Ring"}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));
 
 
     }
@@ -151,7 +151,7 @@ namespace ItemGenerator {
         delete iCoin;
     }
 
-    ArmorBase atl(ArmorBase a) {
+    ItemArmorBase atl(ItemArmorBase a) {
         armorList.push_back(a);
         return a;
     }
@@ -161,7 +161,7 @@ namespace ItemGenerator {
         return c;
     }
 
-    WeaponBase atl(WeaponBase w) {
+    ItemWeaponBase atl(ItemWeaponBase w) {
         weaponList.push_back(w);
         return w;
     }
@@ -176,7 +176,7 @@ namespace ItemGenerator {
         return s;
     }
 
-    WeaponBase getRandWeaponBase(const WeaponType w) {
+    ItemWeaponBase getRandItemWeaponBase(const ItemWeaponType w) {
         while (true) {
             size_t i = (rand()) % weaponList.size();
             if (weaponList[i].weaponType == w) {
@@ -186,12 +186,12 @@ namespace ItemGenerator {
         return weaponList[0];
     }
 
-    WeaponBase getRandWeaponBase() {
+    ItemWeaponBase getRandItemWeaponBase() {
         size_t i = (rand()) % weaponList.size();
         return weaponList[i];
     }
 
-    ArmorBase getRandArmorBase() {
+    ItemArmorBase getRandItemArmorBase() {
         size_t i = (rand()) % armorList.size();
         return armorList[i];
     }
@@ -218,7 +218,7 @@ namespace ItemGenerator {
                     }
                 }
 
-                Weapon* w = createRandWeapon(itemDifficulty);
+                ItemWeapon* w = createRandItemWeapon(itemDifficulty);
                 if(rand() % 20 == 0 || true){
                     DamageType damType = Random::choose<DamageType>(5, damBlood, damPoison, damFire, damIce, damShock);
                     Enchantment e = Enchantment(effDamage, (rand()%10)+10, Random::randDouble(1, 5), Random::randDouble(2, 30), damType);
@@ -241,7 +241,7 @@ namespace ItemGenerator {
                     }
                 }
 
-                items.push_back(createRandArmor(itemDifficulty));
+                items.push_back(createRandItemArmor(itemDifficulty));
             }
         }
 
@@ -293,8 +293,8 @@ namespace ItemGenerator {
         return potion;
     }
 
-    UtilitySpell* createScrollFromBase(ScrollBase sb) {
-        UtilitySpell* utilitySpell = new UtilitySpell(sb.eff, -1, sb.names[rand() % sb.names.size()], .1);
+    ItemUtilitySpell* createScrollFromBase(ScrollBase sb) {
+        ItemUtilitySpell* utilitySpell = new ItemUtilitySpell(sb.eff, -1, sb.names[rand() % sb.names.size()], .1);
         switch (sb.eff) {
             case spellRelocate:
                 utilitySpell->artIndex = Arts::artScrollPerson;
@@ -323,27 +323,27 @@ namespace ItemGenerator {
         }
     }
 
-    Weapon* createWeaponFromType(WeaponType w, int itemDifficulty) {
-        return createWeaponFromBase(getRandWeaponBase(w), itemDifficulty);
+    ItemWeapon* createItemWeaponFromType(ItemWeaponType w, int itemDifficulty) {
+        return createItemWeaponFromBase(getRandItemWeaponBase(w), itemDifficulty);
     }
 
-    Weapon* createWeaponFromBase(WeaponBase base, int itemDifficulty) {
+    ItemWeapon* createItemWeaponFromBase(ItemWeaponBase base, int itemDifficulty) {
         size_t ni = rand() % base.names.size();
         size_t arti = min(ni, base.arts.size() - 1);
 
-        Weapon* w;
+        ItemWeapon* w;
 
         if (base.range != -1) {
             if (base.manaCost != -1) {
-                w = new CombatSpell();
-                ((CombatSpell*) w)->manaCost = (int) (base.manaCost * Random::randDouble(4.0, 12.0));
+                w = new ItemCombatSpell();
+                ((ItemCombatSpell*) w)->manaCost = (int) (base.manaCost * Random::randDouble(4.0, 12.0));
                 w->addEnchantment(Enchantment(effDamage, 10, 1, 6, base.damageType));
             } else {
                 w = new Ranged();
             }
             ((Ranged*) w)->range = base.range;
         } else {
-            w = new Weapon();
+            w = new ItemWeapon();
         }
         w->baseDamage = base.damage;
         w->useDelay = base.useDelay;
@@ -361,12 +361,12 @@ namespace ItemGenerator {
         return w;
     }
 
-    Armor* createArmorFromBase(ArmorBase base, int itemDifficulty){
+    ItemArmor* createItemArmorFromBase(ItemArmorBase base, int itemDifficulty){
         size_t ni = rand() % base.names.size();
 
-        Armor* a;
+        ItemArmor* a;
 
-        a = new Armor();
+        a = new ItemArmor();
 
         a->name = base.names[ni];
         a->weight = base.weight;
@@ -382,7 +382,7 @@ namespace ItemGenerator {
         return a;
     }
 
-    Weapon* applyConditionToWeapon(Weapon* w, Condition c, int itemDifficulty, bool prependName) {
+    ItemWeapon* applyConditionToItemWeapon(ItemWeapon* w, Condition c, int itemDifficulty, bool prependName) {
 
         if (prependName) {
             w->name = c.names[rand() % c.names.size()] + " " + w->name;
@@ -391,7 +391,7 @@ namespace ItemGenerator {
         w->baseDamage *= Random::randDouble(c.damage.x, c.damage.y);
         w->useDelay *= Random::randDouble(c.useDelay.x, c.useDelay.y);
         w->weight *= Random::randDouble(c.weight.x, c.weight.y);
-        CombatSpell* s = dynamic_cast<CombatSpell*> (w);
+        ItemCombatSpell* s = dynamic_cast<ItemCombatSpell*> (w);
         if (s) {
             s->manaCost *= Random::randDouble(c.manaCost.x, c.manaCost.y);
         }
@@ -399,18 +399,18 @@ namespace ItemGenerator {
         return w;
     }
 
-    Weapon* applyRandConditionToWeapon(Weapon * w, int itemDifficulty, bool prependName) {
+    ItemWeapon* applyRandConditionToItemWeapon(ItemWeapon * w, int itemDifficulty, bool prependName) {
         Condition condition;
         do {
             condition = conditionList[rand() % conditionList.size()];
-        } while (!Utility::vectorContains(condition.applicableWeaponTypes, w->weaponType));
+        } while (!Utility::vectorContains(condition.applicableItemWeaponTypes, w->weaponType));
 
-        applyConditionToWeapon(w, condition, itemDifficulty);
+        applyConditionToItemWeapon(w, condition, itemDifficulty);
         return w;
     }
 
-    Weapon* createRandWeapon(int itemDifficulty) {
-        WeaponType wType;
+    ItemWeapon* createRandItemWeapon(int itemDifficulty) {
+        ItemWeaponType wType;
         if (rand() % 3 == 0) {
             if (rand() % 3 == 0) {
                 wType = wepMagic; // 1/9 chance
@@ -420,8 +420,8 @@ namespace ItemGenerator {
         } else {
             wType = wepMelee; // 2/3 chance
         }
-        WeaponBase base = getRandWeaponBase(wType);
-        Weapon* w = createWeaponFromBase(base, itemDifficulty);
+        ItemWeaponBase base = getRandItemWeaponBase(wType);
+        ItemWeapon* w = createItemWeaponFromBase(base, itemDifficulty);
 
         switch (wType) {
             case wepMelee:
@@ -435,18 +435,18 @@ namespace ItemGenerator {
                 break;
         }
 
-        applyRandConditionToWeapon(w, itemDifficulty);
+        applyRandConditionToItemWeapon(w, itemDifficulty);
 
         return w;
     }
 
-    Armor* createRandArmor(int itemDifficulty) {
-        ArmorBase base = getRandArmorBase();
-        Armor* w = createArmorFromBase(base, itemDifficulty);
+    ItemArmor* createRandItemArmor(int itemDifficulty) {
+        ItemArmorBase base = getRandItemArmorBase();
+        ItemArmor* w = createItemArmorFromBase(base, itemDifficulty);
 
         w->minimumAbilities.list[iAGI] = pow(2, itemDifficulty) - 1;
 
-        //applyRandConditionToArmor(w, itemDifficulty);
+        //applyRandConditionToItemArmor(w, itemDifficulty);
         //todo
 
         return w;

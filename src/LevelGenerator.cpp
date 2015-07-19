@@ -140,14 +140,14 @@ for(Point2 pe : path){
     /*
 
      {
-     AiEntity* e = new AiEntity("Rat", aiMoveRandom | aiFleeFromPlayer, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
+     EntityAi* e = new EntityAi("Rat", aiMoveRandom | aiFleeFromEntityPlayer, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
      e->viewDistance = 6;
      e->setMoveDelay(Math::randomRange(.5, 1.5));
 
      int count = (rand()%20)+10;
      for(int i=0;i<count;i++){
 
-     placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
+     placeNewEntityAi(dynamic_cast<EntityAi*>(Entity::clone(e)), stairUpPos);
 
      }
 
@@ -155,37 +155,37 @@ for(Point2 pe : path){
 
 
      {
-     AiEntity* e = new AiEntity ("Goblin", aiAttackPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
-     e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damMelee));
+     EntityAi* e = new EntityAi ("Goblin", aiAttackEntityPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
+     e->setActiveItemWeapon(ItemGenerator::createItemWeapon(difficulty, damMelee));
      e->setMoveDelay(Math::randomRange(.5, 1.5));
 
      int count = (rand()%80)+20;
      for(int i=0;i<count;i++){
-     placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
+     placeNewEntityAi(dynamic_cast<EntityAi*>(Entity::clone(e)), stairUpPos);
      }
      }
 
      {
-     AiEntity* e = new AiEntity ("Troll", aiAttackPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-     e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damMelee));
+     EntityAi* e = new EntityAi ("Troll", aiAttackEntityPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
+     e->setActiveItemWeapon(ItemGenerator::createItemWeapon(difficulty, damMelee));
      e->setMoveDelay(Math::randomRange(.5, 1.5));
 
      int count = (rand()%20)+20;
      for(int i=0;i<count;i++){
-     placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
+     placeNewEntityAi(dynamic_cast<EntityAi*>(Entity::clone(e)), stairUpPos);
      }
      }
 
      {
 
-     AiEntity* e = new AiEntity ("Goblin Archer", aiAttackPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 8);
-     e->setActiveWeapon(ItemGenerator::createWeapon(difficulty, damRanged));
+     EntityAi* e = new EntityAi ("Goblin Archer", aiAttackEntityPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 8);
+     e->setActiveItemWeapon(ItemGenerator::createItemWeapon(difficulty, damRanged));
      e->setMoveDelay(Math::randomRange(.5, 1.5));
 
      int count = (rand()%40)+20;
      for(int i=0;i<count;i++){
 
-     placeNewAiEntity(dynamic_cast<AiEntity*>(Entity::clone(e)), stairUpPos);
+     placeNewEntityAi(dynamic_cast<EntityAi*>(Entity::clone(e)), stairUpPos);
      }
      }
 
@@ -198,13 +198,13 @@ for(Point2 pe : path){
 
     int count = (rand() % (200)) + 100;
     for (int i = 0; i < count; i++) {
-        AiEntity* e = EnemyGenerator::makeRandomEntity(difficulty);
+        EntityAi* e = EnemyGenerator::makeRandomEntity(difficulty);
         if(entitiesGenerated.count(e->getName())){
             entitiesGenerated[e->getName()]++;
         }else{
             entitiesGenerated[e->getName()] = 1;
         }
-        placeNewAiEntity(e, stairUpPos);
+        placeNewEntityAi(e, stairUpPos);
     }
 
     for(pair<string, int> p : entitiesGenerated){

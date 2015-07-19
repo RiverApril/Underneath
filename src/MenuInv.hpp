@@ -10,7 +10,7 @@
 #define __Underneath__MenuInv__
 
 #include "Menu.hpp"
-#include "Player.hpp"
+#include "EntityPlayer.hpp"
 #include "World.hpp"
 
 namespace Ui {
@@ -18,7 +18,7 @@ namespace Ui {
     class MenuInv : public Menu {
     public:
 
-        MenuInv(Player* player, World* w, int* useItem);
+        MenuInv(EntityPlayer* player, World* w, int* useItem);
 
         ~MenuInv() {
         }
@@ -26,7 +26,7 @@ namespace Ui {
         void handleInput(int in);
         void update();
 
-        Player* player;
+        EntityPlayer* player;
         World* currentWorld;
         //int scrollOffset = 0;
         int selected = 0;

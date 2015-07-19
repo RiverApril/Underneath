@@ -10,18 +10,18 @@
 #define __Underneath__Ranged__
 
 #include "Global.hpp"
-#include "Weapon.hpp"
+#include "ItemWeapon.hpp"
 
-class Ranged : public Weapon {
+class Ranged : public ItemWeapon {
 public:
 
     static Ranged* cloneUnsafe(Ranged* oldE, Ranged* newE);
 
-    Ranged() : Weapon() {
+    Ranged() : ItemWeapon() {
 
     }
 
-    Ranged(double baseDamage, string name, double weight, double useDelay, double range) : Weapon(baseDamage, name, weight, useDelay) {
+    Ranged(double baseDamage, string name, double weight, double useDelay, double range) : ItemWeapon(baseDamage, name, weight, useDelay) {
         this->baseDamage = baseDamage;
         this->damageType = damPierce;
         this->range = range;
@@ -37,7 +37,7 @@ public:
 
     virtual bool equalsExceptQty(Item* other) {
         Ranged* otherR = dynamic_cast<Ranged*> (other);
-        return Weapon::equalsExceptQty(other)
+        return ItemWeapon::equalsExceptQty(other)
                 &&(otherR)
                 &&(range == otherR->range);
     }

@@ -17,16 +17,20 @@ typedef int SpellEffect;
 const SpellEffect spellRemoteUse = 0;
 const SpellEffect spellRelocate = 1;
 
-class UtilitySpell : public Item {
+const SpellEffect spellDebugPlaceWall = 101;
+const SpellEffect spellDebugPlaceFloor = 102;
+const SpellEffect spellDebugPlaceGoblin = 103;
+
+class ItemUtilitySpell : public Item {
 public:
 
-    static UtilitySpell* cloneUnsafe(UtilitySpell* oldE, UtilitySpell* newE = nullptr);
+    static ItemUtilitySpell* cloneUnsafe(ItemUtilitySpell* oldE, ItemUtilitySpell* newE = nullptr);
 
-    UtilitySpell() : Item() {
+    ItemUtilitySpell() : Item() {
 
     }
 
-    UtilitySpell(SpellEffect spellEffect, int manaCost, string name, double weight) : Item(name, weight) {
+    ItemUtilitySpell(SpellEffect spellEffect, int manaCost, string name, double weight) : Item(name, weight) {
         this->spellEffect = spellEffect;
         this->manaCost = manaCost;
     }
@@ -40,11 +44,12 @@ public:
     virtual void load(unsigned char* data, int* position);
 
     virtual bool equalsExceptQty(Item* other) {
-        UtilitySpell* otherW = dynamic_cast<UtilitySpell*> (other);
+        ItemUtilitySpell* otherW = dynamic_cast<ItemUtilitySpell*> (other);
         return Item::equalsExceptQty(other)
                 && (otherW)
-                && (spellEffect == otherW->spellEffect)
-                && (manaCost == otherW->manaCost);
+       		 	&& (spellEffect == otherW->spellEffect)
+        		&& (manaCost == otherW->manaCost)
+        		&& (continuousUse == otherW->continuousUse);
     }
 
     virtual bool instantUse() {
@@ -53,6 +58,7 @@ public:
 
     SpellEffect spellEffect = 0;
     int manaCost = 0; // -1 means one use without mana cost
+    bool continuousUse = false;
 
     virtual string getExtendedName() {
         return name;

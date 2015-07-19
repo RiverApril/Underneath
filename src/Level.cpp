@@ -7,7 +7,7 @@
 //
 
 #include "Level.hpp"
-#include "AiEntity.hpp"
+#include "EntityAi.hpp"
 #include "Math.hpp"
 #include "Geometry.hpp"
 #include "Global.hpp"
@@ -493,7 +493,7 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
     for (Entity* e : entityList) {
         if(e){
             if(!e->removed){
-                Alive* a = dynamic_cast<Alive*>(e);
+                EntityAlive* a = dynamic_cast<EntityAlive*>(e);
                 if(a){
                     if(distanceSquared(a->pos, pos) <= radius*radius){
                         a->hurt(damExplosion, attackPower);
@@ -506,7 +506,7 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
 
 //Level::generate() is implemented in LevelGenerator.cpp
 
-void Level::placeNewAiEntity(AiEntity* e, Point2 entrance) {
+void Level::placeNewEntityAi(EntityAi* e, Point2 entrance) {
     Point2 p;
     do {
         p = Point2(findRandomWithoutFlag(tileFlagSolid));

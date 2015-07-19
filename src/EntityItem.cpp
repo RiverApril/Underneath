@@ -1,28 +1,28 @@
 //
-//  ItemEntity.cpp
+//  EntityItem.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/15/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "ItemEntity.hpp"
+#include "EntityItem.hpp"
 #include "Level.hpp"
 
-ItemEntity::ItemEntity() : ItemEntity(nullptr, Point2Zero) {
+EntityItem::EntityItem() : EntityItem(nullptr, Point2Zero) {
 
 }
 
-ItemEntity::ItemEntity(Item* item, Point2 p) : Entity(' ', p, Ui::C_WHITE) {
+EntityItem::EntityItem(Item* item, Point2 p) : Entity(' ', p, Ui::C_WHITE) {
     this->item = item;
     defaultIcon = '*';
 }
 
-ItemEntity::~ItemEntity() {
+EntityItem::~EntityItem() {
 
 }
 
-char ItemEntity::getIcon(Point2 p, double time, Level* level) {
+char EntityItem::getIcon(Point2 p, double time, Level* level) {
     if (removed) {
         return defaultIcon;
     }
@@ -46,11 +46,11 @@ char ItemEntity::getIcon(Point2 p, double time, Level* level) {
     }
 }
 
-bool ItemEntity::update(double deltaTime, double time, Level* level) {
+bool EntityItem::update(double deltaTime, double time, Level* level) {
     return Entity::update(deltaTime, time, level);
 }
 
-ItemEntity* ItemEntity::cloneUnsafe(ItemEntity* oldE, ItemEntity* newE) {
+EntityItem* EntityItem::cloneUnsafe(EntityItem* oldE, EntityItem* newE) {
 
     Entity::cloneUnsafe(oldE, newE);
 
@@ -60,16 +60,16 @@ ItemEntity* ItemEntity::cloneUnsafe(ItemEntity* oldE, ItemEntity* newE) {
 
 }
 
-int ItemEntity::getEntityTypeId() {
+int EntityItem::getEntityTypeId() {
     return ENTITY_TYPE_ITEMENTITY;
 }
 
-void ItemEntity::save(vector<unsigned char>* data) {
+void EntityItem::save(vector<unsigned char>* data) {
     Entity::save(data);
     item->save(data);
 }
 
-void ItemEntity::load(unsigned char* data, int* position) {
+void EntityItem::load(unsigned char* data, int* position) {
     Entity::load(data, position);
     item = Item::loadNew(data, position);
 }

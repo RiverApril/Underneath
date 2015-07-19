@@ -9,12 +9,12 @@
 #ifndef __Underneath__World__
 #define __Underneath__World__
 
-class Player;
+class EntityPlayer;
 class Level;
 
 #include "Global.hpp"
 #include "Geometry.hpp"
-#include "Player.hpp"
+#include "EntityPlayer.hpp"
 
 class World {
 public:
@@ -26,7 +26,7 @@ public:
     vector<string> levels;
 
     Level* currentLevel;
-    Player* currentPlayer;
+    EntityPlayer* currentEntity;
     string name = "";
     double worldTime = 0.0;
     double worldLastTime = 0.0;
@@ -44,7 +44,7 @@ namespace WorldLoader {
 
 }
 
-#include "Player.hpp"
+#include "EntityPlayer.hpp"
 #include "Level.hpp"
 
 #endif /* defined(__Underneath__World__) */

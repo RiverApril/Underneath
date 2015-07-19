@@ -66,9 +66,9 @@ public:
     static string equipSlotName(EquipSlot slot){
         switch (slot) {
             case slotWep1:
-                return "Primary Weapon";//primaryLeftHand?"Left Hand":"Right Hand";
+                return "Primary ItemWeapon";//primaryLeftHand?"Left Hand":"Right Hand";
             case slotWep2:
-                return "Secondary Weapon";//primaryLeftHand?"Right Hand":"Left Hand";
+                return "Secondary ItemWeapon";//primaryLeftHand?"Right Hand":"Left Hand";
             case slotHands:
                 return "Hands";
             case slotHead:
@@ -118,7 +118,7 @@ public:
         switch (slot) {
             case slotWep1:
             case slotWep2:
-                return "Weapon";
+                return "ItemWeapon";
             case slotHands:
                 return "Hands";
             case slotHead:

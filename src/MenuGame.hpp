@@ -13,7 +13,7 @@
 #include "Geometry.hpp"
 #include "World.hpp"
 #include "Level.hpp"
-#include "Player.hpp"
+#include "EntityPlayer.hpp"
 
 namespace Ui {
 
@@ -62,12 +62,12 @@ namespace Ui {
 
         vector<Entity*> nearestEntities;
 
-#define modePlayerControl 0
+#define modeEntityPlayerControl 0
 #define modeAdjustBorder 1
 #define modeSelectDirection 2
 #define modeSelectPosition 3
 #define modeSelectEntity 4
-        int controlMode = modePlayerControl;
+        int controlMode = modeEntityPlayerControl;
 
         void changeMode(int newMode);
 

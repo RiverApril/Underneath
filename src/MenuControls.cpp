@@ -86,7 +86,7 @@ namespace Ui {
 
             mvprintw(y, 2, "[ %s ]", keyDisplayName(*keybindings[i].key).c_str());
             mvprintw(y, 22, keybindings[i].name.c_str());
-            mvprintw(y++, terminalSize.x-8, "%s %s", (keybindings[i].catagory & keyCatUi)?"UI":"  ", (keybindings[i].catagory & keyCatPlayer)?"GAME":"    ");
+            mvprintw(y++, terminalSize.x-8, "%s %s", (keybindings[i].catagory & keyCatUi)?"UI":"  ", (keybindings[i].catagory & keyCatEntityPlayer)?"GAME":"    ");
 
             setColor(C_WHITE, C_BLACK);
         }

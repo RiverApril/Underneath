@@ -10,7 +10,6 @@
 #include "MenuMain.hpp"
 #include "MenuGame.hpp"
 #include "MenuYesNo.hpp"
-#include "MenuPlayerSetup.hpp"
 #include "Controls.hpp"
 
 namespace Ui {

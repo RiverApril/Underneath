@@ -65,6 +65,7 @@ namespace Tiles {
     Tile* tileCrate;
 
     Tile* tileRubble;
+    Tile* tileCorpse;
 
     Tile* tileEdge;
     Tile* tileUnset;
@@ -104,9 +105,10 @@ namespace Tiles {
 
 
         tileRubble = new Tile(new RandomIcon({'#', '%', '&'}, C_LIGHT_GRAY, bg), "rubble", tileFlagPathable, new RandomIcon({'#', '%', '&'}, C_DARK_GRAY, bg));
+        tileCorpse = new Tile(new RandomIcon({'#', '%', '&'}, C_LIGHT_RED, bg), "corpse", tileFlagPathable, new RandomIcon({'#', '%', '&'}, C_DARK_GRAY, bg));
 
         
-        tileEdge = new Tile(new BasicIcon('.',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon('.', C_BLACK, C_DARK_GRAY));
+        tileEdge = new Tile(new BasicIcon(' ',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon('.', C_BLACK, C_DARK_GRAY));
         tileUnset = new Tile(new BasicIcon('X',  C_LIGHT_MAGENTA, bg), "unset", tileFlagSolid | tileFlagTall | tileFlagIndestructable);
 
 

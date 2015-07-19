@@ -10,7 +10,7 @@
 #define __Underneath__MenuDebug__
 
 #include "Menu.hpp"
-#include "Alive.hpp"
+#include "EntityAlive.hpp"
 #include "World.hpp"
 
 #define column0 0

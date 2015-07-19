@@ -8,7 +8,7 @@
 
 #include "MenuChest.hpp"
 #include "Math.hpp"
-#include "ItemEntity.hpp"
+#include "EntityItem.hpp"
 #include "Controls.hpp"
 #include "Utility.hpp"
 #include "Art.hpp"
@@ -18,7 +18,7 @@
 
 namespace Ui {
 
-    MenuChest::MenuChest(TEChest* chest, Player* user, World* w) : Menu() {
+    MenuChest::MenuChest(TEChest* chest, EntityPlayer* user, World* w) : Menu() {
         this->chest = chest;
         this->user = user;
         this->currentWorld = w;

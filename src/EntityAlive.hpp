@@ -1,32 +1,32 @@
 //
-//  Alive.h
+//  EntityAlive.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/2/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__Alive__
-#define __Underneath__Alive__
+#ifndef __Underneath__EntityAlive__
+#define __Underneath__EntityAlive__
 
 #include "Entity.hpp"
-#include "Weapon.hpp"
-#include "CombatSpell.hpp"
+#include "ItemWeapon.hpp"
+#include "ItemCombatSpell.hpp"
 #include "Math.hpp"
 #include "Inventory.hpp"
 #include "Effect.hpp"
 #include "Weakness.hpp"
 
-class Alive : public Entity, public Inventory {
+class EntityAlive : public Entity, public Inventory {
 public:
 
-    static Alive* cloneUnsafe(Alive* oldE, Alive* newE);
+    static EntityAlive* cloneUnsafe(EntityAlive* oldE, EntityAlive* newE);
 
-    Alive();
+    EntityAlive();
 
-    Alive(string name, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
+    EntityAlive(string name, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);
 
-    ~Alive();
+    ~EntityAlive();
 
     virtual bool update(double deltaTime, double time, Level* level);
 
@@ -58,7 +58,7 @@ public:
 
     virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 
-    virtual double hurt(Weapon* w, double damageMultiplier = 1);
+    virtual double hurt(ItemWeapon* w, double damageMultiplier = 1);
 
     void addEffect(Effect e);
 
@@ -74,11 +74,11 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual void setActiveWeapon(Weapon* newWeapon){
+    virtual void setActiveItemWeapon(ItemWeapon* newItemWeapon){
         console("ERROR - SET ACTIVE WEAPON FOR ALIVE");
     }
 
-    virtual Weapon* getActiveWeapon(){
+    virtual ItemWeapon* getActiveItemWeapon(){
         return nullptr;
     }
 
@@ -124,4 +124,4 @@ protected:
 
 };
 
-#endif /* defined(__Underneath__Alive__) */
+#endif /* defined(__Underneath__EntityAlive__) */

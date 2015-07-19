@@ -9,7 +9,7 @@
 #ifndef __Underneath__Weakness__
 #define __Underneath__Weakness__
 
-#include "Weapon.hpp"
+#include "ItemWeapon.hpp"
 
 struct Weakness {
 

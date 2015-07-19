@@ -10,13 +10,13 @@
 #define __Underneath__EnemyGenerator__
 
 #include "ItemGenerator.hpp"
-#include "AiEntity.hpp"
+#include "EntityAi.hpp"
 
 namespace EnemyGenerator {
 
     struct WeightedEnemy {
 
-        WeightedEnemy(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase weaponBase, string weaponNameZ, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0) {
+        WeightedEnemy(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::ItemWeaponBase weaponBase, string weaponNameZ, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0) {
             this->weight = weight;
             this->name = name;
             this->icon = icon;
@@ -33,7 +33,7 @@ namespace EnemyGenerator {
         AiType ai = 0;
         int maxHp = 10;
         int color = Ui::C_LIGHT_RED;
-        ItemGenerator::WeaponBase weaponBase;
+        ItemGenerator::ItemWeaponBase weaponBase;
         string weaponName = "";
         int weaponDifficultyAdd = 0;
         double difficultyWeightMulti = 1;
@@ -64,9 +64,9 @@ namespace EnemyGenerator {
 
     void setIntervals(int difficulty);
 
-    AiEntity* makeRandomEntity(int difficulty);
+    EntityAi* makeRandomEntity(int difficulty);
 
-    AiEntity* makeEntity(WeightedEnemy* we, int difficulty);
+    EntityAi* makeEntity(WeightedEnemy* we, int difficulty);
 
 }
 

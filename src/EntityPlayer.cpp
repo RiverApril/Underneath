@@ -1,27 +1,27 @@
 //
-//  Player.cpp
+//  EntityPlayer.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/18/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Player.hpp"
+#include "EntityPlayer.hpp"
 #include "Level.hpp"
-#include "ItemEntity.hpp"
+#include "EntityItem.hpp"
 #include "MenuChest.hpp"
 #include "Verbalizer.hpp"
 #include "Potion.hpp"
-#include "UtilitySpell.hpp"
+#include "ItemUtilitySpell.hpp"
 #include "EnemyGenerator.hpp"
 #include "EntityTimeActivated.hpp"
 #include "Icon.hpp"
 
-Player::Player() : Player("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()) {
+EntityPlayer::EntityPlayer() : EntityPlayer("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()) {
 
 }
 
-Player::Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities) : Alive(name, icon, startPos, colorCode) {
+EntityPlayer::EntityPlayer(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities) : EntityAlive(name, icon, startPos, colorCode) {
     abilities = startAbilities;
     viewDistance = 14;
     updateVariablesForAbilities();
@@ -32,13 +32,13 @@ Player::Player(string name, char icon, Point2 startPos, Ui::Color colorCode, Abi
     mp = maxMp;
 }
 
-Player::~Player() {
+EntityPlayer::~EntityPlayer() {
 
 }
 
-bool Player::update(double deltaTime, double time, Level* level) {
+bool EntityPlayer::update(double deltaTime, double time, Level* level) {
     if (dead) {
-        level->currentWorld->currentPlayer = nullptr;
+        level->currentWorld->currentEntity = nullptr;
     }
     if (timeSinceCombat > 30) {
         if (!outOfCombatHealing) {
@@ -53,23 +53,23 @@ bool Player::update(double deltaTime, double time, Level* level) {
     }
     timeSinceCombat += deltaTime;
 
-    return Alive::update(deltaTime, time, level);
+    return EntityAlive::update(deltaTime, time, level);
 }
 
-double Player::moveAbsalute(Point2 p, Level* level) {
+double EntityPlayer::moveAbsalute(Point2 p, Level* level) {
     if (tryToMoveAbsalute(p, level)) {
         return moveDelay;
     } else {
-        return interact(level, p, true, getActiveWeapon());
+        return interact(level, p, true, getActiveItemWeapon());
     }
     return 0;
 }
 
-double Player::moveRelative(Point2 p, Level* level) {
+double EntityPlayer::moveRelative(Point2 p, Level* level) {
     return moveAbsalute(p + pos, level);
 }
 
-double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item) {
+double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item) {
 
 
 
@@ -100,7 +100,7 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
             return interactDelay;
         }
 
-        UtilitySpell* s = dynamic_cast<UtilitySpell*> (item);
+        ItemUtilitySpell* s = dynamic_cast<ItemUtilitySpell*> (item);
         if (s) {
             int use = 0;
             if (s->manaCost == -1) {
@@ -124,6 +124,17 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
                             hurt(damSuffocation, maxHp * 2);
                             return 0;
                         }
+                        break;
+                    case spellDebugPlaceWall:
+                        level->setTile(posToInteract, Tiles::tileWall);
+                        break;
+                    case spellDebugPlaceFloor:
+                        level->setTile(posToInteract, Tiles::tileFloor);
+                        break;
+                    case spellDebugPlaceGoblin:
+                        EntityAi* e = EnemyGenerator::makeEntity(EnemyGenerator::goblinScout, level->getDifficulty());
+                        e->pos = posToInteract;
+                        level->newEntity(e);
                         break;
                 }
                 if (use == 2) {
@@ -157,11 +168,11 @@ double Player::interact(Level* level, Point2 posToInteract, bool needToBeSolid, 
     return 0;
 }
 
-double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item) {
+double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item) {
 
     bool use = true;
 
-    Weapon* weapon = dynamic_cast<Weapon*> (item);
+    ItemWeapon* weapon = dynamic_cast<ItemWeapon*> (item);
     if (weapon) {
         if (distanceSquared(posOfTile, pos) > 1) {
             use = false;
@@ -184,7 +195,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
                             } else if (tid == Tiles::tileCrate->getIndex()) {
                                 TEChest* c = dynamic_cast<TEChest*> (te);
                                 for (Item* i : c->inventory) {
-                                    level->newEntity(new ItemEntity(Item::clone(i), posOfTile));
+                                    level->newEntity(new EntityItem(Item::clone(i), posOfTile));
                                 }
                                 level->removeTileEntity(c);
                                 level->setTile(posOfTile, Tiles::tileFloor);
@@ -194,7 +205,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
 
                         case TILE_ENTITY_TYPE_MIMIC:
                         {
-                            AiEntity* e = EnemyGenerator::makeEntity(EnemyGenerator::mimic, level->getDifficulty());
+                            EntityAi* e = EnemyGenerator::makeEntity(EnemyGenerator::mimic, level->getDifficulty());
 
                             Tile* t = Tiles::getTile(tid);
 
@@ -243,7 +254,7 @@ double Player::interactWithTile(Level* level, int tid, Point2 posOfTile, Item* i
     return 0;
 }
 
-double Player::calcDamageMultiplier(Weapon* weapon) {
+double EntityPlayer::calcDamageMultiplier(ItemWeapon* weapon) {
     double x = 1;
     if (weapon) {
         if (weapon->weaponType == wepMelee) {
@@ -254,22 +265,22 @@ double Player::calcDamageMultiplier(Weapon* weapon) {
             x = 1 + (((double) abilities[iINT] / (double) maxAbilities[iINT]) * 10.0);
         }
     }
-    x *= getAttackMultiplierFromEffectsAndArmor(weapon->damageType);
+    x *= getAttackMultiplierFromEffectsAndItemArmor(weapon->damageType);
     return x;
 }
 
-double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item) {
+double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, Item* item) {
 
     if (e->removed) {
         return 0;
     }
 
-    Alive* a = dynamic_cast<Alive*> (e);
+    EntityAlive* a = dynamic_cast<EntityAlive*> (e);
     if (a) {
         if (item != nullptr) {
-            Weapon* weapon = dynamic_cast<Weapon*> (item);
+            ItemWeapon* weapon = dynamic_cast<ItemWeapon*> (item);
             Ranged* ranged = dynamic_cast<Ranged*> (item);
-            CombatSpell* spell = dynamic_cast<CombatSpell*> (item);
+            ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*> (item);
 
             if (ranged) {
                 if (distanceSquared(pos, posOfEntity) > ranged->range * ranged->range) {
@@ -314,7 +325,7 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
 
     if (distanceSquared(posOfEntity, pos) <= 1) {
 
-        ItemEntity* ie = dynamic_cast<ItemEntity*> (e);
+        EntityItem* ie = dynamic_cast<EntityItem*> (e);
 
         if (ie) {
             Item* iei = ie->getItem();
@@ -334,9 +345,9 @@ double Player::interactWithEntity(Level* level, Entity* e, Point2 posOfEntity, I
     return 0;
 }
 
-Player* Player::cloneUnsafe(Player* oldE, Player* newE) {
+EntityPlayer* EntityPlayer::cloneUnsafe(EntityPlayer* oldE, EntityPlayer* newE) {
 
-    Alive::cloneUnsafe(oldE, newE);
+    EntityAlive::cloneUnsafe(oldE, newE);
 
     newE->abilities = oldE->abilities;
     newE->abilityPoints = oldE->abilityPoints;
@@ -360,12 +371,12 @@ Player* Player::cloneUnsafe(Player* oldE, Player* newE) {
     return newE;
 }
 
-int Player::getEntityTypeId() {
+int EntityPlayer::getEntityTypeId() {
     return ENTITY_TYPE_PLAYER;
 }
 
-void Player::save(vector<unsigned char>* data) {
-    Alive::save(data);
+void EntityPlayer::save(vector<unsigned char>* data) {
+    EntityAlive::save(data);
     abilities.save(data);
     Utility::saveInt(data, abilityPoints);
     Utility::saveInt(data, level);
@@ -390,8 +401,8 @@ void Player::save(vector<unsigned char>* data) {
 
 }
 
-void Player::load(unsigned char* data, int* position) {
-    Alive::load(data, position);
+void EntityPlayer::load(unsigned char* data, int* position) {
+    EntityAlive::load(data, position);
     abilities.load(data, position);
     abilityPoints = Utility::loadInt(data, position);
     level = Utility::loadInt(data, position);
@@ -413,8 +424,8 @@ void Player::load(unsigned char* data, int* position) {
 
 }
 
-double Player::useDelay(Item* item) {
-    Weapon* weapon = dynamic_cast<Weapon*> (item);
+double EntityPlayer::useDelay(Item* item) {
+    ItemWeapon* weapon = dynamic_cast<ItemWeapon*> (item);
     double d = 0;
     if (weapon) {
         d = weapon->useDelay;
@@ -425,7 +436,7 @@ double Player::useDelay(Item* item) {
 
 }
 
-void Player::gainXp(double amount) {
+void EntityPlayer::gainXp(double amount) {
     xp += amount;
     double l = nextLevelXp;
     while (xp >= l) {
@@ -438,7 +449,7 @@ void Player::gainXp(double amount) {
     }
 }
 
-bool Player::removeItem(Item* item, bool deleteItem) {
+bool EntityPlayer::removeItem(Item* item, bool deleteItem) {
     if (item) {
         for(pair<EquipSlot, Equipable*> p : equipedItems){
             if (item == p.second) {
@@ -449,7 +460,7 @@ bool Player::removeItem(Item* item, bool deleteItem) {
     return Inventory::removeItem(item, deleteItem);
 }
 
-bool Player::equipItem(Equipable* newItem, bool forceDefaultSlot){
+bool EntityPlayer::equipItem(Equipable* newItem, bool forceDefaultSlot){
     if(newItem){
         vector<EquipSlot> vs = newItem->getViableSlots();
         if(vs.size() > 0){
@@ -466,7 +477,7 @@ bool Player::equipItem(Equipable* newItem, bool forceDefaultSlot){
     return false;
 }
 
-bool Player::equipItem(Equipable* newItem, EquipSlot slot){
+bool EntityPlayer::equipItem(Equipable* newItem, EquipSlot slot){
 
     try{
 
@@ -533,17 +544,17 @@ bool Player::equipItem(Equipable* newItem, EquipSlot slot){
 
 }
 
-void Player::setActiveWeapon(Weapon* newWeapon) {
-    equipItem(newWeapon);
+void EntityPlayer::setActiveItemWeapon(ItemWeapon* newItemWeapon) {
+    equipItem(newItemWeapon);
 }
 
-void Player::recalculateDefenses(){
+void EntityPlayer::recalculateDefenses(){
 
     calculatedDefenses.clear();
 
     for(pair<EquipSlot, Equipable*> p : equipedItems){
         if(p.second){
-            Armor* armor = dynamic_cast<Armor*>(p.second);
+            ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
             if(armor){
                 for(Defense d : armor->defenses){
                     if(calculatedDefenses.count(d.damageType)){

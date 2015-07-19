@@ -1,27 +1,27 @@
 //
-//  ItemEntity.h
+//  EntityItem.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/15/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__ItemEntity__
-#define __Underneath__ItemEntity__
+#ifndef __Underneath__EntityItem__
+#define __Underneath__EntityItem__
 
 #include "Entity.hpp"
 #include "Item.hpp"
 
-class ItemEntity : public Entity {
+class EntityItem : public Entity {
 public:
 
-    static ItemEntity* cloneUnsafe(ItemEntity* oldE, ItemEntity* newE);
+    static EntityItem* cloneUnsafe(EntityItem* oldE, EntityItem* newE);
 
-    ItemEntity();
+    EntityItem();
 
-    ItemEntity(Item* item, Point2 p);
+    EntityItem(Item* item, Point2 p);
 
-    ~ItemEntity();
+    ~EntityItem();
 
     virtual bool update(double deltaTime, double time, Level* level);
 
@@ -54,4 +54,4 @@ protected:
 
 };
 
-#endif /* defined(__Underneath__ItemEntity__) */
+#endif /* defined(__Underneath__EntityItem__) */

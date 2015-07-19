@@ -1,42 +1,42 @@
 //
-//  AiEntity.h
+//  EntityAi.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/18/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__AiEntity__
-#define __Underneath__AiEntity__
+#ifndef __Underneath__EntityAi__
+#define __Underneath__EntityAi__
 
-#include "Alive.hpp"
+#include "EntityAlive.hpp"
 
 typedef int AiType;
 
 const AiType aiNone = 0;
 const AiType aiMoveRandom = 1 << 0;
-const AiType aiAttackPlayer = 1 << 1;
-const AiType aiFleeFromPlayer = 1 << 2;
+const AiType aiAttackEntityPlayer = 1 << 1;
+const AiType aiFleeFromEntityPlayer = 1 << 2;
 
 const int agroViewDistanceMultiplier = 3;
 
-class AiEntity : public Alive {
+class EntityAi : public EntityAlive {
 public:
 
-    static AiEntity* cloneUnsafe(AiEntity* oldE, AiEntity* newE);
+    static EntityAi* cloneUnsafe(EntityAi* oldE, EntityAi* newE);
 
-    AiEntity();
+    EntityAi();
 
-    AiEntity(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 1);
+    EntityAi(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 1);
 
-    ~AiEntity();
+    ~EntityAi();
 
     void runAi(double time, Level* level);
     bool update(double deltaTime, double time, Level* level);
 
     virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 
-    virtual double hurt(Weapon* w, double damageMultiplier = 1);
+    virtual double hurt(ItemWeapon* w, double damageMultiplier = 1);
 
     virtual void save(std::vector<unsigned char>* data);
 
@@ -44,10 +44,10 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual void setActiveWeapon(Weapon* newWeapon);
+    virtual void setActiveItemWeapon(ItemWeapon* newItemWeapon);
 
-    virtual Weapon* getActiveWeapon() {
-        return activeWeapon;
+    virtual ItemWeapon* getActiveItemWeapon() {
+        return activeItemWeapon;
     }
 
     void setMoveDelay(double newDelay) {
@@ -63,11 +63,11 @@ public:
     virtual void setTimes(double time) {
         lastMoveTime = time;
         lastAttackTime = time;
-        Alive::setTimes(time);
+        EntityAlive::setTimes(time);
     }
 
     virtual bool isHostile() {
-        return ai & aiAttackPlayer;
+        return ai & aiAttackEntityPlayer;
     }
     
     double getAttackMultiplierFromEffects(DamageType damType){
@@ -87,7 +87,7 @@ protected:
     int ai = aiNone;
 
     Point2 lastKnownTargetPos = Point2Neg1;
-    Alive* target = nullptr;
+    EntityAlive* target = nullptr;
 
     double lastMoveTime = 0;
     double moveDelay = 1.5; //TODO should vary
@@ -96,7 +96,7 @@ protected:
 
     bool agro = false;
 
-    Weapon* activeWeapon = nullptr;
+    ItemWeapon* activeItemWeapon = nullptr;
 };
 
-#endif /* defined(__Underneath__AiEntity__) */
+#endif /* defined(__Underneath__EntityAi__) */

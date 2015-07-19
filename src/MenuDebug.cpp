@@ -31,7 +31,7 @@ namespace Ui {
         setColor(C_WHITE);
 
         /*for(int i=0;i<terminalSize.y;i++){
-            mvprintw(i, 0, "%2d: %d", i, currentWorld->currentPlayer->xpForLevel(i));
+            mvprintw(i, 0, "%2d: %d", i, currentWorld->currentEntity->xpForLevel(i));
         }*/
         
         move(0, 0);
@@ -58,7 +58,7 @@ namespace Ui {
         mvvline(a, column2 - 1, '|', terminalSize.y);
         mvvline(a, column3 - 1, '|', terminalSize.y);
 
-        mvprintw(a, column0, "Weapon");
+        mvprintw(a, column0, "ItemWeapon");
         mvprintw(a, column1, "Damage");
         mvprintw(a, column2, "Delay");
         mvprintw(a, column3, "Dam/Time");
@@ -69,7 +69,7 @@ namespace Ui {
 
         a++;
 
-        for (ItemGenerator::WeaponBase w : ItemGenerator::weaponList) {
+        for (ItemGenerator::ItemWeaponBase w : ItemGenerator::weaponList) {
             mvprintw(a, column0, "%s", w.names[0].c_str());
             mvprintw(a, column1, "%.2f", w.damage);
             mvprintw(a, column2, "%.2f", w.useDelay);

@@ -1,15 +1,15 @@
 //
-//  Weapon.cpp
+//  ItemWeapon.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/11/14.
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
-#include "Weapon.hpp"
+#include "ItemWeapon.hpp"
 #include "Utility.hpp"
 
-Weapon::Weapon(double baseDamage, string name, double weight, double useDelay) : Equipable(name, weight) {
+ItemWeapon::ItemWeapon(double baseDamage, string name, double weight, double useDelay) : Equipable(name, weight) {
     debugf("%s: %.2f", name.c_str(), baseDamage);
     this->baseDamage = baseDamage;
     this->useDelay = useDelay;
@@ -18,7 +18,7 @@ Weapon::Weapon(double baseDamage, string name, double weight, double useDelay) :
     this->damageType = damSharp;
 }
 
-void Weapon::save(vector<unsigned char>* data) {
+void ItemWeapon::save(vector<unsigned char>* data) {
     Equipable::save(data);
 
     Utility::saveDouble(data, baseDamage);
@@ -34,7 +34,7 @@ void Weapon::save(vector<unsigned char>* data) {
     }
 }
 
-void Weapon::load(unsigned char* data, int* position) {
+void ItemWeapon::load(unsigned char* data, int* position) {
     Equipable::load(data, position);
 
     baseDamage = Utility::loadDouble(data, position);
@@ -50,7 +50,7 @@ void Weapon::load(unsigned char* data, int* position) {
     }
 }
 
-Weapon* Weapon::cloneUnsafe(Weapon* oldE, Weapon* newE) {
+ItemWeapon* ItemWeapon::cloneUnsafe(ItemWeapon* oldE, ItemWeapon* newE) {
 
     Equipable::cloneUnsafe(oldE, newE);
 

@@ -10,16 +10,16 @@
 #define __Underneath__Verbalizer__
 
 #include "Global.hpp"
-#include "Player.hpp"
+#include "EntityPlayer.hpp"
 
 namespace Verbalizer {
 
-    void attack(Alive* attacker, Alive* underAttack, Weapon* weapon, double damage);
+    void attack(EntityAlive* attacker, EntityAlive* underAttack, ItemWeapon* weapon, double damage);
 
-    // Alive* dead  lol
-    void defeatedEnemy(Alive* dead, int xpGained);
+    // EntityAlive* dead  lol
+    void defeatedEnemy(EntityAlive* dead, int xpGained);
 
-    void leveledUp(Player* player);
+    void leveledUp(EntityPlayer* player);
 
 }
 

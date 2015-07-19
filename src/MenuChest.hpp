@@ -10,7 +10,7 @@
 #define __Underneath__MenuChest__
 
 #include "Menu.hpp"
-#include "Alive.hpp"
+#include "EntityAlive.hpp"
 #include "World.hpp"
 
 namespace Ui {
@@ -18,7 +18,7 @@ namespace Ui {
     class MenuChest : public Menu {
     public:
 
-        MenuChest(TEChest* chest, Player* user, World* w);
+        MenuChest(TEChest* chest, EntityPlayer* user, World* w);
 
         ~MenuChest() {
         }
@@ -27,7 +27,7 @@ namespace Ui {
         void update();
 
         TEChest* chest;
-        Player* user;
+        EntityPlayer* user;
         World* currentWorld;
         //int scrollOffset = 0;
         int selected = 0;

@@ -26,7 +26,7 @@ void consolef(string format, ...);
 string formatString(string format, ...);
 string plural(string n);
 
-class Player;
+class EntityPlayer;
 class Inventory;
 
 namespace Ui {
@@ -55,7 +55,7 @@ namespace Ui {
 
     int printMultiLineString(int y, int x, string s, int maxX = -1);
 
-    void drawInventory(World* currentWorld, Player* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv = nullptr, string invDisplayName = "", bool selectedLeft = true);
+    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv = nullptr, string invDisplayName = "", bool selectedLeft = true);
 
     extern unsigned long tick;
 

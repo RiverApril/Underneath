@@ -1,13 +1,13 @@
 //
-//  Armor.h
+//  ItemArmor.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 4/29/15.
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__Armor__
-#define __Underneath__Armor__
+#ifndef __Underneath__ItemArmor__
+#define __Underneath__ItemArmor__
 
 #include "Equipable.hpp"
 #include "Enchantment.hpp"
@@ -38,19 +38,19 @@ bool operator==(const Defense& a, const Defense& b);
 
 bool operator!=(const Defense& a, const Defense& b);
 
-class Armor : public Equipable {
+class ItemArmor : public Equipable {
 public:
 
 
-    static Armor* cloneUnsafe(Armor* oldE, Armor* newE = nullptr);
+    static ItemArmor* cloneUnsafe(ItemArmor* oldE, ItemArmor* newE = nullptr);
 
-    Armor() : Equipable() {
+    ItemArmor() : Equipable() {
 
     }
 
-    Armor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name, double weight);
+    ItemArmor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name, double weight);
 
-    Armor(EquipSlot viableSlot, vector<Defense> defenses, string name, double weight);
+    ItemArmor(EquipSlot viableSlot, vector<Defense> defenses, string name, double weight);
 
     virtual int getItemTypeId() {
         return ITEM_TYPE_ARMOR;
@@ -64,18 +64,18 @@ public:
         return false;
     }
 
-    Armor* addEnchantment(Enchantment e) {
+    ItemArmor* addEnchantment(Enchantment e) {
         enchantments.push_back(e);
         return this;
     }
 
-    Armor* addDefence(Defense e) {
+    ItemArmor* addDefence(Defense e) {
         defenses.push_back(e);
         return this;
     }
 
     virtual bool equalsExceptQty(Item* other) {
-        Armor* otherW = dynamic_cast<Armor*> (other);
+        ItemArmor* otherW = dynamic_cast<ItemArmor*> (other);
         return Equipable::equalsExceptQty(other)
         &&(otherW)
         &&(defenses == otherW->defenses)
@@ -106,4 +106,4 @@ protected:
 };
 
 
-#endif /* defined(__Underneath__Armor__) */
+#endif /* defined(__Underneath__ItemArmor__) */

@@ -7,10 +7,10 @@
 //
 
 #include "Entity.hpp"
-#include "Alive.hpp"
-#include "AiEntity.hpp"
-#include "Player.hpp"
-#include "ItemEntity.hpp"
+#include "EntityAlive.hpp"
+#include "EntityAi.hpp"
+#include "EntityPlayer.hpp"
+#include "EntityItem.hpp"
 #include "EntityTimeActivated.hpp"
 
 #include "Level.hpp"
@@ -115,16 +115,16 @@ Entity* Entity::clone(Entity* oldE) {
             return makeNewAndClone<Entity, Entity>(oldE);
 
         case ENTITY_TYPE_ALIVE:
-            return makeNewAndClone<Entity, Alive>(oldE);
+            return makeNewAndClone<Entity, EntityAlive>(oldE);
 
         case ENTITY_TYPE_AIENTITY:
-            return makeNewAndClone<Entity, AiEntity>(oldE);
+            return makeNewAndClone<Entity, EntityAi>(oldE);
 
         case ENTITY_TYPE_PLAYER:
-            return makeNewAndClone<Entity, Player>(oldE);
+            return makeNewAndClone<Entity, EntityPlayer>(oldE);
 
         case ENTITY_TYPE_ITEMENTITY:
-            return makeNewAndClone<Entity, ItemEntity>(oldE);
+            return makeNewAndClone<Entity, EntityItem>(oldE);
 
         case ENTITY_TYPE_TIME_ACTIVATED:
             return makeNewAndClone<Entity, EntityTimeActivated>(oldE);
@@ -184,16 +184,16 @@ Entity* Entity::loadNew(unsigned char* data, int* position) {
             e = new Entity();
             break;
         case ENTITY_TYPE_ALIVE:
-            e = new Alive();
+            e = new EntityAlive();
             break;
         case ENTITY_TYPE_AIENTITY:
-            e = new AiEntity();
+            e = new EntityAi();
             break;
         case ENTITY_TYPE_PLAYER:
-            e = new Player();
+            e = new EntityPlayer();
             break;
         case ENTITY_TYPE_ITEMENTITY:
-            e = new ItemEntity();
+            e = new EntityItem();
             break;
         case ENTITY_TYPE_TIME_ACTIVATED:
             e = new EntityTimeActivated();

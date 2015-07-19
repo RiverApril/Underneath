@@ -9,7 +9,7 @@
 #ifndef __Underneath__Inventory__
 #define __Underneath__Inventory__
 
-#include "Weapon.hpp"
+#include "ItemWeapon.hpp"
 
 struct Inventory {
 

@@ -7,7 +7,7 @@
 //
 
 #include "Command.hpp"
-#include "Alive.hpp"
+#include "EntityAlive.hpp"
 #include "MenuGame.hpp"
 #include "Utility.hpp"
 #include "ItemGenerator.hpp"
@@ -189,7 +189,7 @@ namespace Commands {
                     if (arguments.size() > 3) {
                         e.meta = Utility::parseDouble(arguments[3].c_str());
                     }
-                    mg->currentWorld->currentPlayer->addEffect(e);
+                    mg->currentWorld->currentEntity->addEffect(e);
                     console("Applied Effect: " + e.toString());
                     return true;
                 }
@@ -219,7 +219,7 @@ namespace Commands {
             if (mg) {
                 if (arguments.size() == 1) {
                     int amount = Utility::parseInt(arguments[0]);
-                    mg->currentWorld->currentPlayer->gainXp(amount);
+                    mg->currentWorld->currentEntity->gainXp(amount);
                     console("Added " + to_string(amount) + "XP");
                     return true;
                 } else {
@@ -232,18 +232,18 @@ namespace Commands {
         }
     };
 
-    struct CommandGive : Command {
+    struct CommandWep : Command {
 
         string help() {
-            return "Gives an item to the player";
+            return "Gives a weapon to the player";
         }
 
         string usage() {
-            return "give <weaponType> <difficulty>";
+            return "wep <weaponType> <difficulty>";
         }
 
         string defaultName() {
-            return "give";
+            return "wep";
         }
 
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
@@ -252,9 +252,9 @@ namespace Commands {
                 if (arguments.size() == 2) {
                     int wepType = Utility::parseInt(arguments[0]);
                     int diff = Utility::parseInt(arguments[1]);
-                    Item* i = ItemGenerator::createWeaponFromType(wepType, diff);
-                    mg->currentWorld->currentPlayer->addItem(i);
-                    consolef("Item given to %s", mg->currentWorld->currentPlayer->Entity::getName().c_str());
+                    Item* i = ItemGenerator::createItemWeaponFromType(wepType, diff);
+                    mg->currentWorld->currentEntity->addItem(i);
+                    consolef("ItemWeapon given");
                     return true;
                 } else {
                     console("Impropper use of command.");
@@ -331,16 +331,61 @@ namespace Commands {
         }
     };
 
+    struct CommandDebugTools : Command {
+        string help() {
+            return "Gives debug tools";
+        }
+
+        string usage() {
+            return "tools";
+        }
+
+        string defaultName() {
+            return "tools";
+        }
+
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
+            MenuGame* mg = dynamic_cast<MenuGame*> (currentMenu);
+            if (mg) {
+                
+                ItemUtilitySpell* i = new ItemUtilitySpell(spellDebugPlaceWall, 0, "DEBUG Wall wand", 0);
+                i->continuousUse = true;
+                mg->currentWorld->currentEntity->addItem(i);
+
+                i = new ItemUtilitySpell(spellDebugPlaceFloor, 0, "DEBUG Floor wand", 0);
+                i->continuousUse = true;
+                mg->currentWorld->currentEntity->addItem(i);
+
+                i = new ItemUtilitySpell(spellDebugPlaceGoblin, 0, "DEBUG Goblin wand", 0);
+                i->continuousUse = true;
+                mg->currentWorld->currentEntity->addItem(i);
+
+                i = new ItemUtilitySpell(spellRelocate, 0, "DEBUG Move wand", 0);
+                i->continuousUse = true;
+                mg->currentWorld->currentEntity->addItem(i);
+
+
+                consolef("Tools given");
+                return true;
+            } else {
+                console("Must be ingame to use.");
+            }
+            return false;
+            return true;
+        }
+    };
+
     void initCommands() {
         commandList.push_back(new CommandHelp());
         commandList.push_back(new CommandEcho());
         commandList.push_back(new CommandDebug());
         commandList.push_back(new CommandEffect());
         commandList.push_back(new CommandXp());
-        commandList.push_back(new CommandGive());
+        commandList.push_back(new CommandWep());
         commandList.push_back(new CommandNextKey());
         commandList.push_back(new CommandGodMode());
         commandList.push_back(new CommandClear());
+        commandList.push_back(new CommandDebugTools());
     }
 
     void cleanupCommands() {
