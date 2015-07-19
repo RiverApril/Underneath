@@ -11,7 +11,7 @@
 
 #include "Global.hpp"
 
-#define keyCatEntityPlayer 1
+#define keyCatPlayer 1
 #define keyCatUi 2
 
 struct KeyBind{
@@ -56,6 +56,7 @@ namespace Key {
     extern int drop;
     extern int dropAll;
     extern int equip;
+    extern int equipPrimary;
 
     //In chest
     extern int take;

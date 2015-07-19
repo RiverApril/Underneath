@@ -38,7 +38,7 @@ EntityPlayer::~EntityPlayer() {
 
 bool EntityPlayer::update(double deltaTime, double time, Level* level) {
     if (dead) {
-        level->currentWorld->currentEntity = nullptr;
+        level->currentWorld->currentPlayer = nullptr;
     }
     if (timeSinceCombat > 30) {
         if (!outOfCombatHealing) {

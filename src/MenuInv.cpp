@@ -60,6 +60,16 @@ namespace Ui {
                 *useItem = selected;
                 closeThisMenu();
             }
+        } else if (in == Key::equipPrimary) {
+            Equipable* equipable = dynamic_cast<Equipable*> (player->inventory[selected]);
+            if (equipable) {
+                EquipSlot slot = player->getSlot(equipable);
+                if(slot){
+                    player->equipItem(nullptr, slot);
+                }else{
+                    player->equipItem(equipable, equipable->getViableSlots()[0]);
+                }
+            }
         } else if (in == Key::interact) {
             *useItem = selected;
             closeThisMenu();

@@ -189,7 +189,7 @@ namespace Commands {
                     if (arguments.size() > 3) {
                         e.meta = Utility::parseDouble(arguments[3].c_str());
                     }
-                    mg->currentWorld->currentEntity->addEffect(e);
+                    mg->currentWorld->currentPlayer->addEffect(e);
                     console("Applied Effect: " + e.toString());
                     return true;
                 }
@@ -219,7 +219,7 @@ namespace Commands {
             if (mg) {
                 if (arguments.size() == 1) {
                     int amount = Utility::parseInt(arguments[0]);
-                    mg->currentWorld->currentEntity->gainXp(amount);
+                    mg->currentWorld->currentPlayer->gainXp(amount);
                     console("Added " + to_string(amount) + "XP");
                     return true;
                 } else {
@@ -253,7 +253,7 @@ namespace Commands {
                     int wepType = Utility::parseInt(arguments[0]);
                     int diff = Utility::parseInt(arguments[1]);
                     Item* i = ItemGenerator::createItemWeaponFromType(wepType, diff);
-                    mg->currentWorld->currentEntity->addItem(i);
+                    mg->currentWorld->currentPlayer->addItem(i);
                     consolef("ItemWeapon given");
                     return true;
                 } else {
@@ -284,8 +284,12 @@ namespace Commands {
             setColor(C_WHITE);
             move(0, 0);
             addstr("Waiting for key...");
-            int in = getch();
+            int in;
+            do{
+            	in = getch();
+            }while(in == ERR);
             consolef("Key pressed: int(%d)  char(%c)", (char) in, in);
+            currentMenu->update();
             return true;
         }
     };
@@ -350,19 +354,19 @@ namespace Commands {
                 
                 ItemUtilitySpell* i = new ItemUtilitySpell(spellDebugPlaceWall, 0, "DEBUG Wall wand", 0);
                 i->continuousUse = true;
-                mg->currentWorld->currentEntity->addItem(i);
+                mg->currentWorld->currentPlayer->addItem(i);
 
                 i = new ItemUtilitySpell(spellDebugPlaceFloor, 0, "DEBUG Floor wand", 0);
                 i->continuousUse = true;
-                mg->currentWorld->currentEntity->addItem(i);
+                mg->currentWorld->currentPlayer->addItem(i);
 
                 i = new ItemUtilitySpell(spellDebugPlaceGoblin, 0, "DEBUG Goblin wand", 0);
                 i->continuousUse = true;
-                mg->currentWorld->currentEntity->addItem(i);
+                mg->currentWorld->currentPlayer->addItem(i);
 
                 i = new ItemUtilitySpell(spellRelocate, 0, "DEBUG Move wand", 0);
                 i->continuousUse = true;
-                mg->currentWorld->currentEntity->addItem(i);
+                mg->currentWorld->currentPlayer->addItem(i);
 
 
                 consolef("Tools given");

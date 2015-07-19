@@ -477,7 +477,11 @@ namespace Ui {
                     } else {
                         for (Effect e : potion->effects) {
                             if (e.timeLeft > 0) {
-                                a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2f", effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
+                                if(e.eId == effBuffDefense){
+                                    a += printMultiLineString(a, columnX, formatString("   %s %d%% for %.2f", effectName(e.eId, e.meta).c_str(), (int)(e.power*100), e.timeLeft));
+                                }else{
+                                	a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2f", effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
+                                }
                             } else {
                                 a += printMultiLineString(a, columnX, formatString("   %s %.2f", effectName(e.eId, e.meta).c_str(), e.power));
                             }

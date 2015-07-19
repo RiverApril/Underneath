@@ -88,6 +88,7 @@ Ui::Color Entity::getBgColorCode() {
 
 Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE) {
 
+    newE->uniqueId = oldE->uniqueId;
     newE->defaultIcon = oldE->defaultIcon;
     newE->pos = oldE->pos;
     newE->lastPos = oldE->lastPos;

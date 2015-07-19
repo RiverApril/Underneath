@@ -39,7 +39,7 @@ namespace Ui {
 
         if(in == KEY_ESCAPE){
             running = false;
-        } else if(in == '\n' || in == ' '){
+        } else if(in == '\n'){
             switch (selection) {
                 case 0:
                     openMenu(new MenuWorldSelect());
@@ -72,6 +72,8 @@ namespace Ui {
     }
 
     void MenuMain::update() {
+        move(0, 0);
+        clrtobot();
 
         int a = 2;
 

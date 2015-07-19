@@ -41,7 +41,12 @@ namespace Ui {
             printCenter(terminalSize.y/2 - 2, "Press any key to asign (case sensitive)");
             printCenter(terminalSize.y/2 - 1, "\"%s\"", keybindings[selected].name.c_str());
             printCenter(terminalSize.y/2 + 1, "Currently asigned as [%s]", keyDisplayName(*(keybindings[selected].key)).c_str());
-            int newKey = getch();
+
+            int newKey;
+            do{
+                newKey = getch();
+            }while(newKey == ERR);
+
             bool set = true;
             for(int r : reservedKeys){
                 if(r == newKey){
@@ -61,9 +66,9 @@ namespace Ui {
         clrtobot();
         setColor(C_WHITE);
 
-        mvprintw(0, 0, "Controls");
+        mvprintw(0, 0, "Controls - auto saves on escape");
 
-        int y = 2;
+        int y = 1;
 
         for(int i=0;i<keybindings.size();i++){
             if(i == selected){
@@ -85,8 +90,8 @@ namespace Ui {
             }
 
             mvprintw(y, 2, "[ %s ]", keyDisplayName(*keybindings[i].key).c_str());
-            mvprintw(y, 22, keybindings[i].name.c_str());
-            mvprintw(y++, terminalSize.x-8, "%s %s", (keybindings[i].catagory & keyCatUi)?"UI":"  ", (keybindings[i].catagory & keyCatEntityPlayer)?"GAME":"    ");
+            mvprintw(y, 17, keybindings[i].name.c_str());
+            mvprintw(y++, terminalSize.x-8, "%s %s", (keybindings[i].catagory & keyCatUi)?"UI":"  ", (keybindings[i].catagory & keyCatPlayer)?"GAME":"    ");
 
             setColor(C_WHITE, C_BLACK);
         }
@@ -96,13 +101,13 @@ namespace Ui {
     string MenuControls::keyDisplayName(int key){
         switch (key) {
             case KEY_UP:
-                return "Arrow Up";
+                return "Up";
             case KEY_DOWN:
-                return "Arrow Down";
+                return "Down";
             case KEY_LEFT:
-                return "Arrow Left";
+                return "Left";
             case KEY_RIGHT:
-                return "Arrow Right";
+                return "Right";
             case KEY_ESCAPE:
                 return "Escape";
             case '\n':
@@ -110,7 +115,10 @@ namespace Ui {
             case ' ':
                 return "Space";
             case KEY_BACKSPACE:
+            case 127:
                 return "Backspace";
+            case 8:
+                return "Delete";
                 
             default:
                 return string()+(char)key;

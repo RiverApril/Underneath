@@ -15,6 +15,7 @@
 typedef int TimeActivatedType;
 const TimeActivatedType timeActivatedBomb = 0;
 const TimeActivatedType timeActivatedWallBomb = 1;
+const TimeActivatedType timeActivatedDud = 2;
 
 
 class ItemTimeActivated : public Item {

@@ -35,6 +35,9 @@ char EntityTimeActivated::getChar(unsigned long tick, Point2 pos, Level* lvl) {
         case timeActivatedWallBomb:
             return tick%4==0?'*':((timeLeft<10)?(to_string((int)timeLeft)[0]):'!');
 
+        case timeActivatedDud:
+            return '*';
+        
         default:
             return '!';
     }

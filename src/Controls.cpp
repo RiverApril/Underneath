@@ -38,6 +38,7 @@ namespace Key {
     int drop = 'd';
     int dropAll = 'D';
     int equip = 'e';
+    int equipPrimary = 'E';
 
     //In chest
     int take = 't';
@@ -47,31 +48,32 @@ namespace Key {
 }
 
 vector<KeyBind> keybindings = {
-    KeyBind("Move Up", &Key::moveUp, keyCatEntityPlayer),
-    KeyBind("Move Down", &Key::moveDown, keyCatEntityPlayer),
-    KeyBind("Move Left", &Key::moveLeft, keyCatEntityPlayer),
-    KeyBind("Move Right", &Key::moveRight, keyCatEntityPlayer),
-    KeyBind("Interact / Use / Attack", &Key::interact, keyCatEntityPlayer | keyCatUi),
-    KeyBind("Secondary Attack", &Key::secondaryAttack, keyCatEntityPlayer),
-    KeyBind("Examine", &Key::inspect, keyCatEntityPlayer),
-    KeyBind("Heal", &Key::waitUntilHealed, keyCatEntityPlayer),
-    KeyBind("Open Inventory", &Key::inventory, keyCatEntityPlayer | keyCatUi),
-    KeyBind("Open Skills", &Key::statsMenu, keyCatEntityPlayer),
+    KeyBind("Move Up", &Key::moveUp, keyCatPlayer),
+    KeyBind("Move Down", &Key::moveDown, keyCatPlayer),
+    KeyBind("Move Left", &Key::moveLeft, keyCatPlayer),
+    KeyBind("Move Right", &Key::moveRight, keyCatPlayer),
+    KeyBind("Interact / Use / Attack", &Key::interact, keyCatPlayer | keyCatUi),
+    KeyBind("Secondary Attack", &Key::secondaryAttack, keyCatPlayer),
+    KeyBind("Examine", &Key::inspect, keyCatPlayer),
+    KeyBind("Heal", &Key::waitUntilHealed, keyCatPlayer),
+    KeyBind("Open Inventory", &Key::inventory, keyCatPlayer | keyCatUi),
+    KeyBind("Open Skills", &Key::statsMenu, keyCatPlayer),
     KeyBind("Ui Up", &Key::uiUp, keyCatUi),
     KeyBind("Ui Down", &Key::uiDown, keyCatUi),
     KeyBind("Ui Left", &Key::uiLeft, keyCatUi),
     KeyBind("Ui Right", &Key::uiRight, keyCatUi),
     KeyBind("Equip Item", &Key::equip, keyCatUi),
+    KeyBind("Equip Item as Primary", &Key::equipPrimary, keyCatUi),
     KeyBind("Drop Item", &Key::drop, keyCatUi),
     KeyBind("Drop Stack", &Key::dropAll, keyCatUi),
     KeyBind("Transfer Item", &Key::take, keyCatUi),
     KeyBind("Transfer Stack", &Key::takeStack, keyCatUi),
     KeyBind("Transfer Inventory", &Key::takeAll, keyCatUi),
 
-    KeyBind("Adjust Borders", &Key::adjustConsole, keyCatEntityPlayer),
-    KeyBind("Open Debug Menu", &Key::debugMenu, keyCatEntityPlayer)
+    KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer),
+    KeyBind("Open Debug Menu", &Key::debugMenu, keyCatPlayer)
 };
 
 vector<int> reservedKeys = {
-    KEY_ESCAPE, '\n'
+    KEY_ESCAPE, '\n', KEY_RESIZE, KEY_BACKSPACE, 127
 };

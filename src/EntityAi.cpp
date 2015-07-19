@@ -13,6 +13,7 @@
 #include "Verbalizer.hpp"
 #include "ItemGenerator.hpp"
 #include "EntityItem.hpp"
+#include "EntityTimeActivated.hpp"
 
 EntityAi::EntityAi() : EntityAi("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1) {
 
@@ -30,7 +31,7 @@ void EntityAi::runAi(double time, Level* level) {
 
 
     if (target == nullptr) {
-        target = level->currentWorld->currentEntity;
+        target = level->currentWorld->currentPlayer;
     }
 
     Point2 speed;
@@ -47,6 +48,9 @@ void EntityAi::runAi(double time, Level* level) {
     bool canSeeTarget = level->canSee(pos, target->pos, agro ? viewDistance * agroViewDistanceMultiplier : viewDistance, false);
     if (!canSeeTarget && agro) {
         agro = false;
+    }
+    if(canSeeTarget && !agro){
+        agro = true;
     }
 
     if (ai & aiFleeFromEntityPlayer) {
@@ -79,8 +83,15 @@ void EntityAi::runAi(double time, Level* level) {
             } else {
                 //speed.x = pos.x > lastKnownTargetPos.x ? -1 : (pos.x < lastKnownTargetPos.x ? 1 : 0);
                 //speed.y = pos.y > lastKnownTargetPos.y ? -1 : (pos.y < lastKnownTargetPos.y ? 1 : 0);
-                vector<Point2> path = level->getPathTo(pos, lastKnownTargetPos, tileFlagAll, tileFlagSolid);
+                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid);
                 if(!path.empty()){
+                    if(Ui::printDebugEnabled){
+                        for(Point2 point : path){
+                            EntityTimeActivated* e = new EntityTimeActivated("path", timeActivatedDud, 2, 0, 0, point);
+                            e->fgColor = Ui::C_LIGHT_GREEN;
+                            level->newEntity(e);
+                        }
+                    }
                     debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
                     speed = path[0]-pos;
                 }
@@ -159,7 +170,7 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
     while (lastMoveTime + moveDelay <= time) {
         runAi(time, level);
         lastMoveTime += moveDelay;
-        if (level->canSee(target->pos, pos, level->currentWorld->currentEntity->viewDistance, true)) {
+        if (level->canSee(target->pos, pos, level->currentWorld->currentPlayer->viewDistance, true)) {
 
             level->renderMenuGame(lastMoveTime);
             //usleep(10 * 1000);
@@ -170,7 +181,7 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
         int xp = rand() % (int) maxHp;
         Verbalizer::defeatedEnemy(this, xp);
 
-        level->currentWorld->currentEntity->gainXp(xp);
+        level->currentWorld->currentPlayer->gainXp(xp);
 
         vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand() % 10) == 0 ? 1 : 0, (rand() % 10) == 0 ? 1 : 0, (rand() % 5) == 0 ? 2 : 0);
         //if(rand()%5==0){

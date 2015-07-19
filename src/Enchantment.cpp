@@ -9,6 +9,10 @@
 #include "Enchantment.hpp"
 #include "Utility.hpp"
 
+string enchantmentName(Enchantment e) {
+    return effectName(e.effectId, e.meta);
+}
+
 Enchantment::Enchantment(unsigned char* data, int* position) {
     load(data, position);
 }

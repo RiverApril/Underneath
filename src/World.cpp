@@ -24,7 +24,7 @@ World::~World() {
     }
 
     currentLevel = nullptr;
-    currentEntity = nullptr;
+    currentPlayer = nullptr;
 }
 
 namespace WorldLoader {
@@ -67,14 +67,12 @@ namespace WorldLoader {
         return buffer;
     }
 
-    World* load(std::string name, string optionalStartLevel) {
+    World* load(World* world, std::string name, string optionalStartLevel) {
 
         try {
             debug("Loading World: " + name + "...");
 
             std::string dir = WorldsDir + "/" + name + "/";
-
-            World* world = nullptr;
 
             //world.info
             FILE* fileWorldInfo;
@@ -86,11 +84,15 @@ namespace WorldLoader {
 
                 int* position = new int(0);
 
-                world = new World(name);
+                if(world == nullptr){
+                	world = new World(name);
+                }else{
+                    world->name = name;
+                }
 
                 world->worldTime = Utility::loadDouble(data, position);
 
-                int levelCount = Utility::loadInt8Bit(data, position);
+                int levelCount = Utility::loadInt(data, position);
 
                 std::string currentLevelName = Utility::loadString(data, position);
                 int playerUniqueId = Utility::loadInt(data, position);
@@ -141,7 +143,8 @@ namespace WorldLoader {
                 if (world->currentLevel != nullptr) {
                     for (size_t i = 0; i < world->currentLevel->entityCount(); i++) {
                         if (world->currentLevel->entityList[i]->uniqueId == playerUniqueId) {
-                            world->currentEntity = dynamic_cast<EntityPlayer*> (world->currentLevel->entityList[i]);
+                            world->currentPlayer = dynamic_cast<EntityPlayer*> (world->currentLevel->entityList[i]);
+                            debugf("Setting currentPlayer to entity with uid: %d", world->currentPlayer->uniqueId);
                         }
                     }
                 }
@@ -187,10 +190,10 @@ namespace WorldLoader {
 
             Utility::saveDouble(data, loadedWorld->worldTime);
 
-            Utility::saveInt8Bit(data, (int8_t) loadedWorld->levels.size());
+            Utility::saveInt(data, (int)loadedWorld->levels.size());
 
             Utility::saveString(data, loadedWorld->currentLevel->getName());
-            Utility::saveInt(data, loadedWorld->currentEntity->uniqueId);
+            Utility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
 
             for (size_t j = 0; j < loadedWorld->levels.size(); j++) {
                 Utility::saveString(data, loadedWorld->levels.at(j));
@@ -337,18 +340,18 @@ namespace WorldLoader {
         world->levels.push_back(world->currentLevel->getName());
 
 
-        world->currentEntity = new EntityPlayer(name, '@', p, Ui::C_WHITE, playerAbilities);
-        world->currentEntity->setActiveItemWeapon(ItemGenerator::applyRandConditionToItemWeapon(ItemGenerator::createItemWeaponFromType(wepMelee, 0), 0));
-        world->currentEntity->addItem(new ItemSpecial(specialtyCompass));
-        world->currentEntity->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        world->currentEntity->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        world->currentEntity->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        world->currentEntity->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        //world->currentEntity->addItem(new ItemTimeActivated(timeActivatedBomb, 15, 1000, 5, 1), 10);
-        //world->currentEntity->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
+        world->currentPlayer = new EntityPlayer(name, '@', p, Ui::C_WHITE, playerAbilities);
+        world->currentPlayer->setActiveItemWeapon(ItemGenerator::applyRandConditionToItemWeapon(ItemGenerator::createItemWeaponFromType(wepMelee, 0), 0));
+        world->currentPlayer->addItem(new ItemSpecial(specialtyCompass));
+        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedBomb, 15, 1000, 5, 1), 10);
+        //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
 
 
-        world->currentLevel->newEntity(world->currentEntity);
+        world->currentLevel->newEntity(world->currentPlayer);
 
         //save(world);
 
@@ -364,8 +367,21 @@ namespace WorldLoader {
         for (string level : world->levels) {
             if (level == newName) {
                 debug("Level found, loading...");
-                load(world->name, newName);
-                world->currentEntity->pos = entrance;
+                EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentPlayer));
+                load(world, world->name, newName);
+                world->currentPlayer = newEntityPlayer;
+                world->currentPlayer->pos = entrance;
+                debugf("CurrentPlayer uid: %d", world->currentPlayer->uniqueId);
+                forVector(world->currentLevel->entityList, i){
+                    if(world->currentLevel->entityList[i]->uniqueId == newEntityPlayer->uniqueId){
+                        Entity* e = world->currentLevel->entityList[i];
+                        delete e;
+                        world->currentLevel->entityList[i] = newEntityPlayer;
+                    }
+                    if(dynamic_cast<EntityPlayer*>(world->currentLevel->entityList[i])){
+                        debugf("EntityPlayer uid: %d", world->currentLevel->entityList[i]->uniqueId);
+                    }
+                }
                 return true;
             }
         }
@@ -373,9 +389,9 @@ namespace WorldLoader {
 
         int newDifficulty = world->currentLevel->getDifficulty() + 1;
         Point2 newSize = world->currentLevel->getSize();
-        EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentEntity));
+        EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentPlayer));
 
-        world->currentLevel->actuallyRemoveEntityUnsafe(world->currentEntity, true);
+        world->currentLevel->actuallyRemoveEntityUnsafe(world->currentPlayer, true);
         string oldName = world->currentLevel->getName();
         delete world->currentLevel;
         world->currentLevel = nullptr;
@@ -384,9 +400,9 @@ namespace WorldLoader {
 
         newLevel->generate((unsigned int) rand(), entrance, oldName);
 
-        world->currentEntity = newEntityPlayer;
-        world->currentEntity->pos = entrance;
-        newLevel->newEntity(newEntityPlayer);
+        world->currentPlayer = newEntityPlayer;
+        world->currentPlayer->pos = entrance;
+        newLevel->newEntity(world->currentPlayer, false);
 
         world->levels.push_back(newLevel->getName());
         world->currentLevel = newLevel;

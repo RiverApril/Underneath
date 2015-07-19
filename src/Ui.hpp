@@ -14,6 +14,7 @@
 #include "Global.hpp"
 #include "Geometry.hpp"
 #include "Color.hpp"
+#include "Enchantment.hpp"
 
 class World;
 
@@ -46,6 +47,8 @@ namespace Ui {
     int getColorPair(Color fg, Color bg);
 
     //Color codeToColor(char c);
+
+    int printEnchantments(int a, vector<Enchantment> enchantments, int columnX);
 
     bool addChColor(char c, bool* lookingForCode);
 

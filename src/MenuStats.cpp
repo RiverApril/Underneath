@@ -40,7 +40,7 @@ namespace Ui {
         } else if (in == Key::uiDown) {
             selected++;
 
-        } else if (in == '\n' || in == ' ') {
+        } else if (in == '\n') {
             if (player->abilityPoints > 0) {
                 if (player->abilities[selected] < player->maxAbilities[selected]) {
                     //openMenu(new MenuYesNo(formatString("Are you sure you want to spend a skill point on %s?", abilityNames[selected].c_str()), shouldSpendPoint, true));

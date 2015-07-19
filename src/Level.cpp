@@ -312,10 +312,12 @@ void Level::renderMenuGame(double displayTime) {
     }
 }*/
 
-Entity* Level::newEntity(Entity* newE) {
-    newE->uniqueId = nextUniqueId;
+Entity* Level::newEntity(Entity* newE, bool setUID) {
+    if(setUID){
+        newE->uniqueId = nextUniqueId;
+    	nextUniqueId++;
+    }
     newE->setTimes(currentWorld->worldTime);
-    nextUniqueId++;
     entityList.push_back(newE);
     return newE;
 }
@@ -529,18 +531,18 @@ void Level::save(vector<unsigned char>* data) {
         }
     }
     Utility::saveInt(data, (int) entityList.size());
-    debugf("Saving %d entities...", (int) entityList.size());
+    debugf("Saving %d Entities...", (int) entityList.size());
     for (size_t i = 0; i < entityList.size(); i++) {
         debug("Saving Entity: " + entityList[i]->getName() + "(" + to_string(entityList[i]->getEntityTypeId()) + ")" + ", Pos: " + entityList[i]->pos.toString());
         entityList[i]->save(data);
     }
-    debugf("%d Entities saved.", (int) entityList.size());
-    debugf("Saving %d tile entities...", (int) tileEntityList.size());
+    debugf("%d Entities Saved.", (int) entityList.size());
+    debugf("Saving %d Tile Entities...", (int) tileEntityList.size());
     Utility::saveInt(data, (int) tileEntityList.size());
     for (size_t i = 0; i < tileEntityList.size(); i++) {
         tileEntityList[i]->save(data);
     }
-    debugf("%d Tile entities saved.", (int) tileEntityList.size());
+    debugf("%d Tile Entities Saved.", (int) tileEntityList.size());
 }
 
 void Level::load(unsigned char* data, int* position) {
@@ -564,12 +566,12 @@ void Level::load(unsigned char* data, int* position) {
     for (int i = 0; i < entityCount; i++) {
         entityList.push_back(Entity::loadNew(data, position));
     }
-    debugf("Loaded %d entities", (int) entityList.size());
+    debugf("Loaded %d Entities", (int) entityList.size());
 
     int tileEntityCount = Utility::loadInt(data, position);
-    debugf("%d Tile entities to Load...", tileEntityCount);
+    debugf("%d Tile Entities to Load...", tileEntityCount);
     for (int i = 0; i < tileEntityCount; i++) {
         tileEntityList.push_back(TileEntity::loadNew(data, position));
     }
-    debugf("Loaded %d tile entities", (int) tileEntityList.size());
+    debugf("Loaded %d Tile Entities", (int) tileEntityList.size());
 }

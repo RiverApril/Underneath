@@ -10,6 +10,50 @@
 #include "Utility.hpp"
 #include "Ui.hpp"
 
+string effectName(EffectId eid, double meta) {
+    switch (eid) {
+        case effDamage:
+            return damageTypeName((DamageType) meta);
+
+        case effHeal:
+            return "Heal";
+
+        case effBuffAttack:
+            return "Buff "+damageTypeName((DamageType) meta);
+
+        case effBuffDefense:
+            return "Resist "+damageTypeName((DamageType) meta);
+
+        case effLSD:
+            return "Psychedelic";
+
+        case effMemory:
+            return "Where am I?";
+
+        default:
+            return "UNDEFINED";
+    }
+}
+
+Ui::Color effectColor(EffectId eid, double meta) {
+    switch (eid) {
+        case effDamage:
+            return damageTypeColor((DamageType) meta);
+
+        case effHeal:
+            return Ui::C_LIGHT_GREEN;
+
+        case effBuffAttack:
+            return Ui::C_LIGHT_BLUE;
+
+        case effBuffDefense:
+            return Ui::C_LIGHT_MAGENTA;
+            
+        default:
+            return Ui::C_LIGHT_GREEN;
+    }
+}
+
 Effect::Effect(unsigned char* data, int* position) {
     load(data, position);
 }

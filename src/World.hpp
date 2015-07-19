@@ -26,7 +26,7 @@ public:
     vector<string> levels;
 
     Level* currentLevel;
-    EntityPlayer* currentEntity;
+    EntityPlayer* currentPlayer;
     string name = "";
     double worldTime = 0.0;
     double worldLastTime = 0.0;
@@ -35,7 +35,7 @@ public:
 
 namespace WorldLoader {
     bool exists(std::string name);
-    World* load(std::string name, string optionalStartLevel = "");
+    World* load(World* world, std::string name, string optionalStartLevel = "");
     bool save(World* loadedWorld);
     World* create(std::string name, Abilities<int> playerAbilities);
     bool changeLevel(World* world, Point2 entrance, string newName);

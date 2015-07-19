@@ -84,7 +84,7 @@ public:
 
     //void setAndUnsetDisplayEntities();
 
-    Entity* newEntity(Entity* newE);
+    Entity* newEntity(Entity* newE, bool setUID = true);
     void removeEntity(Entity* e, bool deleteEntity);
     void actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity);
 
