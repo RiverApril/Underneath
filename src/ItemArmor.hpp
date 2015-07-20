@@ -9,7 +9,7 @@
 #ifndef __Underneath__ItemArmor__
 #define __Underneath__ItemArmor__
 
-#include "Equipable.hpp"
+#include "ItemEquipable.hpp"
 #include "Enchantment.hpp"
 #include "DamageType.hpp"
 
@@ -38,13 +38,13 @@ bool operator==(const Defense& a, const Defense& b);
 
 bool operator!=(const Defense& a, const Defense& b);
 
-class ItemArmor : public Equipable {
+class ItemArmor : public ItemEquipable {
 public:
 
 
     static ItemArmor* cloneUnsafe(ItemArmor* oldE, ItemArmor* newE = nullptr);
 
-    ItemArmor() : Equipable() {
+    ItemArmor() : ItemEquipable() {
 
     }
 
@@ -76,7 +76,7 @@ public:
 
     virtual bool equalsExceptQty(Item* other) {
         ItemArmor* otherW = dynamic_cast<ItemArmor*> (other);
-        return Equipable::equalsExceptQty(other)
+        return ItemEquipable::equalsExceptQty(other)
         &&(otherW)
         &&(defenses == otherW->defenses)
         &&(enchantments == otherW->enchantments)

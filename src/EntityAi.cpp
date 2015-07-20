@@ -76,7 +76,7 @@ void EntityAi::runAi(double time, Level* level) {
         }
         if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
             //debug("LKTP: "+lastKnownTargetPos.toString()+"  TP: "+target->pos.toString()+"  P: "+pos.toString());
-            Ranged* r = dynamic_cast<Ranged*> (activeItemWeapon);
+            ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
             if (r && canSeeTarget && (distanceSquared(target->pos, pos) < (r->range * r->range))) {
                 speed.x = 0;
                 speed.y = 0;
@@ -125,7 +125,7 @@ void EntityAi::runAi(double time, Level* level) {
             if (distanceSquared(pos, target->pos) <= 1) {
                 attack = true;
             } else {
-                Ranged* r = dynamic_cast<Ranged*> (activeItemWeapon);
+                ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
                 if (r) {
                     if (level->canSee(pos, target->pos, Math::min(r->range, (double) viewDistance), false)) {
                         attack = true;

@@ -10,20 +10,20 @@
 #define __Underneath__ItemWeapon__
 
 #include "Global.hpp"
-#include "Equipable.hpp"
+#include "ItemEquipable.hpp"
 #include "Enchantment.hpp"
 #include "Ui.hpp"
 #include "DamageType.hpp"
 
 const vector<EquipSlot> weaponSlots = {slotWep1, slotWep2};
 
-class ItemWeapon : public Equipable {
+class ItemWeapon : public ItemEquipable {
 public:
 
 
     static ItemWeapon* cloneUnsafe(ItemWeapon* oldE, ItemWeapon* newE = nullptr);
 
-    ItemWeapon() : Equipable() {
+    ItemWeapon() : ItemEquipable() {
 
     }
 
@@ -48,7 +48,7 @@ public:
 
     virtual bool equalsExceptQty(Item* other) {
         ItemWeapon* otherW = dynamic_cast<ItemWeapon*> (other);
-        return Equipable::equalsExceptQty(other)
+        return ItemEquipable::equalsExceptQty(other)
                 &&(otherW)
                 &&(baseDamage == otherW->baseDamage)
                 &&(damageType == otherW->damageType)

@@ -17,7 +17,7 @@
 #include "Math.hpp"
 #include "Utility.hpp"
 #include "Controls.hpp"
-#include "Ranged.hpp"
+#include "ItemRanged.hpp"
 #include "ItemUtilitySpell.hpp"
 
 #define currentPlayer currentWorld->currentPlayer
@@ -376,7 +376,7 @@ namespace Ui {
                 changeMode(modeEntityPlayerControl);
 
             } else if (/* DISABLED, deemed overpowered (part above too)*/ (false) && in == 'f') {
-                Ranged* ranged = dynamic_cast<Ranged*> (currentPlayer->getActiveItemWeapon());
+                ItemRanged* ranged = dynamic_cast<ItemRanged*> (currentPlayer->getActiveItemWeapon());
                 if (ranged && controlMode != modeSelectEntity) {
                     itemToBeUsedRange = ranged->range;
                     itemToBeUsed = ranged;
@@ -411,7 +411,7 @@ namespace Ui {
                     }
 
                 } else {
-                    Ranged* ranged = dynamic_cast<Ranged*> (wep);
+                    ItemRanged* ranged = dynamic_cast<ItemRanged*> (wep);
                     if (ranged) {
                         changeMode(modeSelectPosition);
                         if (!currentLevel->canSee(currentPlayer->pos, targetPosition, ranged->range, false)) {

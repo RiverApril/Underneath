@@ -8,7 +8,7 @@
 
 #include "Item.hpp"
 #include "Utility.hpp"
-#include "Equipable.hpp"
+#include "ItemEquipable.hpp"
 #include "ItemWeapon.hpp"
 #include "ItemCombatSpell.hpp"
 #include "Potion.hpp"
@@ -57,13 +57,13 @@ Item* Item::clone(Item* oldI) {
             return makeNewAndClone<Item, Item>(oldI);
 
         case ITEM_TYPE_EQUIPABLE:
-            return makeNewAndClone<Item, Equipable>(oldI);
+            return makeNewAndClone<Item, ItemEquipable>(oldI);
 
         case ITEM_TYPE_WEAPON:
             return makeNewAndClone<Item, ItemWeapon>(oldI);
 
         case ITEM_TYPE_RANGED:
-            return makeNewAndClone<Item, Ranged>(oldI);
+            return makeNewAndClone<Item, ItemRanged>(oldI);
 
         case ITEM_TYPE_COMBAT_SPELL:
             return makeNewAndClone<Item, ItemCombatSpell>(oldI);
@@ -104,7 +104,7 @@ Item* Item::loadNew(unsigned char* data, int* position) {
             break;
 
         case ITEM_TYPE_EQUIPABLE:
-            e = new Equipable();
+            e = new ItemEquipable();
             break;
 
         case ITEM_TYPE_WEAPON:
@@ -112,7 +112,7 @@ Item* Item::loadNew(unsigned char* data, int* position) {
             break;
 
         case ITEM_TYPE_RANGED:
-            e = new Ranged();
+            e = new ItemRanged();
             break;
 
         case ITEM_TYPE_COMBAT_SPELL:

@@ -1,27 +1,27 @@
 //
-//  Ranged.h
+//  ItemRanged.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 1/22/15.
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__Ranged__
-#define __Underneath__Ranged__
+#ifndef __Underneath__ItemRanged__
+#define __Underneath__ItemRanged__
 
 #include "Global.hpp"
 #include "ItemWeapon.hpp"
 
-class Ranged : public ItemWeapon {
+class ItemRanged : public ItemWeapon {
 public:
 
-    static Ranged* cloneUnsafe(Ranged* oldE, Ranged* newE);
+    static ItemRanged* cloneUnsafe(ItemRanged* oldE, ItemRanged* newE);
 
-    Ranged() : ItemWeapon() {
+    ItemRanged() : ItemWeapon() {
 
     }
 
-    Ranged(double baseDamage, string name, double weight, double useDelay, double range) : ItemWeapon(baseDamage, name, weight, useDelay) {
+    ItemRanged(double baseDamage, string name, double weight, double useDelay, double range) : ItemWeapon(baseDamage, name, weight, useDelay) {
         this->baseDamage = baseDamage;
         this->damageType = damPierce;
         this->range = range;
@@ -36,7 +36,7 @@ public:
     virtual void load(unsigned char* data, int* position);
 
     virtual bool equalsExceptQty(Item* other) {
-        Ranged* otherR = dynamic_cast<Ranged*> (other);
+        ItemRanged* otherR = dynamic_cast<ItemRanged*> (other);
         return ItemWeapon::equalsExceptQty(other)
                 &&(otherR)
                 &&(range == otherR->range);
@@ -44,7 +44,11 @@ public:
 
     double range = 4;
 
+    bool operator< (ItemRanged& b){
+        return this->damageType < b.damageType;
+    }
+
 protected:
 };
 
-#endif /* defined(__Underneath__Ranged__) */
+#endif /* defined(__Underneath__ItemRanged__) */

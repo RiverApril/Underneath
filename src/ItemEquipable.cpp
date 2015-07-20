@@ -1,31 +1,31 @@
 //
-//  Equipable.cpp
+//  ItemEquipable.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/15/15.
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Equipable.hpp"
+#include "ItemEquipable.hpp"
 #include "Utility.hpp"
 
-Equipable::Equipable(string name, double weight) : Item(name, weight) {
+ItemEquipable::ItemEquipable(string name, double weight) : Item(name, weight) {
 
 }
 
-void Equipable::save(vector<unsigned char>* data) {
+void ItemEquipable::save(vector<unsigned char>* data) {
     Item::save(data);
 
     minimumAbilities.save(data);
 }
 
-void Equipable::load(unsigned char* data, int* position) {
+void ItemEquipable::load(unsigned char* data, int* position) {
     Item::load(data, position);
 
     minimumAbilities.load(data, position);
 }
 
-Equipable* Equipable::cloneUnsafe(Equipable* oldE, Equipable* newE) {
+ItemEquipable* ItemEquipable::cloneUnsafe(ItemEquipable* oldE, ItemEquipable* newE) {
 
     Item::cloneUnsafe(oldE, newE);
 
@@ -35,8 +35,8 @@ Equipable* Equipable::cloneUnsafe(Equipable* oldE, Equipable* newE) {
 
 }
 
-bool Equipable::equalsExceptQty(Item* other) {
-    Equipable* otherW = dynamic_cast<Equipable*> (other);
+bool ItemEquipable::equalsExceptQty(Item* other) {
+    ItemEquipable* otherW = dynamic_cast<ItemEquipable*> (other);
     return Item::equalsExceptQty(other)
             &&(otherW)
             &&(otherW->minimumAbilities == minimumAbilities);

@@ -287,7 +287,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
     if (a) {
         if (item != nullptr) {
             ItemWeapon* weapon = dynamic_cast<ItemWeapon*> (item);
-            Ranged* ranged = dynamic_cast<Ranged*> (item);
+            ItemRanged* ranged = dynamic_cast<ItemRanged*> (item);
             ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*> (item);
 
             if (ranged) {
@@ -366,9 +366,9 @@ EntityPlayer* EntityPlayer::cloneUnsafe(EntityPlayer* oldE, EntityPlayer* newE) 
     newE->outOfCombatHealing = oldE->outOfCombatHealing;
 
     forVector(oldE->inventory, i) {
-        for(pair<EquipSlot, Equipable*> p : oldE->equipedItems){
+        for(pair<EquipSlot, ItemEquipable*> p : oldE->equipedItems){
             if (oldE->inventory[i] == p.second) {
-                newE->equipedItems[p.first] = dynamic_cast<Equipable*> (newE->inventory[i]);
+                newE->equipedItems[p.first] = dynamic_cast<ItemEquipable*> (newE->inventory[i]);
             }
         }
     }
@@ -395,7 +395,7 @@ void EntityPlayer::save(vector<unsigned char>* data) {
 
     Utility::saveInt(data, (int)equipedItems.size());
 
-    for(pair<EquipSlot, Equipable*> p : equipedItems){
+    for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
         bool saved = false;
     	forVector(inventory, i) {
             if (inventory[i] == p.second) {
@@ -424,7 +424,7 @@ void EntityPlayer::load(unsigned char* data, int* position) {
     for(int i=0;i<size;i++){
         int slot = Utility::loadInt(data, position);
         int index = Utility::loadInt(data, position);
-        equipedItems[slot] = dynamic_cast<Equipable*>(inventory[index]);
+        equipedItems[slot] = dynamic_cast<ItemEquipable*>(inventory[index]);
     }
 
     recalculateDefenses();
@@ -459,7 +459,7 @@ void EntityPlayer::gainXp(double amount) {
 
 bool EntityPlayer::removeItem(Item* item, bool deleteItem) {
     if (item) {
-        for(pair<EquipSlot, Equipable*> p : equipedItems){
+        for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
             if (item == p.second) {
                 equipItem(nullptr, p.first);
             }
@@ -468,7 +468,7 @@ bool EntityPlayer::removeItem(Item* item, bool deleteItem) {
     return Inventory::removeItem(item, deleteItem);
 }
 
-bool EntityPlayer::equipItem(Equipable* newItem, bool forceDefaultSlot){
+bool EntityPlayer::equipItem(ItemEquipable* newItem, bool forceDefaultSlot){
     if(newItem){
         vector<EquipSlot> vs = newItem->getViableSlots();
         if(vs.size() > 0){
@@ -485,7 +485,7 @@ bool EntityPlayer::equipItem(Equipable* newItem, bool forceDefaultSlot){
     return false;
 }
 
-bool EntityPlayer::equipItem(Equipable* newItem, EquipSlot slot){
+bool EntityPlayer::equipItem(ItemEquipable* newItem, EquipSlot slot){
 
     try{
 
@@ -522,7 +522,7 @@ bool EntityPlayer::equipItem(Equipable* newItem, EquipSlot slot){
                 throw false;
             }
 
-            for(pair<EquipSlot, Equipable*> p : equipedItems){
+            for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
                 if(p.second){
                     if(p.second->blocksSlot(slot, p.first)){
                         equipedItems[p.first] = nullptr;
@@ -533,7 +533,7 @@ bool EntityPlayer::equipItem(Equipable* newItem, EquipSlot slot){
 
 
             if(alreadyHave){
-                equipedItems[slot] = dynamic_cast<Equipable*> (newItem);
+                equipedItems[slot] = dynamic_cast<ItemEquipable*> (newItem);
                 throw true;
             }else{
                 throw false;
@@ -560,7 +560,7 @@ void EntityPlayer::recalculateDefenses(){
 
     calculatedDefenses.clear();
 
-    for(pair<EquipSlot, Equipable*> p : equipedItems){
+    for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
         if(p.second){
             ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
             if(armor){

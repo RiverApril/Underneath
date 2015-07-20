@@ -10,7 +10,7 @@
 #include "MenuMain.hpp"
 #include "Tile.hpp"
 #include "Math.hpp"
-#include "Ranged.hpp"
+#include "ItemRanged.hpp"
 #include "Utility.hpp"
 #include "ItemGenerator.hpp"
 #include "EnemyGenerator.hpp"

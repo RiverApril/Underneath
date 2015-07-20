@@ -347,9 +347,9 @@ namespace ItemGenerator {
                 ((ItemCombatSpell*) w)->manaCost = (int) (base.manaCost * Random::randDouble(4.0, 12.0));
                 w->addEnchantment(Enchantment(effDamage, 10, 1, 6, base.damageType));
             } else {
-                w = new Ranged();
+                w = new ItemRanged();
             }
-            ((Ranged*) w)->range = base.range;
+            ((ItemRanged*) w)->range = base.range;
         } else {
             w = new ItemWeapon();
         }

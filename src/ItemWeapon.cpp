@@ -9,7 +9,7 @@
 #include "ItemWeapon.hpp"
 #include "Utility.hpp"
 
-ItemWeapon::ItemWeapon(double baseDamage, string name, double weight, double useDelay) : Equipable(name, weight) {
+ItemWeapon::ItemWeapon(double baseDamage, string name, double weight, double useDelay) : ItemEquipable(name, weight) {
     debugf("%s: %.2f", name.c_str(), baseDamage);
     this->baseDamage = baseDamage;
     this->useDelay = useDelay;
@@ -19,7 +19,7 @@ ItemWeapon::ItemWeapon(double baseDamage, string name, double weight, double use
 }
 
 void ItemWeapon::save(vector<unsigned char>* data) {
-    Equipable::save(data);
+    ItemEquipable::save(data);
 
     Utility::saveDouble(data, baseDamage);
     Utility::saveInt(data, damageType);
@@ -35,7 +35,7 @@ void ItemWeapon::save(vector<unsigned char>* data) {
 }
 
 void ItemWeapon::load(unsigned char* data, int* position) {
-    Equipable::load(data, position);
+    ItemEquipable::load(data, position);
 
     baseDamage = Utility::loadDouble(data, position);
     damageType = Utility::loadInt(data, position);
@@ -52,7 +52,7 @@ void ItemWeapon::load(unsigned char* data, int* position) {
 
 ItemWeapon* ItemWeapon::cloneUnsafe(ItemWeapon* oldE, ItemWeapon* newE) {
 
-    Equipable::cloneUnsafe(oldE, newE);
+    ItemEquipable::cloneUnsafe(oldE, newE);
 
     newE->baseDamage = oldE->baseDamage;
     newE->enchantments = oldE->enchantments;

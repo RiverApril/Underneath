@@ -56,9 +56,9 @@ public:
 
     virtual bool removeItem(Item* item, bool deleteItem);
 
-    bool equipItem(Equipable* newItem);
+    bool equipItem(ItemEquipable* newItem);
 
-    bool equipItem(Equipable* newItem, EquipSlot slot);
+    bool equipItem(ItemEquipable* newItem, EquipSlot slot);
 
     virtual void setTimes(double time) {
         lastMoveTime = time;

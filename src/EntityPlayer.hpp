@@ -96,8 +96,8 @@ public:
         return dynamic_cast<ItemWeapon*>(equipedItems[slotWep2]);
     }
 
-    EquipSlot getSlot(Equipable* e){
-        for(pair<EquipSlot, Equipable*> p : equipedItems){
+    EquipSlot getSlot(ItemEquipable* e){
+        for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
             if(p.second == e){
                 return p.first;
             }
@@ -105,7 +105,7 @@ public:
         return slotNone;
     }
 
-    virtual Equipable* getEquiped(EquipSlot slot) {
+    virtual ItemEquipable* getEquiped(EquipSlot slot) {
         if(equipedItems.count(slot) <= 0){
             return nullptr;
         }
@@ -139,8 +139,8 @@ public:
 
     void gainXp(double amount);
 
-    bool equipItem(Equipable* newItem, bool forceDefaultSlot = false);
-    bool equipItem(Equipable* newItem, EquipSlot slot);
+    bool equipItem(ItemEquipable* newItem, bool forceDefaultSlot = false);
+    bool equipItem(ItemEquipable* newItem, EquipSlot slot);
 
     /*bool pickupItem(Item* newItem){
         if(newItem != nullptr){
@@ -190,7 +190,7 @@ public:
                 }
             }
         }
-        for(pair<EquipSlot, Equipable*> p : equipedItems){
+        for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
             ItemArmor* a = dynamic_cast<ItemArmor*>(p.second);
             if(a){
                 for(Enchantment e : a->enchantments){
@@ -217,7 +217,7 @@ protected:
     int timeSinceCombat = 0;
     bool outOfCombatHealing = false;
 
-    map<EquipSlot, Equipable*> equipedItems;
+    map<EquipSlot, ItemEquipable*> equipedItems;
 
 
     //Item* hotbar[10] = {nullptr};

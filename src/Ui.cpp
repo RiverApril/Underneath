@@ -390,10 +390,10 @@ namespace Ui {
 
                 char pre = '-';
 
-                Equipable* equippable = dynamic_cast<Equipable*>(item);
+                ItemEquipable* equippable = dynamic_cast<ItemEquipable*>(item);
                 if(equippable){
                     EquipSlot slot = player->getSlot(equippable);
-                    pre = Equipable::equipSlotAbr(slot);
+                    pre = ItemEquipable::equipSlotAbr(slot);
                 }
                 string displayName;
                 if (item->qty == 1) {
@@ -416,10 +416,10 @@ namespace Ui {
             Item* item = inv[selectedY];
 
             if(item) {
-                Equipable* equipable = dynamic_cast<Equipable*>(item);
+                ItemEquipable* equipable = dynamic_cast<ItemEquipable*>(item);
                 ItemArmor* armor = dynamic_cast<ItemArmor*>(item);
                 ItemWeapon* weapon = dynamic_cast<ItemWeapon*>(item);
-                Ranged* ranged = dynamic_cast<Ranged*>(item);
+                ItemRanged* ranged = dynamic_cast<ItemRanged*>(item);
                 ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(item);
                 Potion* potion = dynamic_cast<Potion*>(item);
                 ItemUtilitySpell* utilitySpell = dynamic_cast<ItemUtilitySpell*>(item);
@@ -442,29 +442,29 @@ namespace Ui {
                     vector<EquipSlot> vs = equipable->getViableSlots();
 
                     for(EquipSlot slot : vs){
-                        string c = Equipable::equipSlotNameGeneric(slot);
+                        string c = ItemEquipable::equipSlotNameGeneric(slot);
                         if(!Utility::vectorContains(eqv, c)){
                             eqv.push_back(c);
                             if(eqs.length() > 0){
                                 eqs += ", ";
                             }else{
-                                eqp = Equipable::equipSlotPreposition(slot);
+                                eqp = ItemEquipable::equipSlotPreposition(slot);
                             }
-                            eqs += Equipable::equipSlotNameGeneric(slot);
+                            eqs += ItemEquipable::equipSlotNameGeneric(slot);
                         }
                     }
 
                     setColor(C_LIGHT_MAGENTA, C_BLACK);
 
                     if(eqs.length() > 0){
-                        a += printMultiLineString(a, columnX, formatString("Equipable %s %s", eqp.c_str(), eqs.c_str()));
+                        a += printMultiLineString(a, columnX, formatString("ItemEquipable %s %s", eqp.c_str(), eqs.c_str()));
                     }
 
                     setColor(C_LIGHT_GRAY, C_BLACK);
 
                     EquipSlot slot = player->getSlot(equipable);
                     if(slot != slotNone){
-                        mvprintw(terminalSize.y - 1, columnX, "-Equipped %s %s", Equipable::equipSlotPreposition(slot).c_str(), Equipable::equipSlotName(slot).c_str());
+                        mvprintw(terminalSize.y - 1, columnX, "-Equipped %s %s", ItemEquipable::equipSlotPreposition(slot).c_str(), ItemEquipable::equipSlotName(slot).c_str());
                     }
                 }
 
@@ -679,13 +679,13 @@ namespace Ui {
          mvhline(2, 0, '-', terminalSize.x);
          Item* item;
          ItemWeapon* weapon;
-         Ranged* ranged;
+         ItemRanged* ranged;
          ItemCombatSpell* spell;
          int y = 3;
          for(int i=minI;i<maxI;i++){
          item = inv->inventory[i];
          weapon = dynamic_cast<ItemWeapon*>(item);
-         ranged = dynamic_cast<Ranged*>(item);
+         ranged = dynamic_cast<ItemRanged*>(item);
          spell = dynamic_cast<ItemCombatSpell*>(item);
          if(i == selected){
          setColor(C_BLACK, C_WHITE);
@@ -718,7 +718,7 @@ namespace Ui {
 
          if(item){
          weapon = dynamic_cast<ItemWeapon*>(item);
-         ranged = dynamic_cast<Ranged*>(item);
+         ranged = dynamic_cast<ItemRanged*>(item);
          spell = dynamic_cast<ItemCombatSpell*>(item);
 
          int a = 3;

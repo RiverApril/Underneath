@@ -48,7 +48,7 @@ namespace Ui {
                 currentWorld->currentLevel->newEntity(new EntityItem(drop, player->pos));
             }
         } else if (in == Key::equip) {
-            Equipable* equipable = dynamic_cast<Equipable*> (player->inventory[selected]);
+            ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (player->inventory[selected]);
             if (equipable) {
                 EquipSlot slot = player->getSlot(equipable);
                 if(slot){
@@ -61,7 +61,7 @@ namespace Ui {
                 closeThisMenu();
             }
         } else if (in == Key::equipPrimary) {
-            Equipable* equipable = dynamic_cast<Equipable*> (player->inventory[selected]);
+            ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (player->inventory[selected]);
             if (equipable) {
                 EquipSlot slot = player->getSlot(equipable);
                 if(slot){
@@ -116,13 +116,13 @@ namespace Ui {
         mvhline(2, 0, '-', terminalSize.x);
         Item* item;
         ItemWeapon* weapon;
-        Ranged* ranged;
+        ItemRanged* ranged;
         ItemCombatSpell* spell;
         int y = 3;
         for(int i=minI;i<maxI;i++){
             item = player->inventory[i];
             weapon = dynamic_cast<ItemWeapon*>(item);
-            ranged = dynamic_cast<Ranged*>(item);
+            ranged = dynamic_cast<ItemRanged*>(item);
             spell = dynamic_cast<ItemCombatSpell*>(item);
             if(i == selected){
                 setColor(C_BLACK, C_WHITE);
@@ -148,7 +148,7 @@ namespace Ui {
 
         if(item){
             weapon = dynamic_cast<ItemWeapon*>(item);
-            ranged = dynamic_cast<Ranged*>(item);
+            ranged = dynamic_cast<ItemRanged*>(item);
             spell = dynamic_cast<ItemCombatSpell*>(item);
 
             int a = 3;

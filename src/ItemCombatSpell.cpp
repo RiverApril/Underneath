@@ -10,20 +10,20 @@
 #include "Utility.hpp"
 
 void ItemCombatSpell::save(vector<unsigned char>* data) {
-    Ranged::save(data);
+    ItemRanged::save(data);
 
     Utility::saveInt(data, manaCost);
 }
 
 void ItemCombatSpell::load(unsigned char* data, int* position) {
-    Ranged::load(data, position);
+    ItemRanged::load(data, position);
 
     manaCost = Utility::loadInt(data, position);
 }
 
 ItemCombatSpell* ItemCombatSpell::cloneUnsafe(ItemCombatSpell* oldE, ItemCombatSpell* newE) {
 
-    Ranged::cloneUnsafe(oldE, newE);
+    ItemRanged::cloneUnsafe(oldE, newE);
 
     newE->manaCost = oldE->manaCost;
 

@@ -9,7 +9,7 @@
 #include "ItemArmor.hpp"
 #include "Utility.hpp"
 
-ItemArmor::ItemArmor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name, double weight) : Equipable(name, weight) {
+ItemArmor::ItemArmor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name, double weight) : ItemEquipable(name, weight) {
     this->viableSlots = viableSlots;
     this->defenses = defenses;
 }
@@ -18,7 +18,7 @@ ItemArmor::ItemArmor(EquipSlot viableSlot, vector<Defense> defenses, string name
 }
 
 void ItemArmor::save(vector<unsigned char>* data) {
-    Equipable::save(data);
+    ItemEquipable::save(data);
 
     Utility::saveInt(data, (int) enchantments.size());
     for (Enchantment ench : enchantments) {
@@ -37,7 +37,7 @@ void ItemArmor::save(vector<unsigned char>* data) {
 }
 
 void ItemArmor::load(unsigned char* data, int* position) {
-    Equipable::load(data, position);
+    ItemEquipable::load(data, position);
 
     int size = Utility::loadInt(data, position);
     for (int i = 0; i < size; i++) {
@@ -57,7 +57,7 @@ void ItemArmor::load(unsigned char* data, int* position) {
 
 ItemArmor* ItemArmor::cloneUnsafe(ItemArmor* oldE, ItemArmor* newE) {
 
-    Equipable::cloneUnsafe(oldE, newE);
+    ItemEquipable::cloneUnsafe(oldE, newE);
 
     newE->defenses = oldE->defenses;
     newE->enchantments = oldE->enchantments;

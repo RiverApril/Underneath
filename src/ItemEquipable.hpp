@@ -1,13 +1,13 @@
 //
-//  Equipable.h
+//  ItemEquipable.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/15/15.
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__Equipable__
-#define __Underneath__Equipable__
+#ifndef __Underneath__ItemEquipable__
+#define __Underneath__ItemEquipable__
 
 #include "Global.hpp"
 #include "Item.hpp"
@@ -30,7 +30,7 @@ const EquipSlot slotFinger3 = 9;
 const EquipSlot slotFinger4 = 10;
 const EquipSlot slotMAX = slotFinger4;
 
-class Equipable : public Item {
+class ItemEquipable : public Item {
 public:
 
     static char equipSlotAbr(EquipSlot slot){
@@ -140,13 +140,13 @@ public:
         }
     }
 
-    static Equipable* cloneUnsafe(Equipable* oldE, Equipable* newE = nullptr);
+    static ItemEquipable* cloneUnsafe(ItemEquipable* oldE, ItemEquipable* newE = nullptr);
 
-    Equipable() : Item() {
+    ItemEquipable() : Item() {
 
     }
 
-    Equipable(string name, double weight);
+    ItemEquipable(string name, double weight);
 
     virtual int getItemTypeId() {
         return ITEM_TYPE_EQUIPABLE;
@@ -178,8 +178,16 @@ public:
 
     Abilities<int> minimumAbilities = Abilities<int>(0);
 
+    bool operator< (ItemEquipable& b){
+        if(this->getViableSlots().size() > 0 && b.getViableSlots().size() > 0){
+            return this->getViableSlots()[0] < b.getViableSlots()[0];
+        }else{
+            return this->getViableSlots().size() < b.getViableSlots().size();
+        }
+    }
+
 
 protected:
 };
 
-#endif /* defined(__Underneath__Equipable__) */
+#endif /* defined(__Underneath__ItemEquipable__) */

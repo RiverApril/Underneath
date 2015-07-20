@@ -1,27 +1,27 @@
 //
-//  Ranged.cpp
+//  ItemRanged.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 1/22/15.
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Ranged.hpp"
+#include "ItemRanged.hpp"
 #include "Utility.hpp"
 
-void Ranged::save(vector<unsigned char>* data) {
+void ItemRanged::save(vector<unsigned char>* data) {
     ItemWeapon::save(data);
 
     Utility::saveDouble(data, range);
 }
 
-void Ranged::load(unsigned char* data, int* position) {
+void ItemRanged::load(unsigned char* data, int* position) {
     ItemWeapon::load(data, position);
 
     range = Utility::loadDouble(data, position);
 }
 
-Ranged* Ranged::cloneUnsafe(Ranged* oldE, Ranged* newE) {
+ItemRanged* ItemRanged::cloneUnsafe(ItemRanged* oldE, ItemRanged* newE) {
 
     ItemWeapon::cloneUnsafe(oldE, newE);
 
