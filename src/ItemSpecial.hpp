@@ -40,6 +40,10 @@ public:
     virtual bool equalsExceptQty(Item* other);
 
     SpecialType specialty = 0;
+
+    bool operator< (ItemSpecial& b){
+        return this->specialty < b.specialty;
+    }
     
     
 protected:

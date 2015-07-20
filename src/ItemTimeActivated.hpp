@@ -45,6 +45,10 @@ public:
     double power = 1;
     double radius = 4;
 
+    bool operator< (ItemTimeActivated& b){
+        return this->timeActivatedType < b.timeActivatedType;
+    }
+
 
 protected:
 };

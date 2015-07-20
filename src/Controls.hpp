@@ -57,6 +57,7 @@ namespace Key {
     extern int dropAll;
     extern int equip;
     extern int equipPrimary;
+    extern int sortInv;
 
     //In chest
     extern int take;

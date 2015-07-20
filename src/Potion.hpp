@@ -55,6 +55,14 @@ public:
         return name;
     }
 
+    bool operator< (Potion& b){
+        if(this->effects.size() == 1 && b.effects.size() == 1){
+            return this->effects[0].eId < b.effects[0].eId;
+        }else{
+            return this->effects.size() < b.effects.size();
+        }
+    }
+
 protected:
 };
 

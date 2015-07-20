@@ -39,6 +39,7 @@ namespace Key {
     int dropAll = 'D';
     int equip = 'e';
     int equipPrimary = 'E';
+    int sortInv = 's';
 
     //In chest
     int take = 't';
@@ -69,6 +70,7 @@ vector<KeyBind> keybindings = {
     KeyBind("Transfer Item", &Key::take, keyCatUi),
     KeyBind("Transfer Stack", &Key::takeStack, keyCatUi),
     KeyBind("Transfer Inventory", &Key::takeAll, keyCatUi),
+    KeyBind("Sort Inventory", &Key::sortInv, keyCatUi),
 
     KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer),
     KeyBind("Open Debug Menu", &Key::debugMenu, keyCatPlayer)

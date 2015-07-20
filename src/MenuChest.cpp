@@ -36,7 +36,7 @@ namespace Ui {
 
         } else if (in == Key::equip) {
             if (selectedLeft) {
-                Equipable* equipable = dynamic_cast<Equipable*> (user->inventory[selected]);
+                ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (user->inventory[selected]);
                 if (equipable) {
                     EquipSlot slot = user->getSlot(equipable);
                     if(slot){

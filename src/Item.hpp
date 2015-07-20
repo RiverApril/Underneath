@@ -19,11 +19,11 @@ const int ITEM_TYPE_EQUIPABLE = 1;
 const int ITEM_TYPE_WEAPON = 2;
 const int ITEM_TYPE_RANGED = 3;
 const int ITEM_TYPE_COMBAT_SPELL = 4;
-const int ITEM_TYPE_POTION = 5;
-const int ITEM_TYPE_UTILITY_SPELL = 6;
-const int ITEM_TYPE_ITEMSPECIAL = 7;
-const int ITEM_TYPE_TIME_ACTIVATED = 8;
-const int ITEM_TYPE_ARMOR = 9;
+const int ITEM_TYPE_ARMOR = 5;
+const int ITEM_TYPE_POTION = 6;
+const int ITEM_TYPE_UTILITY_SPELL = 7;
+const int ITEM_TYPE_ITEMSPECIAL = 8;
+const int ITEM_TYPE_TIME_ACTIVATED = 9;
 
 class Item {
 public:
@@ -77,6 +77,10 @@ public:
 
     string name;
 
+    bool operator< (Item& b){
+        return this->getItemTypeId() < b.getItemTypeId();
+    }
+
 
 protected:
 
@@ -86,5 +90,9 @@ protected:
     static Item* cloneUnsafe(Item* oldE, Item* newE);
 
 };
+
+template <typename T> bool comparePointer(T* a, T* b){
+    return *a < *b;
+}
 
 #endif /* defined(__Underneath__Item__) */

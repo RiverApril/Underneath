@@ -77,6 +77,9 @@ namespace Ui {
         } else if (in == KEY_ESCAPE || in == Key::inventory) {
             closeThisMenu();
             return;
+        }else if (in == Key::sortInv){
+            std::sort(player->inventory.begin(), player->inventory.end(), comparePointer<Item>);
+            return;
         }
     }
 

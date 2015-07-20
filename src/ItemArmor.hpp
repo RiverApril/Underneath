@@ -101,6 +101,10 @@ public:
     vector<Enchantment> enchantments;
 
     vector<EquipSlot> viableSlots;
+
+    bool operator< (ItemArmor& b){
+        return this->viableSlots[0] < b.viableSlots[0];
+    }
     
 protected:
 };

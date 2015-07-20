@@ -64,6 +64,10 @@ public:
         return name;
     }
 
+    bool operator< (ItemUtilitySpell& b){
+        return this->spellEffect < b.spellEffect;
+    }
+
 protected:
 };
 
