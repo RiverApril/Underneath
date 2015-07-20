@@ -47,6 +47,7 @@ namespace Arts {
     extern int artGameOver;
 
     extern int artCoin;
+    extern int artSmallKey;
 
     extern int artScroll;
     extern int artScrollFire;

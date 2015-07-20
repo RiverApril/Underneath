@@ -183,7 +183,7 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
 
         level->currentWorld->currentPlayer->gainXp(xp);
 
-        vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand() % 10) == 0 ? 1 : 0, (rand() % 10) == 0 ? 1 : 0, (rand() % 5) == 0 ? 2 : 0);
+        vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand() % 10) == 0 ? 1 : 0, (rand() % 10) == 0 ? 1 : 0, (rand() % 5) == 0 ? 2 : 0, 20);
         //if(rand()%5==0){
         //drops.push_back(Item::clone(activeItemWeapon));
         //}

@@ -245,6 +245,14 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
         } else if (Tiles::tileList[tid]->hasFlag(tileFlagDoor)) {
             level->setTile(posOfTile, Tiles::tileOpenDoor);
             return interactDelay;
+        } else if (tid == Tiles::tileLockedDoor->getIndex()) {
+            if(containsItemEqualingExceptQty(ItemGenerator::iSmallKey, 1)){
+            	level->setTile(posOfTile, Tiles::tileOpenDoor);
+                consolef("Opened the door using up a %sKey%s.", Ui::colorCode(Ui::C_LIGHT_MAGENTA).c_str(), Ui::colorCode(Ui::C_WHITE).c_str());
+            	return interactDelay;
+            }else{
+                consolef("This door requires a %sKey%s.", Ui::colorCode(Ui::C_LIGHT_MAGENTA).c_str(), Ui::colorCode(Ui::C_WHITE).c_str());
+            }
         } else if (tid == Tiles::tileCrate->getIndex()) {
             level->setTile(posOfTile, Tiles::tileFloor);
             return interactDelay;

@@ -26,6 +26,7 @@ namespace Arts {
     int artGameOver;
 
     int artCoin;
+    int artSmallKey;
 
     int artScroll;
     int artScrollFire;
@@ -136,6 +137,7 @@ namespace Arts {
         Arts::artCrossbow = Arts::loadNew(ArtDir + "/", "crossbow");
 
         Arts::artCoin = Arts::loadNew(ArtDir + "/", "coin");
+        Arts::artSmallKey = Arts::loadNew(ArtDir + "/", "smallkey");
 
         Point2 compassInSize = Point2Neg1;
 
