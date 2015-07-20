@@ -49,6 +49,16 @@ namespace Ui {
                 MenuChest::handleInput(Key::take);
             }
 
+        } else if (in == Key::equipPrimary) {
+            ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (user->inventory[selected]);
+            if (equipable) {
+                EquipSlot slot = user->getSlot(equipable);
+                if(slot){
+                    user->equipItem(nullptr, slot);
+                }else{
+                    user->equipItem(equipable, equipable->getViableSlots()[0]);
+                }
+            }
         } else if (in == Key::take) {
             if (from->inventory.size() > 0 && selected < from->inventory.size()) {
                 Item* take;

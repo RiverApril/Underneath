@@ -79,7 +79,8 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
 
     genDebug("found path");
 
-    genDebug("Adding tile Entities...");
+    genDebug("Adding Tile Entities...");
+    int chestCount = 0;
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
 
@@ -95,6 +96,7 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
                 TEChest* te = new TEChest(Point2(i, j));
                 te->addItems(ItemGenerator::createRandLoots(difficulty, difficulty * 100, 5, 5, 5, 10));
                 tileEntityList.push_back(te);
+                chestCount++;
                 continue;
             }
 
@@ -113,6 +115,8 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
             }
         }
     }
+
+    debugf("Chest Count: %d", chestCount);
 
     setTile(stairUpPos, Tiles::tileStairUp);
     setTile(stairDownPos, Tiles::tileStairDown);
@@ -135,7 +139,7 @@ for(Point2 pe : path){
 
     //return stairUpPos;
 
-    genDebug("adding entities...");
+    genDebug("Adding Entities...");
 
     /*
 
@@ -455,7 +459,7 @@ namespace LevelGenerator {
             if (!addedWalls) {
                 if (rand() % 3 == 0 && r->radius.xPlusY() > 12) {
                     generateMaze(level, r);
-                    if (rand() % 3 == 0) {
+                    if (rand() % 2 == 0) {
                         level->setTile(r->center, Tiles::tileChest);
                     }
                     addedWalls = true;
