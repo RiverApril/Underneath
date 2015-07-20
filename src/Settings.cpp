@@ -11,7 +11,12 @@
 #include "Ui.hpp"
 #include "Utility.hpp"
 
-namespace Setting{
+namespace Settings{
+
+    vector<Setting*> settingList = {
+        new SettingBool("Debug Mode", &debugMode)
+    };
+    
 
     bool saveSettings(string path){
         FILE* file;
@@ -30,6 +35,15 @@ namespace Setting{
                 }else{
                     lines += to_string(*bind.key);
                 }
+                lines += "\n";
+            }
+
+            lines += "\n";
+
+            for(Setting* set : settingList){
+                lines += set->name;
+                lines += ":";
+                lines += set->stringValue();
                 lines += "\n";
             }
 
@@ -67,6 +81,17 @@ namespace Setting{
                                 } catch (Utility::ParseException) {
 
                                 }
+                            }
+                            break;
+                        }
+                    }
+
+                    for(Setting* setting : settingList){
+                        if(settingId.compare(setting->name) == 0){
+                            try{
+                                setting->setValue(line);
+                            }catch(Utility::ParseException){
+
                             }
                             break;
                         }

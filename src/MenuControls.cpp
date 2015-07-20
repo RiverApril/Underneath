@@ -21,7 +21,7 @@ namespace Ui {
 
     void MenuControls::handleInput(int in){
         if(in == KEY_ESCAPE){
-            Setting::saveSettings(UnderneathDir + "settings.txt");
+            Settings::saveSettings(UnderneathDir + "settings.txt");
             closeThisMenu();
             return;
         }else if(in == Key::uiUp){

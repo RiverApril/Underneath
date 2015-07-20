@@ -11,6 +11,7 @@
 #include "MenuGame.hpp"
 #include "Utility.hpp"
 #include "ItemGenerator.hpp"
+#include "Settings.hpp"
 
 
 
@@ -152,8 +153,9 @@ namespace Commands {
 
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
             if (argumentsRaw.length() == 0) {
-                printDebugEnabled = !printDebugEnabled;
-                console("Debug " + string(printDebugEnabled ? "Enabled" : "Disabled") + ".");
+                debugMode = !debugMode;
+                console("Debug " + string(debugMode ? "Enabled" : "Disabled") + ".");
+                Settings::saveSettings(UnderneathDir + "settings.txt");
                 return true;
             }
             return false;

@@ -12,6 +12,7 @@
 #include "Global.hpp"
 #include "Controls.hpp"
 #include "MenuControls.hpp"
+#include "MenuSettings.hpp"
 
 namespace Ui {
 
@@ -32,7 +33,7 @@ namespace Ui {
     }
 
     void MenuMain::handleInput(int in) {
-        const int maxUiSelection = 2;
+        const int maxUiSelection = 3;
 
         move(selection + 2, 0);
         clrtoeol();
@@ -50,6 +51,10 @@ namespace Ui {
                     break;
 
                 case 2:
+                    openMenu(new MenuSettings());
+                    break;
+
+                case 3:
                     running = false;
                     break;
 
@@ -92,12 +97,9 @@ namespace Ui {
         Arts::getArt(Arts::artTitle)->printCenter(a);
         a += Arts::getArt(Arts::artTitle)->getSize().y;
         printCenter(a++, "%sPlay%s", selection == 0 ? "- " : "  ", selection == 0 ? " -" : "  ");
-
-        //setColor(C_DARK_GRAY);
         printCenter(a++, "%sControls%s", selection == 1 ? "- " : "  ", selection == 1 ? " -" : "  ");
-        //setColor(C_BLACK);
-
-        printCenter(a++, "%sExit%s", selection == 2 ? "- " : "  ", selection == 2 ? " -" : "  ");
+        printCenter(a++, "%sSettings%s", selection == 2 ? "- " : "  ", selection == 2 ? " -" : "  ");
+        printCenter(a++, "%sExit%s", selection == 3 ? "- " : "  ", selection == 3 ? " -" : "  ");
 
         a += 4;
 

@@ -196,7 +196,9 @@ for(Point2 pe : path){
 
     map<string, int> entitiesGenerated;
 
-    int count = (rand() % (200)) + 100;
+    int maxCount = (size.x + size.y)/2;
+
+    int count = (rand() % (maxCount));
     for (int i = 0; i < count; i++) {
         EntityAi* e = EnemyGenerator::makeRandomEntity(difficulty);
         if(entitiesGenerated.count(e->getName())){

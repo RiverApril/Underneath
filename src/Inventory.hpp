@@ -57,6 +57,24 @@ struct Inventory {
         return false;
     }
 
+    virtual bool containsItemEqualingExceptQty(Item* item, int remove = 0){
+
+        forVector(inventory, i) {
+            Item* ie = inventory[i];
+            if (ie->equalsExceptQty(item)) {
+                if(ie->qty - remove >= 0){
+                    ie->qty -= remove;
+                    if(ie->qty == 0){
+                        inventory.erase(inventory.begin()+(long) i);
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
     virtual void addItems(vector<Item*> items) {
         for (Item* i : items) {
             addItem(i);

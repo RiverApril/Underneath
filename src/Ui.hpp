@@ -78,8 +78,6 @@ namespace Ui {
     extern string consoleInput;
     extern int consoleScroll;
 
-    extern bool printDebugEnabled;
-
 
 }
 

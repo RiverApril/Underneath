@@ -21,7 +21,7 @@
 vector<string> consoleBuffer;
 
 void debug(string s) {
-    if (Ui::printDebugEnabled) {
+    if (debugMode) {
         console("DEBUG: " + s);
     }
 }
@@ -92,7 +92,7 @@ namespace Ui {
 
     Point2 terminalSize;
 
-    bool printDebugEnabled = true;
+    bool debugMode = true;
 
     bool consoleInputMode = false;
     string consoleInput = "";

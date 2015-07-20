@@ -18,7 +18,7 @@
 namespace ItemGenerator {
 
     Item* iCoin;
-
+    Item* iSmallKey;
 
     vector<ItemArmorBase> armorList;
     vector<Condition> conditionList;
@@ -45,6 +45,9 @@ namespace ItemGenerator {
 
         iCoin = new Item("Coin", .01);
         iCoin->artIndex = Arts::artCoin;
+
+        iSmallKey = new Item("Key", .02);
+        iSmallKey->artIndex = Arts::artSmallKey;
 
         PotionBase potionHealth = atl(PotionBase({"Health Potion"}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100));
         PotionBase potionMana = atl(PotionBase({"Mana Potion"}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100));
@@ -196,12 +199,17 @@ namespace ItemGenerator {
         return armorList[i];
     }
 
-    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty) {
+    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty, int keyChance) {
         vector<Item*> items;
 
         if (goldMaxQty > 0) {
             Item* item = Item::clone(iCoin);
             item->qty = (rand() % (goldMaxQty))+1;
+            items.push_back(item);
+        }
+
+        if (keyChance > 0 && rand() % keyChance == 0) {
+            Item* item = Item::clone(iSmallKey);
             items.push_back(item);
         }
 

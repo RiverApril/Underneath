@@ -23,6 +23,7 @@ bool running;
 int nextUniqueId;
 
 bool godMode = false;
+bool debugMode = false;
 
 string CustomWorkingDirectory;
 string UnderneathDir;

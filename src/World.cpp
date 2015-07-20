@@ -326,7 +326,7 @@ namespace WorldLoader {
 
         World* world = new World(name);
 
-        world->currentLevel = new Level(world, "Floor0", Point2(300, 300), 1);
+        world->currentLevel = new Level(world, "Floor 1", Point2(100, 100), 1);
 
         srand(static_cast<unsigned int> (time(NULL)));
 

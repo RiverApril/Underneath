@@ -181,6 +181,7 @@ namespace ItemGenerator {
     extern vector<ScrollBase> scrollList;
 
     extern Item* iCoin;
+    extern Item* iSmallKey;
 
     extern ItemWeaponBase wKnife;
     extern ItemWeaponBase wSword;
@@ -198,7 +199,7 @@ namespace ItemGenerator {
     extern ItemWeaponBase wNatural;
 
 
-    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty);
+    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty, int keyMaxQty);
 
     Item* createRandAltLoot(int itemDifficulty);
 

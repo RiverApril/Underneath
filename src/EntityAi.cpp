@@ -85,7 +85,7 @@ void EntityAi::runAi(double time, Level* level) {
                 //speed.y = pos.y > lastKnownTargetPos.y ? -1 : (pos.y < lastKnownTargetPos.y ? 1 : 0);
                 vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid);
                 if(!path.empty()){
-                    if(Ui::printDebugEnabled){
+                    if(debugMode){
                         for(Point2 point : path){
                             EntityTimeActivated* e = new EntityTimeActivated("path", timeActivatedDud, 2, 0, 0, point);
                             e->fgColor = Ui::C_LIGHT_GREEN;
