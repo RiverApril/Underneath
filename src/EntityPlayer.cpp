@@ -11,7 +11,7 @@
 #include "EntityItem.hpp"
 #include "MenuChest.hpp"
 #include "Verbalizer.hpp"
-#include "Potion.hpp"
+#include "ItemPotion.hpp"
 #include "ItemUtilitySpell.hpp"
 #include "EnemyGenerator.hpp"
 #include "EntityTimeActivated.hpp"
@@ -76,7 +76,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
     if (item == nullptr || containsItem(item)) {
 
 
-        Potion* p = dynamic_cast<Potion*> (item);
+        ItemPotion* p = dynamic_cast<ItemPotion*> (item);
         if (p) {
             for (Effect e : p->effects) {
                 addEffect(e);

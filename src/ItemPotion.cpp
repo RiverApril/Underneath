@@ -1,15 +1,15 @@
 //
-//  Potion.cpp
+//  ItemPotion.cpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/2/15.
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#include "Potion.hpp"
+#include "ItemPotion.hpp"
 #include "Utility.hpp"
 
-void Potion::save(vector<unsigned char>* data) {
+void ItemPotion::save(vector<unsigned char>* data) {
     Item::save(data);
 
     Utility::saveInt(data, (int) effects.size());
@@ -18,7 +18,7 @@ void Potion::save(vector<unsigned char>* data) {
     }
 }
 
-void Potion::load(unsigned char* data, int* position) {
+void ItemPotion::load(unsigned char* data, int* position) {
     Item::load(data, position);
 
     int size = Utility::loadInt(data, position);
@@ -29,7 +29,7 @@ void Potion::load(unsigned char* data, int* position) {
     }
 }
 
-Potion* Potion::cloneUnsafe(Potion* oldE, Potion* newE) {
+ItemPotion* ItemPotion::cloneUnsafe(ItemPotion* oldE, ItemPotion* newE) {
 
     Item::cloneUnsafe(oldE, newE);
 

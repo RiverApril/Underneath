@@ -11,7 +11,7 @@
 
 
 #include "ItemCombatSpell.hpp"
-#include "Potion.hpp"
+#include "ItemPotion.hpp"
 #include "ItemUtilitySpell.hpp"
 #include "ItemArmor.hpp"
 

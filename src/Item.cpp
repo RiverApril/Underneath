@@ -11,7 +11,7 @@
 #include "ItemEquipable.hpp"
 #include "ItemWeapon.hpp"
 #include "ItemCombatSpell.hpp"
-#include "Potion.hpp"
+#include "ItemPotion.hpp"
 #include "ItemUtilitySpell.hpp"
 #include "ItemSpecial.hpp"
 #include "ItemTimeActivated.hpp"
@@ -69,7 +69,7 @@ Item* Item::clone(Item* oldI) {
             return makeNewAndClone<Item, ItemCombatSpell>(oldI);
 
         case ITEM_TYPE_POTION:
-            return makeNewAndClone<Item, Potion>(oldI);
+            return makeNewAndClone<Item, ItemPotion>(oldI);
 
 		case ITEM_TYPE_UTILITY_SPELL:
             return makeNewAndClone<Item, ItemUtilitySpell>(oldI);
@@ -120,7 +120,7 @@ Item* Item::loadNew(unsigned char* data, int* position) {
             break;
             
         case ITEM_TYPE_POTION:
-            e = new Potion();
+            e = new ItemPotion();
             break;
 
         case ITEM_TYPE_UTILITY_SPELL:

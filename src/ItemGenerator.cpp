@@ -12,7 +12,7 @@
 #include "ItemGenerator.hpp"
 #include "Art.hpp"
 #include "Entity.hpp"
-#include "Potion.hpp"
+#include "ItemPotion.hpp"
 #include "ItemTimeActivated.hpp"
 
 namespace ItemGenerator {

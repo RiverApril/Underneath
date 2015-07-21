@@ -12,7 +12,7 @@
 #include "EntityAi.hpp"
 #include "EntityPlayer.hpp"
 #include "Math.hpp"
-#include "Potion.hpp"
+#include "ItemPotion.hpp"
 #include "ItemUtilitySpell.hpp"
 #include "ItemSpecial.hpp"
 #include "ItemTimeActivated.hpp"
@@ -421,7 +421,7 @@ namespace Ui {
                 ItemWeapon* weapon = dynamic_cast<ItemWeapon*>(item);
                 ItemRanged* ranged = dynamic_cast<ItemRanged*>(item);
                 ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(item);
-                Potion* potion = dynamic_cast<Potion*>(item);
+                ItemPotion* potion = dynamic_cast<ItemPotion*>(item);
                 ItemUtilitySpell* utilitySpell = dynamic_cast<ItemUtilitySpell*>(item);
                 ItemSpecial* itemSpecial = dynamic_cast<ItemSpecial*>(item);
                 ItemTimeActivated* itemTimeActivated = dynamic_cast<ItemTimeActivated*>(item);

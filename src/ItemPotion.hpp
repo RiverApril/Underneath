@@ -1,36 +1,36 @@
 //
-//  Potion.h
+//  ItemPotion.h
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/2/15.
 //  Copyright (c) 2015 Braeden Atlee. All rights reserved.
 //
 
-#ifndef __Underneath__Potion__
-#define __Underneath__Potion__
+#ifndef __Underneath__ItemPotion__
+#define __Underneath__ItemPotion__
 
 #include "Global.hpp"
 #include "Item.hpp"
 #include "Effect.hpp"
 
-class Potion : public Item {
+class ItemPotion : public Item {
 public:
 
-    static Potion* cloneUnsafe(Potion* oldE, Potion* newE = nullptr);
+    static ItemPotion* cloneUnsafe(ItemPotion* oldE, ItemPotion* newE = nullptr);
 
-    Potion() : Item() {
-
-    }
-
-    Potion(string name, double weight) : Item(name, weight) {
+    ItemPotion() : Item() {
 
     }
 
-    Potion(Effect effect, string name, double weight) : Item(name, weight) {
+    ItemPotion(string name, double weight) : Item(name, weight) {
+
+    }
+
+    ItemPotion(Effect effect, string name, double weight) : Item(name, weight) {
         this->effects = {effect};
     }
 
-    Potion(vector<Effect> effects, string name, double weight) : Item(name, weight) {
+    ItemPotion(vector<Effect> effects, string name, double weight) : Item(name, weight) {
         this->effects = effects;
     }
 
@@ -43,7 +43,7 @@ public:
     virtual void load(unsigned char* data, int* position);
 
     virtual bool equalsExceptQty(Item* other) {
-        Potion* otherW = dynamic_cast<Potion*> (other);
+        ItemPotion* otherW = dynamic_cast<ItemPotion*> (other);
         return Item::equalsExceptQty(other)
                 && (otherW)
                 && (effects == otherW->effects);
@@ -55,7 +55,7 @@ public:
         return name;
     }
 
-    bool operator< (Potion& b){
+    bool operator< (ItemPotion& b){
         if(this->effects.size() == 1 && b.effects.size() == 1){
             return this->effects[0].eId < b.effects[0].eId;
         }else{
@@ -66,4 +66,4 @@ public:
 protected:
 };
 
-#endif /* defined(__Underneath__Potion__) */
+#endif /* defined(__Underneath__ItemPotion__) */
