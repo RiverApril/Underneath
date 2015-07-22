@@ -35,6 +35,10 @@ namespace Ui {
     }
 
     void Menu::_openUi() {
+        if(closeOnReopen){
+            closeThisMenu();
+            return;
+        }
         if (markAllForClosure && !(dynamic_cast<MenuMain*> (this))) {
             closeThisMenu();
             return;

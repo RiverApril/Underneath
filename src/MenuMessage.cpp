@@ -10,12 +10,14 @@
 
 namespace Ui {
 
-    MenuMessage::MenuMessage(string message) : Menu() {
+    MenuMessage::MenuMessage(string message, Menu* nextMenu) : Menu() {
         this->message = {message};
+        this->nextMenu = nextMenu;
     }
 
-    MenuMessage::MenuMessage(vector<string> message) : Menu() {
+    MenuMessage::MenuMessage(vector<string> message, Menu* nextMenu) : Menu() {
         this->message = message;
+        this->nextMenu = nextMenu;
     }
 
     void MenuMessage::handleInput(int in) {
@@ -23,6 +25,11 @@ namespace Ui {
             case '\n':
             case ' ':
             case KEY_ESCAPE:
+                if(nextMenu){
+                    closeOnReopen = true;
+                    openMenu(nextMenu);
+                    return;
+                }
                 closeThisMenu();
                 return;
 

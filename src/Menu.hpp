@@ -132,6 +132,7 @@ namespace Ui {
 
         bool printConsoleByDefault = true;
         bool markAllForClosure = false;
+		bool closeOnReopen = false;
 
     };
 

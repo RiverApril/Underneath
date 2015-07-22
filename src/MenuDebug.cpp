@@ -9,6 +9,7 @@
 #include "MenuDebug.hpp"
 #include "ItemGenerator.hpp"
 #include "Controls.hpp"
+#include "MenuMessage.hpp"
 
 namespace Ui {
 
@@ -21,6 +22,9 @@ namespace Ui {
     void MenuDebug::handleInput(int in){
         if(in == KEY_ESCAPE || in == Key::debugMenu){
             closeThisMenu();
+            return;
+        }else if(in == 'q'){
+            openMenu(new MenuMessage("Test 1", new MenuMessage("Test 2")));
             return;
         }
     }

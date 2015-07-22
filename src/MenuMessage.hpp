@@ -16,8 +16,8 @@ namespace Ui {
     class MenuMessage : public Menu {
     public:
 
-        MenuMessage(string message);
-        MenuMessage(vector<string> message);
+        MenuMessage(string message, Menu* nextMenu = nullptr);
+        MenuMessage(vector<string> message, Menu* nextMenu = nullptr);
 
         ~MenuMessage() {
         }
@@ -26,6 +26,8 @@ namespace Ui {
         void update();
 
         vector<string> message;
+
+        Menu* nextMenu = nullptr;
 
 
     };
