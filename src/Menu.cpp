@@ -23,17 +23,6 @@ namespace Ui {
         return s;
     }*/
 
-    string colorCode(const unsigned char fgc, const unsigned char bgc) {
-        string s = "&";
-        if(limitedColorMode){
-            s += (char)(unsigned char)(fgc | (bgc << 2));
-        }else{
-            s += (char)(unsigned char)(fgc | (bgc << 4));
-        }
-        //debugf("code: 0x%x, 0x%x, 0x%x", s[1], bgc, fgc);
-        return s;
-    }
-
     void Menu::_openUi() {
         if(closeOnReopen){
             closeThisMenu();

@@ -50,6 +50,9 @@ namespace Ui {
 
     int printEnchantments(int a, vector<Enchantment> enchantments, int columnX);
 
+	//string colorCode(const char c);
+	string colorCode(const unsigned char fgc, const unsigned char bgc = C_BLACK);
+
     bool addChColor(char c, bool* lookingForCode);
 
     int stringLengthWithColored(string s);

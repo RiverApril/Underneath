@@ -172,19 +172,23 @@ namespace Arts {
                 }
             }
 
-            for(int j=compassInSize.y;j<fullInSize.y;j+=compassInSize.y){
-                Art* a = new Art();
+			if (compassInSize.x > 0 && compassInSize.y > 0) {
 
-                for(int i=0;i<compassInSize.y;i++){
-                    if(j+i < fullCompassInArt->lines.size()){
-                        a->lines.push_back(fullCompassInArt->lines[j+i]);
-                    }
-                }
-                
-                a->calcSize();
-                artList.push_back(a);
-                compassInList.push_back(((int)artList.size())-1);
-            }
+				for (int j = compassInSize.y;j < fullInSize.y;j += compassInSize.y) {
+					Art* a = new Art();
+
+					for (int i = 0;i < compassInSize.y;i++) {
+						if (j + i < fullCompassInArt->lines.size()) {
+							a->lines.push_back(fullCompassInArt->lines[j + i]);
+						}
+					}
+
+					a->calcSize();
+					artList.push_back(a);
+					compassInList.push_back(((int)artList.size()) - 1);
+				}
+
+			}
 
         }
 

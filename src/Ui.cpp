@@ -117,6 +117,10 @@ namespace Ui {
         limitedColorMode = COLORS < 256;
 
         if (limitedColorMode) {
+
+			swap(C_DARK_BLUE, C_DARK_RED);
+			swap(C_DARK_YELLOW, C_DARK_CYAN);
+
             C_LIGHT_BLACK = C_DARK_BLACK;
             C_LIGHT_RED = C_DARK_RED;
             C_LIGHT_GREEN = C_DARK_GREEN;
@@ -251,6 +255,13 @@ namespace Ui {
         }
     }*/
 
+    string colorCode(const unsigned char fgc, const unsigned char bgc) {
+		string s = "&";
+		s += (char)(unsigned char)(fgc | (bgc << 4));
+		//debugf("code: 0x%x, 0x%x, 0x%x", s[1], bgc, fgc);
+		return s;
+	}
+
     bool addChColor(char c, bool* lookingForCode) {
         if (*lookingForCode) {
             *lookingForCode = false;
@@ -259,11 +270,7 @@ namespace Ui {
                 return true;
             } else {
                 unsigned char uc = (unsigned char)c;
-                if(limitedColorMode){
-                    setColor(uc & 0x7, (uc >> 2) & 0x7);
-                }else{
-                    setColor(uc & 0xF, (uc >> 4) & 0xF);
-                }
+                setColor(uc & 0xF, (uc >> 4) & 0xF);
                 //consolef("uc:0x%x, msd:0x%x, lsd:0x%x", uc, uc & 0xF, uc >> 4);
                 return false;
             }

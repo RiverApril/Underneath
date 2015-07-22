@@ -43,9 +43,6 @@ const char C_CODE_BLACK = C_CODE_DARK_BLACK;*/
 
 namespace Ui {
 
-    //string colorCode(const char c);
-    string colorCode(const unsigned char fgc, const unsigned char bgc = C_BLACK);
-
     class Menu;
 
     class Menu {
