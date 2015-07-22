@@ -180,7 +180,7 @@ public:
         }
         return 0;
     }
-    
+
     double getAttackMultiplierFromEffectsAndItemArmor(DamageType damType){
         double d = 1;
         for(Effect eff : effects){
@@ -218,10 +218,7 @@ protected:
     bool outOfCombatHealing = false;
 
     map<EquipSlot, ItemEquipable*> equipedItems;
-
-
-    //Item* hotbar[10] = {nullptr};
-
+    
     double useDelay(Item* item);
 
     void setNextLevelXp() {

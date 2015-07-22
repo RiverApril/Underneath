@@ -36,7 +36,7 @@ $(PROGRAM_NAME): $(NAME)
 mingw32 : CPPC := i686-w64-mingw32-g++
 mingw32 : NAME := $(NAME)_MINGW32.exe
 mingw32 : CPP_FLAGS := -g -lstdc++ -std=c++11
-mingw32 : LIB_FLAGS := -lpdcurses -static-libgcc -static-libstdc++ -lpthread 
+mingw32 : LIB_FLAGS := -lpdcurses -static-libgcc -static-libstdc++ -lpthread
 
 
 all: clean $(NAME)
@@ -44,7 +44,11 @@ all: clean $(NAME)
 $(NAME): $(OBJS)
 	$(CPPC) $(CPP_FLAGS) $(OBJS) -o $(NAME) $(LIB_FLAGS)
 
-$(OBJSLASH)%.o: $(SRCSLASH)%.cpp
+$(OBJSLASH)main.o:
+	@$(MKDIR) -p $(OBJSLASH)
+	$(CPPC) $(CPP_FLAGS) -c $(SRCSLASH)main.cpp -o $@
+
+$(OBJSLASH)%.o: $(SRCSLASH)%.cpp $(SRCSLASH)%.hpp
 	@$(MKDIR) -p $(OBJSLASH)
 	$(CPPC) $(CPP_FLAGS) -c $< -o $@
 
@@ -53,4 +57,3 @@ clean:
 	@-$(RM) $(OBJS)
 
 mingw32: $(NAME)
-
