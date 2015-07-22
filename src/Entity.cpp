@@ -12,6 +12,7 @@
 #include "EntityPlayer.hpp"
 #include "EntityItem.hpp"
 #include "EntityTimeActivated.hpp"
+#include "EntityShop.hpp"
 
 #include "Level.hpp"
 #include "Math.hpp"
@@ -130,6 +131,9 @@ Entity* Entity::clone(Entity* oldE) {
         case ENTITY_TYPE_TIME_ACTIVATED:
             return makeNewAndClone<Entity, EntityTimeActivated>(oldE);
 
+        case ENTITY_TYPE_SHOP:
+            return makeNewAndClone<Entity, EntityShop>(oldE);
+
         default:
             throw Utility::FileExceptionLoad("Entity type unknown: " + to_string(type));
             return nullptr;
@@ -198,6 +202,9 @@ Entity* Entity::loadNew(unsigned char* data, int* position) {
             break;
         case ENTITY_TYPE_TIME_ACTIVATED:
             e = new EntityTimeActivated();
+            break;
+        case ENTITY_TYPE_SHOP:
+            e = new EntityShop();
             break;
 
         default:

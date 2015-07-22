@@ -22,6 +22,7 @@ const int ENTITY_TYPE_AIENTITY = 2;
 const int ENTITY_TYPE_PLAYER = 3;
 const int ENTITY_TYPE_ITEMENTITY = 4;
 const int ENTITY_TYPE_TIME_ACTIVATED = 5;
+const int ENTITY_TYPE_SHOP = 6;
 
 class Entity : Icon {
 public:

@@ -187,6 +187,7 @@ EntityAlive* EntityAlive::cloneUnsafe(EntityAlive* oldE, EntityAlive* newE) {
     newE->mp = oldE->mp;
     newE->viewDistance = oldE->viewDistance;
 
+    newE->removeAllItems(true);
     forVector(oldE->inventory, i) {
         newE->inventory.push_back(Item::clone(oldE->inventory[i]));
     }
