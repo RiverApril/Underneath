@@ -223,7 +223,7 @@ namespace ItemGenerator {
 
     ItemWeapon* createRandItemWeapon(int itemDifficulty);
 
-    Potion* createPotionFromBase(PotionBase pb, int itemDifficulty);
+    ItemPotion* createPotionFromBase(PotionBase pb, int itemDifficulty);
 
     ItemUtilitySpell* createScrollFromBase(ScrollBase sb);
 
