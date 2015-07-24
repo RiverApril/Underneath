@@ -331,7 +331,7 @@ namespace Ui {
             a += printMultiLineString(a, columnX, formatString("Enchantments:"));
             for (Enchantment e : enchantments) {
                 setColor(effectColor(e.effectId, e.meta));
-                a += printMultiLineString(a, columnX, formatString("   %s %s (1/%d for %.2f)", enchantmentName(e).c_str(), Utility::intToRomanNumerals(e.power).c_str(), e.chance, e.time));
+                a += printMultiLineString(a, columnX, formatString("   %s %s (1/%d for %.2f)", enchantmentName(e).c_str(), Utility::intToRomanNumerals((int)e.power).c_str(), e.chance, e.time));
 
             }
             a++;
@@ -600,7 +600,9 @@ namespace Ui {
                             
                             
                             Arts::getArt(Arts::compassOut)->printAt(Point2(columnX, a));
-                            Arts::getArt(Arts::compassInList[frame])->printAt(Point2(columnX, a)+Arts::compassInOffset);
+							if (Arts::compassInList.size() > frame) {
+								Arts::getArt(Arts::compassInList[frame])->printAt(Point2(columnX, a) + Arts::compassInOffset);
+							}
                             break;
                         }
                     }
