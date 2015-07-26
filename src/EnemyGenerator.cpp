@@ -28,7 +28,7 @@ namespace EnemyGenerator {
         goblinScout = atl(new WeightedEnemy(100, "Goblin Scout", 'g', aiAttackEntityPlayer, 50, ItemGenerator::wKnife, "", Ui::C_LIGHT_GREEN, 1.0));
         goblinScout->weaknesses.push_back(Weakness(damPoison, 2));
 
-        goblinWarrier = atl(new WeightedEnemy(50, "Goblin Warrier", 'w', aiAttackEntityPlayer, 75, ItemGenerator::wSword, "", Ui::C_DARK_GREEN, 1.0));
+        goblinWarrier = atl(new WeightedEnemy(50, "Goblin Warrior", 'w', aiAttackEntityPlayer, 75, ItemGenerator::wSword, "", Ui::C_DARK_GREEN, 1.0));
         goblinWarrier->weaknesses.push_back(Weakness(damPoison, 2));
 
         goblinArcher = atl(new WeightedEnemy(50, "Goblin Archer", 'a', aiAttackEntityPlayer, 25, ItemGenerator::wBow, "", Ui::C_LIGHT_GREEN, 1.0));
@@ -52,7 +52,7 @@ namespace EnemyGenerator {
         myconid->weaknesses.push_back(Weakness(damFire, 4));
 
 
-        
+
         mimic = new WeightedEnemy(0, "Mimic", '+', aiAttackEntityPlayer, 75, ItemGenerator::wNatural, "Teeth", Ui::C_LIGHT_GREEN, 0);
         mimic->weaknesses.push_back(Weakness(damFire, 4));
 
