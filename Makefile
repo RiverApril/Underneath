@@ -39,6 +39,13 @@ mingw32 : CPP_FLAGS := -g -lstdc++ -std=c++11
 mingw32 : LIB_FLAGS := -lpdcurses -static-libgcc -static-libstdc++ -lpthread
 
 
+lightCurses : CPP_FLAGS += -D useSDLLightCurses
+lightCurses : LIB_FLAGS := -lSDL2 -lSDL2_image
+
+
+mingw32: $(NAME)
+lightCurses: $(NAME)
+
 all: clean $(NAME)
 
 $(NAME): $(OBJS)
@@ -55,5 +62,3 @@ $(OBJSLASH)%.o: $(SRCSLASH)%.cpp $(SRCSLASH)%.hpp
 clean:
 	@-$(RM) $(NAME)
 	@-$(RM) $(OBJS)
-
-mingw32: $(NAME)

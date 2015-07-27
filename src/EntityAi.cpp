@@ -95,7 +95,7 @@ void EntityAi::runAi(double time, Level* level) {
                     debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
                     speed = path[0]-pos;
                 }
-                
+
             }
 
         }
@@ -106,7 +106,7 @@ void EntityAi::runAi(double time, Level* level) {
     if (!moved) {
         moved = tryToMoveRelative(speed.xOnly(), level) || tryToMoveRelative(speed.yOnly(), level);
     }
-    
+
     if (ai & aiAttackEntityPlayer) {
         if(!moved && speed != Point2Zero){
             if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
@@ -170,11 +170,11 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
     while (lastMoveTime + moveDelay <= time) {
         runAi(time, level);
         lastMoveTime += moveDelay;
-        if (level->canSee(target->pos, pos, level->currentWorld->currentPlayer->viewDistance, true)) {
+        /*if (level->canSee(target->pos, pos, level->currentWorld->currentPlayer->viewDistance, true)) {
 
             level->renderMenuGame(lastMoveTime);
             //usleep(10 * 1000);
-        }
+        }*/
     }
 
     if (dead) {

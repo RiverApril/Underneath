@@ -31,12 +31,16 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#ifdef useSDLLightCurses
+    #include "LC_SDLLightcurses.hpp"
+    extern int ESCDELAY;
+#endif
+
 #ifdef _WIN32
+
     #include <memory>
     #include <direct.h>
     #include <stdint.h>
-    #include "curses.h"
-    extern int ESCDELAY;
     #define GetCurrentDir _getcwd
     int mkdir(const char *filename, int useless);
 
@@ -47,22 +51,22 @@
         return ss.str();
     }
 
+    #ifndef useSDLLightCurses
+        #include "curses.h"
+        extern int ESCDELAY;
+    #endif
+
 #else
+
     #include <unistd.h>
-    #include <ncurses.h>
+
     #define GetCurrentDir getcwd
+
+    #ifndef useSDLLightCurses
+        #include <ncurses.h>
+    #endif
+
 #endif
-
-
-#undef COLOR_WHITE
-#undef COLOR_RED
-#undef COLOR_BLUE
-#undef COLOR_GREEN
-#undef COLOR_YELLOW
-#undef COLOR_MAGENTA
-#undef COLOR_CYAN
-#undef COLOR_BLUE
-#undef COLOR_BLACK
 
 #define forVector(list, i) for(int i=0;i<list.size();i++)
 

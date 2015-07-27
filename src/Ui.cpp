@@ -191,7 +191,7 @@ namespace Ui {
         }
         attrset(getColorPair(fg, bg) | attr);
     }
-    
+
     int getColorPair(Color fg, Color bg){
         return COLOR_PAIR(fg + (bg * (limitedColorMode?0x8:0x10)));
     }
@@ -438,7 +438,7 @@ namespace Ui {
                 a += printMultiLineString(a, columnX, formatString("Name: %s%s", item->name.c_str(), item->qty == 1 ? "" : (formatString(" x %d", item->qty).c_str())));
 
                 setColor(C_LIGHT_GRAY, C_BLACK);
-                
+
                 if(equipable){
                     //a+= printMultiLineString(a, columnX, "EQUIPABLE");
 
@@ -595,10 +595,10 @@ namespace Ui {
                             }else{
                                 frame = 0;
                             }
-                            
+
                             //consolef("%f", angle);
-                            
-                            
+
+
                             Arts::getArt(Arts::compassOut)->printAt(Point2(columnX, a));
 							if (Arts::compassInList.size() > frame) {
 								Arts::getArt(Arts::compassInList[frame])->printAt(Point2(columnX, a) + Arts::compassInOffset);

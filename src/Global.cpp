@@ -16,6 +16,10 @@
     }
 #endif
 
+#ifdef useSDLLightCurses
+    int ESCDELAY;
+#endif
+
 char workingDirectory[FILENAME_MAX];
 
 bool running;
