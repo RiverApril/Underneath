@@ -25,12 +25,6 @@ int main(int argc, const char** argv) {
     }
 
 
-    cout << endl << "Press enter to start Underneath..." << endl;
-    cin.ignore();
-
-
-
-
     debug("Working Directory: " + (string(workingDirectory)));
 
     CustomWorkingDirectory = Utility::readTextFile("customUnderneathWorkingDirectory.txt", "./");

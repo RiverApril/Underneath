@@ -38,8 +38,13 @@ namespace MainWindow{
     int rgbColorWhite;
     int rgbColorBlack;
 
+    bool shiftIsDown = false;
+
     //From SDL docs
     Uint32 getpixel(SDL_Surface *surface, int x, int y) {
+        if(x > surface->w || y > surface->h){
+            return 0;
+        }
         int bpp = surface->format->BytesPerPixel;
         /* Here p is the address to the pixel we want to retrieve */
         Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
@@ -70,6 +75,9 @@ namespace MainWindow{
     }
 
     void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel) {
+        if(x > surface->w || y > surface->h){
+            return;
+        }
         int bpp = surface->format->BytesPerPixel;
         /* Here p is the address to the pixel we want to set */
         Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
@@ -109,7 +117,7 @@ namespace MainWindow{
             case 0x2: //Dark Green
             case 0x4: //Dark Blue
             case 0x6: //Dark Cyan
-                return 0;
+                return 1;
             case 0x1: //Dark Red
             case 0x3: //Dark Yellow
             case 0x5: //Dark Magenta
@@ -124,13 +132,14 @@ namespace MainWindow{
             case 0xA: //Light Green
             case 0xC: //Light Blue
             case 0xE: //Light Cyan
-                return 0;
+                return 1;
             case 0x9: //Light Red
             case 0xB: //Light Yellow
             case 0xD: //Light Magenta
             case 0xF: //Light White
-                return 0xFF;
+                return 0xFE;
         }
+        return 1;
     }
 
     int greenFromCode(int colorCode){
@@ -161,6 +170,7 @@ namespace MainWindow{
             case 0xF: //Light White
                 return 0xFE;
         }
+        return 1;
     }
 
     int blueFromCode(int colorCode){
@@ -191,6 +201,7 @@ namespace MainWindow{
             case 0xF: //Light White
                 return 0xFE;
         }
+        return 1;
     }
 
 
@@ -375,12 +386,82 @@ namespace MainWindow{
                     case SDLK_BACKSPACE:
                         return KEY_BACKSPACE;
 
+                    case SDLK_LSHIFT:
+                    case SDLK_RSHIFT:
+                        shiftIsDown = true;
+                        return ERR;
+
                     default:
                         if(e.key.keysym.sym >= 32 && e.key.keysym.sym <= 127){
+                            if(shiftIsDown){
+                                if(e.key.keysym.sym >= 'a' && e.key.keysym.sym <= 'z'){
+                                    return e.key.keysym.sym += ('A'-'a');
+                                }
+                                switch (e.key.keysym.sym) {
+                                    case '`':
+                                        return '~';
+                                    case '1':
+                                        return '!';
+                                    case '2':
+                                        return '@';
+                                    case '3':
+                                        return '#';
+                                    case '4':
+                                        return '$';
+                                    case '5':
+                                        return '%';
+                                    case '6':
+                                        return '^';
+                                    case '7':
+                                        return '&';
+                                    case '8':
+                                        return '*';
+                                    case '9':
+                                        return '(';
+                                    case '0':
+                                        return ')';
+                                    case '-':
+                                        return '_';
+                                    case '=':
+                                        return '+';
+                                    case '[':
+                                        return '{';
+                                    case ']':
+                                        return '}';
+                                    case '\\':
+                                        return '|';
+                                    case ';':
+                                        return ':';
+                                    case '\'':
+                                        return '"';
+                                    case ',':
+                                        return '<';
+                                    case '.':
+                                        return '>';
+                                    case '/':
+                                        return '?';
+                                        
+                                    default:
+                                        break;
+                                }
+                            }
                             return e.key.keysym.sym;
                         }else{
                             return ERR;
                         }
+                }
+                break;
+            }
+            case SDL_KEYUP:{
+                switch (e.key.keysym.sym) {
+
+                    case SDLK_LSHIFT:
+                    case SDLK_RSHIFT:
+                        shiftIsDown = true;
+                        return ERR;
+
+                    default:
+                        return ERR;
                 }
                 break;
             }
@@ -532,6 +613,7 @@ int clrtobot(){
 
 int refresh(){
     update();
+    return 0;
 }
 
 int endwin(){
@@ -549,10 +631,12 @@ int getcury(int scr){
 
 int bkgd(int c){
     backgroundColor = c;
+    return 0;
 }
 
 int init_pair(int i, int a, int b){
     //Dummy
+    return 0;
 }
 
 int getmaxx(int scr){
@@ -565,6 +649,7 @@ int getmaxy(int scr){
 
 int attrset(int attr){
     currentAttr = attr;
+    return 0;
 }
 
 #endif

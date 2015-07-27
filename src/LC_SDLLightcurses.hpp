@@ -65,6 +65,9 @@ namespace MainWindow{
     bool initMedia();
     //SDL_Surface* loadImage(const char* path);
 
+    Uint32 getpixel(SDL_Surface *surface, int x, int y);
+    void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
+
     void operationThreadFunction();
 
     int getCode();
