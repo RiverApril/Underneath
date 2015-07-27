@@ -39,6 +39,7 @@ mingw32 : CPP_FLAGS := -g -lstdc++ -std=c++11
 mingw32 : LIB_FLAGS := -lpdcurses -static-libgcc -static-libstdc++ -lpthread
 
 
+lightCurses : NAME := $(PROGRAM_NAME)_SDL_BUILD_$(PLATFORM)
 lightCurses : CPP_FLAGS += -D useSDLLightCurses
 lightCurses : LIB_FLAGS := -lSDL2 -lSDL2_image
 

@@ -1,4 +1,5 @@
 
+#ifdef useSDLLightCurses
 #include "LC_SDLLightcurses.hpp"
 
 namespace MainWindow{
@@ -12,14 +13,19 @@ namespace MainWindow{
 
     int cursor = 0;
 
-    int width = 80;
-    int height = 60;
+    int width = 100;
+    int height = 30;
 
     std::vector<char> screenCharBuffer = std::vector<char>(width * height);
     std::vector<int> screenAttrBuffer = std::vector<int>(width * height);
 
-    int charHeight = 8;
-    int charWidth = 8;
+    int charWidth = 7;
+    int charHeight = 14;
+
+    int imageCharsPerLine = 16;
+    int imageLineCount = 16;
+    int imageCharWidth = 7;
+    int imageCharHeight = 14;
 
     bool quit = false;
 
@@ -133,7 +139,7 @@ namespace MainWindow{
             case 0x1: //Dark Red
             case 0x4: //Dark Blue
             case 0x5: //Dark Magenta
-                return 0;
+                return 1;
             case 0x2: //Dark Green
             case 0x3: //Dark Yellow
             case 0x6: //Dark Cyan
@@ -148,12 +154,12 @@ namespace MainWindow{
             case 0x9: //Light Red
             case 0xC: //Light Blue
             case 0xD: //Light Magenta
-                return 0;
+                return 1;
             case 0xA: //Light Green
             case 0xB: //Light Yellow
             case 0xE: //Light Cyan
             case 0xF: //Light White
-                return 0xFF;
+                return 0xFE;
         }
     }
 
@@ -163,7 +169,7 @@ namespace MainWindow{
             case 0x2: //Dark Green
             case 0x1: //Dark Red
             case 0x3: //Dark Yellow
-                return 0;
+                return 1;
             case 0x4: //Dark Blue
             case 0x6: //Dark Cyan
             case 0x5: //Dark Magenta
@@ -178,12 +184,12 @@ namespace MainWindow{
             case 0xA: //Light Green
             case 0x9: //Light Red
             case 0xB: //Light Yellow
-                return 0;
+                return 1;
             case 0xC: //Light Blue
             case 0xE: //Light Cyan
             case 0xD: //Light Magenta
             case 0xF: //Light White
-                return 0xFF;
+                return 0xFE;
         }
     }
 
@@ -211,6 +217,10 @@ namespace MainWindow{
                 }
             }
         }
+
+        //for(int i=32;i<128;i++){
+            //printf("%c%s", i, i%16==15?"\n":"");
+        //}
 
         return success;
     }
@@ -243,10 +253,10 @@ namespace MainWindow{
         for(int i=0;i<width;i++){
             for(int j=0;j<height;j++){
 
-                c = ((i*width)+j);
+                c = ((j*width)+i);
 
-                src.x = (((int)screenCharBuffer[c])%16)*8;
-                src.y = (((int)screenCharBuffer[c])/16)*8;
+                src.x = (((int)screenCharBuffer[c]-32)%imageCharsPerLine)*imageCharWidth;
+                src.y = (((int)screenCharBuffer[c]-32)/imageLineCount)*imageCharHeight;
 
                 dst.x = (c%width)*charWidth;
                 dst.y = (c/width)*charHeight;
@@ -256,8 +266,12 @@ namespace MainWindow{
                 SDL_LockSurface(mainScreenSurface);
 
 
-                fgColorCode = ((screenAttrBuffer[c] & A_COLOR) >> 17) & 0x10;
-                bgColorCode = (((screenAttrBuffer[c] & A_COLOR) >> 17) >> 4) & 0x10;
+                fgColorCode = ((screenAttrBuffer[c] & A_COLOR) >> 17) & 0xF;
+                bgColorCode = (((screenAttrBuffer[c] & A_COLOR) >> 17) >> 4) & 0xF;
+
+                //if((fgColorCode != 0x10 && fgColorCode != 0x0) || (bgColorCode != 0x10 && bgColorCode != 0x0)){
+                    //printf("Color Codes: 0x%X, 0x%X\n", fgColorCode, bgColorCode);
+                //}
 
                 if(fgColorCode == 0 && bgColorCode == 0){
                     fgColorCode = 0xF;
@@ -324,35 +338,54 @@ namespace MainWindow{
 
         switch(e.type){
             case SDL_QUIT:{
-                return KEY_ESCAPE;
+                return KEY_EXIT;
             }
             case SDL_WINDOWEVENT:{
                 if(e.window.event == SDL_WINDOWEVENT_RESIZED){
                     width = (int)ceil(e.window.data1 / (double)charWidth);
                     height = (int)ceil(e.window.data2 / (double)charHeight);
+                    SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
+                    mainScreenSurface = SDL_GetWindowSurface(mainWindow);
                     screenCharBuffer = std::vector<char>(width * height);
                     screenAttrBuffer = std::vector<int>(width * height);
                     return KEY_RESIZE;
                 }
-                break;
+                return ERR;
             }
             case SDL_KEYDOWN:{
                 switch(e.key.keysym.sym){
                     case SDLK_UP:
                         return KEY_UP;
+
                     case SDLK_DOWN:
                         return KEY_DOWN;
+
                     case SDLK_LEFT:
                         return KEY_LEFT;
+
                     case SDLK_RIGHT:
                         return KEY_RIGHT;
+
                     case SDLK_RETURN:
                         return '\n';
 
+                    case SDLK_ESCAPE:
+                        return KEY_ESCAPE;
+
+                    case SDLK_BACKSPACE:
+                        return KEY_BACKSPACE;
+
                     default:
-                        return e.key.keysym.sym;
+                        if(e.key.keysym.sym >= 32 && e.key.keysym.sym <= 127){
+                            return e.key.keysym.sym;
+                        }else{
+                            return ERR;
+                        }
                 }
                 break;
+            }
+            default:{
+                return ERR;
             }
         }
     }
@@ -394,7 +427,10 @@ void timeout(int timeout){
 }
 
 int getch(){
-    return MainWindow::getCode();
+    update();
+    int c = MainWindow::getCode();
+    //if(c!=-1)printf("Key code: 0x%X\n", c);
+    return c;
 }
 
 int	move(int y, int x){
@@ -451,10 +487,10 @@ int	mvprintw(int y, int x, const char * s, ...){
 }
 
 int	hline(const char c, int l){
-    for(int i=0;cursor%width>0 && i<l;cursor++){
+    for(int i=0;cursor%width>0 && i<l;i++){
         screenCharBuffer[cursor] = c;
         screenAttrBuffer[cursor] = currentAttr;
-        i++;
+        cursor++;
     }
     return 0;
 }
@@ -465,7 +501,7 @@ int	mvhline(int y, int x, const char c, int l){
 }
 
 int	vline(const char c, int l){
-    for(int i=0;cursor>0 && i<l;cursor+=width){
+    for(int i=0;cursor<width*height && i<l;cursor+=width){
         screenCharBuffer[cursor] = c;
         screenAttrBuffer[cursor] = currentAttr;
         i++;
@@ -530,3 +566,5 @@ int getmaxy(int scr){
 int attrset(int attr){
     currentAttr = attr;
 }
+
+#endif

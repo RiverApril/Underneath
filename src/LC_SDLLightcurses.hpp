@@ -1,4 +1,5 @@
 
+#ifdef useSDLLightCurses
 #ifndef __SDLCursesLight__lightcurses__
 #define __SDLCursesLight__lightcurses__
 
@@ -44,6 +45,7 @@ Only designed to be used with Underneath
 #define KEY_RIGHT 0x105
 #define KEY_BACKSPACE 0x107
 #define KEY_ENTER 0x157
+#define KEY_EXIT 0x169
 #define ERR (-1)
 
 #define A_BLINK 0x00000800
@@ -102,3 +104,4 @@ int attrset(int);
 
 
 #endif /* defined(__SDLCursesLight__lightcurses__) */
+#endif

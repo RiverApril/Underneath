@@ -58,6 +58,8 @@ namespace Ui {
                     move(0, 0);
                     clrtobot();
                     break;
+                case KEY_EXIT:
+                    running = false;
             }
             if (!consoleHandleInput(in)) {
                 switch (in) {
