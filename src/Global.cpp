@@ -14,10 +14,10 @@
     int mkdir(const char *filename, int useless) {
         return mkdir(filename);
     }
-#endif
-
-#ifdef useSDLLightCurses
-    int ESCDELAY;
+#else
+	#ifdef useSDLLightCurses
+		int ESCDELAY;
+	#endif
 #endif
 
 char workingDirectory[FILENAME_MAX];

@@ -71,7 +71,7 @@ else:
 objectDirectory += "/"+executableName
 
 
-cppList = glob.glob(sourceDirectory+"/*."+sourceExtention)
+cppList = [a.replace("\\", "/") for a in glob.glob(sourceDirectory+"/*."+sourceExtention)]
 hppList = [a.replace("."+sourceExtention, "."+headerExtention) for a in cppList]
 oppList = [a.replace(sourceDirectory+"/", objectDirectory+"/") for a in [a.replace("."+sourceExtention, "."+objectExtention) for a in cppList]]
 
