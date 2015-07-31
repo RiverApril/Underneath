@@ -40,7 +40,7 @@ namespace Arts {
     int artPotion2;
     int artPotion3;
     int artPotion4;
-    
+
     int artBomb;
 
     int artKnife;
@@ -98,7 +98,7 @@ namespace Arts {
         Arts::artPotion2 = Arts::loadNew(ArtDir + "/", "potion2");
         Arts::artPotion3 = Arts::loadNew(ArtDir + "/", "potion3");
         Arts::artPotion4 = Arts::loadNew(ArtDir + "/", "potion4");
-        
+
         Arts::artBomb = Arts::loadNew(ArtDir + "/", "bomb");
 
         Arts::artKnife = Arts::loadNew(ArtDir + "/", "knife");
@@ -264,7 +264,7 @@ namespace Arts {
             fclose(file);
         } else {
             debug("Failed to load: " + path);
-            
+
             return -1;
         }
         art->calcSize();
