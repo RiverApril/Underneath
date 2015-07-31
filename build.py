@@ -65,6 +65,7 @@ elif systemName == "Darwin":
     executableName += "_OSX_"+machine
 elif systemName == "Windows":
     executableName += "_Windows_"+machine+".exe"
+    libraryFlags = "-lpdcurses"
 else:
     executableName += "_"+systemName+"_"+machine
 
