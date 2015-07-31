@@ -51,12 +51,10 @@ compileAll = args.all
 
 if args.sdl:
     executableName += "_SDL"
-    objectDirectory += "/"+executableName
     compilerFlags += " -D useSDLLightCurses"
     libraryFlags = "-lSDL2 -lSDL2_image"
 else:
     executableName += "_Standard"
-    objectDirectory += "/"+executableName
 
 
 if systemName == "Linux":
@@ -68,6 +66,8 @@ elif systemName == "Windows":
 else:
     executableName += "_"+systemName+"_"+machine
 
+
+objectDirectory += "/"+executableName
 
 
 cppList = glob.glob(sourceDirectory+"/*."+sourceExtention)
