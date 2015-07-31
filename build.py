@@ -49,13 +49,13 @@ compileAll = args.all
 
 
 if args.sdl:
-executableName += "_SDL"
-objectDirectory += "/"+executableName
-compilerFlags += " -D useSDLLightCurses"
+    executableName += "_SDL"
+    objectDirectory += "/"+executableName
+    compilerFlags += " -D useSDLLightCurses"
 libraryFlags = "-lSDL2 -lSDL2_image"
 else:
-executableName += "_Standard"
-objectDirectory += "/"+executableName
+    executableName += "_Standard"
+    objectDirectory += "/"+executableName
 
 
 if systemName == "Linux":
