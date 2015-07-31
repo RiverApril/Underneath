@@ -23,6 +23,7 @@ def mkdir_p(path):
 parser = argparse.ArgumentParser(description="Compile Underneath.")
 parser.add_argument("-s", "--sdl", action="store_true")
 parser.add_argument("-a", "--all", action="store_true")
+parser.add_argument("-l", "--linkonly", action="store_true")
 
 args = parser.parse_args()
 
@@ -80,21 +81,21 @@ mkdir_p(objectDirectory)
 if os.path.isfile(executableName):
     executableModifiedDate = modification_date(executableName)
 
+if not args.linkonly:
+    print("Building: "+executableName);
 
-print("Building: "+executableName);
+    for i in range(len(cppList)):
+        sourceFileDate = modification_date(cppList[i])
 
-for i in range(len(cppList)):
-    sourceFileDate = modification_date(cppList[i])
+        headerFileDate = datetime.datetime.min
+        if os.path.isfile(hppList[i]):
+            headerFileDate = modification_date(hppList[i])
 
-    headerFileDate = datetime.datetime.min
-    if os.path.isfile(hppList[i]):
-        headerFileDate = modification_date(hppList[i])
-
-    if executableModifiedDate<sourceFileDate or executableModifiedDate<headerFileDate or compileAll:
-        print("+ Compiling: "+cppList[i])
-        call([compiler]+compilerFlags.split(" ")+["-c", cppList[i], "-o", oppList[i]])
-    else:
-        print("   Skipping: "+cppList[i])
+        if executableModifiedDate<sourceFileDate or executableModifiedDate<headerFileDate or compileAll:
+            print("+ Compiling: "+cppList[i])
+            call([compiler]+compilerFlags.split(" ")+["-c", cppList[i], "-o", oppList[i]])
+        else:
+            print("   Skipping: "+cppList[i])
 
 
 print("Linking: "+executableName);
