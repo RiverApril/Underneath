@@ -84,6 +84,7 @@ extern int nextUniqueId;
 
 extern bool godMode;
 extern bool debugMode;
+extern bool showFollowPaths;
 
 extern string CustomWorkingDirectory;
 extern string UnderneathDir;

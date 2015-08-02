@@ -85,7 +85,7 @@ void EntityAi::runAi(double time, Level* level) {
                 //speed.y = pos.y > lastKnownTargetPos.y ? -1 : (pos.y < lastKnownTargetPos.y ? 1 : 0);
                 vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid);
                 if(!path.empty()){
-                    if(debugMode){
+                    if(showFollowPaths){
                         for(Point2 point : path){
                             EntityTimeActivated* e = new EntityTimeActivated("path", timeActivatedDud, 2, 0, 0, point);
                             e->fgColor = Ui::C_LIGHT_GREEN;
@@ -93,7 +93,13 @@ void EntityAi::runAi(double time, Level* level) {
                         }
                     }
                     debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
-                    speed = path[0]-pos;
+
+                    speed = path[0]-pos;if (speed.x == 0) {
+                        speed.x = rand() % 2 == 0 ? 1 : -1;
+                    }
+                    if (speed.y == 0) {
+                        speed.y = rand() % 2 == 0 ? 1 : -1;
+                    }
                 }
 
             }

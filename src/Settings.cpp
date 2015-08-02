@@ -16,7 +16,11 @@ namespace Settings{
     vector<Setting*> settingList = {
         new SettingBool("Debug Mode", &debugMode)
     };
-    
+
+    vector<Setting*> hiddenSettingList = {
+        new SettingBool("Show AI Paths", &showFollowPaths)
+    }
+
 
     bool saveSettings(string path){
         FILE* file;
@@ -41,6 +45,13 @@ namespace Settings{
             lines += "\n";
 
             for(Setting* set : settingList){
+                lines += set->name;
+                lines += ":";
+                lines += set->stringValue();
+                lines += "\n";
+            }
+
+            for(Setting* set : hiddenSettingList){
                 lines += set->name;
                 lines += ":";
                 lines += set->stringValue();
@@ -87,6 +98,17 @@ namespace Settings{
                     }
 
                     for(Setting* setting : settingList){
+                        if(settingId.compare(setting->name) == 0){
+                            try{
+                                setting->setValue(line);
+                            }catch(Utility::ParseException){
+
+                            }
+                            break;
+                        }
+                    }
+
+                    for(Setting* setting : hiddenSettingList){
                         if(settingId.compare(setting->name) == 0){
                             try{
                                 setting->setValue(line);

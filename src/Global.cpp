@@ -28,6 +28,7 @@ int nextUniqueId;
 
 bool godMode = false;
 bool debugMode = false;
+bool showFollowPaths = false;
 
 string CustomWorkingDirectory;
 string UnderneathDir;
