@@ -363,7 +363,7 @@ namespace Ui {
             }
 
         }
-        
+
         if (currentWorld != nullptr && currentPlayer != nullptr && currentLevel != nullptr) {
             if (controlMode == modeSelectEntity && ((/* DISABLED, deemed overpowered (part below too) */ (false) && in == 'f') || in == Key::interact)) {
 
@@ -541,6 +541,7 @@ namespace Ui {
         viewUpdate();
         move(0, 0);
         clrtobot();
+
         for (int j = 0; j < gameArea.y; j++) {
             move(j, 0);
             for (int i = 0; i < gameArea.x; i++) {

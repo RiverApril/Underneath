@@ -575,5 +575,3 @@ void EntityPlayer::recalculateDefenses(){
         }
     }
 }
-
-

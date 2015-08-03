@@ -45,7 +45,7 @@ public:
 
     //void setAndUnsetDisplayEntity(Level* level);
 
-    bool isSolid() {
+    virtual bool isSolid() {
         return solid;
     }
 

@@ -27,6 +27,7 @@ parser = argparse.ArgumentParser(description="Compile Underneath.")
 parser.add_argument("-s", "--sdl", action="store_true")
 parser.add_argument("-a", "--all", action="store_true")
 parser.add_argument("-l", "--linkonly", action="store_true")
+parser.add_argument("-r", "--run", action="store_true")
 
 args = parser.parse_args()
 
@@ -52,7 +53,7 @@ executableName = "Underneath"
 compileAll = args.all
 
 
-    
+
 
 if args.sdl:
     executableName += "_SDL"
@@ -80,7 +81,7 @@ else:
 objectDirectory += "/"+executableName
 copyDirectory = objectDirectory+copyDirectory
 
-cppList = [a.replace("\\", "/") for a in glob.glob(sourceDirectory+"/*."+sourceExtention)]
+cppList = [a.replace("\\", "/") for a in sorted(glob.glob(sourceDirectory+"/*."+sourceExtention))]
 hppList = [a.replace("."+sourceExtention, "."+headerExtention) for a in cppList]
 oppList = [a.replace(sourceDirectory+"/", objectDirectory+"/") for a in [a.replace("."+sourceExtention, "."+objectExtention) for a in cppList]]
 cppCopyList = [a.replace(sourceDirectory+"/", copyDirectory+"/") for a in cppList]
@@ -139,6 +140,12 @@ if returnCode == 0:
         if os.path.isfile(executableName+"_outdated") and os.path.isfile(executableName):
             print("    - Deleteing outdated executable: "+executableName+"_outdated")
             os.remove(executableName+"_outdated")
+        if args.run and returnCode == 0:
+            print("    > Running...")
+            if systemName == "Windows":
+                os.system(executableName)
+            else:
+                os.system("./"+executableName)
     else:
         print("    x Failed to link, Error Code: "+str(returnCode))
 

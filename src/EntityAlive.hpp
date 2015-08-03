@@ -56,6 +56,10 @@ public:
         //pos.set(-1);
     }
 
+    virtual bool isSolid() {
+        return !dead;
+    }
+
     virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 
     virtual double hurt(ItemWeapon* w, double damageMultiplier = 1);
@@ -95,7 +99,7 @@ public:
     vector<Weakness> weaknesses;
 
     int viewDistance = 10;
-    
+
     double getDefenseMultiplierFromEffects(DamageType damType){
         double d = 0;
         for(Effect eff : effects){

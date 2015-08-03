@@ -83,7 +83,7 @@ void EntityAi::runAi(double time, Level* level) {
             } else {
                 //speed.x = pos.x > lastKnownTargetPos.x ? -1 : (pos.x < lastKnownTargetPos.x ? 1 : 0);
                 //speed.y = pos.y > lastKnownTargetPos.y ? -1 : (pos.y < lastKnownTargetPos.y ? 1 : 0);
-                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid);
+                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid, true);
                 if(!path.empty()){
                     if(showFollowPaths){
                         for(Point2 point : path){
@@ -94,12 +94,13 @@ void EntityAi::runAi(double time, Level* level) {
                     }
                     debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
 
-                    speed = path[0]-pos;if (speed.x == 0) {
-                        speed.x = rand() % 2 == 0 ? 1 : -1;
+                    speed = path[0]-pos;
+
+                    if (speed.x == 0 && speed.y == 0) {
+                        speed.x = rand() & 1 ? 1 : -1;
+                        speed.y = rand() & 1 ? 1 : -1;
                     }
-                    if (speed.y == 0) {
-                        speed.y = rand() % 2 == 0 ? 1 : -1;
-                    }
+
                 }
 
             }
