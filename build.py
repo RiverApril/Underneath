@@ -5,13 +5,13 @@ import os
 import errno
 import shutil
 import filecmp
-import datetime
+#import datetime
 from subprocess import call
 
 
-def modification_date(filename):
-    t = os.path.getmtime(filename)
-    return datetime.datetime.fromtimestamp(t)
+#def modification_date(filename):
+#    t = os.path.getmtime(filename)
+#    return datetime.datetime.fromtimestamp(t)
 
 
 def mkdir_p(path):
@@ -73,7 +73,7 @@ else:
 
 
 objectDirectory += "/"+executableName
-
+copyDirectory = objectDirectory+copyDirectory
 
 cppList = [a.replace("\\", "/") for a in glob.glob(sourceDirectory+"/*."+sourceExtention)]
 hppList = [a.replace("."+sourceExtention, "."+headerExtention) for a in cppList]
@@ -85,19 +85,16 @@ hppCopyList = [a.replace(sourceDirectory+"/", copyDirectory+"/") for a in hppLis
 mkdir_p(objectDirectory)
 mkdir_p(copyDirectory)
 
-if os.path.isfile(executableName):
-    executableModifiedDate = modification_date(executableName)
-
 returnCode = 0
 
 if os.path.isfile(executableName):
-    print("* Renaming old executable to: "+executableName+"_outdated")
+    print("    * Renaming old executable to: "+executableName+"_outdated")
     os.rename(executableName, executableName+"_outdated")
 
 skipCount = 0
 
 if not args.linkonly:
-    print("# Building: "+executableName);
+    print("    # Building: "+executableName);
 
     for i in range(len(cppList)):
 
@@ -115,7 +112,7 @@ if not args.linkonly:
 
 
         if compileAll or cppDiff or hppDiff:
-            print("+ Compiling: "+cppList[i])
+            print("    + Compiling: "+cppList[i])
             returnCode = call([compiler]+compilerFlags.split(" ")+["-c", cppList[i], "-o", oppList[i]])
             if returnCode == 0:
                 shutil.copy(cppList[i], cppCopyList[i])
@@ -127,16 +124,18 @@ if not args.linkonly:
             skipCount += 1
 
 
-print(". Skipped "+str(skipCount)+" compilations.")
+print("    . Skipped "+str(skipCount)+" compilations.")
 
 if returnCode == 0:
-    print("~ Linking: "+executableName);
+    print("    ~ Linking: "+executableName);
     returnCode = call([compiler]+compilerFlags.split(" ")+oppList+["-o", executableName]+libraryFlags.split(" "))
 
     if returnCode == 0:
         if os.path.isfile(executableName+"_outdated") and os.path.isfile(executableName):
-            print("- Deleteing outdated executable: "+executableName+"_outdated")
+            print("    - Deleteing outdated executable: "+executableName+"_outdated")
             os.remove(executableName+"_outdated")
+    else:
+        print("    x Failed to link, Error Code: "+str(returnCode))
 
 else:
-    print("x Stopping, return code: "+str(returnCode))
+    print("    x Failed to compile, Error Code: "+str(returnCode))
