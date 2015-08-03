@@ -59,15 +59,14 @@ if args.sdl:
     executableName += "_SDL"
     compilerFlags += " -D useSDLLightCurses"
     if systemName == "Windows":
-        compilerFlags += " -D main=SDL_main"
-        libraryFlags = "-lmingw32 -lSDL2main -lSDL2 -lSDL2_image"
+        compilerFlags += " -Imingw_dev_lib\\include"
+        libraryFlags = "-Lmingw_dev_lib\\lib -w -Wl,-subsystem,windows -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -static-libgcc -static-libstdc++ -L ."
     else:
         libraryFlags = "-lSDL2 -lSDL2_image"
 else:
     executableName += "_Standard"
     if systemName == "Windows":
-        libraryFlags = "-lpdcurses"
-
+        libraryFlags = "-lpdcurses -static-libgcc -static-libstdc++ -L ."
 
 
 if systemName == "Darwin":
@@ -95,6 +94,8 @@ returnCode = 0
 
 if os.path.isfile(executableName):
     print("    * Renaming old executable to: "+executableName+"_outdated")
+    if os.path.isfile(executableName+"_outdated"):
+        os.remove(executableName+"_outdated")
     os.rename(executableName, executableName+"_outdated")
 
 skipCount = 0
@@ -107,10 +108,12 @@ if not args.linkonly:
         cppDiff = True
         hppDiff = True
 
+        hppExists = os.path.isfile(hppList[i])
+
         if os.path.isfile(cppCopyList[i]):
             cppDiff = not filecmp.cmp(cppList[i], cppCopyList[i])
 
-        if os.path.isfile(hppList[i]):
+        if hppExists:
             if os.path.isfile(hppCopyList[i]):
                 hppDiff = not filecmp.cmp(hppList[i], hppCopyList[i])
         else:
@@ -122,7 +125,7 @@ if not args.linkonly:
             returnCode = call([compiler]+compilerFlags.split(" ")+["-c", cppList[i], "-o", oppList[i]])
             if returnCode == 0:
                 shutil.copy(cppList[i], cppCopyList[i])
-                if os.path.isfile(hppList[i]):
+                if hppExists:
                     shutil.copy(hppList[i], hppCopyList[i])
             else:
                 break

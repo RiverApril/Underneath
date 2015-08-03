@@ -2,6 +2,31 @@
 #ifdef useSDLLightCurses
 #include "LC_SDLLightcurses.hpp"
 
+#include <iostream>
+#include <sstream>
+#include <ostream>
+#include <vector>
+#include <queue>
+#include <map>
+#include <functional>
+#include <algorithm>
+#include <string>
+
+#ifdef __MINGW32__
+    #include "thread.h"
+#else
+    #include <thread>
+#endif
+
+#include <time.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <cmath>
+#include <fstream>
+#include <assert.h>
+
+#include <stdio.h>
+
 namespace MainWindow{
 
 
@@ -206,6 +231,7 @@ namespace MainWindow{
 
 
     bool initSDL(){
+        printf("Init SDL\n");
         bool success = true;
 
         if(SDL_Init(SDL_INIT_VIDEO) < 0){
@@ -228,10 +254,6 @@ namespace MainWindow{
                 }
             }
         }
-
-        //for(int i=32;i<128;i++){
-            //printf("%c%s", i, i%16==15?"\n":"");
-        //}
 
         return success;
     }
@@ -274,8 +296,8 @@ namespace MainWindow{
 
                 SDL_BlitSurface(fontSurface, &src, mainScreenSurface, &dst);
 
+                
                 SDL_LockSurface(mainScreenSurface);
-
 
                 fgColorCode = ((screenAttrBuffer[c] & A_COLOR) >> 17) & 0xF;
                 bgColorCode = (((screenAttrBuffer[c] & A_COLOR) >> 17) >> 4) & 0xF;

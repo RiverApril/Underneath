@@ -3,29 +3,8 @@
 #ifndef __SDLCursesLight__lightcurses__
 #define __SDLCursesLight__lightcurses__
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
-
-#include <iostream>
-#include <sstream>
-#include <ostream>
-#include <vector>
-#include <queue>
-#include <map>
-#include <functional>
-#include <algorithm>
-#include <thread>
-#include <string>
-
-
-#include <time.h>
-#include <locale.h>
-#include <stdlib.h>
-#include <cmath>
-#include <fstream>
-#include <assert.h>
-
-#include <stdio.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 /*
 
