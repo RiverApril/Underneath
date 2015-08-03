@@ -17,7 +17,7 @@
 #include "Level.hpp"
 #include "Settings.hpp"
 
-int main(int argc, const char** argv) {
+int main(int argc, char* argv[]) {
 
 
     if (!GetCurrentDir(workingDirectory, sizeof (workingDirectory))) {

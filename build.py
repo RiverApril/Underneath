@@ -52,22 +52,27 @@ executableName = "Underneath"
 compileAll = args.all
 
 
+    
 
 if args.sdl:
     executableName += "_SDL"
     compilerFlags += " -D useSDLLightCurses"
-    libraryFlags = "-lSDL2 -lSDL2_image"
+    if systemName == "Windows":
+        compilerFlags += " -D main=SDL_main"
+        libraryFlags = "-lmingw32 -lSDL2main -lSDL2 -lSDL2_image"
+    else:
+        libraryFlags = "-lSDL2 -lSDL2_image"
 else:
     executableName += "_Standard"
+    if systemName == "Windows":
+        libraryFlags = "-lpdcurses"
 
 
-if systemName == "Linux":
-    executableName += "_Linux_"+machine
-elif systemName == "Darwin":
+
+if systemName == "Darwin":
     executableName += "_OSX_"+machine
 elif systemName == "Windows":
     executableName += "_Windows_"+machine+".exe"
-    libraryFlags = "-lpdcurses"
 else:
     executableName += "_"+systemName+"_"+machine
 
