@@ -19,8 +19,7 @@ namespace Settings{
 
     vector<Setting*> hiddenSettingList = {
         new SettingBool("Show AI Paths", &showFollowPaths)
-    }
-
+    };
 
     bool saveSettings(string path){
         FILE* file;

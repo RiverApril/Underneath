@@ -1,5 +1,6 @@
 /bin/**
 /obj/**
+/cpy/**
 *.dll
 *.cbp
 *.depend
