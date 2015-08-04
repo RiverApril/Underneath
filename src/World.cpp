@@ -333,7 +333,7 @@ namespace WorldLoader {
         Point2 start;
         Point2 p;
         do {
-            start = Point2(rand() % world->currentLevel->getSize().x, rand() % world->currentLevel->getSize().y);
+            start = Point2((rand() % (world->currentLevel->getSize().x-10))+10, (rand() % (world->currentLevel->getSize().y-10))+10);
             p = world->currentLevel->generate((unsigned int) rand(), start, "");
         } while (!(p.x >= 0 && p.y >= 0));
 

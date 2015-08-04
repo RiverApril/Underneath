@@ -596,7 +596,7 @@ namespace Ui {
                                 frame = 0;
                             }
 
-                            //consolef("%f", angle);
+                            consolef("Size:%d  Frame:%d  Angle:%f", Arts::compassInList.size(), frame, angle);
 
 
                             Arts::getArt(Arts::compassOut)->printAt(Point2(columnX, a));

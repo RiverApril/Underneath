@@ -158,19 +158,19 @@ namespace Arts {
                 if(fullCompassInArt->lines[0][i] == '#'){
                     w++;
                 }else{
-                    compassInSize.x = w;
                     break;
                 }
             }
+            compassInSize.x = w;
 
             for(int j=0;j<fullInSize.y;j++){
                 if(fullCompassInArt->lines[j][0] == '#'){
                     h++;
                 }else{
-                    compassInSize.y = h;
                     break;
                 }
             }
+            compassInSize.y = h;
 
 			if (compassInSize.x > 0 && compassInSize.y > 0) {
 
@@ -221,6 +221,7 @@ namespace Arts {
                 a->lines.push_back(fullCompassOutArt->lines[i]);
             }
 
+            a->calcSize();
             artList.push_back(a);
             compassOut = ((int)artList.size())-1;
         }
