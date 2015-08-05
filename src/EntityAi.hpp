@@ -34,6 +34,8 @@ public:
     void runAi(double time, Level* level);
     bool update(double deltaTime, double time, Level* level);
 
+    virtual void dropLoots(Level* level);
+
     virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 
     virtual double hurt(ItemWeapon* w, double damageMultiplier = 1);
@@ -69,7 +71,7 @@ public:
     virtual bool isHostile() {
         return ai & aiAttackEntityPlayer;
     }
-    
+
     double getAttackMultiplierFromEffects(DamageType damType){
         double d = 1;
         for(Effect eff : effects){

@@ -353,7 +353,7 @@ namespace Commands {
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
             MenuGame* mg = dynamic_cast<MenuGame*> (currentMenu);
             if (mg) {
-                
+
                 ItemUtilitySpell* i = new ItemUtilitySpell(spellDebugPlaceWall, 0, "DEBUG Wall wand", 0);
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
@@ -362,11 +362,15 @@ namespace Commands {
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
 
+                i = new ItemUtilitySpell(spellRelocate, 0, "DEBUG Move wand", 0);
+                i->continuousUse = true;
+                mg->currentWorld->currentPlayer->addItem(i);
+
                 i = new ItemUtilitySpell(spellDebugPlaceGoblin, 0, "DEBUG Goblin wand", 0);
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
 
-                i = new ItemUtilitySpell(spellRelocate, 0, "DEBUG Move wand", 0);
+                i = new ItemUtilitySpell(spellDebugPlaceShop, 0, "DEBUG Shop wand", 0);
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
 

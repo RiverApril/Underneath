@@ -20,6 +20,7 @@ const SpellEffect spellRelocate = 1;
 const SpellEffect spellDebugPlaceWall = 101;
 const SpellEffect spellDebugPlaceFloor = 102;
 const SpellEffect spellDebugPlaceGoblin = 103;
+const SpellEffect spellDebugPlaceShop = 104;
 
 class ItemUtilitySpell : public Item {
 public:

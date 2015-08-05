@@ -228,12 +228,14 @@ namespace Ui {
                         bg = C_LIGHT_GREEN;
                         attr = A_BLINK;
                     }
-                    if (!currentLevel->canSee(currentPlayer->pos, p, itemToBeUsedRange, false) && inView) {
-                        if (p == targetPosition) {
-                            bg = C_LIGHT_RED;
-                        }
-                        if (bg == C_BLACK) {
-                            bg = C_DARK_RED;
+                    if(currentLevel->getExplored(p)){
+                        if (!inView && !currentLevel->canSee(currentPlayer->pos, p, itemToBeUsedRange, true)) {
+                            if (p == targetPosition) {
+                                bg = C_LIGHT_RED;
+                            }
+                            if (bg == C_BLACK) {
+                                bg = C_DARK_RED;
+                            }
                         }
                     }
 

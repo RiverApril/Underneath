@@ -27,6 +27,10 @@ bool EntityShop::update(double deltaTime, double time, Level* level) {
     return EntityAi::update(deltaTime, time, level);
 }
 
+void EntityShop::dropLoots(Level* level){
+
+}
+
 EntityShop* EntityShop::cloneUnsafe(EntityShop* oldE, EntityShop* newE) {
 
     EntityAi::cloneUnsafe(oldE, newE);
@@ -46,7 +50,7 @@ int EntityShop::getEntityTypeId() {
 void EntityShop::save(std::vector<unsigned char>* data) {
     EntityAi::save(data);
 
-    
+
     Utility::saveInt(data, (int) shopInv.inventory.size());
     forVector(shopInv.inventory, i) {
         Item* ie = shopInv.inventory[i];

@@ -9,6 +9,7 @@
 #include "EntityPlayer.hpp"
 #include "Level.hpp"
 #include "EntityItem.hpp"
+#include "EntityShop.hpp"
 #include "MenuChest.hpp"
 #include "Verbalizer.hpp"
 #include "ItemPotion.hpp"
@@ -16,6 +17,7 @@
 #include "EnemyGenerator.hpp"
 #include "EntityTimeActivated.hpp"
 #include "Icon.hpp"
+#include "MenuShop.hpp"
 
 EntityPlayer::EntityPlayer() : EntityPlayer("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()) {
 
@@ -131,11 +133,18 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                     case spellDebugPlaceFloor:
                         level->setTile(posToInteract, Tiles::tileFloor);
                         break;
-                    case spellDebugPlaceGoblin:
+                    case spellDebugPlaceGoblin:{
                         EntityAi* e = EnemyGenerator::makeEntity(EnemyGenerator::goblinScout, level->getDifficulty());
                         e->pos = posToInteract;
                         level->newEntity(e);
                         break;
+                    }
+                    case spellDebugPlaceShop:{
+                        EntityShop* e = new EntityShop("Shop keeper", aiNone, 'S', posToInteract, Ui::C_LIGHT_MAGENTA, 100);
+                        e->addItems(ItemGenerator::createRandLoots(level->getDifficulty(), 0, 10, 10, 10, 2));
+                        level->newEntity(e);
+                        break;
+                    }
                 }
                 if (use == 2) {
                     if (item->qty == 1) {
@@ -283,6 +292,28 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
         return 0;
     }
 
+    if (distanceSquared(posOfEntity, pos) <= 1) {
+
+        EntityItem* ie = dynamic_cast<EntityItem*> (e);
+        EntityShop* is = dynamic_cast<EntityShop*> (e);
+
+        if (ie) {
+            Item* iei = ie->getItem();
+            if (iei != nullptr) {
+                if (addItem(iei)) {
+                    level->removeEntity(e, true);
+                    return interactDelay;
+                }
+            }
+            level->removeEntity(e, true);
+            return 0;
+        }else if(is){
+            level->menuGame->openMenu(new Ui::MenuShop(is, this, level->currentWorld));
+            return interactDelay;
+        }
+
+    }
+
     EntityAlive* a = dynamic_cast<EntityAlive*> (e);
     if (a) {
         if (item != nullptr) {
@@ -329,25 +360,6 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             console(Ui::colorCode(Ui::C_LIGHT_RED) + "No item equiped.");
             return 0;
         }
-    }
-
-    if (distanceSquared(posOfEntity, pos) <= 1) {
-
-        EntityItem* ie = dynamic_cast<EntityItem*> (e);
-
-        if (ie) {
-            Item* iei = ie->getItem();
-            if (iei != nullptr) {
-                //debug("Picking up item: "+iei->getExtendedName());
-                if (addItem(iei)) {
-                    level->removeEntity(e, true);
-                    return interactDelay;
-                }
-            }
-            level->removeEntity(e, true);
-            return 0;
-        }
-
     }
 
     return 0;

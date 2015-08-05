@@ -24,6 +24,8 @@ public:
 
     bool update(double deltaTime, double time, Level* level);
 
+    virtual void dropLoots(Level* level);
+
     virtual void save(std::vector<unsigned char>* data);
 
     virtual int getEntityTypeId();

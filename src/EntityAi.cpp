@@ -185,21 +185,26 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
     }
 
     if (dead) {
-        int xp = rand() % (int) maxHp;
-        Verbalizer::defeatedEnemy(this, xp);
-
-        level->currentWorld->currentPlayer->gainXp(xp);
-
-        vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand() % 10) == 0 ? 1 : 0, (rand() % 10) == 0 ? 1 : 0, (rand() % 5) == 0 ? 2 : 0, 20);
-        //if(rand()%5==0){
-        //drops.push_back(Item::clone(activeItemWeapon));
-        //}
-        for (Item* i : drops) {
-            level->newEntity(new EntityItem(i, pos));
-        }
+        dropLoots(level);
     }
 
     return EntityAlive::update(deltaTime, time, level);
+}
+
+void EntityAi::dropLoots(Level* level){
+
+    int xp = rand() % (int) maxHp;
+    Verbalizer::defeatedEnemy(this, xp);
+
+    level->currentWorld->currentPlayer->gainXp(xp);
+
+    vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand() % 10) == 0 ? 1 : 0, (rand() % 10) == 0 ? 1 : 0, (rand() % 5) == 0 ? 2 : 0, 20);
+    //if(rand()%5==0){
+    //drops.push_back(Item::clone(activeItemWeapon));
+    //}
+    for (Item* i : drops) {
+        level->newEntity(new EntityItem(i, pos));
+    }
 }
 
 EntityAi* EntityAi::cloneUnsafe(EntityAi* oldE, EntityAi* newE) {
