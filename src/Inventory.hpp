@@ -81,23 +81,7 @@ struct Inventory {
         }
     }
 
-    virtual bool addItem(Item* newItem, int qty = -1) {
-        if(qty != -1){
-            newItem->qty = qty;
-        }
-        if (newItem != nullptr) {
-            for (Item* i : inventory) {
-                if (i->equalsExceptQty(newItem)) {
-                    i->qty += newItem->qty;
-                    delete newItem;
-                    return true;
-                }
-            }
-            inventory.push_back(newItem);
-            return true;
-        }
-        return false;
-    }
+    virtual bool addItem(Item* newItem, int qty = -1);
 
     vector<Item*> inventory;
 

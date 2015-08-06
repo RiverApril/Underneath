@@ -67,11 +67,13 @@ public:
                 && getItemTypeId() == other->getItemTypeId()
                 &&(name.compare(other->name) == 0)
                 &&(weight == other->weight)
-                &&(artIndex == other->artIndex);
+                &&(artIndex == other->artIndex)
+                &&(coinValue == other->coinValue);
     }
 
     double weight = 0;
     int qty = 1;
+    int coinValue = 0;
 
     int artIndex = -1;
 

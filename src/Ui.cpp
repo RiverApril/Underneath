@@ -437,6 +437,12 @@ namespace Ui {
 
                 a += printMultiLineString(a, columnX, formatString("Name: %s%s", item->name.c_str(), item->qty == 1 ? "" : (formatString(" x %d", item->qty).c_str())));
 
+                if(item->coinValue > 0){
+                    a += printMultiLineString(a, columnX, formatString("-Value: %dc", item->coinValue));
+                }else if(item->coinValue == -1){
+                    a += printMultiLineString(a, columnX, formatString("-Unsellable", item->coinValue));
+                }
+
                 setColor(C_LIGHT_GRAY, C_BLACK);
 
                 if(equipable){

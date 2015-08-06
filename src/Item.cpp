@@ -23,6 +23,7 @@ void Item::save(vector<unsigned char>* data) {
     Utility::saveString(data, name);
     Utility::saveInt(data, qty);
     Utility::saveInt(data, artIndex);
+    Utility::saveInt(data, coinValue);
 }
 
 void Item::load(unsigned char* data, int* position) {
@@ -30,6 +31,7 @@ void Item::load(unsigned char* data, int* position) {
     name = Utility::loadString(data, position);
     qty = Utility::loadInt(data, position);
     artIndex = Utility::loadInt(data, position);
+    coinValue = Utility::loadInt(data, position);
 }
 
 Item* Item::cloneUnsafe(Item* oldE, Item* newE) {
@@ -38,6 +40,7 @@ Item* Item::cloneUnsafe(Item* oldE, Item* newE) {
     newE->name = oldE->name;
     newE->weight = oldE->weight;
     newE->artIndex = oldE->artIndex;
+    newE->coinValue = oldE->coinValue;
 
     return newE;
 }
@@ -118,7 +121,7 @@ Item* Item::loadNew(unsigned char* data, int* position) {
         case ITEM_TYPE_COMBAT_SPELL:
             e = new ItemCombatSpell();
             break;
-            
+
         case ITEM_TYPE_POTION:
             e = new ItemPotion();
             break;

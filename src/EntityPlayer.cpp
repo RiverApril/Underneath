@@ -513,7 +513,7 @@ bool EntityPlayer::equipItem(ItemEquipable* newItem, EquipSlot slot){
         if(newItem){
 
             if(!alreadyHave){
-                inventory.push_back(newItem);
+                addItem(newItem);
                 equipedItems[slot] = newItem;
             }
 

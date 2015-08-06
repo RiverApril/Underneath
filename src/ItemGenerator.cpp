@@ -14,6 +14,7 @@
 #include "Entity.hpp"
 #include "ItemPotion.hpp"
 #include "ItemTimeActivated.hpp"
+#include "ItemSpecial.hpp"
 
 namespace ItemGenerator {
 
@@ -45,9 +46,11 @@ namespace ItemGenerator {
 
         iCoin = new Item("Coin", .01);
         iCoin->artIndex = Arts::artCoin;
+        iCoin->coinValue = -1;
 
         iSmallKey = new Item("Key", .02);
         iSmallKey->artIndex = Arts::artSmallKey;
+        iSmallKey->coinValue = 1000;
 
         PotionBase potionHealth = atl(PotionBase({"Health Potion"}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100));
         PotionBase potionMana = atl(PotionBase({"Mana Potion"}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100));
@@ -92,7 +95,7 @@ namespace ItemGenerator {
         wFrostItemCombatSpell = atl(ItemWeaponBase({"Freeze", "Chill"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
         wShockItemCombatSpell = atl(ItemWeaponBase({"Electrocute", "Shock", "Zap"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
 
-        
+
 
         wNatural = ItemWeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee);
 
@@ -227,11 +230,12 @@ namespace ItemGenerator {
                 }
 
                 ItemWeapon* w = createRandItemWeapon(itemDifficulty);
-                if(rand() % 20 == 0 || true){
+                if(rand() % 10 == 0){
                     DamageType damType = Random::choose<DamageType>(5, damBlood, damPoison, damFire, damIce, damShock);
                     Enchantment e = Enchantment(effDamage, (rand()%10)+10, Random::randDouble(1, 5), Random::randDouble(2, 30), damType);
                     w->addEnchantment(e);
                 }
+                w->coinValue = calculateItemValue(w);
                 items.push_back(w);
             }
         }
@@ -249,7 +253,9 @@ namespace ItemGenerator {
                     }
                 }
 
-                items.push_back(createRandItemArmor(itemDifficulty));
+                ItemArmor* a = createRandItemArmor(itemDifficulty);
+                a->coinValue = calculateItemValue(a);
+                items.push_back(a);
             }
         }
 
@@ -267,7 +273,9 @@ namespace ItemGenerator {
                     }
                 }
 
-                items.push_back(createRandAltLoot(itemDifficulty));
+                Item* r = createRandAltLoot(itemDifficulty);
+                r->coinValue = calculateItemValue(r);
+                items.push_back(r);
             }
 
         }
@@ -467,6 +475,74 @@ namespace ItemGenerator {
             return c;
         }
         return nullptr;
+    }
+
+
+    int calculateItemValue(Item* item){//TODO finish coin values
+        double value = 0;
+        ItemEquipable* ie = dynamic_cast<ItemEquipable*>(item);
+        ItemPotion* ip = dynamic_cast<ItemPotion*>(item);
+        ItemSpecial* is = dynamic_cast<ItemSpecial*>(item);
+        ItemTimeActivated* it = dynamic_cast<ItemTimeActivated*>(item);
+        ItemUtilitySpell* iu = dynamic_cast<ItemUtilitySpell*>(item);
+        if(ie){
+
+            value += 5;
+
+            ItemWeapon* iw = dynamic_cast<ItemWeapon*>(item);
+            ItemArmor* ia = dynamic_cast<ItemArmor*>(item);
+            if(iw){
+
+                value += (iw->baseDamage * iw->useDelay) * 2;
+
+                ItemRanged* ir = dynamic_cast<ItemRanged*>(item);
+                if(ir){
+
+                    value += ir->range * 4;
+
+                    ItemCombatSpell* ic = dynamic_cast<ItemCombatSpell*>(item);
+                    if(ic){//Combat Spell
+                        value += (50.0 - ic->manaCost) * 5;
+                    }else{//Ranged Weapon
+
+                    }
+
+                }else{//Weapon
+
+                }
+
+                for(Enchantment e : iw->enchantments){
+                    int eValue = 0;
+                    switch(e.effectId){
+                        case effDamage:{
+                            eValue = e.power;
+                        }
+                        default:{
+                            eValue = e.power / 3;
+                        }
+                    }
+                    eValue += (50 - e.chance) * .25;
+                    eValue += (e.time) * .25;
+                    value += eValue * .2;
+                }
+
+            }else if(ia){//Armor
+
+            }else{//Equipable
+
+            }
+        }else if(ip){//Potion
+
+        }else if(is){//Special
+
+        }else if(it){//Time Activated
+
+        }else if(iu){//Utility Spell
+
+        }else{//Item
+            value = item->coinValue;
+        }
+        return (int)value;
     }
 
 

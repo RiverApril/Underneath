@@ -229,10 +229,11 @@ namespace ItemGenerator {
 
     Item* makeCoins(int qty);
 
+    int calculateItemValue(Item* item);
+
 
     void initItemTemplates();
     void cleanupItemTemplates();
-
 
 }
 
