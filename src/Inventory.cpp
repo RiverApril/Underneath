@@ -21,9 +21,43 @@ bool Inventory::addItem(Item* newItem, int qty) {
                 return true;
             }
         }
-        newItem->coinValue = ItemGenerator::calculateItemValue(newItem);
+        newItem->coinValue = getCoinValue(newItem);
         inventory.push_back(newItem);
         return true;
     }
     return false;
+}
+
+int Inventory::getCoinValue(Item* item){
+    return ItemGenerator::calculateItemValue(item);
+}
+
+int Inventory::getWallet(){
+    int amount = 0;
+    for (Item* i : inventory) {
+        if(i->equalsExceptQty(ItemGenerator::iCoin)){
+            amount += i->qty;
+        }
+    }
+    return amount;
+}
+
+void Inventory::addToWallet(int amount){
+    if(amount > 0){
+        addItem(ItemGenerator::makeCoins(amount));
+    }else if(amount < 0){
+        amount = -amount;
+        for(Item* i : inventory){
+            if(i->equalsExceptQty(ItemGenerator::iCoin)){
+                if(i->qty > amount){
+                    i->qty -= amount;
+                    amount = 0;
+                    return;
+                }else{
+                    amount -= i->qty;
+                    removeItem(i, true);
+                }
+            }
+        }
+    }
 }

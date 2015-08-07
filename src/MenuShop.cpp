@@ -50,43 +50,48 @@ namespace Ui {
             }
 
         } else if (in == Key::equipPrimary) {
-            ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (user->inventory[selected]);
-            if (equipable) {
-                EquipSlot slot = user->getSlot(equipable);
-                if(slot){
-                    user->equipItem(nullptr, slot);
-                }else{
-                    user->equipItem(equipable, equipable->getViableSlots()[0]);
+            if (selectedLeft) {
+                ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (user->inventory[selected]);
+                if (equipable) {
+                    EquipSlot slot = user->getSlot(equipable);
+                    if(slot){
+                        user->equipItem(nullptr, slot);
+                    }else{
+                        user->equipItem(equipable, equipable->getViableSlots()[0]);
+                    }
                 }
+            } else {
+                MenuShop::handleInput(Key::take);
             }
         } else if (in == Key::take) {
             if (from->inventory.size() > 0 && selected < from->inventory.size()) {
-                Item* take;
-                if (from->inventory[selected]->qty == 1) {
-                    take = from->inventory[selected];
-                    from->removeItem(from->inventory[selected], false);
-                } else {
-                    from->inventory[selected]->qty -= 1;
-                    take = Item::clone(from->inventory[selected]);
-                    take->qty = 1;
+                if(user->getWallet() >= from->inventory[selected]->coinValue){
+                    debugf("Coin Value: %d   Wallet: %d", from->inventory[selected]->coinValue, user->getWallet());
+                    Item* take;
+                    if (from->inventory[selected]->qty == 1) {
+                        take = from->inventory[selected];
+                        from->removeItem(from->inventory[selected], false);
+                    } else {
+                        from->inventory[selected]->qty -= 1;
+                        take = Item::clone(from->inventory[selected]);
+                        take->qty = 1;
+                    }
+                    to->addItem(take);
+                    user->addToWallet(-(from->inventory[selected]->coinValue));
                 }
-                to->addItem(take);
 
             }
 
         } else if (in == Key::takeStack) {
             if (from->inventory.size() > 0 && selected < from->inventory.size()) {
-                Item* take;
-                take = from->inventory[selected];
-                from->removeItem(from->inventory[selected], false);
+                if(user->getWallet() >= (from->inventory[selected]->coinValue * from->inventory[selected]->qty)){
+                    Item* take;
+                    take = from->inventory[selected];
+                    from->removeItem(from->inventory[selected], false);
 
-                to->addItem(take);
-            }
-
-        } else if (in == Key::takeAll) {
-            if (from->inventory.size() > 0) {
-                to->addItems(from->inventory);
-                from->removeAllItems(false);
+                    to->addItem(take);
+                    user->addToWallet(-(from->inventory[selected]->coinValue * from->inventory[selected]->qty));
+                }
             }
 
         } else if (in == KEY_ESCAPE || in == Key::inventory) {
@@ -104,7 +109,7 @@ namespace Ui {
             selected = 0;
         }
 
-        Ui::drawInventory(currentWorld, user, selected, shop, "Shop", selectedLeft);
+        Ui::drawInventory(currentWorld, user, selected, shop, "Shop", selectedLeft, true);
 
     }
 }

@@ -7,6 +7,7 @@
 //
 
 #include "EntityShop.hpp"
+#include "ItemGenerator.hpp"
 
 
 EntityShop::EntityShop() : EntityShop("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1) {
@@ -70,4 +71,9 @@ void EntityShop::load(unsigned char* data, int* position) {
         shopInv.inventory.push_back(item);
     }
 
+}
+
+
+int EntityShop::getCoinValue(Item* item){
+    return ItemGenerator::calculateItemValue(item) * 2;
 }

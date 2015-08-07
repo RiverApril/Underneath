@@ -339,7 +339,7 @@ namespace Ui {
         return a;
     }
 
-    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft) {
+    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft, bool showPrice) {
 
         int columnX = 0;
         int columnWidth = (terminalSize.x) / (secondaryInv == nullptr ? 2 : 3);
@@ -403,11 +403,23 @@ namespace Ui {
                     pre = ItemEquipable::equipSlotAbr(slot);
                 }
                 string displayName;
-                if (item->qty == 1) {
-                    displayName = formatString("%s", item->name.c_str());
-                } else {
-                    displayName = formatString("%d %s", item->qty, plural(item->name).c_str());
+
+                if(showPrice){
+                    if(item->coinValue > 0){
+                        displayName += formatString("(%dc) ", item->coinValue);
+                    }else if(item->coinValue == 0){
+                        displayName += "(Free!) ";
+                    }else if(item->coinValue == -1){
+                        displayName += "(Unbuyable) ";
+                    }
                 }
+
+                if (item->qty != 1) {
+                    displayName += formatString("%d %s", item->qty, plural(item->name).c_str());
+                }else{
+                    displayName += formatString("%s", item->name.c_str());
+                }
+
                 mvprintw(y, columnX, "%c ", pre);
                 y += printMultiLineString(y, columnX + 2, displayName, columnX + columnWidth - 1);
 
@@ -438,9 +450,7 @@ namespace Ui {
                 a += printMultiLineString(a, columnX, formatString("Name: %s%s", item->name.c_str(), item->qty == 1 ? "" : (formatString(" x %d", item->qty).c_str())));
 
                 if(item->coinValue > 0){
-                    a += printMultiLineString(a, columnX, formatString("-Value: %dc", item->coinValue));
-                }else if(item->coinValue == -1){
-                    a += printMultiLineString(a, columnX, formatString("-Unsellable", item->coinValue));
+                    a += printMultiLineString(a, columnX, formatString("Value: %dc", item->coinValue));
                 }
 
                 setColor(C_LIGHT_GRAY, C_BLACK);

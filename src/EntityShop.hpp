@@ -32,6 +32,8 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
+    virtual int getCoinValue(Item* item);
+
 
 protected:
 

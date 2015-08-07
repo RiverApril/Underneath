@@ -83,6 +83,12 @@ struct Inventory {
 
     virtual bool addItem(Item* newItem, int qty = -1);
 
+    virtual int getCoinValue(Item* item);
+
+    virtual int getWallet();
+
+    virtual void addToWallet(int amount);
+
     vector<Item*> inventory;
 
 };

@@ -276,12 +276,10 @@ size_t Level::entityCount() {
 }
 
 bool Level::update(double deltaTime, double time, Point2 viewPos) {
-    console("LEVEL UPDATE");
     bool u = false;
     for (int i = 0; i < entityList.size(); i++) {
         Entity* e = entityList[i];
         if (!e->removed) {
-            console("ENTITY UPDATE");
             if (e->update(deltaTime, time, this)) {
                 u = true;
             }
