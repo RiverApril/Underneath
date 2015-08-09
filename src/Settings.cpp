@@ -14,11 +14,11 @@
 namespace Settings{
 
     vector<Setting*> settingList = {
-        new SettingBool("Debug Mode", &debugMode)
+        new SettingBool("Debug Mode", &debugMode),
+        new SettingBool("Show AI Paths", &showFollowPaths)
     };
 
     vector<Setting*> hiddenSettingList = {
-        new SettingBool("Show AI Paths", &showFollowPaths)
     };
 
     bool saveSettings(string path){

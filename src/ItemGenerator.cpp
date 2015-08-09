@@ -512,7 +512,7 @@ namespace ItemGenerator {
                 }
 
                 for(Enchantment e : iw->enchantments){
-                    int eValue = 0;
+                    double eValue = 0;
                     switch(e.effectId){
                         case effDamage:{
                             eValue = e.power;
@@ -527,6 +527,24 @@ namespace ItemGenerator {
                 }
 
             }else if(ia){//Armor
+
+                value += 5;
+
+                for(Defense d : ia->defenses){
+                    double eValue = d.amount * 2;
+                    eValue += 5;
+                    value += eValue;
+                }
+
+                for(Enchantment e : ia->enchantments){
+                    double eValue = 0;
+                    switch(e.effectId){
+                        default:{
+                            eValue = e.power * .8;
+                        }
+                    }
+                    value += eValue * .2;
+                }
 
             }else{//Equipable
 
