@@ -515,10 +515,10 @@ namespace ItemGenerator {
                     double eValue = 0;
                     switch(e.effectId){
                         case effDamage:{
-                            eValue = e.power;
+                            eValue += e.power;
                         }
                         default:{
-                            eValue = e.power / 3;
+                            eValue += e.power / 3;
                         }
                     }
                     eValue += (50 - e.chance) * .25;
@@ -550,6 +550,19 @@ namespace ItemGenerator {
 
             }
         }else if(ip){//Potion
+
+            value += 10;
+
+
+            for(Effect e : ip->effects){
+                double eValue = 0;
+                if(e.timeLeft < 1){
+                    eValue += e.power;
+                }else{
+                    eValue += e.timeLeft * e.power * .8;
+                }
+                value += eValue;
+            }
 
         }else if(is){//Special
 
