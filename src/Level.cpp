@@ -590,3 +590,16 @@ void Level::load(unsigned char* data, int* position) {
     }
     debugf("Loaded %d Tile Entities", (int) tileEntityList.size());
 }
+
+
+Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel) {
+    switch(genType){
+        case genTypeSurface:{
+            return generateSurface(seed, stairUpPos, previousLevel);
+        }
+        case genTypeDungeon:{
+            return generateDungeon(seed, stairUpPos, previousLevel);
+        }
+
+    }
+}

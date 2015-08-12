@@ -566,6 +566,15 @@ namespace ItemGenerator {
 
         }else if(is){//Special
 
+            switch (is->specialty) {
+                case specialtyCompass:{
+                    value = -1;
+                }
+                default:{
+                    value = -1;
+                }
+            }
+
         }else if(it){//Time Activated
 
         }else if(iu){//Utility Spell

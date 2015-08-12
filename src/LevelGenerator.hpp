@@ -45,7 +45,7 @@ namespace LevelGenerator {
         Point2 radius;
         vector<Entry*>* entrances;
     };
-    
+
 
     int getPathAndMaybeDoor();
 
@@ -58,6 +58,10 @@ namespace LevelGenerator {
     extern void makeRoomsAndPaths(vector<Room*>* rooms, Level* level);
 
     extern void generateMaze(Level* level, Room* room);
+
+    extern Point2 generateSurface(unsigned int seed, Point2 stairUpPos, string previousLevel);
+
+    extern Point2 generateDungeon(unsigned int seed, Point2 stairUpPos, string previousLevel);
 
 }
 

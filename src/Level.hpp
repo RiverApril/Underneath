@@ -31,6 +31,10 @@ struct TileData {
     //Entity* entity = nullptr;
 };
 
+typedef int GenType;
+const GenType genTypeSurface = 0;
+const GenType genTypeDungeon = 1;
+
 class Level {
 public:
 
@@ -76,7 +80,9 @@ public:
 
     void genDebug(string s);
 
-    Point2 generate(unsigned int seed, Point2 stairUpPos, string previousLevel);
+    Point2 generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel);
+    Point2 generateSurface(unsigned int seed, Point2 stairUpPos, string previousLevel);
+    Point2 generateDungeon(unsigned int seed, Point2 stairUpPos, string previousLevel);
 
     void placeNewEntityAi(EntityAi* e, Point2 entrance);
 

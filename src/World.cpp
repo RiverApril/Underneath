@@ -326,7 +326,7 @@ namespace WorldLoader {
 
         World* world = new World(name);
 
-        world->currentLevel = new Level(world, "Floor 1", Point2(100, 100), 1);
+        world->currentLevel = new Level(world, "Surface", Point2(100, 100), 0);
 
         srand(static_cast<unsigned int> (time(NULL)));
 
@@ -334,7 +334,7 @@ namespace WorldLoader {
         Point2 p;
         do {
             start = Point2((rand() % (world->currentLevel->getSize().x-20))+10, (rand() % (world->currentLevel->getSize().y-20))+10);
-            p = world->currentLevel->generate((unsigned int) rand(), start, "");
+            p = world->currentLevel->generate(genTypeSurface, (unsigned int) rand(), start, "");
         } while (!(p.x >= 0 && p.y >= 0));
 
         world->levels.push_back(world->currentLevel->getName());
@@ -398,7 +398,7 @@ namespace WorldLoader {
 
         Level* newLevel = new Level(world, newName, newSize, newDifficulty);
 
-        newLevel->generate((unsigned int) rand(), entrance, oldName);
+        newLevel->generate(genTypeDungeon, (unsigned int) rand(), entrance, oldName);
 
         world->currentPlayer = newEntityPlayer;
         world->currentPlayer->pos = entrance;

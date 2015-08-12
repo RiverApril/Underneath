@@ -11,8 +11,64 @@
 #include "TEMimic.hpp"
 
 
+Point2 Level::generateSurface(unsigned int seed, Point2 stairUpPos, string previousLevel){
 
-Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLevel) {
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
+            tileGrid[i][j].index = (int8_t) Tiles::tileUnset->getIndex();
+            tileGrid[i][j].explored = false;
+        }
+    }
+
+    Point2 center = size / 2;
+
+    int innerRing = center.xPlusY() * .1;
+
+    int outerRing = center.xPlusY() * .2;
+
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
+            Point2 here = Point2(i, j);
+
+            setTile(here, Tiles::tileGrass);
+            int distance = sqrt(distanceSquared(here, center));
+
+            if(distance > outerRing){
+                setTile(here, Tiles::tileTree);
+            }else if(distance > innerRing && (rand() % 10) == 0){
+                setTile(here, Tiles::tileTree);
+            }
+        }
+    }
+
+    int centerRoomRadius = (rand() % 5) + 4;
+
+
+    Utility::executeGrid(center-centerRoomRadius, center+centerRoomRadius, [this](int x, int y){
+        setTile(Point2(x, y), Tiles::tileFloor);
+    });
+
+    Utility::executeBorder(center-centerRoomRadius, center+centerRoomRadius, [this](int x, int y){
+        setTile(Point2(x, y), Tiles::tileWall);
+    });
+
+    setTile(Point2(center.x, center.y+centerRoomRadius), Tiles::tileDoor);
+
+    stairDownPos = center;
+
+    setTile(stairDownPos, Tiles::tileStairDown);
+    tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor 1"));
+
+    if(canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
+        return stairUpPos;
+    }else{
+        return Point2Neg1;
+    }
+
+
+}
+
+Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previousLevel){
 
     genDebugPos = 1;
 
@@ -125,76 +181,8 @@ Point2 Level::generate(unsigned int seed, Point2 stairUpPos, string previousLeve
     }
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor" + to_string(Utility::parseInt(name.substr(5)) + 1)));
 
-    /*for (TileEntity* e : tileEntityList) {
-        debugf("TileEntity id: %d", e->getTileEntityTypeId());
-    }*/
-
-    /*disabled debug path
-vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
-for(Point2 pe : path){
-    if(!tileAt(pe)->isSolid()){
-        setTile(pe, Tiles::tileDebug1);
-    }
-}*/
-
-    //return stairUpPos;
 
     genDebug("Adding Entities...");
-
-    /*
-
-     {
-     EntityAi* e = new EntityAi("Rat", aiMoveRandom | aiFleeFromEntityPlayer, 'r', Point2Zero, Ui::C_DARK_YELLOW, 5);
-     e->viewDistance = 6;
-     e->setMoveDelay(Math::randomRange(.5, 1.5));
-
-     int count = (rand()%20)+10;
-     for(int i=0;i<count;i++){
-
-     placeNewEntityAi(dynamic_cast<EntityAi*>(Entity::clone(e)), stairUpPos);
-
-     }
-
-     }
-
-
-     {
-     EntityAi* e = new EntityAi ("Goblin", aiAttackEntityPlayer, 'g', Point2Zero, Ui::C_DARK_GREEN, 10);
-     e->setActiveItemWeapon(ItemGenerator::createItemWeapon(difficulty, damMelee));
-     e->setMoveDelay(Math::randomRange(.5, 1.5));
-
-     int count = (rand()%80)+20;
-     for(int i=0;i<count;i++){
-     placeNewEntityAi(dynamic_cast<EntityAi*>(Entity::clone(e)), stairUpPos);
-     }
-     }
-
-     {
-     EntityAi* e = new EntityAi ("Troll", aiAttackEntityPlayer, 't', Point2Zero, Ui::C_DARK_RED, 15);
-     e->setActiveItemWeapon(ItemGenerator::createItemWeapon(difficulty, damMelee));
-     e->setMoveDelay(Math::randomRange(.5, 1.5));
-
-     int count = (rand()%20)+20;
-     for(int i=0;i<count;i++){
-     placeNewEntityAi(dynamic_cast<EntityAi*>(Entity::clone(e)), stairUpPos);
-     }
-     }
-
-     {
-
-     EntityAi* e = new EntityAi ("Goblin Archer", aiAttackEntityPlayer, 'a', Point2Zero, Ui::C_DARK_GREEN, 8);
-     e->setActiveItemWeapon(ItemGenerator::createItemWeapon(difficulty, damRanged));
-     e->setMoveDelay(Math::randomRange(.5, 1.5));
-
-     int count = (rand()%40)+20;
-     for(int i=0;i<count;i++){
-
-     placeNewEntityAi(dynamic_cast<EntityAi*>(Entity::clone(e)), stairUpPos);
-     }
-     }
-
-     */
-    //
 
     EnemyGenerator::setIntervals(difficulty);
 
@@ -227,6 +215,7 @@ for(Point2 pe : path){
 
 
 namespace LevelGenerator {
+
 
     bool roomsOverlap(Room* a, Room* b, int border) {
         return !(((a->center.x - a->radius.x - border) > (b->center.x + b->radius.x + border) ||

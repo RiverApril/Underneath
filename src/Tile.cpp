@@ -46,6 +46,8 @@ namespace Tiles {
 
     vector<Tile*> tileList;
 
+    Tile* tileTree;
+    Tile* tileGrass;
 
     Tile* tileFloor;
     //Tile* tilePath;
@@ -86,6 +88,10 @@ namespace Tiles {
 
         Color bg = C_BLACK;
 
+        tileTree = new Tile(new RandomIcon({'T', 't'}, C_LIGHT_GREEN, bg), "tree", tileFlagSolid);
+        tileGrass = new Tile(new RandomIcon({',', '.', ' ', ' ', ' '}, C_LIGHT_GREEN, bg), "grass", tileFlagPathable | tileFlagReplaceable, new BasicIcon(' ', C_BLACK, bg));
+
+
         tileFloor = new Tile(new BasicIcon('.', C_WHITE, C_BLACK), "floor", tileFlagPathable | tileFlagReplaceable);
         tileBloodFloor = new Tile(new BasicIcon('.', C_LIGHT_RED, C_BLACK), "bloody floor", tileFlagPathable | tileFlagReplaceable);
 
@@ -109,7 +115,7 @@ namespace Tiles {
         tileRubble = new Tile(new RandomIcon({'#', '%', '&'}, C_LIGHT_GRAY, bg), "rubble", tileFlagPathable | tileFlagReplaceable, new RandomIcon({'#', '%', '&'}, C_DARK_GRAY, bg));
         tileCorpse = new Tile(new BasicIcon('&', C_LIGHT_RED, bg), "corpse", tileFlagPathable, new BasicIcon('&', C_DARK_GRAY, bg));
 
-        
+
         tileEdge = new Tile(new BasicIcon(' ',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon('.', C_BLACK, C_DARK_GRAY));
         tileUnset = new Tile(new BasicIcon('X',  C_LIGHT_MAGENTA, bg), "unset", tileFlagSolid | tileFlagTall | tileFlagIndestructable);
 
