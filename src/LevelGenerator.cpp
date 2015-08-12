@@ -11,7 +11,7 @@
 #include "TEMimic.hpp"
 
 
-Point2 Level::generateSurface(unsigned int seed, Point2 stairUpPos, string previousLevel){
+Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string previousLevel){
 
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
@@ -41,25 +41,43 @@ Point2 Level::generateSurface(unsigned int seed, Point2 stairUpPos, string previ
         }
     }
 
-    int centerRoomRadius = (rand() % 5) + 4;
+    int centerRoomRadius = (rand() % 3) + 4;
+
+    int centerRoomInnerRadius = centerRoomRadius - 2;
 
 
     Utility::executeGrid(center-centerRoomRadius, center+centerRoomRadius, [this](int x, int y){
         setTile(Point2(x, y), Tiles::tileFloor);
     });
 
+    Utility::executeBorder(center-centerRoomInnerRadius, center+centerRoomInnerRadius, [this](int x, int y){
+        if((x+y)%3 == 0){
+            setTile(Point2(x, y), Tiles::tileStatue);
+        }
+    });
+
     Utility::executeBorder(center-centerRoomRadius, center+centerRoomRadius, [this](int x, int y){
         setTile(Point2(x, y), Tiles::tileWall);
     });
 
-    setTile(Point2(center.x, center.y+centerRoomRadius), Tiles::tileDoor);
+    Point2 door = center;
+
+    if(rand()&2==0){
+        door.x += rand()&2==0?centerRoomRadius:-centerRoomRadius;
+        door.y += (rand()%centerRoomRadius*2)-centerRoomRadius;
+    }else{
+        door.x += (rand()%centerRoomRadius*2)-centerRoomRadius;
+        door.y += rand()&2==0?centerRoomRadius:-centerRoomRadius;
+    }
+
+    setTile(door, Tiles::tileDoor);
 
     stairDownPos = center;
 
     setTile(stairDownPos, Tiles::tileStairDown);
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor 1"));
 
-    if(canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
+    if(indexAt(stairUpPos) == Tiles::tileGrass->getIndex() && canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
         return stairUpPos;
     }else{
         return Point2Neg1;

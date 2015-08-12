@@ -594,8 +594,8 @@ void Level::load(unsigned char* data, int* position) {
 
 Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel) {
     switch(genType){
-        case genTypeSurface:{
-            return generateSurface(seed, stairUpPos, previousLevel);
+        case genTypeStartArea:{
+            return generateStartArea(seed, stairUpPos, previousLevel);
         }
         case genTypeDungeon:{
             return generateDungeon(seed, stairUpPos, previousLevel);

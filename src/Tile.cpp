@@ -49,6 +49,8 @@ namespace Tiles {
     Tile* tileTree;
     Tile* tileGrass;
 
+    Tile* tileStatue;
+
     Tile* tileFloor;
     //Tile* tilePath;
     Tile* tileBloodFloor;
@@ -91,6 +93,7 @@ namespace Tiles {
         tileTree = new Tile(new RandomIcon({'T', 't'}, C_LIGHT_GREEN, bg), "tree", tileFlagSolid);
         tileGrass = new Tile(new RandomIcon({',', '.', ' ', ' ', ' '}, C_LIGHT_GREEN, bg), "grass", tileFlagPathable | tileFlagReplaceable, new BasicIcon(' ', C_BLACK, bg));
 
+        tileStatue = new Tile(new RandomIcon({'H', 'I', 'Z'}, C_WHITE, bg), "statue", tileFlagSolid);
 
         tileFloor = new Tile(new BasicIcon('.', C_WHITE, C_BLACK), "floor", tileFlagPathable | tileFlagReplaceable);
         tileBloodFloor = new Tile(new BasicIcon('.', C_LIGHT_RED, C_BLACK), "bloody floor", tileFlagPathable | tileFlagReplaceable);

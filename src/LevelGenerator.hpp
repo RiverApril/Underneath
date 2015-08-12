@@ -59,10 +59,6 @@ namespace LevelGenerator {
 
     extern void generateMaze(Level* level, Room* room);
 
-    extern Point2 generateSurface(unsigned int seed, Point2 stairUpPos, string previousLevel);
-
-    extern Point2 generateDungeon(unsigned int seed, Point2 stairUpPos, string previousLevel);
-
 }
 
 #endif /* defined(__Underneath__LevelGenerator__) */

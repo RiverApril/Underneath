@@ -334,7 +334,7 @@ namespace WorldLoader {
         Point2 p;
         do {
             start = Point2((rand() % (world->currentLevel->getSize().x-20))+10, (rand() % (world->currentLevel->getSize().y-20))+10);
-            p = world->currentLevel->generate(genTypeSurface, (unsigned int) rand(), start, "");
+            p = world->currentLevel->generate(genTypeStartArea, (unsigned int) rand(), start, "");
         } while (!(p.x >= 0 && p.y >= 0));
 
         world->levels.push_back(world->currentLevel->getName());
@@ -388,7 +388,7 @@ namespace WorldLoader {
         debug("Level not found, creating a new one...");
 
         int newDifficulty = world->currentLevel->getDifficulty() + 1;
-        Point2 newSize = world->currentLevel->getSize();
+        Point2 newSize = (world->currentLevel->getSize() * 1.1).truncate();
         EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentPlayer));
 
         world->currentLevel->actuallyRemoveEntityUnsafe(world->currentPlayer, true);

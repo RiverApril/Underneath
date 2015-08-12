@@ -13,9 +13,13 @@ struct Point2;
 
 namespace Random {
 
+    extern unsigned char predefinedRandomGrid[64][64];
+
     double randDouble(double min, double max);
 
     int randomFromPoint(Point2 seed);
+
+    void setup();
 
     template <typename T> const T choose(int count, ...) {
         vector<T> options;

@@ -16,6 +16,7 @@
 #include "EnemyGenerator.hpp"
 #include "Level.hpp"
 #include "Settings.hpp"
+#include "Random.hpp"
 
 int main(int argc, char* argv[]) {
 
@@ -44,6 +45,7 @@ int main(int argc, char* argv[]) {
     Commands::initCommands();
     EnemyGenerator::initEnemies();
     Settings::loadSettings(UnderneathDir + "settings.txt");
+    Random::setup();
 
 
     Ui::MenuMain* mainMenu = new Ui::MenuMain();

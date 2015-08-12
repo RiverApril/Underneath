@@ -669,7 +669,7 @@ namespace Ui {
 
         if (currentLevel != nullptr) {
             Ui::setColor(C_LIGHT_GRAY);
-            mvprintw(gameArea.y, 0, "%d, %d e:%d te:%d p:%s %s(%d)", p.x, p.y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "null" : "not null", currentLevel->getName().c_str(), currentLevel->getDifficulty());
+            mvprintw(gameArea.y, 0, "%d, %d [%dx%d] e:%d te:%d p:%s %s(%d)", p.x, p.y, currentLevel->getSize().x, currentLevel->getSize().y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "null" : "not null", currentLevel->getName().c_str(), currentLevel->getDifficulty());
         }
 
 
