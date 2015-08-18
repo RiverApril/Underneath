@@ -23,7 +23,7 @@ namespace ItemGenerator {
         Condition() {
         }
 
-        Condition(vector<string> names, double damMin, double damMax, double udMin, double udMax, double wMin, double wMax, vector<ItemWeaponType> weaponTypes) {
+        Condition(vector<string> names, double damMin, double damMax, double udMin, double udMax, double wMin, double wMax, vector<WeaponType> weaponTypes) {
             this->names = names;
             this->damage.x = damMin;
             this->damage.y = damMax;
@@ -31,7 +31,7 @@ namespace ItemGenerator {
             this->useDelay.y = udMax;
             this->weight.x = wMin;
             this->weight.y = wMax;
-            this->applicableItemWeaponTypes = weaponTypes;
+            this->applicableWeaponTypes = weaponTypes;
         }
 
         Condition magical(double minMana, double maxMana) {
@@ -45,7 +45,7 @@ namespace ItemGenerator {
         Vector2 useDelay = Vector2One;
         Vector2 weight = Vector2One;
         Vector2 manaCost = Vector2One;
-        vector<ItemWeaponType> applicableItemWeaponTypes;
+        vector<WeaponType> applicableWeaponTypes;
     };
 
     struct DefenseRange{
@@ -77,12 +77,12 @@ namespace ItemGenerator {
         double weight;
     };
 
-    struct ItemWeaponBase {
+    struct WeaponBase {
 
-        ItemWeaponBase() {
+        WeaponBase() {
         }
 
-        ItemWeaponBase(vector<string> names, double damage, double useDelay, DamageType damageType, ItemWeaponType weaponType) {
+        WeaponBase(vector<string> names, double damage, double useDelay, DamageType damageType, WeaponType weaponType) {
             this->names = names;
             this->damage = damage;
             this->useDelay = useDelay;
@@ -90,23 +90,23 @@ namespace ItemGenerator {
             this->weaponType = weaponType;
         }
 
-        ItemWeaponBase ranged(double range) {
+        WeaponBase ranged(double range) {
             this->range = range;
             return *this;
         }
 
-        ItemWeaponBase magical(double range, double manaCost) {
+        WeaponBase magical(double range, double manaCost) {
             this->range = range;
             this->manaCost = manaCost;
             return *this;
         }
 
-        ItemWeaponBase setWeight(double weight) {
+        WeaponBase setWeight(double weight) {
             this->weight = weight;
             return *this;
         }
 
-        ItemWeaponBase setArts(vector<int> artIndecies) {
+        WeaponBase setArts(vector<int> artIndecies) {
             this->arts = artIndecies;
             return *this;
         }
@@ -117,7 +117,7 @@ namespace ItemGenerator {
         vector<string> names = {""};
         vector<int> arts = {-1};
         DamageType damageType = damSharp;
-        ItemWeaponType weaponType = wepMelee;
+        WeaponType weaponType = wepMelee;
         double range = -1;
         double manaCost = -1;
         vector<Enchantment> enchs;
@@ -169,34 +169,34 @@ namespace ItemGenerator {
 
     ItemArmorBase atl(ItemArmorBase a);
     Condition atl(Condition c);
-    ItemWeaponBase atl(ItemWeaponBase w);
+    WeaponBase atl(WeaponBase w);
     PotionBase atl(PotionBase p);
     ScrollBase atl(ScrollBase s);
 
 
     extern vector<ItemArmorBase> armorList;
     extern vector<Condition> conditionList;
-    extern vector<ItemWeaponBase> weaponList;
+    extern vector<WeaponBase> weaponList;
     extern vector<PotionBase> potionList;
     extern vector<ScrollBase> scrollList;
 
     extern Item* iCoin;
     extern Item* iSmallKey;
 
-    extern ItemWeaponBase wKnife;
-    extern ItemWeaponBase wSword;
-    extern ItemWeaponBase wAxe;
-    extern ItemWeaponBase wMace;
-    extern ItemWeaponBase wSpear;
+    extern WeaponBase wKnife;
+    extern WeaponBase wSword;
+    extern WeaponBase wAxe;
+    extern WeaponBase wMace;
+    extern WeaponBase wSpear;
 
-    extern ItemWeaponBase wBow;
-    extern ItemWeaponBase wCrossbow;
+    extern WeaponBase wBow;
+    extern WeaponBase wCrossbow;
 
-    extern ItemWeaponBase wFireItemCombatSpell;
-    extern ItemWeaponBase wFrostItemCombatSpell;
-    extern ItemWeaponBase wShockItemCombatSpell;
+    extern WeaponBase wFireItemCombatSpell;
+    extern WeaponBase wFrostItemCombatSpell;
+    extern WeaponBase wShockItemCombatSpell;
 
-    extern ItemWeaponBase wNatural;
+    extern WeaponBase wNatural;
 
 
     vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty, int keyMaxQty);
@@ -207,15 +207,17 @@ namespace ItemGenerator {
 
     ItemArmor* createRandItemArmor(int itemDifficulty);
 
-    ItemWeaponBase getRandItemWeaponBase(DamageType d);
-    ItemWeaponBase getRandItemWeaponBase();
+    WeaponBase getRandWeaponBase(WeaponType w, DamageType d);
+    WeaponBase getRandWeaponBase(WeaponType w);
+    WeaponBase getRandWeaponBase();
     ItemArmorBase getRandItemArmorBase();
 
-    ItemWeapon* createItemWeaponFromBase(ItemWeaponBase base, int itemDifficulty);
+    ItemWeapon* createItemWeaponFromBase(WeaponBase base, int itemDifficulty);
 
     ItemArmor* createItemArmorFromBase(ItemArmorBase base, int itemDifficulty);
 
-    ItemWeapon* createItemWeaponFromType(ItemWeaponType w, int itemDifficulty);
+    ItemWeapon* createItemWeaponFromType(WeaponType w, DamageType d, int itemDifficulty);
+    ItemWeapon* createItemWeaponFromType(WeaponType w, int itemDifficulty);
 
     ItemWeapon* applyConditionToItemWeapon(ItemWeapon* w, Condition c, int itemDifficulty, bool prependName = true);
 

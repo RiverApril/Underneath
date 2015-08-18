@@ -12,11 +12,11 @@
 #include "Global.hpp"
 #include "Color.hpp"
 
-typedef int ItemWeaponType;
+typedef int WeaponType;
 
-const ItemWeaponType wepMelee = 0;
-const ItemWeaponType wepRanged = 1;
-const ItemWeaponType wepMagic = 2;
+const WeaponType wepMelee = 0;
+const WeaponType wepRanged = 1;
+const WeaponType wepMagic = 2;
 
 typedef int DamageType;
 const DamageType damSharp = 0;

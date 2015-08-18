@@ -23,24 +23,24 @@ namespace ItemGenerator {
 
     vector<ItemArmorBase> armorList;
     vector<Condition> conditionList;
-    vector<ItemWeaponBase> weaponList;
+    vector<WeaponBase> weaponList;
     vector<PotionBase> potionList;
     vector<ScrollBase> scrollList;
 
-    ItemWeaponBase wKnife;
-    ItemWeaponBase wSword;
-    ItemWeaponBase wAxe;
-    ItemWeaponBase wMace;
-    ItemWeaponBase wSpear;
+    WeaponBase wKnife;
+    WeaponBase wSword;
+    WeaponBase wAxe;
+    WeaponBase wMace;
+    WeaponBase wSpear;
 
-    ItemWeaponBase wBow;
-    ItemWeaponBase wCrossbow;
+    WeaponBase wBow;
+    WeaponBase wCrossbow;
 
-    ItemWeaponBase wFireItemCombatSpell;
-    ItemWeaponBase wFrostItemCombatSpell;
-    ItemWeaponBase wShockItemCombatSpell;
+    WeaponBase wFireItemCombatSpell;
+    WeaponBase wFrostItemCombatSpell;
+    WeaponBase wShockItemCombatSpell;
 
-    ItemWeaponBase wNatural;
+    WeaponBase wNatural;
 
     void initItemTemplates() {
 
@@ -82,22 +82,22 @@ namespace ItemGenerator {
 
 
 
-        wKnife = atl(ItemWeaponBase({"Knife", "Dagger", "Cleaver"}, 0.25, 0.5, damSharp, wepMelee).setWeight(1).setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver}));
-        wSword = atl(ItemWeaponBase({"Longsword", "Cutlass", "Katana", "Machete", "Gladius", "Scimitar", "Rapier", "Short Sword", "Broadsword", "Saber", "Claymore"}, 1, 1, damSharp, wepMelee).setWeight(2).setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore}));
-        wAxe = atl(ItemWeaponBase({"Axe", "Hatchet", "Double Axe"}, 1.2, 1.2, damSharp, wepMelee).setWeight(2).setArts({Arts::artAxe, Arts::artAxe, Arts::artDoubleAxe}));
-        wMace = atl(ItemWeaponBase({"Mace", "Club", "Flail", "War Hammer", "Mallet"}, 1.5, 1.5, damBlunt, wepMelee).setArts({Arts::artMace, Arts::artClub, Arts::artFlail, Arts::artWarHammer, Arts::artWarHammer}));
-        wSpear = atl(ItemWeaponBase({"Spear", "Halberd"}, 1.3, 1.3, damPierce, wepMelee).ranged(1.8).setWeight(2.5).setArts({Arts::artSpear, Arts::artHalberd}));
+        wKnife = atl(WeaponBase({"Knife", "Dagger", "Cleaver"}, 0.25, 0.5, damSharp, wepMelee).setWeight(1).setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver}));
+        wSword = atl(WeaponBase({"Longsword", "Cutlass", "Katana", "Machete", "Gladius", "Scimitar", "Rapier", "Short Sword", "Broadsword", "Saber", "Claymore"}, 1, 1, damSharp, wepMelee).setWeight(2).setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore}));
+        wAxe = atl(WeaponBase({"Axe", "Hatchet", "Double Axe"}, 1.2, 1.2, damSharp, wepMelee).setWeight(2).setArts({Arts::artAxe, Arts::artAxe, Arts::artDoubleAxe}));
+        wMace = atl(WeaponBase({"Mace", "Club", "Flail", "War Hammer", "Mallet"}, 1.5, 1.5, damBlunt, wepMelee).setArts({Arts::artMace, Arts::artClub, Arts::artFlail, Arts::artWarHammer, Arts::artWarHammer}));
+        wSpear = atl(WeaponBase({"Spear", "Halberd"}, 1.3, 1.3, damPierce, wepMelee).ranged(1.8).setWeight(2.5).setArts({Arts::artSpear, Arts::artHalberd}));
 
-        wBow = atl(ItemWeaponBase({"Longbow", "Bow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
-        wCrossbow = atl(ItemWeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
+        wBow = atl(WeaponBase({"Longbow", "Bow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
+        wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
 
-        wFireItemCombatSpell = atl(ItemWeaponBase({"Ignite", "Scorch", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
-        wFrostItemCombatSpell = atl(ItemWeaponBase({"Freeze", "Chill"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
-        wShockItemCombatSpell = atl(ItemWeaponBase({"Electrocute", "Shock", "Zap"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
+        wFireItemCombatSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
+        wFrostItemCombatSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
+        wShockItemCombatSpell = atl(WeaponBase({"Electrocute", "Shock", "Zap"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
 
 
 
-        wNatural = ItemWeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee);
+        wNatural = WeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee);
 
 
         Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, 1, 1,
@@ -167,7 +167,7 @@ namespace ItemGenerator {
         return c;
     }
 
-    ItemWeaponBase atl(ItemWeaponBase w) {
+    WeaponBase atl(WeaponBase w) {
         weaponList.push_back(w);
         return w;
     }
@@ -182,7 +182,17 @@ namespace ItemGenerator {
         return s;
     }
 
-    ItemWeaponBase getRandItemWeaponBase(const ItemWeaponType w) {
+    WeaponBase getRandWeaponBase(const WeaponType w, const DamageType d) {
+        while (true) {
+            size_t i = (rand()) % weaponList.size();
+            if (weaponList[i].weaponType == w && weaponList[i].damageType) {
+                return weaponList[i];
+            }
+        }
+        return weaponList[0];
+    }
+
+    WeaponBase getRandWeaponBase(const WeaponType w) {
         while (true) {
             size_t i = (rand()) % weaponList.size();
             if (weaponList[i].weaponType == w) {
@@ -192,7 +202,7 @@ namespace ItemGenerator {
         return weaponList[0];
     }
 
-    ItemWeaponBase getRandItemWeaponBase() {
+    WeaponBase getRandWeaponBase() {
         size_t i = (rand()) % weaponList.size();
         return weaponList[i];
     }
@@ -339,11 +349,15 @@ namespace ItemGenerator {
         }
     }
 
-    ItemWeapon* createItemWeaponFromType(ItemWeaponType w, int itemDifficulty) {
-        return createItemWeaponFromBase(getRandItemWeaponBase(w), itemDifficulty);
+    ItemWeapon* createItemWeaponFromType(WeaponType w, DamageType d, int itemDifficulty) {
+        return createItemWeaponFromBase(getRandWeaponBase(w, d), itemDifficulty);
     }
 
-    ItemWeapon* createItemWeaponFromBase(ItemWeaponBase base, int itemDifficulty) {
+    ItemWeapon* createItemWeaponFromType(WeaponType w, int itemDifficulty) {
+        return createItemWeaponFromBase(getRandWeaponBase(w), itemDifficulty);
+    }
+
+    ItemWeapon* createItemWeaponFromBase(WeaponBase base, int itemDifficulty) {
         size_t ni = rand() % base.names.size();
         size_t arti = min(ni, base.arts.size() - 1);
 
@@ -419,14 +433,14 @@ namespace ItemGenerator {
         Condition condition;
         do {
             condition = conditionList[rand() % conditionList.size()];
-        } while (!Utility::vectorContains(condition.applicableItemWeaponTypes, w->weaponType));
+        } while (!Utility::vectorContains(condition.applicableWeaponTypes, w->weaponType));
 
         applyConditionToItemWeapon(w, condition, itemDifficulty);
         return w;
     }
 
     ItemWeapon* createRandItemWeapon(int itemDifficulty) {
-        ItemWeaponType wType;
+        WeaponType wType;
         if (rand() % 3 == 0) {
             if (rand() % 3 == 0) {
                 wType = wepMagic; // 1/9 chance
@@ -436,7 +450,7 @@ namespace ItemGenerator {
         } else {
             wType = wepMelee; // 2/3 chance
         }
-        ItemWeaponBase base = getRandItemWeaponBase(wType);
+        WeaponBase base = getRandWeaponBase(wType);
         ItemWeapon* w = createItemWeaponFromBase(base, itemDifficulty);
 
         switch (wType) {

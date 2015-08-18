@@ -62,7 +62,7 @@ public:
 
     double baseDamage = 1;
     DamageType damageType = damSharp;
-    ItemWeaponType weaponType = wepMelee;
+    WeaponType weaponType = wepMelee;
     double useDelay = 1;
 
     vector<Enchantment> enchantments;

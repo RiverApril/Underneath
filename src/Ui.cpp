@@ -98,7 +98,7 @@ namespace Ui {
     string consoleInput = "";
     int consoleScroll = 0;
 
-    void initNCurses() {
+    void initNCurses(int limitedColorModeOverride) {
 
         setlocale(LC_ALL, "");
 
@@ -114,30 +114,26 @@ namespace Ui {
         ESCDELAY = 1;
 
 
-        limitedColorMode = COLORS < 256;
+        limitedColorMode = (COLORS < 16) || limitedColorModeOverride;
 
         if (limitedColorMode) {
 
-			swap(C_DARK_BLUE, C_DARK_RED);
-			swap(C_DARK_YELLOW, C_DARK_CYAN);
+			//swap(C_DARK_BLUE, C_DARK_RED);
+			//swap(C_DARK_YELLOW, C_DARK_CYAN);
 
-            C_LIGHT_BLACK = C_DARK_BLACK;
+            C_LIGHT_BLACK = C_DARK_WHITE;
             C_LIGHT_RED = C_DARK_RED;
             C_LIGHT_GREEN = C_DARK_GREEN;
             C_LIGHT_YELLOW = C_DARK_YELLOW;
             C_LIGHT_BLUE = C_DARK_BLUE;
             C_LIGHT_MAGENTA = C_DARK_MAGENTA;
             C_LIGHT_CYAN = C_DARK_CYAN;
-            //C_LIGHT_WHITE = C_DARK_WHITE;
+            C_LIGHT_WHITE = C_DARK_WHITE;
         }
 
         initColorPairs();
 
-        if(limitedColorMode){
-        	bkgd(getColorPair(C_WHITE, C_BLACK+7));
-        }else{
-            bkgd(getColorPair(C_WHITE, C_BLACK));
-        }
+        bkgd(getColorPair(C_WHITE, C_BLACK));
 
         refresh();
 

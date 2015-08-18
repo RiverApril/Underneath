@@ -64,7 +64,7 @@ if args.sdl:
     else:
         libraryFlags = "-lSDL2 -lSDL2_image"
 else:
-    executableName += "_Standard"
+    executableName += "_Term"
     if systemName == "Windows":
         libraryFlags = "-lpdcurses -static-libgcc -static-libstdc++ -L ."
 

@@ -44,7 +44,7 @@ namespace EnemyGenerator {
         wraith->weaknesses.push_back(Weakness(damSharp, .5));
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
 
-        ItemGenerator::ItemWeaponBase myconidWepon = ItemGenerator::wNatural;
+        ItemGenerator::WeaponBase myconidWepon = ItemGenerator::wNatural;
         myconidWepon.damage *= .5;
         myconidWepon.enchs.push_back(Enchantment(effLSD, 30, 0, 50));
         myconidWepon.enchs.push_back(Enchantment(effMemory, 10, 0, 100));

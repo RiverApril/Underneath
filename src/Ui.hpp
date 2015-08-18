@@ -35,7 +35,7 @@ namespace Ui {
 
     extern const Color COLOR_DEFAULT_ENTITY;
 
-    void initNCurses();
+    void initNCurses(int limitedColorModeOverride);
     void initColorPairs();
 
     void exitProgram();
