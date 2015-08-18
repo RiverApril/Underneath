@@ -9,7 +9,7 @@ A dungeon crawler with ASCII graphics lightly based on the classic game Rogue
 This program uses standard c++ libraries and ncurses (pdcurses in Windows).
 SDL version uses SDL2 and SDL_Image.
 
-My development is primarily in Linux and some in MacOSX. I have successfully built on windows, but its a pain in the ass snd Windows command promt only supports 8 colors, witch doesn't look as good as 16.
+My development is primarily in Linux and some in MacOSX. I have successfully built on windows, but its a pain in the ass and Windows command promt only supports 8 colors, witch doesn't look as good as 16.
 
 
 ---
