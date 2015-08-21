@@ -91,53 +91,28 @@ namespace ItemGenerator {
         wBow = atl(WeaponBase({"Longbow", "Bow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
         wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
 
-        wFireItemCombatSpell = atl(WeaponBase({"Ignite", "Scorch", "Burn"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
-        wFrostItemCombatSpell = atl(WeaponBase({"Freeze", "Chill"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
-        wShockItemCombatSpell = atl(WeaponBase({"Electrocute", "Shock", "Zap"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
+        wFireItemCombatSpell = atl(WeaponBase({"Ignite Spell", "Scorch Spell", "Burn Spell"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
+        wFrostItemCombatSpell = atl(WeaponBase({"Freeze Spell", "Chill Spell"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
+        wShockItemCombatSpell = atl(WeaponBase({"Electrocute Spell", "Shock Spell", "Zap Spell"}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
 
 
 
         wNatural = WeaponBase({"Teeth", "Claws"}, 1, 1, damSharp, wepMelee);
 
 
-        Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, 1, 1,
-        {
-            wepMelee, wepRanged
-        }));
-        Condition cNormal = atl(Condition({"Standard", "Normal", "Regular", "Stock"}, 1, 1, 1, 1, 1, 1,
-        {
-            wepMelee, wepRanged
-        }));
-        Condition cForged = atl(Condition({"Forged", "Crafted"}, 1.4, 1.6, 1, 1, 1, 1,
-        {
-            wepMelee, wepRanged
-        }));
-        Condition cFortified = atl(Condition({"Fortified", "Strengthened", "Reinforced"}, 1.8, 2.2, 1.1, 1.1, 1.3, 1.6,
-        {
-            wepMelee, wepRanged
-        }));
-        Condition cHeavy = atl(Condition({"Heavy", "Overweight", "Obese", "Dense"}, 1, 1.1, 1.3, 1.5, 2, 3,
-        {
-            wepMelee, wepRanged
-        }));
 
 
-        Condition cCheapMagic = atl(Condition({"Cheap", "Frugal"}, .8, 1.0, 1, 1, 1, 1,
-        {
-            wepMagic
-        }).magical(.5, .8));
-        Condition cNormalMagic = atl(Condition({"Apprentice"}, 1, 1, 1, 1, 1, 1,
-        {
-            wepMagic
-        }).magical(1.0, 1.0));
-        Condition cExpenciveMagic = atl(Condition({"Expencive", "Costly"}, 0.9, 1.0, 1, 1, 1, 1,
-        {
-            wepMagic
-        }).magical(3.0, 5.0));
-        Condition cMasterMagic = atl(Condition({"Master", "Expert", "Warlock's"}, 1.5, 2.5, 2, 3, 1, 1,
-        {
-            wepMagic
-        }).magical(2.0, 4.0));
+        Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, 1, 1, {wepMelee, wepRanged}));
+        Condition cNormal = atl(Condition({"Standard", "Normal", "Regular", "Stock"}, 1, 1, 1, 1, 1, 1, {wepMelee, wepRanged}));
+        Condition cForged = atl(Condition({"Forged", "Crafted"}, 1.4, 1.6, 1, 1, 1, 1, {wepMelee, wepRanged}));
+        Condition cFortified = atl(Condition({"Fortified", "Strengthened", "Reinforced"}, 1.8, 2.2, 1.1, 1.1, 1.3, 1.6, {wepMelee, wepRanged}));
+        Condition cHeavy = atl(Condition({"Heavy", "Dense"}, 1, 1.1, 1.3, 1.5, 2, 3, {wepMelee, wepRanged}));
+
+
+        Condition cCheapMagic = atl(Condition({"Cheap", "Frugal"}, .8, 1.0, 1, 1, 1, 1, {wepMagic}).magical(.5, .8));
+        Condition cNormalMagic = atl(Condition({"Apprentice"}, 1, 1, 1, 1, 1, 1, {wepMagic}).magical(1.0, 1.0));
+        Condition cExpenciveMagic = atl(Condition({"Expencive", "Costly"}, 0.9, 1.0, 1, 1, 1, 1, {wepMagic}).magical(3.0, 5.0));
+        Condition cMasterMagic = atl(Condition({"Master", "Expert", "Warlock's"}, 1.5, 2.5, 2, 3, 1, 1, {wepMagic}).magical(2.0, 4.0));
 
 
         ItemArmorBase aLeatherChest = atl(ItemArmorBase({"Leather Cuirass"}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}, 3));
@@ -148,7 +123,8 @@ namespace ItemGenerator {
 
         ItemArmorBase aLeatherGloves = atl(ItemArmorBase({"Leather Gloves"}, {slotHands}, {DefenseRange(damSharp, .01, .03), DefenseRange(damPierce, .01, .02)}, 1));
 
-        ItemArmorBase aGoldenRing = atl(ItemArmorBase({"Golden Ring"}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));
+
+        ItemArmorBase aGoldenRing = atl(ItemArmorBase({"Golden Ring", "Silver Ring"}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));
 
 
     }
@@ -240,7 +216,7 @@ namespace ItemGenerator {
                 }
 
                 ItemWeapon* w = createRandItemWeapon(itemDifficulty);
-                if(rand() % 10 == 0){
+                if(rand() % 10 == 0 && w->enchantments.size() == 0){
                     DamageType damType = Random::choose<DamageType>(5, damBlood, damPoison, damFire, damIce, damShock);
                     Enchantment e = Enchantment(effDamage, (rand()%10)+10, Random::randDouble(1, 5), Random::randDouble(2, 30), damType);
                     w->addEnchantment(e);

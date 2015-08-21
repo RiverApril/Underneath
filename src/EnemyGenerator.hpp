@@ -49,6 +49,7 @@ namespace EnemyGenerator {
     extern WeightedEnemy* goblinArcher;
     extern WeightedEnemy* troll;
     extern WeightedEnemy* wraith;
+    extern WeightedEnemy* slime;
     extern WeightedEnemy* mimic;
     extern WeightedEnemy* myconid;
 

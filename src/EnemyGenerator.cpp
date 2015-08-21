@@ -20,6 +20,7 @@ namespace EnemyGenerator {
     WeightedEnemy* goblinArcher;
     WeightedEnemy* troll;
     WeightedEnemy* wraith;
+    WeightedEnemy* slime;
     WeightedEnemy* mimic;
     WeightedEnemy* myconid;
 
@@ -43,6 +44,10 @@ namespace EnemyGenerator {
         wraith->weaknesses.push_back(Weakness(damShock, 2));
         wraith->weaknesses.push_back(Weakness(damSharp, .5));
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
+
+        slime = atl(new WeightedEnemy(75, "Slime", 's', aiAttackEntityPlayer, 40, ItemGenerator::wNatural, "Goo", Ui::C_LIGHT_YELLOW, 1.0));
+        slime->weaknesses.push_back(Weakness(damSharp, .4));
+        slime->weaknesses.push_back(Weakness(damPierce, .4));
 
         ItemGenerator::WeaponBase myconidWepon = ItemGenerator::wNatural;
         myconidWepon.damage *= .5;

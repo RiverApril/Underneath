@@ -463,6 +463,7 @@ namespace LevelGenerator {
             bool addedWalls = false;
 
 
+            //Maze
             if (!addedWalls) {
                 if (rand() % 3 == 0 && r->radius.xPlusY() > 12) {
                     generateMaze(level, r);
@@ -473,6 +474,7 @@ namespace LevelGenerator {
                 }
             }
 
+            //Ring shaped room
             if (!addedWalls) {
                 if (rand() % 3 == 0) {
 
@@ -493,6 +495,7 @@ namespace LevelGenerator {
                 }
             }
 
+            //Chest Room
             if(!addedWalls){
                 int doors = 0;
                 Point2 lastDoorLocation = Point2Neg1;
@@ -524,7 +527,9 @@ namespace LevelGenerator {
                         level->setTile(lastDoorLocation, Tiles::tileLockedDoor);
                     }
                 }
+                addedWalls = true;
             }
+
 
             if (rand() % 3 == 0) {
 

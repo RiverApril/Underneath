@@ -103,8 +103,6 @@ namespace Tiles {
     extern Tile* tileEdge;
     extern Tile* tileUnset;
 
-    extern Tile* tileBookcase;
-
     extern Tile* tileDebug1;
     extern Tile* tileDebug2;
     extern Tile* tileDebug3;

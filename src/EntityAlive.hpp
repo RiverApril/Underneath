@@ -116,7 +116,7 @@ protected:
     string name;
     double maxHp = 30;
     double hp = maxHp;
-    double maxMp = 30;
+    double maxMp = 0;
     double mp = maxMp;
     bool dead = false;
 

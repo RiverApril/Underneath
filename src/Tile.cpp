@@ -75,8 +75,6 @@ namespace Tiles {
     Tile* tileEdge;
     Tile* tileUnset;
 
-    Tile* tileBookcase;
-
     Tile* tileDebug1;
     Tile* tileDebug2;
     Tile* tileDebug3;
@@ -123,9 +121,6 @@ namespace Tiles {
 
         tileEdge = new Tile(new BasicIcon(' ',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon('.', C_BLACK, C_DARK_GRAY));
         tileUnset = new Tile(new BasicIcon('X',  C_LIGHT_MAGENTA, bg), "unset", tileFlagSolid | tileFlagTall | tileFlagIndestructable);
-
-
-        tileBookcase = new Tile(new BasicIcon('=', C_DARK_YELLOW, bg), "bookcase", tileFlagSolid | tileFlagHasTileEntity);
 
         tileDebug1 = new Tile(new BasicIcon('1', C_LIGHT_GREEN, bg), "debug 1", tileFlagPathable | tileFlagReplaceable);
         tileDebug2 = new Tile(new BasicIcon('2', C_LIGHT_GREEN, bg), "debug 2", tileFlagPathable | tileFlagReplaceable);

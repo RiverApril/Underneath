@@ -468,16 +468,35 @@ namespace Ui {
                 } else if(controlMode == modeSelectPosition){
                     changeMode(modeEntityPlayerControl);
                     if(currentLevel->getExplored(targetPosition)){
+
                         console("Tile: "+currentLevel->tileAt(targetPosition)->getName());
+
                         if(currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance, true)){
                             for(Entity* e : currentLevel->entityList){
                                 if(!e->removed && e->pos == targetPosition){
-                                    console("Entity("+to_string(e->getEntityTypeId())+"): "+e->getName());
+                                    if(debugMode){
+                                        console("Entity("+to_string(e->getEntityTypeId())+"): "+e->getName());
+                                    }
+
+                                    EntityAlive* a = dynamic_cast<EntityAlive*>(e);
+                                    if(a){
+                                        consolef("%s HP:[%d/%d]", a->getName().c_str(), a->getHp(), a->getMaxHp());
+                                        for(Weakness w : a->weaknesses){
+                                            if(w.multiplier > 1){
+                                                consolef("%d%% Weakness to %s", (int)(w.multiplier*100), damageTypeName(w.damageType).c_str());
+                                            }else{
+                                                consolef("%d%% Resistance to %s", (int)((1/w.multiplier)*100), damageTypeName(w.damageType).c_str());
+                                            }
+                                        }
+                                    }
+
                                 }
                             }
                             for(TileEntity* t : currentLevel->tileEntityList){
                                 if(t->pos == targetPosition){
-                                    console("Tile Entity("+to_string(t->getTileEntityTypeId())+"): "+t->debugString());
+                                    if(debugMode){
+                                        console("Tile Entity("+to_string(t->getTileEntityTypeId())+"): "+t->debugString());
+                                    }
                                 }
                             }
                         }else{
@@ -590,10 +609,12 @@ namespace Ui {
             move(a, gameArea.x + 1);
             clrtoeol();
 
-            a += printMultiLineString(a, gameArea.x + 1, formatString("MP: %3d/%3d", mp, maxMp));
-            Ui::setColor(C_LIGHT_BLUE);
-            printw(" %s", Utility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
-            Ui::setColor(C_WHITE);
+            if(maxMp > 0){
+                a += printMultiLineString(a, gameArea.x + 1, formatString("MP: %3d/%3d", mp, maxMp));
+                Ui::setColor(C_LIGHT_BLUE);
+                printw(" %s", Utility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
+                Ui::setColor(C_WHITE);
+            }
 
             for (size_t i = 0; i < currentPlayer->effects.size(); i++) {
                 Effect eff = currentPlayer->effects[i];
