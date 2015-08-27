@@ -602,4 +602,6 @@ Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, st
         }
 
     }
+    return Point2Neg1;
 }
+

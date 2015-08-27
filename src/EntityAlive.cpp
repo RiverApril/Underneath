@@ -105,11 +105,15 @@ double EntityAlive::hurt(DamageType damageType, double amount, double damageMult
     
     amount *= damageMultiplier;
 
+    double amoutBeforeWeaknesses = amount;
+
     for (Weakness w : weaknesses) {
         if (w.damageType == damageType) {
             amount *= w.multiplier;
+            Verbalizer::weakness(this, w, amoutBeforeWeaknesses, amount);
         }
     }
+
 
     hp -= amount;
     if (hp <= 0 && !dead) {

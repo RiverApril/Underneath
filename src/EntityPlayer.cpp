@@ -18,6 +18,7 @@
 #include "EntityTimeActivated.hpp"
 #include "Icon.hpp"
 #include "MenuShop.hpp"
+#include "Animator.hpp"
 
 EntityPlayer::EntityPlayer() : EntityPlayer("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()) {
 
@@ -341,9 +342,11 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                     double d = a->hurt(spell, x + 1);
                     Verbalizer::attack(this, a, spell, d);
 
+                    Animator::renderRangedAttack(pos, posOfEntity, damageTypeColor(spell->damageType), Ui::C_BLACK, '#', level, 4);
+
                     return useDelay(item);
                 }
-                console(Ui::colorCode(Ui::C_LIGHT_RED) + "Not enough mana.");
+                console(Ui::colorCode(Ui::C_LIGHT_RED) + "Not enough mana!");
                 return 0;
             }
 
@@ -352,12 +355,16 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                 double d = a->hurt(weapon, x);
                 Verbalizer::attack(this, a, weapon, d);
 
+                if(ranged){
+                    Animator::renderRangedAttack(pos, posOfEntity, damageTypeColor(ranged->damageType), Ui::C_BLACK, '-', level, 1);
+                }
+
                 return useDelay(item);
             }
 
             return 0;
         } else {
-            console(Ui::colorCode(Ui::C_LIGHT_RED) + "No item equiped.");
+            console(Ui::colorCode(Ui::C_LIGHT_RED) + "No item equiped!");
             return 0;
         }
     }

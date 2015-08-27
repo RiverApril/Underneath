@@ -14,9 +14,10 @@
 
 namespace Verbalizer {
 
+    void weakness(EntityAlive* underAttack, Weakness w, double damageWithoutChange, double damageWithChange);
+
     void attack(EntityAlive* attacker, EntityAlive* underAttack, ItemWeapon* weapon, double damage);
 
-    // EntityAlive* dead  lol
     void defeatedEnemy(EntityAlive* dead, int xpGained);
 
     void leveledUp(EntityPlayer* player);

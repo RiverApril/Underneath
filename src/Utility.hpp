@@ -127,6 +127,8 @@ namespace Utility {
     void executeBorder(Point2 min, Point2 max, std::function<void(int, int)> process);
 
     void executeGrid(Point2 min, Point2 max, std::function<void(int, int)> process);
+
+    vector<Point2> plotLine(Point2 a, Point2 b);
 }
 
 

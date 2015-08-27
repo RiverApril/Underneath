@@ -13,6 +13,27 @@ namespace Verbalizer {
 
     using namespace Ui;
 
+    void weakness(EntityAlive* underAttack, Weakness w, double damageWithoutChange, double damageWithChange){
+
+        double damage = abs(damageWithChange - damageWithoutChange);
+
+        EntityPlayer* playerUnderAttack = dynamic_cast<EntityPlayer*>(underAttack);
+
+
+
+        string entityIs = "The " + Ui::colorCode(C_LIGHT_BLUE) + underAttack->getName() + Ui::colorCode(C_WHITE) + " is";
+        string weakOrResistant = (w.multiplier>1?"weak":"resistant");
+
+        if(playerUnderAttack){
+			entityIs = Ui::colorCode(C_LIGHT_BLUE) + "You" + Ui::colorCode(C_WHITE) + " are";
+        }
+
+        string verbal = entityIs + " " + weakOrResistant + " to %s, " + Ui::colorCode(C_LIGHT_GREEN) + "%.2f" + Ui::colorCode(C_WHITE) + " damage was%sdealt.";
+
+        consolef(verbal.c_str(), damageTypeName(w.damageType).c_str(), damage, w.multiplier>1?" ":" not ");
+
+    }
+
     void attack(EntityAlive* attacker, EntityAlive* underAttack, ItemWeapon* weapon, double damage) {
 
         EntityPlayer* playerAttacker = dynamic_cast<EntityPlayer*> (attacker);
@@ -25,14 +46,15 @@ namespace Verbalizer {
         string theSpace = "The ";
 
         if (playerAttacker) {
-            attackerString = "You";
+            attackerString = Ui::colorCode(C_LIGHT_BLUE) + "You";
             deals = "deal";
             their = "your";
             theSpace = "";
+            consolef(" ");
         }
 
         if (playerUnderAttack) {
-            underAttackString = "you";
+            underAttackString = Ui::colorCode(C_LIGHT_BLUE) + "you";
         }
         string verbal = theSpace + attackerString +
                 Ui::colorCode(C_WHITE) + " " + deals +

@@ -62,12 +62,12 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
 
     Point2 door = center;
 
-    if(rand()&2==0){
-        door.x += rand()&2==0?centerRoomRadius:-centerRoomRadius;
+    if((rand()&2)==0){
+        door.x += (rand()&2)==0?centerRoomRadius:-centerRoomRadius;
         door.y += (rand()%centerRoomRadius*2)-centerRoomRadius;
     }else{
         door.x += (rand()%centerRoomRadius*2)-centerRoomRadius;
-        door.y += rand()&2==0?centerRoomRadius:-centerRoomRadius;
+        door.y += (rand()&2)==0?centerRoomRadius:-centerRoomRadius;
     }
 
     setTile(door, Tiles::tileDoor);

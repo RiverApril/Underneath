@@ -411,4 +411,29 @@ namespace Utility {
         }
     }
 
+    int sign(int a){
+        return a>0?1:(a<0?-1:0);
+    }
+
+    vector<Point2> plotLine(Point2 a, Point2 b){
+        vector<Point2> line;
+
+        Point2 delta = b - a;
+        int error = 0;
+        double deltaerr = abs ((double)delta.y / delta.x);
+        int y = a.y;
+        for(int x=a.x;x<=b.x;x++){
+            line.push_back(Point2(x, y));
+            error = error + deltaerr;
+            while(error >= 0.5){
+                line.push_back(Point2(x, y));
+                y = y + sign(b.y - a.y);
+                error = error - 1.0;
+            }
+
+        }
+
+        return line;
+    }
+
 }

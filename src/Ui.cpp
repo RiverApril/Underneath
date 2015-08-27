@@ -476,7 +476,7 @@ namespace Ui {
                     setColor(C_LIGHT_MAGENTA, C_BLACK);
 
                     if(eqs.length() > 0){
-                        a += printMultiLineString(a, columnX, formatString("ItemEquipable %s %s", eqp.c_str(), eqs.c_str()));
+                        a += printMultiLineString(a, columnX, formatString("Equipable %s %s", eqp.c_str(), eqs.c_str()));
                     }
 
                     setColor(C_LIGHT_GRAY, C_BLACK);
@@ -608,7 +608,7 @@ namespace Ui {
                                 frame = 0;
                             }
 
-                            consolef("Size:%d  Frame:%d  Angle:%f", Arts::compassInList.size(), frame, angle);
+                        	//debugf("Size:%d  Frame:%d  Angle:%f", Arts::compassInList.size(), frame, angle);
 
 
                             Arts::getArt(Arts::compassOut)->printAt(Point2(columnX, a));
