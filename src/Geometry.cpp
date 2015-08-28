@@ -303,6 +303,53 @@ Vector2 Vector2::operator/(double other) {
     return Vector2(this->x / other, this->y / other);
 }
 
+Vector2 Vector2::operator+(Point2 other){
+	return Vector2(this->x + other.x, this->y + other.y);
+}
+
+Vector2 Vector2::operator-(Point2 other){
+    return Vector2(this->x - other.x, this->y - other.y);
+}
+
+Vector2 Vector2::operator*(Point2 other){
+    return Vector2(this->x * other.x, this->y * other.y);
+}
+
+Vector2 Vector2::operator/(Point2 other){
+    return Vector2(this->x * other.x, this->y * other.y);
+}
+
+
+Vector2 Vector2::operator-(){
+    return Vector2(-this->x, -this->y);
+}
+
+
+Vector2* Vector2::operator+=(Vector2 other){
+    this->x += other.x;
+    this->y += other.y;
+    return this;
+}
+
+Vector2* Vector2::operator-=(Vector2 other){
+    this->x -= other.x;
+    this->y -= other.y;
+    return this;
+}
+
+Vector2* Vector2::operator*=(Vector2 other){
+    this->x *= other.x;
+    this->y *= other.y;
+    return this;
+}
+
+Vector2* Vector2::operator/=(Vector2 other){
+    this->x /= other.x;
+    this->y /= other.y;
+    return this;
+}
+
+
 int distanceSquared(Point2 a, Point2 b) {
     return (int) Math::distanceSquared(a.x, a.y, b.x, b.y);
 }

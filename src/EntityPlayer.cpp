@@ -342,7 +342,9 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                     double d = a->hurt(spell, x + 1);
                     Verbalizer::attack(this, a, spell, d);
 
-                    Animator::renderRangedAttack(pos, posOfEntity, damageTypeColor(spell->damageType), Ui::C_BLACK, '#', level, 4);
+                    BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), Ui::C_BLACK);
+                    Animator::renderRangedAttack(pos, posOfEntity, icon, level, 8);
+                    delete icon;
 
                     return useDelay(item);
                 }
@@ -355,9 +357,9 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                 double d = a->hurt(weapon, x);
                 Verbalizer::attack(this, a, weapon, d);
 
-                if(ranged){
-                    Animator::renderRangedAttack(pos, posOfEntity, damageTypeColor(ranged->damageType), Ui::C_BLACK, '-', level, 1);
-                }
+                BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), Ui::C_BLACK);
+                Animator::renderRangedAttack(pos, posOfEntity, icon, level, 1);
+                delete icon;
 
                 return useDelay(item);
             }

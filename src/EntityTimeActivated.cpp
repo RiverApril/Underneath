@@ -8,6 +8,7 @@
 
 #include "EntityTimeActivated.hpp"
 #include "Level.hpp"
+#include "Animator.hpp"
 
 EntityTimeActivated::EntityTimeActivated() : EntityTimeActivated("", 0, 1, 1, 2, Point2Zero) {
 
@@ -49,9 +50,11 @@ bool EntityTimeActivated::update(double deltaTime, double time, Level* level) {
         switch (timeActivatedType) {
             case timeActivatedBomb:
                 level->explode(pos, radius, power, false);
+                Animator::renderExposion(pos, radius, Tiles::tileRubble->getIcon(true), level, 1);
                 break;
             case timeActivatedWallBomb:
                 level->explode(pos, radius, power, true);
+                Animator::renderExposion(pos, radius, Tiles::tileRubble->getIcon(true), level, 1);
                 break;
 
         }

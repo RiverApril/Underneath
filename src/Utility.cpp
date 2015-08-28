@@ -7,6 +7,7 @@
 //
 
 #include "Utility.hpp"
+#include "Ui.hpp"
 
 
 namespace Utility {
@@ -411,26 +412,36 @@ namespace Utility {
         }
     }
 
-    int sign(int a){
-        return a>0?1:(a<0?-1:0);
-    }
-
     vector<Point2> plotLine(Point2 a, Point2 b){
-        vector<Point2> line;
+        vector<Point2> line = vector<Point2>();
 
-        Point2 delta = b - a;
-        int error = 0;
-        double deltaerr = abs ((double)delta.y / delta.x);
-        int y = a.y;
-        for(int x=a.x;x<=b.x;x++){
-            line.push_back(Point2(x, y));
-            error = error + deltaerr;
-            while(error >= 0.5){
-                line.push_back(Point2(x, y));
-                y = y + sign(b.y - a.y);
-                error = error - 1.0;
+
+        int w = b.x - a.x ;
+        int h = b.y - a.y ;
+        int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0 ;
+        if (w<0) dx1 = -1 ; else if (w>0) dx1 = 1 ;
+        if (h<0) dy1 = -1 ; else if (h>0) dy1 = 1 ;
+        if (w<0) dx2 = -1 ; else if (w>0) dx2 = 1 ;
+        int longest = abs(w) ;
+        int shortest = abs(h) ;
+        if (!(longest>shortest)) {
+            longest = abs(h) ;
+            shortest = abs(w) ;
+            if (h<0) dy2 = -1 ; else if (h>0) dy2 = 1 ;
+            dx2 = 0 ;
+        }
+        int numerator = longest >> 1 ;
+        for (int i=0;i<=longest;i++) {
+            line.push_back(Point2(a.x, a.y));
+            numerator += shortest ;
+            if (!(numerator<longest)) {
+                numerator -= longest ;
+                a.x += dx1 ;
+                a.y += dy1 ;
+            } else {
+                a.x += dx2 ;
+                a.y += dy2 ;
             }
-
         }
 
         return line;

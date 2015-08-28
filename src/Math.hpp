@@ -12,6 +12,7 @@
 namespace Math {
 
     const double pi = 3.14159265358979;
+    const double tau = 2*pi;
 
     double distanceSquared(double ax, double ay, double bx, double by);
     double distanceSquared(double x, double y);

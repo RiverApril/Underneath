@@ -13,7 +13,8 @@
 #include "Level.hpp"
 
 namespace Animator {
-    void renderRangedAttack(Point2 from, Point2 to, Ui::Color fg, Ui::Color bg, char character, Level* level, int length);
+    void renderRangedAttack(Point2 from, Point2 to, Icon* icon, Level* level, int length);
+    void renderExposion(Point2 center, double radius, Icon* icon, Level* level, int length);
 }
 
 

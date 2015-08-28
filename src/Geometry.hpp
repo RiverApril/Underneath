@@ -35,6 +35,10 @@ struct Point2 {
         return x >= xMin && y >= yMin && x <= xMax && y <= yMax;
     }
 
+    bool inRange(Point2 min, Point2 max) {
+        return x >= min.x && y >= min.y && x <= max.x && y <= max.y;
+    }
+
     void set(const Point2 other);
 
     void add(int x, int y);
@@ -141,6 +145,18 @@ struct Vector2 {
     Vector2 operator-(double other);
     Vector2 operator*(double other);
     Vector2 operator/(double other);
+
+    Vector2 operator+(Point2 other);
+    Vector2 operator-(Point2 other);
+    Vector2 operator*(Point2 other);
+    Vector2 operator/(Point2 other);
+
+    Vector2 operator-();
+
+    Vector2* operator+=(Vector2 other);
+    Vector2* operator-=(Vector2 other);
+    Vector2* operator*=(Vector2 other);
+    Vector2* operator/=(Vector2 other);
 
     string toString();
 };

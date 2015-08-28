@@ -14,6 +14,7 @@
 #include "ItemGenerator.hpp"
 #include "EntityItem.hpp"
 #include "EntityTimeActivated.hpp"
+#include "Animator.hpp"
 
 EntityAi::EntityAi() : EntityAi("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1) {
 
@@ -147,6 +148,16 @@ void EntityAi::runAi(double time, Level* level) {
         while (lastAttackTime + activeItemWeapon->useDelay <= time) {
             double d = target->hurt(activeItemWeapon, getAttackMultiplierFromEffects(activeItemWeapon->damageType));
             Verbalizer::attack(this, target, activeItemWeapon, d);
+            ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(activeItemWeapon);
+            BasicIcon* icon;
+            if(spell){
+                icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), Ui::C_BLACK);
+            	Animator::renderRangedAttack(pos, target->pos, icon, level, 8);
+            }else{
+                icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), Ui::C_BLACK);
+                Animator::renderRangedAttack(pos, target->pos, icon, level, 1);
+            }
+            delete icon;
             lastAttackTime += activeItemWeapon->useDelay;
         }
     }
@@ -174,18 +185,20 @@ double EntityAi::hurt(ItemWeapon* w, double damageMultiplier) {
 
 bool EntityAi::update(double deltaTime, double time, Level* level) {
 
-    while (lastMoveTime + moveDelay <= time) {
-        runAi(time, level);
-        lastMoveTime += moveDelay;
-        /*if (level->canSee(target->pos, pos, level->currentWorld->currentPlayer->viewDistance, true)) {
-
-            level->renderMenuGame(lastMoveTime);
-            //usleep(10 * 1000);
-        }*/
-    }
-
     if (dead) {
         dropLoots(level);
+    }else{
+
+        while (lastMoveTime + moveDelay <= time) {
+            runAi(time, level);
+            lastMoveTime += moveDelay;
+            /*if (level->canSee(target->pos, pos, level->currentWorld->currentPlayer->viewDistance, true)) {
+
+                level->renderMenuGame(lastMoveTime);
+                //usleep(10 * 1000);
+            }*/
+        }
+        
     }
 
     return EntityAlive::update(deltaTime, time, level);
