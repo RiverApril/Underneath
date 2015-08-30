@@ -13,3 +13,16 @@ char RandomIcon::getChar(unsigned long tick, Point2 pos, Level* lvl){
     return i[Random::randomFromPoint(pos)%i.size()];
 }
 
+char RandomColorIcon::getChar(unsigned long tick, Point2 pos, Level* lvl){
+    return i[Random::randomFromPoint(pos)%i.size()];
+}
+
+Ui::Color RandomColorIcon::getFgColor(unsigned long tick, Point2 pos, Level* lvl){
+    return fg[Random::randomFromPoint(pos)%fg.size()];
+}
+
+Ui::Color RandomColorIcon::getBgColor(unsigned long tick, Point2 pos, Level* lvl){
+    return bg[Random::randomFromPoint(pos)%bg.size()];
+}
+
+

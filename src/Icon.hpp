@@ -82,6 +82,25 @@ public:
     }
 };
 
+class RandomColorIcon : public Icon{
+    vector<char> i = {'?'};
+    vector<Ui::Color> fg = {Ui::C_DARK_BLACK};
+    vector<Ui::Color> bg = {Ui::C_LIGHT_WHITE};
+
+public:
+    RandomColorIcon(vector<char> i, vector<Ui::Color> fg, vector<Ui::Color> bg){
+        this->i = i;
+        this->fg = fg;
+        this->bg = bg;
+    }
+
+    virtual char getChar(unsigned long tick, Point2 pos, Level* lvl);
+
+    virtual Ui::Color getFgColor(unsigned long tick, Point2 pos, Level* lvl);
+
+    virtual Ui::Color getBgColor(unsigned long tick, Point2 pos, Level* lvl);
+};
+
 class AnimatedIcon : public Icon{
     int speed = 1;
     vector<char> i = {'?'};

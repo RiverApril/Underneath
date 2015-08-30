@@ -495,6 +495,29 @@ namespace LevelGenerator {
                 }
             }
 
+            //Blue Tree Room
+            if(!addedWalls){
+                if (rand() % 3 == 0 && r->radius.x > 6 && r->radius.y > 6) {
+                    Utility::executeBorder(-r->radius, r->radius, [level, &r](int x, int y){
+                        if(level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileWall->getIndex()){
+                            level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
+                        }
+                    });
+
+                    Utility::executeGrid(-r->radius, r->radius, [level, &r](int x, int y){
+                        if(level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileFloor->getIndex()){
+                            if(rand() % 3 == 0){
+                                level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
+                            }else{
+                                level->setTile(r->center + Point2(x, y), Tiles::tileBlueGrass);
+                            }
+                        }
+                    });
+
+                    addedWalls = true;
+                }
+            }
+
             //Chest Room
             if(!addedWalls){
                 int doors = 0;

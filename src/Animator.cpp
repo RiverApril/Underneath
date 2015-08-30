@@ -19,6 +19,10 @@ namespace Animator {
 
         vector<Point2> line = Utility::plotLine(from, to);
 
+        if(line.size() <= 2){
+            return;
+        }
+
         int j = 1-length;
 
         for(int i=1; i < line.size() || j < line.size(); i++){
