@@ -8,6 +8,7 @@
 
 #include "Ui.hpp"
 #include "Random.hpp"
+#include "Math.hpp"
 #include "Utility.hpp"
 #include "ItemGenerator.hpp"
 #include "Art.hpp"
@@ -492,7 +493,7 @@ namespace ItemGenerator {
 
                     ItemCombatSpell* ic = dynamic_cast<ItemCombatSpell*>(item);
                     if(ic){//Combat Spell
-                        value += (50.0 - ic->manaCost) * 5;
+                        value += Math::max(100.0 - ic->manaCost, 1.0) * 5;
                     }else{//Ranged Weapon
 
                     }
