@@ -50,11 +50,11 @@ bool EntityTimeActivated::update(double deltaTime, double time, Level* level) {
         switch (timeActivatedType) {
             case timeActivatedBomb:
                 level->explode(pos, radius, power, false);
-                Animator::renderExposion(pos, radius, Tiles::tileRubble->getIcon(true), level, 1);
+                Animator::renderExposion(pos, radius, level, 1);
                 break;
             case timeActivatedWallBomb:
                 level->explode(pos, radius, power, true);
-                Animator::renderExposion(pos, radius, Tiles::tileRubble->getIcon(true), level, 1);
+                Animator::renderExposion(pos, radius, level, 1);
                 break;
 
         }
