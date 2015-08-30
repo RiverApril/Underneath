@@ -314,6 +314,9 @@ void Level::renderMenuGame(double displayTime) {
 
 Entity* Level::newEntity(Entity* newE, bool setUID) {
     if(setUID){
+        if(nextUniqueId == 0){
+            debugf("New Entity with UID = 0  Name: %s", newE->getName().c_str());
+        }
         newE->uniqueId = nextUniqueId;
     	nextUniqueId++;
     }
@@ -537,6 +540,7 @@ void Level::save(vector<unsigned char>* data) {
 
     Point2::save(size, data);
     Utility::saveInt(data, difficulty);
+    Utility::saveInt(data, nextUniqueId);
 
     Point2::save(stairDownPos, data);
     for (size_t i = 0; i < size.x; i++) {
@@ -565,6 +569,7 @@ void Level::load(unsigned char* data, int* position) {
     //these happen beforehand:
     //load size
     //load difficulty
+    nextUniqueId = Utility::loadInt(data, position);
 
     stairDownPos = Point2::load(data, position);
 
