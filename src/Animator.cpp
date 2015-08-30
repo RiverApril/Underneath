@@ -48,20 +48,23 @@ namespace Animator {
 
     }
 
-    void renderExposion(Point2 center, double radius, Icon* icon, Level* level, int length){
+    void renderExposion(Point2 center, double radius, Level* level, int length){
 
-        double p = 3;
+        double p = 8;
+
+        RandomIcon icon = RandomIcon({'~', '*', '&'}, Ui::C_LIGHT_YELLOW, Ui::C_BLACK);
 
         for(int r=0;r<radius;r++){
-            double ma = (r*p);
+            double ma = ((r+1)*p);
             double maDivTau = ma/Math::tau;
+
+            Ui::setColor(r<(radius/3)?Ui::C_LIGHT_RED:Ui::C_LIGHT_YELLOW, icon.Icon::getBgColor(Ui::tick, Point2Zero, level));
+
             for(double a = 0; a<ma;a+=maDivTau){
                 Point2 pos = Point2(sin(maDivTau*a)*r, cos(maDivTau*a)*r);
-                consolef("pos: %d, %d", pos.x, pos.y);
                 pos += center-level->menuGame->viewPos;
 
-                Ui::setColor(icon->getFgColor(Ui::tick, pos, level), icon->getBgColor(Ui::tick, pos, level));
-                mvaddch(pos.y, pos.x, icon->getChar(Ui::tick, pos, level));
+                mvaddch(pos.y, pos.x, icon.getChar(Ui::tick, pos, level));
             }
 
             usleep(1000*50);

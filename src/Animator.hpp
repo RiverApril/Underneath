@@ -14,7 +14,7 @@
 
 namespace Animator {
     void renderRangedAttack(Point2 from, Point2 to, Icon* icon, Level* level, int length);
-    void renderExposion(Point2 center, double radius, Icon* icon, Level* level, int length);
+    void renderExposion(Point2 center, double radius, Level* level, int length);
 }
 
 
