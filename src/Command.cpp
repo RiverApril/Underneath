@@ -137,31 +137,6 @@ namespace Commands {
         }
     };
 
-    struct CommandDebug : Command {
-
-        string help() {
-            return "Toggles debug messages.";
-        }
-
-        string usage() {
-            return "debug";
-        }
-
-        string defaultName() {
-            return "debug";
-        }
-
-        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
-            if (argumentsRaw.length() == 0) {
-                debugMode = !debugMode;
-                console("Debug " + string(debugMode ? "Enabled" : "Disabled") + ".");
-                Settings::saveSettings(UnderneathDir + "settings.txt");
-                return true;
-            }
-            return false;
-        }
-    };
-
     struct CommandEffect : Command {
 
         string help() {
@@ -311,8 +286,8 @@ namespace Commands {
         }
 
         bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
-            godMode = !godMode;
-            consolef("God Mode %s", godMode?"Enabled":"Disabled");
+            Settings::godMode = !Settings::godMode;
+            consolef("God Mode %s", Settings::godMode?"Enabled":"Disabled");
             return true;
         }
     };
@@ -385,10 +360,43 @@ namespace Commands {
         }
     };
 
+    struct CommandKillall : Command {
+
+        string help() {
+            return "Kills all nearby hostiles";
+        }
+
+        string usage() {
+            return "killall [everything]";
+        }
+
+        string defaultName() {
+            return "killall";
+        }
+
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
+            MenuGame* mg = dynamic_cast<MenuGame*> (currentMenu);
+            if (mg) {
+                vector<Entity*> eList;
+                if(arguments.size()>0 && !arguments[0].compare("everything")){
+                    eList = mg->currentWorld->currentLevel->entityList;
+                }else{
+                	eList = mg->currentWorld->currentLevel->getAllVisableEntitiesSortedByNearest(mg->currentWorld->currentPlayer->pos, mg->currentWorld->currentPlayer->viewDistance, {mg->currentWorld->currentPlayer});
+                }
+                for(Entity* e : eList){
+                    if(e->isHostile()){
+                        mg->currentWorld->currentLevel->removeEntity(e, true);
+                    }
+                }
+
+            }
+            return true;
+        }
+    };
+
     void initCommands() {
         commandList.push_back(new CommandHelp());
         commandList.push_back(new CommandEcho());
-        commandList.push_back(new CommandDebug());
         commandList.push_back(new CommandEffect());
         commandList.push_back(new CommandXp());
         commandList.push_back(new CommandWep());
@@ -396,6 +404,7 @@ namespace Commands {
         commandList.push_back(new CommandGodMode());
         commandList.push_back(new CommandClear());
         commandList.push_back(new CommandDebugTools());
+        commandList.push_back(new CommandKillall());
     }
 
     void cleanupCommands() {
