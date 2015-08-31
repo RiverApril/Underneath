@@ -19,6 +19,7 @@
 #include "Controls.hpp"
 #include "ItemRanged.hpp"
 #include "ItemUtilitySpell.hpp"
+#include "Settings.hpp"
 
 #define currentPlayer currentWorld->currentPlayer
 #define currentLevel currentWorld->currentLevel
@@ -161,7 +162,7 @@ namespace Ui {
         bool inView = false;
         if (currentLevel != nullptr) {
             if (currentPlayer != nullptr) {
-                if (currentLevel->canSee(currentPlayer->pos, p, currentPlayer->viewDistance, true)) {
+                if (currentLevel->canSee(currentPlayer->pos, p, currentPlayer->viewDistance, true) || Settings::seeEverything) {
                     currentLevel->setExplored(p, true);
                     inView = true;
                 }
@@ -474,7 +475,7 @@ namespace Ui {
                         if(currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance, true)){
                             for(Entity* e : currentLevel->entityList){
                                 if(!e->removed && e->pos == targetPosition){
-                                    if(debugMode){
+                                    if(Settings::debugMode){
                                         console("Entity("+to_string(e->getEntityTypeId())+"): "+e->getName());
                                     }
 
@@ -494,7 +495,7 @@ namespace Ui {
                             }
                             for(TileEntity* t : currentLevel->tileEntityList){
                                 if(t->pos == targetPosition){
-                                    if(debugMode){
+                                    if(Settings::debugMode){
                                         console("Tile Entity("+to_string(t->getTileEntityTypeId())+"): "+t->debugString());
                                     }
                                 }

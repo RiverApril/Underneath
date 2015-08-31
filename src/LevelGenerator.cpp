@@ -216,7 +216,17 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
 
     map<string, int> entitiesGenerated;
 
-    int maxCountDiv2 = (size.x + size.y)/4;
+    int nonsolidTileCount = 0;
+
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
+            if(!tileAt(Point2(i, j))->hasFlag(tileFlagSolid)){
+                nonsolidTileCount++;
+            }
+        }
+    }
+
+    int maxCountDiv2 = ((nonsolidTileCount)/20)/2;
 
     int count = (rand() % (maxCountDiv2))+(maxCountDiv2);
     for (int i = 0; i < count; i++) {
@@ -508,16 +518,35 @@ namespace LevelGenerator {
             //Blue Tree Room
             if(!addedWalls){
                 if (rand() % 3 == 0 && r->radius.x > 6 && r->radius.y > 6) {
-                    Utility::executeBorder(-r->radius, r->radius, [level, &r](int x, int y){
+                    Utility::executeBorder(-r->radius-1, r->radius+1, [level, &r](int x, int y){
                         if(level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileWall->getIndex()){
-                            level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
+                        	level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
+                        }else if(level->tileAt(r->center + Point2(x, y))->hasFlag(tileFlagDoor)){
+                            level->setTile(r->center + Point2(x, y), Tiles::tileBlueGrass);
+                        }
+                    });
+
+                    for(int i=0;i<10;i++){
+                        Utility::executeGrid(-r->radius, r->radius, [level, &r](int x, int y){
+                            int count = level->countTilesAround(r->center + Point2(x, y), Tiles::tileDenseBlueTree) + level->countTilesAround(r->center + Point2(x, y), Tiles::tileBlueTree);
+                            if(count >= 2 && rand() % 5 != 0 && level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileFloor->getIndex()){
+                                level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
+                            }
+                        });
+                    }
+
+                    Utility::executeGrid(-r->radius, r->radius, [level, &r](int x, int y){
+                        if(rand() % 5 == 0 && level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileFloor->getIndex()){
+                            level->setTile(r->center + Point2(x, y), Tiles::tileBlueTree);
+                        }else{
+                            level->setTile(r->center + Point2(x, y), Tiles::tileBlueGrass);
                         }
                     });
 
                     Utility::executeGrid(-r->radius, r->radius, [level, &r](int x, int y){
                         if(level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileFloor->getIndex()){
-                            if(rand() % 3 == 0){
-                                level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
+                            if(rand() % 5 == 0){
+                                level->setTile(r->center + Point2(x, y), Tiles::tileBlueTree);
                             }else{
                                 level->setTile(r->center + Point2(x, y), Tiles::tileBlueGrass);
                             }

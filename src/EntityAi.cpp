@@ -15,6 +15,7 @@
 #include "EntityItem.hpp"
 #include "EntityTimeActivated.hpp"
 #include "Animator.hpp"
+#include "Settings.hpp"
 
 EntityAi::EntityAi() : EntityAi("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1) {
 
@@ -57,10 +58,8 @@ void EntityAi::runAi(double time, Level* level) {
     if (ai & aiFleeFromEntityPlayer) {
         if (canSeeTarget) {
 
-            Point2 playerPos = target->pos;
-
-            speed.x = pos.x > playerPos.x ? -1 : (pos.x < playerPos.x ? 1 : 0);
-            speed.y = pos.y > playerPos.y ? -1 : (pos.y < playerPos.y ? 1 : 0);
+            speed.x = pos.x > target->pos.x ? 1 : (pos.x < target->pos.x ? -1 : 0);
+            speed.y = pos.y > target->pos.y ? 1 : (pos.y < target->pos.y ? -1 : 0);
 
             if (speed.x == 0) {
                 speed.x = rand() % 2 == 0 ? 1 : -1;
@@ -68,7 +67,6 @@ void EntityAi::runAi(double time, Level* level) {
             if (speed.y == 0) {
                 speed.y = rand() % 2 == 0 ? 1 : -1;
             }
-            speed = speed*-1;
         }
     }
     if (ai & aiAttackEntityPlayer) {
@@ -86,12 +84,15 @@ void EntityAi::runAi(double time, Level* level) {
                 //speed.y = pos.y > lastKnownTargetPos.y ? -1 : (pos.y < lastKnownTargetPos.y ? 1 : 0);
                 vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid, true);
                 if(!path.empty()){
-                    if(showFollowPaths){
+                    if(Settings::showFollowPaths){
                         for(Point2 point : path){
                             EntityTimeActivated* e = new EntityTimeActivated("path", timeActivatedDud, 2, 0, 0, point);
                             e->fgColor = Ui::C_LIGHT_GREEN;
                             level->newEntity(e);
                         }
+                        EntityTimeActivated* e = new EntityTimeActivated("lastKnownTargetPos", timeActivatedDud, 2, 0, 0, lastKnownTargetPos);
+                        e->fgColor = Ui::C_LIGHT_MAGENTA;
+                        level->newEntity(e);
                     }
                     debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
 
@@ -109,14 +110,15 @@ void EntityAi::runAi(double time, Level* level) {
         }
 
     }
-
-    bool moved = tryToMoveRelative(speed, level);
-    if (!moved) {
-        moved = tryToMoveRelative(speed.xOnly(), level) || tryToMoveRelative(speed.yOnly(), level);
+    bool movedOrDontNeedToMove = true;
+    while (lastMoveTime + moveDelay <= time) {
+        movedOrDontNeedToMove = tryToMoveRelative(speed.xOnly(), level) || movedOrDontNeedToMove;
+        movedOrDontNeedToMove = tryToMoveRelative(speed.yOnly(), level) || movedOrDontNeedToMove;
+        lastMoveTime += moveDelay;
     }
 
     if (ai & aiAttackEntityPlayer) {
-        if(!moved && speed != Point2Zero){
+        if(!movedOrDontNeedToMove && speed != Point2Zero){
             if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
                 debug("Failed to move");
                 if(!canSeeTarget && level->canSee(pos, lastKnownTargetPos, agro ? viewDistance * agroViewDistanceMultiplier : viewDistance, false)){
@@ -188,16 +190,7 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
     if (dead) {
         dropLoots(level);
     }else{
-
-        while (lastMoveTime + moveDelay <= time) {
-            runAi(time, level);
-            lastMoveTime += moveDelay;
-            /*if (level->canSee(target->pos, pos, level->currentWorld->currentPlayer->viewDistance, true)) {
-
-                level->renderMenuGame(lastMoveTime);
-                //usleep(10 * 1000);
-            }*/
-        }
+        runAi(time, level);
         
     }
 
@@ -205,6 +198,10 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
 }
 
 void EntityAi::dropLoots(Level* level){
+
+    if(!isHostile()){
+        return;
+    }
 
     int xp = rand() % (int) maxHp;
     Verbalizer::defeatedEnemy(this, xp);

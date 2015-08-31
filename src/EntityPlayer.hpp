@@ -50,31 +50,9 @@ public:
 
     virtual void load(unsigned char* data, int* position);
 
-    virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1) {
-        timeSinceCombat = 0;
-        if(godMode){
-            return 0;
-        }
+    virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 
-        damageMultiplier *= 1.0 - getDefenseMultiplierFromItemArmor(damageType);
-
-        return EntityAlive::hurt(damageType, amount, damageMultiplier);
-    }
-
-    virtual double hurt(ItemWeapon* w, double damageMultiplier = 1) {
-        timeSinceCombat = 0;
-        if(godMode){
-            return 0;
-        }
-        double chance = (((double) abilities[iAGI] / maxAbilities[iAGI]) / 2);
-        if (rand() < (RAND_MAX * chance)) {
-            return 0;
-        }
-
-        damageMultiplier *= 1.0 - getDefenseMultiplierFromItemArmor(w->damageType);
-
-        return EntityAlive::hurt(w, damageMultiplier);
-    }
+    virtual double hurt(ItemWeapon* w, double damageMultiplier = 1);
 
     virtual double heal(double amount) {
         double a = EntityAlive::heal(amount);

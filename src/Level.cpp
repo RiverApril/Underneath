@@ -598,6 +598,8 @@ void Level::load(unsigned char* data, int* position) {
 
 
 Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel) {
+    entityList.clear();
+    tileEntityList.clear();
     switch(genType){
         case genTypeStartArea:{
             return generateStartArea(seed, stairUpPos, previousLevel);

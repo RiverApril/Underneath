@@ -19,6 +19,7 @@
 #include "Icon.hpp"
 #include "MenuShop.hpp"
 #include "Animator.hpp"
+#include "Settings.hpp"
 
 EntityPlayer::EntityPlayer() : EntityPlayer("", ' ', Point2Zero, Ui::C_WHITE, Abilities<int>()) {
 
@@ -596,4 +597,30 @@ void EntityPlayer::recalculateDefenses(){
             }
         }
     }
+}
+
+double EntityPlayer::hurt(DamageType damageType, double amount, double damageMultiplier) {
+    timeSinceCombat = 0;
+    if(Settings::godMode){
+        return 0;
+    }
+
+    damageMultiplier *= 1.0 - getDefenseMultiplierFromItemArmor(damageType);
+
+    return EntityAlive::hurt(damageType, amount, damageMultiplier);
+}
+
+double EntityPlayer::hurt(ItemWeapon* w, double damageMultiplier) {
+    timeSinceCombat = 0;
+    if(Settings::godMode){
+        return 0;
+    }
+    double chance = (((double) abilities[iAGI] / maxAbilities[iAGI]) / 2);
+    if (rand() < (RAND_MAX * chance)) {
+        return 0;
+    }
+
+    damageMultiplier *= 1.0 - getDefenseMultiplierFromItemArmor(w->damageType);
+
+    return EntityAlive::hurt(w, damageMultiplier);
 }

@@ -13,9 +13,17 @@
 
 namespace Settings{
 
+    bool godMode = false;
+    bool debugMode = false;
+    bool showFollowPaths = false;
+    bool seeEverything = false;
+
     vector<Setting*> settingList = {
-        new SettingBool("Debug Mode", &debugMode),
-        new SettingBool("Show AI Paths", &showFollowPaths)
+        new SettingLabel("DEBUG SETTINGS:"),
+        new SettingBool("Debug Output", &debugMode),
+        new SettingBool("God Mode", &godMode),
+        new SettingBool("Show AI Paths", &showFollowPaths),
+        new SettingBool("X-ray Vision", &seeEverything)
     };
 
     vector<Setting*> hiddenSettingList = {

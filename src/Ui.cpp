@@ -17,11 +17,12 @@
 #include "ItemSpecial.hpp"
 #include "ItemTimeActivated.hpp"
 #include "ItemArmor.hpp"
+#include "Settings.hpp"
 
 vector<string> consoleBuffer;
 
 void debug(string s) {
-    if (debugMode) {
+    if (Settings::debugMode) {
         console("DEBUG: " + s);
     }
 }

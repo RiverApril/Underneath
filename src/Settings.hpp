@@ -13,6 +13,11 @@
 
 namespace Settings{
 
+    extern bool godMode;
+    extern bool debugMode;
+    extern bool showFollowPaths;
+    extern bool seeEverything;
+
     struct Setting{
 
         string name = "";
@@ -36,6 +41,25 @@ namespace Settings{
         }
     };
 
+    struct SettingLabel : Setting{
+
+        SettingLabel(string name) : Setting(name){
+
+        }
+
+        ~SettingLabel(){}
+
+        string stringValue(){
+            return "";
+        }
+
+        bool setValue(string text){
+            return true;
+        }
+
+        virtual void cycleValue(){}
+    };
+
     struct SettingBool : Setting{
 
         bool* value;
@@ -47,7 +71,7 @@ namespace Settings{
         ~SettingBool(){}
 
         string stringValue(){
-            return (*value)?"true":"false";
+            return (*value)?"ON":"OFF";
         }
 
         bool setValue(string text){

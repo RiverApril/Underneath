@@ -51,7 +51,12 @@ namespace Ui {
         mvprintw(selected+a, 0, "-");
 
         for(Settings::Setting* setting : Settings::settingList){
-            mvprintw(a++, 2, "%s: %s", setting->name.c_str(), setting->stringValue().c_str());
+            Settings::SettingLabel* sl = dynamic_cast<Settings::SettingLabel*>(setting);
+            if(sl){
+                mvprintw(a++, 1, "%s", setting->name.c_str());
+            }else{
+            	mvprintw(a++, 3, "%s: %s", setting->name.c_str(), setting->stringValue().c_str());
+            }
         }
 
     }
