@@ -21,8 +21,10 @@ namespace EnemyGenerator {
     WeightedEnemy* troll;
     WeightedEnemy* wraith;
     WeightedEnemy* slime;
-    WeightedEnemy* mimic;
     WeightedEnemy* myconid;
+
+    WeightedEnemy* mimic;
+    WeightedEnemy* bunny;
 
     void initEnemies() {
 
@@ -60,6 +62,9 @@ namespace EnemyGenerator {
 
         mimic = new WeightedEnemy(0, "Mimic", '+', aiAttackEntityPlayer, 75, ItemGenerator::wNatural, "Teeth", Ui::C_LIGHT_GREEN, 0);
         mimic->weaknesses.push_back(Weakness(damFire, 4));
+
+
+        bunny = new WeightedEnemy(0, "Bunny", 'b', aiFleeFromEntityPlayer | aiMoveRandom, 10, ItemGenerator::wNatural, "Claws", Ui::C_LIGHT_WHITE, 0);
 
 
 

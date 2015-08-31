@@ -76,6 +76,16 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
 
     setTile(stairDownPos, Tiles::tileStairDown);
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor 1"));
+    
+
+    int count = (rand() % 10)+5;
+
+    for(int i=0;i<count;i++){
+        Entity* e = makeEntity(EnemyGenerator::bunny, difficulty);
+        e->pos = findRandomOfType(Tiles::tileGrass->getIndex());
+        newEntity(e);
+    }
+
 
     if(indexAt(stairUpPos) == Tiles::tileGrass->getIndex() && canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
         return stairUpPos;

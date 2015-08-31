@@ -50,8 +50,10 @@ namespace EnemyGenerator {
     extern WeightedEnemy* troll;
     extern WeightedEnemy* wraith;
     extern WeightedEnemy* slime;
-    extern WeightedEnemy* mimic;
     extern WeightedEnemy* myconid;
+
+    extern WeightedEnemy* mimic;
+    extern WeightedEnemy* bunny;
 
     extern vector<WeightedEnemy*> enemyWeightList;
 
