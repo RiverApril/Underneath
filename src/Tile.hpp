@@ -96,6 +96,7 @@ namespace Tiles {
 
     extern Tile* tileRubble;
     extern Tile* tileCorpse;
+    extern Tile* tileBones;
 
     extern Tile* tileTree;
     extern Tile* tileGrass;

@@ -47,7 +47,7 @@ namespace EnemyGenerator {
         wraith->weaknesses.push_back(Weakness(damSharp, .5));
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
 
-        slime = atl(new WeightedEnemy(75, "Slime", 's', aiAttackEntityPlayer, 40, ItemGenerator::wNatural, "Goo", Ui::C_LIGHT_YELLOW, 1.0));
+        slime = atl(new WeightedEnemy(75, "Slime", 's', aiAttackEntityPlayer | aiMoveRandom, 40, ItemGenerator::wNatural, "Goo", Ui::C_LIGHT_YELLOW, 1.0));
         slime->weaknesses.push_back(Weakness(damSharp, .4));
         slime->weaknesses.push_back(Weakness(damPierce, .4));
 
@@ -55,16 +55,17 @@ namespace EnemyGenerator {
         myconidWepon.damage *= .5;
         myconidWepon.enchs.push_back(Enchantment(effLSD, 30, 0, 50));
         myconidWepon.enchs.push_back(Enchantment(effMemory, 10, 0, 100));
-        myconid = atl(new WeightedEnemy(20, "Myconid", 'm', aiAttackEntityPlayer, 50, myconidWepon, "Finger", Ui::C_LIGHT_MAGENTA, 1.0));
+        myconid = atl(new WeightedEnemy(20, "Myconid", 'm', aiAttackEntityPlayer | aiMoveRandom, 50, myconidWepon, "Finger", Ui::C_LIGHT_MAGENTA, 1.0));
         myconid->weaknesses.push_back(Weakness(damFire, 4));
 
 
 
-        mimic = new WeightedEnemy(0, "Mimic", '+', aiAttackEntityPlayer, 75, ItemGenerator::wNatural, "Teeth", Ui::C_LIGHT_GREEN, 0);
+        mimic = new WeightedEnemy(0, "Mimic", '+', aiAttackEntityPlayer | aiMoveRandom, 75, ItemGenerator::wNatural, "Teeth", Ui::C_LIGHT_GREEN, 0);
         mimic->weaknesses.push_back(Weakness(damFire, 4));
 
 
         bunny = new WeightedEnemy(0, "Bunny", 'b', aiFleeFromEntityPlayer | aiMoveRandom, 10, ItemGenerator::wNatural, "Claws", Ui::C_LIGHT_WHITE, 0);
+        bunny->moveDelay = 1.0;
 
 
 
@@ -94,6 +95,7 @@ namespace EnemyGenerator {
     EntityAi* makeEntity(WeightedEnemy* we, int difficulty) {
         EntityAi* e = new EntityAi(we->name, we->ai, we->icon, Point2Zero, we->color, we->maxHp);
         e->weaknesses = we->weaknesses;
+        e->moveDelay = we->moveDelay;
         ItemWeapon* weapon = ItemGenerator::applyRandConditionToItemWeapon(ItemGenerator::createItemWeaponFromBase(we->weaponBase, difficulty + we->weaponDifficultyAdd), difficulty);
         if (we->weaponName.size() > 0) {
             weapon->name = we->weaponName;

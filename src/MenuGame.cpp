@@ -481,12 +481,12 @@ namespace Ui {
 
                                     EntityAlive* a = dynamic_cast<EntityAlive*>(e);
                                     if(a){
-                                        consolef("%s HP:[%d/%d]", a->getName().c_str(), a->getHp(), a->getMaxHp());
+                                        consolef("%s HP:[%f/%f]", a->getName().c_str(), a->getHp(), a->getMaxHp());
                                         for(Weakness w : a->weaknesses){
                                             if(w.multiplier > 1){
-                                                consolef("%d%% Weakness to %s", (int)(w.multiplier*100), damageTypeName(w.damageType).c_str());
+                                                consolef("%d%% Weakness to %s", (int)(1/w.multiplier*100), damageTypeName(w.damageType).c_str());
                                             }else{
-                                                consolef("%d%% Resistance to %s", (int)((1/w.multiplier)*100), damageTypeName(w.damageType).c_str());
+                                                consolef("%d%% Resistance to %s", (int)((w.multiplier)*100), damageTypeName(w.damageType).c_str());
                                             }
                                         }
                                     }
@@ -691,7 +691,7 @@ namespace Ui {
         }
 
 
-        if (currentLevel != nullptr) {
+        if (currentLevel != nullptr && Settings::debugMode) {
             currentLevel->menuGame = this;
             Ui::setColor(C_LIGHT_GRAY);
             mvprintw(gameArea.y, 0, "%d, %d [%dx%d] e:%d te:%d p:%s %s(%d)", p.x, p.y, currentLevel->getSize().x, currentLevel->getSize().y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "null" : "not null", currentLevel->getName().c_str(), currentLevel->getDifficulty());

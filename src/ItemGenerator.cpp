@@ -83,14 +83,14 @@ namespace ItemGenerator {
 
 
 
-        wKnife = atl(WeaponBase({"Knife", "Dagger", "Cleaver"}, 0.25, 0.5, damSharp, wepMelee).setWeight(1).setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver}));
+        wKnife = atl(WeaponBase({"Knife", "Dagger", "Cleaver"}, 0.25, 1.0/3, damSharp, wepMelee).setWeight(1).setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver}));
         wSword = atl(WeaponBase({"Longsword", "Cutlass", "Katana", "Machete", "Gladius", "Scimitar", "Rapier", "Short Sword", "Broadsword", "Saber", "Claymore"}, 1, 1, damSharp, wepMelee).setWeight(2).setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore}));
         wAxe = atl(WeaponBase({"Axe", "Hatchet", "Double Axe"}, 1.2, 1.2, damSharp, wepMelee).setWeight(2).setArts({Arts::artAxe, Arts::artAxe, Arts::artDoubleAxe}));
         wMace = atl(WeaponBase({"Mace", "Club", "Flail", "War Hammer", "Mallet"}, 1.5, 1.5, damBlunt, wepMelee).setArts({Arts::artMace, Arts::artClub, Arts::artFlail, Arts::artWarHammer, Arts::artWarHammer}));
         wSpear = atl(WeaponBase({"Spear", "Halberd"}, 1.3, 1.3, damPierce, wepMelee).ranged(1.8).setWeight(2.5).setArts({Arts::artSpear, Arts::artHalberd}));
 
         wBow = atl(WeaponBase({"Longbow", "Bow", "Recurve Bow"}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
-        wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, .6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
+        wCrossbow = atl(WeaponBase({"Crossbow", "Scorpion"}, 0.6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
 
         wFireItemCombatSpell = atl(WeaponBase({"Ignite Spell", "Scorch Spell", "Burn Spell"}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
         wFrostItemCombatSpell = atl(WeaponBase({"Freeze Spell", "Chill Spell"}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
@@ -469,7 +469,7 @@ namespace ItemGenerator {
     }
 
 
-    int calculateItemValue(Item* item){//TODO finish coin values
+    int calculateItemValue(Item* item){
         double value = 0;
         ItemEquipable* ie = dynamic_cast<ItemEquipable*>(item);
         ItemPotion* ip = dynamic_cast<ItemPotion*>(item);
@@ -568,7 +568,35 @@ namespace ItemGenerator {
 
         }else if(it){//Time Activated
 
+            switch (it->timeActivatedType) {
+                case timeActivatedWallBomb:
+                    value += 20;
+                    //no break intentional
+                case timeActivatedBomb:
+                    value += it->radius * it->power;
+                    break;
+                case timeActivatedDud:
+                    value = -1;
+                    break;
+
+                    
+                default:
+                    break;
+            }
+
         }else if(iu){//Utility Spell
+
+            switch (iu->spellEffect) {
+                case spellRemoteUse:
+                    value = 50;
+                    break;
+                case spellRelocate:
+                    value = 200;
+                    break;
+                default:
+                    value = -1;
+                    break;
+            }
 
         }else{//Item
             value = item->coinValue;

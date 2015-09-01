@@ -148,7 +148,7 @@ public:
 
     int xpForLevel(int l){
         l+=1;
-        return (pow(l, 2)+(5*l));
+        return (pow(l, 2)+(5*l)+20);
     }
 
     void recalculateDefenses();
@@ -187,6 +187,8 @@ public:
     map<DamageType, double> calculatedDefenses;
 
 
+    double useDelay(Item* item);
+
 
 protected:
 
@@ -197,8 +199,6 @@ protected:
     bool outOfCombatHealing = false;
 
     map<EquipSlot, ItemEquipable*> equipedItems;
-
-    double useDelay(Item* item);
 
     void setNextLevelXp() {
         nextLevelXp = xpForLevel(level);

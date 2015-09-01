@@ -84,6 +84,8 @@ public:
         return d;
     }
 
+    double moveDelay = 1.5; //TODO should vary
+
 
 protected:
     int ai = aiNone;
@@ -92,7 +94,6 @@ protected:
     EntityAlive* target = nullptr;
 
     double lastMoveTime = 0;
-    double moveDelay = 1.5; //TODO should vary
 
     double lastAttackTime = 0;
 

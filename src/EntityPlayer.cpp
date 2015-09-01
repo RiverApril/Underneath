@@ -284,8 +284,8 @@ double EntityPlayer::calcDamageMultiplier(ItemWeapon* weapon) {
         } else if (weapon->weaponType == wepMagic) {
             x = 1 + (((double) abilities[iINT] / (double) maxAbilities[iINT]) * 10.0);
         }
+        x *= getAttackMultiplierFromEffectsAndItemArmor(weapon->damageType);
     }
-    x *= getAttackMultiplierFromEffectsAndItemArmor(weapon->damageType);
     return x;
 }
 

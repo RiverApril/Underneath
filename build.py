@@ -30,6 +30,7 @@ parser.add_argument("-s", "--sdl", action="store_true")
 parser.add_argument("-a", "--all", action="store_true")
 parser.add_argument("-l", "--linkonly", action="store_true")
 parser.add_argument("-r", "--run", action="store_true")
+parser.add_argument("-e", "--release", action="store_true")
 
 args = parser.parse_args()
 
@@ -37,10 +38,6 @@ args = parser.parse_args()
 
 systemName = platform.system()
 machine = platform.machine()
-
-compiler = "g++"
-compilerFlags = "-g -std=c++11"
-libraryFlags = "-lncurses"
 
 sourceDirectory = "src"
 objectDirectory = "obj"
@@ -50,9 +47,23 @@ sourceExtention = "cpp"
 headerExtention = "hpp"
 objectExtention = "opp"
 
+
+compiler = "g++"
+compilerFlags = "-std=c++11"
+libraryFlags = "-lncurses"
+
+optimization = "-g -O0"
+
 executableName = "Underneath"
 
 compileAll = args.all
+
+if args.release:
+	optimization = "-O3"
+	executableName += "_Release"
+
+
+compilerFlags = optimization+" "+compilerFlags;
 
 
 if args.sdl:
@@ -61,8 +72,11 @@ if args.sdl:
     if systemName == "Windows":
         compilerFlags += " -Imingw_dev_lib\\include"
         libraryFlags = "-w -Wl,-subsystem,windows -Wl,-Bstatic -Lmingw_dev_lib\\lib -mwindows -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -static-libgcc -static-libstdc++ -L . -Wl,--no-undefined -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc -Wl,-Bdynamic"
+    elif systemName == "Darwin":
+        libraryFlags = "-lSDL2 -lSDL2_image"
     else:
         libraryFlags = "-lSDL2 -lSDL2_image"
+
 else:
     executableName += "_Term"
     if systemName == "Windows":

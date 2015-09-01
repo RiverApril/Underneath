@@ -110,6 +110,10 @@ namespace WorldLoader {
                     }
                 }
 
+                if(world->currentLevel == nullptr){
+                    throw Utility::FileExceptionLoad("No current level");
+                }
+
                 //levelName.lvl
                 FILE* fileLevel;
 

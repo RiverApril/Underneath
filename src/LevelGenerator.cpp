@@ -228,7 +228,7 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
         }
     }
 
-    int maxCountDiv2 = ((nonsolidTileCount)/20)/2;
+    int maxCountDiv2 = max(((nonsolidTileCount)/20)/2, 1);
 
     int count = (rand() % (maxCountDiv2))+(maxCountDiv2);
     for (int i = 0; i < count; i++) {

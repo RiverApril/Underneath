@@ -539,13 +539,18 @@ namespace Ui {
 
                 } else if (weapon) {
                     double x = player->calcDamageMultiplier(weapon);
+                    double delay = player->useDelay(weapon);
                     if (x == 1.0) {
                         a += printMultiLineString(a, columnX, formatString("Damage: %.2f", weapon->baseDamage));
                     } else {
                         a += printMultiLineString(a, columnX, formatString("Damage: %.2f (%.2f)", weapon->baseDamage, weapon->baseDamage * x));
                     }
                     a += printMultiLineString(a, columnX, formatString("Damage Type: %s", damageTypeName(weapon->damageType).c_str()));
-                    a += printMultiLineString(a, columnX, formatString("Speed: %d%%", (int) (100 / weapon->useDelay)));
+                    if(delay == weapon->useDelay){
+                    	a += printMultiLineString(a, columnX, formatString("Speed: %d%%", (int) (100 / weapon->useDelay)));
+                    }else{
+                        a += printMultiLineString(a, columnX, formatString("Speed: %d%% (%d%%)", (int) (100 / weapon->useDelay), (int) (100 / delay)));
+                    }
                     if (ranged) {
                         a += printMultiLineString(a, columnX, formatString("Range: %.2f", ranged->range));
                         if (spell) {
@@ -556,7 +561,7 @@ namespace Ui {
                         a = printEnchantments(a, weapon->enchantments, columnX);
                     }
                     setColor(C_LIGHT_CYAN);
-                    a += printMultiLineString(a, columnX, formatString("d/t: %.2f", ((weapon->baseDamage * x) / weapon->useDelay)));
+                    a += printMultiLineString(a, columnX, formatString("d/t: %.2f", ((weapon->baseDamage * x) / delay)));
                     if (spell) {
                         a += printMultiLineString(a, columnX, formatString("d/m: %.2f", ((spell->baseDamage * x) / (double) spell->manaCost)));
                     }
@@ -567,12 +572,12 @@ namespace Ui {
                     bool c = false;
 
                     for (int i = 0; i < abilityCount; i++) {
-                        if (equipable->minimumAbilities[i] > 0) {
+                        if (weapon->minimumAbilities[i] > 0) {
                             a += printMultiLineString(a, columnX, formatString("- %s", abilityAbr[i].c_str()), terminalSize.x - 4);
-                            if (equipable->minimumAbilities[i] > player->abilities[i]) {
+                            if (weapon->minimumAbilities[i] > player->abilities[i]) {
                                 setColor(C_LIGHT_RED);
                             }
-                            printw(" %d", equipable->minimumAbilities[i]);
+                            printw(" %d", weapon->minimumAbilities[i]);
                             setColor(C_LIGHT_GRAY);
                             c = true;
                         }

@@ -43,6 +43,8 @@ Ui::Color damageTypeColor(DamageType d) {
             return Ui::C_LIGHT_GRAY;
         case damBlunt:
             return Ui::C_LIGHT_GRAY;
+        case damPierce:
+            return Ui::C_LIGHT_GRAY;
         case damFire:
             return Ui::C_LIGHT_YELLOW;
         case damIce:

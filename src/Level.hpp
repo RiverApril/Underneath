@@ -88,6 +88,8 @@ public:
 
     bool update(double deltaTime, double time, Point2 viewPos);
 
+    void randomTileUpdate(Point2 p);
+
     //void setAndUnsetDisplayEntities();
 
     Entity* newEntity(Entity* newE, bool setUID = true);

@@ -15,6 +15,7 @@
 #include "ItemGenerator.hpp"
 #include "EnemyGenerator.hpp"
 #include "Utility.hpp"
+#include "Settings.hpp"
 
 Level::Level(World* w, string n, Point2 s, int d) {
     currentWorld = w;
@@ -70,6 +71,8 @@ Level::~Level() {
         }
     }
     deleteTileEntityList.clear();
+
+    
 }
 
 bool Level::getExplored(Point2 p) {
@@ -297,7 +300,19 @@ bool Level::update(double deltaTime, double time, Point2 viewPos) {
         actuallyRemoveTileEntityUnsafe(deleteTileEntityList[0]);
         deleteTileEntityList.erase(deleteTileEntityList.begin());
     }
+
+    for(int i=0;i<20;i++){
+        randomTileUpdate(Point2(rand() % size.x, rand() % size.y));
+    }
+
     return u;
+}
+
+void Level::randomTileUpdate(Point2 p){
+    int index = indexAt(p);
+    if(index == Tiles::tileCorpse->getIndex()){
+		setTile(p, Tiles::tileBones);
+    }
 }
 
 void Level::renderMenuGame(double displayTime) {
@@ -483,6 +498,13 @@ bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag ba
 }
 
 void Level::genDebug(string s) {
+    if(!Settings::debugMode){
+        move(0, 0);
+        clrtobot();
+        mvprintw(0, 0, "Generating...");
+        refresh();
+        return;
+    }
     Ui::setColor(Ui::C_WHITE);
     move(genDebugPos, 0);
     clrtoeol();
@@ -490,7 +512,7 @@ void Level::genDebug(string s) {
     genDebugPos++;
 
     if (genDebugPos >= Ui::terminalSize.y) {
-        genDebugPos = 1;
+        genDebugPos = 0;
         move(genDebugPos, 0);
         clrtobot();
     }
