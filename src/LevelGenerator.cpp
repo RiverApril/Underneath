@@ -22,9 +22,7 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
 
     Point2 center = size / 2;
 
-    int innerRing = center.xPlusY() * .1;
-
-    int outerRing = center.xPlusY() * .2;
+    int ring = center.xPlusY() * .2;
 
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
@@ -33,11 +31,15 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
             setTile(here, Tiles::tileGrass);
             int distance = sqrt(distanceSquared(here, center));
 
-            if(distance > outerRing){
+            if((rand() % (distance+1)) > ring){
+                setTile(here, Tiles::tileTree);
+            }
+
+            /*if(distance > outerRing && (rand() % 10) != 0){
                 setTile(here, Tiles::tileTree);
             }else if(distance > innerRing && (rand() % 10) == 0){
                 setTile(here, Tiles::tileTree);
-            }
+            }*/
         }
     }
 
@@ -51,7 +53,7 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
     });
 
     Utility::executeBorder(center-centerRoomInnerRadius, center+centerRoomInnerRadius, [this](int x, int y){
-        if((x+y)%3 == 0){
+        if(rand()%6 != 0 && (x+y)%2 == 0){
             setTile(Point2(x, y), Tiles::tileStatue);
         }
     });

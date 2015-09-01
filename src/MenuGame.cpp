@@ -507,28 +507,30 @@ namespace Ui {
                         console("Tile unexplored.");
                     }
                 }
-            } else if (in == 'r') {
-                Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
-                timePassed += currentPlayer->moveAbsalute(p, currentLevel);
+            } else if(Settings::cheatKeysEnabled){
+                if (in == 'r') {
+                    Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
+                    timePassed += currentPlayer->moveAbsalute(p, currentLevel);
 
-            } else if (in == 'R') {
-                Point2 p = currentLevel->stairDownPos;
-                consolef("Stair Down: %s", p.toString().c_str());
-                //timePassed += currentPlayer->moveAbsalute(p, currentLevel);
-                currentPlayer->pos = p;
+                } else if (in == 'R') {
+                    Point2 p = currentLevel->stairDownPos;
+                    consolef("Stair Down: %s", p.toString().c_str());
+                    //timePassed += currentPlayer->moveAbsalute(p, currentLevel);
+                    currentPlayer->pos = p;
 
-            } else if (in == '[') {
-                currentPlayer->hurt(damDebug, 1);
+                } else if (in == '[') {
+                    currentPlayer->hurt(damDebug, 1);
 
-            } else if (in == ']') {
-                currentPlayer->heal(1);
+                } else if (in == ']') {
+                    currentPlayer->heal(1);
 
-            } else if (in == '{') {
-                currentPlayer->hurt(damDebug, 10);
+                } else if (in == '{') {
+                    currentPlayer->hurt(damDebug, 10);
 
-            } else if (in == '}') {
-                currentPlayer->heal(10);
+                } else if (in == '}') {
+                    currentPlayer->heal(10);
 
+                }
             }
         }
     }

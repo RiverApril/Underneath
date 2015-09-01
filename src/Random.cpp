@@ -19,7 +19,7 @@ namespace Random {
     }
 
     int randomFromPoint(Point2 seed){
-        return predefinedRandomGrid[seed.x][seed.y];
+        return predefinedRandomGrid[seed.x % 64][seed.y % 64];
     }
 
     void setup(){

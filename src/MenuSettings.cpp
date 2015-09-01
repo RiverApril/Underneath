@@ -55,7 +55,7 @@ namespace Ui {
             if(sl){
                 mvprintw(a++, 1, "%s", setting->name.c_str());
             }else{
-            	mvprintw(a++, 3, "%s: %s", setting->name.c_str(), setting->stringValue().c_str());
+            	mvprintw(a++, 3, "%s - %s", setting->stringValue().c_str(), setting->name.c_str());
             }
         }
 

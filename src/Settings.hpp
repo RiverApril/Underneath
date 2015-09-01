@@ -17,6 +17,7 @@ namespace Settings{
     extern bool debugMode;
     extern bool showFollowPaths;
     extern bool seeEverything;
+    extern bool cheatKeysEnabled;
 
     struct Setting{
 
@@ -71,14 +72,14 @@ namespace Settings{
         ~SettingBool(){}
 
         string stringValue(){
-            return (*value)?"ON":"OFF";
+            return (*value)?" ON":"OFF";
         }
 
         bool setValue(string text){
-            if(text.compare("true") == 0){
+            if(text.compare(" ON") == 0){
                 *value = true;
                 return true;
-            }else if(text.compare("false") == 0){
+            }else if(text.compare("OFF") == 0){
                 *value = false;
                 return true;
             }
