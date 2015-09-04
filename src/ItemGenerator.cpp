@@ -275,7 +275,7 @@ namespace ItemGenerator {
         double time = Random::randDouble(pb.time.x, pb.time.y);
         double power = Random::randDouble(pb.power.x, pb.power.y);
         for (EffIdMeta eff : pb.effects) {
-            effects.push_back(Effect(eff.id, time, power * (pb.difficultyScales?itemDifficulty:1), eff.meta));
+            effects.push_back(Effect(eff.id, time, power * (pb.difficultyScales?itemDifficulty+1:1), eff.meta));
         }
         ItemPotion* potion = new ItemPotion(effects, pb.names[rand() % pb.names.size()], .2);
         switch (rand() % 4) {
