@@ -212,11 +212,8 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor" + to_string(Utility::parseInt(name.substr(5)) + 1)));
 
 
-    genDebug("Adding Entities...");
+    genDebug("Counting Valid Tiles...");
 
-    EnemyGenerator::setIntervals(difficulty);
-
-    map<string, int> entitiesGenerated;
 
     int nonsolidAccessableTileCount = 0;
     int unaccessableTileCount = 0;
@@ -225,7 +222,7 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
         for (int j = 0; j < size.y; j++) {
             if(!tileAt(Point2(i, j))->hasFlag(tileFlagSolid)){
                 if(canPathTo(stairUpPos, Point2(i, j), tileFlagPathable | tileFlagSecretPathable)){
-                	nonsolidAccessableTileCount++;
+                    nonsolidAccessableTileCount++;
                 }else{
                     unaccessableTileCount++;
                 }
@@ -235,6 +232,13 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
 
     debugf("Pathable non-solid tile count: %d", nonsolidAccessableTileCount);
     debugf("Unaccessable tiles: %d", unaccessableTileCount);
+
+
+    genDebug("Adding Entities...");
+
+    EnemyGenerator::setIntervals(difficulty);
+
+    map<string, int> entitiesGenerated;
 
     int maxCountDiv2 = max(((nonsolidAccessableTileCount)/30)/2, 1);
 

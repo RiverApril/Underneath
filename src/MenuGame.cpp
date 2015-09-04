@@ -309,10 +309,10 @@ namespace Ui {
     }
 
     void MenuGame::handleInput(int in) {
-        if (in == KEY_RESIZE) {
-            setGameAreaSize();
+        if (in == ERR) {
 
-        } else if (in == ERR) {
+        } else if (in == KEY_RESIZE) {
+            setGameAreaSize();
 
         } else if (in == KEY_ESCAPE) {
             if (controlMode != modeEntityPlayerControl) {
@@ -368,7 +368,7 @@ namespace Ui {
         }
 
         if (currentWorld != nullptr && currentPlayer != nullptr && currentLevel != nullptr) {
-            if (controlMode == modeSelectEntity && ((/* DISABLED, deemed overpowered (part below too) */ (false) && in == 'f') || in == Key::interact)) {
+            /*if (controlMode == modeSelectEntity && (((false) && in == 'f') || in == Key::interact)) {
 
                 if (targetEntity) {
                     if (currentLevel->canSee(currentPlayer->pos, targetEntity->pos, currentPlayer->viewDistance, false)) {
@@ -378,7 +378,7 @@ namespace Ui {
 
                 changeMode(modeEntityPlayerControl);
 
-            } else if (/* DISABLED, deemed overpowered (part above too)*/ (false) && in == 'f') {
+            } else if ((false) && in == 'f') {
                 ItemRanged* ranged = dynamic_cast<ItemRanged*> (currentPlayer->getActiveItemWeapon());
                 if (ranged && controlMode != modeSelectEntity) {
                     itemToBeUsedRange = ranged->range;
@@ -395,7 +395,8 @@ namespace Ui {
                     }
                 }
 
-            } else if (in == Key::interact || in == Key::secondaryAttack) {
+            } else*/
+            if (in == Key::interact || in == Key::secondaryAttack) {
                 ItemWeapon* wep = (in == Key::interact)?currentPlayer->getActiveItemWeapon():currentPlayer->getSecondaryItemWeapon();
                 if (controlMode == modeSelectDirection) {
 

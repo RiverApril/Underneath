@@ -84,7 +84,8 @@ namespace Ui {
         int a = 2;
 
         setColor(C_WHITE);
-        /*printCenter(a++, "  _ _ ___ ___ ___ ___ ___ ___ ___ ___ ___  ");
+        /*
+        printCenter(a++, "  _ _ ___ ___ ___ ___ ___ ___ ___ ___ ___  ");
         printCenter(a++, " | | |   |   \\ __|  _|   | __| _ |_ _| | | ");
         printCenter(a++, " | | | | | | | __| | | | | __|   || ||   | ");
         printCenter(a++, " |___|_|_|___/___|_| |_|_|___|_|_||_||_|_| ");
@@ -102,7 +103,7 @@ namespace Ui {
         printCenter(a++, "%sSettings%s", selection == 2 ? "- " : "  ", selection == 2 ? " -" : "  ");
         printCenter(a++, "%sExit%s", selection == 3 ? "- " : "  ", selection == 3 ? " -" : "  ");
 
-        a += 4;
+        a += 3;
 
         if (limitedColorMode) {
             mvaddstr(a, 0, "Limited Color Mode - For best results use a terminal with 256(or 16) colors.");

@@ -110,9 +110,7 @@ namespace WorldLoader {
                     }
                 }
 
-                if(world->currentLevel == nullptr){
-                    throw Utility::FileExceptionLoad("No current level");
-                }
+                //throw Utility::FileExceptionLoad("No current level");
 
                 //levelName.lvl
                 FILE* fileLevel;
@@ -371,8 +369,18 @@ namespace WorldLoader {
         for (string level : world->levels) {
             if (level == newName) {
                 debug("Level found, loading...");
-                EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentPlayer));
+
+                Level* oldCurrentLevel = world->currentLevel;
+
                 load(world, world->name, newName);
+
+                if(!world->currentLevel){
+                    debug("Failed to load level");
+                    world->currentLevel = oldCurrentLevel;
+                    continue;
+                }
+
+                EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentPlayer));
                 world->currentPlayer = newEntityPlayer;
                 world->currentPlayer->pos = entrance;
                 debugf("CurrentPlayer uid: %d", world->currentPlayer->uniqueId);

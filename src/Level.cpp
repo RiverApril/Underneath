@@ -312,6 +312,8 @@ void Level::randomTileUpdate(Point2 p){
     int index = indexAt(p);
     if(index == Tiles::tileCorpse->getIndex()){
 		setTile(p, Tiles::tileBones);
+    }else if(index == Tiles::tileBloodFloor->getIndex()){
+        setTile(p, Tiles::tileFloor);
     }
 }
 
