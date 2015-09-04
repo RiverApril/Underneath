@@ -55,7 +55,23 @@ void EntityAi::runAi(double time, Level* level) {
         agro = true;
     }
 
-    if (ai & aiFleeFromEntityPlayer) {
+    if(ai & aiAttackAndFleeAtLowHealth){
+        if(ai & aiFlee){
+            if((hp/maxHp) > healthPercentUpperBoundry){
+                ai -= aiFlee;
+                ai |= aiAttack;
+            }
+        }else if(ai & aiAttack){
+            if((hp/maxHp) < healthPercentLowerBoundry){
+                ai -= aiAttack;
+                ai |= aiFlee;
+            }
+        }else{
+            ai |= aiAttack;
+        }
+    }
+
+    if (ai & aiFlee) {
         if (canSeeTarget) {
 
             /*speed.x = pos.x > target->pos.x ? 1 : (pos.x < target->pos.x ? -1 : 0);
@@ -109,7 +125,7 @@ void EntityAi::runAi(double time, Level* level) {
             }
         }
     }
-    if (ai & aiAttackEntityPlayer) {
+    if (ai & aiAttack) {
         if (canSeeTarget) {
             lastKnownTargetPos = target->pos;
         }
@@ -155,7 +171,7 @@ void EntityAi::runAi(double time, Level* level) {
         lastMoveTime += moveDelay;
     }
 
-    if (ai & aiAttackEntityPlayer) {
+    if (ai & aiAttack) {
         if(!movedOrDontNeedToMove && speed != Point2Zero){
             if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
                 debug("Failed to move");
@@ -168,7 +184,7 @@ void EntityAi::runAi(double time, Level* level) {
     }
 
     bool attack = false;
-    if (ai & aiAttackEntityPlayer) {
+    if (ai & aiAttack) {
         if (activeItemWeapon != nullptr) {
             if (distanceSquared(pos, target->pos) <= 1) {
                 attack = true;

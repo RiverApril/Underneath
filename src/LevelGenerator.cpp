@@ -218,17 +218,25 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
 
     map<string, int> entitiesGenerated;
 
-    int nonsolidTileCount = 0;
+    int nonsolidAccessableTileCount = 0;
+    int unaccessableTileCount = 0;
 
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
             if(!tileAt(Point2(i, j))->hasFlag(tileFlagSolid)){
-                nonsolidTileCount++;
+                if(canPathTo(stairUpPos, Point2(i, j), tileFlagPathable | tileFlagSecretPathable)){
+                	nonsolidAccessableTileCount++;
+                }else{
+                    unaccessableTileCount++;
+                }
             }
         }
     }
 
-    int maxCountDiv2 = max(((nonsolidTileCount)/20)/2, 1);
+    debugf("Pathable non-solid tile count: %d", nonsolidAccessableTileCount);
+    debugf("Unaccessable tiles: %d", unaccessableTileCount);
+
+    int maxCountDiv2 = max(((nonsolidAccessableTileCount)/30)/2, 1);
 
     int count = (rand() % (maxCountDiv2))+(maxCountDiv2);
     for (int i = 0; i < count; i++) {

@@ -15,8 +15,12 @@ typedef int AiType;
 
 const AiType aiNone = 0;
 const AiType aiMoveRandom = 1 << 0;
-const AiType aiAttackEntityPlayer = 1 << 1;
-const AiType aiFleeFromEntityPlayer = 1 << 2;
+const AiType aiAttack = 1 << 1;
+const AiType aiFlee = 1 << 2;
+const AiType aiAttackAndFleeAtLowHealth = 1 << 3;
+
+const double healthPercentLowerBoundry = .25;
+const double healthPercentUpperBoundry = .75;
 
 const int agroViewDistanceMultiplier = 3;
 
@@ -69,7 +73,7 @@ public:
     }
 
     virtual bool isHostile() {
-        return ai & aiAttackEntityPlayer;
+        return ai & aiAttack;
     }
 
     double getAttackMultiplierFromEffects(DamageType damType){
