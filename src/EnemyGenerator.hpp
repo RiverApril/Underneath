@@ -32,7 +32,7 @@ namespace EnemyGenerator {
         char icon = '?';
         AiType ai = 0;
         int maxHp = 10;
-        int color = Ui::C_LIGHT_RED;
+        int color = C_LIGHT_RED;
         ItemGenerator::WeaponBase weaponBase;
         string weaponName = "";
         int weaponDifficultyAdd = 0;

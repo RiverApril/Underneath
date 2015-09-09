@@ -25,6 +25,8 @@ namespace Animator {
 
         int j = 1-length;
 
+        timeout(10);
+
         for(int i=1; i < line.size() || j < line.size(); i++){
 
 
@@ -45,9 +47,13 @@ namespace Animator {
 
             j++;
 
-            usleep(1000*50);
+            for(int i=0;i<5;i++){
+                getch();
+            }
             refresh();
         }
+
+        timeout(defaultTimeout);
 
 
     }
@@ -56,13 +62,15 @@ namespace Animator {
 
         double p = 8;
 
-        RandomIcon icon = RandomIcon({'~', '*', '&'}, Ui::C_LIGHT_YELLOW, Ui::C_BLACK);
+        RandomIcon icon = RandomIcon({'~', '*', '&'}, C_LIGHT_YELLOW, C_BLACK);
+
+        timeout(10);
 
         for(int r=0;r<radius;r++){
             double ma = ((r+1)*p);
             double maDivTau = ma/Math::tau;
 
-            Ui::setColor(r<(radius/3)?Ui::C_LIGHT_RED:Ui::C_LIGHT_YELLOW, icon.Icon::getBgColor(Ui::tick, Point2Zero, level));
+            Ui::setColor(r<(radius/3)?C_LIGHT_RED:C_LIGHT_YELLOW, icon.Icon::getBgColor(Ui::tick, Point2Zero, level));
 
             for(double a = 0; a<ma;a+=maDivTau){
                 Point2 pos = Point2(sin(maDivTau*a)*r, cos(maDivTau*a)*r);
@@ -71,9 +79,13 @@ namespace Animator {
                 mvaddch(pos.y, pos.x, icon.getChar(Ui::tick, pos, level));
             }
 
-            usleep(1000*50);
+            for(int i=0;i<5;i++){
+                getch();
+            }
             refresh();
         }
+
+        timeout(defaultTimeout);
 
     }
 

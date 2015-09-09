@@ -91,6 +91,7 @@ namespace WorldLoader {
                 }
 
                 world->worldTime = Utility::loadDouble(data, position);
+                world->worldLastTime = world->worldTime;
 
                 int levelCount = Utility::loadInt(data, position);
 
@@ -342,8 +343,15 @@ namespace WorldLoader {
         world->levels.push_back(world->currentLevel->getName());
 
 
-        world->currentPlayer = new EntityPlayer(name, '@', p, Ui::C_WHITE, playerAbilities);
-        world->currentPlayer->setActiveItemWeapon(ItemGenerator::applyRandConditionToItemWeapon(ItemGenerator::createItemWeaponFromType(wepMelee, 0), 0));
+        world->currentPlayer = new EntityPlayer(name, '@', p, C_WHITE, playerAbilities);
+        ItemWeapon* weapon = nullptr;
+        do{
+            if(weapon != nullptr){
+                delete weapon;
+            }
+            weapon = ItemGenerator::applyRandConditionToItemWeapon(ItemGenerator::createItemWeaponFromType(wepMelee, 0), 0);
+        }while((weapon->baseDamage / weapon->useDelay) < 5);
+        world->currentPlayer->setActiveItemWeapon(weapon);
         world->currentPlayer->addItem(new ItemSpecial(specialtyCompass));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));

@@ -40,26 +40,26 @@ string damageTypeName(DamageType d) {
 Ui::Color damageTypeColor(DamageType d) {
     switch (d) {
         case damSharp:
-            return Ui::C_LIGHT_GRAY;
+            return C_LIGHT_GRAY;
         case damBlunt:
-            return Ui::C_LIGHT_GRAY;
+            return C_LIGHT_GRAY;
         case damPierce:
-            return Ui::C_LIGHT_GRAY;
+            return C_LIGHT_GRAY;
         case damFire:
-            return Ui::C_LIGHT_YELLOW;
+            return C_LIGHT_YELLOW;
         case damIce:
-            return Ui::C_LIGHT_CYAN;
+            return C_LIGHT_CYAN;
         case damShock:
-            return Ui::C_LIGHT_MAGENTA;
+            return C_LIGHT_MAGENTA;
         case damPoison:
-            return Ui::C_LIGHT_GREEN;
+            return C_LIGHT_GREEN;
         case damBlood:
-            return Ui::C_LIGHT_RED;
+            return C_LIGHT_RED;
         case damDebug:
-            return Ui::C_WHITE;
+            return C_WHITE;
         case damExplosion:
-            return Ui::C_LIGHT_YELLOW;
+            return C_LIGHT_YELLOW;
         default:
-            return Ui::C_WHITE;
+            return C_WHITE;
     }
 }

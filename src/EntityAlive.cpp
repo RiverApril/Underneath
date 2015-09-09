@@ -12,7 +12,7 @@
 #include "Random.hpp"
 #include "Verbalizer.hpp"
 
-EntityAlive::EntityAlive() : EntityAlive("", ' ', Point2Zero, Ui::C_WHITE) {
+EntityAlive::EntityAlive() : EntityAlive("", ' ', Point2Zero, C_WHITE) {
 
 }
 

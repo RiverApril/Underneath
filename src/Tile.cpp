@@ -19,7 +19,7 @@ Tile::Tile(Icon* icon, string name, TileFlag flags, Icon* unseen) {
     this->flags = flags;
 }
 
-Tile::Tile(Icon* icon, string name, TileFlag flags) : Tile(icon, name, flags, new BasicIcon(icon->getChar(0, Point2Neg1, nullptr), Ui::C_DARK_GRAY, Ui::C_BLACK)) {
+Tile::Tile(Icon* icon, string name, TileFlag flags) : Tile(icon, name, flags, new BasicIcon(icon->getChar(0, Point2Neg1, nullptr), C_DARK_GRAY, C_BLACK)) {
 }
 
 Icon* Tile::getIcon(bool inView) {

@@ -19,14 +19,14 @@
 #include "Utility.hpp"
 #include "Global.hpp"
 
-Entity::Entity() : Entity(' ', Point2Zero, Ui::C_WHITE) {
+Entity::Entity() : Entity(' ', Point2Zero, C_WHITE) {
 
 }
 
 Entity::Entity(char icon, Point2 startPos, Ui::Color color) {
     this->defaultIcon = icon;
     this->fgColor = color;
-    this->bgColor = Ui::C_BLACK;
+    this->bgColor = C_BLACK;
 
     pos = startPos;
     lastPos = startPos;

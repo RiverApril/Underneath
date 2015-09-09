@@ -507,7 +507,7 @@ void Level::genDebug(string s) {
         refresh();
         return;
     }
-    Ui::setColor(Ui::C_WHITE);
+    Ui::setColor(C_WHITE);
     move(genDebugPos, 0);
     clrtoeol();
     mvprintw(genDebugPos, 0, s.c_str());

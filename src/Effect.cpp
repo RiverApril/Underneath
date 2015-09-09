@@ -41,16 +41,16 @@ Ui::Color effectColor(EffectId eid, double meta) {
             return damageTypeColor((DamageType) meta);
 
         case effHeal:
-            return Ui::C_LIGHT_GREEN;
+            return C_LIGHT_GREEN;
 
         case effBuffAttack:
-            return Ui::C_LIGHT_BLUE;
+            return C_LIGHT_BLUE;
 
         case effBuffDefense:
-            return Ui::C_LIGHT_MAGENTA;
+            return C_LIGHT_MAGENTA;
             
         default:
-            return Ui::C_LIGHT_GREEN;
+            return C_LIGHT_GREEN;
     }
 }
 

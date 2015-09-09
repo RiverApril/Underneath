@@ -20,7 +20,7 @@ namespace Ui {
 
 
     void MenuDebug::handleInput(int in){
-        if(in == KEY_ESCAPE || in == Key::debugMenu){
+        if(in == KEY_ESCAPE){
             closeThisMenu();
             return;
         }else if(in == 'q'){

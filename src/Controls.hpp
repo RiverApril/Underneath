@@ -42,7 +42,6 @@ namespace Key {
     //Open UI
     extern int inventory;
     extern int statsMenu;
-    extern int debugMenu;
 
 
 
@@ -62,7 +61,6 @@ namespace Key {
     //In chest
     extern int take;
     extern int takeStack;
-    extern int takeAll;
 
 }
 

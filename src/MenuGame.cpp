@@ -353,11 +353,6 @@ namespace Ui {
                 openMenu(new MenuStats(currentPlayer, currentWorld));
             }
 
-        } else if (in == Key::debugMenu) {
-            if (currentPlayer != nullptr) {
-                openMenu(new MenuDebug(currentWorld));
-            }
-
         } else if (in == Key::adjustConsole) {
             if (controlMode == modeAdjustBorder) {
                 changeMode(modeEntityPlayerControl);
@@ -691,11 +686,13 @@ namespace Ui {
             printCenterOffset(gameArea.y / 2 + 3 + ((int)a->lines.size()/2), -(borderSize.x / 2), "Press Escape to return to the Main Menu.");
         }
 
-
-        if (currentLevel != nullptr && Settings::debugMode) {
+        if(currentLevel != nullptr){
             currentLevel->menuGame = this;
-            Ui::setColor(C_LIGHT_GRAY);
-            mvprintw(gameArea.y, 0, "%d, %d [%dx%d] e:%d te:%d p:%s %s(%d)", p.x, p.y, currentLevel->getSize().x, currentLevel->getSize().y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "null" : "not null", currentLevel->getName().c_str(), currentLevel->getDifficulty());
+
+            if (Settings::debugMode) {
+                Ui::setColor(C_LIGHT_GRAY);
+                mvprintw(gameArea.y, 0, "%d, %d [%dx%d] e:%d te:%d p:%s %s(%d)", p.x, p.y, currentLevel->getSize().x, currentLevel->getSize().y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "null" : "not null", currentLevel->getName().c_str(), currentLevel->getDifficulty());
+            }
         }
 
 

@@ -117,7 +117,7 @@ namespace Ui {
 
         limitedColorMode = (COLORS < 16) || limitedColorModeOverride;
 
-        if (limitedColorMode) {
+        /*if (limitedColorMode) {
 
 			//swap(C_DARK_BLUE, C_DARK_RED);
 			//swap(C_DARK_YELLOW, C_DARK_CYAN);
@@ -130,7 +130,7 @@ namespace Ui {
             C_LIGHT_MAGENTA = C_DARK_MAGENTA;
             C_LIGHT_CYAN = C_DARK_CYAN;
             C_LIGHT_WHITE = C_DARK_WHITE;
-        }
+        }*/
 
         initColorPairs();
 
@@ -142,7 +142,7 @@ namespace Ui {
 
     void initColorPairs() {
 
-        if(limitedColorMode){
+        /*if(limitedColorMode){
 
             short a = 0;
 
@@ -153,7 +153,7 @@ namespace Ui {
                 }
             }
 
-        }else{
+        }else*/{
 
             short a = 0;
 
@@ -179,18 +179,32 @@ namespace Ui {
 
     void setColor(Color fg, Color bg, int attr) {
         if (limitedColorMode) {
-            if (fg >= 0x8) {
-                fg -= 0x8;
+            switch (bg) {
+                case C_LIGHT_BLACK: bg = C_DARK_BLACK;break;
+                case C_LIGHT_RED: bg = C_DARK_RED;break;
+                case C_LIGHT_GREEN: bg = C_DARK_GREEN;break;
+                case C_LIGHT_YELLOW: bg = C_DARK_YELLOW;break;
+                case C_LIGHT_BLUE: bg = C_DARK_BLUE;break;
+                case C_LIGHT_MAGENTA: bg = C_DARK_MAGENTA;break;
+                case C_LIGHT_CYAN: bg = C_DARK_CYAN;break;
+                case C_LIGHT_WHITE: bg = C_DARK_WHITE;break;
             }
-            if (bg >= 0x8) {
-                bg -= 0x8;
+            switch (fg) {
+                case C_LIGHT_BLACK: fg = C_DARK_WHITE;break;
+                case C_LIGHT_RED: fg = C_DARK_RED;break;
+                case C_LIGHT_GREEN: fg = C_DARK_GREEN;break;
+                case C_LIGHT_YELLOW: fg = C_DARK_YELLOW;break;
+                case C_LIGHT_BLUE: fg = C_DARK_BLUE;break;
+                case C_LIGHT_MAGENTA: fg = C_DARK_MAGENTA;break;
+                case C_LIGHT_CYAN: fg = C_DARK_CYAN;break;
+                case C_LIGHT_WHITE: fg = (bg == C_DARK_BLACK)?C_DARK_BLACK:C_DARK_WHITE;break;
             }
         }
         attrset(getColorPair(fg, bg) | attr);
     }
 
     int getColorPair(Color fg, Color bg){
-        return COLOR_PAIR(fg + (bg * (limitedColorMode?0x8:0x10)));
+        return COLOR_PAIR(fg + (bg * 0x10));
     }
 
     int printMultiLineString(int y, int x, string s, int maxX) {
@@ -352,7 +366,7 @@ namespace Ui {
         if (inv.size() > 0) {
             Item* item = inv[selectedY];
             if (item) {
-                setColor(C_DARK_GRAY, C_BLACK);
+                setColor(C_LIGHT_GRAY, C_BLACK);
                 if (item->artIndex > -1) {
                     Art* art = Arts::getArt(item->artIndex);
                     Point2 artSize = art->getSize();

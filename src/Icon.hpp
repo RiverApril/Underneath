@@ -27,17 +27,17 @@ public:
         return '?';
     }
     virtual Ui::Color getFgColor(unsigned long tick, Point2 pos, Level* lvl){
-        return Ui::C_WHITE;
+        return C_WHITE;
     }
     virtual Ui::Color getBgColor(unsigned long tick, Point2 pos, Level* lvl){
-        return Ui::C_BLACK;
+        return C_BLACK;
     }
 };
 
 class BasicIcon : public Icon{
     char i = '?';
-    Ui::Color fg = Ui::C_DARK_BLACK;
-    Ui::Color bg = Ui::C_LIGHT_WHITE;
+    Ui::Color fg = C_DARK_BLACK;
+    Ui::Color bg = C_LIGHT_WHITE;
 
 public:
     BasicIcon(char i, Ui::Color fg, Ui::Color bg){
@@ -61,8 +61,8 @@ public:
 
 class RandomIcon : public Icon{
     vector<char> i = {'?'};
-    Ui::Color fg = Ui::C_DARK_BLACK;
-    Ui::Color bg = Ui::C_LIGHT_WHITE;
+    Ui::Color fg = C_DARK_BLACK;
+    Ui::Color bg = C_LIGHT_WHITE;
 
 public:
     RandomIcon(vector<char> i, Ui::Color fg, Ui::Color bg){
@@ -84,8 +84,8 @@ public:
 
 class RandomColorIcon : public Icon{
     vector<char> i = {'?'};
-    vector<Ui::Color> fg = {Ui::C_DARK_BLACK};
-    vector<Ui::Color> bg = {Ui::C_LIGHT_WHITE};
+    vector<Ui::Color> fg = {C_DARK_BLACK};
+    vector<Ui::Color> bg = {C_LIGHT_WHITE};
 
 public:
     RandomColorIcon(vector<char> i, vector<Ui::Color> fg, vector<Ui::Color> bg){
@@ -104,8 +104,8 @@ public:
 class AnimatedIcon : public Icon{
     int speed = 1;
     vector<char> i = {'?'};
-    Ui::Color fg = Ui::C_DARK_BLACK;
-    Ui::Color bg = Ui::C_LIGHT_WHITE;
+    Ui::Color fg = C_DARK_BLACK;
+    Ui::Color bg = C_LIGHT_WHITE;
 
 public:
     AnimatedIcon(vector<char> i, int speed, Ui::Color fg, Ui::Color bg){
@@ -131,8 +131,8 @@ public:
 class ColorAnimatedIcon : public Icon{
     int speed = 1;
     vector<char> i = {'?'};
-    vector<Ui::Color> fg = {Ui::C_DARK_BLACK};
-    vector<Ui::Color> bg = {Ui::C_LIGHT_WHITE};
+    vector<Ui::Color> fg = {C_DARK_BLACK};
+    vector<Ui::Color> bg = {C_LIGHT_WHITE};
 
 public:
     virtual char getChar(unsigned long tick, Point2 pos, Level* lvl){

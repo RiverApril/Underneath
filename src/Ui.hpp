@@ -13,8 +13,8 @@
 
 #include "Global.hpp"
 #include "Geometry.hpp"
-#include "Color.hpp"
 #include "Enchantment.hpp"
+
 
 class World;
 
@@ -31,6 +31,8 @@ class EntityPlayer;
 class Inventory;
 
 namespace Ui {
+
+    typedef unsigned char Color;
 
 
     extern const Color COLOR_DEFAULT_ENTITY;

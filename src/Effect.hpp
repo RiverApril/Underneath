@@ -10,6 +10,7 @@
 #define __Underneath__Effect__
 
 #include "DamageType.hpp"
+#include "Color.hpp"
 
 #define EFFECT_DELAY 1
 

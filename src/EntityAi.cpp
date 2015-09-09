@@ -17,7 +17,7 @@
 #include "Animator.hpp"
 #include "Settings.hpp"
 
-EntityAi::EntityAi() : EntityAi("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1) {
+EntityAi::EntityAi() : EntityAi("", aiNone, ' ', Point2Zero, C_WHITE, 1) {
 
 }
 
@@ -112,11 +112,11 @@ void EntityAi::runAi(double time, Level* level) {
                 if(Settings::showFollowPaths){
                     for(Point2 point : path){
                         EntityTimeActivated* e = new EntityTimeActivated("path", timeActivatedDud, 2, 0, 0, point);
-                        e->fgColor = Ui::C_LIGHT_GREEN;
+                        e->fgColor = C_LIGHT_GREEN;
                         level->newEntity(e);
                     }
                     EntityTimeActivated* e = new EntityTimeActivated("runToPos", timeActivatedDud, 2, 0, 0, runToPos);
-                    e->fgColor = Ui::C_LIGHT_MAGENTA;
+                    e->fgColor = C_LIGHT_MAGENTA;
                     level->newEntity(e);
                 }
 
@@ -146,11 +146,11 @@ void EntityAi::runAi(double time, Level* level) {
                     if(Settings::showFollowPaths){
                         for(Point2 point : path){
                             EntityTimeActivated* e = new EntityTimeActivated("path", timeActivatedDud, 2, 0, 0, point);
-                            e->fgColor = Ui::C_LIGHT_GREEN;
+                            e->fgColor = C_LIGHT_GREEN;
                             level->newEntity(e);
                         }
                         EntityTimeActivated* e = new EntityTimeActivated("lastKnownTargetPos", timeActivatedDud, 2, 0, 0, lastKnownTargetPos);
-                        e->fgColor = Ui::C_LIGHT_MAGENTA;
+                        e->fgColor = C_LIGHT_MAGENTA;
                         level->newEntity(e);
                     }
                     debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
@@ -207,10 +207,10 @@ void EntityAi::runAi(double time, Level* level) {
             ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(activeItemWeapon);
             BasicIcon* icon;
             if(spell){
-                icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), Ui::C_BLACK);
+                icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), C_BLACK);
             	Animator::renderRangedAttack(pos, target->pos, icon, level, 8);
             }else{
-                icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), Ui::C_BLACK);
+                icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), C_BLACK);
                 Animator::renderRangedAttack(pos, target->pos, icon, level, 1);
             }
             delete icon;

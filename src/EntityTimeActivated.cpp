@@ -18,7 +18,7 @@ EntityTimeActivated::EntityTimeActivated(ItemTimeActivated* item, Point2 p) : En
 
 }
 
-EntityTimeActivated::EntityTimeActivated(string name, TimeActivatedType timeActivatedType, double time, double power, double radius, Point2 p) : Entity('!', p, Ui::C_LIGHT_RED) {
+EntityTimeActivated::EntityTimeActivated(string name, TimeActivatedType timeActivatedType, double time, double power, double radius, Point2 p) : Entity('!', p, C_LIGHT_RED) {
     this->name = name;
     this->timeActivatedType = timeActivatedType;
     this->timeLeft = time;

@@ -10,7 +10,7 @@
 #include "ItemGenerator.hpp"
 
 
-EntityShop::EntityShop() : EntityShop("", aiNone, ' ', Point2Zero, Ui::C_WHITE, 1) {
+EntityShop::EntityShop() : EntityShop("", aiNone, ' ', Point2Zero, C_WHITE, 1) {
 
 }
 

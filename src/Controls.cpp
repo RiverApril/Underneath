@@ -16,7 +16,7 @@ namespace Key {
     int moveLeft = KEY_LEFT;
     int moveRight = KEY_RIGHT;
     int interact = 'g';
-    int secondaryAttack = 'f';
+    int secondaryAttack = 'G';
     int inspect = 'q';
     int adjustConsole = '\\';
     int waitUntilHealed = 'h';
@@ -24,7 +24,6 @@ namespace Key {
     //Open UI
     int inventory = 'i';
     int statsMenu = 's';
-    int debugMenu = 'd';
 
 
 
@@ -44,7 +43,6 @@ namespace Key {
     //In chest
     int take = 't';
     int takeStack = 'T';
-    int takeAll = 'R';
 
 }
 
@@ -56,7 +54,7 @@ vector<KeyBind> keybindings = {
     KeyBind("Interact / Use / Attack", &Key::interact, keyCatPlayer | keyCatUi),
     KeyBind("Secondary Attack", &Key::secondaryAttack, keyCatPlayer),
     KeyBind("Examine", &Key::inspect, keyCatPlayer),
-    KeyBind("Heal", &Key::waitUntilHealed, keyCatPlayer),
+    KeyBind("Wait until Healed", &Key::waitUntilHealed, keyCatPlayer),
     KeyBind("Open Inventory", &Key::inventory, keyCatPlayer | keyCatUi),
     KeyBind("Open Skills", &Key::statsMenu, keyCatPlayer),
     KeyBind("Ui Up", &Key::uiUp, keyCatUi),
@@ -69,11 +67,9 @@ vector<KeyBind> keybindings = {
     KeyBind("Drop Stack", &Key::dropAll, keyCatUi),
     KeyBind("Transfer Item", &Key::take, keyCatUi),
     KeyBind("Transfer Stack", &Key::takeStack, keyCatUi),
-    KeyBind("Transfer Inventory", &Key::takeAll, keyCatUi),
     KeyBind("Sort Inventory", &Key::sortInv, keyCatUi),
 
-    KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer),
-    KeyBind("Open Debug Menu", &Key::debugMenu, keyCatPlayer)
+    KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer)
 };
 
 vector<int> reservedKeys = {

@@ -9,6 +9,7 @@
 #include "LevelGenerator.hpp"
 #include "EnemyGenerator.hpp"
 #include "TEMimic.hpp"
+#include "EntityShop.hpp"
 
 
 Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string previousLevel){
@@ -571,7 +572,7 @@ namespace LevelGenerator {
                 }
             }
 
-            //Chest Room
+            //Chest Room or Shop
             if(!addedWalls){
                 int doors = 0;
                 Point2 lastDoorLocation = Point2Neg1;
@@ -597,10 +598,16 @@ namespace LevelGenerator {
                         doors++;
                     }
                 }*/
+
                 if(doors == 1){
+                    //Chest
                     if (rand() % 2 == 0) {
                         level->setTile(r->center, Tiles::tileChest);
                         level->setTile(lastDoorLocation, Tiles::tileLockedDoor);
+                    }else if(rand() % 2 == 0){
+                        EntityShop* e = new EntityShop("Shop keeper", aiNone, 'S', r->center, C_LIGHT_MAGENTA, 100);
+                        e->addItems(ItemGenerator::createRandLoots(level->getDifficulty(), 0, 10, 10, 10, 2));
+                        level->newEntity(e);
                     }
                 }
                 addedWalls = true;

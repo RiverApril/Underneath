@@ -87,12 +87,6 @@ namespace Ui {
                 to->addItem(take);
             }
 
-        } else if (in == Key::takeAll) {
-            if (from->inventory.size() > 0) {
-                to->addItems(from->inventory);
-                from->removeAllItems(false);
-            }
-
         } else if (in == KEY_ESCAPE || in == Key::inventory) {
             closeThisMenu();
             return;
