@@ -98,10 +98,15 @@ namespace Ui {
         printCenter(a++, "                                  (        ");*/
         Arts::getArt(Arts::artTitle)->printCenter(a);
         a += Arts::getArt(Arts::artTitle)->getSize().y;
+
         printCenter(a++, "%sPlay%s", selection == 0 ? "- " : "  ", selection == 0 ? " -" : "  ");
+
         printCenter(a++, "%sControls%s", selection == 1 ? "- " : "  ", selection == 1 ? " -" : "  ");
+
         printCenter(a++, "%sSettings%s", selection == 2 ? "- " : "  ", selection == 2 ? " -" : "  ");
+
         printCenter(a++, "%sExit%s", selection == 3 ? "- " : "  ", selection == 3 ? " -" : "  ");
+
 
         a += 3;
 

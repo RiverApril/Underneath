@@ -33,6 +33,24 @@ bool Point2::operator==(const Point2 other) {
     return this->x == other.x && this->y == other.y;
 }
 
+
+bool Point2::operator>(const Point2 other) {
+    return this->x > other.x && this->y > other.y;
+}
+
+bool Point2::operator<(const Point2 other) {
+    return this->x < other.x && this->y < other.y;
+}
+
+bool Point2::operator<=(const Point2 other) {
+    return this->x <= other.x && this->y <= other.y;
+}
+
+bool Point2::operator>=(const Point2 other) {
+    return this->x >= other.x && this->y >= other.y;
+}
+
+
 bool Point2::operator!=(const Point2 other) {
     return !(*this == other);
 }

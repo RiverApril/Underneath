@@ -90,15 +90,15 @@ namespace Ui {
         printCenter(2, "Enter Name");
 
         printCenter(5, e ? "  %sContinue%s  " : "%sCreate New%s",
-                selection == 0 ? "- " : "  ", selection == 0 ? " -" : "  ");
+                selection == selPlay ? "- " : "  ", selection == selPlay ? " -" : "  ");
 
         setColor(e ? C_LIGHT_RED : C_DARK_GRAY);
         printCenter(6, "%sDelete%s",
-                selection == 1 ? "- " : "  ", selection == 1 ? " -" : "  ");
+                selection == selDel ? "- " : "  ", selection == selDel ? " -" : "  ");
         setColor(C_WHITE);
 
-        printCenter(8, "%sBack%s", selection == 2 ? "- " : "  ",
-                selection == 2 ? " -" : "  ");
+        printCenter(8, "%sBack%s", selection == selBack ? "- " : "  ",
+                selection == selBack ? " -" : "  ");
 
 
         setColor(e ? C_LIGHT_GREEN : C_LIGHT_YELLOW);
