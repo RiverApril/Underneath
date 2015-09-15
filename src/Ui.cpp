@@ -425,12 +425,11 @@ namespace Ui {
                         displayName += "(Unbuyable) ";
                     }
                 }
-
-                if (item->qty != 1) {
-                    displayName += formatString("%d %s", item->qty, plural(item->name).c_str());
-                }else{
-                    displayName += formatString("%s", item->name.c_str());
+                if(item->qty != 1){
+                    displayName += formatString("%d ", item->qty);
                 }
+
+                displayName += formatString("%s", item->getName(item->qty != 1).c_str());
 
                 mvprintw(y, columnX, "%c ", pre);
                 y += printMultiLineString(y, columnX + 2, displayName, columnX + columnWidth - 1);
@@ -459,7 +458,7 @@ namespace Ui {
 
                 int a = 2;
 
-                a += printMultiLineString(a, columnX, formatString("Name: %s%s", item->name.c_str(), item->qty == 1 ? "" : (formatString(" x %d", item->qty).c_str())));
+                a += printMultiLineString(a, columnX, formatString("Name: %s %s", item->qty!=1?formatString("%d", item->qty).c_str():"", item->getName(item->qty != 1).c_str()));
 
                 if(item->coinValue > 0){
                     a += printMultiLineString(a, columnX, formatString("Value: %dc", item->coinValue));
@@ -504,7 +503,7 @@ namespace Ui {
                 }
 
                 //mvprintw(a++, columnX, "Qty: %d", item->qty);
-                a += printMultiLineString(a, columnX, formatString("Weight: %.2f", item->weight));
+                //a += printMultiLineString(a, columnX, formatString("Weight: %.2f", item->weight));
                 if (potion) {
                     a += printMultiLineString(a, columnX, "Effects:");
                     if (potion->effects.size() == 0) {
@@ -603,27 +602,39 @@ namespace Ui {
                 }else if(itemSpecial){
                     switch (itemSpecial->specialty) {
                         case specialtyCompass:{
+
+							printMultiLineString(a++, columnX, "Points towards the staircase down.");
+
                             int frame = 0;
 
                             Point2 diff = player->pos - currentWorld->currentLevel->stairDownPos;
 
                             double angle = 360 - ((atan2((double)diff.y, (double)-diff.x) * 180 / Math::pi) + 180);
 
+                            string d = "";
+
                             if((angle >= 0 && angle < 22.5) || (angle >= 337.5 && angle <= 360)){ //W
                                 frame = 1;
                             }else if(angle >= 22.5 && angle < 67.5){//NW
+                                d = "NW";
                                 frame = 2;
                             }else if(angle >= 67.5 && angle < 112.5){//N
+                                d = "N";
                                 frame = 3;
                             }else if(angle >= 112.5 && angle < 157.5){//NE
+                                d = "NE";
                                 frame = 4;
                             }else if(angle >= 157.5 && angle < 202.5){//E
+                                d = "E";
                                 frame = 5;
                             }else if(angle >= 202.5 && angle < 247.5){//SE
+                                d = "SE";
                                 frame = 6;
                             }else if(angle >= 247.5 && angle < 292.5){//S
+                                d = "S";
                                 frame = 7;
                             }else if(angle >= 292.5 && angle < 337.5){//SW
+                                d = "SW";
                                 frame = 8;
                             }else{
                                 frame = 0;
@@ -635,7 +646,9 @@ namespace Ui {
                             Arts::getArt(Arts::compassOut)->printAt(Point2(columnX, a));
 							if (Arts::compassInList.size() > frame) {
 								Arts::getArt(Arts::compassInList[frame])->printAt(Point2(columnX, a) + Arts::compassInOffset);
-							}
+                            }else{
+                                printMultiLineString(a++, columnX, d.c_str());
+                            }
                             break;
                         }
                     }

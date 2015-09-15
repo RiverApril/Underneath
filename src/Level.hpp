@@ -66,9 +66,9 @@ public:
     int indexAt(Point2 p);
 
     Entity* getClosestVisableEntity(Point2 origin, double range, Entity* notMe = nullptr);
-    vector<Entity*> getAllVisableEntitiesSortedByNearest(Point2 origin, double range, Entity* notMe);
+    vector<Entity*> getAllVisableEntities(Point2 origin, double range, Entity* notMe, bool sort);
 
-    vector<Entity*> getAllVisableEntitiesSortedByNearest(Point2 origin, double range, vector<Entity*> notMes, Point2 nearestTo, Point2 inDirection);
+    vector<Entity*> getAllVisableEntities(Point2 origin, double range, vector<Entity*> notMes, Point2 nearestTo, Point2 inDirection, bool sort);
 
     bool canSee(Point2 origin, Point2 test, double range, bool withWalls);
 

@@ -251,7 +251,7 @@ void EntityAlive::load(unsigned char* data, int* position) {
 
     repeat(size, i) {
         Item* item = Item::loadNew(data, position);
-        debug("Loaded item: " + item->name + "(" + to_string(item->getItemTypeId()) + ")");
+        debug("Loaded item: " + item->getName(false) + "(" + to_string(item->getItemTypeId()) + ")");
         inventory.push_back(item);
     }
 

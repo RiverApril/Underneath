@@ -57,6 +57,8 @@ namespace LevelGenerator {
 
     extern void makeRoomsAndPaths(vector<Room*>* rooms, Level* level);
 
+    extern void fillRooms(Level* level, vector<Room*>* rooms);
+
     extern void generateMaze(Level* level, Room* room);
 
 }

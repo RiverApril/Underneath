@@ -381,7 +381,7 @@ namespace Commands {
                 if(arguments.size()>0 && !arguments[0].compare("everything")){
                     eList = mg->currentWorld->currentLevel->entityList;
                 }else{
-                	eList = mg->currentWorld->currentLevel->getAllVisableEntitiesSortedByNearest(mg->currentWorld->currentPlayer->pos, mg->currentWorld->currentPlayer->viewDistance, {mg->currentWorld->currentPlayer});
+                	eList = mg->currentWorld->currentLevel->getAllVisableEntities(mg->currentWorld->currentPlayer->pos, mg->currentWorld->currentPlayer->viewDistance, mg->currentWorld->currentPlayer, false);
                 }
                 for(Entity* e : eList){
                     if(e->isHostile()){

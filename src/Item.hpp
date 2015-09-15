@@ -71,20 +71,50 @@ public:
                 &&(coinValue == other->coinValue);
     }
 
+    virtual string getName(bool plural){
+        if(plural){
+            if(pluralName.size() > 0){
+            	return pluralName;
+            }else{
+                return name+"s";
+            }
+        }else{
+            return name;
+        }
+    }
+
+    virtual void setName(vector<string> names){
+        if(names.size() > 0){
+            name = names[0];
+            if(names.size() > 1){
+                pluralName = names[1];
+            }
+        }
+    }
+
+    virtual void prependName(string prepend){
+        if(pluralName.size() > 0){
+            pluralName = prepend + pluralName;
+        }
+        name = prepend + name;
+    }
+
     double weight = 0;
     int qty = 1;
     int coinValue = 0;
 
     int artIndex = -1;
 
-    string name;
-
     bool operator< (Item& b){
         return this->getItemTypeId() < b.getItemTypeId();
     }
 
 
+
 protected:
+
+    string name;
+    string pluralName = "";
 
     template<class Super, class Sub>
     static Sub* makeNewAndClone(Super* oldT);

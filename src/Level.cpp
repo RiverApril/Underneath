@@ -209,11 +209,11 @@ Entity* Level::getClosestVisableEntity(Point2 origin, double range, Entity* notM
     return closest;
 }
 
-vector<Entity*> Level::getAllVisableEntitiesSortedByNearest(Point2 origin, double range, Entity* notMe) {
-    return getAllVisableEntitiesSortedByNearest(origin, range,{notMe}, origin, Point2Zero);
+vector<Entity*> Level::getAllVisableEntities(Point2 origin, double range, Entity* notMe, bool sort) {
+    return getAllVisableEntities(origin, range,{notMe}, origin, Point2Zero, sort);
 }
 
-vector<Entity*> Level::getAllVisableEntitiesSortedByNearest(Point2 origin, double range, vector<Entity*> notMes, Point2 nearestTo, Point2 inDirection) {
+vector<Entity*> Level::getAllVisableEntities(Point2 origin, double range, vector<Entity*> notMes, Point2 nearestTo, Point2 inDirection, bool sort) {
 
     vector<Entity*> list;
 

@@ -336,8 +336,8 @@ namespace LevelGenerator {
 
     vector<Room*>* createRooms(Point2 startPos, int maxQty, Point2 roomSize) {
         vector<Room*>* rooms = new vector<Room*>();
-        Room* centerRoom = createRoom(roomSize, rooms, startPos);
-        rooms->push_back(centerRoom);
+        //Room* centerRoom = createRoom(roomSize, rooms, startPos);
+        //rooms->push_back(centerRoom);
         for (int i = 1; i < maxQty; i++) {
             Room* r = createRoom(roomSize, rooms);
             if (r->radius.x > 0 && r->radius.y > 0) {
@@ -490,6 +490,25 @@ namespace LevelGenerator {
         }
 
 
+        fillRooms(level, rooms);
+
+
+        for (int i = 0; i < level->getSize().x; i++) {
+            for (int j = 0; j < level->getSize().y; j++) {
+                if (level->indexAt(Point2(i, j)) == Tiles::tileUnset->getIndex()) {
+                    level->setTile(Point2(i, j), Tiles::tileWall);
+                }
+                if(i == 0 || j == 0 || i == level->getSize().x-1 || j == level->getSize().y-1){
+                    level->setTile(Point2(i, j), Tiles::tileEdge);
+                }
+            }
+        }
+
+
+
+    }
+
+    void fillRooms(Level* level, vector<Room*>* rooms){
         for (int i = 0; i < rooms->size(); i++) {
             Room* r = rooms->at(i);
 
@@ -531,11 +550,11 @@ namespace LevelGenerator {
             }
 
             //Blue Tree Room
-            if(!addedWalls){
+            /*if(!addedWalls){
                 if (rand() % 3 == 0 && r->radius.x > 6 && r->radius.y > 6) {
                     Utility::executeBorder(-r->radius-1, r->radius+1, [level, &r](int x, int y){
                         if(level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileWall->getIndex()){
-                        	level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
+                            level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
                         }else if(level->tileAt(r->center + Point2(x, y))->hasFlag(tileFlagDoor)){
                             level->setTile(r->center + Point2(x, y), Tiles::tileBlueGrass);
                         }
@@ -570,7 +589,7 @@ namespace LevelGenerator {
 
                     addedWalls = true;
                 }
-            }
+            }*/
 
             //Chest Room or Shop
             if(!addedWalls){
@@ -583,21 +602,21 @@ namespace LevelGenerator {
                     }
                 });
                 /*for (int j = -r->radius.x; j <= r->radius.x; j++) {
-                    if(level->tileAt(Point2(j, -r->radius.y))->hasFlag(tileFlagDoor)){
-                        doors++;
-                    }
-                    if(level->tileAt(Point2(j, r->radius.y))->hasFlag(tileFlagDoor)){
-                        doors++;
-                    }
-                }
-                for (int k = -r->radius.y; k <= r->radius.y; k++) {
-                    if(level->tileAt(Point2(-r->radius.x, k))->hasFlag(tileFlagDoor)){
-                        doors++;
-                    }
-                    if(level->tileAt(Point2(r->radius.x, k))->hasFlag(tileFlagDoor)){
-                        doors++;
-                    }
-                }*/
+                 if(level->tileAt(Point2(j, -r->radius.y))->hasFlag(tileFlagDoor)){
+                 doors++;
+                 }
+                 if(level->tileAt(Point2(j, r->radius.y))->hasFlag(tileFlagDoor)){
+                 doors++;
+                 }
+                 }
+                 for (int k = -r->radius.y; k <= r->radius.y; k++) {
+                 if(level->tileAt(Point2(-r->radius.x, k))->hasFlag(tileFlagDoor)){
+                 doors++;
+                 }
+                 if(level->tileAt(Point2(r->radius.x, k))->hasFlag(tileFlagDoor)){
+                 doors++;
+                 }
+                 }*/
 
                 if(doors == 1){
                     //Chest
@@ -660,19 +679,7 @@ namespace LevelGenerator {
                 addedWalls = true;
             }
         }
-
-        for (int i = 0; i < level->getSize().x; i++) {
-            for (int j = 0; j < level->getSize().y; j++) {
-                if (level->indexAt(Point2(i, j)) == Tiles::tileUnset->getIndex()) {
-                    level->setTile(Point2(i, j), Tiles::tileWall);
-                }
-                if(i == 0 || j == 0 || i == level->getSize().x-1 || j == level->getSize().y-1){
-                    level->setTile(Point2(i, j), Tiles::tileEdge);
-                }
-            }
-        }
-
-
+        
 
     }
 

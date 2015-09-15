@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     Tiles::initTiles();
     Arts::loadArts();
     ItemGenerator::initItemTemplates();
-    Ui::initNCurses(true);
+    Ui::initNCurses(false);
     Commands::initCommands();
     EnemyGenerator::initEnemies();
     Settings::loadSettings(UnderneathDir + "settings.txt");

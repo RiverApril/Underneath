@@ -14,7 +14,7 @@ EntityTimeActivated::EntityTimeActivated() : EntityTimeActivated("", 0, 1, 1, 2,
 
 }
 
-EntityTimeActivated::EntityTimeActivated(ItemTimeActivated* item, Point2 p) : EntityTimeActivated(item->name, item->timeActivatedType, item->time, item->power, item->radius, p) {
+EntityTimeActivated::EntityTimeActivated(ItemTimeActivated* item, Point2 p) : EntityTimeActivated(item->getName(false), item->timeActivatedType, item->time, item->power, item->radius, p) {
 
 }
 

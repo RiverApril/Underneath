@@ -294,9 +294,9 @@ namespace Ui {
                 temp = currentPlayer->pos;
             }
             temp += p;
-            vector<Entity*> list = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, {
+            vector<Entity*> list = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, {
                 currentPlayer, targetEntity
-            }, temp, p);
+            }, temp, p, true);
             if (list.size() > 0) {
                 targetEntity = list[0];
                 targetPosition = targetEntity->pos;
@@ -438,7 +438,7 @@ namespace Ui {
                         unsigned char b = 1;
                         timeout(20);
                         while ((currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()) && b) {
-                            vector<Entity*> nearest = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
+                            vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
                             for (Entity* e : nearest) {
                                 if (e->isHostile()) {
                                     b = 0;
@@ -654,7 +654,7 @@ namespace Ui {
             move(a, gameArea.x + 1);
             clrtoeol();
 
-            nearestEntities = currentLevel->getAllVisableEntitiesSortedByNearest(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer);
+            nearestEntities = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, true);
 
             //consolef("Nearest Entity Count: %d", nearestEntities.size());
 

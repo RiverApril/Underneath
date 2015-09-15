@@ -419,12 +419,10 @@ void EntityPlayer::save(vector<unsigned char>* data) {
     Utility::saveInt(data, (int)equipedItems.size());
 
     for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
-        bool saved = false;
     	forVector(inventory, i) {
             if (inventory[i] == p.second) {
                 Utility::saveInt(data, p.first);
                 Utility::saveInt(data, i);
-                saved = true;
                 break;
             }
         }

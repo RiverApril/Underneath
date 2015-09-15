@@ -65,13 +65,13 @@ namespace ItemGenerator {
         ItemArmorBase(){
         }
 
-        ItemArmorBase(vector<string> names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences, double weight){
+        ItemArmorBase(vector<vector<string>> names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences, double weight){
             this->names = names;
             this->viableSlots = viableSlots;
             this->defences = defences;
             this->weight = weight;
         }
-        vector<string> names;
+        vector<vector<string>> names;
         vector<EquipSlot> viableSlots;
         vector<DefenseRange> defences;
         double weight;
@@ -82,7 +82,7 @@ namespace ItemGenerator {
         WeaponBase() {
         }
 
-        WeaponBase(vector<string> names, double damage, double useDelay, DamageType damageType, WeaponType weaponType) {
+        WeaponBase(vector<vector<string>> names, double damage, double useDelay, DamageType damageType, WeaponType weaponType) {
             this->names = names;
             this->damage = damage;
             this->useDelay = useDelay;
@@ -114,7 +114,7 @@ namespace ItemGenerator {
         double damage = 0;
         double useDelay = 0;
         double weight = 1;
-        vector<string> names = {""};
+        vector<vector<string>> names = {{""}};
         vector<int> arts = {-1};
         DamageType damageType = damSharp;
         WeaponType weaponType = wepMelee;

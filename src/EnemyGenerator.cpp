@@ -98,7 +98,7 @@ namespace EnemyGenerator {
         e->moveDelay = we->moveDelay;
         ItemWeapon* weapon = ItemGenerator::applyRandConditionToItemWeapon(ItemGenerator::createItemWeaponFromBase(we->weaponBase, difficulty + we->weaponDifficultyAdd), difficulty);
         if (we->weaponName.size() > 0) {
-            weapon->name = we->weaponName;
+            weapon->getName(false) = we->weaponName;
         }
         e->setActiveItemWeapon(weapon);
         return e;
