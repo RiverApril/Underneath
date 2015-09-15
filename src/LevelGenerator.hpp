@@ -22,32 +22,15 @@ namespace LevelGenerator {
     const int up = 2;
     const int down = 3;
 
-    struct Entry {
-        int direction = 0;
-        int x = 0;
-        int y = 0;
-    };
-
     struct Room {
 
-        Room() {
-            entrances = new vector<Entry*>();
-        }
-
-        ~Room() {
-            for (size_t i = 0; i < entrances->size(); i++) {
-                delete entrances->at(i);
-            }
-            entrances->clear();
-            delete entrances;
-        }
-        Point2 center;
-        Point2 radius;
-        vector<Entry*>* entrances;
+        Room() {}
+        Point2 pos;
+        Point2 size;
     };
 
 
-    int getPathAndMaybeDoor();
+    //int getPathAndMaybeDoor();
 
     extern bool roomsOverlap(Room* a, Room* b, int border);
 
@@ -60,6 +43,8 @@ namespace LevelGenerator {
     extern void fillRooms(Level* level, vector<Room*>* rooms);
 
     extern void generateMaze(Level* level, Room* room);
+
+    extern void fillMaze(Level* level, Point2 size, vector<vector<char>>& grid);
 
 }
 

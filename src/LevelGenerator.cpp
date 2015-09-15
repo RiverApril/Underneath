@@ -222,11 +222,9 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
             if(!tileAt(Point2(i, j))->hasFlag(tileFlagSolid)){
-                if(canPathTo(stairUpPos, Point2(i, j), tileFlagPathable | tileFlagSecretPathable)){
-                    nonsolidAccessableTileCount++;
-                }else{
-                    unaccessableTileCount++;
-                }
+                nonsolidAccessableTileCount++;
+            }else{
+                unaccessableTileCount++;
             }
         }
     }
@@ -271,10 +269,10 @@ namespace LevelGenerator {
 
 
     bool roomsOverlap(Room* a, Room* b, int border) {
-        return !(((a->center.x - a->radius.x - border) > (b->center.x + b->radius.x + border) ||
-                (b->center.x - b->radius.x - border) > (a->center.x + a->radius.x + border)) ||
-                ((a->center.y - a->radius.y - border) > (b->center.y + b->radius.y + border) ||
-                (b->center.y - b->radius.y - border) > (a->center.y + a->radius.y + border)));
+        return !(((a->pos.x - border) > (b->pos.x + b->size.x + border) ||
+                (b->pos.x - border) > (a->pos.x + a->size.x + border)) ||
+                ((a->pos.y - border) > (b->pos.y + b->size.y + border) ||
+                (b->pos.y - border) > (a->pos.y + a->size.y + border)));
     }
 
     Room* createRoom(Point2 roomSize, vector<Room*>* presentRooms, Point2 pos) {
@@ -283,14 +281,14 @@ namespace LevelGenerator {
         int att = 0;
         while (!fit && att < 100) {
             att++;
-            r->radius.x = ((rand() % 2 == 0) ? (rand() % 6) : (rand() % 12)) + 3;
-            r->radius.y = ((rand() % 2 == 0) ? (rand() % 6) : (rand() % 12)) + 3;
+            r->size.x = (((rand() % 2 == 0) ? (rand() % 6) : (rand() % 12)) + 3)*2;
+            r->size.y = (((rand() % 2 == 0) ? (rand() % 6) : (rand() % 12)) + 3)*2;
             if (pos == Point2Neg1) {
-                r->center.x = (rand() % (roomSize.x - (r->radius.x * 2))) + r->radius.x;
-                r->center.y = (rand() % (roomSize.y - (r->radius.y * 2))) + r->radius.y;
+                r->pos.x = ((rand() % (roomSize.x - (r->size.x)))/2)*2;
+                r->pos.y = ((rand() % (roomSize.y - (r->size.y)))/2)*2;
             } else {
-                r->center.x = pos.x;
-                r->center.y = pos.y;
+                r->pos.x = pos.x;
+                r->pos.y = pos.y;
             }
             fit = true;
             for (size_t i = 0; i < presentRooms->size(); i++) {
@@ -301,35 +299,7 @@ namespace LevelGenerator {
             }
         }
         if (!fit) {
-            r->radius.set(0);
-        } else {
-            int ec = (rand() % 4) + 4;
-            bool eL = false, eR = false, eU = false, eD = false;
-            for (int i = 0; i < ec || (!(eL && eR && eU && eD)); i++) {
-                Entry* e = new Entry();
-                e->direction = rand() % 4;
-                if (e->direction == left) eL = true;
-                if (e->direction == right) eR = true;
-                if (e->direction == up) eU = true;
-                if (e->direction == down) eD = true;
-                int rr = (e->direction == left || e->direction == right ? r->radius.y : r->radius.x) - 1;
-                int offset = ((rand() % (rr * 2 - 1)) - rr);
-                e->x = (e->direction == left ? -r->radius.x : (e->direction == right ? r->radius.x : offset)) + r->center.x;
-                e->y = (e->direction == up ? -r->radius.y : (e->direction == down ? r->radius.y : offset)) + r->center.y;
-                /*bool tooClose = false;
-                for(int j=0;j<r->entrances->size();j++){
-                    Entry* ee = r->entrances->at(j);
-                    if(ee->direction == e->direction){
-                        if(abs(ee->offset-e->offset)<=2){
-                            tooClose = true;
-                            break;
-                        }
-                    }
-                }
-                if(!tooClose){*/
-                r->entrances->push_back(e);
-                //}
-            }
+            r->size.set(0);
         }
         return r;
     }
@@ -340,7 +310,7 @@ namespace LevelGenerator {
         //rooms->push_back(centerRoom);
         for (int i = 1; i < maxQty; i++) {
             Room* r = createRoom(roomSize, rooms);
-            if (r->radius.x > 0 && r->radius.y > 0) {
+            if (r->size.x > 0 && r->size.y > 0) {
                 rooms->push_back(r);
             }else{
                 delete r;
@@ -349,145 +319,120 @@ namespace LevelGenerator {
         return rooms;
     }
 
-    int getPathAndMaybeDoor() {
+    /*int getPathAndMaybeDoor() {
         return (rand() % 30 == 0 ? (rand() % 10 == 0 ? Tiles::tileSecretDoor : Tiles::tileDoor) : Tiles::tileFloor)->getIndex();
-    }
+    }*/
 
     void makeRoomsAndPaths(vector<Room*>* rooms, Level* level) {
-        for (size_t i = 0; i < rooms->size(); i++) {
-            Room* r = rooms->at(i);
-            for (int j = -r->radius.x; j <= r->radius.x; j++) {
-                level->setTile(Point2(r->center.x + j, r->center.y + r->radius.y), Tiles::tileWall);
-                level->setTile(Point2(r->center.x + j, r->center.y - r->radius.y), Tiles::tileWall);
-            }
-            for (int j = -r->radius.y; j <= r->radius.y; j++) {
-                level->setTile(Point2(r->center.x + r->radius.x, r->center.y + j), Tiles::tileWall);
-                level->setTile(Point2(r->center.x - r->radius.x, r->center.y + j), Tiles::tileWall);
-            }
-            for (int j = -r->radius.x + 1; j <= r->radius.x - 1; j++) {
-                for (int k = -r->radius.y + 1; k <= r->radius.y - 1; k++) {
-                    level->setTile(Point2(r->center.x + j, r->center.y + k), Tiles::tileFloor);
+
+
+        Point2 size = level->getSize();
+
+        vector<vector<char>> grid = vector<vector<char>>(size.x, vector<char>(size.y));
+
+        for (int i = 0; i < size.x; i++) {
+            for (int j = 0; j < size.y; j++) {
+                grid[i][j] = 'u';
+                if(i == 0 || j == 0 || i == level->getSize().x-1 || j == level->getSize().y-1){
+                    grid[i][j] = 'x';
                 }
             }
         }
 
-        for (size_t i = 0; i < rooms->size(); i++) {
-            Room* r = rooms->at(i);
 
-            for (size_t j = 0; j < r->entrances->size(); j++) {
-                Entry* e = r->entrances->at(j);
+        for (Room* r : *rooms) {
+            for (int i = r->pos.x; i <= r->pos.x+r->size.x; i++) {
+                level->setTile(Point2(i, r->pos.y), Tiles::tileWall);
+                level->setTile(Point2(i, r->pos.y+r->size.y), Tiles::tileWall);
+                grid[i][r->pos.y] = 'x';
+                grid[i][r->pos.y+r->size.y] = 'x';
+            }
+            for (int i = r->pos.y; i <= r->pos.y+r->size.y; i++) {
+                level->setTile(Point2(r->pos.x, i), Tiles::tileWall);
+                level->setTile(Point2(r->pos.x+r->size.x, i), Tiles::tileWall);
+                grid[r->pos.x][i] = 'x';
+                grid[r->pos.x+r->size.x][i] = 'x';
+            }
+            for (int i = r->pos.x + 1; i <= r->pos.x+r->size.x-1; i++) {
+                for (int j = r->pos.y + 1; j <= r->pos.y+r->size.y-1; j++) {
+                    level->setTile(Point2(i, j), Tiles::tileFloor);
+                    grid[i][j] = 'x';
+                }
+            }
+        }
 
-                for (size_t k = 0; k < rooms->size(); k++) {
-                    Room* ro = rooms->at(k);
+        fillMaze(level, size, grid);
 
-                    if (r->center == ro->center) {
-                        continue;
+        for (Room* r : *rooms) {
+            do{
+                Point2 p;
+                Point2 p2;
+                bool r2 = rand() % 2 == 0;
+
+                if(rand() % 2 == 0){
+                    p.x = r->pos.x + (r2?r->size.x:0);
+                    p2.x = r->pos.x + (r2?r->size.x+1:-1);
+
+                    p.y = r->pos.y + (rand() % (r->size.y-1))+1;
+                    p2.y = p.y;
+                }else{
+                    p.x = r->pos.x + (rand() % (r->size.x-1))+1;
+                    p2.x = p.x;
+
+                    p.y = r->pos.y + (r2?r->size.y:0);
+                    p2.y = r->pos.y + (r2?r->size.y+1:-1);
+                }
+
+                grid[p.x][p.y] = 'v';
+                level->setTile(p, Tiles::tileDoor);
+
+                if(level->inRange(p2)){
+                    grid[p2.x][p2.y] = 'v';
+                }
+
+            }while(rand() % 5 == 0);
+        }
+
+        for (int i = 0; i < size.x; i++) {
+            for (int j = 0; j < size.y; j++) {
+                if(level->indexAt(Point2(i, j)) == Tiles::tileUnset->getIndex()){
+                    if(grid[i][j] == 'v'){
+                        level->setTile(Point2(i, j), Tiles::tileFloor);
+                    }else if(grid[i][j] == 'u'){
+                        level->setTile(Point2(i, j), Tiles::tileWall);
                     }
+                }
+            }
+        }
 
-                    for (size_t l = 0; l < ro->entrances->size(); l++) {
-                        Entry* eo = ro->entrances->at(l);
+        bool changed = true;
 
-                        if ((e->direction != eo->direction)) {
-                            int ddif = 1;
-                            if ((e->direction == left && eo->direction == right) ||
-                                    (e->direction == right && eo->direction == left) ||
-                                    (e->direction == up && eo->direction == down) ||
-                                    (e->direction == down && eo->direction == up)) {
-                                ddif = 2;
-                            }
-                            if (eo->x == e->x) {
-                                continue;
-                            }
-                            int xdif = abs(eo->x - e->x);
-                            int ydif = abs(eo->y - e->y);
-                            bool blocked = false;
-                            if (ddif == 1) {
-                                bool xoLarge = eo->x > e->x;
-                                bool yoLarge = eo->y > e->y;
-                                /*if((e->direction == right && xoLarge &&
-                                 ((eo->direction == up && yoLarge) ||
-                                 (eo->direction == down && !yoLarge))) ||
-                                 (e->direction == left && !xoLarge &&
-                                 ((eo->direction == up && yoLarge) ||
-                                 (eo->direction == down && !yoLarge)))){*/
-                                if (((e->direction == right && xoLarge) || (e->direction == left && !xoLarge)) &&
-                                        ((eo->direction == up && yoLarge) || (eo->direction == down && !yoLarge))) {
-                                    for (int m = 1; m < xdif; m++) {
-                                        if (level->indexAt(Point2(e->x + (xoLarge ? m : -m), e->y)) != Tiles::tileUnset->getIndex()) {
-                                            blocked = true;
-                                            break;
-                                        }
-                                    }
-                                    for (int m = 0; m < ydif; m++) {
-                                        if (level->indexAt(Point2(e->x + (xoLarge ? xdif : -xdif), e->y + (yoLarge ? m : -m))) != Tiles::tileUnset->getIndex()) {
-                                            blocked = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!blocked) {
-                                        for (int m = 1; m < xdif; m++) {
-                                            level->setTile(Point2(e->x + (xoLarge ? m : -m), e->y), getPathAndMaybeDoor());
-
-                                            if (rand() % 10 == 0) {
-                                                int a = rand() % 10;
-                                                int aa = (rand() % 3) - 1;
-                                                for (int n = 1; n < a; n++) {
-                                                    if (level->indexAt(Point2(e->x + (xoLarge ? m : -m), e->y + (n * aa))) == Tiles::tileUnset->getIndex()) {
-                                                        level->setTile(Point2(e->x + (xoLarge ? m : -m), e->y + (n * aa)), getPathAndMaybeDoor());
-                                                    } else {
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        for (int m = 0; m < ydif; m++) {
-                                            level->setTile(Point2(e->x + (xoLarge ? xdif : -xdif), e->y + (yoLarge ? m : -m)), getPathAndMaybeDoor());
-
-                                            if (rand() % 10 == 0) {
-                                                int a = rand() % 10;
-                                                int aa = (rand() % 3) - 1;
-                                                for (int n = 1; n < a; n++) {
-                                                    if (level->indexAt(Point2(e->x + (xoLarge ? xdif : -xdif)+(n * aa), e->y + (yoLarge ? m : -m))) == Tiles::tileUnset->getIndex()) {
-                                                        level->setTile(Point2(e->x + (xoLarge ? xdif : -xdif)+(n * aa), e->y + (yoLarge ? m : -m)), getPathAndMaybeDoor());
-                                                    } else {
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        level->setTile(Point2(e->x, e->y), (rand() % 20) == 0 ? Tiles::tileSecretDoor : Tiles::tileDoor);
-                                        level->setTile(Point2(eo->x, eo->y), (rand() % 20) == 0 ? Tiles::tileSecretDoor : Tiles::tileDoor);
-                                    }
-                                }
-                            }
+        do{
+            changed = false;
+            for (int i = 0; i < level->getSize().x; i++) {
+                for (int j = 0; j < level->getSize().y; j++) {
+                    if (level->indexAt(Point2(i, j)) == Tiles::tileFloor->getIndex()) {
+                        int paths = 0;
+                        if (level->tileAt(Point2(i + 1, j))->hasFlag(tileFlagPathable)) {
+                            paths++;
                         }
-
-                    }
-                }
-            }
-        }
-
-
-        for (int i = 0; i < level->getSize().x; i++) {
-            for (int j = 0; j < level->getSize().y; j++) {
-                Tile* a = level->tileAt(Point2(i, j));
-                if (a->getIndex() == Tiles::tileFloor->getIndex()) {
-                    int walls = 0;
-                    for (int k = -1; k <= 1; k++) {
-                        for (int l = -1; l <= 1; l++) {
-                            if (!(k == 0 && l == 0)) {
-                                if (level->indexAt(Point2(i + k, j + l)) == Tiles::tileWall->getIndex()) {
-                                    walls++;
-                                }
-                            }
+                        if (level->tileAt(Point2(i - 1, j))->hasFlag(tileFlagPathable)) {
+                            paths++;
+                        }
+                        if (level->tileAt(Point2(i, j + 1))->hasFlag(tileFlagPathable)) {
+                            paths++;
+                        }
+                        if (level->tileAt(Point2(i, j - 1))->hasFlag(tileFlagPathable)) {
+                            paths++;
+                        }
+                        if (paths == 1) {
+                            level->setTile(Point2(i, j), Tiles::tileWall);
+                            changed = true;
                         }
                     }
-                    if (walls == 7 && rand() % 30 == 0) {
-                        level->setTile(Point2(i, j), Tiles::tileChest);
-                    }
                 }
             }
-        }
+        }while(changed);
 
 
         fillRooms(level, rooms);
@@ -509,8 +454,7 @@ namespace LevelGenerator {
     }
 
     void fillRooms(Level* level, vector<Room*>* rooms){
-        for (int i = 0; i < rooms->size(); i++) {
-            Room* r = rooms->at(i);
+        /*for (Room* r : *rooms) {
 
             Point2 inner = r->radius - 1;
 
@@ -549,48 +493,6 @@ namespace LevelGenerator {
                 }
             }
 
-            //Blue Tree Room
-            /*if(!addedWalls){
-                if (rand() % 3 == 0 && r->radius.x > 6 && r->radius.y > 6) {
-                    Utility::executeBorder(-r->radius-1, r->radius+1, [level, &r](int x, int y){
-                        if(level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileWall->getIndex()){
-                            level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
-                        }else if(level->tileAt(r->center + Point2(x, y))->hasFlag(tileFlagDoor)){
-                            level->setTile(r->center + Point2(x, y), Tiles::tileBlueGrass);
-                        }
-                    });
-
-                    for(int i=0;i<10;i++){
-                        Utility::executeGrid(-r->radius, r->radius, [level, &r](int x, int y){
-                            int count = level->countTilesAround(r->center + Point2(x, y), Tiles::tileDenseBlueTree) + level->countTilesAround(r->center + Point2(x, y), Tiles::tileBlueTree);
-                            if(count >= 2 && rand() % 5 != 0 && level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileFloor->getIndex()){
-                                level->setTile(r->center + Point2(x, y), Tiles::tileDenseBlueTree);
-                            }
-                        });
-                    }
-
-                    Utility::executeGrid(-r->radius, r->radius, [level, &r](int x, int y){
-                        if(rand() % 5 == 0 && level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileFloor->getIndex()){
-                            level->setTile(r->center + Point2(x, y), Tiles::tileBlueTree);
-                        }else{
-                            level->setTile(r->center + Point2(x, y), Tiles::tileBlueGrass);
-                        }
-                    });
-
-                    Utility::executeGrid(-r->radius, r->radius, [level, &r](int x, int y){
-                        if(level->tileAt(r->center + Point2(x, y))->getIndex() == Tiles::tileFloor->getIndex()){
-                            if(rand() % 5 == 0){
-                                level->setTile(r->center + Point2(x, y), Tiles::tileBlueTree);
-                            }else{
-                                level->setTile(r->center + Point2(x, y), Tiles::tileBlueGrass);
-                            }
-                        }
-                    });
-
-                    addedWalls = true;
-                }
-            }*/
-
             //Chest Room or Shop
             if(!addedWalls){
                 int doors = 0;
@@ -601,22 +503,6 @@ namespace LevelGenerator {
                         lastDoorLocation = r->center + Point2(x, y);
                     }
                 });
-                /*for (int j = -r->radius.x; j <= r->radius.x; j++) {
-                 if(level->tileAt(Point2(j, -r->radius.y))->hasFlag(tileFlagDoor)){
-                 doors++;
-                 }
-                 if(level->tileAt(Point2(j, r->radius.y))->hasFlag(tileFlagDoor)){
-                 doors++;
-                 }
-                 }
-                 for (int k = -r->radius.y; k <= r->radius.y; k++) {
-                 if(level->tileAt(Point2(-r->radius.x, k))->hasFlag(tileFlagDoor)){
-                 doors++;
-                 }
-                 if(level->tileAt(Point2(r->radius.x, k))->hasFlag(tileFlagDoor)){
-                 doors++;
-                 }
-                 }*/
 
                 if(doors == 1){
                     //Chest
@@ -678,17 +564,16 @@ namespace LevelGenerator {
                 }
                 addedWalls = true;
             }
-        }
+        }*/
         
 
     }
 
     void generateMaze(Level* level, Room* room) {
 
-        int w = (room->radius.x * 2) - 1;
-        int h = (room->radius.y * 2) - 1;
+        Point2 size = room->size;
 
-        vector<vector<char>> grid = vector<vector<char>>(w, vector<char>(h));
+        vector<vector<char>> grid = vector<vector<char>>(size.x, vector<char>(size.y));
 
         for (int i = 0; i < grid.size(); i++) {
             for (int j = 0; j < grid[0].size(); j++) {
@@ -696,7 +581,31 @@ namespace LevelGenerator {
             }
         }
 
-        Point2 activePoint = room->radius;
+        fillMaze(level, size, grid);
+
+        for (int i = 0; i < size.x; i++) {
+            for (int j = 0; j < size.y; j++) {
+                Point2 p = Point2(i, j) + room->pos;
+                level->setTile(p, grid[i][j] == 'v' ? Tiles::tileFloor->getIndex() : Tiles::tileWall->getIndex());
+                if (level->tileAt(p - Point2(-1, 0))->hasFlag(tileFlagDoor) ||
+                        level->tileAt(p - Point2(1, 0))->hasFlag(tileFlagDoor) ||
+                        level->tileAt(p - Point2(0, -1))->hasFlag(tileFlagDoor) ||
+                        level->tileAt(p - Point2(0, 1))->hasFlag(tileFlagDoor)) {
+                    level->setTile(p, Tiles::tileFloor);
+                }
+            }
+        }
+
+
+    }
+
+    void fillMaze(Level* level, Point2 size, vector<vector<char>>& grid){
+        //u == unexplored
+        //v == path
+        //x == not usable
+
+
+        Point2 activePoint = size/2;
 
         grid[activePoint.x][activePoint.y] = 'v';
 
@@ -707,19 +616,19 @@ namespace LevelGenerator {
 
             Point2 temp;
             temp = (activePoint + Point2(-2, 0));
-            if (temp.inRange(0, 0, w - 1, h - 1) && grid[temp.x][temp.y] == 'u') {
+            if (temp.inRange(0, 0, size.x - 1, size.y - 1) && grid[temp.x][temp.y] == 'u') {
                 posibilities.push_back(temp);
             }
             temp = (activePoint + Point2(2, 0));
-            if (temp.inRange(0, 0, w - 1, h - 1) && grid[temp.x][temp.y] == 'u') {
+            if (temp.inRange(0, 0, size.x - 1, size.y - 1) && grid[temp.x][temp.y] == 'u') {
                 posibilities.push_back(temp);
             }
             temp = (activePoint + Point2(0, -2));
-            if (temp.inRange(0, 0, w - 1, h - 1) && grid[temp.x][temp.y] == 'u') {
+            if (temp.inRange(0, 0, size.x - 1, size.y - 1) && grid[temp.x][temp.y] == 'u') {
                 posibilities.push_back(temp);
             }
             temp = (activePoint + Point2(0, 2));
-            if (temp.inRange(0, 0, w - 1, h - 1) && grid[temp.x][temp.y] == 'u') {
+            if (temp.inRange(0, 0, size.x - 1, size.y - 1) && grid[temp.x][temp.y] == 'u') {
                 posibilities.push_back(temp);
             }
 
@@ -744,24 +653,9 @@ namespace LevelGenerator {
                 grid[chosenWall.x][chosenWall.y] = 'v';
                 grid[chosenNext.x][chosenNext.y] = 'v';
             }
-
+            
             activePoint = chosenNext;
         }
-
-        for (int i = 0; i < w; i++) {
-            for (int j = 0; j < h; j++) {
-                Point2 p = Point2(i + 1, j + 1) - room->radius + room->center;
-                level->setTile(p, grid[i][j] == 'v' ? Tiles::tileFloor->getIndex() : Tiles::tileWall->getIndex());
-                if (level->tileAt(p - Point2(-1, 0))->hasFlag(tileFlagDoor) ||
-                        level->tileAt(p - Point2(1, 0))->hasFlag(tileFlagDoor) ||
-                        level->tileAt(p - Point2(0, -1))->hasFlag(tileFlagDoor) ||
-                        level->tileAt(p - Point2(0, 1))->hasFlag(tileFlagDoor)) {
-                    level->setTile(p, Tiles::tileFloor);
-                }
-            }
-        }
-
-
     }
 
 
