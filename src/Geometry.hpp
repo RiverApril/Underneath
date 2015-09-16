@@ -51,6 +51,7 @@ struct Point2 {
     Point2 operator-(Point2 other);
     Point2 operator*(Point2 other);
     Point2 operator/(Point2 other);
+    Point2 operator%(Point2 other);
 
     Point2 operator-();
 
@@ -63,6 +64,7 @@ struct Point2 {
     Point2 operator-(int other);
     Point2 operator*(int other);
     Point2 operator/(int other);
+    Point2 operator%(int other);
 
     Vector2 operator+(double other);
     Vector2 operator-(double other);

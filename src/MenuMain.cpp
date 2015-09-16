@@ -108,7 +108,7 @@ namespace Ui {
         printCenter(a++, "%sExit%s", selection == 3 ? "- " : "  ", selection == 3 ? " -" : "  ");
 
 
-        a += 3;
+        a = terminalSize.y-6;
 
         if (limitedColorMode) {
             mvaddstr(a, 0, "Limited Color Mode - For best results use a terminal with 256(or 16) colors.");

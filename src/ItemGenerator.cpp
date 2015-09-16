@@ -297,7 +297,8 @@ namespace ItemGenerator {
     }
 
     ItemUtilitySpell* createScrollFromBase(ScrollBase sb) {
-        ItemUtilitySpell* utilitySpell = new ItemUtilitySpell(sb.eff, -1, sb.names[rand() % sb.names.size()], .1);
+        ItemUtilitySpell* utilitySpell = new ItemUtilitySpell(sb.eff, -1, "", .1);
+        utilitySpell->setName(sb.names[rand() % sb.names.size()]);
         switch (sb.eff) {
             case spellRelocate:
                 utilitySpell->artIndex = Arts::artScrollPerson;
@@ -579,7 +580,7 @@ namespace ItemGenerator {
                     value = -1;
                     break;
 
-                    
+
                 default:
                     break;
             }

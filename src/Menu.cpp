@@ -58,9 +58,9 @@ namespace Ui {
             if(getmouse(&mouseEvent) == OK){
                 mousePos.x = mouseEvent.x;
                 mousePos.y = mouseEvent.y;
-                consolef("KEY_MOUSE OK");
+                debugf("KEY_MOUSE OK");
             }
-            consolef("KEY_MOUSE");
+            debugf("KEY_MOUSE");
         }
 
         if (subMenu != nullptr) {
