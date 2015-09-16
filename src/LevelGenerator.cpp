@@ -608,29 +608,29 @@ namespace LevelGenerator {
         vector<Point2> backPath;
 
         while (true) {
-            vector<Point2> posibilities;
+            vector<Point2> possibilities;
 
             Point2 temp;
             temp = (activePoint + Point2(-2, 0));
             if (temp.inRange(0, 0, size.x - 1, size.y - 1) && grid[temp.x][temp.y] == 'u') {
-                posibilities.push_back(temp);
+                possibilities.push_back(temp);
             }
             temp = (activePoint + Point2(2, 0));
             if (temp.inRange(0, 0, size.x - 1, size.y - 1) && grid[temp.x][temp.y] == 'u') {
-                posibilities.push_back(temp);
+                possibilities.push_back(temp);
             }
             temp = (activePoint + Point2(0, -2));
             if (temp.inRange(0, 0, size.x - 1, size.y - 1) && grid[temp.x][temp.y] == 'u') {
-                posibilities.push_back(temp);
+                possibilities.push_back(temp);
             }
             temp = (activePoint + Point2(0, 2));
             if (temp.inRange(0, 0, size.x - 1, size.y - 1) && grid[temp.x][temp.y] == 'u') {
-                posibilities.push_back(temp);
+                possibilities.push_back(temp);
             }
 
             Point2 chosen;
 
-            if (posibilities.size() == 0) {
+            if (possibilities.size() == 0) {
                 if (backPath.size() == 0) {
                     break;
                 }
@@ -638,7 +638,7 @@ namespace LevelGenerator {
                 backPath.pop_back();
                 continue;
             } else {
-                chosen = posibilities[rand() % posibilities.size()] - activePoint;
+                chosen = possibilities[rand() % possibilities.size()] - activePoint;
                 backPath.push_back(activePoint);
             }
 

@@ -29,12 +29,25 @@ EntityAi::~EntityAi() {
 
 }
 
-void EntityAi::runAi(double time, Level* level) {
-
-
+void EntityAi::lookAi(double time, Level* level){
     if (target == nullptr) {
         target = level->currentWorld->currentPlayer;
     }
+
+    canSeeTarget = level->canSee(pos, target->pos, agro ? viewDistance * agroViewDistanceMultiplier : viewDistance, false);
+    if (!canSeeTarget && agro) {
+        agro = false;
+    }
+    if(canSeeTarget && !agro){
+        agro = true;
+    }
+
+    if (canSeeTarget) {
+        lastKnownTargetPos = target->pos;
+    }
+}
+
+void EntityAi::moveAi(double time, Level* level) {
 
     Point2 speed;
 
@@ -47,13 +60,7 @@ void EntityAi::runAi(double time, Level* level) {
             speed.y = (rand() % 3 - 1);
         }
     }
-    bool canSeeTarget = level->canSee(pos, target->pos, agro ? viewDistance * agroViewDistanceMultiplier : viewDistance, false);
-    if (!canSeeTarget && agro) {
-        agro = false;
-    }
-    if(canSeeTarget && !agro){
-        agro = true;
-    }
+
 
     if(ai & aiAttackAndFleeAtLowHealth){
         if(ai & aiFlee){
@@ -126,9 +133,6 @@ void EntityAi::runAi(double time, Level* level) {
         }
     }
     if (ai & aiAttack) {
-        if (canSeeTarget) {
-            lastKnownTargetPos = target->pos;
-        }
         if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
             //debug("LKTP: "+lastKnownTargetPos.toString()+"  TP: "+target->pos.toString()+"  P: "+pos.toString());
             ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
@@ -157,6 +161,23 @@ void EntityAi::runAi(double time, Level* level) {
 
                     speed = path[0]-pos;
 
+                }else{
+                    vector<Point2> possibilities;
+                    for(int i=-1;i<=1;i++){
+                        for(int j=-1;j<=1;j++){
+                            if(abs(i) != abs(j)){
+                                Point2 p = pos+Point2(i, j);
+                                if(p != lastPos && !level->tileAt(p)->hasFlag(tileFlagSolid)){
+                                    possibilities.push_back(Point2(i, j));
+                                }
+                            }
+                        }
+                    }
+                    if(possibilities.size() > 0){
+                        speed = possibilities[rand()%possibilities.size()];
+                        debugf("possibility size: %d", possibilities.size());
+                    }
+
                 }
 
             }
@@ -164,15 +185,25 @@ void EntityAi::runAi(double time, Level* level) {
         }
 
     }
-    bool movedOrDontNeedToMove = true;
-    while (lastMoveTime + moveDelay <= time) {
-        movedOrDontNeedToMove = tryToMoveRelative(speed.xOnly(), level) || movedOrDontNeedToMove;
-        movedOrDontNeedToMove = tryToMoveRelative(speed.yOnly(), level) || movedOrDontNeedToMove;
-        lastMoveTime += moveDelay;
+
+    lastPos = pos;
+    bool m = false;
+    if(rand() % 2 == 0){
+        m = m | tryToMoveRelative(speed.xOnly(), level);
+        m = m | tryToMoveRelative(speed.yOnly(), level);
+    }else{
+        m = m | tryToMoveRelative(speed.yOnly(), level);
+        m = m | tryToMoveRelative(speed.xOnly(), level);
     }
 
-    if (ai & aiAttack) {
-        if(!movedOrDontNeedToMove && speed != Point2Zero){
+
+}
+
+void EntityAi::attackAi(double time, Level* level){
+
+
+    /*if (ai & aiAttack) {
+        if(speed != Point2Zero){
             if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
                 debug("Failed to move");
                 if(!canSeeTarget && level->canSee(pos, lastKnownTargetPos, agro ? viewDistance * agroViewDistanceMultiplier : viewDistance, false)){
@@ -181,7 +212,7 @@ void EntityAi::runAi(double time, Level* level) {
                 }
             }
         }
-    }
+    }*/
 
     bool attack = false;
     if (ai & aiAttack) {
@@ -226,7 +257,6 @@ void EntityAi::runAi(double time, Level* level) {
         lastAttackTime = time;
     }
 
-
 }
 
 double EntityAi::hurt(DamageType damageType, double amount, double damageMultiplier) {
@@ -244,8 +274,13 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
     if (dead) {
         dropLoots(level);
     }else{
-        runAi(time, level);
-        
+        lookAi(time, level);
+        while (lastMoveTime + moveDelay <= time) {
+            moveAi(time, level);
+            lastMoveTime += moveDelay;
+        }
+        attackAi(time, level);
+
     }
 
     return EntityAlive::update(deltaTime, time, level);
