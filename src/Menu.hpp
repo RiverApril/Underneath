@@ -43,9 +43,6 @@ const char C_CODE_BLACK = C_CODE_DARK_BLACK;*/
 
 namespace Ui {
 
-    extern MEVENT mouseEvent;
-    extern Point2 mousePos;
-
     class Menu;
 
     class Menu {

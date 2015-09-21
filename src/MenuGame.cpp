@@ -392,15 +392,7 @@ namespace Ui {
 
             } else*/
 
-            if(in == KEY_MOUSE){
-                if (controlMode == modeSelectPosition) {
-                    if(mousePos != Point2Neg1){
-                        if(mousePos < gameArea){
-                            targetPosition = mousePos + viewPos;
-                        }
-                    }
-                }
-            }else if (in == Key::interact || in == Key::secondaryAttack) {
+            if (in == Key::interact || in == Key::secondaryAttack) {
                 ItemWeapon* wep = (in == Key::interact)?currentPlayer->getActiveItemWeapon():currentPlayer->getSecondaryItemWeapon();
                 if (controlMode == modeSelectDirection) {
 

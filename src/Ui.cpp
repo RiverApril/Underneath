@@ -113,7 +113,6 @@ namespace Ui {
         curs_set(0);
         timeout(defaultTimeout);
         ESCDELAY = 1;
-        mousemask(ALL_MOUSE_EVENTS, NULL);
 
 
         limitedColorMode = (COLORS < 16) || limitedColorModeOverride;

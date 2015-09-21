@@ -31,6 +31,7 @@ parser.add_argument("-a", "--all", action="store_true")
 parser.add_argument("-l", "--linkonly", action="store_true")
 parser.add_argument("-r", "--run", action="store_true")
 parser.add_argument("-e", "--release", action="store_true")
+parser.add_argument("-d", "--debug", action="store_true")
 
 args = parser.parse_args()
 
@@ -59,28 +60,42 @@ executableName = "Underneath"
 compileAll = args.all
 
 if args.release:
-	optimization = "-O3"
-	executableName += "_Release"
+    optimization = "-O3"
+    executableName += "_Release"
 
 
 compilerFlags = optimization+" "+compilerFlags;
 
-
 if args.sdl:
     executableName += "_SDL"
     compilerFlags += " -D useSDLLightCurses"
+
     if systemName == "Windows":
         compilerFlags += " -Imingw_dev_lib\\include"
-        libraryFlags = "-w -Wl,-subsystem,windows -Wl,-Bstatic -Lmingw_dev_lib\\lib -mwindows -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -static-libgcc -static-libstdc++ -L . -Wl,--no-undefined -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc -Wl,-Bdynamic"
+        libraryFlags = " -w -Wl,-subsystem,windows -Wl,-Bstatic -Lmingw_dev_lib\\lib -mwindows -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -static-libgcc -static-libstdc++ -L . -Wl,--no-undefined -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc -Wl,-Bdynamic"
     elif systemName == "Darwin":
-        libraryFlags = "-lSDL2 -lSDL2_image"
+        compilerFlags += " -I/usr/local/include -lSDL_Image"
+        libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` `sdl2-config --static-libs`"
     else:
-        libraryFlags = "-lSDL2 -lSDL2_image"
+        pass
 
 else:
     executableName += "_Term"
     if systemName == "Windows":
-        libraryFlags = "-lpdcurses -static-libgcc -static-libstdc++ -L ."
+        libraryFlags = "-lpdcurses v-static-libgcc -static-libstdc++ -L ."
+    elif systemName == "Darwin":
+        libraryFlags = "-lncurses"
+    else:
+        libraryFlags = "-lncurses"
+
+
+if args.release:
+    if systemName == "Windows":
+        pass
+    elif systemName == "Darwin": #Don't staticly link Mac Libs
+        libraryFlags = "-Bdynamic " + libraryFlags
+    else:
+        pass
 
 
 if systemName == "Darwin":
@@ -136,7 +151,10 @@ if not args.linkonly:
 
         if compileAll or cppDiff or hppDiff:
             print("    + Compiling: "+cppList[i])
-            returnCode = call([compiler]+compilerFlags.split(" ")+["-c", cppList[i], "-o", oppList[i]])
+            command = compiler+" "+compilerFlags+" -c "+cppList[i]+" -o "+oppList[i]
+            if args.debug:
+                print("    . Executing: \""+command+"\"")
+            returnCode = call(command, shell=True)
             if returnCode == 0:
                 shutil.copy(cppList[i], cppCopyList[i])
                 if hppExists:
@@ -151,7 +169,10 @@ print("    . Skipped "+str(skipCount)+" compilations.")
 
 if returnCode == 0:
     print("    ~ Linking: "+executableName);
-    returnCode = call([compiler]+compilerFlags.split(" ")+oppList+["-o", executableName]+libraryFlags.split(" "))
+    command = compiler+" "+compilerFlags+" "+(" ".join(oppList))+" -o "+ executableName+" "+libraryFlags
+    if args.debug:
+        print("    . Executing: \""+command+"\"")
+    returnCode = call(command, shell=True)
 
     if returnCode == 0:
         if os.path.isfile(executableName+"_outdated") and os.path.isfile(executableName):

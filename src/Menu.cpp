@@ -16,9 +16,6 @@
 
 namespace Ui {
 
-    MEVENT mouseEvent;
-    Point2 mousePos;
-
     /*string colorCode(const char c) {
         string s = "&";
         s += c;
@@ -51,17 +48,6 @@ namespace Ui {
     }
 
     void Menu::_handleInput(int in) {
-
-        mousePos = Point2Neg1;
-
-        if(in == KEY_MOUSE){
-            if(getmouse(&mouseEvent) == OK){
-                mousePos.x = mouseEvent.x;
-                mousePos.y = mouseEvent.y;
-                consolef("KEY_MOUSE OK");
-            }
-            consolef("KEY_MOUSE");
-        }
 
         if (subMenu != nullptr) {
             subMenu->_handleInput(in);

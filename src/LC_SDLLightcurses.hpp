@@ -3,6 +3,7 @@
 #ifndef __SDLCursesLight__lightcurses__
 #define __SDLCursesLight__lightcurses__
 
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
