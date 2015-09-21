@@ -81,6 +81,10 @@ Point2 Point2::operator/(Point2 other) {
     return Point2(this->x / other.x, this->y / other.y);
 }
 
+Point2 Point2::operator%(Point2 other) {
+    return Point2(this->x % other.x, this->y % other.y);
+}
+
 Point2* Point2::operator+=(Point2 other) {
     this->x += other.x;
     this->y += other.y;
@@ -119,6 +123,10 @@ Point2 Point2::operator*(int other) {
 
 Point2 Point2::operator/(int other) {
     return Point2(this->x / other, this->y / other);
+}
+
+Point2 Point2::operator%(int other) {
+    return Point2(this->x % other, this->y % other);
 }
 
 Point2 Point2::operator-() {

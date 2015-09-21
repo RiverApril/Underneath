@@ -65,7 +65,7 @@ namespace ItemGenerator {
         ItemArmorBase(){
         }
 
-        ItemArmorBase(vector<vector<string>> names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences, double weight){
+        ItemArmorBase(vector<vector<string> > names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences, double weight){
             this->names = names;
             this->viableSlots = viableSlots;
             this->defences = defences;
@@ -158,12 +158,12 @@ namespace ItemGenerator {
         ScrollBase() {
         }
 
-        ScrollBase(vector<string> names, SpellEffect eff) {
+        ScrollBase(vector<vector<string> > names, SpellEffect eff) {
             this->names = names;
             this->eff = eff;
         }
 
-        vector<string> names = {""};
+        vector<vector<string> >  names = {{""}};
         SpellEffect eff = 0;
     };
 

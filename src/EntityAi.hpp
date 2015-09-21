@@ -35,7 +35,9 @@ public:
 
     ~EntityAi();
 
-    void runAi(double time, Level* level);
+    void lookAi(double time, Level* level);
+    void moveAi(double time, Level* level);
+    void attackAi(double time, Level* level);
     bool update(double deltaTime, double time, Level* level);
 
     virtual void dropLoots(Level* level);
@@ -96,12 +98,15 @@ protected:
 
     Point2 lastKnownTargetPos = Point2Neg1;
     EntityAlive* target = nullptr;
+    bool canSeeTarget;
 
     double lastMoveTime = 0;
 
     double lastAttackTime = 0;
 
     bool agro = false;
+
+    Point2 lastPos;
 
     ItemWeapon* activeItemWeapon = nullptr;
 };

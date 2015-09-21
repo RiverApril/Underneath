@@ -48,7 +48,6 @@ namespace Ui {
     }
 
     void Menu::_handleInput(int in) {
-
         if (subMenu != nullptr) {
             subMenu->_handleInput(in);
         } else {
