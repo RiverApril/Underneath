@@ -74,15 +74,15 @@ if args.sdl:
         compilerFlags += " -Imingw_dev_lib\\include"
         libraryFlags = " -w -Wl,-subsystem,windows -Wl,-Bstatic -Lmingw_dev_lib\\lib -mwindows -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -static-libgcc -static-libstdc++ -L . -Wl,--no-undefined -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc -Wl,-Bdynamic"
     elif systemName == "Darwin":
-        compilerFlags += " -I/usr/local/include -lSDL2_image"
-        libraryFlags = "-L/usr/local/lib `sdl2-config --cflags`"
+        compilerFlags += " -I/usr/local/include"
+        libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
         if args.release:
             libraryFlags += " `sdl2-config --static-libs`"
         else:
             libraryFlags += " `sdl2-config --libs`"
     else:
         compilerFlags += " -I/usr/local/include"
-        libraryFlags = "-L/usr/local/lib `sdl2-config --cflags`  -lSDL2_image"
+        libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
         if args.release:
             libraryFlags += " `sdl2-config --static-libs`"
         else:
