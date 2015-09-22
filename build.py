@@ -81,12 +81,11 @@ if args.sdl:
         else:
             libraryFlags += " `sdl2-config --libs`"
     else:
-        compilerFlags += " -I/usr/local/include"
-        libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
+        compilerFlags += " `sdl2-config --cflags`"
         if args.release:
-            libraryFlags += " `sdl2-config --static-libs`"
+            libraryFlags = " `sdl2-config --static-libs` -lSDL2_image"
         else:
-            libraryFlags += " `sdl2-config --libs`"
+            libraryFlags  = " `sdl2-config --libs` -lSDL2_image"
 
 else:
     executableName += "_Term"
@@ -104,7 +103,7 @@ if args.release:
     elif systemName == "Darwin": #Don't staticly link Mac Libs
         libraryFlags = "-Bdynamic " + libraryFlags
     else:
-        pass
+        libraryFlags = "-Wl,-Bdynamic " + libraryFlags
 
 
 if systemName == "Darwin":
