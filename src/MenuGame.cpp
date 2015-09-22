@@ -628,19 +628,14 @@ namespace Ui {
                 }
             }
 
-            a++;
-
             Ui::setColor(C_WHITE);
 
-            mvprintw(a, gameArea.x + 1, "Tick [%c]: %s", spinyIcon->getChar(tick, Point2Neg1, currentLevel), Utility::toString((int)tick, 62).c_str());
-            a++;
+            //mvprintw(a++, gameArea.x + 1, "Tick [%c]: %s", spinyIcon->getChar(tick, Point2Neg1, currentLevel), Utility::toString((int)tick, 62).c_str());
 
-            mvprintw(a, gameArea.x + 1, "Time: %.2f", displayTime);
-            a++;
-            mvprintw(a, gameArea.x + 1, "Time: %s", Utility::intToRomanNumerals((int) displayTime).c_str());
+            mvprintw(a++, gameArea.x + 1, "Time: %.2f", displayTime);
+            //mvprintw(a++, gameArea.x + 1, "Time: %s", Utility::intToRomanNumerals((int) displayTime).c_str());
             //mvprintw(11, gameArea.x+1, "Tick: %d", tick);
 
-            a++;
             a++;
 
             move(a, gameArea.x + 1);
