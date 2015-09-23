@@ -45,12 +45,12 @@ namespace MainWindow{
     std::vector<int> screenAttrBuffer = std::vector<int>(width * height);
 
     int charWidth = 7;
-    int charHeight = 14;
+    int charHeight = 12;
 
     int imageCharsPerLine = 16;
     int imageLineCount = 16;
     int imageCharWidth = 7;
-    int imageCharHeight = 14;
+    int imageCharHeight = 12;
 
     bool quit = false;
 
@@ -142,22 +142,22 @@ namespace MainWindow{
             case 0x2: //Dark Green
             case 0x4: //Dark Blue
             case 0x6: //Dark Cyan
-                return 1;
+                return 0x01;
             case 0x1: //Dark Red
             case 0x3: //Dark Yellow
             case 0x5: //Dark Magenta
-                return 0x80;
+                return 0xBB;
 
             case 0x7: //Dark White
-                return 0xC0;
+                return 0xBB;
 
             case 0x8: //Light Black
-                return 0x40;
+                return 0x55;
 
             case 0xA: //Light Green
             case 0xC: //Light Blue
             case 0xE: //Light Cyan
-                return 1;
+                return 0x55;
             case 0x9: //Light Red
             case 0xB: //Light Yellow
             case 0xD: //Light Magenta
@@ -173,22 +173,22 @@ namespace MainWindow{
             case 0x1: //Dark Red
             case 0x4: //Dark Blue
             case 0x5: //Dark Magenta
-                return 1;
+                return 0x01;
             case 0x2: //Dark Green
             case 0x3: //Dark Yellow
             case 0x6: //Dark Cyan
-                return 0x80;
+                return 0xBB;
 
             case 0x7: //Dark White
-                return 0xC0;
+                return 0xBB;
 
             case 0x8: //Light Black
-                return 0x40;
+                return 0x55;
 
             case 0x9: //Light Red
             case 0xC: //Light Blue
             case 0xD: //Light Magenta
-                return 1;
+                return 0x55;
             case 0xA: //Light Green
             case 0xB: //Light Yellow
             case 0xE: //Light Cyan
@@ -204,22 +204,22 @@ namespace MainWindow{
             case 0x2: //Dark Green
             case 0x1: //Dark Red
             case 0x3: //Dark Yellow
-                return 1;
+                return 0x01;
             case 0x4: //Dark Blue
             case 0x6: //Dark Cyan
             case 0x5: //Dark Magenta
-                return 0x80;
+                return 0xBB;
 
             case 0x7: //Dark White
-                return 0xC0;
+                return 0xBB;
 
             case 0x8: //Light Black
-                return 0x40;
+                return 0x55;
 
             case 0xA: //Light Green
             case 0x9: //Light Red
             case 0xB: //Light Yellow
-                return 1;
+                return 0x55;
             case 0xC: //Light Blue
             case 0xE: //Light Cyan
             case 0xD: //Light Magenta
@@ -366,7 +366,7 @@ namespace MainWindow{
             if(lastTick - tick > inputTimeout){
                 return ERR;
             }
-            SDL_Delay(1);
+            //SDL_Delay(1);
         }
 
         switch(e.type){
