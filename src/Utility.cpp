@@ -204,7 +204,7 @@ namespace Utility {
             for(int i=maxDigit;i>=0;i--){
                 int digit = pow(base, i);
                 digitList.push_back(0);
-                while(num > digit){
+                while(num >= digit){
                     num -= digit;
                     digitList[digitPos] ++;
                 }

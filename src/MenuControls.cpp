@@ -40,7 +40,7 @@ namespace Ui {
             clrtobot();
             printCenter(terminalSize.y/2 - 2, "Press any key to asign (case sensitive)");
             printCenter(terminalSize.y/2 - 1, "\"%s\"", keybindings[selected].name.c_str());
-            printCenter(terminalSize.y/2 + 1, "Currently asigned as [%s]", keyDisplayName(*(keybindings[selected].key)).c_str());
+            printCenter(terminalSize.y/2 + 1, "Currently asigned as [ %s ]", keyDisplayName(*(keybindings[selected].key)).c_str());
 
             int newKey;
             do{

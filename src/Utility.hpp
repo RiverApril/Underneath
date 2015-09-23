@@ -112,7 +112,7 @@ namespace Utility {
 
     char getSymbolFromNumber(int number);
 
-    string toString(int num, int base);
+    string toString(int num, int base = 10);
 
     double parseDouble(string s, int base = 10, double defaultIfException = 0);
 

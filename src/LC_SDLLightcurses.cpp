@@ -542,9 +542,9 @@ int	move(int y, int x){
 }
 
 int addch(const char c){
-    cursor++;
     screenCharBuffer[cursor] = c;
     screenAttrBuffer[cursor] = currentAttr;
+    cursor++;
     return 0;
 }
 
@@ -590,7 +590,7 @@ int	mvprintw(int y, int x, const char * s, ...){
 }
 
 int	hline(const char c, int l){
-    for(int i=0;cursor%width>0 && i<l;i++){
+    for(int i=0;cursor%width>0 && i<=l;i++){
         screenCharBuffer[cursor] = c;
         screenAttrBuffer[cursor] = currentAttr;
         cursor++;
@@ -604,10 +604,10 @@ int	mvhline(int y, int x, const char c, int l){
 }
 
 int	vline(const char c, int l){
-    for(int i=0;cursor<width*height && i<l;cursor+=width){
+    for(int i=0;cursor<width*height && i<=l;i++){
         screenCharBuffer[cursor] = c;
         screenAttrBuffer[cursor] = currentAttr;
-        i++;
+        cursor+=width;
     }
     return 0;
 }
