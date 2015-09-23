@@ -127,6 +127,7 @@ namespace Settings{
                         }
                     }
 
+                    settingId = "";
                     line = "";
                 } else if (c == ':') {
                     settingId = line;
