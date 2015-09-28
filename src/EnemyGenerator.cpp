@@ -11,43 +11,43 @@
 
 namespace EnemyGenerator {
 
-    vector<WeightedEnemy*> enemyWeightList;
+    vector<EntityBase*> enemyWeightList;
 
     int total = 0;
 
-    WeightedEnemy* goblinScout;
-    WeightedEnemy* goblinWarrier;
-    WeightedEnemy* goblinArcher;
-    WeightedEnemy* troll;
-    WeightedEnemy* wraith;
-    WeightedEnemy* slime;
-    WeightedEnemy* myconid;
+    EntityBase* goblinScout;
+    EntityBase* goblinWarrier;
+    EntityBase* goblinArcher;
+    EntityBase* troll;
+    EntityBase* wraith;
+    EntityBase* slime;
+    EntityBase* myconid;
 
-    WeightedEnemy* mimic;
-    WeightedEnemy* bunny;
+    EntityBase* mimic;
+    EntityBase* bunny;
 
     void initEnemies() {
 
-        goblinScout = atl(new WeightedEnemy(100, "Goblin Scout", 'g', aiAttackAndFleeAtLowHealth, 50, ItemGenerator::wKnife, "", C_LIGHT_GREEN, 1.0));
+        goblinScout = atl(new EntityBase(100, "Goblin Scout", 'g', aiAttackAndFleeAtLowHealth, 50, ItemGenerator::wKnife, "", C_LIGHT_GREEN, 1.0));
         goblinScout->weaknesses.push_back(Weakness(damPoison, 2));
 
-        goblinWarrier = atl(new WeightedEnemy(50, "Goblin Warrior", 'w', aiAttack, 75, ItemGenerator::wSword, "", C_DARK_GREEN, 1.0));
+        goblinWarrier = atl(new EntityBase(50, "Goblin Warrior", 'w', aiAttack, 75, ItemGenerator::wSword, "", C_DARK_GREEN, 1.0));
         goblinWarrier->weaknesses.push_back(Weakness(damPoison, 2));
 
-        goblinArcher = atl(new WeightedEnemy(50, "Goblin Archer", 'a', aiAttack, 25, ItemGenerator::wBow, "", C_LIGHT_GREEN, 1.0));
+        goblinArcher = atl(new EntityBase(50, "Goblin Archer", 'a', aiAttack, 25, ItemGenerator::wBow, "", C_LIGHT_GREEN, 1.0));
         goblinArcher->weaknesses.push_back(Weakness(damPoison, 2));
 
-        troll = atl(new WeightedEnemy(20, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
+        troll = atl(new EntityBase(20, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));
 
-        wraith = atl(new WeightedEnemy(2, "Wraith", ' ', aiAttack, 200, ItemGenerator::wSword, "", C_BLACK, 2.0, 2));
+        wraith = atl(new EntityBase(2, "Wraith", ' ', aiAttack, 200, ItemGenerator::wSword, "", C_BLACK, 2.0, 2));
         wraith->weaknesses.push_back(Weakness(damFire, 2));
         wraith->weaknesses.push_back(Weakness(damIce, 2));
         wraith->weaknesses.push_back(Weakness(damShock, 2));
         wraith->weaknesses.push_back(Weakness(damSharp, .5));
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
 
-        slime = atl(new WeightedEnemy(75, "Slime", 's', aiAttack | aiMoveRandom, 40, ItemGenerator::wNatural, "Goo", C_LIGHT_YELLOW, 1.0));
+        slime = atl(new EntityBase(75, "Slime", 's', aiAttack, 40, ItemGenerator::wNatural, "Goo", C_LIGHT_YELLOW, 1.0));
         slime->weaknesses.push_back(Weakness(damSharp, .4));
         slime->weaknesses.push_back(Weakness(damPierce, .4));
 
@@ -55,16 +55,16 @@ namespace EnemyGenerator {
         myconidWepon.damage *= .5;
         myconidWepon.enchs.push_back(Enchantment(effLSD, 30, 0, 50));
         myconidWepon.enchs.push_back(Enchantment(effMemory, 10, 0, 100));
-        myconid = atl(new WeightedEnemy(20, "Myconid", 'm', aiAttack | aiMoveRandom, 50, myconidWepon, "Finger", C_LIGHT_MAGENTA, 1.0));
+        myconid = atl(new EntityBase(20, "Myconid", 'm', aiAttack, 50, myconidWepon, "Finger", C_LIGHT_MAGENTA, 1.0));
         myconid->weaknesses.push_back(Weakness(damFire, 4));
 
 
 
-        mimic = new WeightedEnemy(0, "Mimic", '+', aiAttack | aiMoveRandom, 75, ItemGenerator::wNatural, "Teeth", C_LIGHT_GREEN, 0);
+        mimic = new EntityBase(0, "Mimic", '+', aiAttack | aiMoveRandom, 75, ItemGenerator::wNatural, "Teeth", C_LIGHT_GREEN, 0);
         mimic->weaknesses.push_back(Weakness(damFire, 4));
 
 
-        bunny = new WeightedEnemy(0, "Bunny", 'b', aiFlee | aiMoveRandom, 10, ItemGenerator::wNatural, "Claws", C_LIGHT_WHITE, 0);
+        bunny = new EntityBase(0, "Bunny", 'b', aiFlee | aiMoveRandom, 10, ItemGenerator::wNatural, "Claws", C_LIGHT_WHITE, 0);
         bunny->moveDelay = 1.0;
 
 
@@ -73,13 +73,13 @@ namespace EnemyGenerator {
     }
 
     void cleanupEnemies() {
-        for (WeightedEnemy* we : enemyWeightList) {
+        for (EntityBase* we : enemyWeightList) {
             delete we;
         }
         enemyWeightList.clear();
     }
 
-    WeightedEnemy* atl(WeightedEnemy* we) {
+    EntityBase* atl(EntityBase* we) {
         enemyWeightList.push_back(we);
         return we;
     }
@@ -92,7 +92,7 @@ namespace EnemyGenerator {
         }
     }
 
-    EntityAi* makeEntity(WeightedEnemy* we, int difficulty) {
+    EntityAi* makeEntity(EntityBase* we, int difficulty) {
         EntityAi* e = new EntityAi(we->name, we->ai, we->icon, Point2Zero, we->color, we->maxHp);
         e->weaknesses = we->weaknesses;
         e->moveDelay = we->moveDelay;
@@ -107,8 +107,8 @@ namespace EnemyGenerator {
     EntityAi* makeRandomEntity(int difficulty) {
 
         int r = rand() % total;
-        WeightedEnemy* last = enemyWeightList[0];
-        for (WeightedEnemy* we : enemyWeightList) {
+        EntityBase* last = enemyWeightList[0];
+        for (EntityBase* we : enemyWeightList) {
             if (we->interval > r) {
                 last = we;
                 break;

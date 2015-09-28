@@ -569,7 +569,7 @@ void Level::save(vector<unsigned char>* data) {
     Point2::save(stairDownPos, data);
     for (size_t i = 0; i < size.x; i++) {
         for (size_t j = 0; j < size.y; j++) {
-            Utility::saveInt8Bit(data, tileGrid[i][j].index);
+            Utility::saveUInt8Bit(data, tileGrid[i][j].index);
             Utility::saveBool(data, tileGrid[i][j].explored);
         }
     }

@@ -26,7 +26,7 @@ namespace Ui {
 class Entity;
 
 struct TileData {
-    int8_t index = 0;
+    uint8_t index = 0;
     bool explored = false;
     //Entity* entity = nullptr;
 };

@@ -14,9 +14,9 @@
 
 namespace EnemyGenerator {
 
-    struct WeightedEnemy {
+    struct EntityBase {
 
-        WeightedEnemy(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase weaponBase, string weaponNameZ, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0) {
+        EntityBase(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase weaponBase, string weaponNameZ, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0) {
             this->weight = weight;
             this->name = name;
             this->icon = icon;
@@ -45,18 +45,18 @@ namespace EnemyGenerator {
         int interval = 0;
     };
 
-    extern WeightedEnemy* goblinScout;
-    extern WeightedEnemy* goblinWarrier;
-    extern WeightedEnemy* goblinArcher;
-    extern WeightedEnemy* troll;
-    extern WeightedEnemy* wraith;
-    extern WeightedEnemy* slime;
-    extern WeightedEnemy* myconid;
+    extern EntityBase* goblinScout;
+    extern EntityBase* goblinWarrier;
+    extern EntityBase* goblinArcher;
+    extern EntityBase* troll;
+    extern EntityBase* wraith;
+    extern EntityBase* slime;
+    extern EntityBase* myconid;
 
-    extern WeightedEnemy* mimic;
-    extern WeightedEnemy* bunny;
+    extern EntityBase* mimic;
+    extern EntityBase* bunny;
 
-    extern vector<WeightedEnemy*> enemyWeightList;
+    extern vector<EntityBase*> enemyWeightList;
 
     extern int total;
 
@@ -64,13 +64,13 @@ namespace EnemyGenerator {
 
     void cleanupEnemies();
 
-    WeightedEnemy* atl(WeightedEnemy* we);
+    EntityBase* atl(EntityBase* we);
 
     void setIntervals(int difficulty);
 
     EntityAi* makeRandomEntity(int difficulty);
 
-    EntityAi* makeEntity(WeightedEnemy* we, int difficulty);
+    EntityAi* makeEntity(EntityBase* we, int difficulty);
 
 }
 

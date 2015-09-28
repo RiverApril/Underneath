@@ -46,7 +46,7 @@ namespace Utility {
         data->push_back(n);
     }
 
-    void saveInt8Bit(vector<unsigned char>* data, int8_t n) {
+    void saveUInt8Bit(vector<unsigned char>* data, uint8_t n) {
         data->push_back((unsigned char) n);
     }
 

@@ -304,6 +304,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             Item* iei = ie->getItem();
             if (iei != nullptr) {
                 if (addItem(iei)) {
+                    ie->setItemToNull();
                     level->removeEntity(e, true);
                     return interactDelay;
                 }

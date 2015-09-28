@@ -46,6 +46,10 @@ public:
         return item;
     }
 
+    virtual void setItemToNull(){
+        item = nullptr;
+    }
+
     virtual void load(unsigned char* data, int* position);
 
 

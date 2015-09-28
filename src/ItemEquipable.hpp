@@ -24,10 +24,11 @@ const EquipSlot slotHands = 3;
 const EquipSlot slotHead = 4;
 const EquipSlot slotBody = 5;
 const EquipSlot slotFeet = 6;
-const EquipSlot slotFinger1 = 7;
-const EquipSlot slotFinger2 = 8;
-const EquipSlot slotFinger3 = 9;
-const EquipSlot slotFinger4 = 10;
+const EquipSlot slotLegs = 7;
+const EquipSlot slotFinger1 = 8;
+const EquipSlot slotFinger2 = 9;
+const EquipSlot slotFinger3 = 10;
+const EquipSlot slotFinger4 = 11;
 const EquipSlot slotMAX = slotFinger4;
 
 class ItemEquipable : public Item {
@@ -45,6 +46,8 @@ public:
                 return 'H';
             case slotBody:
                 return 'B';
+            case slotLegs:
+                return 'L';
             case slotFeet:
                 return 'F';
             case slotFinger1:
@@ -75,6 +78,8 @@ public:
                 return "Head";
             case slotBody:
                 return "Body";
+            case slotLegs:
+                return "Legs";
             case slotFeet:
                 return "Feet";
             case slotFinger1:
@@ -103,6 +108,7 @@ public:
             case slotHead:
             case slotBody:
             case slotFeet:
+            case slotLegs:
             case slotFinger1:
             case slotFinger2:
             case slotFinger3:
@@ -125,6 +131,8 @@ public:
                 return "Head";
             case slotBody:
                 return "Body";
+            case slotLegs:
+                return "Legs";
             case slotFeet:
                 return "Feet";
             case slotFinger1:

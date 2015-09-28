@@ -30,7 +30,7 @@ namespace Utility {
     void saveInt(vector<unsigned char>* data, int n);
     void saveUnsignedLong(vector<unsigned char>* data, unsigned long n);
     void saveUnsignedChar(vector<unsigned char>* data, unsigned char n);
-    void saveInt8Bit(vector<unsigned char>* data, int8_t n);
+    void saveUInt8Bit(vector<unsigned char>* data, uint8_t n);
     void saveBool(vector<unsigned char>* data, bool n);
     void saveString(vector<unsigned char>* data, string n);
 

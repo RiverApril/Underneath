@@ -19,7 +19,9 @@ EntityItem::EntityItem(Item* item, Point2 p) : Entity(' ', p, C_WHITE) {
 }
 
 EntityItem::~EntityItem() {
-
+    if(item){
+        delete item;
+    }
 }
 
 char EntityItem::getIcon(Point2 p, double time, Level* level) {

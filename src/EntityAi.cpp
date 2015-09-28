@@ -26,7 +26,7 @@ EntityAi::EntityAi(std::string name, int aiFlags, char icon, Point2 startPos, Ui
 }
 
 EntityAi::~EntityAi() {
-
+	
 }
 
 void EntityAi::lookAi(double time, Level* level){
@@ -133,15 +133,15 @@ void EntityAi::moveAi(double time, Level* level) {
         }
     }
     if (ai & aiAttack) {
+
+        bool pathEmpty = true;
+
         if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
-            //debug("LKTP: "+lastKnownTargetPos.toString()+"  TP: "+target->pos.toString()+"  P: "+pos.toString());
             ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
             if (r && canSeeTarget && (distanceSquared(target->pos, pos) < (r->range * r->range))) {
                 speed.x = 0;
                 speed.y = 0;
             } else {
-                //speed.x = pos.x > lastKnownTargetPos.x ? -1 : (pos.x < lastKnownTargetPos.x ? 1 : 0);
-                //speed.y = pos.y > lastKnownTargetPos.y ? -1 : (pos.y < lastKnownTargetPos.y ? 1 : 0);
                 vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid, true);
                 if(path.empty()){
                     path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid, false);
@@ -161,22 +161,7 @@ void EntityAi::moveAi(double time, Level* level) {
 
                     speed = path[0]-pos;
 
-                }else{
-                    vector<Point2> possibilities;
-                    for(int i=-1;i<=1;i++){
-                        for(int j=-1;j<=1;j++){
-                            if(abs(i) != abs(j)){
-                                Point2 p = pos+Point2(i, j);
-                                if(p != lastPos && !level->tileAt(p)->hasFlag(tileFlagSolid)){
-                                    possibilities.push_back(Point2(i, j));
-                                }
-                            }
-                        }
-                    }
-                    if(possibilities.size() > 0){
-                        speed = possibilities[rand()%possibilities.size()];
-                        debugf("possibility size: %d", possibilities.size());
-                    }
+                    pathEmpty = false;
 
                 }
 
@@ -184,16 +169,39 @@ void EntityAi::moveAi(double time, Level* level) {
 
         }
 
+        if(!canSeeTarget && pathEmpty){
+            vector<Point2> possibilities;
+            for(int i=-1;i<=1;i++){
+                for(int j=-1;j<=1;j++){
+                    if(abs(i) != abs(j)){
+                        Point2 p = pos+Point2(i, j);
+                        if(p != lastPos && !level->tileAt(p)->hasFlag(tileFlagSolid)){
+                            possibilities.push_back(Point2(i, j));
+                        }
+                    }
+                }
+            }
+            if(possibilities.size() > 0){
+                speed = possibilities[rand()%possibilities.size()];
+                debugf("possibility size: %d", possibilities.size());
+            }
+            
+        }
+
     }
 
     lastPos = pos;
     bool m = false;
     if(rand() % 2 == 0){
-        m = m | tryToMoveRelative(speed.xOnly(), level);
-        m = m | tryToMoveRelative(speed.yOnly(), level);
+        m = m || tryToMoveRelative(speed.xOnly(), level);
+        m = m || tryToMoveRelative(speed.yOnly(), level);
     }else{
-        m = m | tryToMoveRelative(speed.yOnly(), level);
-        m = m | tryToMoveRelative(speed.xOnly(), level);
+        m = m || tryToMoveRelative(speed.yOnly(), level);
+        m = m || tryToMoveRelative(speed.xOnly(), level);
+    }
+
+    if(!canSeeTarget && pos == lastKnownTargetPos){
+        lastKnownTargetPos = Point2Neg1;
     }
 
 
