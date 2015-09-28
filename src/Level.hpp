@@ -55,6 +55,7 @@ public:
     //void setDisplayEntity(Point2 p, Entity* e);
 
     bool inRange(Point2 p);
+    bool inRange(int x, int y);
 
     Point2 findRandomOfType(int index);
     Point2 findRandomWithFlag(TileFlag flag);
@@ -64,6 +65,11 @@ public:
     bool setTile(Point2 p, int tile);
     bool setTile(Point2 p, Tile* tile);
     int indexAt(Point2 p);
+
+    Tile* tileAt(int x, int y);
+    bool setTile(int x, int y, int tile);
+    bool setTile(int x, int y, Tile* tile);
+    int indexAt(int x, int y);
 
     Entity* getClosestVisableEntity(Point2 origin, double range, Entity* notMe = nullptr);
     vector<Entity*> getAllVisableEntities(Point2 origin, double range, Entity* notMe, bool sort);
@@ -81,8 +87,11 @@ public:
     void genDebug(string s);
 
     Point2 generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel);
+
+    //The following are implemented in LevelGenerator.cpp
     Point2 generateStartArea(unsigned int seed, Point2 stairUpPos, string previousLevel);
     Point2 generateDungeon(unsigned int seed, Point2 stairUpPos, string previousLevel);
+    
 
     void placeNewEntityAi(EntityAi* e, Point2 entrance);
 

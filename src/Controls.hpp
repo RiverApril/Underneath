@@ -38,6 +38,8 @@ namespace Key {
     extern int inspect;
     extern int adjustConsole;
     extern int waitUntilHealed;
+    extern int wait;
+    extern int walk;
 
     //Open UI
     extern int inventory;
@@ -67,5 +69,7 @@ namespace Key {
 extern vector<KeyBind> keybindings;
 
 extern vector<int> reservedKeys;
+
+string keyDisplayName(int key);
 
 #endif /* defined(__Underneath__Controls__) */

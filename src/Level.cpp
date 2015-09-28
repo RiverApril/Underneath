@@ -107,6 +107,10 @@ bool Level::inRange(Point2 p) {
     return p.x >= 0 && p.y >= 0 && p.x < size.x && p.y < size.y;
 }
 
+bool Level::inRange(int x, int y) {
+    return x >= 0 && y >= 0 && x < size.x && y < size.y;
+}
+
 Point2 Level::findRandomOfType(int index) {
     Point2 p;
     do {
@@ -156,6 +160,29 @@ Tile* Level::tileAt(Point2 p) {
 int Level::indexAt(Point2 p) {
     if (inRange(p)) {
         return tileGrid[p.x][p.y].index;
+    }
+    return Tiles::tileEdge->getIndex();
+}
+
+bool Level::setTile(int x, int y, int tile) {
+    if (inRange(x, y)) {
+        tileGrid[x][y].index = (int8_t) tile;
+        return true;
+    }
+    return false;
+}
+
+bool Level::setTile(int x, int y, Tile* tile) {
+    return setTile(x, y, tile->getIndex());
+}
+
+Tile* Level::tileAt(int x, int y) {
+    return Tiles::getTile(indexAt(x, y));
+}
+
+int Level::indexAt(int x, int y) {
+    if (inRange(x, y)) {
+        return tileGrid[x][y].index;
     }
     return Tiles::tileEdge->getIndex();
 }
@@ -382,7 +409,7 @@ void Level::actuallyRemoveTileEntityUnsafe(TileEntity* e) {
     debugf("Failed to Remove Tile Entity: %d", e->getTileEntityTypeId());
 }
 
-vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities) {
+vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities) {
     vector<vector<int>> map = vector<vector<int>>(size.x, vector<int>(size.y));
 
     for (size_t i = 0; i < size.x; i++) {
@@ -392,15 +419,15 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, T
     }
 
     queue<Point2> priorityQueue;
-    priorityQueue.push(from);
+    priorityQueue.push(to);
 
     while (!priorityQueue.empty()) {
         Point2 c = priorityQueue.front();
         priorityQueue.pop();
-        if (c == to) {
+        if (c == from) {
             vector<Point2> path;
-            Point2 l = to;
-            int v = map[to.x][to.y];
+            Point2 l = from;
+            int v = map[from.x][from.y];
             while (v > 0) {
                 bool leave = false;
                 for (int i = -1; i <= 1 && !leave; i++) {
@@ -431,7 +458,7 @@ vector<Point2> Level::getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, T
                         if (inRange(p)) {
                             if (tileAt(p)->hasFlag(requiredFlag) && tileAt(p)->doesNotHaveFlag(bannedFlag)) {
                                 bool ent = false;
-                                if(careAboutEntities && p != from && p != to){
+                                if(careAboutEntities && p != to && p != from){
                                     for(Entity* e : entityList){
                                         if(e){
                                             if(e->isSolid()){
@@ -548,13 +575,12 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
     }
 }
 
-//Level::generate() is implemented in LevelGenerator.cpp
 
 void Level::placeNewEntityAi(EntityAi* e, Point2 entrance) {
     Point2 p;
     do {
         p = Point2(findRandomWithoutFlag(tileFlagSolid));
-    } while (!canPathTo(entrance, p, tileFlagPathable | tileFlagSecretPathable) || canSee(entrance, p, e->viewDistance, false));
+    } while (!canPathTo(entrance, p, tileFlagPathable | tileFlagSecretPathable) || canPathTo(entrance, p, tileFlagAll, tileFlagSolid));
 
     e->pos = p;
     newEntity(e);

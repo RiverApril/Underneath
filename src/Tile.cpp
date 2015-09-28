@@ -72,9 +72,6 @@ namespace Tiles {
 
     Tile* tileTree;
     Tile* tileGrass;
-    Tile* tileBlueTree;
-    Tile* tileDenseBlueTree;
-    Tile* tileBlueGrass;
 
     Tile* tileEdge;
     Tile* tileUnset;
@@ -120,10 +117,6 @@ namespace Tiles {
 
         tileTree = new Tile(new RandomColorIcon({'T', 't'}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "tree", tileFlagSolid, new RandomIcon({'T', 't'}, C_DARK_GRAY, bg));
         tileGrass = new Tile(new RandomColorIcon({',', '.', ' ', ' ', ' '}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "grass", tileFlagPathable | tileFlagReplaceable, new RandomIcon({',', '.', ' ', ' ', ' '}, C_DARK_GRAY, bg));
-
-        tileBlueTree = new Tile(new RandomColorIcon({'T', 't'}, {C_LIGHT_BLUE, C_LIGHT_BLUE, C_DARK_BLUE}, {bg}), "blue tree", tileFlagSolid, new RandomIcon({'T', 't'}, C_DARK_GRAY, bg));
-        tileDenseBlueTree = new Tile(new RandomColorIcon({'T', 't'}, {C_LIGHT_BLUE, C_LIGHT_BLUE, C_DARK_BLUE}, {bg}), "dense blue tree", tileFlagSolid | tileFlagTall, new RandomIcon({'T', 't'}, C_DARK_GRAY, bg));
-        tileBlueGrass = new Tile(new RandomColorIcon({',', '.', ' ', ' ', ' '}, {C_LIGHT_BLUE, C_LIGHT_BLUE, C_DARK_BLUE}, {bg}), "blue grass", tileFlagPathable | tileFlagReplaceable, new RandomIcon({',', '.', ' ', ' ', ' '}, C_DARK_GRAY, bg));
 
         tileStatue = new Tile(new RandomIcon({'H', 'I', 'Z'}, C_WHITE, bg), "statue", tileFlagSolid);
 

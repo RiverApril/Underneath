@@ -25,8 +25,6 @@ namespace Ui {
         void handleInput(int in);
         void update();
 
-        string keyDisplayName(int key);
-
         int selected = 0;
         
     };

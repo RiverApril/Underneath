@@ -24,10 +24,7 @@ Vector2 Vector2One = Vector2(1, 1);
 
 //Point2:
 
-Point2::Point2(int x, int y) {
-    this->x = x;
-    this->y = y;
-}
+Point2::Point2(int x, int y) : x(x), y(y){}
 
 bool Point2::operator==(const Point2 other) {
     return this->x == other.x && this->y == other.y;
@@ -166,11 +163,7 @@ Point2 Point2::load(unsigned char* data, int* position) {
 
 //Point3:
 
-Point3::Point3(int x, int y, int z) {
-    this->x = x;
-    this->y = y;
-    this->z = z;
-}
+Point3::Point3(int x, int y, int z) : x(x), y(y), z(z){}
 
 bool Point3::operator==(const Point3 other) {
     return this->x == other.x && this->y == other.y && this->z == other.z;
@@ -266,10 +259,7 @@ Point3 Point3::load(unsigned char* data, int* position) {
 
 //Vector2:
 
-Vector2::Vector2(double x, double y) {
-    this->x = x;
-    this->y = y;
-}
+Vector2::Vector2(double x, double y) : x(x), y(y){}
 
 bool Vector2::operator==(Vector2 other) {
     return this->x == other.x && this->y == other.y;

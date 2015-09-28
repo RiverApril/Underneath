@@ -229,9 +229,6 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
         }
     }
 
-    debugf("Pathable non-solid tile count: %d", nonsolidAccessableTileCount);
-    debugf("Unaccessable tiles: %d", unaccessableTileCount);
-
 
     genDebug("Adding Entities...");
 
@@ -552,9 +549,8 @@ namespace LevelGenerator {
                     }
                     for (int i = r->pos.x; i < r->pos.x+r->size.x; i++) {
                         for (int j = r->pos.y; j < r->pos.y+r->size.y; j++) {
-                            Point2 p = Point2(i, j);
-                            if (level->indexAt(p) == Tiles::tileTemp->getIndex()) {
-                                level->setTile(p, Tiles::tileCrate);
+                            if (level->indexAt(i, j) == Tiles::tileTemp->getIndex()) {
+                                level->setTile(i, j, Tiles::tileCrate);
                             }
                         }
                     }

@@ -100,9 +100,6 @@ namespace Tiles {
 
     extern Tile* tileTree;
     extern Tile* tileGrass;
-    extern Tile* tileBlueTree;
-    extern Tile* tileDenseBlueTree;
-    extern Tile* tileBlueGrass;
 
     extern Tile* tileEdge;
     extern Tile* tileUnset;

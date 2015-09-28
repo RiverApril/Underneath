@@ -56,7 +56,7 @@ namespace Ui {
 
         Point2 targetPosition = Point2Zero;
         Entity* targetEntity = nullptr;
-
+	
         double itemToBeUsedRange = -1;
         Item* itemToBeUsed = nullptr;
 

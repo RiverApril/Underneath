@@ -147,7 +147,12 @@ namespace Ui {
     void MenuGame::viewUpdate() {
         if(currentWorld != nullptr){
             if (currentPlayer != nullptr) {
-                viewPos = currentPlayer->pos - (gameArea / 2);
+                if(controlMode == modeSelectPosition){
+                    viewPos = targetPosition;
+                }else{
+                	viewPos = currentPlayer->pos;
+                }
+                viewPos -= (gameArea / 2);
             }
         }
     }
@@ -216,28 +221,10 @@ namespace Ui {
                         bg = C_LIGHT_BLUE;
                         attr = A_BLINK;
                     }
-                    if (!currentLevel->canSee(currentPlayer->pos, p, itemToBeUsedRange, false) && inView) {
-                        if (p == targetPosition) {
-                            bg = C_LIGHT_RED;
-                        }
-                        if (bg == C_BLACK) {
-                            bg = C_DARK_RED;
-                        }
-                    }
                 } else if (controlMode == modeSelectPosition) {
                     if (p == targetPosition) {
                         bg = C_LIGHT_GREEN;
                         attr = A_BLINK;
-                    }
-                    if(currentLevel->getExplored(p)){
-                        if (!inView && !currentLevel->canSee(currentPlayer->pos, p, itemToBeUsedRange, true)) {
-                            if (p == targetPosition) {
-                                bg = C_LIGHT_RED;
-                            }
-                            if (bg == C_BLACK) {
-                                bg = C_DARK_RED;
-                            }
-                        }
                     }
 
                 }
@@ -425,7 +412,7 @@ namespace Ui {
                     }
                 }
             } else if(in == Key::waitUntilHealed) {
-                if(currentPlayer != nullptr){
+                if(controlMode == modeEntityPlayerControl){
                     if(currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()){
                         unsigned char b = 1;
                         timeout(20);
@@ -455,6 +442,89 @@ namespace Ui {
                         }
                     }else{
                         console("Already at full health and mana.");
+                    }
+                }
+
+            } else if (in == Key::wait) {
+                if(controlMode == modeEntityPlayerControl){
+                    timeout(0);
+                    console("Waiting indefinitely. Press any key to stop waiting.");
+                    bool c = true;
+                    while (c) {
+                        vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
+                        for (Entity* e : nearest) {
+                            if (e->isHostile()) {
+                                console("A hostile is near!");
+                                c = false;
+                                break;
+                            }
+                        }
+                        timePassed = 1;
+                        MenuGame::update();
+                        if (getch() != ERR) {
+                            console("Stopped waiting.");
+                            c = false;
+                        }
+                    }
+                    timeout(defaultTimeout);
+                }
+
+            }  else if (in == Key::walk) {
+                if(controlMode == modeEntityPlayerControl){
+                    changeMode(modeSelectPosition);
+                    itemToBeUsedRange = 1000;
+                    targetPosition = currentPlayer->pos;
+                } else if(controlMode == modeSelectPosition){
+                    Point2 t = targetPosition;
+                    changeMode(modeEntityPlayerControl);
+                    vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, tileFlagSolid);
+                    path.push_back(t);
+                    bool pathExplored = true;
+                    if(!Settings::seeEverything){
+                        for(Point2 p : path){
+                            if(!currentLevel->getExplored(p)){
+                                pathExplored = false;
+                                break;
+                            }
+                        }
+                    }
+                    if(path.size() > 0 && pathExplored){
+                        timeout(20);
+                        console("Walking to target position...");
+                        bool c = true;
+                        for(Point2 p : path) {
+                            /*vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
+                            for (Entity* e : nearest) {
+                                if (e->isHostile()) {
+                                    console("A hostile is near!");
+                                    c = false;
+                                    break;
+                                }
+                            }*/
+                            Point2 d = p-currentPlayer->pos;
+                            if(abs(d.x) <= 1 && abs(d.y) <= 1){
+                            	timePassed = currentPlayer->tryToMoveRelative(d, currentLevel);
+                            }else{
+                                console("Next Path fragment is too far.");
+                                c = false;
+                                break;
+                            }
+                            MenuGame::update();
+                            if (getch() != ERR) {
+                                console("Stopped walking.");
+                                c = false;
+                                break;
+                            }
+                        }
+                        timeout(defaultTimeout);
+                        Point2 d = targetPosition-currentPlayer->pos;
+                        if(currentPlayer->pos == t){
+                            console("You have arrived at your destination.");
+                        }else if(abs(d.x) <= 1 && abs(d.y) <= 1){
+                            console("Your destination is next to you.");
+                        }
+                    }else{
+                        console("No expolored path found.");
                     }
                 }
 
@@ -551,7 +621,7 @@ namespace Ui {
 
         if(currentPlayer){
             if(currentPlayer->leveledUp){
-                openMenu(new MenuMessage({"Level up!", "", "", "", string("Press [")+(char)(Key::statsMenu)+string("] to spend skill points.")}));
+                openMenu(new MenuMessage({"Level up!", "", ""}));
                 currentPlayer->leveledUp = false;
             }
         }
@@ -632,9 +702,13 @@ namespace Ui {
 
             //mvprintw(a++, gameArea.x + 1, "Tick [%c]: %s", spinyIcon->getChar(tick, Point2Neg1, currentLevel), Utility::toString((int)tick, 62).c_str());
 
-            mvprintw(a++, gameArea.x + 1, "Time: %.2f", displayTime);
+            mvprintw(a++, gameArea.x + 1, "%d:%02d:%02d:%02d", (((int)displayTime)/60/60/24), (((int)displayTime)/60/60)%(24), (((int)displayTime)/60)%60, ((int)displayTime)%60);
             //mvprintw(a++, gameArea.x + 1, "Time: %s", Utility::intToRomanNumerals((int) displayTime).c_str());
-            //mvprintw(11, gameArea.x+1, "Tick: %d", tick);
+
+            if(Settings::debugMode){
+            	mvprintw(a++, gameArea.x + 1, "Time: %.2f", displayTime);
+            	mvprintw(a++, gameArea.x+1, "Tick: %d", tick);
+            }
 
             a++;
 

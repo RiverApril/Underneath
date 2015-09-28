@@ -20,6 +20,8 @@ namespace Key {
     int inspect = 'q';
     int adjustConsole = '\\';
     int waitUntilHealed = 'h';
+    int wait = 'w';
+    int walk = 'W';
 
     //Open UI
     int inventory = 'i';
@@ -54,6 +56,8 @@ vector<KeyBind> keybindings = {
     KeyBind("Interact / Use / Attack", &Key::interact, keyCatPlayer | keyCatUi),
     KeyBind("Secondary Attack", &Key::secondaryAttack, keyCatPlayer),
     KeyBind("Examine", &Key::inspect, keyCatPlayer),
+    KeyBind("Auto Walk", &Key::walk, keyCatPlayer),
+    KeyBind("Wait", &Key::wait, keyCatPlayer),
     KeyBind("Wait until Healed", &Key::waitUntilHealed, keyCatPlayer),
     KeyBind("Open Inventory", &Key::inventory, keyCatPlayer | keyCatUi),
     KeyBind("Open Skills", &Key::statsMenu, keyCatPlayer),
@@ -75,3 +79,30 @@ vector<KeyBind> keybindings = {
 vector<int> reservedKeys = {
     KEY_ESCAPE, '\n', KEY_RESIZE, KEY_BACKSPACE, 127
 };
+
+string keyDisplayName(int key){
+    switch (key) {
+        case KEY_UP:
+            return "Up";
+        case KEY_DOWN:
+            return "Down";
+        case KEY_LEFT:
+            return "Left";
+        case KEY_RIGHT:
+            return "Right";
+        case KEY_ESCAPE:
+            return "Escape";
+        case '\n':
+            return "Enter";
+        case ' ':
+            return "Space";
+        case KEY_BACKSPACE:
+        case 127:
+            return "Backspace";
+        case 8:
+            return "Delete";
+
+        default:
+            return string()+(char)key;
+    }
+}

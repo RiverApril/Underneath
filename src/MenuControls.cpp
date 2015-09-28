@@ -97,32 +97,5 @@ namespace Ui {
         }
         
     }
-
-    string MenuControls::keyDisplayName(int key){
-        switch (key) {
-            case KEY_UP:
-                return "Up";
-            case KEY_DOWN:
-                return "Down";
-            case KEY_LEFT:
-                return "Left";
-            case KEY_RIGHT:
-                return "Right";
-            case KEY_ESCAPE:
-                return "Escape";
-            case '\n':
-                return "Enter";
-            case ' ':
-                return "Space";
-            case KEY_BACKSPACE:
-            case 127:
-                return "Backspace";
-            case 8:
-                return "Delete";
-                
-            default:
-                return string()+(char)key;
-        }
-    }
     
 }
