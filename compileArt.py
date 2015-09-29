@@ -16,10 +16,14 @@ for filePath in filePaths:
     file.close()
 
 for art in artList:
-    art[1] = art[1].replace("\\", "\\\\")
-    art[1] = art[1].replace("\"", "\\\"")
-    art[1] = art[1].replace("\n", "\",\"")
+    art[1] = art[1].replace("\\", "\\\\")#escape backslash(\)
+    art[1] = art[1].replace("\"", "\\\"")#escape double quote(")
+    while "\n\n" in art[1]:
+        art[1] = art[1].replace("\n\n", "\n")#remove multiple lines
+    art[1] = art[1].replace("\n", "\", \"")#replace new lines with ", "
     art[1] = "{\""+art[1]+"\"}"
+    art[1] = art[1].replace(", \"\"}", "}")#remove trailing empty line
+    art[1] = art[1].replace("{\"\", ", "{")#remove leading empty line
 
 file = open(srcPath+"ArtFiles.hpp", "w")
 file.write("\n")
