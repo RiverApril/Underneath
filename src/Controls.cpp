@@ -21,7 +21,7 @@ namespace Key {
     int adjustConsole = '\\';
     int waitUntilHealed = 'h';
     int wait = 'w';
-    int walk = 'W';
+    int walk = 'e';
 
     //Open UI
     int inventory = 'i';

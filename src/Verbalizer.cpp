@@ -13,6 +13,10 @@ namespace Verbalizer {
 
     using namespace Ui;
 
+    string colorCode(const unsigned char fg, const unsigned char bg = C_BLACK){
+        return string("&")+Ui::cc(fg, bg);
+    }
+
     void weakness(EntityAlive* underAttack, Weakness w, double damageWithoutChange, double damageWithChange){
 
         double damage = abs(damageWithChange - damageWithoutChange);
@@ -21,14 +25,14 @@ namespace Verbalizer {
 
 
 
-        string entityIs = "The " + Ui::colorCode(C_LIGHT_BLUE) + underAttack->getName() + Ui::colorCode(C_WHITE) + " is";
+        string entityIs = "The " + colorCode(C_LIGHT_BLUE) + underAttack->getName() + colorCode(C_WHITE) + " is";
         string weakOrResistant = (w.multiplier>1?"weak":"resistant");
 
         if(playerUnderAttack){
-			entityIs = Ui::colorCode(C_LIGHT_BLUE) + "You" + Ui::colorCode(C_WHITE) + " are";
+			entityIs = colorCode(C_LIGHT_BLUE) + "You" + colorCode(C_WHITE) + " are";
         }
 
-        string verbal = entityIs + " " + weakOrResistant + " to %s, " + Ui::colorCode(C_LIGHT_GREEN) + "%.2f" + Ui::colorCode(C_WHITE) + " damage was%sdealt.";
+        string verbal = entityIs + " " + weakOrResistant + " to %s, " + colorCode(C_LIGHT_GREEN) + "%.2f" + colorCode(C_WHITE) + " damage was%sdealt.";
 
         consolef(verbal.c_str(), damageTypeName(w.damageType).c_str(), damage, w.multiplier>1?" ":" not ");
 
@@ -39,14 +43,14 @@ namespace Verbalizer {
         EntityPlayer* playerAttacker = dynamic_cast<EntityPlayer*> (attacker);
         EntityPlayer* playerUnderAttack = dynamic_cast<EntityPlayer*> (underAttack);
 
-        string attackerString = Ui::colorCode(C_LIGHT_BLUE) + attacker->getName();
-        string underAttackString = Ui::colorCode(C_LIGHT_BLUE) + underAttack->getName();
+        string attackerString = colorCode(C_LIGHT_BLUE) + attacker->getName();
+        string underAttackString = colorCode(C_LIGHT_BLUE) + underAttack->getName();
         string deals = "deals";
         string their = "their";
         string theSpace = "The ";
 
         if (playerAttacker) {
-            attackerString = Ui::colorCode(C_LIGHT_BLUE) + "You";
+            attackerString = colorCode(C_LIGHT_BLUE) + "You";
             deals = "deal";
             their = "your";
             theSpace = "";
@@ -54,14 +58,14 @@ namespace Verbalizer {
         }
 
         if (playerUnderAttack) {
-            underAttackString = Ui::colorCode(C_LIGHT_BLUE) + "you";
+            underAttackString = colorCode(C_LIGHT_BLUE) + "you";
         }
         string verbal = theSpace + attackerString +
-                Ui::colorCode(C_WHITE) + " " + deals +
-                Ui::colorCode(C_LIGHT_GREEN) + " %.2f " +
-                Ui::colorCode(C_WHITE) + "damage to " + underAttackString +
-                Ui::colorCode(C_WHITE) + " with " + their + " " +
-                Ui::colorCode(C_LIGHT_RED) + weapon->getName(false);
+                colorCode(C_WHITE) + " " + deals +
+                colorCode(C_LIGHT_GREEN) + " %.2f " +
+                colorCode(C_WHITE) + "damage to " + underAttackString +
+                colorCode(C_WHITE) + " with " + their + " " +
+                colorCode(C_LIGHT_RED) + weapon->getName(false);
 
         consolef(verbal, damage);
 
@@ -70,21 +74,21 @@ namespace Verbalizer {
 
     void defeatedEnemy(EntityAlive* dead, int xpGained) {
         consolef("You have deafeated the %s%s%s and gained %s%d xp%s.",
-                Ui::colorCode(C_LIGHT_BLUE).c_str(),
+                colorCode(C_LIGHT_BLUE).c_str(),
                 dead->getName().c_str(),
-                Ui::colorCode(C_WHITE).c_str(),
-                Ui::colorCode(C_LIGHT_GREEN).c_str(),
+                colorCode(C_WHITE).c_str(),
+                colorCode(C_LIGHT_GREEN).c_str(),
                 xpGained,
-                Ui::colorCode(C_WHITE).c_str());
+                colorCode(C_WHITE).c_str());
     }
 
     void leveledUp(EntityPlayer* player) {
         consolef("%sLevel Up!%s You are now level %s%d%s.",
-                Ui::colorCode(C_LIGHT_GREEN).c_str(),
-                Ui::colorCode(C_WHITE).c_str(),
-                Ui::colorCode(C_LIGHT_GREEN).c_str(),
+                colorCode(C_LIGHT_GREEN).c_str(),
+                colorCode(C_WHITE).c_str(),
+                colorCode(C_LIGHT_GREEN).c_str(),
                 player->level,
-                Ui::colorCode(C_WHITE).c_str());
+                colorCode(C_WHITE).c_str());
     }
 
 }

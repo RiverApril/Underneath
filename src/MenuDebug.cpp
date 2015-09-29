@@ -50,7 +50,7 @@ namespace Ui {
 
         for(int i=0;i<0x10;i++){
             for(int j=0;j<0x10;j++){
-                printMultiLineColoredString(i, j+20, colorCode(i, j)+"#");
+                printMultiLineColoredString(i, j+20, (string("&")+cc(i, j))+"#");
             }
         }
 

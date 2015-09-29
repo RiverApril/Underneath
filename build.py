@@ -32,8 +32,14 @@ parser.add_argument("-l", "--linkonly", action="store_true")
 parser.add_argument("-r", "--run", action="store_true")
 parser.add_argument("-e", "--release", action="store_true")
 parser.add_argument("-d", "--debug", action="store_true")
+parser.add_argument("-t", "--art", action="store_true")
 
 args = parser.parse_args()
+
+
+if args.art:
+    print("    + Making ArtFiles.hpp")
+    import compileArt
 
 
 

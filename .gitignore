@@ -35,3 +35,4 @@ settings.txt
 UnderneathSolution/*
 *.lib
 mingw_dev_lib/*
+*.pyc

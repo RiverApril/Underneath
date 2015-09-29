@@ -725,7 +725,7 @@ namespace Ui {
                     Ui::setColor(C_WHITE);
 
 
-                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("%s [%s%c%s]", nearestEntity->getName().c_str(), colorCode(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)).c_str(), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), colorCode(C_WHITE).c_str()));
+                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("%s [&%c%c&%c]", nearestEntity->getName().c_str(), cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE)));
                     //printw("%c", );
                     //Ui::setColor(C_WHITE);
                     //printw("]");

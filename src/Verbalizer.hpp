@@ -14,6 +14,8 @@
 
 namespace Verbalizer {
 
+    string colorCode(const unsigned char fg, const unsigned char bg);
+
     void weakness(EntityAlive* underAttack, Weakness w, double damageWithoutChange, double damageWithChange);
 
     void attack(EntityAlive* attacker, EntityAlive* underAttack, ItemWeapon* weapon, double damage);

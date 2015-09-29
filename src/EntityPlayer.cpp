@@ -260,10 +260,10 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
         } else if (tid == Tiles::tileLockedDoor->getIndex()) {
             if(containsItemEqualingExceptQty(ItemGenerator::iSmallKey, 1)){
             	level->setTile(posOfTile, Tiles::tileOpenDoor);
-                consolef("Opened the door using up a %sKey%s.", Ui::colorCode(C_LIGHT_MAGENTA).c_str(), Ui::colorCode(C_WHITE).c_str());
+                consolef("Opened the door using up a &%cKey&%c.", Ui::cc(C_LIGHT_MAGENTA), Ui::cc(C_WHITE));
             	return interactDelay;
             }else{
-                consolef("This door requires a %sKey%s.", Ui::colorCode(C_LIGHT_MAGENTA).c_str(), Ui::colorCode(C_WHITE).c_str());
+                consolef("This door requires a &%cKey&%c.", Ui::cc(C_LIGHT_MAGENTA), Ui::cc(C_WHITE));
             }
         } else if (tid == Tiles::tileCrate->getIndex()) {
             level->setTile(posOfTile, Tiles::tileFloor);
@@ -327,10 +327,10 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
 
             if (ranged) {
                 if (distanceSquared(pos, posOfEntity) > ranged->range * ranged->range) {
-                    console(Ui::colorCode(C_LIGHT_RED) + "Out of range!");
+                    consolef("&%cOut of range!", Ui::cc(C_LIGHT_RED));
                     return 0;
                 } else if (!level->canSee(pos, posOfEntity, viewDistance, false)) {
-                    console(Ui::colorCode(C_LIGHT_RED) + "No line of sight!");
+                    consolef("&%cNo line of sight!", Ui::cc(C_LIGHT_RED));
                     return 0;
                 }
             }
@@ -351,7 +351,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
 
                     return useDelay(item);
                 }
-                console(Ui::colorCode(C_LIGHT_RED) + "Not enough mana!");
+                consolef("&%cNot enough mana!", Ui::cc(C_LIGHT_RED));
                 return 0;
             }
 
@@ -369,7 +369,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
 
             return 0;
         } else {
-            console(Ui::colorCode(C_LIGHT_RED) + "No item equiped!");
+            consolef("&%cNo item equiped!", Ui::cc(C_LIGHT_RED));
             return 0;
         }
     }

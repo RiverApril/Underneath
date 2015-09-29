@@ -71,6 +71,18 @@ namespace ItemGenerator {
             EffIdMeta(effBuffDefense, damShock)
         }, 2, 30, .1, 1, false));
 
+        PotionBase potionPhysicalAttack = atl(PotionBase({"Physical Attack Potion"}, {
+            EffIdMeta(effBuffAttack, damPierce),
+            EffIdMeta(effBuffAttack, damSharp),
+            EffIdMeta(effBuffAttack, damBlunt)
+        }, 4, 60, 1.1, 2, false));
+
+        PotionBase potionElementalAttacK = atl(PotionBase({"Elemental Attack Potion"}, {
+            EffIdMeta(effBuffAttack, damFire),
+            EffIdMeta(effBuffAttack, damIce),
+            EffIdMeta(effBuffAttack, damShock)
+        }, 2, 30, 1.1, 2, false));
+
         /*PotionBase potionOrganicDefense = atl(PotionBase({"Organic Defense Potion"}, {
             EffIdMeta(effBuffDefense, damPoison),
             EffIdMeta(effBuffDefense, damBlood)
@@ -335,13 +347,14 @@ namespace ItemGenerator {
     }
 
     Item* createRandAltLoot(int itemDifficulty) {
-        if(rand()%3 != 0) {
+        int r = rand() % 8;
+        if(r < 4) {// 1/2 for potion
             PotionBase pb = potionList[rand() % potionList.size()];
             return createPotionFromBase(pb, itemDifficulty);
-        } else if(rand()%3 != 0) {
+        } else if(r < 6) {// 1/4 for scroll
             ScrollBase sb = scrollList[rand() % scrollList.size()];
             return createScrollFromBase(sb);
-        } else {
+        } else {// 1/4 for bomb
             return new ItemTimeActivated(rand()%10==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10), 1);
         }
     }

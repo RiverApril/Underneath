@@ -266,12 +266,17 @@ namespace Ui {
         }
     }*/
 
-    string colorCode(const unsigned char fgc, const unsigned char bgc) {
+    /*string colorCode(const unsigned char fgc, const unsigned char bgc) {
 		string s = "&";
 		s += (char)(unsigned char)(fgc | (bgc << 4));
 		//debugf("code: 0x%x, 0x%x, 0x%x", s[1], bgc, fgc);
 		return s;
-	}
+	}*/
+
+    //colorCode proceded by &
+    char cc(const unsigned char fgc, const unsigned char bgc){
+        return (char)(fgc | (bgc << 4));
+    }
 
     bool addChColor(char c, bool* lookingForCode) {
         if (*lookingForCode) {
@@ -342,7 +347,7 @@ namespace Ui {
             a += printMultiLineString(a, columnX, formatString("Enchantments:"));
             for (Enchantment e : enchantments) {
                 setColor(effectColor(e.effectId, e.meta));
-                a += printMultiLineString(a, columnX, formatString("   %s %s (1/%d for %.2f)", enchantmentName(e).c_str(), Utility::intToRomanNumerals((int)e.power).c_str(), e.chance, e.time));
+                a += printMultiLineString(a, columnX, formatString("   %s %s (1/%d chance, lasts for %.2ft)", enchantmentName(e).c_str(), Utility::intToRomanNumerals((int)e.power).c_str(), e.chance, e.time));
 
             }
             a++;
@@ -511,9 +516,11 @@ namespace Ui {
                         for (Effect e : potion->effects) {
                             if (e.timeLeft > 0) {
                                 if(e.eId == effBuffDefense){
-                                    a += printMultiLineString(a, columnX, formatString("   %s %d%% for %.2f", effectName(e.eId, e.meta).c_str(), (int)(e.power*100), e.timeLeft));
+                                    a += printMultiLineString(a, columnX, formatString("   %s %d%% for %.2ft", effectName(e.eId, e.meta).c_str(), (int)(e.power*100), e.timeLeft));
+                                }else if(e.eId == effBuffAttack){
+                                    a += printMultiLineString(a, columnX, formatString("   %s %c%d% for %.2ft", effectName(e.eId, e.meta).c_str(), e.power>0?'+':'-', (int)abs((e.power*100)-100), e.timeLeft));
                                 }else{
-                                	a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2f", effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
+                                    a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2ft", effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
                                 }
                             } else {
                                 a += printMultiLineString(a, columnX, formatString("   %s %.2f", effectName(e.eId, e.meta).c_str(), e.power));

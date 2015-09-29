@@ -361,6 +361,9 @@ namespace WorldLoader {
         //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
 
 
+
+
+
         world->currentLevel->newEntity(world->currentPlayer);
 
         //save(world);

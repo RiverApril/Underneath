@@ -74,6 +74,7 @@ namespace ItemGenerator {
         vector<vector<string>> names;
         vector<EquipSlot> viableSlots;
         vector<DefenseRange> defences;
+        vector<Enchantment> enchs;
         double weight;
     };
 

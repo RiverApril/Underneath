@@ -31,7 +31,7 @@ namespace Arts {
     void loadArts();
     void cleanupArts();
 
-    int loadNew(string location, string name, string ext = "txt", string dot = ".");
+    int loadNew(string location, string name, vector<string> fallback, string ext = "txt", string dot = ".");
 
     Art* getArt(int index);
 
