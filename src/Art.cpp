@@ -81,7 +81,7 @@ namespace Arts {
 
         mkdir(ArtDir.c_str(), 0777);
 
-        defaultArt = new Art();
+        defaultArt = new Art("Default Art");
         defaultArt->lines.push_back("Failed to load art.");
 
         Arts::artTitle = Arts::loadNew(ArtDir + "/", "title", ArtFiles::title);
@@ -174,7 +174,7 @@ namespace Arts {
 			if (compassInSize.x > 0 && compassInSize.y > 0) {
 
 				for (int j = compassInSize.y;j < fullInSize.y;j += compassInSize.y) {
-					Art* a = new Art();
+					Art* a = new Art("compassIn part");
 
 					for (int i = 0;i < compassInSize.y;i++) {
 						if (j + i < fullCompassInArt->lines.size()) {
@@ -214,7 +214,7 @@ namespace Arts {
                     break;
                 }
             }
-            Art* a = new Art();
+            Art* a = new Art("CompassOut");
 
             for(int i=compassInOffset.y;i<fullOutSize.y;i++){
                 a->lines.push_back(fullCompassOutArt->lines[i]);
@@ -243,7 +243,7 @@ namespace Arts {
     int loadNew(string location, string name, vector<string> fallback, string ext, string dot) {
         string path = location + name + dot + ext;
 
-        Art* art = new Art();
+        Art* art = new Art(name);
 
 
         FILE* file;

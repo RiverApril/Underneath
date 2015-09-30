@@ -33,6 +33,8 @@ namespace Ui {
 
         World* currentWorld;
 
+        int artIndex = 0;
+
     };
 }
 

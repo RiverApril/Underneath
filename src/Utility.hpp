@@ -129,6 +129,8 @@ namespace Utility {
     void executeGrid(Point2 min, Point2 max, std::function<void(int, int)> process);
 
     vector<Point2> plotLine(Point2 a, Point2 b);
+
+    string capitalize(string s);
 }
 
 

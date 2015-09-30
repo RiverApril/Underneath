@@ -26,6 +26,15 @@ namespace Ui {
         }else if(in == 'q'){
             openMenu(new MenuMessage("Test 1", new MenuMessage("Test 2")));
             return;
+        }else if(in == '['){
+            artIndex--;
+        }else if(in == ']'){
+            artIndex++;
+        }
+        if(artIndex >= (int)Arts::artList.size()){
+            artIndex = -1;
+        }else if(artIndex < -1){
+            artIndex = ((int)Arts::artList.size())-1;
         }
     }
 
@@ -40,18 +49,26 @@ namespace Ui {
         
         move(0, 0);
 
-        for(int i=0;i<0x10;i++){
-            for(int j=0;j<0x10;j++){
-                setColor(i, j);
-                addch('#');
-            }
-            addch('\n');
-        }
+        if(artIndex == -1){
 
-        for(int i=0;i<0x10;i++){
-            for(int j=0;j<0x10;j++){
-                printMultiLineColoredString(i, j+20, (string("&")+cc(i, j))+"#");
+            for(int i=0;i<0x10;i++){
+                for(int j=0;j<0x10;j++){
+                    setColor(i, j);
+                    addch('#');
+                }
+                addch('\n');
             }
+
+            for(int i=0;i<0x10;i++){
+                for(int j=0;j<0x10;j++){
+                    printMultiLineColoredString(i, j+20, (string("&")+cc(i, j))+"#");
+                }
+            }
+
+        }else{
+            Art* a = Arts::getArt(artIndex);
+            printw("[%d] %s", artIndex, a->name.c_str());
+            a->printAt(Point2(0, 1));
         }
 
         /*

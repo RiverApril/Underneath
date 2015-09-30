@@ -447,4 +447,9 @@ namespace Utility {
         return line;
     }
 
+    string capitalize(string s){
+        s[0] = (char)min((int)s[0], (int)(s[0]-('a'-'A')));
+        return s;
+    }
+
 }

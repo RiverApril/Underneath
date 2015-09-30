@@ -13,7 +13,8 @@
 #include "Geometry.hpp"
 
 struct Art {
-    vector<string> lines;
+
+    Art(string name) : name(name){}
 
     Point2 calcSize();
     Point2 getSize();
@@ -22,7 +23,9 @@ struct Art {
 
     void printCenter(int y, int xOffset = 0);
 
+    vector<string> lines;
     Point2 size;
+    string name;
 
 };
 

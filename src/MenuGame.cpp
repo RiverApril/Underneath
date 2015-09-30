@@ -535,9 +535,12 @@ namespace Ui {
                     targetPosition = currentPlayer->pos;
                 } else if(controlMode == modeSelectPosition){
                     changeMode(modeEntityPlayerControl);
+
+                    console("Inspecting...");
+
                     if(currentLevel->getExplored(targetPosition)){
 
-                        console("Tile: "+currentLevel->tileAt(targetPosition)->getName());
+                        console(Utility::capitalize(currentLevel->tileAt(targetPosition)->getName()));
 
                         if(currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance, true)){
                             for(Entity* e : currentLevel->entityList){
@@ -565,13 +568,23 @@ namespace Ui {
                                     if(Settings::debugMode){
                                         console("Tile Entity("+to_string(t->getTileEntityTypeId())+"): "+t->debugString());
                                     }
+                                    switch (t->getTileEntityTypeId()) {
+                                        case TILE_ENTITY_TYPE_STAIR:{
+                                            TEStair* tes = dynamic_cast<TEStair*>(t);
+                                            consolef("Staircase going &%c%s", cc(C_LIGHT_CYAN), tes->up?"Up":"Down");
+                                            break;
+                                        }
+
+                                        default:
+                                            break;
+                                    }
                                 }
                             }
                         }else{
-                            console("Tile not in view.");
+                            console("Area not in view");
                         }
                     }else{
-                        console("Tile unexplored.");
+                        console("Area Unexplored.");
                     }
                 }
             } else if(Settings::cheatKeysEnabled){
@@ -596,6 +609,9 @@ namespace Ui {
 
                 } else if (in == '}') {
                     currentPlayer->heal(10);
+
+                } else if (in == 'D') {
+                    openMenu(new MenuDebug(currentWorld));
 
                 }
             }
