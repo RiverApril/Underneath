@@ -26,7 +26,7 @@ EntityAlive::EntityAlive(string name, char icon, Point2 startPos, Ui::Color colo
 }
 
 EntityAlive::~EntityAlive() {
-    
+
 }
 
 bool EntityAlive::update(double deltaTime, double time, Level* level) {
@@ -60,7 +60,7 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
                                 level->setTile(pos, Tiles::tileBloodFloor);
                             }
                             break;
-                            
+
                         default:
                             break;
                     }
@@ -100,9 +100,9 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
 }
 
 double EntityAlive::hurt(DamageType damageType, double amount, double damageMultiplier) {
-    
+
     damageMultiplier *= getDefenseMultiplierFromEffects(damageType);
-    
+
     amount *= damageMultiplier;
 
     double amoutBeforeWeaknesses = amount;
@@ -129,7 +129,7 @@ double EntityAlive::hurt(ItemWeapon* w, double damageMultiplier) {
             addEffect(Effect(ench.effectId, ench.time, ench.power, ench.meta));
         }
     }
-    
+
     return hurt(w->damageType, d, damageMultiplier);
 }
 

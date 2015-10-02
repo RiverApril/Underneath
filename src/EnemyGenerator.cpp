@@ -60,7 +60,7 @@ namespace EnemyGenerator {
 
 
 
-        mimic = new EntityBase(0, "Mimic", '+', aiAttack | aiMoveRandom, 75, ItemGenerator::wNatural, "Teeth", C_LIGHT_GREEN, 0);
+        mimic = new EntityBase(0, "Mimic", 'M', aiAttack | aiMoveRandom, 75, ItemGenerator::wNatural, "Teeth", C_LIGHT_GREEN, 0);
         mimic->weaknesses.push_back(Weakness(damFire, 4));
 
 

@@ -151,7 +151,7 @@ namespace ItemGenerator {
 
         ItemArmorBase aMailGloves = atl(ItemArmorBase({{"Mail Gloves", "Pairs of Mail Gloves"}, {"Mail Gauntlets", "Pairs of Mail Gauntlets"}}, {slotHands}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}, 1));
 
-        
+
 
 
         ItemArmorBase aGoldenRing = atl(ItemArmorBase({{"Golden Ring"}, {"Silver Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));

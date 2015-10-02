@@ -26,7 +26,7 @@ EntityAi::EntityAi(std::string name, int aiFlags, char icon, Point2 startPos, Ui
 }
 
 EntityAi::~EntityAi() {
-	
+
 }
 
 void EntityAi::lookAi(double time, Level* level){
@@ -185,7 +185,7 @@ void EntityAi::moveAi(double time, Level* level) {
                 speed = possibilities[rand()%possibilities.size()];
                 debugf("possibility size: %d", possibilities.size());
             }
-            
+
         }
 
     }

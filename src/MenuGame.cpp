@@ -447,7 +447,7 @@ namespace Ui {
 
             } else if (in == Key::wait) {
                 if(controlMode == modeEntityPlayerControl){
-                    timeout(0);
+                    timeout(20);
                     console("Waiting indefinitely. Press any key to stop waiting.");
                     bool c = true;
                     while (c) {
@@ -740,22 +740,16 @@ namespace Ui {
                 if (nearestEntity != nullptr) {
                     Ui::setColor(C_WHITE);
 
-                    string s = formatString("[&%c%c&%c] %s", cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE), nearestEntity->getName().c_str());
+                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("[&%c%c&%c] %s ", cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE), nearestEntity->getName().c_str()) );
 
 
+                    EntityAlive* alive = dynamic_cast<EntityAlive*> (nearestEntity);
+                    if (alive) {
+                        const int hp = Math::roundToInt(alive->getHp());
+                        const int maxHp = Math::roundToInt(alive->getMaxHp());
 
-                    EntityAi* aiEntity = dynamic_cast<EntityAi*> (nearestEntity);
-                    if (aiEntity) {
-                        const int hp = Math::roundToInt(aiEntity->getHp());
-                        const int maxHp = Math::roundToInt(aiEntity->getMaxHp());
-                        s+= formatString("%c%s%c", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (int)s.size() - gameArea.x)).c_str(), cc(C_WHITE));
+                        a += printMultiLineColoredString(a, gameArea.x + 1, formatString("HP: &%c%s&%c", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (gameArea.x + 1) - 4)).c_str(), cc(C_WHITE)) );
                     }
-
-                    a += printMultiLineColoredString(a, gameArea.x + 1, s);
-                    //printw("%c", );
-                    //Ui::setColor(C_WHITE);
-                    //printw("]");
-                    a++;
                 }
 
             }
