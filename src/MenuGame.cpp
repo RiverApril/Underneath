@@ -740,11 +740,7 @@ namespace Ui {
                 if (nearestEntity != nullptr) {
                     Ui::setColor(C_WHITE);
 
-
-                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("%s [&%c%c&%c]", nearestEntity->getName().c_str(), cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE)));
-                    //printw("%c", );
-                    //Ui::setColor(C_WHITE);
-                    //printw("]");
+                    string s = formatString("[&%c%c&%c] %s", cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE), nearestEntity->getName().c_str());
 
 
 
@@ -752,11 +748,13 @@ namespace Ui {
                     if (aiEntity) {
                         const int hp = Math::roundToInt(aiEntity->getHp());
                         const int maxHp = Math::roundToInt(aiEntity->getMaxHp());
-                        a += printMultiLineString(a, gameArea.x + 1, formatString(" HP: %d/%d", hp, maxHp));
-                        Ui::setColor((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN);
-                        printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
-                        Ui::setColor(C_WHITE);
+                        s+= formatString("%c%s%c", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (int)s.size() - gameArea.x)).c_str(), cc(C_WHITE));
                     }
+
+                    a += printMultiLineColoredString(a, gameArea.x + 1, s);
+                    //printw("%c", );
+                    //Ui::setColor(C_WHITE);
+                    //printw("]");
                     a++;
                 }
 

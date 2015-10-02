@@ -79,7 +79,7 @@ namespace Arts {
 
     void loadArts() {
 
-        mkdir(ArtDir.c_str(), 0777);
+        //mkdir(ArtDir.c_str(), 0777);
 
         defaultArt = new Art("Default Art");
         defaultArt->lines.push_back("Failed to load art.");
