@@ -32,9 +32,9 @@ namespace Verbalizer {
 			entityIs = colorCode(C_LIGHT_BLUE) + "You" + colorCode(C_WHITE) + " are";
         }
 
-        string verbal = entityIs + " " + weakOrResistant + " to %s, " + colorCode(C_LIGHT_GREEN) + "%.2f" + colorCode(C_WHITE) + " damage was%sdealt.";
+        string verbal = entityIs + " " + weakOrResistant + " to %s, " + colorCode(C_LIGHT_GREEN) + "%.2f" + colorCode(C_WHITE) + "%sdamage was%sdealt.";
 
-        consolef(verbal.c_str(), damageTypeName(w.damageType).c_str(), damage, w.multiplier>1?" ":" not ");
+        consolef(verbal.c_str(), damageTypeName(w.damageType).c_str(), damage, w.multiplier>1?" more ":" ", w.multiplier>1?" ":" not ");
 
     }
 

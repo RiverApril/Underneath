@@ -7,6 +7,7 @@
 //
 
 #include "Controls.hpp"
+#include "Ui.hpp"
 
 namespace Key {
 
@@ -94,15 +95,46 @@ string keyDisplayName(int key){
             return "Escape";
         case '\n':
             return "Enter";
+        case '\t':
+            return "Tab";
         case ' ':
             return "Space";
         case KEY_BACKSPACE:
         case 127:
             return "Backspace";
         case 8:
+        case KEY_DC:
             return "Delete";
+        case KEY_F(1):
+            return "F1";
+        case KEY_F(2):
+            return "F2";
+        case KEY_F(3):
+            return "F3";
+        case KEY_F(4):
+            return "F4";
+        case KEY_F(5):
+            return "F5";
+        case KEY_F(6):
+            return "F6";
+        case KEY_F(7):
+            return "F7";
+        case KEY_F(8):
+            return "F8";
+        case KEY_F(9):
+            return "F9";
+        case KEY_F(10):
+            return "F10";
+        case KEY_F(11):
+            return "F11";
+        case KEY_F(12):
+            return "F12";
 
         default:
-            return string()+(char)key;
+            if(key >= 32 && key <= 126){
+                return formatString("%c", (char)key);
+            }else{
+                return formatString("code(%d)", key);
+            }
     }
 }

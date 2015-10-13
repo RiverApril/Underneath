@@ -704,13 +704,13 @@ namespace Ui {
 
             for (size_t i = 0; i < currentPlayer->effects.size(); i++) {
                 Effect eff = currentPlayer->effects[i];
-                string name = effectName(eff.eId, eff.meta);
-                Ui::Color color = effectColor(eff.eId, eff.meta);
-                setColor(color);
-                if(eff.power > 0){
-                	a += printMultiLineString(a, gameArea.x + 1, formatString("%s %s: %.2f", name.c_str(), Utility::intToRomanNumerals((int) eff.power).c_str(), eff.timeLeft));
+                setColor(effectColor(eff.eId, eff.meta));
+                if(eff.eId == effBuffDefense){
+                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %d%% for %.2ft", effectName(eff.eId, eff.meta).c_str(), (int)(eff.power*100), eff.timeLeft));
+                }else if(eff.eId == effBuffAttack){
+                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %c%d%% for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.power>0?'+':'-', (int)abs((eff.power*100)-100), eff.timeLeft));
                 }else{
-					a += printMultiLineString(a, gameArea.x + 1, formatString("%s: %.2f", name.c_str(), eff.timeLeft));
+                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.power, eff.timeLeft));
                 }
             }
 

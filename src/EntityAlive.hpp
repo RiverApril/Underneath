@@ -109,7 +109,7 @@ public:
                 }
             }
         }
-        return 1.0 - d;
+        return d;
     }
 
 protected:

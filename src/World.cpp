@@ -350,7 +350,7 @@ namespace WorldLoader {
                 delete weapon;
             }
             weapon = ItemGenerator::applyRandConditionToItemWeapon(ItemGenerator::createItemWeaponFromType(wepMelee, 0), 0);
-        }while((weapon->baseDamage / weapon->useDelay) < 5);
+        }while((weapon->baseDamage / weapon->useDelay) < 5 || (weapon->baseDamage / weapon->useDelay) > 6);
         world->currentPlayer->setActiveItemWeapon(weapon);
         world->currentPlayer->addItem(new ItemSpecial(specialtyCompass));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));

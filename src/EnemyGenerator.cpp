@@ -40,7 +40,7 @@ namespace EnemyGenerator {
         troll = atl(new EntityBase(20, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));
 
-        wraith = atl(new EntityBase(2, "Wraith", ' ', aiAttack, 200, ItemGenerator::wSword, "", C_BLACK, 2.0, 2));
+        wraith = atl(new EntityBase(2, "Wraith", 'W', aiAttack, 200, ItemGenerator::wSword, "", C_DARK_GRAY, 2.0, 2));
         wraith->weaknesses.push_back(Weakness(damFire, 2));
         wraith->weaknesses.push_back(Weakness(damIce, 2));
         wraith->weaknesses.push_back(Weakness(damShock, 2));

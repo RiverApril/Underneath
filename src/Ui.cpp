@@ -518,7 +518,7 @@ namespace Ui {
                                 if(e.eId == effBuffDefense){
                                     a += printMultiLineString(a, columnX, formatString("   %s %d%% for %.2ft", effectName(e.eId, e.meta).c_str(), (int)(e.power*100), e.timeLeft));
                                 }else if(e.eId == effBuffAttack){
-                                    a += printMultiLineString(a, columnX, formatString("   %s %c%d% for %.2ft", effectName(e.eId, e.meta).c_str(), e.power>0?'+':'-', (int)abs((e.power*100)-100), e.timeLeft));
+                                    a += printMultiLineString(a, columnX, formatString("   %s %c%d%% for %.2ft", effectName(e.eId, e.meta).c_str(), e.power>0?'+':'-', (int)abs((e.power*100)-100), e.timeLeft));
                                 }else{
                                     a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2ft", effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
                                 }

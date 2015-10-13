@@ -12,6 +12,7 @@
 #include "Utility.hpp"
 #include "ItemGenerator.hpp"
 #include "Settings.hpp"
+#include "Controls.hpp"
 
 
 
@@ -265,7 +266,7 @@ namespace Commands {
             do{
             	in = getch();
             }while(in == ERR);
-            consolef("Key pressed: int(%d)  char(%c)", (char) in, in);
+            consolef("Key pressed: int(%d) name: %s", in, keyDisplayName(in).c_str());
             currentMenu->update();
             return true;
         }

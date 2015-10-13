@@ -101,7 +101,7 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
 
 double EntityAlive::hurt(DamageType damageType, double amount, double damageMultiplier) {
 
-    damageMultiplier *= getDefenseMultiplierFromEffects(damageType);
+    damageMultiplier *= 1.0 - getDefenseMultiplierFromEffects(damageType);
 
     amount *= damageMultiplier;
 
@@ -110,7 +110,7 @@ double EntityAlive::hurt(DamageType damageType, double amount, double damageMult
     for (Weakness w : weaknesses) {
         if (w.damageType == damageType) {
             amount *= w.multiplier;
-            Verbalizer::weakness(this, w, amoutBeforeWeaknesses, amount);
+            //Verbalizer::weakness(this, w, amoutBeforeWeaknesses, amount);
         }
     }
 
@@ -130,7 +130,7 @@ double EntityAlive::hurt(ItemWeapon* w, double damageMultiplier) {
         }
     }
 
-    return hurt(w->damageType, d, damageMultiplier);
+    return EntityAlive::hurt(w->damageType, d, damageMultiplier);
 }
 
 void EntityAlive::addEffect(Effect e) {
