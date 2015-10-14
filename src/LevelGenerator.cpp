@@ -81,7 +81,7 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor 1"));
 
 
-    int count = (rand() % 10)+5;
+    int count = (rand() % 20)+5;
 
     for(int i=0;i<count;i++){
         Entity* e = makeEntity(EnemyGenerator::bunny, difficulty);
@@ -146,10 +146,9 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
         int dist = (size.xPlusY()) / 2;
         attemt = 0;
         while (true) {
-            genDebug("looking for exit location  attemt #" + to_string(attemt));
+            genDebug("looking for exit location   attemt #" + to_string(attemt));
             attemt++;
             stairDownPos = findRandomOfType(Tiles::tileFloor->getIndex());
-            //stairUpPos = findRandomOfType(tileFloor->getIndex());
             if ((distanceSquared(stairUpPos, stairDownPos) > (dist * dist)) && canPathTo(stairUpPos, stairDownPos, tileFlagPathable)) {
                 break;
             } else {
@@ -213,7 +212,7 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor" + to_string(Utility::parseInt(name.substr(5)) + 1)));
 
 
-    genDebug("Counting Valid Tiles...");
+    genDebug("Counting Solid Tiles...");
 
 
     int nonsolidAccessableTileCount = 0;

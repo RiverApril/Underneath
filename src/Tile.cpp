@@ -111,7 +111,7 @@ namespace Tiles {
         tileCrate = new Tile(new BasicIcon('+', C_DARK_YELLOW, bg), "crate", tileFlagSolid | tileFlagHasTileEntity);
 
 
-        tileRubble = new Tile(new RandomIcon({'#', '%', '$'}, C_LIGHT_GRAY, bg), "rubble", tileFlagPathable | tileFlagReplaceable, new RandomIcon({'#', '%', '&'}, C_DARK_GRAY, bg));
+        tileRubble = new Tile(new RandomIcon({'#', '#', '#', ','}, C_LIGHT_GRAY, bg), "rubble", tileFlagPathable | tileFlagReplaceable, new RandomIcon({'#', '#', '#', ','}, C_DARK_GRAY, bg));
         tileCorpse = new Tile(new BasicIcon('&', C_LIGHT_RED, bg), "corpse", tileFlagPathable, new BasicIcon('&', C_DARK_GRAY, bg));
         tileBones = new Tile(new BasicIcon('&', C_LIGHT_GRAY, bg), "bones", tileFlagPathable, new BasicIcon('.', C_DARK_GRAY, bg));
 

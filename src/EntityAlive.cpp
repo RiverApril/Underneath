@@ -105,7 +105,7 @@ double EntityAlive::hurt(DamageType damageType, double amount, double damageMult
 
     amount *= damageMultiplier;
 
-    double amoutBeforeWeaknesses = amount;
+    //double amoutBeforeWeaknesses = amount;
 
     for (Weakness w : weaknesses) {
         if (w.damageType == damageType) {

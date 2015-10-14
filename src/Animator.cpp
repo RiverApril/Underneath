@@ -62,7 +62,7 @@ namespace Animator {
 
         double p = 8;
 
-        RandomIcon icon = RandomIcon({'~', '*', '&'}, C_LIGHT_YELLOW, C_BLACK);
+        RandomIcon icon = RandomIcon({'~', '*', '&'}, 0/*Irrelevant*/, C_BLACK);
 
         timeout(10);
 
@@ -70,7 +70,7 @@ namespace Animator {
             double ma = ((r+1)*p);
             double maDivTau = ma/Math::tau;
 
-            Ui::setColor(r<(radius/3)?C_LIGHT_RED:C_LIGHT_YELLOW, icon.Icon::getBgColor(Ui::tick, Point2Zero, level));
+            Ui::setColor(r<(radius/3)?C_LIGHT_RED:C_LIGHT_YELLOW, icon.getBgColor(Ui::tick, Point2Zero, level));
 
             for(double a = 0; a<ma;a+=maDivTau){
                 Point2 pos = Point2(sin(maDivTau*a)*r, cos(maDivTau*a)*r);
