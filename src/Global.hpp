@@ -17,6 +17,7 @@
 #include <map>
 #include <functional>
 #include <algorithm>
+#include <stdint.h>
 
 
 #include <time.h>

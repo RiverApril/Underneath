@@ -418,56 +418,62 @@ namespace MainWindow{
                             if(shiftIsDown){
                                 if(e.key.keysym.sym >= 'a' && e.key.keysym.sym <= 'z'){
                                     return e.key.keysym.sym += ('A'-'a');
+                                }else{
+	                                switch (e.key.keysym.sym) {
+	                                    case '`':
+	                                        return '~';
+	                                    case '1':
+	                                        return '!';
+	                                    case '2':
+	                                        return '@';
+	                                    case '3':
+	                                        return '#';
+	                                    case '4':
+	                                        return '$';
+	                                    case '5':
+	                                        return '%';
+	                                    case '6':
+	                                        return '^';
+	                                    case '7':
+	                                        return '&';
+	                                    case '8':
+	                                        return '*';
+	                                    case '9':
+	                                        return '(';
+	                                    case '0':
+	                                        return ')';
+	                                    case '-':
+	                                        return '_';
+	                                    case '=':
+	                                        return '+';
+	                                    case '[':
+	                                        return '{';
+	                                    case ']':
+	                                        return '}';
+	                                    case '\\':
+	                                        return '|';
+	                                    case ';':
+	                                        return ':';
+	                                    case '\'':
+	                                        return '"';
+	                                    case ',':
+	                                        return '<';
+	                                    case '.':
+	                                        return '>';
+	                                    case '/':
+	                                        return '?';
+	                                        
+	                                    default:
+	                                        break;
+	                                }
                                 }
-                                switch (e.key.keysym.sym) {
-                                    case '`':
-                                        return '~';
-                                    case '1':
-                                        return '!';
-                                    case '2':
-                                        return '@';
-                                    case '3':
-                                        return '#';
-                                    case '4':
-                                        return '$';
-                                    case '5':
-                                        return '%';
-                                    case '6':
-                                        return '^';
-                                    case '7':
-                                        return '&';
-                                    case '8':
-                                        return '*';
-                                    case '9':
-                                        return '(';
-                                    case '0':
-                                        return ')';
-                                    case '-':
-                                        return '_';
-                                    case '=':
-                                        return '+';
-                                    case '[':
-                                        return '{';
-                                    case ']':
-                                        return '}';
-                                    case '\\':
-                                        return '|';
-                                    case ';':
-                                        return ':';
-                                    case '\'':
-                                        return '"';
-                                    case ',':
-                                        return '<';
-                                    case '.':
-                                        return '>';
-                                    case '/':
-                                        return '?';
-                                        
-                                    default:
-                                        break;
-                                }
+                            }else{
+                                if(e.key.keysym.sym >= 'A' && e.key.keysym.sym <= 'Z'){
+                                    return e.key.keysym.sym -= ('A'-'a');
+                                }else{
+                            		return e.key.keysym.sym;
+                            	}
                             }
-                            return e.key.keysym.sym;
                         }else{
                             return ERR;
                         }
@@ -590,7 +596,7 @@ int	mvprintw(int y, int x, const char * s, ...){
 }
 
 int	hline(const char c, int l){
-    for(int i=0;cursor%width>0 && i<=l;i++){
+    for(int i=0;cursor%width>=0 && i<=l;i++){
         screenCharBuffer[cursor] = c;
         screenAttrBuffer[cursor] = currentAttr;
         cursor++;

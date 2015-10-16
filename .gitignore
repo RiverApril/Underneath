@@ -36,3 +36,5 @@ UnderneathSolution/*
 *.lib
 mingw_dev_lib/*
 *.pyc
+*.cproj
+*.userprefs
