@@ -550,7 +550,12 @@ namespace Ui {
 
                                     EntityAlive* a = dynamic_cast<EntityAlive*>(e);
                                     if(a){
-                                        consolef("%s HP:[%f/%f]", a->getName().c_str(), a->getHp(), a->getMaxHp());
+                                        consolef("%s - HP:[%.0f/%.0f]", a->getName().c_str(), a->getHp(), a->getMaxHp());
+                                        EntityAi* eai = dynamic_cast<EntityAi*>(a);
+                                        ItemWeapon* w = eai->getActiveItemWeapon();
+                                        if(w){
+                                        	consolef("Weapon: %s  %.2f d/t (%.2f per %.2ft) ", damageTypeName(w->damageType).c_str(), w->baseDamage, w->useDelay, w->baseDamage / w->useDelay);
+                                        }
                                         for(Weakness w : a->weaknesses){
                                             if(w.multiplier > 1){
                                                 consolef("%d%% Weakness to %s", (int)(1/w.multiplier*100), damageTypeName(w.damageType).c_str());
