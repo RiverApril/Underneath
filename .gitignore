@@ -38,3 +38,8 @@ mingw_dev_lib/*
 *.pyc
 *.cproj
 *.userprefs
+app/*
+.gradle/*
+.idea/*
+local.properties
+build/*
