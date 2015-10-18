@@ -156,7 +156,7 @@ namespace ItemGenerator {
 
         ItemArmorBase aGoldenRing = atl(ItemArmorBase({{"Golden Ring"}, {"Silver Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));
 
-        ItemArmorBase aJewelRing = atl(ItemArmorBase({{"Golden Garnet Ring"}, {"Silver Amathyst Ring"}, {"Silver Garnet Ring"}, {"Golden Amathyst Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .20, 10), DefenseRange(damIce, .01, .20, 10), DefenseRange(damShock, .01, .20, 10)}, 1));
+        ItemArmorBase aJewelRing = atl(ItemArmorBase({{"Golden Garnet Ring"}, {"Silver Amethyst Ring"}, {"Silver Garnet Ring"}, {"Golden Amethyst Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .20, 10), DefenseRange(damIce, .01, .20, 10), DefenseRange(damShock, .01, .20, 10)}, 1));
 
 
     }
