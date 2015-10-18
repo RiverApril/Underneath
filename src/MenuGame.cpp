@@ -239,9 +239,9 @@ namespace Ui {
 
                 if(currentPlayer->hasEffect(effLSD)){
                     if(bg != C_BLACK){
-                        bg = (((int)(currentWorld->worldTime*2.7))+p.y-p.x) % 16;
+                        bg = (((int)((currentWorld->worldTime+100)*2.7))+p.y-p.x) % 16;
                     }else{
-                    	fg = (((int)(currentWorld->worldTime*2.3))+p.x-p.y) % 16;
+                    	fg = (((int)((currentWorld->worldTime+100)*2.3))+p.x-p.y) % 16;
                     }
                 }
             }
