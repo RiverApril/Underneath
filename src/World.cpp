@@ -96,7 +96,7 @@ namespace WorldLoader {
                 int levelCount = Utility::loadInt(data, position);
 
                 std::string currentLevelName = Utility::loadString(data, position);
-                int playerUniqueId = Utility::loadInt(data, position);
+                //int playerUniqueId = Utility::loadInt(data, position);
 
                 world->currentLevel = nullptr;
 
@@ -144,13 +144,19 @@ namespace WorldLoader {
                 //
 
                 if (world->currentLevel != nullptr) {
+                	world->currentPlayer = dynamic_cast<EntityPlayer*> (Entity::loadNew(data, position));
+                    world->currentLevel->newEntity(world->currentPlayer, false);
+                    debugf("Loaded Entity Player with uid: %d", world->currentPlayer->uniqueId);
+                }
+
+                /*if (world->currentLevel != nullptr) {
                     for (size_t i = 0; i < world->currentLevel->entityCount(); i++) {
                         if (world->currentLevel->entityList[i]->uniqueId == playerUniqueId) {
                             world->currentPlayer = dynamic_cast<EntityPlayer*> (world->currentLevel->entityList[i]);
                             debugf("Setting currentPlayer to entity with uid: %d", world->currentPlayer->uniqueId);
                         }
                     }
-                }
+                }*/
 
                 delete[] data;
 
@@ -179,10 +185,6 @@ namespace WorldLoader {
         std::string dir = WorldsDir + "/" + loadedWorld->name.c_str() + "/";
         mkdir(dir.c_str(), 0777);
 
-        std::remove((dir + "world" + ".info.backup").c_str());
-        std::rename((dir + "world" + ".info").c_str(),
-                (dir + "world" + ".info.backup").c_str());
-        std::remove((dir + "world" + ".info").c_str());
 
         //world.info
         FILE* fileWorldInfo;
@@ -196,11 +198,15 @@ namespace WorldLoader {
             Utility::saveInt(data, (int)loadedWorld->levels.size());
 
             Utility::saveString(data, loadedWorld->currentLevel->getName());
-            Utility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
+            //Utility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
 
             for (size_t j = 0; j < loadedWorld->levels.size(); j++) {
                 Utility::saveString(data, loadedWorld->levels.at(j));
             }
+
+            debug("Saving Player to world.info");
+            loadedWorld->currentPlayer->save(data);
+
 
             for (size_t j = 0; j < data->size(); j++) {
                 fputc(data->at(j), fileWorldInfo);
@@ -214,9 +220,6 @@ namespace WorldLoader {
 
             Level* l = loadedWorld->currentLevel;
 
-            std::remove((dir + (l->getName()) + ".lvl.backup").c_str());
-            std::rename((dir + (l->getName()) + ".lvl").c_str(),
-                    (dir + (l->getName()) + ".lvl.backup").c_str());
             std::remove((dir + (l->getName()) + ".lvl").c_str());
 
 
@@ -245,9 +248,6 @@ namespace WorldLoader {
                 //levelName.lvl
                 FILE* fileLevel;
 
-                std::remove((dir+(l->getName())+".lvl.backup").c_str());
-                std::rename((dir+(l->getName())+".lvl").c_str(),
-                            (dir+(l->getName())+".lvl.backup").c_str());
                 std::remove((dir+(l->getName())+".lvl").c_str());
 
                 fileLevel = fopen((dir+(l->getName())+".lvl").c_str(), "wb");
@@ -303,13 +303,9 @@ namespace WorldLoader {
 
 
             for (int i = 0; i < levelCount; i++) {
-                std::string levelName;
-
-                levelName = Utility::loadString(data, position);
+                std::string levelName = Utility::loadString(data, position);
 
                 std::remove((dir + levelName + ".lvl").c_str());
-                std::remove((dir + levelName + ".lvl.backup").c_str());
-                //std::rename((dir + levelName + ".lvl.backup").c_str(), (dir + levelName + ".lvl.deleted").c_str());
             }
 
             delete position;
@@ -318,7 +314,6 @@ namespace WorldLoader {
         //
 
         std::remove((dir + "world" + ".info").c_str());
-        std::remove((dir + "world" + ".info.backup").c_str());
 
         debug("Deleted");
 
@@ -359,10 +354,6 @@ namespace WorldLoader {
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedBomb, 15, 1000, 5, 1), 10);
         //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
-
-
-
-
 
         world->currentLevel->newEntity(world->currentPlayer);
 

@@ -72,7 +72,7 @@ Level::~Level() {
     }
     deleteTileEntityList.clear();
 
-    
+
 }
 
 bool Level::getExplored(Point2 p) {
@@ -358,9 +358,9 @@ void Level::renderMenuGame(double displayTime) {
 
 Entity* Level::newEntity(Entity* newE, bool setUID) {
     if(setUID){
-        if(nextUniqueId == 0){
-            debugf("New Entity with UID = 0  Name: %s", newE->getName().c_str());
-        }
+        //if(nextUniqueId == 0){
+            //debugf("New Entity with UID = 0  Name: %s", newE->getName().c_str());
+        //}
         newE->uniqueId = nextUniqueId;
     	nextUniqueId++;
     }
@@ -599,17 +599,27 @@ void Level::save(vector<unsigned char>* data) {
             Utility::saveBool(data, tileGrid[i][j].explored);
         }
     }
-    Utility::saveInt(data, (int) entityList.size());
-    debugf("Saving %d Entities...", (int) entityList.size());
+    int count = 0;
     for (size_t i = 0; i < entityList.size(); i++) {
-        debug("Saving Entity: " + entityList[i]->getName() + "(" + to_string(entityList[i]->getEntityTypeId()) + ")" + ", Pos: " + entityList[i]->pos.toString());
-        entityList[i]->save(data);
+	    if(entityList[i]->getEntityTypeId() != ENTITY_TYPE_PLAYER){
+            count++;
+        }
+    }
+    Utility::saveInt(data, count);
+    debugf("Saving %d Entities...", count);
+    for (Entity* e : entityList) {
+	    if(e->getEntityTypeId() == ENTITY_TYPE_PLAYER){
+	    	debug("Skipping Saving Player");
+	    	continue;
+	    }
+        debug("Saving Entity: " + e->getName() + "(" + to_string(e->getEntityTypeId()) + ")" + ", Pos: " + e->pos.toString());
+        e->save(data);
     }
     debugf("%d Entities Saved.", (int) entityList.size());
     debugf("Saving %d Tile Entities...", (int) tileEntityList.size());
     Utility::saveInt(data, (int) tileEntityList.size());
-    for (size_t i = 0; i < tileEntityList.size(); i++) {
-        tileEntityList[i]->save(data);
+    for (TileEntity* t : tileEntityList) {
+        t->save(data);
     }
     debugf("%d Tile Entities Saved.", (int) tileEntityList.size());
 }
@@ -661,4 +671,3 @@ Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, st
     }
     return Point2Neg1;
 }
-
