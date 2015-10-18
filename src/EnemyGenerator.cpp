@@ -48,13 +48,13 @@ namespace EnemyGenerator {
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
 
         slime = atl(new EntityBase(75, "Slime", 's', aiAttack, 40, ItemGenerator::wNatural, "Goo", C_LIGHT_YELLOW, 1.0));
-        slime->weaknesses.push_back(Weakness(damSharp, .4));
-        slime->weaknesses.push_back(Weakness(damPierce, .4));
+        slime->weaknesses.push_back(Weakness(damSharp, .25));
+        slime->weaknesses.push_back(Weakness(damPierce, .25));
 
         ItemGenerator::WeaponBase myconidWepon = ItemGenerator::wNatural;
         myconidWepon.damage *= .5;
-        myconidWepon.enchs.push_back(Enchantment(effLSD, 30, 0, 50));
-        myconidWepon.enchs.push_back(Enchantment(effMemory, 10, 0, 100));
+        myconidWepon.enchs.push_back(Enchantment(effLSD, 30, 0, 30));
+        myconidWepon.enchs.push_back(Enchantment(effMemory, 30, 0, 100));
         myconid = atl(new EntityBase(20, "Myconid", 'm', aiAttack, 50, myconidWepon, "Finger", C_LIGHT_MAGENTA, 1.0));
         myconid->weaknesses.push_back(Weakness(damFire, 4));
 
