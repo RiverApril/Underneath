@@ -36,6 +36,7 @@ namespace EnemyGenerator {
 
         goblinArcher = atl(new EntityBase(50, "Goblin Archer", 'a', aiAttack, 25, ItemGenerator::wBow, "", C_LIGHT_GREEN, 1.0));
         goblinArcher->weaknesses.push_back(Weakness(damPoison, 2));
+        goblinArcher->weaknesses.push_back(Weakness(damBlunt, 1.25));
 
         troll = atl(new EntityBase(20, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));
