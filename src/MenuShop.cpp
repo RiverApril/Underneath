@@ -77,7 +77,7 @@ namespace Ui {
                         take->qty = 1;
                     }
                     to->addItem(take);
-                    user->addToWallet(-(from->inventory[selected]->coinValue));
+                    user->addToWallet(-(take->coinValue));
                 }
 
             }
@@ -90,7 +90,7 @@ namespace Ui {
                     from->removeItem(from->inventory[selected], false);
 
                     to->addItem(take);
-                    user->addToWallet(-(from->inventory[selected]->coinValue * from->inventory[selected]->qty));
+                    user->addToWallet(-(take->coinValue * from->inventory[selected]->qty));
                 }
             }
 
@@ -109,7 +109,7 @@ namespace Ui {
             selected = 0;
         }
 
-        Ui::drawInventory(currentWorld, user, selected, shop, "Shop", selectedLeft, true);
+        Ui::drawInventory(currentWorld, user, selected, shop, formatString("%s's Wallet: %dc", user->getName().c_str(), user->getWallet()), "Shop Keeper", selectedLeft, true);
 
     }
 }

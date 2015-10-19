@@ -22,6 +22,7 @@ namespace EnemyGenerator {
     EntityBase* wraith;
     EntityBase* slime;
     EntityBase* myconid;
+    EntityBase* snake;
 
     EntityBase* mimic;
     EntityBase* bunny;
@@ -38,6 +39,12 @@ namespace EnemyGenerator {
         goblinArcher->weaknesses.push_back(Weakness(damPoison, 2));
         goblinArcher->weaknesses.push_back(Weakness(damBlunt, 1.25));
 
+        ItemGenerator::WeaponBase snakeWeapon = ItemGenerator::wNatural;
+        snakeWeapon.damageType = damPierce;
+        snakeWeapon.damage *= .75;
+        snakeWeapon.enchs.push_back(Enchantment(effDamage, 20, 1, 40, damPoison));
+        snake = atl(new EntityBase(20, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_GREEN, 1.0));
+
         troll = atl(new EntityBase(20, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));
 
@@ -52,11 +59,11 @@ namespace EnemyGenerator {
         slime->weaknesses.push_back(Weakness(damSharp, .25));
         slime->weaknesses.push_back(Weakness(damPierce, .25));
 
-        ItemGenerator::WeaponBase myconidWepon = ItemGenerator::wNatural;
-        myconidWepon.damage *= .5;
-        myconidWepon.enchs.push_back(Enchantment(effLSD, 30, 0, 30));
-        myconidWepon.enchs.push_back(Enchantment(effMemory, 30, 0, 100));
-        myconid = atl(new EntityBase(20, "Myconid", 'm', aiAttack, 50, myconidWepon, "Finger", C_LIGHT_MAGENTA, 1.0));
+        ItemGenerator::WeaponBase myconidWeapon = ItemGenerator::wNatural;
+        myconidWeapon.damage *= .5;
+        myconidWeapon.enchs.push_back(Enchantment(effLSD, 30, 0, 30));
+        myconidWeapon.enchs.push_back(Enchantment(effMemory, 30, 0, 100));
+        myconid = atl(new EntityBase(20, "Myconid", 'm', aiAttack, 50, myconidWeapon, "Finger", C_LIGHT_MAGENTA, 1.0));
         myconid->weaknesses.push_back(Weakness(damFire, 4));
 
 

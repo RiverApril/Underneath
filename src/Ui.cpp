@@ -355,7 +355,7 @@ namespace Ui {
         return a;
     }
 
-    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string invDisplayName, bool selectedLeft, bool showPrice) {
+    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string playerDisplayName, string invDisplayName, bool selectedLeft, bool showPrice) {
 
         int columnX = 0;
         int columnWidth = (terminalSize.x) / (secondaryInv == nullptr ? 2 : 3);
@@ -399,7 +399,7 @@ namespace Ui {
             if (((ii == 0) != selectedLeft)) {
                 setColor(C_LIGHT_GRAY);
             }
-            mvprintw(0, columnX, (ii == 1 ? invDisplayName.c_str() : "EntityPlayer"));
+            mvprintw(0, columnX, (ii == 1 ? invDisplayName.c_str() : playerDisplayName.c_str()));
 
             int y = 2;
 

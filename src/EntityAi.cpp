@@ -183,7 +183,7 @@ void EntityAi::moveAi(double time, Level* level) {
             }
             if(possibilities.size() > 0){
                 speed = possibilities[rand()%possibilities.size()];
-                debugf("possibility size: %d", possibilities.size());
+                //debugf("possibility size: %d", possibilities.size());
             }
 
         }

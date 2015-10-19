@@ -714,7 +714,11 @@ namespace Ui {
                 }else if(eff.eId == effBuffAttack){
                     a += printMultiLineString(a, gameArea.x + 1, formatString("%s %c%d%% for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.power>0?'+':'-', (int)abs((eff.power*100)-100), eff.timeLeft));
                 }else{
-                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.power, eff.timeLeft));
+                    if(eff.power != 0){
+                    	a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.power, eff.timeLeft));
+                    }else{
+                        a += printMultiLineString(a, gameArea.x + 1, formatString("%s for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.timeLeft));
+                    }
                 }
             }
 

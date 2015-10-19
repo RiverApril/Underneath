@@ -64,7 +64,7 @@ namespace Ui {
 
     int printMultiLineString(int y, int x, string s, int maxX = -1);
 
-    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv = nullptr, string invDisplayName = "", bool selectedLeft = true, bool showPrice = false);
+    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv = nullptr, string playerDisplayName = "", string invDisplayName = "", bool selectedLeft = true, bool showPrice = false);
 
     extern unsigned long tick;
 

@@ -52,6 +52,7 @@ namespace EnemyGenerator {
     extern EntityBase* wraith;
     extern EntityBase* slime;
     extern EntityBase* myconid;
+    extern EntityBase* snake;
 
     extern EntityBase* mimic;
     extern EntityBase* bunny;

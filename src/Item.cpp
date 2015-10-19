@@ -21,6 +21,7 @@ void Item::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getItemTypeId());
     Utility::saveDouble(data, weight);
     Utility::saveString(data, name);
+    Utility::saveString(data, pluralName);
     Utility::saveInt(data, qty);
     Utility::saveInt(data, artIndex);
     Utility::saveInt(data, coinValue);
@@ -29,6 +30,7 @@ void Item::save(vector<unsigned char>* data) {
 void Item::load(unsigned char* data, int* position) {
     weight = Utility::loadDouble(data, position);
     name = Utility::loadString(data, position);
+    pluralName = Utility::loadString(data, position);
     qty = Utility::loadInt(data, position);
     artIndex = Utility::loadInt(data, position);
     coinValue = Utility::loadInt(data, position);
@@ -38,6 +40,7 @@ Item* Item::cloneUnsafe(Item* oldE, Item* newE) {
 
     newE->qty = oldE->qty;
     newE->name = oldE->name;
+    newE->pluralName = oldE->pluralName;
     newE->weight = oldE->weight;
     newE->artIndex = oldE->artIndex;
     newE->coinValue = oldE->coinValue;
