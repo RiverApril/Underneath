@@ -44,3 +44,5 @@ app/*
 local.properties
 build/*
 /src/ArtFiles.hpp
+*.dll
+
