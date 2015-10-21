@@ -43,3 +43,6 @@ app/*
 .idea/*
 local.properties
 build/*
+/src/ArtFiles.hpp
+*.dll
+
