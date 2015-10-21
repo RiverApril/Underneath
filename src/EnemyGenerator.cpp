@@ -43,7 +43,7 @@ namespace EnemyGenerator {
         snakeWeapon.damageType = damPierce;
         snakeWeapon.damage *= .75;
         snakeWeapon.enchs.push_back(Enchantment(effDamage, 20, 1, 40, damPoison));
-        snake = atl(new EntityBase(20, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_GREEN, 1.0));
+        snake = atl(new EntityBase(20, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_BLUE, 1.0));
 
         troll = atl(new EntityBase(20, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));

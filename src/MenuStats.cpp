@@ -72,7 +72,7 @@ namespace Ui {
         int a = 2;
         printCenter(a++, "Level: %d", player->level);
         printCenter(a++, "XP: %d / %d", (int) player->xp, (int) player->nextLevelXp);
-        printCenter(a++, "%s", Utility::makeBar((int) player->xp, (int) player->nextLevelXp, (int)(terminalSize.y*.4)*2).c_str());
+        printCenter(a++, "%s", Utility::makeBar((int) player->xp, (int) player->nextLevelXp, terminalSize.x-4).c_str());
         if (player->abilityPoints > 0) {
             printCenter(a++, "You have skill points to spend: %d", player->abilityPoints);
         } else {
@@ -88,7 +88,7 @@ namespace Ui {
             if (i == selected) {
                 setColor(C_BLACK, C_WHITE);
             }
-            mvprintw(a++, 3, "%s: %3d", abilityNamesRightAligned[i].c_str(), player->abilities[i]);
+            mvprintw(a++, 3, "%s: %d", abilityNamesRightAligned[i].c_str(), player->abilities[i]);
             if (i == selected) {
                 setColor(C_WHITE);
             }

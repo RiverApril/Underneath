@@ -424,6 +424,13 @@ namespace Ui {
                                     break;
                                 }
                             }
+                            for(Effect e : currentPlayer->effects){
+                                if(e.eId == effDamage && e.power < 0){
+                                    b = 0;
+                                    console("You have an effect that is lowering your health!");
+                                    break;
+                                }
+                            }
                             if (b == 1) {
                                 b = 2;
                                 console("Waiting until fully healed...");
@@ -454,6 +461,13 @@ namespace Ui {
                         for (Entity* e : nearest) {
                             if (e->isHostile()) {
                                 console("A hostile is near!");
+                                c = false;
+                                break;
+                            }
+                        }
+                        for(Effect e : currentPlayer->effects){
+                            if(e.eId == effDamage && e.power < 0){
+                                console("You have an effect that is lowering your health!");
                                 c = false;
                                 break;
                             }
@@ -691,18 +705,18 @@ namespace Ui {
             move(a, gameArea.x + 1);
             clrtoeol();
 
-            a += printMultiLineString(a, gameArea.x + 1, formatString("HP: %3d/%3d", hp, maxHp));
+            a += printMultiLineString(a, gameArea.x + 1, formatString("HP: %d/%d", hp, maxHp));
             Ui::setColor((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN);
-            printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
+            printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 1)).c_str());
             Ui::setColor(C_WHITE);
 
             move(a, gameArea.x + 1);
             clrtoeol();
 
             if(maxMp > 0){
-                a += printMultiLineString(a, gameArea.x + 1, formatString("MP: %3d/%3d", mp, maxMp));
+                a += printMultiLineString(a, gameArea.x + 1, formatString("MP: %d/%d", mp, maxMp));
                 Ui::setColor(C_LIGHT_BLUE);
-                printw(" %s", Utility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 2)).c_str());
+                printw(" %s", Utility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 1)).c_str());
                 Ui::setColor(C_WHITE);
             }
 
@@ -734,6 +748,12 @@ namespace Ui {
             	mvprintw(a++, gameArea.x+1, "Tick: %d", tick);
             }
 
+            if(currentPlayer->abilityPoints > 0){
+                a++;
+                printMultiLineString(a++, gameArea.x+1, "Unspent skill points");
+                printMultiLineString(a++, gameArea.x+1, formatString("Press [%s]", keyDisplayName(Key::statsMenu).c_str()).c_str());
+            }
+
             a++;
 
             move(a, gameArea.x + 1);
@@ -756,8 +776,9 @@ namespace Ui {
                         const int hp = Math::roundToInt(alive->getHp());
                         const int maxHp = Math::roundToInt(alive->getMaxHp());
 
-                        a += printMultiLineColoredString(a, gameArea.x + 1, formatString("HP: &%c%s&%c", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (gameArea.x + 1) - 4)).c_str(), cc(C_WHITE)) );
+                        a += printMultiLineColoredString(a, gameArea.x + 2, formatString("HP: &%c%s&%c ", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (gameArea.x + 1) - 5)).c_str(), cc(C_WHITE)) );
                     }
+                    a++;
                 }
 
             }

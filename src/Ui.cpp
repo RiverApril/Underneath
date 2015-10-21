@@ -707,10 +707,17 @@ namespace Ui {
         move(0, terminalSize.x - 15);
         clrtoeol();
 
+        int mpStrL = 1;
+        if(maxMp > 0){
+            setColor(C_LIGHT_BLUE);
+            string mpStr = formatString("%d/%d", mp, maxMp);
+            mpStrL += (int)mpStr.size();
+            mvprintw(0, terminalSize.x - mpStrL, "%s", mpStr.c_str());
+        }
+        mpStrL++;
         setColor(C_LIGHT_GREEN);
-        mvprintw(0, terminalSize.x - 15, "%3d/%3d", hp, maxHp);
-        setColor(C_LIGHT_BLUE);
-        mvprintw(0, terminalSize.x - 7, "%3d/%3d", mp, maxMp);
+        string hpStr = formatString("%d/%d", hp, maxHp);
+        mvprintw(0, terminalSize.x - mpStrL - (int)hpStr.size(), "%s", hpStr.c_str());
 
 
 
