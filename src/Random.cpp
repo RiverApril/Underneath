@@ -12,19 +12,19 @@
 
 namespace Random {
 
-    unsigned char predefinedRandomGrid[64][64];
+    unsigned char predefinedRandomGrid[PREDEFINED_RANDOM_GRID_SIZE][PREDEFINED_RANDOM_GRID_SIZE];
 
     double randDouble(double min, double max) {
         return min + ((rand() / (double) RAND_MAX) * (max - min));
     }
 
     int randomFromPoint(Point2 seed){
-        return predefinedRandomGrid[seed.x % 64][seed.y % 64];
+        return predefinedRandomGrid[seed.x % PREDEFINED_RANDOM_GRID_SIZE][seed.y % PREDEFINED_RANDOM_GRID_SIZE];
     }
 
     void setup(){
-        for(int i=0;i<64;i++){
-            for(int j=0;j<64;j++){
+        for(int i=0;i<PREDEFINED_RANDOM_GRID_SIZE;i++){
+            for(int j=0;j<PREDEFINED_RANDOM_GRID_SIZE;j++){
                 predefinedRandomGrid[i][j] = rand() % 256;
             }
         }

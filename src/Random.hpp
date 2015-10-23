@@ -9,11 +9,13 @@
 #ifndef __Underneath__Random__
 #define __Underneath__Random__
 
+#define PREDEFINED_RANDOM_GRID_SIZE 64
+
 struct Point2;
 
 namespace Random {
 
-    extern unsigned char predefinedRandomGrid[64][64];
+    extern unsigned char predefinedRandomGrid[PREDEFINED_RANDOM_GRID_SIZE][PREDEFINED_RANDOM_GRID_SIZE];
 
     double randDouble(double min, double max);
 
