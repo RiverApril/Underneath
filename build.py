@@ -30,7 +30,7 @@ parser.add_argument("-s", "--sdl", action="store_true")
 parser.add_argument("-a", "--all", action="store_true")
 parser.add_argument("-l", "--linkonly", action="store_true")
 parser.add_argument("-r", "--run", action="store_true")
-parser.add_argument("-e", "--release", action="store_true")
+parser.add_argument("-o", "--optimize", action="store_true")
 parser.add_argument("-d", "--debug", action="store_true")
 parser.add_argument("-t", "--notart", action="store_true")
 parser.add_argument("-w", "--windows", action="store_true")
@@ -65,9 +65,9 @@ executableName = "Underneath"
 
 compileAll = args.all
 
-if args.release:
+if args.optimize:
     optimization = "-O3"
-    executableName += "_Release"
+    executableName += "_Optim"
 
 
 if systemName == "Windows" or args.windows:
@@ -86,16 +86,10 @@ if args.sdl:
     elif systemName == "Darwin":
         compilerFlags += " -I/usr/local/include"
         libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
-        if args.release:
-            libraryFlags += " `sdl2-config --static-libs`"
-        else:
-            libraryFlags += " `sdl2-config --libs`"
+        libraryFlags += " `sdl2-config --libs`"
     else:
         compilerFlags += " `sdl2-config --cflags`"
-        if args.release:
-            libraryFlags = " `sdl2-config --static-libs` -lSDL2_image"
-        else:
-            libraryFlags  = " `sdl2-config --libs` -lSDL2_image"
+        libraryFlags  = " `sdl2-config --libs` -lSDL2_image"
 
 else:
     executableName += "_Term"
