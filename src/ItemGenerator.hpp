@@ -138,7 +138,7 @@ namespace ItemGenerator {
         PotionBase() {
         }
 
-        PotionBase(vector<string> names, vector<EffIdMeta> effects, double timeMin, double timeMax, double powerMin, double powerMax, bool difficultyScales = true) {
+        PotionBase(vector<vector<string> > names, vector<EffIdMeta> effects, double timeMin, double timeMax, double powerMin, double powerMax, bool difficultyScales = true) {
             this->names = names;
             this->effects = effects;
             this->time = Vector2(timeMin, timeMax);
@@ -146,7 +146,7 @@ namespace ItemGenerator {
             this->difficultyScales = difficultyScales;
         }
 
-        vector<string> names = {""};
+        vector<vector<string> > names = {{""}};
         vector<EffIdMeta> effects = {};
         Vector2 time = Vector2One;
         Vector2 power = Vector2One;

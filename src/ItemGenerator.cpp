@@ -53,35 +53,38 @@ namespace ItemGenerator {
         iSmallKey->artIndex = Arts::artSmallKey;
         iSmallKey->coinValue = 1000;
 
-        PotionBase potionHealth = atl(PotionBase({"Health Potion"}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100));
-        PotionBase potionMana = atl(PotionBase({"Mana Potion"}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100));
+        PotionBase potionHealth = atl(PotionBase({{"Health Potion"}}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100));
+        PotionBase potionMana = atl(PotionBase({{"Mana Potion"}}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100));
 
-        PotionBase potionRegen = atl(PotionBase({"Regeneration Potion"}, {EffIdMeta(effHeal, 0)}, 2, 30, 1, 10));
-        PotionBase potionManaRegen = atl(PotionBase({"Mana Regeneration Potion"}, {EffIdMeta(effHeal, 1)}, 2, 30, 1, 10));
+        PotionBase potionRegen = atl(PotionBase({{"Regeneration Potion"}}, {EffIdMeta(effHeal, 0)}, 2, 30, 1, 10));
+        PotionBase potionManaRegen = atl(PotionBase({{"Mana Regeneration Potion"}}, {EffIdMeta(effHeal, 1)}, 2, 30, 1, 10));
 
-        PotionBase potionPhysicalDefense = atl(PotionBase({"Physical Defense Potion"}, {
+        PotionBase potionPhysicalDefense = atl(PotionBase({{"Physical Defense Potion"}}, {
             EffIdMeta(effBuffDefense, damPierce),
             EffIdMeta(effBuffDefense, damSharp),
         	EffIdMeta(effBuffDefense, damBlunt)
         }, 4, 60, .1, 1, false));
 
-        PotionBase potionElementalDefense = atl(PotionBase({"Elemental Defense Potion"}, {
+        PotionBase potionElementalDefense = atl(PotionBase({{"Elemental Defense Potion"}}, {
             EffIdMeta(effBuffDefense, damFire),
             EffIdMeta(effBuffDefense, damIce),
             EffIdMeta(effBuffDefense, damShock)
         }, 2, 30, .1, 1, false));
 
-        PotionBase potionPhysicalAttack = atl(PotionBase({"Physical Attack Potion"}, {
+        PotionBase potionPhysicalAttack = atl(PotionBase({{"Physical Attack Potion"}}, {
             EffIdMeta(effBuffAttack, damPierce),
             EffIdMeta(effBuffAttack, damSharp),
             EffIdMeta(effBuffAttack, damBlunt)
         }, 4, 60, 1.1, 2, false));
 
-        PotionBase potionElementalAttacK = atl(PotionBase({"Elemental Attack Potion"}, {
+        PotionBase potionElementalAttacK = atl(PotionBase({{"Elemental Attack Potion"}}, {
             EffIdMeta(effBuffAttack, damFire),
             EffIdMeta(effBuffAttack, damIce),
             EffIdMeta(effBuffAttack, damShock)
         }, 2, 30, 1.1, 2, false));
+
+        PotionBase potionPreventBad = atl(PotionBase({{"Purity Potion"}}, {EffIdMeta(effPurity, 0)}, 3, 30, 0, 0, false));
+        PotionBase potionRemoveBad = atl(PotionBase({{"Clensing Potion"}}, {EffIdMeta(effPurity, 0)}, 0, 0, 0, 0, false));
 
         /*PotionBase potionOrganicDefense = atl(PotionBase({"Organic Defense Potion"}, {
             EffIdMeta(effBuffDefense, damPoison),
@@ -124,7 +127,7 @@ namespace ItemGenerator {
 
         Condition cCheapMagic = atl(Condition({"Cheap", "Frugal"}, .8, 1.0, 1, 1, 1, 1, {wepMagic}).magical(.5, .8));
         Condition cNormalMagic = atl(Condition({"Apprentice"}, 1, 1, 1, 1, 1, 1, {wepMagic}).magical(1.0, 1.0));
-        Condition cExpenciveMagic = atl(Condition({"Expencive", "Costly"}, 0.9, 1.0, 1, 1, 1, 1, {wepMagic}).magical(3.0, 5.0));
+        Condition cExpenciveMagic = atl(Condition({"Expensive", "Costly"}, 0.9, 1.0, 1, 1, 1, 1, {wepMagic}).magical(3.0, 5.0));
         Condition cMasterMagic = atl(Condition({"Master", "Expert", "Warlock's"}, 1.5, 2.5, 2, 3, 1, 1, {wepMagic}).magical(2.0, 4.0));
 
 
@@ -308,7 +311,8 @@ namespace ItemGenerator {
         for (EffIdMeta eff : pb.effects) {
             effects.push_back(Effect(eff.id, time, power * (pb.difficultyScales?itemDifficulty+1:1), eff.meta));
         }
-        ItemPotion* potion = new ItemPotion(effects, pb.names[rand() % pb.names.size()], .2);
+        ItemPotion* potion = new ItemPotion(effects, "", .2);
+        potion->setName(pb.names[rand() % pb.names.size()]);
         switch (rand() % 4) {
             default:
             case 0:

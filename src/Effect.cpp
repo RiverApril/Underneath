@@ -30,6 +30,9 @@ string effectName(EffectId eid, double meta) {
         case effMemory:
             return "Where am I?";
 
+        case effPurity:
+            return "Purity";
+
         default:
             return "UNDEFINED";
     }
@@ -47,10 +50,47 @@ Ui::Color effectColor(EffectId eid, double meta) {
             return C_LIGHT_BLUE;
 
         case effBuffDefense:
+            return C_LIGHT_BLUE;
+
+        case effLSD:
             return C_LIGHT_MAGENTA;
-            
+
+        case effMemory:
+            return C_LIGHT_GRAY;
+
+        case effPurity:
+            return C_LIGHT_BLUE;
+
         default:
             return C_LIGHT_GREEN;
+    }
+}
+
+bool isBadEffect(Effect e){
+    switch (e.eId) {
+        case effDamage:
+            return e.power > 0;
+
+        case effHeal:
+            return e.power < 0;
+
+        case effBuffAttack:
+            return e.power < 0;
+
+        case effBuffDefense:
+            return e.power < 0;
+
+        case effLSD:
+            return true;
+
+        case effMemory:
+            return true;
+
+        case effPurity:
+            return false;
+
+        default:
+            return false;
     }
 }
 

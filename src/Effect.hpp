@@ -22,6 +22,7 @@ const EffectId effBuffAttack = 2;
 const EffectId effBuffDefense = 3;
 const EffectId effLSD = 4;
 const EffectId effMemory = 5;
+const EffectId effPurity = 6;
 
 struct Effect {
     Effect(unsigned char* data, int* position);
@@ -39,6 +40,8 @@ struct Effect {
     double power = 1;
     double meta = 0;
 };
+
+bool isBadEffect(Effect e);
 
 string effectName(EffectId eid, double meta);
 

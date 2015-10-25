@@ -520,10 +520,18 @@ namespace Ui {
                                 }else if(e.eId == effBuffAttack){
                                     a += printMultiLineString(a, columnX, formatString("   %s %c%d%% for %.2ft", effectName(e.eId, e.meta).c_str(), e.power>0?'+':'-', (int)abs((e.power*100)-100), e.timeLeft));
                                 }else{
-                                    a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2ft", effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
+                                    if(e.power == 0){
+                                        a += printMultiLineString(a, columnX, formatString("   %s for %.2ft", effectName(e.eId, e.meta).c_str(), e.timeLeft));
+                                    }else{
+                                        a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2ft", effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
+                                    }
                                 }
                             } else {
-                                a += printMultiLineString(a, columnX, formatString("   %s %.2f", effectName(e.eId, e.meta).c_str(), e.power));
+                                if(e.power == 0){
+                                    a += printMultiLineString(a, columnX, formatString("   %s", effectName(e.eId, e.meta).c_str()));
+                                }else{
+                                    a += printMultiLineString(a, columnX, formatString("   %s %.2f", effectName(e.eId, e.meta).c_str(), e.power));
+                                }
                             }
                         }
                     }

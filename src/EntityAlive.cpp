@@ -46,6 +46,8 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
             lastManaTime += manaDelay;
         }
 
+        bool removebad = false;
+
         forVector(effects, i) {
             Effect* e = &effects[i];
 
@@ -81,6 +83,9 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
                 case effBuffDefense:
                     //Applies on damage and hurt
                     break;
+                case effPurity:
+                    removebad = true;
+                    break;
 
             }
 
@@ -94,6 +99,21 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
             }
             debug(e->toString());
         }
+
+        if(removebad){
+            forVector(effects, i) {
+                Effect* e = &effects[i];
+
+                if(isBadEffect(*e)){
+                    e->timeLeft = 0;
+                    effects.erase(effects.begin()+(long) i);
+                    i--;
+                    continue;
+                }
+
+            }
+        }
+
     }
 
     return Entity::update(deltaTime, time, level);
