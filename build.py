@@ -33,6 +33,7 @@ parser.add_argument("-r", "--run", action="store_true")
 parser.add_argument("-e", "--release", action="store_true")
 parser.add_argument("-d", "--debug", action="store_true")
 parser.add_argument("-t", "--notart", action="store_true")
+parser.add_argument("-w", "--windows", action="store_true")
 
 args = parser.parse_args()
 
@@ -41,10 +42,9 @@ if not args.notart:
     print("    + Making ArtFiles.hpp")
     import compileArt
 
-
-
 systemName = platform.system()
 machine = platform.machine()
+
 
 sourceDirectory = "src"
 objectDirectory = "obj"
@@ -70,15 +70,18 @@ if args.release:
     executableName += "_Release"
 
 
+if systemName == "Windows" or args.windows:
+    compiler = "i686-w64-mingw32-c++"
+
+
 compilerFlags = optimization+" "+compilerFlags;
 
 if args.sdl:
     executableName += "_SDL"
     compilerFlags += " -D useSDLLightCurses"
 
-    if systemName == "Windows":
-        compilerFlags += " -Imingw_dev_lib\\include"
-        libraryFlags = " -w -Wl,-subsystem,windows -Wl,-Bstatic -Lmingw_dev_lib\\lib -mwindows -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -static-libgcc -static-libstdc++ -L . -Wl,--no-undefined -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc -Wl,-Bdynamic"
+    if systemName == "Windows" or args.windows:
+        print("    ! Compiling on Windows with SDL has not been implemented.")
     elif systemName == "Darwin":
         compilerFlags += " -I/usr/local/include"
         libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
@@ -95,26 +98,17 @@ if args.sdl:
 
 else:
     executableName += "_Term"
-    if systemName == "Windows":
-        libraryFlags = "-lpdcurses v-static-libgcc -static-libstdc++ -L ."
+    if systemName == "Windows" or args.windows:
+        libraryFlags = "-lpdcurses -static -static-libgcc -static-libstdc++"
     elif systemName == "Darwin":
         libraryFlags = "-lncurses"
     else:
         libraryFlags = "-lncurses"
 
 
-if args.release:
-    if systemName == "Windows":
-        pass
-    elif systemName == "Darwin": #Don't staticly link Mac Libs
-        libraryFlags = "-Bdynamic " + libraryFlags
-    else:
-        libraryFlags = "-Wl,-Bdynamic " + libraryFlags
-
-
 if systemName == "Darwin":
     executableName += "_OSX_"+machine
-elif systemName == "Windows":
+elif systemName == "Windows" or args.windows:
     executableName += "_Windows_"+machine+".exe"
 else:
     executableName += "_"+systemName+"_"+machine
