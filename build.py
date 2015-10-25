@@ -72,6 +72,7 @@ if args.release:
 
 if systemName == "Windows" or args.windows:
     compiler = "i686-w64-mingw32-c++"
+    compilerFlags += " -D WIN32"
 
 
 compilerFlags = optimization+" "+compilerFlags;
