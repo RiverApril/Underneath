@@ -82,7 +82,8 @@ if args.sdl:
     compilerFlags += " -D useSDLLightCurses"
 
     if systemName == "Windows" or args.windows:
-        print("    ! Compiling on Windows with SDL has not been implemented.")
+        compilerFlags += " `/usr/i686-w64-mingw32/bin/sdl2-config --cflags`"
+        libraryFlags  = " `/usr/i686-w64-mingw32/bin/sdl2-config --libs` -lSDL2_image -static -static-libgcc -static-libstdc++"
     elif systemName == "Darwin":
         compilerFlags += " -I/usr/local/include"
         libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"

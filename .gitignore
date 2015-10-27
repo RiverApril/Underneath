@@ -45,3 +45,4 @@ local.properties
 build/*
 /src/ArtFiles.hpp
 windowsTesting/
+/src/thread.h
