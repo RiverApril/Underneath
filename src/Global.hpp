@@ -32,6 +32,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+using namespace std;
+
 #ifdef useSDLLightCurses
     #include "LC_SDLLightcurses.hpp"
     extern int ESCDELAY;
@@ -46,8 +48,8 @@
     int mkdir(const char *filename, int useless);
 
     template <typename T>
-    std::string to_string(T a) {
-        std::stringstream ss;
+    string to_string(T a) {
+        stringstream ss;
         ss << a;
         return ss.str();
     }
@@ -75,7 +77,6 @@
 
 #define KEY_ESCAPE 27
 
-using namespace std;
 
 extern char workingDirectory[FILENAME_MAX];
 

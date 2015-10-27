@@ -27,6 +27,8 @@
 
 #include <stdio.h>
 
+using namespace std;
+
 namespace MainWindow{
 
 
@@ -34,15 +36,15 @@ namespace MainWindow{
     SDL_Surface* mainScreenSurface;
     SDL_Surface* fontSurface;
 
-    std::thread operationThread;
+    thread operationThread;
 
     int cursor = 0;
 
     int width = 100;
     int height = 30;
 
-    std::vector<char> screenCharBuffer = std::vector<char>(width * height);
-    std::vector<int> screenAttrBuffer = std::vector<int>(width * height);
+    vector<char> screenCharBuffer = vector<char>(width * height);
+    vector<int> screenAttrBuffer = vector<int>(width * height);
 
     int charWidth = 7;
     int charHeight = 12;
@@ -296,7 +298,7 @@ namespace MainWindow{
 
                 SDL_BlitSurface(fontSurface, &src, mainScreenSurface, &dst);
 
-                
+
                 SDL_LockSurface(mainScreenSurface);
 
                 fgColorCode = ((screenAttrBuffer[c] & A_COLOR) >> 17) & 0xF;
@@ -379,8 +381,8 @@ namespace MainWindow{
                     height = (int)ceil(e.window.data2 / (double)charHeight);
                     SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
                     mainScreenSurface = SDL_GetWindowSurface(mainWindow);
-                    screenCharBuffer = std::vector<char>(width * height);
-                    screenAttrBuffer = std::vector<int>(width * height);
+                    screenCharBuffer = vector<char>(width * height);
+                    screenAttrBuffer = vector<int>(width * height);
                     return KEY_RESIZE;
                 }
                 return ERR;
@@ -462,7 +464,7 @@ namespace MainWindow{
 	                                        return '>';
 	                                    case '/':
 	                                        return '?';
-	                                        
+
 	                                    default:
 	                                        break;
 	                                }

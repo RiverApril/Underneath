@@ -33,9 +33,6 @@ namespace Utility {
     }
 
     void saveUnsignedLong(vector<unsigned char>* data, unsigned long n) {
-        data->push_back((unsigned char) ((n >> 48) & 0xFF));
-        data->push_back((unsigned char) ((n >> 40) & 0xFF));
-        data->push_back((unsigned char) ((n >> 32) & 0xFF));
         data->push_back((unsigned char) ((n >> 24) & 0xFF));
         data->push_back((unsigned char) ((n >> 16) & 0xFF));
         data->push_back((unsigned char) ((n >> 8) & 0xFF));
@@ -83,10 +80,7 @@ namespace Utility {
     }
 
     unsigned long loadUnsignedLong(unsigned char* data, int* position) {
-        return ((((unsigned long) loadUnsignedChar(data, position)) << 48) |
-                (((unsigned long) loadUnsignedChar(data, position)) << 40) |
-                (((unsigned long) loadUnsignedChar(data, position)) << 32) |
-                (((unsigned long) loadUnsignedChar(data, position)) << 24) |
+        return ((((unsigned long) loadUnsignedChar(data, position)) << 24) |
                 (((unsigned long) loadUnsignedChar(data, position)) << 16) |
                 (((unsigned long) loadUnsignedChar(data, position)) << 8) |
                 (((unsigned long) loadUnsignedChar(data, position)) << 0));
@@ -393,7 +387,7 @@ namespace Utility {
         return s;
     }
 
-    void executeBorder(Point2 min, Point2 max, std::function<void(int, int)> process){
+    void executeBorder(Point2 min, Point2 max, function<void(int, int)> process){
         for(int i=min.x;i<=max.x;i++){
             process(i, min.y);
             process(i, max.y);
@@ -404,7 +398,7 @@ namespace Utility {
         }
     }
 
-    void executeGrid(Point2 min, Point2 max, std::function<void(int, int)> process){
+    void executeGrid(Point2 min, Point2 max, function<void(int, int)> process){
         for(int i=min.x;i<=max.x;i++){
             for(int j=min.y;j<=max.y;j++){
                 process(i, j);

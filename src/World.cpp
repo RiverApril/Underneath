@@ -31,10 +31,10 @@ namespace WorldLoader {
 
     //World* loadedWorld;
 
-    bool exists(std::string name) {
+    bool exists(string name) {
         //debug("Does "+name+" Exist?");
 
-        std::string dir = WorldsDir + "/" + name + "/";
+        string dir = WorldsDir + "/" + name + "/";
 
         bool l = false;
 
@@ -67,17 +67,17 @@ namespace WorldLoader {
         return buffer;
     }
 
-    World* load(World* world, std::string name, string optionalStartLevel) {
+    World* load(World* world, string name, string optionalStartLevel) {
 
         try {
             debug("Loading World: " + name + "...");
 
-            std::string dir = WorldsDir + "/" + name + "/";
+            string dir = WorldsDir + "/" + name + "/";
 
             //world.info
             FILE* fileWorldInfo;
 
-            fileWorldInfo = std::fopen((dir + "world" + ".info").c_str(), "rb");
+            fileWorldInfo = fopen((dir + "world.info").c_str(), "rb");
             if (fileWorldInfo != nullptr) {
 
                 unsigned char* data = readData(fileWorldInfo);
@@ -95,13 +95,13 @@ namespace WorldLoader {
 
                 int levelCount = Utility::loadInt(data, position);
 
-                std::string currentLevelName = Utility::loadString(data, position);
+                string currentLevelName = Utility::loadString(data, position);
                 //int playerUniqueId = Utility::loadInt(data, position);
 
                 world->currentLevel = nullptr;
 
                 for (int i = 0; i < levelCount; i++) {
-                    std::string levelName;
+                    string levelName;
 
                     levelName = Utility::loadString(data, position);
 
@@ -116,7 +116,7 @@ namespace WorldLoader {
                 //levelName.lvl
                 FILE* fileLevel;
 
-                fileLevel = std::fopen((dir + (currentLevelName) + ".lvl").c_str(), "rb");
+                fileLevel = fopen((dir + (currentLevelName) + ".lvl").c_str(), "rb");
 
                 if (fileLevel != nullptr) {
 
@@ -182,14 +182,14 @@ namespace WorldLoader {
 
         mkdir(UnderneathDir.c_str(), 0777);
         mkdir(WorldsDir.c_str(), 0777);
-        std::string dir = WorldsDir + "/" + loadedWorld->name.c_str() + "/";
+        string dir = WorldsDir + "/" + loadedWorld->name.c_str() + "/";
         mkdir(dir.c_str(), 0777);
 
 
         //world.info
         FILE* fileWorldInfo;
 
-        fileWorldInfo = std::fopen((dir + "world" + ".info").c_str(), "wb");
+        fileWorldInfo = fopen((dir + "world" + ".info").c_str(), "wb");
         if (fileWorldInfo != nullptr) {
             vector<unsigned char>* data = new vector<unsigned char>();
 
@@ -201,7 +201,7 @@ namespace WorldLoader {
             //Utility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
 
             for (size_t j = 0; j < loadedWorld->levels.size(); j++) {
-                Utility::saveString(data, loadedWorld->levels.at(j));
+                Utility::saveString(data, loadedWorld->levels[j]);
             }
 
             debug("Saving Player to world.info");
@@ -220,7 +220,7 @@ namespace WorldLoader {
 
             Level* l = loadedWorld->currentLevel;
 
-            std::remove((dir + (l->getName()) + ".lvl").c_str());
+            remove((dir + (l->getName()) + ".lvl").c_str());
 
 
             fileLevel = fopen((dir + (l->getName()) + ".lvl").c_str(), "wb");
@@ -248,11 +248,11 @@ namespace WorldLoader {
                 //levelName.lvl
                 FILE* fileLevel;
 
-                std::remove((dir+(l->getName())+".lvl").c_str());
+                remove((dir+(l->getName())+".lvl").c_str());
 
                 fileLevel = fopen((dir+(l->getName())+".lvl").c_str(), "wb");
                 if(fileLevel != nullptr){
-                    std::vector<unsigned char>* data = new std::string();
+                    vector<unsigned char>* data = new string();
 
 
                     l->save(data);
@@ -281,46 +281,49 @@ namespace WorldLoader {
         return false;
     }
 
-    bool deleteWorld(std::string name) {
+    bool deleteWorld(string name) {
         debug("Deleting World: " + name + "...");
 
-        std::string dir = WorldsDir + "/" + name + "/";
+        string dir = WorldsDir + "/" + name + "/";
 
         //world.info
         FILE* fileWorldInfo;
 
-        fileWorldInfo = std::fopen((dir + "world" + ".info").c_str(), "rb");
+        fileWorldInfo = fopen((dir + "world.info").c_str(), "rb");
         if (fileWorldInfo != nullptr) {
 
             unsigned char* data = readData(fileWorldInfo);
 
             int* position = new int(0);
 
-            Utility::loadDouble(data, position);
-            int levelCount = Utility::loadInt8Bit(data, position);
-            Utility::loadString(data, position);
-            Utility::loadInt(data, position);
+            double worldTime = Utility::loadDouble(data, position); // worldTime
+            int levelCount = Utility::loadInt(data, position); // levelCount
+            string worldName = Utility::loadString(data, position); // World Name
+            //Utility::loadInt(data, position);
 
 
             for (int i = 0; i < levelCount; i++) {
-                std::string levelName = Utility::loadString(data, position);
-
-                std::remove((dir + levelName + ".lvl").c_str());
+                string levelName = Utility::loadString(data, position);
+                consolef("levelName: %s", levelName.c_str());
+                remove((dir + levelName + ".lvl").c_str());
             }
+
+            //No need to load player
 
             delete position;
             fclose(fileWorldInfo);
         }
         //
 
-        std::remove((dir + "world" + ".info").c_str());
+        remove((dir + "world" + ".info").c_str());
+        remove(dir.c_str());
 
         debug("Deleted");
 
         return true;
     }
 
-    World* create(std::string name, Abilities<int> playerAbilities) {
+    World* create(string name, Abilities<int> playerAbilities) {
 
         World* world = new World(name);
 

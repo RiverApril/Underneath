@@ -18,7 +18,7 @@ public:
 
     EntityShop();
 
-    EntityShop(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 1);
+    EntityShop(string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 1);
 
     ~EntityShop();
 
@@ -26,7 +26,7 @@ public:
 
     virtual void dropLoots(Level* level);
 
-    virtual void save(std::vector<unsigned char>* data);
+    virtual void save(vector<unsigned char>* data);
 
     virtual int getEntityTypeId();
 

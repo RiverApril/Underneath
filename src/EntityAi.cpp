@@ -21,7 +21,7 @@ EntityAi::EntityAi() : EntityAi("", aiNone, ' ', Point2Zero, C_WHITE, 1) {
 
 }
 
-EntityAi::EntityAi(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : EntityAlive(name, icon, startPos, colorCode, maxHp) {
+EntityAi::EntityAi(string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : EntityAlive(name, icon, startPos, colorCode, maxHp) {
     this->ai = aiFlags;
 }
 
@@ -337,7 +337,7 @@ int EntityAi::getEntityTypeId() {
     return ENTITY_TYPE_AIENTITY;
 }
 
-void EntityAi::save(std::vector<unsigned char>* data) {
+void EntityAi::save(vector<unsigned char>* data) {
     EntityAlive::save(data);
     Utility::saveInt(data, ai);
     Utility::saveBool(data, agro);

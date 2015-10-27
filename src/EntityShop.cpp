@@ -14,7 +14,7 @@ EntityShop::EntityShop() : EntityShop("", aiNone, ' ', Point2Zero, C_WHITE, 1) {
 
 }
 
-EntityShop::EntityShop(std::string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : EntityAi(name, aiFlags, icon, startPos, colorCode, maxHp) {
+EntityShop::EntityShop(string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode, int maxHp) : EntityAi(name, aiFlags, icon, startPos, colorCode, maxHp) {
 }
 
 EntityShop::~EntityShop() {
@@ -48,7 +48,7 @@ int EntityShop::getEntityTypeId() {
     return ENTITY_TYPE_SHOP;
 }
 
-void EntityShop::save(std::vector<unsigned char>* data) {
+void EntityShop::save(vector<unsigned char>* data) {
     EntityAi::save(data);
 
 

@@ -19,7 +19,7 @@ class Level;
 class World {
 public:
 
-    World(std::string n);
+    World(string n);
 
     ~World();
 
@@ -34,12 +34,12 @@ public:
 };
 
 namespace WorldLoader {
-    bool exists(std::string name);
-    World* load(World* world, std::string name, string optionalStartLevel = "");
+    bool exists(string name);
+    World* load(World* world, string name, string optionalStartLevel = "");
     bool save(World* loadedWorld);
-    World* create(std::string name, Abilities<int> playerAbilities);
+    World* create(string name, Abilities<int> playerAbilities);
     bool changeLevel(World* world, Point2 entrance, string newName);
-    bool deleteWorld(std::string name);
+    bool deleteWorld(string name);
     unsigned char* readData(FILE* file);
 
 }

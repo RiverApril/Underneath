@@ -24,54 +24,47 @@
 
 #define abilityCount 7
 
-namespace AbilityDetails {
+using namespace std;
 
-    static const string abilityAbr[abilityCount] = {
-        "STR",
-        "DEX",
-        "INT",
-        "AGI",
-        "SPD",
-        "CON",
-        "WIS"
-    };
+static const string abilityAbr[abilityCount] = {
+    "STR",
+    "DEX",
+    "INT",
+    "AGI",
+    "SPD",
+    "CON",
+    "WIS"
+};
 
-    static const string abilityNames[abilityCount] = {
-        "Strength",
-        "Dexterity",
-        "Intelligence",
-        "Agility",
-        "Speed",
-        "Constitution",
-        "Wisdom"
-    };
+static const string abilityNames[abilityCount] = {
+    "Strength",
+    "Dexterity",
+    "Intelligence",
+    "Agility",
+    "Speed",
+    "Constitution",
+    "Wisdom"
+};
 
-    static const string abilityNamesRightAligned[abilityCount] = {
-        "     Strength",
-        "    Dexterity",
-        " Intelligence",
-        "      Agility",
-        "        Speed",
-        " Constitution",
-        "       Wisdom"
-    };
+static const string abilityNamesRightAligned[abilityCount] = {
+    "     Strength",
+    "    Dexterity",
+    " Intelligence",
+    "      Agility",
+    "        Speed",
+    " Constitution",
+    "       Wisdom"
+};
 
-    static const string abilityInfo[abilityCount] = {
-        "Melee attack damage.",
-        "Ranged attack damage.",
-        "Magic attack damage.",
-        "Dodge Chance and Attack Speed.",
-        "Movement Speed.",
-        "Max Health.",
-        "Max Mana."
-    };
-
-
-
-
-}
-
-using namespace AbilityDetails;
+static const string abilityInfo[abilityCount] = {
+    "Melee attack damage.",
+    "Ranged attack damage.",
+    "Magic attack damage.",
+    "Dodge Chance and Attack Speed.",
+    "Movement Speed.",
+    "Max Health.",
+    "Max Mana."
+};
 
 template <typename T>
 struct Abilities {
