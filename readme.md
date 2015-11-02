@@ -53,7 +53,7 @@ All flags:
 -l  Link only, don't compile sources
 -o  Optimization level 3 (default 0)
 -d  Print all commands that the build.py is executing
--t  Do not recompile ArtFiles.hpp
+-t  Do not remake ArtFiles.hpp
 -w  Use "i686-w64-mingw32-c++" as the compiler (this is to build for windows on linux)
 ```
 
