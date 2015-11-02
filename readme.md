@@ -9,7 +9,7 @@ A dungeon crawler with ASCII graphics lightly based on the classic game Rogue
 This program uses standard c++ libraries and ncurses (pdcurses in Windows).
 SDL version uses SDL2 and SDL_Image.
 
-My development is primarily in Linux and some in MacOSX. I have successfully compiled for Windows using mingw32 on Linux.
+My development is primarily in Linux and some in MacOSX. I have successfully compiled for Windows using MinGW on Linux.
 
 
 ---
