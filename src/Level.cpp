@@ -488,7 +488,7 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
 }
 
 bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities) {
-    return !getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities).empty();
+    return !(getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities).empty());
 
     /*vector<vector<char>> map = vector<vector<char>>(size.x, vector<char>(size.y));
     for(int i=0;i<size.x;i++){

@@ -9,10 +9,10 @@
 #ifndef __Underneath__Math__
 #define __Underneath__Math__
 
-namespace Math {
+#define PI 3.14159265358979
+#define TAU (2*PI)
 
-    const double pi = 3.14159265358979;
-    const double tau = 2*pi;
+namespace Math {
 
     double distanceSquared(double ax, double ay, double bx, double by);
     double distanceSquared(double x, double y);

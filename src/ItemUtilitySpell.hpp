@@ -31,7 +31,7 @@ public:
 
     }
 
-    ItemUtilitySpell(SpellEffect spellEffect, int manaCost, string name, double weight) : Item(name, weight) {
+    ItemUtilitySpell(SpellEffect spellEffect, int manaCost, string name) : Item(name) {
         this->spellEffect = spellEffect;
         this->manaCost = manaCost;
     }

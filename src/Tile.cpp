@@ -46,7 +46,6 @@ namespace Tiles {
 
     vector<Tile*> tileList;
 
-    Tile* tileStatue;
 
     Tile* tileFloor;
     //Tile* tilePath;
@@ -72,6 +71,8 @@ namespace Tiles {
 
     Tile* tileTree;
     Tile* tileGrass;
+
+    Tile* tilePillar;
 
     Tile* tileEdge;
     Tile* tileUnset;
@@ -118,7 +119,7 @@ namespace Tiles {
         tileTree = new Tile(new RandomColorIcon({'T', 't'}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "tree", tileFlagSolid, new RandomIcon({'T', 't'}, C_DARK_GRAY, bg));
         tileGrass = new Tile(new RandomColorIcon({',', '.', ' ', ' ', ' '}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "grass", tileFlagPathable | tileFlagReplaceable, new RandomIcon({',', '.', ' ', ' ', ' '}, C_DARK_GRAY, bg));
 
-        tileStatue = new Tile(new RandomIcon({'H', 'I', 'Z'}, C_WHITE, bg), "statue", tileFlagSolid);
+        tilePillar = new Tile(new RandomIcon({'I'}, C_WHITE, bg), "pillar", tileFlagSolid);
 
 
         tileEdge = new Tile(new BasicIcon(' ',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon('.', C_BLACK, C_DARK_GRAY));

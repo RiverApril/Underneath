@@ -623,7 +623,7 @@ namespace Ui {
 
                             Point2 diff = player->pos - currentWorld->currentLevel->stairDownPos;
 
-                            double angle = 360 - ((atan2((double)diff.y, (double)-diff.x) * 180 / Math::pi) + 180);
+                            double angle = 360 - ((atan2((double)diff.y, (double)-diff.x) * 180 / PI) + 180);
 
                             string d = "";
 

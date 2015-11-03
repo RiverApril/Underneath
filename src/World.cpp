@@ -296,15 +296,15 @@ namespace WorldLoader {
 
             int* position = new int(0);
 
-            double worldTime = Utility::loadDouble(data, position); // worldTime
+            /*double worldTime = */Utility::loadDouble(data, position); // worldTime
             int levelCount = Utility::loadInt(data, position); // levelCount
-            string worldName = Utility::loadString(data, position); // World Name
+            /*string worldName = */Utility::loadString(data, position); // World Name
             //Utility::loadInt(data, position);
 
 
             for (int i = 0; i < levelCount; i++) {
                 string levelName = Utility::loadString(data, position);
-                consolef("levelName: %s", levelName.c_str());
+                //debugf("levelName: %s", levelName.c_str());
                 remove((dir + levelName + ".lvl").c_str());
             }
 

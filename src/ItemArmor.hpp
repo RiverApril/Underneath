@@ -48,9 +48,9 @@ public:
 
     }
 
-    ItemArmor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name, double weight);
+    ItemArmor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name);
 
-    ItemArmor(EquipSlot viableSlot, vector<Defense> defenses, string name, double weight);
+    ItemArmor(EquipSlot viableSlot, vector<Defense> defenses, string name);
 
     virtual int getItemTypeId() {
         return ITEM_TYPE_ARMOR;

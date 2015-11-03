@@ -9,7 +9,7 @@
 #include "ItemTimeActivated.hpp"
 #include "Utility.hpp"
 
-ItemTimeActivated::ItemTimeActivated(TimeActivatedType timeActivatedType, double time, double power, double radius, double weight) : Item("", weight){
+ItemTimeActivated::ItemTimeActivated(TimeActivatedType timeActivatedType, double time, double power, double radius) : Item(""){
     this->timeActivatedType = timeActivatedType;
     this->time = time;
     this->power = power;

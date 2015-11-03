@@ -14,16 +14,21 @@
 
 Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string previousLevel){
 
+    Point2 center = size / 2;
+
+    int ring = center.xPlusY() * .2;
+    int deepRing = center.xPlusY() * .5;
+
+    if(distanceSquared(stairUpPos, center) < deepRing*deepRing){
+        return Point2Neg1;
+    }
+
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
             tileGrid[i][j].index = (int8_t) Tiles::tileUnset->getIndex();
             tileGrid[i][j].explored = false;
         }
     }
-
-    Point2 center = size / 2;
-
-    int ring = center.xPlusY() * .2;
 
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
@@ -44,6 +49,8 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
         }
     }
 
+
+    //RUIN
     int centerRoomRadius = (rand() % 3) + 4;
 
     int centerRoomInnerRadius = centerRoomRadius - 2;
@@ -55,13 +62,14 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
 
     Utility::executeBorder(center-centerRoomInnerRadius, center+centerRoomInnerRadius, [this](int x, int y){
         if(rand()%6 != 0 && (x+y)%2 == 0){
-            setTile(Point2(x, y), Tiles::tileStatue);
+            setTile(Point2(x, y), Tiles::tilePillar);
         }
     });
 
     Utility::executeBorder(center-centerRoomRadius, center+centerRoomRadius, [this](int x, int y){
         setTile(Point2(x, y), Tiles::tileWall);
     });
+
 
     Point2 door = center;
 
@@ -74,6 +82,51 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
     }
 
     setTile(door, Tiles::tileDoor);
+
+
+    /*int r = (rand() % 3) + 2;
+
+    Utility::executeGrid(stairUpPos-r*4, stairUpPos+r*4, [this, stairUpPos, r](int x, int y){
+        if(distanceSquared(stairUpPos, Point2(x, y)) < r*r*8){
+            setTile(Point2(x, y), Tiles::tileGrass);
+        }
+    });*/
+
+
+    /*HOUSE
+    Point2 houseCenter = stairUpPos;
+    int houseRadius = (rand() % 3) + 2;
+
+    Utility::executeGrid(houseCenter-houseRadius*4, houseCenter+houseRadius*4, [this, houseCenter, houseRadius](int x, int y){
+        if(distanceSquared(houseCenter, Point2(x, y)) < houseRadius*houseRadius*8){
+        	setTile(Point2(x, y), Tiles::tileGrass);
+        }
+    });
+
+    Utility::executeGrid(houseCenter-houseRadius, houseCenter+houseRadius, [this](int x, int y){
+        setTile(Point2(x, y), Tiles::tileFloor);
+    });
+
+    Utility::executeBorder(houseCenter-houseRadius, houseCenter+houseRadius, [this](int x, int y){
+        setTile(Point2(x, y), Tiles::tileWall);
+    });
+
+    door = houseCenter;
+
+    if((rand()&2)==0){
+        door.x += (rand()&2)==0?houseRadius:-houseRadius;
+        door.y += (rand()%houseRadius*2)-houseRadius;
+    }else{
+        door.x += (rand()%houseRadius*2)-houseRadius;
+        door.y += (rand()&2)==0?houseRadius:-houseRadius;
+    }
+
+    setTile(door, Tiles::tileDoor);*/
+
+
+
+
+
 
     stairDownPos = center;
 
@@ -89,8 +142,16 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
         newEntity(e);
     }
 
+    vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
+    for(Point2 p : path){
+        Utility::executeGrid(p-1, p+1, [this](int x, int y){
+            if(tileAt(Point2(x, y))->getIndex() == Tiles::tileTree->getIndex()){
+            	setTile(Point2(x, y), Tiles::tileGrass);
+            }
+        });
+    }
 
-    if(indexAt(stairUpPos) == Tiles::tileGrass->getIndex() && canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
+    if(canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
         return stairUpPos;
     }else{
         return Point2Neg1;
@@ -452,6 +513,17 @@ namespace LevelGenerator {
         for (Room* r : *rooms) {
 
             bool addedWalls = false;
+
+            if(r->size.x > 6 && r->size.y > 6 && rand()%3 > 0){
+                int l = (rand()%2)+2;
+                Utility::executeBorder(r->pos+l, r->pos+r->size-l, [level](int x, int y){
+                    if((x+y)%2 == 0){
+                        if(rand()%3 > 0){
+                            level->setTile(Point2(x, y), Tiles::tilePillar);
+                        }
+                    }
+                });
+            }
 
 
             //Maze

@@ -329,23 +329,23 @@ namespace Commands {
             MenuGame* mg = dynamic_cast<MenuGame*> (currentMenu);
             if (mg) {
 
-                ItemUtilitySpell* i = new ItemUtilitySpell(spellDebugPlaceWall, 0, "DEBUG Wall wand", 0);
+                ItemUtilitySpell* i = new ItemUtilitySpell(spellDebugPlaceWall, 0, "DEBUG Wall wand");
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
 
-                i = new ItemUtilitySpell(spellDebugPlaceFloor, 0, "DEBUG Floor wand", 0);
+                i = new ItemUtilitySpell(spellDebugPlaceFloor, 0, "DEBUG Floor wand");
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
 
-                i = new ItemUtilitySpell(spellRelocate, 0, "DEBUG Move wand", 0);
+                i = new ItemUtilitySpell(spellRelocate, 0, "DEBUG Move wand");
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
 
-                i = new ItemUtilitySpell(spellDebugPlaceGoblin, 0, "DEBUG Goblin wand", 0);
+                i = new ItemUtilitySpell(spellDebugPlaceGoblin, 0, "DEBUG Goblin wand");
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
 
-                i = new ItemUtilitySpell(spellDebugPlaceShop, 0, "DEBUG Shop wand", 0);
+                i = new ItemUtilitySpell(spellDebugPlaceShop, 0, "DEBUG Shop wand");
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
 

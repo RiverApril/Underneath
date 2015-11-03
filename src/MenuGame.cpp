@@ -80,6 +80,8 @@ namespace Ui {
             return false;
         }
 
+        fadeIn = fadeInMin;
+
         return true;
     }
 
@@ -168,8 +170,10 @@ namespace Ui {
         if (currentLevel != nullptr) {
             if (currentPlayer != nullptr) {
                 if (currentLevel->canSee(currentPlayer->pos, p, currentPlayer->viewDistance, true) || Settings::seeEverything) {
-                    currentLevel->setExplored(p, true);
                     inView = true;
+                }
+                if(inView){
+                    currentLevel->setExplored(p, true);
                 }
                 if (!currentLevel->getExplored(p)) {
                     symbol = ' ';
@@ -242,6 +246,13 @@ namespace Ui {
                         bg = (((int)((currentWorld->worldTime+100)*2.7))+p.y-p.x) % 16;
                     }else{
                     	fg = (((int)((currentWorld->worldTime+100)*2.3))+p.x-p.y) % 16;
+                    }
+                }
+                if(fadeIn < fadeInMax){
+                    if(distanceSquared(p, currentPlayer->pos) > fadeIn*fadeIn){
+                        bg = C_BLACK;
+                        fg = C_BLACK;
+                        symbol = ' ';
                     }
                 }
             }
@@ -666,6 +677,10 @@ namespace Ui {
         viewUpdate();
         move(0, 0);
         clrtobot();
+
+        if(fadeIn < fadeInMax){
+            fadeIn++;
+        }
 
         for (int j = 0; j < gameArea.y; j++) {
             move(j, 0);

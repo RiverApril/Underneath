@@ -23,14 +23,12 @@ namespace ItemGenerator {
         Condition() {
         }
 
-        Condition(vector<string> names, double damMin, double damMax, double udMin, double udMax, double wMin, double wMax, vector<WeaponType> weaponTypes) {
+        Condition(vector<string> names, double damMin, double damMax, double udMin, double udMax, vector<WeaponType> weaponTypes) {
             this->names = names;
             this->damage.x = damMin;
             this->damage.y = damMax;
             this->useDelay.x = udMin;
             this->useDelay.y = udMax;
-            this->weight.x = wMin;
-            this->weight.y = wMax;
             this->applicableWeaponTypes = weaponTypes;
         }
 
@@ -43,7 +41,6 @@ namespace ItemGenerator {
         vector<string> names = {""};
         Vector2 damage = Vector2One;
         Vector2 useDelay = Vector2One;
-        Vector2 weight = Vector2One;
         Vector2 manaCost = Vector2One;
         vector<WeaponType> applicableWeaponTypes;
     };
@@ -65,17 +62,15 @@ namespace ItemGenerator {
         ItemArmorBase(){
         }
 
-        ItemArmorBase(vector<vector<string> > names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences, double weight){
+        ItemArmorBase(vector<vector<string> > names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences){
             this->names = names;
             this->viableSlots = viableSlots;
             this->defences = defences;
-            this->weight = weight;
         }
         vector<vector<string>> names;
         vector<EquipSlot> viableSlots;
         vector<DefenseRange> defences;
         vector<Enchantment> enchs;
-        double weight;
     };
 
     struct WeaponBase {
@@ -102,11 +97,6 @@ namespace ItemGenerator {
             return *this;
         }
 
-        WeaponBase setWeight(double weight) {
-            this->weight = weight;
-            return *this;
-        }
-
         WeaponBase setArts(vector<int> artIndecies) {
             this->arts = artIndecies;
             return *this;
@@ -114,7 +104,6 @@ namespace ItemGenerator {
 
         double damage = 0;
         double useDelay = 0;
-        double weight = 1;
         vector<vector<string>> names = {{""}};
         vector<int> arts = {-1};
         DamageType damageType = damSharp;
@@ -171,15 +160,17 @@ namespace ItemGenerator {
     ItemArmorBase atl(ItemArmorBase a);
     Condition atl(Condition c);
     WeaponBase atl(WeaponBase w);
-    PotionBase atl(PotionBase p);
+    PotionBase atl(PotionBase p, int of100);
     ScrollBase atl(ScrollBase s);
 
 
     extern vector<ItemArmorBase> armorList;
     extern vector<Condition> conditionList;
     extern vector<WeaponBase> weaponList;
-    extern vector<PotionBase> potionList;
     extern vector<ScrollBase> scrollList;
+
+    extern vector<PotionBase> potionList;
+    extern vector<int> potionChanceList;
 
     extern Item* iCoin;
     extern Item* iSmallKey;
