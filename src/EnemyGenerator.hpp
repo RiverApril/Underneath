@@ -16,7 +16,7 @@ namespace EnemyGenerator {
 
     struct EntityBase {
 
-        EntityBase(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase weaponBase, string weaponNameZ, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0) {
+        EntityBase(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase weaponBase, string weaponName, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0) {
             this->weight = weight;
             this->name = name;
             this->icon = icon;

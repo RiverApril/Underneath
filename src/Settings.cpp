@@ -19,12 +19,16 @@ namespace Settings{
     bool seeEverything = false;
     bool cheatKeysEnabled = false;
 
+    bool autoSave = true;
+
     vector<Setting*> settingList = {
+        new SettingBool("Auto Save", &autoSave),
+        new SettingLabel(""),
         new SettingBool("Debug Output", &debugMode),
         new SettingBool("God Mode", &godMode),
         new SettingBool("Show AI Paths", &showFollowPaths),
         new SettingBool("X-ray Vision", &seeEverything),
-        new SettingBool("Cheat Keys", &cheatKeysEnabled)
+        new SettingBool("Cheat Keys", &cheatKeysEnabled),
     };
 
     vector<Setting*> hiddenSettingList = {

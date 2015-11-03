@@ -662,6 +662,13 @@ namespace Ui {
             render(currentWorld->worldTime);
 
             currentWorld->worldLastTime = currentWorld->worldTime;
+            timeSinceTimePassed = 0;
+        }else{
+            timeSinceTimePassed++;
+        }
+
+        if(Settings::autoSave && timeSinceTimePassed == autoSaveTime){
+            WorldLoader::save(currentWorld);
         }
 
         if(currentPlayer){
@@ -771,8 +778,13 @@ namespace Ui {
 
             a++;
 
-            move(a, gameArea.x + 1);
-            clrtoeol();
+            if(Settings::autoSave && timeSinceTimePassed > autoSaveTime && timeSinceTimePassed < autoSaveTime+10){
+                printMultiLineString(a++, gameArea.x+1, "Auto saving...");
+                a++;
+            }
+
+            //move(a, gameArea.x + 1);
+            //clrtoeol();
 
             nearestEntities = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, true);
 

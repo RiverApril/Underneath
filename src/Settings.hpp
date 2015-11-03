@@ -19,6 +19,8 @@ namespace Settings{
     extern bool seeEverything;
     extern bool cheatKeysEnabled;
 
+    extern bool autoSave;
+
     struct Setting{
 
         string name = "";

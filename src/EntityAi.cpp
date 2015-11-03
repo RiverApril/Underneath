@@ -157,7 +157,7 @@ void EntityAi::moveAi(double time, Level* level) {
                         e->fgColor = C_LIGHT_MAGENTA;
                         level->newEntity(e);
                     }
-                    debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
+                    //debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
 
                     speed = path[0]-pos;
 

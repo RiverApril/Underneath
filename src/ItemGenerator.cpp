@@ -47,11 +47,11 @@ namespace ItemGenerator {
 
     void initItemTemplates() {
 
-        iCoin = new Item("Coin", .01);
+        iCoin = new Item("Coin");
         iCoin->artIndex = Arts::artCoin;
         iCoin->coinValue = -1;
 
-        iSmallKey = new Item("Key", .02);
+        iSmallKey = new Item("Key");
         iSmallKey->artIndex = Arts::artSmallKey;
         iSmallKey->coinValue = 1000;
 
