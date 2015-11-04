@@ -11,6 +11,7 @@
 
 #define PI 3.14159265358979
 #define TAU (2*PI)
+#define Deg1InRad (TAU/360)
 
 namespace Math {
 

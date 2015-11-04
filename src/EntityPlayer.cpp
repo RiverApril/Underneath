@@ -60,17 +60,17 @@ bool EntityPlayer::update(double deltaTime, double time, Level* level) {
     return EntityAlive::update(deltaTime, time, level);
 }
 
-double EntityPlayer::moveAbsalute(Point2 p, Level* level) {
+double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract) {
     if (tryToMoveAbsalute(p, level)) {
         return moveDelay;
-    } else {
+    } else if(canInteract) {
         return interact(level, p, true, getActiveItemWeapon());
     }
     return 0;
 }
 
 double EntityPlayer::moveRelative(Point2 p, Level* level) {
-    return moveAbsalute(p + pos, level);
+    return moveAbsalute(p + pos, level, true);
 }
 
 double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item) {
@@ -124,7 +124,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         if (posToInteract == pos) {
                             posToInteract = level->findRandomWithoutFlag(tileFlagSolid);
                         }
-                        if (!moveAbsalute(posToInteract, level)) {
+                        if (!moveAbsalute(posToInteract, level, false)) {
                             hurt(damSuffocation, maxHp * 2);
                             return 0;
                         }
@@ -241,6 +241,8 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                             if (s) {
                                 int delay = interactDelay;
                                 WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
+                                level->currentWorld->currentLevel->menuGame = level->menuGame;
+                                //level no longer the currentLevel
                                 return delay;
                             }
                         }
@@ -329,7 +331,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                 if (distanceSquared(pos, posOfEntity) > ranged->range * ranged->range) {
                     consolef("&%cOut of range!", Ui::cc(C_LIGHT_RED));
                     return 0;
-                } else if (!level->canSee(pos, posOfEntity, viewDistance, false)) {
+                } else if (!level->canSee(pos, posOfEntity, viewDistance)) {
                     consolef("&%cNo line of sight!", Ui::cc(C_LIGHT_RED));
                     return 0;
                 }

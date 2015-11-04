@@ -390,7 +390,7 @@ namespace ItemGenerator {
         if (base.range != -1) {
             if (base.manaCost != -1) {
                 w = new ItemCombatSpell();
-                ((ItemCombatSpell*) w)->manaCost = (int) (base.manaCost * Random::randDouble(4.0, 12.0));
+                ((ItemCombatSpell*) w)->manaCost = (int) (base.manaCost * Random::randDouble(1.0, 2.0));
                 w->addEnchantment(Enchantment(effDamage, 10, 1, 6, base.damageType));
             } else {
                 w = new ItemRanged();

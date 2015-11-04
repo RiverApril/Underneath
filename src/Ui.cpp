@@ -355,7 +355,7 @@ namespace Ui {
         return a;
     }
 
-    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string playerDisplayName, string invDisplayName, bool selectedLeft, bool showPrice) {
+    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string playerDisplayName, string invDisplayName, bool selectedLeft, bool showPrice, bool flashImportantInfo) {
 
         int columnX = 0;
         int columnWidth = (terminalSize.x) / (secondaryInv == nullptr ? 2 : 3);
@@ -556,7 +556,14 @@ namespace Ui {
                         a += printMultiLineString(a, columnX, "One Use");
                         setColor(C_LIGHT_GRAY, C_BLACK);
                     } else {
+
+                        if(player->getMaxMp() < utilitySpell->manaCost || (player->getMp() < utilitySpell->manaCost && flashImportantInfo && (tick % 4) >= 2)){
+                            setColor(C_BLACK, C_LIGHT_RED);
+                        }else if(player->getMp() < utilitySpell->manaCost){
+                            setColor(C_BLACK, C_LIGHT_YELLOW);
+                        }
                         a += printMultiLineString(a, columnX, formatString("Mana Cost: %d", utilitySpell->manaCost));
+                        setColor(C_LIGHT_GRAY, C_BLACK);
                     }
                 } else if(armor){
                     for(Defense def : armor->defenses){
@@ -611,7 +618,13 @@ namespace Ui {
                         }
                     }
                     if (c) {
-                        printMultiLineString(b, columnX, "Requires: ");
+                        if(flashImportantInfo && (tick % 4) >= 2){
+                            setColor(C_BLACK, C_LIGHT_RED);
+                        }
+
+                        printMultiLineString(b, columnX, "Requires:");
+                        setColor(C_LIGHT_GRAY);
+
                     }
                 }else if(itemSpecial){
                     switch (itemSpecial->specialty) {
@@ -623,32 +636,36 @@ namespace Ui {
 
                             Point2 diff = player->pos - currentWorld->currentLevel->stairDownPos;
 
-                            double angle = 360 - ((atan2((double)diff.y, (double)-diff.x) * 180 / PI) + 180);
+                            double angle = (atan2((double)diff.y, (double)-diff.x) * 180 / PI);
+
+                            if(angle < 0){
+                                angle = angle + 360;
+                            }
 
                             string d = "";
 
-                            if((angle >= 0 && angle < 22.5) || (angle >= 337.5 && angle <= 360)){ //W
+                            if((angle >= 0 && angle < 22.5) || (angle >= 337.5 && angle <= 360)){ //E
                                 frame = 1;
-                            }else if(angle >= 22.5 && angle < 67.5){//NW
-                                d = "NW";
+                            }else if(angle >= 22.5 && angle < 67.5){//NE
+                                d = "NE";
                                 frame = 2;
                             }else if(angle >= 67.5 && angle < 112.5){//N
                                 d = "N";
                                 frame = 3;
-                            }else if(angle >= 112.5 && angle < 157.5){//NE
-                                d = "NE";
+                            }else if(angle >= 112.5 && angle < 157.5){//NW
+                                d = "NW";
                                 frame = 4;
                             }else if(angle >= 157.5 && angle < 202.5){//E
                                 d = "E";
                                 frame = 5;
-                            }else if(angle >= 202.5 && angle < 247.5){//SE
-                                d = "SE";
+                            }else if(angle >= 202.5 && angle < 247.5){//SW
+                                d = "SW";
                                 frame = 6;
                             }else if(angle >= 247.5 && angle < 292.5){//S
                                 d = "S";
                                 frame = 7;
-                            }else if(angle >= 292.5 && angle < 337.5){//SW
-                                d = "SW";
+                            }else if(angle >= 292.5 && angle < 337.5){//SE
+                                d = "SE";
                                 frame = 8;
                             }else{
                                 frame = 0;

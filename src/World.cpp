@@ -90,6 +90,8 @@ namespace WorldLoader {
                     world->name = name;
                 }
 
+                world->seed = Utility::loadType<unsigned int>(data, position);
+
                 world->worldTime = Utility::loadDouble(data, position);
                 world->worldLastTime = world->worldTime;
 
@@ -192,6 +194,8 @@ namespace WorldLoader {
         fileWorldInfo = fopen((dir + "world" + ".info").c_str(), "wb");
         if (fileWorldInfo != nullptr) {
             vector<unsigned char>* data = new vector<unsigned char>();
+
+            Utility::saveType(data, loadedWorld->seed);
 
             Utility::saveDouble(data, loadedWorld->worldTime);
 
@@ -296,6 +300,7 @@ namespace WorldLoader {
 
             int* position = new int(0);
 
+            Utility::loadType<unsigned int>(data, position);
             /*double worldTime = */Utility::loadDouble(data, position); // worldTime
             int levelCount = Utility::loadInt(data, position); // levelCount
             /*string worldName = */Utility::loadString(data, position); // World Name
@@ -335,7 +340,8 @@ namespace WorldLoader {
         Point2 p;
         do {
             start = Point2((rand() % (world->currentLevel->getSize().x-20))+10, (rand() % (world->currentLevel->getSize().y-20))+10);
-            p = world->currentLevel->generate(genTypeStartArea, (unsigned int) rand(), start, "");
+            world->seed = (unsigned int) rand();
+            p = world->currentLevel->generate(genTypeStartArea, world->seed, start, "");
         } while (!(p.x >= 0 && p.y >= 0));
 
         world->levels.push_back(world->currentLevel->getName());
@@ -415,7 +421,7 @@ namespace WorldLoader {
 
         Level* newLevel = new Level(world, newName, newSize, newDifficulty);
 
-        newLevel->generate(genTypeDungeon, (unsigned int) rand(), entrance, oldName);
+        newLevel->generate(genTypeDungeon, world->seed, entrance, oldName);
 
         world->currentPlayer = newEntityPlayer;
         world->currentPlayer->pos = entrance;

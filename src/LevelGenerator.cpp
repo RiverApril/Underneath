@@ -12,7 +12,7 @@
 #include "EntityShop.hpp"
 
 
-Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string previousLevel){
+Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
 
     Point2 center = size / 2;
 
@@ -160,12 +160,7 @@ Point2 Level::generateStartArea(unsigned int seed, Point2 stairUpPos, string pre
 
 }
 
-Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previousLevel){
-
-    genDebugPos = 1;
-
-
-    srand(seed);
+Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
 
     int attemt = 0;
 
@@ -183,14 +178,14 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
                     tileGrid[i][j].explored = false;
                 }
             }
-            genDebug("generating...  attemt #" + to_string(attemt));
+            debugf("generating...  attemt #%d", attemt);
             attemt++;
 
 
             vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(stairUpPos, 1000, size);
             LevelGenerator::makeRoomsAndPaths(rooms, this);
 
-            genDebug("generated");
+            debugf("generated");
 
             for (size_t i = 0; i < rooms->size(); i++) {
                 delete rooms->at(i);
@@ -207,14 +202,14 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
         int dist = (size.xPlusY()) / 2;
         attemt = 0;
         while (true) {
-            genDebug("looking for exit location   attemt #" + to_string(attemt));
+            debugf("looking for exit location   attemt #%d", attemt);
             attemt++;
             stairDownPos = findRandomOfType(Tiles::tileFloor->getIndex());
             if ((distanceSquared(stairUpPos, stairDownPos) > (dist * dist)) && canPathTo(stairUpPos, stairDownPos, tileFlagPathable)) {
                 break;
             } else {
                 dist--;
-                genDebug("distance between entance and exit: " + to_string(dist));
+                debugf("distance between entance and exit: %d", dist);
                 if (dist < ((size.xPlusY() / 2) / 10)) {
                     pathNotFound = true;
                     break;
@@ -224,9 +219,9 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
 
     } while (pathNotFound);
 
-    genDebug("found path");
+    debugf("found path");
 
-    genDebug("Adding Tile Entities...");
+    debugf("Adding Tile Entities...");
     int chestCount = 0;
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
@@ -273,7 +268,7 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor" + to_string(Utility::parseInt(name.substr(5)) + 1)));
 
 
-    genDebug("Counting Solid Tiles...");
+    debugf("Counting Solid Tiles...");
 
 
     int nonsolidAccessableTileCount = 0;
@@ -290,7 +285,7 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
     }
 
 
-    genDebug("Adding Entities...");
+    debugf("Adding Entities...");
 
     EnemyGenerator::setIntervals(difficulty);
 
@@ -313,7 +308,7 @@ Point2 Level::generateDungeon(unsigned int seed, Point2 stairUpPos, string previ
         debugf("%s x%d", p.first.c_str(), p.second);
     }
 
-    genDebug("done");
+    debugf("done");
 
 
     return stairUpPos;

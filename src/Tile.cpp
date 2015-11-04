@@ -116,7 +116,7 @@ namespace Tiles {
         tileCorpse = new Tile(new BasicIcon('&', C_LIGHT_RED, bg), "corpse", tileFlagPathable, new BasicIcon('&', C_DARK_GRAY, bg));
         tileBones = new Tile(new BasicIcon('&', C_LIGHT_GRAY, bg), "bones", tileFlagPathable, new BasicIcon('.', C_DARK_GRAY, bg));
 
-        tileTree = new Tile(new RandomColorIcon({'T', 't'}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "tree", tileFlagSolid, new RandomIcon({'T', 't'}, C_DARK_GRAY, bg));
+        tileTree = new Tile(new RandomColorIcon({'T', 't'}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "tree", tileFlagSolid | tileFlagTall, new RandomIcon({'T', 't'}, C_DARK_GRAY, bg));
         tileGrass = new Tile(new RandomColorIcon({',', '.', ' ', ' ', ' '}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "grass", tileFlagPathable | tileFlagReplaceable, new RandomIcon({',', '.', ' ', ' ', ' '}, C_DARK_GRAY, bg));
 
         tilePillar = new Tile(new RandomIcon({'I'}, C_WHITE, bg), "pillar", tileFlagSolid);

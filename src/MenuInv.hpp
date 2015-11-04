@@ -33,6 +33,8 @@ namespace Ui {
 
         int* useItem;
 
+        int flashImportantInfo = 0;
+
 
         const int columnPrefixChar = 0;
         const int columnName = 2;
