@@ -9,7 +9,7 @@
 #include "ItemSpecial.hpp"
 #include "Utility.hpp"
 
-ItemSpecial::ItemSpecial(SpecialType specialty) : Item("", .1){
+ItemSpecial::ItemSpecial(SpecialType specialty) : Item(""){
     this->specialty = specialty;
 
     switch (specialty) {

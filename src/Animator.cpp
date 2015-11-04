@@ -68,7 +68,7 @@ namespace Animator {
 
         for(int r=0;r<radius;r++){
             double ma = ((r+1)*p);
-            double maDivTau = ma/Math::tau;
+            double maDivTau = ma/TAU;
 
             Ui::setColor(r<(radius/3)?C_LIGHT_RED:C_LIGHT_YELLOW, icon.getBgColor(Ui::tick, Point2Zero, level));
 

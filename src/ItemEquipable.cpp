@@ -9,7 +9,7 @@
 #include "ItemEquipable.hpp"
 #include "Utility.hpp"
 
-ItemEquipable::ItemEquipable(string name, double weight) : Item(name, weight) {
+ItemEquipable::ItemEquipable(string name) : Item(name) {
 
 }
 

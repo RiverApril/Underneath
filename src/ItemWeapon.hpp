@@ -27,7 +27,7 @@ public:
 
     }
 
-    ItemWeapon(double baseDamage, string name, double weight, double useDelay);
+    ItemWeapon(double baseDamage, string name, double useDelay);
 
     virtual int getItemTypeId() {
         return ITEM_TYPE_WEAPON;

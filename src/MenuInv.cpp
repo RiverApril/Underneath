@@ -54,7 +54,9 @@ namespace Ui {
                 if(slot){
                     player->equipItem(nullptr, slot);
                 }else{
-                    player->equipItem(equipable);
+                    if(!player->equipItem(equipable)){
+                        flashImportantInfo = flashTimeMax;
+                    }
                 }
             }else{
                 *useItem = selected;
@@ -91,8 +93,9 @@ namespace Ui {
             selected = 0;
         }
 
-		Ui::drawInventory(currentWorld, player, selected/*, scrollOffset*/);
+		Ui::drawInventory(currentWorld, player, selected, nullptr, "", "", true, false, flashImportantInfo>0);
 
+        flashImportantInfo--;
 
         /*setColor(C_WHITE);
         int minI = Math::max(0, scrollOffset);

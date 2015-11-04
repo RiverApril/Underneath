@@ -33,8 +33,6 @@ namespace Ui {
 
         move(0, 0);
         clrtobot();
-        setColor(C_WHITE, C_BLACK);
-        mvaddstr(0, 0, "Building Level...");
         refresh();
 
         initSuccess = init(worldName, playerAbilities);
@@ -47,6 +45,8 @@ namespace Ui {
         }*/
         if (initSuccess) {
             currentLevel->menuGame = this;
+        }else{
+            openMenu(new MenuMessage(formatString("Unable to load world: \"%s\"", worldName.c_str())));
         }
 
         viewUpdate();
@@ -76,9 +76,11 @@ namespace Ui {
         } else {
             currentWorld = WorldLoader::create(worldName, playerAbilities);
         }
-        if (currentWorld == nullptr) {
+        if (currentWorld == nullptr || currentLevel == nullptr) {
             return false;
         }
+
+        fadeIn = fadeInMin;
 
         return true;
     }
@@ -146,13 +148,15 @@ namespace Ui {
 
     void MenuGame::viewUpdate() {
         if(currentWorld != nullptr){
-            if (currentPlayer != nullptr) {
-                if(controlMode == modeSelectPosition){
-                    viewPos = targetPosition;
-                }else{
-                	viewPos = currentPlayer->pos;
+            if(currentLevel != nullptr){
+                if (currentPlayer != nullptr) {
+                    if(controlMode == modeSelectPosition){
+                        viewPos = targetPosition;
+                    }else{
+                        viewPos = currentPlayer->pos;
+                    }
+                    viewPos -= (gameArea / 2);
                 }
-                viewPos -= (gameArea / 2);
             }
         }
     }
@@ -167,9 +171,11 @@ namespace Ui {
         bool inView = false;
         if (currentLevel != nullptr) {
             if (currentPlayer != nullptr) {
-                if (currentLevel->canSee(currentPlayer->pos, p, currentPlayer->viewDistance, true) || Settings::seeEverything) {
-                    currentLevel->setExplored(p, true);
+                if (currentLevel->canSee(p, currentPlayer->pos, currentPlayer->viewDistance) || Settings::seeEverything) {
                     inView = true;
+                }
+                if(inView){
+                    currentLevel->setExplored(p, true);
                 }
                 if (!currentLevel->getExplored(p)) {
                     symbol = ' ';
@@ -242,6 +248,13 @@ namespace Ui {
                         bg = (((int)((currentWorld->worldTime+100)*2.7))+p.y-p.x) % 16;
                     }else{
                     	fg = (((int)((currentWorld->worldTime+100)*2.3))+p.x-p.y) % 16;
+                    }
+                }
+                if(fadeIn < fadeInMax){
+                    if(distanceSquared(p, currentPlayer->pos) > fadeIn*fadeIn){
+                        bg = C_BLACK;
+                        fg = C_BLACK;
+                        symbol = ' ';
                     }
                 }
             }
@@ -400,7 +413,7 @@ namespace Ui {
                     ItemRanged* ranged = dynamic_cast<ItemRanged*> (wep);
                     if (ranged) {
                         changeMode(modeSelectPosition);
-                        if (!currentLevel->canSee(currentPlayer->pos, targetPosition, ranged->range, false)) {
+                        if (!currentLevel->canSee(currentPlayer->pos, targetPosition, ranged->range)) {
                             targetPosition = currentPlayer->pos;
                         }
                         itemToBeUsedRange = ranged->range;
@@ -555,7 +568,7 @@ namespace Ui {
 
                         console(Utility::capitalize(currentLevel->tileAt(targetPosition)->getName()));
 
-                        if(currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance, true)){
+                        if(currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)){
                             for(Entity* e : currentLevel->entityList){
                                 if(!e->removed && e->pos == targetPosition){
                                     if(Settings::debugMode){
@@ -566,9 +579,11 @@ namespace Ui {
                                     if(a){
                                         consolef("%s - HP:[%.0f/%.0f]", a->getName().c_str(), a->getHp(), a->getMaxHp());
                                         EntityAi* eai = dynamic_cast<EntityAi*>(a);
-                                        ItemWeapon* w = eai->getActiveItemWeapon();
-                                        if(w){
-                                        	consolef("Weapon: %s  %.2f d/t (%.2f per %.2ft) ", damageTypeName(w->damageType).c_str(), w->baseDamage, w->useDelay, w->baseDamage / w->useDelay);
+                                        if(eai){
+                                            ItemWeapon* w = eai->getActiveItemWeapon();
+                                            if(w){
+                                                consolef("Weapon: %s  %.2f d/t (%.2f per %.2ft) ", damageTypeName(w->damageType).c_str(), w->baseDamage, w->useDelay, w->baseDamage / w->useDelay);
+                                            }
                                         }
                                         for(Weakness w : a->weaknesses){
                                             if(w.multiplier > 1){
@@ -608,7 +623,7 @@ namespace Ui {
             } else if(Settings::cheatKeysEnabled){
                 if (in == 'r') {
                     Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
-                    timePassed += currentPlayer->moveAbsalute(p, currentLevel);
+                    timePassed += currentPlayer->moveAbsalute(p, currentLevel, false);
 
                 } else if (in == 'R') {
                     Point2 p = currentLevel->stairDownPos;
@@ -651,6 +666,13 @@ namespace Ui {
             render(currentWorld->worldTime);
 
             currentWorld->worldLastTime = currentWorld->worldTime;
+            timeSinceTimePassed = 0;
+        }else{
+            timeSinceTimePassed++;
+        }
+
+        if(Settings::autoSave && timeSinceTimePassed == autoSaveTime){
+            WorldLoader::save(currentWorld);
         }
 
         if(currentPlayer){
@@ -666,6 +688,10 @@ namespace Ui {
         viewUpdate();
         move(0, 0);
         clrtobot();
+
+        if(fadeIn < fadeInMax){
+            fadeIn++;
+        }
 
         for (int j = 0; j < gameArea.y; j++) {
             move(j, 0);
@@ -756,8 +782,13 @@ namespace Ui {
 
             a++;
 
-            move(a, gameArea.x + 1);
-            clrtoeol();
+            if(Settings::autoSave && timeSinceTimePassed > autoSaveTime && timeSinceTimePassed < autoSaveTime+10){
+                printMultiLineString(a++, gameArea.x+1, "Auto saving...");
+                a++;
+            }
+
+            //move(a, gameArea.x + 1);
+            //clrtoeol();
 
             nearestEntities = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, true);
 
@@ -794,11 +825,11 @@ namespace Ui {
         }
 
         if(currentLevel != nullptr){
-            currentLevel->menuGame = this;
+            //currentLevel->menuGame = this;
 
             if (Settings::debugMode) {
                 Ui::setColor(C_LIGHT_GRAY);
-                mvprintw(gameArea.y, 0, "%d, %d [%dx%d] e:%d te:%d p:%s %s(%d)", p.x, p.y, currentLevel->getSize().x, currentLevel->getSize().y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "null" : "not null", currentLevel->getName().c_str(), currentLevel->getDifficulty());
+                mvprintw(gameArea.y, 0, "%d, %d [%dx%d] e:%d te:%d p:%s %s(%d)", p.x, p.y, currentLevel->getSize().x, currentLevel->getSize().y, currentLevel->entityCount(), currentLevel->tileEntityList.size(), (currentPlayer == nullptr) ? "0" : "1", currentLevel->getName().c_str(), currentLevel->getDifficulty());
             }
         }
 

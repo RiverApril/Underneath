@@ -187,33 +187,61 @@ int Level::indexAt(int x, int y) {
     return Tiles::tileEdge->getIndex();
 }
 
-bool Level::canSee(Point2 origin, Point2 test, double range, bool withWalls) {
+bool Level::canSee(Point2 origin, Point2 test, double range) {
+
+    if(origin == test){
+        return true;
+    }
 
     if (Math::distanceSquared(origin.x, origin.y, test.x, test.y) > range * range) {
         return false;
     }
 
-    Vector2 step = ((test - origin) / ((double) range));
+    bool hitAWall = false;
 
     Vector2 v;
-    Point2 p;
 
-    for (double i = 0; i < range; i += .2) {
+    {
+        Vector2 step = ((test - origin) / ((double) range));
 
-        v = (step * i);
+        for (double i = 0; i <= range; i += .1) {
 
-        if (withWalls) {
-            p = v.roundToward0();
-        } else {
-            p = v.roundAwayFrom0();
-        }
+            v = (step * i);
 
-        if (tileAt(origin + (p))->isTall()) {
-            return false;
+            Point2 p = v.roundAwayFrom0();
+
+            if (p != Point2Zero && (origin+p) != test && tileAt(origin + p)->isTall()) {
+                hitAWall = true;
+                break;
+            }
         }
     }
 
-    return true;
+    if(hitAWall){
+
+        hitAWall = false;
+
+        Point2 t = test;
+        test = origin;
+        origin = t;
+
+        Vector2 step = ((test - origin) / ((double) range));
+
+        for (double i = 0; i <= range; i += .1) {
+
+            v = (step * i);
+
+            Point2 p = v.roundAwayFrom0();
+
+            if (p != Point2Zero && (origin+p) != test && tileAt(origin + p)->isTall()) {
+                hitAWall = true;
+                break;
+            }
+        }
+        return !hitAWall;
+    }else{
+        return !hitAWall;
+    }
 }
 
 Entity* Level::getClosestVisableEntity(Point2 origin, double range, Entity* notMe) {
@@ -223,7 +251,7 @@ Entity* Level::getClosestVisableEntity(Point2 origin, double range, Entity* notM
         if (e == notMe) {
             continue;
         }
-        if (canSee(origin, e->pos, range, false)) {
+        if (canSee(origin, e->pos, range)) {
             if (e != nullptr) {
                 double temp = distanceSquared(origin, e->pos);
                 if (temp < lastDistSquared) {
@@ -277,7 +305,7 @@ vector<Entity*> Level::getAllVisableEntities(Point2 origin, double range, vector
         if (skip) {
             continue;
         }
-        if (canSee(origin, e->pos, range, true)) {
+        if (canSee(origin, e->pos, range)) {
             if (e != nullptr) {
                 list.push_back(e);
             }
@@ -488,7 +516,7 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
 }
 
 bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities) {
-    return !getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities).empty();
+    return !(getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities).empty());
 
     /*vector<vector<char>> map = vector<vector<char>>(size.x, vector<char>(size.y));
     for(int i=0;i<size.x;i++){
@@ -524,28 +552,6 @@ bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag ba
         }
     }
     return false;*/
-}
-
-void Level::genDebug(string s) {
-    if(!Settings::debugMode){
-        move(0, 0);
-        clrtobot();
-        mvprintw(0, 0, "Generating...");
-        refresh();
-        return;
-    }
-    Ui::setColor(C_WHITE);
-    move(genDebugPos, 0);
-    clrtoeol();
-    mvprintw(genDebugPos, 0, s.c_str());
-    genDebugPos++;
-
-    if (genDebugPos >= Ui::terminalSize.y) {
-        genDebugPos = 0;
-        move(genDebugPos, 0);
-        clrtobot();
-    }
-    refresh();
 }
 
 void Level::explode(Point2 pos, double radius, double attackPower, bool destroyTiles){
@@ -660,12 +666,15 @@ void Level::load(unsigned char* data, int* position) {
 Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel) {
     entityList.clear();
     tileEntityList.clear();
+
+    srand(seed);
+
     switch(genType){
         case genTypeStartArea:{
-            return generateStartArea(seed, stairUpPos, previousLevel);
+            return generateStartArea(stairUpPos, previousLevel);
         }
         case genTypeDungeon:{
-            return generateDungeon(seed, stairUpPos, previousLevel);
+            return generateDungeon(stairUpPos, previousLevel);
         }
 
     }

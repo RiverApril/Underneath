@@ -74,8 +74,6 @@ namespace Tiles {
 
     extern vector<Tile*> tileList;
 
-    extern Tile* tileStatue;
-
     extern Tile* tileFloor;
     extern Tile* tileBloodFloor;
     //extern Tile* tilePath;
@@ -100,6 +98,8 @@ namespace Tiles {
 
     extern Tile* tileTree;
     extern Tile* tileGrass;
+
+    extern Tile* tilePillar;
 
     extern Tile* tileEdge;
     extern Tile* tileUnset;

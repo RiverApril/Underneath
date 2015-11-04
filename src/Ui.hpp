@@ -30,6 +30,8 @@ string plural(string n);
 class EntityPlayer;
 class Inventory;
 
+#define flashTimeMax 10
+
 namespace Ui {
 
     typedef unsigned char Color;
@@ -64,7 +66,7 @@ namespace Ui {
 
     int printMultiLineString(int y, int x, string s, int maxX = -1);
 
-    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv = nullptr, string playerDisplayName = "", string invDisplayName = "", bool selectedLeft = true, bool showPrice = false);
+    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv = nullptr, string playerDisplayName = "", string invDisplayName = "", bool selectedLeft = true, bool showPrice = false, bool flashImportantInfo = false);
 
     extern unsigned long tick;
 

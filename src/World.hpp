@@ -30,6 +30,7 @@ public:
     string name = "";
     double worldTime = 0.0;
     double worldLastTime = 0.0;
+    unsigned int seed = 0;
 
 };
 

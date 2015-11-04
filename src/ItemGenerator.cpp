@@ -25,8 +25,10 @@ namespace ItemGenerator {
     vector<ItemArmorBase> armorList;
     vector<Condition> conditionList;
     vector<WeaponBase> weaponList;
-    vector<PotionBase> potionList;
     vector<ScrollBase> scrollList;
+
+    vector<int> potionChanceList;
+    vector<PotionBase> potionList;
 
     WeaponBase wKnife;
     WeaponBase wSword;
@@ -45,46 +47,46 @@ namespace ItemGenerator {
 
     void initItemTemplates() {
 
-        iCoin = new Item("Coin", .01);
+        iCoin = new Item("Coin");
         iCoin->artIndex = Arts::artCoin;
         iCoin->coinValue = -1;
 
-        iSmallKey = new Item("Key", .02);
+        iSmallKey = new Item("Key");
         iSmallKey->artIndex = Arts::artSmallKey;
         iSmallKey->coinValue = 1000;
 
-        PotionBase potionHealth = atl(PotionBase({{"Health Potion"}}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100));
-        PotionBase potionMana = atl(PotionBase({{"Mana Potion"}}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100));
+        PotionBase potionHealth = atl(PotionBase({{"Health Potion"}}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100), 100);
+        PotionBase potionMana = atl(PotionBase({{"Mana Potion"}}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100), 80);
 
-        PotionBase potionRegen = atl(PotionBase({{"Regeneration Potion"}}, {EffIdMeta(effHeal, 0)}, 2, 30, 1, 10));
-        PotionBase potionManaRegen = atl(PotionBase({{"Mana Regeneration Potion"}}, {EffIdMeta(effHeal, 1)}, 2, 30, 1, 10));
+        PotionBase potionRegen = atl(PotionBase({{"Regeneration Potion"}}, {EffIdMeta(effHeal, 0)}, 2, 30, 1, 10), 50);
+        PotionBase potionManaRegen = atl(PotionBase({{"Mana Regeneration Potion"}}, {EffIdMeta(effHeal, 1)}, 2, 30, 1, 10), 40);
 
         PotionBase potionPhysicalDefense = atl(PotionBase({{"Physical Defense Potion"}}, {
             EffIdMeta(effBuffDefense, damPierce),
             EffIdMeta(effBuffDefense, damSharp),
         	EffIdMeta(effBuffDefense, damBlunt)
-        }, 4, 60, .1, 1, false));
+        }, 4, 60, .1, 1, false), 50);
 
         PotionBase potionElementalDefense = atl(PotionBase({{"Elemental Defense Potion"}}, {
             EffIdMeta(effBuffDefense, damFire),
             EffIdMeta(effBuffDefense, damIce),
             EffIdMeta(effBuffDefense, damShock)
-        }, 2, 30, .1, 1, false));
+        }, 2, 30, .1, 1, false), 25);
 
         PotionBase potionPhysicalAttack = atl(PotionBase({{"Physical Attack Potion"}}, {
             EffIdMeta(effBuffAttack, damPierce),
             EffIdMeta(effBuffAttack, damSharp),
             EffIdMeta(effBuffAttack, damBlunt)
-        }, 4, 60, 1.1, 2, false));
+        }, 4, 60, 1.1, 2, false), 50);
 
         PotionBase potionElementalAttacK = atl(PotionBase({{"Elemental Attack Potion"}}, {
             EffIdMeta(effBuffAttack, damFire),
             EffIdMeta(effBuffAttack, damIce),
             EffIdMeta(effBuffAttack, damShock)
-        }, 2, 30, 1.1, 2, false));
+        }, 2, 30, 1.1, 2, false), 25);
 
-        PotionBase potionPreventBad = atl(PotionBase({{"Purity Potion"}}, {EffIdMeta(effPurity, 0)}, 3, 30, 0, 0, false));
-        PotionBase potionRemoveBad = atl(PotionBase({{"Clensing Potion"}}, {EffIdMeta(effPurity, 0)}, 0, 0, 0, 0, false));
+        PotionBase potionPreventBad = atl(PotionBase({{"Purity Potion"}}, {EffIdMeta(effPurity, 0)}, 3, 30, 0, 0, false), 5);
+        PotionBase potionRemoveBad = atl(PotionBase({{"Clensing Potion"}}, {EffIdMeta(effPurity, 0)}, 0, 0, 0, 0, false), 10);
 
         /*PotionBase potionOrganicDefense = atl(PotionBase({"Organic Defense Potion"}, {
             EffIdMeta(effBuffDefense, damPoison),
@@ -96,18 +98,19 @@ namespace ItemGenerator {
         ScrollBase scrollRelocate = atl(ScrollBase({{"Scroll of Relocation", "Scrolls of Relocation"}}, spellRelocate));
 
 
-        wKnife = atl(WeaponBase({{"Knife", "Knives"}, {"Dagger"}, {"Cleaver"}}, 0.25, 1.0/3, damSharp, wepMelee).setWeight(1).setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver}));
-        wSword = atl(WeaponBase({{"Longsword"}, {"Cutlass", "Cutlasses"}, {"Katana"}, {"Machete"}, {"Gladius", "Gladii"}, {"Scimitar"}, {"Rapier"}, {"Short Sword"}, {"Broadsword"}, {"Saber"}, {"Claymore"}}, 1, 1, damSharp, wepMelee).setWeight(2).setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore}));
-        wAxe = atl(WeaponBase({{"Axe"}, {"Hatchet"}, {"Double Axe"}}, 1.2, 1.2, damSharp, wepMelee).setWeight(2).setArts({Arts::artAxe, Arts::artAxe, Arts::artDoubleAxe}));
+
+        wKnife = atl(WeaponBase({{"Knife", "Knives"}, {"Dagger"}, {"Cleaver"}}, 0.25, 1.0/3, damSharp, wepMelee).setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver}));
+        wSword = atl(WeaponBase({{"Longsword"}, {"Cutlass", "Cutlasses"}, {"Katana"}, {"Machete"}, {"Gladius", "Gladii"}, {"Scimitar"}, {"Rapier"}, {"Short Sword"}, {"Broadsword"}, {"Saber"}, {"Claymore"}}, 1, 1, damSharp, wepMelee).setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore}));
+        wAxe = atl(WeaponBase({{"Axe"}, {"Hatchet"}, {"Double Axe"}}, 1.2, 1.2, damSharp, wepMelee).setArts({Arts::artAxe, Arts::artAxe, Arts::artDoubleAxe}));
         wMace = atl(WeaponBase({{"Mace"}, {"Club"}, {"Flail"}, {"War Hammer"}, {"Mallet"}}, 1.5, 1.5, damBlunt, wepMelee).setArts({Arts::artMace, Arts::artClub, Arts::artFlail, Arts::artWarHammer, Arts::artWarHammer}));
-        wSpear = atl(WeaponBase({{"Spear"}, {"Halberd"}}, 1.3, 1.3, damPierce, wepMelee).setWeight(2.5).setArts({Arts::artSpear, Arts::artHalberd}));
+        wSpear = atl(WeaponBase({{"Spear"}, {"Halberd"}}, 1.3, 1.3, damPierce, wepMelee).setArts({Arts::artSpear, Arts::artHalberd}));
 
-        wBow = atl(WeaponBase({{"Longbow"}, {"Bow"}, {"Recurve Bow"}}, .5, 1, damPierce, wepRanged).ranged(20).setWeight(1.5).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
-        wCrossbow = atl(WeaponBase({{"Crossbow"}, {"Scorpion"}}, 0.6, 0.8, damPierce, wepRanged).ranged(10).setWeight(2).setArts({Arts::artCrossbow}));
+        wBow = atl(WeaponBase({{"Longbow"}, {"Bow"}, {"Recurve Bow"}}, .5, 1, damPierce, wepRanged).ranged(20).setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow}));
+        wCrossbow = atl(WeaponBase({{"Crossbow"}, {"Scorpion"}}, 0.6, 0.8, damPierce, wepRanged).ranged(10).setArts({Arts::artCrossbow}));
 
-        wFireItemCombatSpell = atl(WeaponBase({{"Ignite Spell"}, {"Scorch Spell"}, {"Burn Spell"}}, 1, .2, damFire, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFire}));
-        wFrostItemCombatSpell = atl(WeaponBase({{"Freeze Spell"}, {"Chill Spell"}}, 1, .2, damIce, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollFrost}));
-        wShockItemCombatSpell = atl(WeaponBase({{"Electrocute Spell"}, {"Shock Spell"}, {"Zap Spell"}}, 1, .2, damShock, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollShock}));
+        wFireItemCombatSpell = atl(WeaponBase({{"Ignite Spell"}, {"Scorch Spell"}, {"Burn Spell"}}, 1, .2, damFire, wepMagic).magical(8, 2).setArts({Arts::artScrollFire}));
+        wFrostItemCombatSpell = atl(WeaponBase({{"Freeze Spell"}, {"Chill Spell"}}, 1, .2, damIce, wepMagic).magical(8, 2).setArts({Arts::artScrollFrost}));
+        wShockItemCombatSpell = atl(WeaponBase({{"Electrocute Spell"}, {"Shock Spell"}, {"Zap Spell"}}, 1, .2, damShock, wepMagic).magical(8, 2).setArts({Arts::artScrollShock}));
 
         wHealingCombatSpell = atl(WeaponBase({{"Healing Spell"}}, 0, .2, damNone, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollHeal}));
         wHealingCombatSpell.enchs.push_back(Enchantment(effHeal, 1, double power, double time, double meta));
@@ -115,53 +118,53 @@ namespace ItemGenerator {
 
 
 
-        wNatural = WeaponBase({{"Teeth"}, {"Claws"}}, 1, 1, damSharp, wepMelee);
+        wNatural = WeaponBase({{"Teeth", "Teeth"}, {"Claws", "Claws"}}, 1, 1, damSharp, wepMelee);
 
 
 
 
-        Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, 1, 1, {wepMelee, wepRanged}));
-        Condition cNormal = atl(Condition({"Standard", "Normal", "Regular", "Stock"}, 1, 1, 1, 1, 1, 1, {wepMelee, wepRanged}));
-        Condition cForged = atl(Condition({"Forged", "Crafted"}, 1.4, 1.6, 1, 1, 1, 1, {wepMelee, wepRanged}));
-        Condition cFortified = atl(Condition({"Fortified", "Strengthened", "Reinforced"}, 1.8, 2.2, 1.1, 1.1, 1.3, 1.6, {wepMelee, wepRanged}));
-        Condition cHeavy = atl(Condition({"Heavy", "Dense"}, 1, 1.1, 1.3, 1.5, 2, 3, {wepMelee, wepRanged}));
+        Condition cBroken = atl(Condition({"Broken", "Cracked", "Damaged"}, .5, .7, 1, 1, {wepMelee, wepRanged}));
+        Condition cNormal = atl(Condition({"Standard", "Normal", "Regular", "Stock"}, 1, 1, 1, 1, {wepMelee, wepRanged}));
+        Condition cForged = atl(Condition({"Forged", "Crafted"}, 1.4, 1.6, 1, 1, {wepMelee, wepRanged}));
+        Condition cFortified = atl(Condition({"Fortified", "Strengthened", "Reinforced"}, 1.8, 2.2, 1.3, 1.6, {wepMelee, wepRanged}));
+        Condition cHeavy = atl(Condition({"Heavy", "Dense"}, 1, 1.1, 1.3, 1.5, {wepMelee, wepRanged}));
 
 
-        Condition cCheapMagic = atl(Condition({"Cheap", "Frugal"}, .8, 1.0, 1, 1, 1, 1, {wepMagic}).magical(.5, .8));
-        Condition cNormalMagic = atl(Condition({"Apprentice"}, 1, 1, 1, 1, 1, 1, {wepMagic}).magical(1.0, 1.0));
-        Condition cExpenciveMagic = atl(Condition({"Expensive", "Costly"}, 0.9, 1.0, 1, 1, 1, 1, {wepMagic}).magical(3.0, 5.0));
-        Condition cMasterMagic = atl(Condition({"Master", "Expert", "Warlock's"}, 1.5, 2.5, 2, 3, 1, 1, {wepMagic}).magical(2.0, 4.0));
-
-
-
-        ItemArmorBase aLeatherChest = atl(ItemArmorBase({{"Leather Cuirass", "Leather Cuirasses"}}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}, 3));
-
-        ItemArmorBase aLeatherHelm = atl(ItemArmorBase({{"Leather Coif"}}, {slotHead}, {DefenseRange(damSharp, .01, .06), DefenseRange(damPierce, .01, .03)}, 2));
-
-        ItemArmorBase aLeatherLeggings = atl(ItemArmorBase({{"Leather Greaves", "Pairs of Leather Greaves"}}, {slotLegs}, {DefenseRange(damSharp, .01, .05), DefenseRange(damPierce, .01, .02)}, 1.5));
-
-        ItemArmorBase aLeatherBoots = atl(ItemArmorBase({{"Leather Boots", "Pairs of Leather Boots"}}, {slotFeet}, {DefenseRange(damSharp, .01, .04), DefenseRange(damPierce, .01, .02)}, 1.5));
-
-        ItemArmorBase aLeatherGloves = atl(ItemArmorBase({{"Leather Gloves", "Pairs of Leather Gloves"}, {"Leather Bracers", "Pairs of Leather Bracers"}, {"Leather Vambraces", "Pairs of Leather Vambraces"}}, {slotHands}, {DefenseRange(damSharp, .01, .03), DefenseRange(damPierce, .01, .02)}, 1));
+        Condition cCheapMagic = atl(Condition({"Cheap", "Frugal"}, .8, 1.0, 1, 1, {wepMagic}).magical(.5, .8));
+        Condition cNormalMagic = atl(Condition({"Apprentice"}, 1, 1, 1, 1, {wepMagic}).magical(1.0, 1.0));
+        Condition cExpenciveMagic = atl(Condition({"Expensive", "Costly"}, 0.9, 1.0, 1, 1, {wepMagic}).magical(3.0, 5.0));
+        Condition cMasterMagic = atl(Condition({"Master", "Expert", "Warlock's"}, 1.5, 2.5, 2, 3, {wepMagic}).magical(2.0, 4.0));
 
 
 
-        ItemArmorBase aMailChest = atl(ItemArmorBase({{"Mail Shirt"}, {"Hauberk"}}, {slotBody}, {DefenseRange(damSharp, .01, .30), DefenseRange(damPierce, .01, .30), DefenseRange(damBlunt, .01, .10)}, 5));
+        ItemArmorBase aLeatherChest = atl(ItemArmorBase({{"Leather Cuirass", "Leather Cuirasses"}}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}));
 
-        ItemArmorBase aMailHelm = atl(ItemArmorBase({{"Mail Coif"}, {"Mail Hood"}}, {slotHead}, {DefenseRange(damSharp, .01, .15), DefenseRange(damPierce, .01, .15)}, 5));
+        ItemArmorBase aLeatherHelm = atl(ItemArmorBase({{"Leather Coif"}}, {slotHead}, {DefenseRange(damSharp, .01, .06), DefenseRange(damPierce, .01, .03)}));
 
-        ItemArmorBase aMailLeggings = atl(ItemArmorBase({{"Mail Leggings", "Pairs of Mail Leggings"}}, {slotLegs}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .10)}, 1));
+        ItemArmorBase aLeatherLeggings = atl(ItemArmorBase({{"Leather Greaves", "Pairs of Leather Greaves"}}, {slotLegs}, {DefenseRange(damSharp, .01, .05), DefenseRange(damPierce, .01, .02)}));
 
-        ItemArmorBase aMailBoots = atl(ItemArmorBase({{"Mail Socks", "Pairs of Mail Socks"}}, {slotFeet}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}, 1));
+        ItemArmorBase aLeatherBoots = atl(ItemArmorBase({{"Leather Boots", "Pairs of Leather Boots"}}, {slotFeet}, {DefenseRange(damSharp, .01, .04), DefenseRange(damPierce, .01, .02)}));
 
-        ItemArmorBase aMailGloves = atl(ItemArmorBase({{"Mail Gloves", "Pairs of Mail Gloves"}, {"Mail Gauntlets", "Pairs of Mail Gauntlets"}}, {slotHands}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}, 1));
-
-
+        ItemArmorBase aLeatherGloves = atl(ItemArmorBase({{"Leather Gloves", "Pairs of Leather Gloves"}, {"Leather Bracers", "Pairs of Leather Bracers"}, {"Leather Vambraces", "Pairs of Leather Vambraces"}}, {slotHands}, {DefenseRange(damSharp, .01, .03), DefenseRange(damPierce, .01, .02)}));
 
 
-        ItemArmorBase aGoldenRing = atl(ItemArmorBase({{"Golden Ring"}, {"Silver Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}, 1));
 
-        ItemArmorBase aJewelRing = atl(ItemArmorBase({{"Golden Garnet Ring"}, {"Silver Amethyst Ring"}, {"Silver Garnet Ring"}, {"Golden Amethyst Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .20, 10), DefenseRange(damIce, .01, .20, 10), DefenseRange(damShock, .01, .20, 10)}, 1));
+        ItemArmorBase aMailChest = atl(ItemArmorBase({{"Mail Shirt"}, {"Hauberk"}}, {slotBody}, {DefenseRange(damSharp, .01, .30), DefenseRange(damPierce, .01, .30), DefenseRange(damBlunt, .01, .10)}));
+
+        ItemArmorBase aMailHelm = atl(ItemArmorBase({{"Mail Coif"}, {"Mail Hood"}}, {slotHead}, {DefenseRange(damSharp, .01, .15), DefenseRange(damPierce, .01, .15)}));
+
+        ItemArmorBase aMailLeggings = atl(ItemArmorBase({{"Mail Leggings", "Pairs of Mail Leggings"}}, {slotLegs}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .10)}));
+
+        ItemArmorBase aMailBoots = atl(ItemArmorBase({{"Mail Socks", "Pairs of Mail Socks"}}, {slotFeet}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}));
+
+        ItemArmorBase aMailGloves = atl(ItemArmorBase({{"Mail Gloves", "Pairs of Mail Gloves"}, {"Mail Gauntlets", "Pairs of Mail Gauntlets"}}, {slotHands}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}));
+
+
+
+
+        ItemArmorBase aGoldenRing = atl(ItemArmorBase({{"Golden Ring"}, {"Silver Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}));
+
+        ItemArmorBase aJewelRing = atl(ItemArmorBase({{"Golden Garnet Ring"}, {"Silver Amethyst Ring"}, {"Silver Garnet Ring"}, {"Golden Amethyst Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .20, 10), DefenseRange(damIce, .01, .20, 10), DefenseRange(damShock, .01, .20, 10)}));
 
 
     }
@@ -185,8 +188,9 @@ namespace ItemGenerator {
         return w;
     }
 
-    PotionBase atl(PotionBase p) {
+    PotionBase atl(PotionBase p, int of100) {
         potionList.push_back(p);
+        potionChanceList.push_back(of100);
         return p;
     }
 
@@ -313,7 +317,7 @@ namespace ItemGenerator {
         for (EffIdMeta eff : pb.effects) {
             effects.push_back(Effect(eff.id, time, power * (pb.difficultyScales?itemDifficulty+1:1), eff.meta));
         }
-        ItemPotion* potion = new ItemPotion(effects, "", .2);
+        ItemPotion* potion = new ItemPotion(effects, "");
         potion->setName(pb.names[rand() % pb.names.size()]);
         switch (rand() % 4) {
             default:
@@ -334,7 +338,7 @@ namespace ItemGenerator {
     }
 
     ItemUtilitySpell* createScrollFromBase(ScrollBase sb) {
-        ItemUtilitySpell* utilitySpell = new ItemUtilitySpell(sb.eff, -1, "", .1);
+        ItemUtilitySpell* utilitySpell = new ItemUtilitySpell(sb.eff, -1, "");
         utilitySpell->setName(sb.names[rand() % sb.names.size()]);
         switch (sb.eff) {
             case spellRelocate:
@@ -355,13 +359,20 @@ namespace ItemGenerator {
     Item* createRandAltLoot(int itemDifficulty) {
         int r = rand() % 8;
         if(r < 4) {// 1/2 for potion
-            PotionBase pb = potionList[rand() % potionList.size()];
+            PotionBase pb;
+            int i;
+            do{
+                i = rand() % potionList.size();
+            }while(rand()%100 <= potionChanceList[i]);
+            
+            pb = potionList[i];
+
             return createPotionFromBase(pb, itemDifficulty);
         } else if(r < 6) {// 1/4 for scroll
             ScrollBase sb = scrollList[rand() % scrollList.size()];
             return createScrollFromBase(sb);
         } else {// 1/4 for bomb
-            return new ItemTimeActivated(rand()%10==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10), 1);
+            return new ItemTimeActivated(rand()%10==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10));
         }
     }
 
@@ -382,7 +393,7 @@ namespace ItemGenerator {
         if (base.range != -1) {
             if (base.manaCost != -1) {
                 w = new ItemCombatSpell();
-                ((ItemCombatSpell*) w)->manaCost = (int) (base.manaCost * Random::randDouble(4.0, 12.0));
+                ((ItemCombatSpell*) w)->manaCost = (int) (base.manaCost * Random::randDouble(1.0, 2.0));
                 w->addEnchantment(Enchantment(effDamage, 10, 1, 6, base.damageType));
             } else {
                 w = new ItemRanged();
@@ -393,7 +404,6 @@ namespace ItemGenerator {
         }
         w->baseDamage = base.damage;
         w->useDelay = base.useDelay;
-        w->weight = base.weight;
         w->setName(base.names[ni]);
         w->artIndex = base.arts[arti];
         w->damageType = base.damageType;
@@ -415,7 +425,6 @@ namespace ItemGenerator {
         a = new ItemArmor();
 
         a->setName(base.names[ni]);
-        a->weight = base.weight;
         a->viableSlots = base.viableSlots;
         for(DefenseRange dr : base.defences){
             if(rand() % dr.chance == 0){
@@ -436,7 +445,6 @@ namespace ItemGenerator {
 
         w->baseDamage *= Random::randDouble(c.damage.x, c.damage.y);
         w->useDelay *= Random::randDouble(c.useDelay.x, c.useDelay.y);
-        w->weight *= Random::randDouble(c.weight.x, c.weight.y);
         ItemCombatSpell* s = dynamic_cast<ItemCombatSpell*> (w);
         if (s) {
             s->manaCost *= Random::randDouble(c.manaCost.x, c.manaCost.y);

@@ -76,21 +76,19 @@ public:
 
     vector<Entity*> getAllVisableEntities(Point2 origin, double range, vector<Entity*> notMes, Point2 nearestTo, Point2 inDirection, bool sort);
 
-    bool canSee(Point2 origin, Point2 test, double range, bool withWalls);
+    bool canSee(Point2 origin, Point2 test, double range);
 
     size_t entityCount();
 
     bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0, bool careAboutEntities = false);
 
-    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = tileFlagAll, bool careAboutEntities = false);
-
-    void genDebug(string s);
+    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0, bool careAboutEntities = false);
 
     Point2 generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel);
 
     //The following are implemented in LevelGenerator.cpp
-    Point2 generateStartArea(unsigned int seed, Point2 stairUpPos, string previousLevel);
-    Point2 generateDungeon(unsigned int seed, Point2 stairUpPos, string previousLevel);
+    Point2 generateStartArea(Point2 stairUpPos, string previousLevel);
+    Point2 generateDungeon(Point2 stairUpPos, string previousLevel);
     
 
     void placeNewEntityAi(EntityAi* e, Point2 entrance);
@@ -156,8 +154,6 @@ private:
     vector<vector<TileData> > tileGrid;
 
     string name;
-
-    int genDebugPos;
 
     int difficulty = 1;
 };

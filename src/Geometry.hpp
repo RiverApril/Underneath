@@ -157,6 +157,11 @@ struct Vector2 {
     Vector2 operator*(Point2 other);
     Vector2 operator/(Point2 other);
 
+    Vector2 operator+(Vector2 other);
+    Vector2 operator-(Vector2 other);
+    Vector2 operator*(Vector2 other);
+    Vector2 operator/(Vector2 other);
+
     Vector2 operator-();
 
     Vector2* operator+=(Vector2 other);
@@ -179,6 +184,7 @@ extern Point2 Point2Neg1;
 extern Point2 Point2One;
 
 extern Vector2 Vector2One;
+extern Vector2 Vector2OneHalf;
 
 
 #endif /* defined(__Underneath__Geometry__) */

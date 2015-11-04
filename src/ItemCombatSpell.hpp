@@ -21,7 +21,7 @@ public:
 
     }
 
-    ItemCombatSpell(int baseDamage, string name, double weight, int manaCost, double useDelay, int range) : ItemRanged(baseDamage, name, weight, useDelay, range) {
+    ItemCombatSpell(int baseDamage, string name, int manaCost, double useDelay, int range) : ItemRanged(baseDamage, name, useDelay, range) {
 
         this->baseDamage = baseDamage;
         this->damageType = damFire;

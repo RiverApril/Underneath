@@ -9,12 +9,12 @@
 #include "ItemArmor.hpp"
 #include "Utility.hpp"
 
-ItemArmor::ItemArmor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name, double weight) : ItemEquipable(name, weight) {
+ItemArmor::ItemArmor(vector<EquipSlot> viableSlots, vector<Defense> defenses, string name) : ItemEquipable(name) {
     this->viableSlots = viableSlots;
     this->defenses = defenses;
 }
 
-ItemArmor::ItemArmor(EquipSlot viableSlot, vector<Defense> defenses, string name, double weight) : ItemArmor(vector<EquipSlot>{viableSlot}, defenses, name, weight) {
+ItemArmor::ItemArmor(EquipSlot viableSlot, vector<Defense> defenses, string name) : ItemArmor(vector<EquipSlot>{viableSlot}, defenses, name) {
 }
 
 void ItemArmor::save(vector<unsigned char>* data) {

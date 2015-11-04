@@ -21,6 +21,7 @@ Point2 Point2One = Point2(1, 1);
 Point2 Point2Neg1 = Point2(-1, -1);
 
 Vector2 Vector2One = Vector2(1, 1);
+Vector2 Vector2OneHalf = Vector2(.5, .5);
 
 //Point2:
 
@@ -332,6 +333,22 @@ Vector2 Vector2::operator*(Point2 other){
 }
 
 Vector2 Vector2::operator/(Point2 other){
+    return Vector2(this->x * other.x, this->y * other.y);
+}
+
+Vector2 Vector2::operator+(Vector2 other){
+    return Vector2(this->x + other.x, this->y + other.y);
+}
+
+Vector2 Vector2::operator-(Vector2 other){
+    return Vector2(this->x - other.x, this->y - other.y);
+}
+
+Vector2 Vector2::operator*(Vector2 other){
+    return Vector2(this->x * other.x, this->y * other.y);
+}
+
+Vector2 Vector2::operator/(Vector2 other){
     return Vector2(this->x * other.x, this->y * other.y);
 }
 

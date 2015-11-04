@@ -9,7 +9,7 @@
 #include "ItemWeapon.hpp"
 #include "Utility.hpp"
 
-ItemWeapon::ItemWeapon(double baseDamage, string name, double weight, double useDelay) : ItemEquipable(name, weight) {
+ItemWeapon::ItemWeapon(double baseDamage, string name, double useDelay) : ItemEquipable(name) {
     debugf("%s: %.2f", name.c_str(), baseDamage);
     this->baseDamage = baseDamage;
     this->useDelay = useDelay;

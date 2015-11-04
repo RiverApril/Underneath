@@ -34,7 +34,7 @@ void EntityAi::lookAi(double time, Level* level){
         target = level->currentWorld->currentPlayer;
     }
 
-    canSeeTarget = level->canSee(pos, target->pos, agro ? viewDistance * agroViewDistanceMultiplier : viewDistance, false);
+    canSeeTarget = level->canSee(pos, target->pos, agro ? viewDistance * agroViewDistanceMultiplier : viewDistance);
     if (!canSeeTarget && agro) {
         agro = false;
     }
@@ -157,7 +157,7 @@ void EntityAi::moveAi(double time, Level* level) {
                         e->fgColor = C_LIGHT_MAGENTA;
                         level->newEntity(e);
                     }
-                    debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
+                    //debugf("%s: %s", name.c_str(), (path[0]-pos).toString().c_str());
 
                     speed = path[0]-pos;
 
@@ -230,7 +230,7 @@ void EntityAi::attackAi(double time, Level* level){
             } else {
                 ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
                 if (r) {
-                    if (level->canSee(pos, target->pos, Math::min(r->range, (double) viewDistance), false)) {
+                    if (level->canSee(pos, target->pos, r->range) && canSeeTarget) {
                         attack = true;
                     }
 
@@ -286,6 +286,7 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
         while (lastMoveTime + moveDelay <= time) {
             moveAi(time, level);
             lastMoveTime += moveDelay;
+            lookAi(time, level);
         }
         attackAi(time, level);
 

@@ -9,7 +9,7 @@ A dungeon crawler with ASCII graphics lightly based on the classic game Rogue
 This program uses standard c++ libraries and ncurses (pdcurses in Windows).
 SDL version uses SDL2 and SDL_Image.
 
-My development is primarily in Linux and some in MacOSX. I have successfully compiled for Windows using mingw32 on Linux.
+My development is primarily in Linux and some in MacOSX. I have successfully compiled for Windows using MinGW on Linux.
 
 
 ---
@@ -53,7 +53,7 @@ All flags:
 -l  Link only, don't compile sources
 -o  Optimization level 3 (default 0)
 -d  Print all commands that the build.py is executing
--t  Do not recompile ArtFiles.hpp
+-t  Do not remake ArtFiles.hpp
 -w  Use "i686-w64-mingw32-c++" as the compiler (this is to build for windows on linux)
 ```
 

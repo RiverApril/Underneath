@@ -28,7 +28,7 @@ public:
 
     }
 
-    ItemTimeActivated(TimeActivatedType timeActivatedType, double time, double power, double radius, double weight);
+    ItemTimeActivated(TimeActivatedType timeActivatedType, double time, double power, double radius);
 
     virtual int getItemTypeId(){
         return ITEM_TYPE_TIME_ACTIVATED;

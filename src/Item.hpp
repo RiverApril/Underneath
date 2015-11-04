@@ -34,9 +34,8 @@ public:
 
     }
 
-    Item(string name, double weight, int qty = 1) {
+    Item(string name, int qty = 1) {
         this->name = name;
-        this->weight = weight;
         this->qty = qty;
     }
 
@@ -66,7 +65,6 @@ public:
         return other
                 && getItemTypeId() == other->getItemTypeId()
                 &&(name.compare(other->name) == 0)
-                &&(weight == other->weight)
                 &&(artIndex == other->artIndex)
                 &&(coinValue == other->coinValue);
     }
@@ -98,8 +96,7 @@ public:
         }
         name = prepend + name;
     }
-
-    double weight = 0;
+	
     int qty = 1;
     int coinValue = 0;
 

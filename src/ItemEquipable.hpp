@@ -154,7 +154,7 @@ public:
 
     }
 
-    ItemEquipable(string name, double weight);
+    ItemEquipable(string name);
 
     virtual int getItemTypeId() {
         return ITEM_TYPE_EQUIPABLE;

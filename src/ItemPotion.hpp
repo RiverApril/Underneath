@@ -22,15 +22,15 @@ public:
 
     }
 
-    ItemPotion(string name, double weight) : Item(name, weight) {
+    ItemPotion(string name) : Item(name) {
 
     }
 
-    ItemPotion(Effect effect, string name, double weight) : Item(name, weight) {
+    ItemPotion(Effect effect, string name) : Item(name) {
         this->effects = {effect};
     }
 
-    ItemPotion(vector<Effect> effects, string name, double weight) : Item(name, weight) {
+    ItemPotion(vector<Effect> effects, string name) : Item(name) {
         this->effects = effects;
     }
 
