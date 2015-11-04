@@ -42,7 +42,7 @@ namespace EnemyGenerator {
         ItemGenerator::WeaponBase snakeWeapon = ItemGenerator::wNatural;
         snakeWeapon.damageType = damPierce;
         snakeWeapon.damage *= .75;
-        snakeWeapon.enchs.push_back(Enchantment(effDamage, 20, 1, 40, damPoison));
+        snakeWeapon.enchs.push_back(ItemGenerator::EnchantmentBase(effDamage, 20, 30, 1, 1, 30, 50, damPoison));
         snake = atl(new EntityBase(20, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_BLUE, 1.0));
 
         troll = atl(new EntityBase(20, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
@@ -61,8 +61,8 @@ namespace EnemyGenerator {
 
         ItemGenerator::WeaponBase myconidWeapon = ItemGenerator::wNatural;
         myconidWeapon.damage *= .5;
-        myconidWeapon.enchs.push_back(Enchantment(effLSD, 30, 0, 30));
-        myconidWeapon.enchs.push_back(Enchantment(effMemory, 30, 0, 100));
+        myconidWeapon.enchs.push_back(ItemGenerator::EnchantmentBase(effLSD, 20, 30, 0, 0, 20, 40));
+        myconidWeapon.enchs.push_back(ItemGenerator::EnchantmentBase(effMemory, 20, 30, 0, 0, 50, 100));
         myconid = atl(new EntityBase(20, "Myconid", 'm', aiAttack, 50, myconidWeapon, "Finger", C_LIGHT_MAGENTA, 1.0));
         myconid->weaknesses.push_back(Weakness(damFire, 4));
 

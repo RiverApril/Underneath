@@ -18,6 +18,29 @@
 
 namespace ItemGenerator {
 
+    struct EnchantmentBase {
+
+        EnchantmentBase() {
+        }
+
+        EnchantmentBase(EffectId effect, int chanceMin, int chanceMax, double powerMin, double powerMax, double timeMin, double timneMax, double meta = 0) {
+            this->effect = effect;
+            this->chance.x = chanceMin;
+            this->chance.y = chanceMax;
+            this->power.x = powerMin;
+            this->power.y = powerMax;
+            this->time.x = timeMin;
+            this->time.y = timneMax;
+            this->meta = meta;
+        }
+        
+        EffectId effect;
+        Point2 chance;
+        Vector2 power;
+        Vector2 time;
+        double meta;
+    };
+
     struct Condition {
 
         Condition() {
@@ -111,27 +134,6 @@ namespace ItemGenerator {
         double range = -1;
         double manaCost = -1;
         vector<EnchantmentBase> enchs;
-    };
-
-    struct EnchantmentBase {
-
-        EnchantmentBase() {
-        }
-
-        EnchantmentBase(EffectId effect, int chanceMin, int chanceMax, double powerMin, double powerMax, double timeMin, double timneMax, double meta = 0) {
-            this->chance.x = chanceMin;
-            this->chance.y = chanceMax;
-            this->power.x = powerMin;
-            this->power.y = powerMax;
-            this->time.x = timeMin;
-            this->time.y = timneMax;
-            double meta = meta;
-        }
-
-        Point2 chance;
-        Vector2 power;
-        Vector2 time;
-        double meta;
     };
 
     struct EffIdMeta {
@@ -228,6 +230,8 @@ namespace ItemGenerator {
     ItemArmorBase getRandItemArmorBase();
 
     ItemWeapon* createItemWeaponFromBase(WeaponBase base, int itemDifficulty);
+    
+    Enchantment createEnchantmentFromBase(EnchantmentBase base);
 
     ItemArmor* createItemArmorFromBase(ItemArmorBase base, int itemDifficulty);
 

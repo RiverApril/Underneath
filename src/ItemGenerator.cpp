@@ -43,6 +43,8 @@ namespace ItemGenerator {
     WeaponBase wFrostItemCombatSpell;
     WeaponBase wShockItemCombatSpell;
 
+    WeaponBase wHealingCombatSpell;
+
     WeaponBase wNatural;
 
     void initItemTemplates() {
@@ -112,8 +114,8 @@ namespace ItemGenerator {
         wFrostItemCombatSpell = atl(WeaponBase({{"Freeze Spell"}, {"Chill Spell"}}, 1, .2, damIce, wepMagic).magical(8, 2).setArts({Arts::artScrollFrost}));
         wShockItemCombatSpell = atl(WeaponBase({{"Electrocute Spell"}, {"Shock Spell"}, {"Zap Spell"}}, 1, .2, damShock, wepMagic).magical(8, 2).setArts({Arts::artScrollShock}));
 
-        wHealingCombatSpell = atl(WeaponBase({{"Healing Spell"}}, 0, .2, damNone, wepMagic).magical(8, 2).setWeight(.1).setArts({Arts::artScrollHeal}));
-        wHealingCombatSpell.enchs.push_back(Enchantment(effHeal, 1, double power, double time, double meta));
+        wHealingCombatSpell = atl(WeaponBase({{"Healing Spell"}}, 0, .2, damNone, wepMagic).magical(8, 2).setArts({Arts::artScrollHeal}));
+        wHealingCombatSpell.enchs.push_back(EnchantmentBase(effHeal, 1, 1, 10, 30, 0, 0));
 
 
 
@@ -408,13 +410,19 @@ namespace ItemGenerator {
         w->artIndex = base.arts[arti];
         w->damageType = base.damageType;
         w->weaponType = base.weaponType;
-        w->enchantments = base.enchs;
+        for(EnchantmentBase e :  base.enchs){
+            w->enchantments.push_back(createEnchantmentFromBase(e));
+        }
 
         w->baseDamage *= (itemDifficulty * .1) + 1;
         w->baseDamage *= Random::randDouble(4.5, 5.5);
 
 
         return w;
+    }
+    
+    Enchantment createEnchantmentFromBase(EnchantmentBase base){
+        return Enchantment(base.effect, Random::randDouble(base.chance.x, base.chance.y), Random::randDouble(base.power.x, base.power.y), Random::randDouble(base.time.x, base.time.y), base.meta);
     }
 
     ItemArmor* createItemArmorFromBase(ItemArmorBase base, int itemDifficulty){
