@@ -568,12 +568,14 @@ namespace Ui {
                 } else if (weapon) {
                     double x = player->calcDamageMultiplier(weapon);
                     double delay = player->useDelay(weapon);
-                    if (x == 1.0) {
-                        a += printMultiLineString(a, columnX, formatString("Damage: %.2f", weapon->baseDamage));
-                    } else {
-                        a += printMultiLineString(a, columnX, formatString("Damage: %.2f (%.2f)", weapon->baseDamage, weapon->baseDamage * x));
+                    if(weapon->baseDamage != 0){
+                        if (x == 1.0) {
+                            a += printMultiLineString(a, columnX, formatString("Damage: %.2f", weapon->baseDamage));
+                        } else {
+                            a += printMultiLineString(a, columnX, formatString("Damage: %.2f (%.2f)", weapon->baseDamage, weapon->baseDamage * x));
+                        }
+                        a += printMultiLineString(a, columnX, formatString("Damage Type: %s", damageTypeName(weapon->damageType).c_str()));
                     }
-                    a += printMultiLineString(a, columnX, formatString("Damage Type: %s", damageTypeName(weapon->damageType).c_str()));
                     if(delay == weapon->useDelay){
                     	a += printMultiLineString(a, columnX, formatString("Speed: %d%%", (int) (100 / weapon->useDelay)));
                     }else{
@@ -585,13 +587,15 @@ namespace Ui {
                             a += printMultiLineString(a, columnX, formatString("Mana Cost: %d", spell->manaCost));
                         }
                     }
-                    if (!spell) {
-                        a = printEnchantments(a, weapon->enchantments, columnX);
-                    }
-                    setColor(C_LIGHT_CYAN);
-                    a += printMultiLineString(a, columnX, formatString("d/t: %.2f", ((weapon->baseDamage * x) / delay)));
-                    if (spell) {
-                        a += printMultiLineString(a, columnX, formatString("d/m: %.2f", ((spell->baseDamage * x) / (double) spell->manaCost)));
+                    //if (!spell) {
+                    a = printEnchantments(a, weapon->enchantments, columnX);
+                    //}
+                    if(weapon->baseDamage != 0){
+                        setColor(C_LIGHT_CYAN);
+                        a += printMultiLineString(a, columnX, formatString("d/t: %.2f", ((weapon->baseDamage * x) / delay)));
+                        if (spell) {
+                            a += printMultiLineString(a, columnX, formatString("d/m: %.2f", ((spell->baseDamage * x) / (double) spell->manaCost)));
+                        }
                     }
                     setColor(C_LIGHT_GRAY, C_BLACK);
 

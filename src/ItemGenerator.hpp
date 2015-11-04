@@ -74,7 +74,7 @@ namespace ItemGenerator {
         vector<vector<string>> names;
         vector<EquipSlot> viableSlots;
         vector<DefenseRange> defences;
-        vector<Enchantment> enchs;
+        vector<EnchantmentBase> enchs;
         double weight;
     };
 
@@ -121,7 +121,28 @@ namespace ItemGenerator {
         WeaponType weaponType = wepMelee;
         double range = -1;
         double manaCost = -1;
-        vector<Enchantment> enchs;
+        vector<EnchantmentBase> enchs;
+    };
+
+    struct EnchantmentBase {
+
+        EnchantmentBase() {
+        }
+
+        EnchantmentBase(EffectId effect, int chanceMin, int chanceMax, double powerMin, double powerMax, double timeMin, double timneMax, double meta = 0) {
+            this->chance.x = chanceMin;
+            this->chance.y = chanceMax;
+            this->power.x = powerMin;
+            this->power.y = powerMax;
+            this->time.x = timeMin;
+            this->time.y = timneMax;
+            double meta = meta;
+        }
+
+        Point2 chance;
+        Vector2 power;
+        Vector2 time;
+        double meta;
     };
 
     struct EffIdMeta {
@@ -196,6 +217,8 @@ namespace ItemGenerator {
     extern WeaponBase wFireItemCombatSpell;
     extern WeaponBase wFrostItemCombatSpell;
     extern WeaponBase wShockItemCombatSpell;
+
+    extern WeaponBase wHealingCombatSpell;
 
     extern WeaponBase wNatural;
 

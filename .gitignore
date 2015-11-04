@@ -46,3 +46,5 @@ build/*
 /src/ArtFiles.hpp
 windowsTesting/
 /src/thread.h
+.tags
+.tags1

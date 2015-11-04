@@ -19,17 +19,18 @@ const WeaponType wepRanged = 1;
 const WeaponType wepMagic = 2;
 
 typedef int DamageType;
-const DamageType damSharp = 0;
-const DamageType damBlunt = 1;
-const DamageType damPierce = 2;
-const DamageType damFire = 3;
-const DamageType damIce = 4;
-const DamageType damShock = 5;
-const DamageType damPoison = 6;
-const DamageType damBlood = 7;
-const DamageType damDebug = 8;
-const DamageType damSuffocation = 9;
-const DamageType damExplosion = 10;
+const DamageType damNone = 0;
+const DamageType damSharp = 1;
+const DamageType damBlunt = 2;
+const DamageType damPierce = 3;
+const DamageType damFire = 4;
+const DamageType damIce = 5;
+const DamageType damShock = 6;
+const DamageType damPoison = 7;
+const DamageType damBlood = 8;
+const DamageType damDebug = 9;
+const DamageType damSuffocation = 10;
+const DamageType damExplosion = 11;
 
 string damageTypeName(DamageType d);
 
