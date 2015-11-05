@@ -605,31 +605,6 @@ namespace Ui {
                         }
                     }
                     setColor(C_LIGHT_GRAY, C_BLACK);
-
-                    int b = a;
-                    a++;
-                    bool c = false;
-
-                    for (int i = 0; i < abilityCount; i++) {
-                        if (weapon->minimumAbilities[i] > 0) {
-                            a += printMultiLineString(a, columnX, formatString("- %s", abilityAbr[i].c_str()), terminalSize.x - 4);
-                            if (weapon->minimumAbilities[i] > player->abilities[i]) {
-                                setColor(C_LIGHT_RED);
-                            }
-                            printw(" %d", weapon->minimumAbilities[i]);
-                            setColor(C_LIGHT_GRAY);
-                            c = true;
-                        }
-                    }
-                    if (c) {
-                        if(flashImportantInfo && (tick % 4) >= 2){
-                            setColor(C_BLACK, C_LIGHT_RED);
-                        }
-
-                        printMultiLineString(b, columnX, "Requires:");
-                        setColor(C_LIGHT_GRAY);
-
-                    }
                 }else if(itemSpecial){
                     switch (itemSpecial->specialty) {
                         case specialtyCompass:{
@@ -708,6 +683,33 @@ namespace Ui {
                     }
                     setColor(C_WHITE);
 
+                }
+
+                if(equipable){
+                    int b = a;
+                    a++;
+                    bool c = false;
+
+                    for (int i = 0; i < abilityCount; i++) {
+                        if (equipable->minimumAbilities[i] > 0) {
+                            a += printMultiLineString(a, columnX, formatString("- %s", abilityAbr[i].c_str()), terminalSize.x - 4);
+                            if (equipable->minimumAbilities[i] > player->abilities[i]) {
+                                setColor(C_LIGHT_RED);
+                            }
+                            printw(" %d", equipable->minimumAbilities[i]);
+                            setColor(C_LIGHT_GRAY);
+                            c = true;
+                        }
+                    }
+                    if (c) {
+                        if(flashImportantInfo && (tick % 4) >= 2){
+                            setColor(C_BLACK, C_LIGHT_RED);
+                        }
+
+                        printMultiLineString(b, columnX, "Requires:");
+                        setColor(C_LIGHT_GRAY);
+                        
+                    }
                 }
 
             }

@@ -105,8 +105,8 @@ namespace Ui {
         move(3, 0);
         clrtoeol();
         printCenter(3, name);
-        setColor(C_WHITE, C_BLACK, A_BLINK);
-        printCenterOffset(3, ((int) name.length() / 2) + 1, "_");
+        setColor(C_WHITE, C_BLACK);
+        printCenterOffset(3, ((int) name.length() / 2) + 1, tick%10>=5?"_":" ");
 
         refresh();
     }

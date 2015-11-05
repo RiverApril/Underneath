@@ -44,7 +44,7 @@ namespace Verbalizer {
         EntityPlayer* playerUnderAttack = dynamic_cast<EntityPlayer*> (underAttack);
 
         string attackerString = colorCode(C_LIGHT_BLUE) + attacker->getName();
-        string underAttackString = colorCode(C_LIGHT_BLUE) + underAttack->getName();
+        string underAttackString = "the " + colorCode(C_LIGHT_BLUE) + underAttack->getName();
         string deals = "deals";
         string their = "their";
         string theSpace = "The ";
