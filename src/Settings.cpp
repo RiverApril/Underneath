@@ -57,6 +57,9 @@ namespace Settings{
             lines += "\n";
 
             for(Setting* set : settingList){
+                if(set->name.size() == 0){
+                    continue;
+                }
                 lines += set->name;
                 lines += ":";
                 lines += set->stringValue();
@@ -64,6 +67,9 @@ namespace Settings{
             }
 
             for(Setting* set : hiddenSettingList){
+                if(set->name.size() == 0){
+                    continue;
+                }
                 lines += set->name;
                 lines += ":";
                 lines += set->stringValue();
