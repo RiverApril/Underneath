@@ -43,7 +43,6 @@ if not args.notart:
     import compileArt
 
 systemName = platform.system()
-machine = platform.machine()
 
 
 sourceDirectory = "src"
@@ -103,11 +102,11 @@ else:
 
 
 if systemName == "Darwin":
-    executableName += "_OSX_"+machine
+    executableName += "_OSX"
 elif systemName == "Windows" or args.windows:
-    executableName += "_Windows_"+machine+".exe"
+    executableName += "_Windows.exe"
 else:
-    executableName += "_"+systemName+"_"+machine
+    executableName += "_"+systemName
 
 
 objectDirectory += "/"+executableName
