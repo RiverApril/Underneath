@@ -3,7 +3,7 @@ apply plugin: 'com.android.model.application'
 model{
     android {
         compileSdkVersion = 23
-        buildToolsVersion = "23.0.2"
+        buildToolsVersion = "23.0.1"
 
         defaultConfig.with {
             applicationId = "takp.nedearb.underneath"
@@ -28,7 +28,7 @@ model{
     }
 
     android.ndk {
-        moduleName = "underneath-jni"
+        moduleName = "AndroidCursesInterface"
     }
 
     android.buildTypes {

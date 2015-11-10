@@ -6,19 +6,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <TextView android:text="Hello World!" android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <TextView android:text="Hello World!" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/mainTextView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:editable="false"
+              android:editable="false"
         android:typeface="monospace"
         android:enabled="true"
         android:layout_gravity="top"
-        android:layout_above="@+id/buttonTest" />
+              android:layout_alignBottom="@+id/buttonTest"
+              android:layout_alignParentRight="true"
+              android:layout_alignParentEnd="true"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -28,6 +25,13 @@
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"/>
+
+    <takp.nedearb.underneath.GameSurfaceView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gameSurfaceView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
