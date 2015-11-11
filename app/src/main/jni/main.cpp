@@ -16,13 +16,18 @@ void initMain(){
 
 void updateMain(){
     input = getch();
-    mvprintw(0, 1, "udpateMain() - input:%d  tick:%d", input, tick);
+    mvprintw(1, 0, "udpateMain() - input:%d  tick:%d", input, tick);
+    if(input != -1){
+        move(3, 0);
+        clrtoeol();
+        mvprintw(3, 0, "Input was %d at tick:%d", input, tick);
+    }
     refresh();
     tick++;
 }
 
 void cleanupMain(){
-    mvprintw(0, 3, "cleanupMain()");
+    mvprintw(2, 0, "cleanupMain()");
     refresh();
     endwin();
 }
