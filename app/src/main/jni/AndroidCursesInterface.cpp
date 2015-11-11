@@ -40,37 +40,47 @@ int refresh(){
     jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
     jmethodID func = Android::javaEnv->GetMethodID(clazz, "refresh", "()V");
     Android::javaEnv->CallVoidMethod(Android::javaObj, func);
+    Android::javaEnv->DeleteLocalRef(clazz);
     return 0;
 }
 
 int getCode(){
     jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
     jmethodID func = Android::javaEnv->GetMethodID(clazz, "getCode", "()I");
-    return (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
+    int r = (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
+    Android::javaEnv->DeleteLocalRef(clazz);
+    return r;
 }
 
 int getBufferWidth(){
     jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
     jmethodID func = Android::javaEnv->GetMethodID(clazz, "getBufferWidth", "()I");
-    return (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
+    int r = (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
+    Android::javaEnv->DeleteLocalRef(clazz);
+    return r;
 }
 
 int getBufferHeight(){
     jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
     jmethodID func = Android::javaEnv->GetMethodID(clazz, "getBufferHeight", "()I");
-    return (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
+    int r = (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
+    Android::javaEnv->DeleteLocalRef(clazz);
+    return r;
 }
 
 int getBufferSize(){
     jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
     jmethodID func = Android::javaEnv->GetMethodID(clazz, "getBufferSize", "()I");
-    return (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
+    int r = (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
+    Android::javaEnv->DeleteLocalRef(clazz);
+    return r;
 }
 
 void setCharInBuffer(int pos, int c, int a){
     jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
     jmethodID func = Android::javaEnv->GetMethodID(clazz, "setCharInBuffer", "(III)V");
     Android::javaEnv->CallVoidMethod(Android::javaObj, func, pos, c, a);
+    Android::javaEnv->DeleteLocalRef(clazz);
 }
 
 
