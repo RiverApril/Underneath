@@ -36,12 +36,12 @@ void Java_takp_nedearb_underneath_GameSurfaceView_cleanupCpp(JNIEnv *env, jobjec
 }
 
 
-void update(){
+int refresh(){
     jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
     jmethodID func = Android::javaEnv->GetMethodID(clazz, "refresh", "()V");
     Android::javaEnv->CallVoidMethod(Android::javaObj, func);
+    return 0;
 }
-
 
 int getCode(){
     jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
@@ -113,7 +113,7 @@ void timeout(int timeout){
 }
 
 int getch(){
-    update();
+    refresh();
     return getCode();
 }
 
@@ -211,11 +211,6 @@ int clrtobot(){
     for(;cursor<size;cursor++){
         setCharInBuffer(cursor, ' ', 0);
     }
-    return 0;
-}
-
-int refresh(){
-    update();
     return 0;
 }
 

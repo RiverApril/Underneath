@@ -39,6 +39,18 @@ using namespace std;
     extern int ESCDELAY;
 #endif
 
+#ifdef __ANDROID__
+	#include "../AndroidCursesInterface.hpp"
+    extern int ESCDELAY;
+
+    template <typename T>
+    string to_string(T a) {
+        stringstream ss;
+        ss << a;
+        return ss.str();
+    }
+#endif
+
 #ifdef _WIN32
 
     #include <memory>
@@ -66,7 +78,9 @@ using namespace std;
     #define GetCurrentDir getcwd
 
     #ifndef useSDLLightCurses
-        #include <ncurses.h>
+        #ifndef __ANDROID__
+            #include <ncurses.h>
+        #endif
     #endif
 
 #endif

@@ -29,6 +29,8 @@ model{
 
     android.ndk {
         moduleName = "AndroidCursesInterface"
+        stl = "gnustl_static"
+        cppFlags += ['-std=c++11', '-fexceptions', '-frtti']
     }
 
     android.buildTypes {
