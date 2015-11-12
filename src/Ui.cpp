@@ -136,7 +136,7 @@ namespace Ui {
 
         bkgd(getColorPair(C_WHITE, C_BLACK));
 
-        refresh();
+        //refresh();
 
     }
 

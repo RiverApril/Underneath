@@ -538,7 +538,7 @@ void timeout(int timeout){
 }
 
 int getch(){
-    update();
+    update(); 
     int c = MainWindow::getCode();
     //if(c!=-1)printf("Key code: 0x%X\n", c);
     return c;

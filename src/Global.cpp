@@ -20,6 +20,10 @@
 	#endif
 #endif
 
+#ifdef __ANDROID__
+	int ESCDELAY;
+#endif
+
 char workingDirectory[FILENAME_MAX];
 
 bool running;

@@ -108,7 +108,7 @@ namespace Ui {
         setColor(C_WHITE, C_BLACK);
         printCenterOffset(3, ((int) name.length() / 2) + 1, tick%10>=5?"_":" ");
 
-        refresh();
+        //refresh();
     }
 
 }
