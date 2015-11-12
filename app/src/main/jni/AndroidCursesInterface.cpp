@@ -13,9 +13,21 @@ namespace Android {
 
     JNIEnv *javaEnv;
     jobject javaObj;
+    int bufferWidth = 0;
+    int bufferHeight = 0;
+    int bufferSize = 0;
 }
 
 extern "C"{
+
+void Java_takp_nedearb_underneath_GameSurfaceView_sendInfoToCpp(JNIEnv *env, jobject obj, int width, int height) {
+    Android::javaEnv = env;
+    Android::javaObj = obj;
+    Android::bufferWidth = width;
+    Android::bufferHeight = height;
+    Android::bufferSize = width * height;
+}
+
 void Java_takp_nedearb_underneath_GameSurfaceView_initCpp(JNIEnv *env, jobject obj) {
     Android::javaEnv = env;
     Android::javaObj = obj;
@@ -23,14 +35,14 @@ void Java_takp_nedearb_underneath_GameSurfaceView_initCpp(JNIEnv *env, jobject o
 }
 
 void Java_takp_nedearb_underneath_GameSurfaceView_updateCpp(JNIEnv *env, jobject obj) {
-    Android::javaEnv = env;
-    Android::javaObj = obj;
+    //Android::javaEnv = env;
+    //Android::javaObj = obj;
     updateMain();
 }
 
 void Java_takp_nedearb_underneath_GameSurfaceView_cleanupCpp(JNIEnv *env, jobject obj) {
-    Android::javaEnv = env;
-    Android::javaObj = obj;
+    //Android::javaEnv = env;
+    //Android::javaObj = obj;
     cleanupMain();
 }
 }
@@ -47,30 +59,6 @@ int refresh(){
 int getCode(){
     jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
     jmethodID func = Android::javaEnv->GetMethodID(clazz, "getCode", "()I");
-    int r = (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
-    Android::javaEnv->DeleteLocalRef(clazz);
-    return r;
-}
-
-int getBufferWidth(){
-    jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
-    jmethodID func = Android::javaEnv->GetMethodID(clazz, "getBufferWidth", "()I");
-    int r = (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
-    Android::javaEnv->DeleteLocalRef(clazz);
-    return r;
-}
-
-int getBufferHeight(){
-    jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
-    jmethodID func = Android::javaEnv->GetMethodID(clazz, "getBufferHeight", "()I");
-    int r = (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
-    Android::javaEnv->DeleteLocalRef(clazz);
-    return r;
-}
-
-int getBufferSize(){
-    jclass clazz = Android::javaEnv->FindClass("takp/nedearb/underneath/GameSurfaceView");
-    jmethodID func = Android::javaEnv->GetMethodID(clazz, "getBufferSize", "()I");
     int r = (int)Android::javaEnv->CallIntMethod(Android::javaObj, func);
     Android::javaEnv->DeleteLocalRef(clazz);
     return r;
@@ -123,12 +111,12 @@ void timeout(int timeout){
 }
 
 int getch(){
-    refresh();
+    //refresh();
     return getCode();
 }
 
 int	move(int y, int x){
-    cursor = (y*getBufferWidth())+x;
+    cursor = (y*Android::bufferWidth)+x;
     return 0;
 }
 
@@ -180,8 +168,7 @@ int	mvprintw(int y, int x, const char * s, ...){
 }
 
 int	hline(const char c, int l){
-    int width = getBufferWidth();
-    for(int i=0;cursor%width>=0 && i<=l;i++){
+    for(int i=0;cursor%Android::bufferWidth>=0 && i<=l;i++){
         setCharInBuffer(cursor, c, currentAttr);
         cursor++;
     }
@@ -194,11 +181,9 @@ int	mvhline(int y, int x, const char c, int l){
 }
 
 int	vline(const char c, int l){
-    int width = getBufferWidth();
-    int height = getBufferHeight();
-    for(int i=0;cursor<width*height && i<=l;i++){
+    for(int i=0;cursor<Android::bufferWidth*Android::bufferHeight && i<=l;i++){
         setCharInBuffer(cursor, c, currentAttr);
-        cursor+=width;
+        cursor+=Android::bufferWidth;
     }
     return 0;
 }
@@ -209,17 +194,15 @@ int	mvvline(int y, int x, const char c, int l){
 }
 
 int clrtoeol(){
-    int width = getBufferWidth();
-    for(;cursor%width>0;cursor++){
+    for(;cursor%Android::bufferWidth>0;cursor++) {
         setCharInBuffer(cursor, 0, 0);
     }
     return 0;
 }
 
 int clrtobot(){
-    int size = getBufferSize();
-    for(;cursor<size;cursor++){
-        setCharInBuffer(cursor, ' ', 0);
+    for(;cursor<Android::bufferSize;cursor++){
+        setCharInBuffer(cursor, 0, 0);
     }
     return 0;
 }
@@ -230,11 +213,11 @@ int endwin(){
 }
 
 int getcurx(int scr){
-    return cursor % getBufferWidth();
+    return cursor % Android::bufferWidth;
 }
 
 int getcury(int scr){
-    return cursor / getBufferWidth();
+    return cursor / Android::bufferWidth;
 }
 
 int bkgd(int c){
@@ -248,11 +231,11 @@ int init_pair(int i, int a, int b){
 }
 
 int getmaxx(int scr){
-    return getBufferWidth();
+    return Android::bufferWidth;
 }
 
 int getmaxy(int scr){
-    return getBufferHeight();
+    return Android::bufferHeight;
 }
 
 int attrset(int attr){

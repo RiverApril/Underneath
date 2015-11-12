@@ -15,8 +15,10 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
+import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.Random;
 
@@ -54,25 +56,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     private PriorityQueue<Integer> inputQueue = new PriorityQueue<>();
 
-    public Button buttonTest;
-    public Button buttonUp;
-    public Button buttonDown;
-    public Button buttonLeft;
-    public Button buttonRight;
-    public Button buttonEnter;
-
-    private final int KEY_UP = 0x103;
-    private final int KEY_DOWN = 0x102;
-    private final int KEY_LEFT = 0x104;
-    private final int KEY_RIGHT = 0x105;
     private final int KEY_RESIZE = 0x200;
-    private final int KEY_BACKSPACE = 0x107;
-    private final int KEY_ENTER = 0x157;
-    private final int KEY_EXIT = 0x169;
-    private final int KEY_ESCAPE = 27;
+
+    public HashMap<Integer, Integer> buttonHashMap = new HashMap<>(); //<id, key>
+
+    private final int A_COLOR = 0x03fe0000;
 
     private DrawFilter filter;
     private Paint paint;
+    private Canvas canvas;
+    private int fgColorCode;
+    private int bgColorCode;
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -117,6 +111,26 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setAntiAlias(false);
         paint.setFilterBitmap(false);
 
+        Rect windowRect = new Rect();
+
+        this.getWindowVisibleDisplayFrame(windowRect);
+
+        int hWindow = windowRect.bottom - windowRect.top;
+        int wWindow = windowRect.right - windowRect.left;
+
+        this.getHolder().setFixedSize(wWindow, hWindow / 2);
+
+    }
+
+    public void addButton(MainActivity activity, int id, int key){
+
+        Button button = (Button)activity.findViewById(id);
+        if(button == null){
+            Log.e(TAG, "Button null");
+            return;
+        }
+        button.setOnClickListener(this);
+        buttonHashMap.put(id, key);
     }
 
     @Override
@@ -150,6 +164,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
             buffersSet = true;
 
+            sendInfoToCpp(bufferWidth, bufferHeight);
+
         }
     }
 
@@ -169,12 +185,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void onDraw(Canvas canvas) {
+    }
 
-        //Log.d(TAG, "onDraw");
+    private void draw(){
 
         tick++;
-        if (canvas != null) {
-            if(bufferChanged) {
+        if(bufferChanged) {
+            canvas = getHolder().lockCanvas();
+            if(canvas != null){
                 //Log.d(TAG, "Buffer changed, drawing...");
                 int pos, i, j, c, x, y;
                 for (pos = 0; pos < bufferSize; pos++) {
@@ -185,10 +203,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     x = (pos % bufferWidth) * cellWidth;
                     y = (pos / bufferWidth) * cellHeight;
 
-                    if(c != 0) {
-                        //Log.d(TAG, "c:"+c+" i:"+i+" j:"+j);
-                        //Log.d(TAG, "p:"+"x:"+x+" y:"+y);
-                    }
+                    //if(c != 0) {
+                    //Log.d(TAG, "c:"+c+" i:"+i+" j:"+j);
+                    //Log.d(TAG, "p:"+"x:"+x+" y:"+y);
+                    //}
+
+                    fgColorCode = ((attrBuffer[pos] & A_COLOR) >> 17) & 0xF;
+                    bgColorCode = (((attrBuffer[pos] & A_COLOR) >> 17) >> 4) & 0xF;
 
                     src.set(i, j, i + imageCellWidth, j + imageCellHeight);
                     dst.set(x, y, x + cellWidth, y + cellHeight);
@@ -196,28 +217,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     canvas.drawBitmap(fontBitmap, src, dst, paint);
                 }
                 bufferChanged = false;
-            }else{
-                //Log.v(TAG, "Buffer hasn't changed");
+                getHolder().unlockCanvasAndPost(canvas);
             }
-        } else {
-            Log.e(TAG, "Canvas is null");
         }
     }
 
     @Override
     public void onClick(View v) {
-        if(v == buttonTest){
-            inputQueue.add(0);
-        }else if(v == buttonUp){
-            inputQueue.add(KEY_UP);
-        }else if(v == buttonDown){
-            inputQueue.add(KEY_DOWN);
-        }else if(v == buttonLeft){
-            inputQueue.add(KEY_LEFT);
-        }else if(v == buttonRight){
-            inputQueue.add(KEY_RIGHT);
-        }else if(v == buttonEnter){
-            inputQueue.add(KEY_ENTER);
+        if(buttonHashMap.containsKey(v.getId())) {
+            inputQueue.add(buttonHashMap.get(v.getId()));
+        }else if(v.getId() == R.id.buttonKeyboard){
+
         }
     }
 
@@ -232,6 +242,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public native void initCpp();
     public native void updateCpp();
     public native void cleanupCpp();
+
+    public native void sendInfoToCpp(int bufferWidth, int bufferHeight);
 
 
     public void update() {
@@ -249,18 +261,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             return inputQueue.poll();
         }
         return ERR;
-    }
-
-    public int getBufferWidth() {
-        return bufferWidth;
-    }
-
-    public int getBufferHeight() {
-        return bufferHeight;
-    }
-
-    public int getBufferSize() {
-        return bufferSize;
     }
 
     public void setCharInBuffer(int pos, int c, int a){
@@ -283,6 +283,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         Log.d(TAG, "Starting updateCpp() loop");
         while(threadInstance.running){
             updateCpp();
+            try {
+                threadInstance.sleep(100);
+            }catch(InterruptedException e){
+
+            }
+            draw();
         }
         Log.d(TAG, "After updateCpp() loop");
         //cleanupCpp();

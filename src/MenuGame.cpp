@@ -33,7 +33,7 @@ namespace Ui {
 
         move(0, 0);
         clrtobot();
-        refresh();
+        //refresh();
 
         initSuccess = init(worldName, playerAbilities);
 
@@ -133,7 +133,7 @@ namespace Ui {
 
         move(0, 0);
         clrtobot();
-        refresh();
+        //refresh();
         return true;
     }
 
@@ -837,7 +837,7 @@ namespace Ui {
 
         printConsole(gameArea.y + 1);
 
-        refresh();
+        //refresh();
     }
 
     void MenuGame::changeMode(int newMode) {

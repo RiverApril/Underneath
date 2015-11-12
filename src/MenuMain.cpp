@@ -188,7 +188,7 @@ namespace Ui {
 			setColor(C_LIGHT_WHITE, C_WHITE);
 			addstr(" L_WHITE");
 		}
-        refresh();
+        //refresh();
     }
 
 }

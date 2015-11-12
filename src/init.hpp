@@ -20,6 +20,12 @@
 
 Ui::MenuMain* mainMenu;
 
+
+bool* init(int argc, char* argv[]);
+void update();
+int cleanup();
+
+
 bool* init(int argc, char* argv[]){
     if (!GetCurrentDir(workingDirectory, sizeof (workingDirectory))) {
         exit(errno);

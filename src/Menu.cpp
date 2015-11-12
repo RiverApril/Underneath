@@ -181,6 +181,7 @@ namespace Ui {
             }
 
         }
+        refresh();
 
 
     }
