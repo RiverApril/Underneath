@@ -671,11 +671,12 @@ namespace Ui {
             timeSinceTimePassed++;
         }
 
-        if(Settings::autoSave && timeSinceTimePassed == autoSaveTime){
-            WorldLoader::save(currentWorld);
-        }
-
         if(currentPlayer){
+
+            if(Settings::autoSave && timeSinceTimePassed == autoSaveTime){
+                WorldLoader::save(currentWorld);
+            }
+
             if(currentPlayer->leveledUp){
                 openMenu(new MenuMessage({"Level up!", "", ""}));
                 currentPlayer->leveledUp = false;
