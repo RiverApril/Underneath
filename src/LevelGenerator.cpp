@@ -569,6 +569,7 @@ namespace LevelGenerator {
                     }else if(rand() % 2 == 0){
                         EntityShop* e = new EntityShop("Shop keeper", aiNone, 'S', r->pos + (r->size/2), C_LIGHT_MAGENTA, 100);
                         e->addItems(ItemGenerator::createRandLoots(level->getDifficulty(), 0, 10, 10, 10, 2));
+                        e->addItem(ItemGenerator::makeCoins((rand()%2000)+1000));
                         level->newEntity(e);
                     }
                 }

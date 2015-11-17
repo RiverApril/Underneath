@@ -65,8 +65,8 @@ namespace Ui {
             }
         } else if (in == Key::take) {
             if (from->inventory.size() > 0 && selected < from->inventory.size()) {
-                if(user->getWallet() >= from->inventory[selected]->coinValue){
-                    debugf("Coin Value: %d   Wallet: %d", from->inventory[selected]->coinValue, user->getWallet());
+                if(to->getWallet() >= from->inventory[selected]->coinValue){
+                    debugf("Coin Value: %d   Wallet: %d", from->inventory[selected]->coinValue, to->getWallet());
                     Item* take;
                     if (from->inventory[selected]->qty == 1) {
                         take = from->inventory[selected];
@@ -76,21 +76,23 @@ namespace Ui {
                         take = Item::clone(from->inventory[selected]);
                         take->qty = 1;
                     }
-                    to->addItem(take);
-                    user->addToWallet(-(take->coinValue));
+                    int coinValue = take->coinValue;
+                    to->addItem(take); //Changes coin value
+                    to->addToWallet(-coinValue);
                 }
 
             }
 
         } else if (in == Key::takeStack) {
             if (from->inventory.size() > 0 && selected < from->inventory.size()) {
-                if(user->getWallet() >= (from->inventory[selected]->coinValue * from->inventory[selected]->qty)){
+                if(to->getWallet() >= (from->inventory[selected]->coinValue * from->inventory[selected]->qty)){
                     Item* take;
                     take = from->inventory[selected];
                     from->removeItem(from->inventory[selected], false);
 
-                    to->addItem(take);
-                    user->addToWallet(-(take->coinValue * from->inventory[selected]->qty));
+                    int coinValue = take->coinValue;
+                    to->addItem(take); //Changes coin value
+                    to->addToWallet(-(coinValue * from->inventory[selected]->qty));
                 }
             }
 
@@ -109,7 +111,7 @@ namespace Ui {
             selected = 0;
         }
 
-        Ui::drawInventory(currentWorld, user, selected, shop, formatString("%s's Wallet: %dc", user->getName().c_str(), user->getWallet()), "Shop Keeper", selectedLeft, true);
+        Ui::drawInventory(currentWorld, user, selected, shop, formatString("%s's Wallet: %dc", user->getName().c_str(), user->getWallet()), formatString("Shop Keeper's Wallet: %dc", shop->getWallet()), selectedLeft, true);
 
     }
 }

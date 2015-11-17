@@ -112,8 +112,13 @@ namespace ItemGenerator {
         wCrossbow = atl(WeaponBase({{"Crossbow"}, {"Scorpion"}}, 0.6, 0.8, damPierce, wepRanged).ranged(10).setArts({Arts::artCrossbow}));
 
         wFireItemCombatSpell = atl(WeaponBase({{"Ignite Spell"}, {"Scorch Spell"}, {"Burn Spell"}}, 1, .2, damFire, wepMagic).magical(8, 2).setArts({Arts::artScrollFire}));
+        wFireItemCombatSpell.enchs.push_back(EnchantmentBase(effDamage, 6, 12, 1, 2, 5, 10, damFire));
+
         wFrostItemCombatSpell = atl(WeaponBase({{"Freeze Spell"}, {"Chill Spell"}}, 1, .2, damIce, wepMagic).magical(8, 2).setArts({Arts::artScrollFrost}));
+        wFrostItemCombatSpell.enchs.push_back(EnchantmentBase(effDamage, 6, 12, 1, 2, 5, 10, damIce));
+
         wShockItemCombatSpell = atl(WeaponBase({{"Electrocute Spell"}, {"Shock Spell"}, {"Zap Spell"}}, 1, .2, damShock, wepMagic).magical(8, 2).setArts({Arts::artScrollShock}));
+        wShockItemCombatSpell.enchs.push_back(EnchantmentBase(effDamage, 6, 12, 1, 2, 5, 10, damShock));
 
         wHealingCombatSpell = atl(WeaponBase({{"Healing Spell"}}, 0, .2, damNone, wepMagic).magical(8, 2).setArts({Arts::artScrollHeal}));
         wHealingCombatSpell.enchs.push_back(EnchantmentBase(effHeal, 1, 1, 10, 30, 0, 0));
@@ -397,7 +402,7 @@ namespace ItemGenerator {
             if (base.manaCost != -1) {
                 w = new ItemCombatSpell();
                 ((ItemCombatSpell*) w)->manaCost = (int) (base.manaCost * Random::randDouble(1.0, 2.0));
-                w->addEnchantment(Enchantment(effDamage, 10, 1, 6, base.damageType));
+                //w->addEnchantment(Enchantment(effDamage, 10, 1, 6, base.damageType));
             } else {
                 w = new ItemRanged();
             }
@@ -526,6 +531,9 @@ namespace ItemGenerator {
 
 
     int calculateItemValue(Item* item){
+        if(item->equalsExceptQty(iCoin)){
+            return -1;
+        }
         double value = 0;
         ItemEquipable* ie = dynamic_cast<ItemEquipable*>(item);
         ItemPotion* ip = dynamic_cast<ItemPotion*>(item);
@@ -648,6 +656,9 @@ namespace ItemGenerator {
                     break;
                 case spellRelocate:
                     value = 200;
+                    break;
+                case spellBarrier:
+                    value = 150;
                     break;
                 default:
                     value = -1;

@@ -174,9 +174,8 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
 
 
 
-        int tid = level->indexAt(posToInteract);
         for (Entity* e : level->entityList) {
-            if (e->uniqueId != uniqueId) {
+            if (e->uniqueId != uniqueId) { //Don't interact with yourself yet.
                 if (!needToBeSolid || e->isSolid()) {
                     if (e->pos == posToInteract) {
                         double d = interactWithEntity(level, e, posToInteract, item);
@@ -187,7 +186,16 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                 }
             }
         }
-        return interactWithTile(level, tid, posToInteract, item);
+        int tid = level->indexAt(posToInteract);
+        double delay = interactWithTile(level, tid, posToInteract, item); //Interact with tile
+        if(delay > 0){
+            return delay;
+        }else{
+            //If there is no tile to interact with, try interacting with yourself.
+            if(posToInteract == pos){
+            	return interactWithEntity(level, this, posToInteract, item);
+            }
+        }
     }
     return 0;
 }
