@@ -87,7 +87,7 @@ namespace ItemGenerator {
             EffIdMeta(effBuffAttack, damShock)
         }, 2, 30, 1.1, 2, false), 25);
 
-        PotionBase potionPreventBad = atl(PotionBase({{"Purity Potion"}}, {EffIdMeta(effPurity, 0)}, 3, 30, 0, 0, false), 5);
+        //PotionBase potionPreventBad = atl(PotionBase({{"Purity Potion"}}, {EffIdMeta(effPurity, 0)}, 3, 30, 0, 0, false), 5);
         PotionBase potionRemoveBad = atl(PotionBase({{"Clensing Potion"}}, {EffIdMeta(effPurity, 0)}, 0, 0, 0, 0, false), 10);
 
         /*PotionBase potionOrganicDefense = atl(PotionBase({"Organic Defense Potion"}, {
