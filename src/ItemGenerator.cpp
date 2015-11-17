@@ -98,6 +98,7 @@ namespace ItemGenerator {
 
         ScrollBase scrollRemoteUse = atl(ScrollBase({{"Scroll of Telekinesis", "Scrolls of Telekinesis"}}, spellRemoteUse));
         ScrollBase scrollRelocate = atl(ScrollBase({{"Scroll of Relocation", "Scrolls of Relocation"}}, spellRelocate));
+        ScrollBase scrollBarrier = atl(ScrollBase({{"Scroll of Protection", "Scrolls of Protection"}}, spellBarrier));
 
 
 

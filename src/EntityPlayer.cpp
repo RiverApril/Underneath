@@ -117,6 +117,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                 switch (s->spellEffect) {
                     case spellRemoteUse:
                         if (!interact(level, posToInteract, false, nullptr)) {
+                            consolef("&%cFailed to interact", Ui::cc(C_LIGHT_RED));
                             return 0;
                         }
                         break;
@@ -126,6 +127,18 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         }
                         if (!moveAbsalute(posToInteract, level, false)) {
                             hurt(damSuffocation, maxHp * 2);
+                        }
+                        break;
+                    case spellBarrier:
+                        if(level->tileAt(posToInteract)->hasFlag(tileFlagReplaceable)){
+                            if(level->firstEntityHere(posToInteract) == nullptr){
+                                level->setTile(posToInteract, Tiles::tileBreakable);
+                            }else{
+                                consolef("&%cTile ocupied by entity", Ui::cc(C_LIGHT_RED));
+                                return 0;
+                            }
+                        }else{
+                            consolef("&%cTile ocupied", Ui::cc(C_LIGHT_RED));
                             return 0;
                         }
                         break;
@@ -240,8 +253,9 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                             TEStair* s = dynamic_cast<TEStair*> (te);
                             if (s) {
                                 int delay = interactDelay;
+                                World* cw = level->currentWorld;
                                 WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
-                                level->currentWorld->currentLevel->menuGame = level->menuGame;
+                                cw->currentLevel->menuGame = level->menuGame;
                                 //level no longer the currentLevel
                                 return delay;
                             }
@@ -269,6 +283,9 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
             }
         } else if (tid == Tiles::tileCrate->getIndex()) {
             level->setTile(posOfTile, Tiles::tileFloor);
+            return interactDelay;
+        } else if (tid == Tiles::tileBreakable->getIndex()) {
+            level->setTile(posOfTile, Tiles::tileRubble);
             return interactDelay;
         }
     }
