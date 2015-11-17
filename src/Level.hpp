@@ -70,6 +70,8 @@ public:
     bool setTile(int x, int y, int tile);
     bool setTile(int x, int y, Tile* tile);
     int indexAt(int x, int y);
+    
+    Entity* firstEntityHere(Point2 p);
 
     Entity* getClosestVisableEntity(Point2 origin, double range, Entity* notMe = nullptr);
     vector<Entity*> getAllVisableEntities(Point2 origin, double range, Entity* notMe, bool sort);

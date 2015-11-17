@@ -187,6 +187,15 @@ int Level::indexAt(int x, int y) {
     return Tiles::tileEdge->getIndex();
 }
 
+Entity* Level::firstEntityHere(Point2 p){
+    for(Entity* e : entityList){
+        if(e->pos == p){
+            return e;
+        }
+    }
+    return nullptr;
+}
+
 bool Level::canSee(Point2 origin, Point2 test, double range) {
 
     if(origin == test){

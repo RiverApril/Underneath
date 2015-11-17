@@ -545,7 +545,11 @@ namespace Ui {
                             break;
 
                         case spellRelocate:
-                            a += printMultiLineString(a, columnX, "Transport to selected location or random location if already there.");
+                            a += printMultiLineString(a, columnX, "Transport to selected location or random location if used on yourself.");
+                            break;
+
+                        case spellBarrier:
+                            a += printMultiLineString(a, columnX, "Place a destrutable wall at a selected location.");
                             break;
 
                         default:

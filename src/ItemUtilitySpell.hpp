@@ -16,6 +16,7 @@ typedef int SpellEffect;
 
 const SpellEffect spellRemoteUse = 0;
 const SpellEffect spellRelocate = 1;
+const SpellEffect spellBarrier = 2;
 
 const SpellEffect spellDebugPlaceWall = 101;
 const SpellEffect spellDebugPlaceFloor = 102;
