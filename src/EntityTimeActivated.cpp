@@ -44,21 +44,25 @@ char EntityTimeActivated::getChar(unsigned long tick, Point2 pos, Level* lvl) {
     }
 }
 
+void EntityTimeActivated::activate(Level* level){
+    switch (timeActivatedType) {
+        case timeActivatedBomb:
+            level->explode(pos, radius, power, false);
+            Animator::renderExposion(pos, radius, level, 1);
+            break;
+        case timeActivatedWallBomb:
+            level->explode(pos, radius, power, true);
+            Animator::renderExposion(pos, radius, level, 1);
+            break;
+
+    }
+    level->removeEntity(this, true);
+}
+
 bool EntityTimeActivated::update(double deltaTime, double time, Level* level) {
     timeLeft -= deltaTime;
     if(!removed && timeLeft <= 0){
-        switch (timeActivatedType) {
-            case timeActivatedBomb:
-                level->explode(pos, radius, power, false);
-                Animator::renderExposion(pos, radius, level, 1);
-                break;
-            case timeActivatedWallBomb:
-                level->explode(pos, radius, power, true);
-                Animator::renderExposion(pos, radius, level, 1);
-                break;
-
-        }
-        level->removeEntity(this, true);
+        activate(level);
     }
     return Entity::update(deltaTime, time, level);
 }

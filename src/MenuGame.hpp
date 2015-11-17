@@ -69,6 +69,12 @@ namespace Ui {
 #define modeSelectEntity 4
         int controlMode = modeEntityPlayerControl;
 
+#define selectModeNone 0
+#define selectModeAttack 1
+#define selectModeWalk 2
+#define selectModeInspect 3
+        int selectMode = selectModeNone;
+
 #define fadeInMax 100
 #define fadeInMin 0
         int fadeIn = fadeInMin;

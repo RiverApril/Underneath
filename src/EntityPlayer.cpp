@@ -393,6 +393,12 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
         }
     }
 
+    EntityTimeActivated* eti = dynamic_cast<EntityTimeActivated*>(e);
+    if(eti){
+        eti->activate(level);
+        return interactDelay;
+    }
+
     return 0;
 }
 
