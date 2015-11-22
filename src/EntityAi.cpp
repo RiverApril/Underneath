@@ -61,7 +61,6 @@ void EntityAi::moveAi(double time, Level* level) {
         }
     }
 
-
     if(ai & aiAttackAndFleeAtLowHealth){
         if(ai & aiFlee){
             if((hp/maxHp) > healthPercentUpperBoundry){
@@ -135,8 +134,10 @@ void EntityAi::moveAi(double time, Level* level) {
     if (ai & aiAttack) {
 
         bool pathEmpty = true;
+        
 
         if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
+            debugf("Last Known Target Position: %d,%d", lastKnownTargetPos.x, lastKnownTargetPos.y);
             ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
             if (r && canSeeTarget && (distanceSquared(target->pos, pos) < (r->range * r->range))) {
                 speed.x = 0;
@@ -200,7 +201,7 @@ void EntityAi::moveAi(double time, Level* level) {
         m = m || tryToMoveRelative(speed.xOnly(), level);
     }
 
-    if(!canSeeTarget && pos == lastKnownTargetPos){
+    if(!canSeeTarget && (pos == lastKnownTargetPos || !m)){
         lastKnownTargetPos = Point2Neg1;
     }
 

@@ -673,7 +673,7 @@ namespace Ui {
             currentWorld->worldTime += timePassed;
             timePassed = 0;
             currentLevel->update(currentWorld->worldTime - currentWorld->worldLastTime, currentWorld->worldTime, viewPos);
-            render(currentWorld->worldTime);
+            //render(currentWorld->worldTime);
 
             currentWorld->worldLastTime = currentWorld->worldTime;
             timeSinceTimePassed = 0;
