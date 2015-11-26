@@ -79,6 +79,7 @@ namespace Ui {
                     int coinValue = take->coinValue;
                     to->addItem(take); //Changes coin value
                     to->addToWallet(-coinValue);
+                    from->addToWallet(coinValue);
                 }
 
             }
@@ -90,9 +91,10 @@ namespace Ui {
                     take = from->inventory[selected];
                     from->removeItem(from->inventory[selected], false);
 
-                    int coinValue = take->coinValue;
+                    int stackCoinValue = (take->coinValue * from->inventory[selected]->qty);
                     to->addItem(take); //Changes coin value
-                    to->addToWallet(-(coinValue * from->inventory[selected]->qty));
+                    to->addToWallet(-stackCoinValue);
+                    from->addToWallet(stackCoinValue);
                 }
             }
 
