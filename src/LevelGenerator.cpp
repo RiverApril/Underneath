@@ -566,10 +566,10 @@ namespace LevelGenerator {
                     if (rand() % 2 == 0) {
                         level->setTile(r->pos + (r->size/2), Tiles::tileChest);
                         level->setTile(lastDoorLocation, Tiles::tileLockedDoor);
-                    }else if(rand() % 2 == 0){
-                        EntityShop* e = new EntityShop("Shop keeper", aiNone, 'S', r->pos + (r->size/2), C_LIGHT_MAGENTA, 100);
-                        e->addItems(ItemGenerator::createRandLoots(level->getDifficulty(), 0, 10, 10, 10, 2));
-                        e->addItem(ItemGenerator::makeCoins((rand()%2000)+1000));
+                    }else{
+                        EntityShop* e = new EntityShop("Merchant", aiNone, 'M', r->pos + (r->size/2), C_LIGHT_MAGENTA, 100);
+                        e->addItems(ItemGenerator::createRandLoots(level->getDifficulty(), 9000, 10, 10, 20, 2));
+                        e->addItem(ItemGenerator::makeCoins(1000));
                         level->newEntity(e);
                     }
                 }

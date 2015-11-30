@@ -347,7 +347,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
     }
 
     EntityAlive* a = dynamic_cast<EntityAlive*> (e);
-    if (a) {
+    if (a && e->uniqueId != uniqueId) {
         if (item != nullptr) {
             ItemWeapon* weapon = dynamic_cast<ItemWeapon*> (item);
             ItemRanged* ranged = dynamic_cast<ItemRanged*> (item);

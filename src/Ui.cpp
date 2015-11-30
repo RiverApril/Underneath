@@ -426,7 +426,7 @@ namespace Ui {
                     }else if(item->coinValue == 0){
                         displayName += "(Free) ";
                     }else if(item->coinValue == -1){
-                        displayName += "(N/A) ";
+                        displayName += "(-) ";
                     }
                 }
                 if(item->qty != 1){
@@ -435,8 +435,14 @@ namespace Ui {
 
                 displayName += formatString("%s", item->getName(item->qty != 1).c_str());
 
+                int w = columnX + columnWidth - 3;
+
+                if(displayName.size() > w){
+                    displayName = displayName.substr(0, w-3)+"...";
+                }
+
                 mvprintw(y, columnX, "%c ", pre);
-                y += printMultiLineString(y, columnX + 2, displayName, columnX + columnWidth - 1);
+                y += printMultiLineString(y, columnX + 2, displayName, w+2);
 
             }
 
