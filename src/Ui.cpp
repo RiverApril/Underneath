@@ -424,9 +424,9 @@ namespace Ui {
                     if(item->coinValue > 0){
                         displayName += formatString("(%dc) ", item->coinValue);
                     }else if(item->coinValue == 0){
-                        displayName += "(Free!) ";
+                        displayName += "(Free) ";
                     }else if(item->coinValue == -1){
-                        displayName += "(Unbuyable) ";
+                        displayName += "(N/A) ";
                     }
                 }
                 if(item->qty != 1){
@@ -462,7 +462,18 @@ namespace Ui {
 
                 int a = 2;
 
-                a += printMultiLineString(a, columnX, formatString("Name: %s %s", item->qty!=1?formatString("%d", item->qty).c_str():"", item->getName(item->qty != 1).c_str()));
+                a += printMultiLineString(a, columnX, formatString("%s %s", item->qty!=1?formatString("%d", item->qty).c_str():"", item->getName(item->qty != 1).c_str()));
+
+                setColor(C_LIGHT_GRAY, C_BLACK);
+
+                if(equipable){
+                    if(equipable->durability < 0){
+                        setColor(C_LIGHT_RED);
+                        a += printMultiLineString(a, columnX, "ITEM BROKEN damage halved");
+                    }
+                    a += printMultiLineString(a, columnX, formatString("Durability: %d", equipable->durability));
+                    setColor(C_LIGHT_GRAY, C_BLACK);
+                }
 
                 if(item->coinValue > 0){
                     a += printMultiLineString(a, columnX, formatString("Value: %dc", item->coinValue));

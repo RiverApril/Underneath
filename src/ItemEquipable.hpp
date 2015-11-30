@@ -194,6 +194,8 @@ public:
         }
     }
 
+    int durability = 100;
+
 
 protected:
 };

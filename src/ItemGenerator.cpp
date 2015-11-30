@@ -232,7 +232,7 @@ namespace ItemGenerator {
         return weaponList[i];
     }
 
-    ItemArmorBase getRandItemArmorBase() {
+    ItemArmorBase getRandArmorBase() {
         size_t i = (rand()) % armorList.size();
         return armorList[i];
     }
@@ -288,7 +288,7 @@ namespace ItemGenerator {
                     }
                 }
 
-                ItemArmor* a = createRandItemArmor(itemDifficulty);
+                ItemArmor* a = createRandArmor(itemDifficulty);
                 a->coinValue = calculateItemValue(a);
                 items.push_back(a);
             }
@@ -410,6 +410,9 @@ namespace ItemGenerator {
         } else {
             w = new ItemWeapon();
         }
+        if(w->durability != INFINITY){
+            w->durability = (rand()%400)+50;
+        }
         w->baseDamage = base.damage;
         w->useDelay = base.useDelay;
         w->setName(base.names[ni]);
@@ -508,8 +511,8 @@ namespace ItemGenerator {
         return w;
     }
 
-    ItemArmor* createRandItemArmor(int itemDifficulty) {
-        ItemArmorBase base = getRandItemArmorBase();
+    ItemArmor* createRandArmor(int itemDifficulty) {
+        ItemArmorBase base = getRandArmorBase();
         ItemArmor* w = createItemArmorFromBase(base, itemDifficulty);
 
         w->minimumAbilities.list[iAGI] = pow(2, itemDifficulty) - 1;

@@ -222,12 +222,12 @@ namespace ItemGenerator {
 
     ItemWeapon* createRandItemWeapon(int itemDifficulty);
 
-    ItemArmor* createRandItemArmor(int itemDifficulty);
+    ItemArmor* createRandArmor(int itemDifficulty);
 
     WeaponBase getRandWeaponBase(WeaponType w, DamageType d);
     WeaponBase getRandWeaponBase(WeaponType w);
     WeaponBase getRandWeaponBase();
-    ItemArmorBase getRandItemArmorBase();
+    ItemArmorBase getRandArmorBase();
 
     ItemWeapon* createItemWeaponFromBase(WeaponBase base, int itemDifficulty);
     

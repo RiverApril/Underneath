@@ -87,11 +87,13 @@ public:
                 }
             }
         }
-        return d;
+        return d*attackMultiplier;
     }
 
     double moveDelay = 1.5; //TODO should vary
 
+
+    double attackMultiplier = 1;
 
 protected:
     int ai = aiNone;

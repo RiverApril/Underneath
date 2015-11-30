@@ -120,27 +120,6 @@ public:
     bool equipItem(ItemEquipable* newItem, bool forceDefaultSlot = false);
     bool equipItem(ItemEquipable* newItem, EquipSlot slot);
 
-    /*bool pickupItem(Item* newItem){
-        if(newItem != nullptr){
-            for(Item* i : inventory){
-                if(i->equalsExceptQty(newItem)){
-                    //debug("i: "+i->name+"   newItem: "+newItem->name);
-                    //debug("i qty: "+to_string(i->qty));
-                    //debug("newItem qty: "+to_string(newItem->qty));
-                    i->qty += newItem->qty;
-                    //debug("i qty: "+to_string(i->qty));
-                    delete newItem;
-                    //debug("Picked up item and added to stack.");
-                    return true;
-                }
-            }
-            inventory.push_back(newItem);
-            //debug("Picked up item.");
-            return true;
-        }
-        return false;
-     }*/
-
 
     //don't need to save
     bool leveledUp = false;
@@ -151,16 +130,31 @@ public:
         return (pow(l, 2)+(5*l)+20);
     }
 
-    void recalculateDefenses();
+    double getDefenseMultiplierFromArmor(DamageType damType){
 
-    double getDefenseMultiplierFromItemArmor(DamageType damType){
-        if(calculatedDefenses.count(damType)){
-            return calculatedDefenses[damType];
+
+        double def = 0;
+
+        for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
+            if(p.second){
+                ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
+                if(armor){
+                    for(Defense d : armor->defenses){
+                        if(d.damageType == damType){
+                            armor->durability--;
+                            if(armor->durability > 0){
+                                def += d.amount;
+                            }
+                        }
+                    }
+                }
+            }
         }
-        return 0;
+
+        return def;
     }
 
-    double getAttackMultiplierFromEffectsAndItemArmor(DamageType damType){
+    double getAttackMultiplierFromEffectsAndArmor(DamageType damType){
         double d = 1;
         for(Effect eff : effects){
             if(eff.eId == effBuffAttack){
@@ -184,10 +178,10 @@ public:
         return d;
     }
 
-    map<DamageType, double> calculatedDefenses;
-
 
     double useDelay(Item* item);
+
+    map<EquipSlot, ItemEquipable*> equipedItems;
 
 
 protected:
@@ -197,8 +191,6 @@ protected:
     double interactDelay = .1;
     int timeSinceCombat = 0;
     bool outOfCombatHealing = false;
-
-    map<EquipSlot, ItemEquipable*> equipedItems;
 
     void setNextLevelXp() {
         nextLevelXp = xpForLevel(level);

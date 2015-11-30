@@ -26,7 +26,7 @@ EntityAi::EntityAi(string name, int aiFlags, char icon, Point2 startPos, Ui::Col
 }
 
 EntityAi::~EntityAi() {
-
+    
 }
 
 void EntityAi::lookAi(double time, Level* level){
@@ -324,6 +324,8 @@ EntityAi* EntityAi::cloneUnsafe(EntityAi* oldE, EntityAi* newE) {
     newE->agro = oldE->agro;
     newE->lastMoveTime = oldE->lastMoveTime;
     newE->lastAttackTime = oldE->lastAttackTime;
+    newE->attackMultiplier = oldE->attackMultiplier;
+    newE->lastKnownTargetPos = oldE->lastKnownTargetPos;
 
     forVector(oldE->inventory, i) {
         if (oldE->inventory[i] == oldE->activeItemWeapon) {
@@ -345,6 +347,7 @@ void EntityAi::save(vector<unsigned char>* data) {
     Utility::saveBool(data, agro);
     Utility::saveDouble(data, lastMoveTime);
     Utility::saveDouble(data, lastAttackTime);
+    Utility::saveDouble(data, attackMultiplier);
     Point2::save(lastKnownTargetPos, data);
 
     int activeItemWeaponIndex = -1;
@@ -364,6 +367,7 @@ void EntityAi::load(unsigned char* data, int* position) {
     agro = Utility::loadBool(data, position);
     lastMoveTime = Utility::loadDouble(data, position);
     lastAttackTime = Utility::loadDouble(data, position);
+    attackMultiplier = Utility::loadDouble(data, position);
     lastKnownTargetPos = Point2::load(data, position);
 
 

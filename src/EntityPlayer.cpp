@@ -264,6 +264,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                                 World* cw = level->currentWorld;
                                 WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
                                 cw->currentLevel->menuGame = level->menuGame;
+                                level->menuGame->fadeIn = fadeInMin;
                                 //level no longer the currentLevel
                                 return delay;
                             }
@@ -311,7 +312,7 @@ double EntityPlayer::calcDamageMultiplier(ItemWeapon* weapon) {
         } else if (weapon->weaponType == wepMagic) {
             x = 1 + (((double) abilities[iINT] / (double) maxAbilities[iINT]) * 10.0);
         }
-        x *= getAttackMultiplierFromEffectsAndItemArmor(weapon->damageType);
+        x *= getAttackMultiplierFromEffectsAndArmor(weapon->damageType);
     }
     return x;
 }
@@ -384,6 +385,14 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
 
             if (weapon) {
                 timeSinceCombat = 0;
+
+                if(weapon->durability < INFINITY){
+                    if(weapon->durability < 0){
+                        x /= 2;
+                    }
+                    weapon->durability--;
+                }
+
                 double d = a->hurt(weapon, x);
                 Verbalizer::attack(this, a, weapon, d);
 
@@ -430,7 +439,6 @@ EntityPlayer* EntityPlayer::cloneUnsafe(EntityPlayer* oldE, EntityPlayer* newE) 
         }
     }
 
-    newE->recalculateDefenses();
     newE->updateVariablesForAbilities();
 
     return newE;
@@ -481,8 +489,7 @@ void EntityPlayer::load(unsigned char* data, int* position) {
         int index = Utility::loadInt(data, position);
         equipedItems[slot] = dynamic_cast<ItemEquipable*>(inventory[index]);
     }
-
-    recalculateDefenses();
+	
     updateVariablesForAbilities();
 
 }
@@ -599,9 +606,6 @@ bool EntityPlayer::equipItem(ItemEquipable* newItem, EquipSlot slot){
             throw true;
         }
     }catch(bool changed){
-        if(changed){
-            recalculateDefenses();
-        }
         return changed;
     }
 
@@ -611,33 +615,13 @@ void EntityPlayer::setActiveItemWeapon(ItemWeapon* newItemWeapon) {
     equipItem(newItemWeapon);
 }
 
-void EntityPlayer::recalculateDefenses(){
-
-    calculatedDefenses.clear();
-
-    for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
-        if(p.second){
-            ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
-            if(armor){
-                for(Defense d : armor->defenses){
-                    if(calculatedDefenses.count(d.damageType)){
-                        calculatedDefenses[d.damageType] += d.amount;
-                    }else{
-                        calculatedDefenses[d.damageType] = d.amount;
-                    }
-                }
-            }
-        }
-    }
-}
-
 double EntityPlayer::hurt(DamageType damageType, double amount, double damageMultiplier) {
     timeSinceCombat = 0;
     if(Settings::godMode){
         return 0;
     }
 
-    damageMultiplier *= 1.0 - getDefenseMultiplierFromItemArmor(damageType);
+    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(damageType);
 
     return EntityAlive::hurt(damageType, amount, damageMultiplier);
 }
@@ -652,7 +636,7 @@ double EntityPlayer::hurt(ItemWeapon* w, double damageMultiplier) {
         return 0;
     }
 
-    damageMultiplier *= 1.0 - getDefenseMultiplierFromItemArmor(w->damageType);
+    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType);
 
     return EntityAlive::hurt(w, damageMultiplier);
 }

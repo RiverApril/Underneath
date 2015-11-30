@@ -39,6 +39,7 @@ namespace EnemyGenerator {
         double difficultyWeightMulti = 1;
         vector<Weakness> weaknesses;
         double moveDelay = 1.5;
+        double attackMultiplier = 1;
 
 
         int weight = 0;
