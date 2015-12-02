@@ -61,7 +61,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
     });
 
     Utility::executeBorder(center-centerRoomInnerRadius, center+centerRoomInnerRadius, [this](int x, int y){
-        if(rand()%6 != 0 && (x+y)%2 == 0){
+        if(rand()%6 != 0 && (x+y)%2 == 1){
             setTile(Point2(x, y), Tiles::tilePillar);
         }
     });
@@ -73,13 +73,17 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
 
     Point2 door = center;
 
-    if((rand()&2)==0){
-        door.x += (rand()&2)==0?centerRoomRadius:-centerRoomRadius;
-        door.y += (rand()%centerRoomRadius*2)-centerRoomRadius;
+    Point2 d = (stairUpPos-center);
+
+    if(abs(d.x) < abs(d.y)){
+        door.x += d.x>0?centerRoomRadius:-centerRoomRadius;
+        //door.y += (rand()%centerRoomRadius*2)-centerRoomRadius;
     }else{
-        door.x += (rand()%centerRoomRadius*2)-centerRoomRadius;
-        door.y += (rand()&2)==0?centerRoomRadius:-centerRoomRadius;
+        //door.x += (rand()%centerRoomRadius*2)-centerRoomRadius;
+        door.y += d.y>0?centerRoomRadius:-centerRoomRadius;
     }
+
+
 
     setTile(door, Tiles::tileDoor);
 
@@ -149,6 +153,11 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
             	setTile(Point2(x, y), Tiles::tileGrass);
             }
         });
+        if(rand()%3 == 0){
+            if(tileAt(p)->getIndex() == Tiles::tileGrass->getIndex()){
+                setTile(p, Tiles::tileFloor);
+            }
+        }
     }
 
     if(canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){

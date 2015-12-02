@@ -173,7 +173,7 @@ namespace Arts {
 
 			if (compassInSize.x > 0 && compassInSize.y > 0) {
 
-				for (int j = compassInSize.y;j < fullInSize.y;j += compassInSize.y) {
+				for (int j = compassInSize.y;j <= fullInSize.y;j += compassInSize.y) {
 					Art* a = new Art("compassIn part");
 
 					for (int i = 0;i < compassInSize.y;i++) {

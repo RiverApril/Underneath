@@ -668,7 +668,7 @@ namespace Ui {
                                 d = "SE";
                                 frame = 8;
                             }else{
-                                frame = 0;
+                                frame = (tick%8)+1;
                             }
 
                         	//debugf("Size:%d  Frame:%d  Angle:%f", Arts::compassInList.size(), frame, angle);
@@ -678,7 +678,7 @@ namespace Ui {
 							if (Arts::compassInList.size() > frame) {
 								Arts::getArt(Arts::compassInList[frame])->printAt(Point2(columnX, a) + Arts::compassInOffset);
                             }else{
-                                printMultiLineString(a++, columnX, d.c_str());
+                                a += printMultiLineString(a, columnX, d.c_str());
                             }
                             break;
                         }

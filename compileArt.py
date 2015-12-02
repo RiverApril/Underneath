@@ -18,8 +18,8 @@ for filePath in filePaths:
 for art in artList:
     art[1] = art[1].replace("\\", "\\\\")#escape backslash(\)
     art[1] = art[1].replace("\"", "\\\"")#escape double quote(")
-    while "\n\n" in art[1]:
-        art[1] = art[1].replace("\n\n", "\n")#remove multiple lines
+    #while "\n\n" in art[1]:
+    	#art[1] = art[1].replace("\n\n", "\n")#remove multiple lines
     art[1] = art[1].replace("\n", "\", \"")#replace new lines with ", "
     art[1] = "{\""+art[1]+"\"}"
     art[1] = art[1].replace(", \"\"}", "}")#remove trailing empty line
