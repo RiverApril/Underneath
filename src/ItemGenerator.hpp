@@ -18,6 +18,30 @@
 
 namespace ItemGenerator {
 
+    struct ItemBase{
+
+        ItemBase(){}
+        virtual ~ItemBase(){};
+    };
+
+    struct ExactItemBase : ItemBase{
+
+        ExactItemBase(Item* i){
+            this->i = i;
+        }
+
+        Item* createCopy(){
+            return Item::clone(i);
+        }
+
+        Item* original(){
+            return i;
+        }
+        
+    private:
+        Item* i;
+    };
+
     struct EnchantmentBase {
 
         EnchantmentBase() {
@@ -55,10 +79,10 @@ namespace ItemGenerator {
             this->applicableWeaponTypes = weaponTypes;
         }
 
-        Condition magical(double minMana, double maxMana) {
+        Condition* magical(double minMana, double maxMana) {
             manaCost.x = minMana;
             manaCost.y = maxMana;
-            return *this;
+            return this;
         }
 
         vector<string> names = {""};
@@ -81,11 +105,11 @@ namespace ItemGenerator {
         int chance;
     };
 
-    struct ItemArmorBase{
-        ItemArmorBase(){
+    struct ArmorBase : ItemBase{
+        ArmorBase(){
         }
 
-        ItemArmorBase(vector<vector<string> > names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences){
+        ArmorBase(vector<vector<string> > names, vector<EquipSlot> viableSlots, vector<DefenseRange> defences){
             this->names = names;
             this->viableSlots = viableSlots;
             this->defences = defences;
@@ -93,10 +117,10 @@ namespace ItemGenerator {
         vector<vector<string>> names;
         vector<EquipSlot> viableSlots;
         vector<DefenseRange> defences;
-        vector<EnchantmentBase> enchs;
+        vector<EnchantmentBase*> enchs;
     };
 
-    struct WeaponBase {
+    struct WeaponBase : ItemBase{
 
         WeaponBase() {
         }
@@ -109,20 +133,20 @@ namespace ItemGenerator {
             this->weaponType = weaponType;
         }
 
-        WeaponBase ranged(double range) {
+        WeaponBase* ranged(double range) {
             this->range = range;
-            return *this;
+            return this;
         }
 
-        WeaponBase magical(double range, double manaCost) {
+        WeaponBase* magical(double range, double manaCost) {
             this->range = range;
             this->manaCost = manaCost;
-            return *this;
+            return this;
         }
 
-        WeaponBase setArts(vector<int> artIndecies) {
+        WeaponBase* setArts(vector<int> artIndecies) {
             this->arts = artIndecies;
-            return *this;
+            return this;
         }
 
         double damage = 0;
@@ -133,7 +157,7 @@ namespace ItemGenerator {
         WeaponType weaponType = wepMelee;
         double range = -1;
         double manaCost = -1;
-        vector<EnchantmentBase> enchs;
+        vector<EnchantmentBase*> enchs;
     };
 
     struct EffIdMeta {
@@ -145,7 +169,7 @@ namespace ItemGenerator {
         double meta;
     };
 
-    struct PotionBase {
+    struct PotionBase : ItemBase{
 
         PotionBase() {
         }
@@ -166,7 +190,7 @@ namespace ItemGenerator {
 
     };
 
-    struct ScrollBase {
+    struct ScrollBase : ItemBase{
 
         ScrollBase() {
         }
@@ -180,40 +204,68 @@ namespace ItemGenerator {
         SpellEffect eff = 0;
     };
 
-    ItemArmorBase atl(ItemArmorBase a);
-    Condition atl(Condition c);
-    WeaponBase atl(WeaponBase w);
-    PotionBase atl(PotionBase p, int of100);
-    ScrollBase atl(ScrollBase s);
+    ArmorBase* atl(ArmorBase* a);
+    Condition* atl(Condition* c);
+    WeaponBase* atl(WeaponBase* w);
+    PotionBase* atl(PotionBase* p, int of100);
+    ScrollBase* atl(ScrollBase* s);
 
 
-    extern vector<ItemArmorBase> armorList;
-    extern vector<Condition> conditionList;
-    extern vector<WeaponBase> weaponList;
-    extern vector<ScrollBase> scrollList;
-
-    extern vector<PotionBase> potionList;
+    extern vector<ArmorBase*> armorList;
+    extern vector<Condition*> conditionList;
+    extern vector<WeaponBase*> weaponList;
+    extern vector<ScrollBase*> scrollList;
+    extern vector<PotionBase*> potionList;
     extern vector<int> potionChanceList;
 
-    extern Item* iCoin;
-    extern Item* iSmallKey;
+    extern ExactItemBase* coin;
+    extern ExactItemBase* smallKey;
 
-    extern WeaponBase wKnife;
-    extern WeaponBase wSword;
-    extern WeaponBase wAxe;
-    extern WeaponBase wMace;
-    extern WeaponBase wSpear;
+    extern PotionBase* potionHealth;
+    extern PotionBase* potionMana;
+    extern PotionBase* potionRegen;
+    extern PotionBase* potionManaRegen;
+    extern PotionBase* potionPhysicalDefense;
+    extern PotionBase* potionElementalDefense;
+    extern PotionBase* potionPhysicalAttack;
+    extern PotionBase* potionElementalAttack;
 
-    extern WeaponBase wBow;
-    extern WeaponBase wCrossbow;
+    extern PotionBase* potionRemoveBad;
 
-    extern WeaponBase wFireItemCombatSpell;
-    extern WeaponBase wFrostItemCombatSpell;
-    extern WeaponBase wShockItemCombatSpell;
+    extern ScrollBase* scrollRemoteUse;
+    extern ScrollBase* scrollRelocate;
+    extern ScrollBase* scrollBarrier;
 
-    extern WeaponBase wHealingCombatSpell;
+    extern WeaponBase* wKnife;
+    extern WeaponBase* wSword;
+    extern WeaponBase* wAxe;
+    extern WeaponBase* wMace;
+    extern WeaponBase* wSpear;
 
-    extern WeaponBase wNatural;
+    extern WeaponBase* wBow;
+    extern WeaponBase* wCrossbow;
+
+    extern WeaponBase* wFireItemCombatSpell;
+    extern WeaponBase* wFrostItemCombatSpell;
+    extern WeaponBase* wShockItemCombatSpell;
+
+    extern WeaponBase* wHealingCombatSpell;
+
+    extern WeaponBase* wNatural;
+
+    extern ArmorBase* aLeatherChest;
+    extern ArmorBase* aLeatherHelm;
+    extern ArmorBase* aLeatherLeggings;
+    extern ArmorBase* aLeatherBoots;
+    extern ArmorBase* aLeatherGloves;
+
+    extern ArmorBase* aMailChest;
+    extern ArmorBase* aMailHelm;
+    extern ArmorBase* aMailLeggings;
+    extern ArmorBase* aMailBoots;
+    extern ArmorBase* aMailGloves;
+    extern ArmorBase* aGoldenRing;
+    extern ArmorBase* aJewelRing;
 
 
     vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty, int keyMaxQty);
@@ -224,29 +276,30 @@ namespace ItemGenerator {
 
     ItemArmor* createRandArmor(int itemDifficulty);
 
-    WeaponBase getRandWeaponBase(WeaponType w, DamageType d);
-    WeaponBase getRandWeaponBase(WeaponType w);
-    WeaponBase getRandWeaponBase();
-    ItemArmorBase getRandArmorBase();
+    ItemWeapon* createRandItemWeapon(int itemDifficulty);
 
-    ItemWeapon* createItemWeaponFromBase(WeaponBase base, int itemDifficulty);
-    
-    Enchantment createEnchantmentFromBase(EnchantmentBase base);
+    WeaponBase* getRandWeaponBase(WeaponType w, DamageType d);
+    WeaponBase* getRandWeaponBase(WeaponType w);
+    WeaponBase* getRandWeaponBase();
+    ArmorBase* getRandArmorBase();
 
-    ItemArmor* createItemArmorFromBase(ItemArmorBase base, int itemDifficulty);
+    Item* createItemFromBase(ItemBase* base, int itemDifficulty);
+    ItemWeapon* createItemWeaponFromBase(WeaponBase* base, int itemDifficulty);
+    ItemArmor* createArmorFromBase(ArmorBase* base, int itemDifficulty);
+    ItemPotion* createPotionFromBase(PotionBase* pb, int itemDifficulty);
+
+    Enchantment createEnchantmentFromBase(EnchantmentBase* base);
 
     ItemWeapon* createItemWeaponFromType(WeaponType w, DamageType d, int itemDifficulty);
     ItemWeapon* createItemWeaponFromType(WeaponType w, int itemDifficulty);
 
-    ItemWeapon* applyConditionToItemWeapon(ItemWeapon* w, Condition c, int itemDifficulty, bool prependName = true);
+    ItemWeapon* applyConditionToItemWeapon(ItemWeapon* w, Condition* c, int itemDifficulty, bool prependName = true);
 
-    ItemWeapon* applyRandConditionToItemWeapon(ItemWeapon * w, int itemDifficulty, bool prependName = true);
+    ItemWeapon* applyRandConditionToItemWeapon(ItemWeapon* w, int itemDifficulty, bool prependName = true);
 
-    ItemWeapon* createRandItemWeapon(int itemDifficulty);
 
-    ItemPotion* createPotionFromBase(PotionBase pb, int itemDifficulty);
 
-    ItemUtilitySpell* createScrollFromBase(ScrollBase sb);
+    ItemUtilitySpell* createScrollFromBase(ScrollBase* sb);
 
     Item* makeCoins(int qty);
 

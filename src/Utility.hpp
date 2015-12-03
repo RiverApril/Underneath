@@ -51,16 +51,16 @@ namespace Utility {
 
 
 
-    double loadDouble(unsigned char* data, int* position);
-    int loadInt(unsigned char* data, int* position);
-    unsigned long loadUnsignedLong(unsigned char* data, int* position);
-    unsigned char loadUnsignedChar(unsigned char* data, int* position);
-    int8_t loadInt8Bit(unsigned char* data, int* position);
-    bool loadBool(unsigned char* data, int* position);
-    string loadString(unsigned char* data, int* position);
+    double loadDouble(vector<unsigned char>* data, int* position);
+    int loadInt(vector<unsigned char>* data, int* position);
+    unsigned long loadUnsignedLong(vector<unsigned char>* data, int* position);
+    unsigned char loadUnsignedChar(vector<unsigned char>* data, int* position);
+    int8_t loadInt8Bit(vector<unsigned char>* data, int* position);
+    bool loadBool(vector<unsigned char>* data, int* position);
+    string loadString(vector<unsigned char>* data, int* position);
 
     template <typename T>
-    T loadType(unsigned char* data, int* position) {
+    T loadType(vector<unsigned char>* data, int* position) {
 
         union {
             T d;

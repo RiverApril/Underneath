@@ -44,7 +44,7 @@ namespace MainWindow{
     int height = 30;
 
     vector<char> screenCharBuffer = vector<char>(width * height);
-    vector<int> screenAttrBuffer = vector<int>(width * height);
+    vector<char> screenColorBuffer = vector<char>(width * height);
 
     int charWidth = 7;
     int charHeight = 12;
@@ -60,7 +60,7 @@ namespace MainWindow{
 
     int backgroundColor = 0;
 
-    int currentAttr = 0;
+    int currentColor = 0;
 
     int rgbColorWhite;
     int rgbColorBlack;
@@ -110,29 +110,29 @@ namespace MainWindow{
         Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
         switch(bpp) {
-        case 1:
-            *p = pixel;
-            break;
+            case 1:
+                *p = pixel;
+                break;
 
-        case 2:
-            *(Uint16 *)p = pixel;
-            break;
+            case 2:
+                *(Uint16 *)p = pixel;
+                break;
 
-        case 3:
-            if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-                p[0] = (pixel >> 16) & 0xff;
-                p[1] = (pixel >> 8) & 0xff;
-                p[2] = pixel & 0xff;
-            } else {
-                p[0] = pixel & 0xff;
-                p[1] = (pixel >> 8) & 0xff;
-                p[2] = (pixel >> 16) & 0xff;
-            }
-            break;
+            case 3:
+                if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+                    p[0] = (pixel >> 16) & 0xff;
+                    p[1] = (pixel >> 8) & 0xff;
+                    p[2] = pixel & 0xff;
+                } else {
+                    p[0] = pixel & 0xff;
+                    p[1] = (pixel >> 8) & 0xff;
+                    p[2] = (pixel >> 16) & 0xff;
+                }
+                break;
 
-        case 4:
-            *(Uint32 *)p = pixel;
-            break;
+            case 4:
+                *(Uint32 *)p = pixel;
+                break;
         }
     }
     //
@@ -144,7 +144,7 @@ namespace MainWindow{
             case 0x2: //Dark Green
             case 0x4: //Dark Blue
             case 0x6: //Dark Cyan
-                return 0x01;
+                return 0x00;
             case 0x1: //Dark Red
             case 0x3: //Dark Yellow
             case 0x5: //Dark Magenta
@@ -164,9 +164,9 @@ namespace MainWindow{
             case 0xB: //Light Yellow
             case 0xD: //Light Magenta
             case 0xF: //Light White
-                return 0xFE;
+                return 0xFF;
         }
-        return 1;
+        return 0x00;
     }
 
     int greenFromCode(int colorCode){
@@ -175,7 +175,7 @@ namespace MainWindow{
             case 0x1: //Dark Red
             case 0x4: //Dark Blue
             case 0x5: //Dark Magenta
-                return 0x01;
+                return 0x00;
             case 0x2: //Dark Green
             case 0x3: //Dark Yellow
             case 0x6: //Dark Cyan
@@ -195,9 +195,9 @@ namespace MainWindow{
             case 0xB: //Light Yellow
             case 0xE: //Light Cyan
             case 0xF: //Light White
-                return 0xFE;
+                return 0xFF;
         }
-        return 1;
+        return 0x00;
     }
 
     int blueFromCode(int colorCode){
@@ -206,7 +206,7 @@ namespace MainWindow{
             case 0x2: //Dark Green
             case 0x1: //Dark Red
             case 0x3: //Dark Yellow
-                return 0x01;
+                return 0x00;
             case 0x4: //Dark Blue
             case 0x6: //Dark Cyan
             case 0x5: //Dark Magenta
@@ -226,9 +226,9 @@ namespace MainWindow{
             case 0xE: //Light Cyan
             case 0xD: //Light Magenta
             case 0xF: //Light White
-                return 0xFE;
+                return 0xFF;
         }
-        return 1;
+        return 0x00;
     }
 
 
@@ -253,12 +253,27 @@ namespace MainWindow{
                     mainScreenSurface = SDL_GetWindowSurface(mainWindow);
                     rgbColorWhite = SDL_MapRGB(mainScreenSurface->format, 0xFF, 0xFF, 0xFF);
                     rgbColorBlack = SDL_MapRGB(mainScreenSurface->format, 0, 0, 0);
+                    //printf("White = 0x%X  Black = 0x%X\n", rgbColorWhite, rgbColorBlack);
                 }
             }
         }
 
         return success;
     }
+
+    /*void makeFontSurface(SDL_Surface* surf, int original, int color, int trans){
+        SDL_LockSurface(surf);
+
+        for(int x=0;x<width*charWidth;x++){
+            for(int y=0;y<height*charHeight;y++){
+                putpixel(surf, x, y, (getpixel(surf, x, y) == original)?color:trans);
+            }
+        }
+
+        SDL_UnlockSurface(surf);
+
+        SDL_SetColorKey(surf, SDL_TRUE, trans);
+    }*/
 
     bool initMedia(){
     	bool success = true;
@@ -283,7 +298,7 @@ namespace MainWindow{
         dst.w = charWidth;
         dst.h = charHeight;
 
-        int c, color, fgColorCode, bgColorCode;
+        int c, colorfg, colorbg, fgColorCode, bgColorCode;
 
         for(int i=0;i<width;i++){
             for(int j=0;j<height;j++){
@@ -296,13 +311,16 @@ namespace MainWindow{
                 dst.x = (c%width)*charWidth;
                 dst.y = (c/width)*charHeight;
 
+                fgColorCode = ((screenColorBuffer[c])) & 0xF;
+                bgColorCode = (((screenColorBuffer[c])) >> 4) & 0xF;
+
                 SDL_BlitSurface(fontSurface, &src, mainScreenSurface, &dst);
+
+                //SDL_BlitSurface(fontFgSurface[fgColorCode], &src, mainScreenSurface, &dst);
+                //SDL_BlitSurface(fontBgSurface[bgColorCode], &src, mainScreenSurface, &dst);
 
 
                 SDL_LockSurface(mainScreenSurface);
-
-                fgColorCode = ((screenAttrBuffer[c] & A_COLOR) >> 17) & 0xF;
-                bgColorCode = (((screenAttrBuffer[c] & A_COLOR) >> 17) >> 4) & 0xF;
 
                 //if((fgColorCode != 0x10 && fgColorCode != 0x0) || (bgColorCode != 0x10 && bgColorCode != 0x0)){
                     //printf("Color Codes: 0x%X, 0x%X\n", fgColorCode, bgColorCode);
@@ -312,23 +330,15 @@ namespace MainWindow{
                     fgColorCode = 0xF;
                 }
 
-                color = SDL_MapRGB(mainScreenSurface->format, redFromCode(fgColorCode), greenFromCode(fgColorCode), blueFromCode(fgColorCode));
+                colorfg = SDL_MapRGB(mainScreenSurface->format, redFromCode(fgColorCode), greenFromCode(fgColorCode), blueFromCode(fgColorCode));
+
+                colorbg = SDL_MapRGB(mainScreenSurface->format, redFromCode(bgColorCode), greenFromCode(bgColorCode), blueFromCode(bgColorCode));
+
+                //printf("0,0 pixel: 0x%X\n", getpixel(mainScreenSurface, dst.x, dst.y));
 
                 for(int x=0;x<charWidth;x++){
                     for(int y=0;y<charHeight;y++){
-                        if(getpixel(mainScreenSurface, dst.x+x, dst.y+y) == rgbColorWhite) {
-		                    putpixel(mainScreenSurface, dst.x+x, dst.y+y, color);
-                        }
-                    }
-                }
-
-                color = SDL_MapRGB(mainScreenSurface->format, redFromCode(bgColorCode), greenFromCode(bgColorCode), blueFromCode(bgColorCode));
-
-                for(int x=0;x<charWidth;x++){
-                    for(int y=0;y<charHeight;y++){
-                        if(getpixel(mainScreenSurface, dst.x+x, dst.y+y) == rgbColorBlack) {
-		                    putpixel(mainScreenSurface, dst.x+x, dst.y+y, color);
-                        }
+                        putpixel(mainScreenSurface, dst.x+x, dst.y+y, (getpixel(mainScreenSurface, dst.x+x, dst.y+y) == rgbColorWhite)?colorfg:colorbg);
                     }
                 }
 
@@ -382,7 +392,7 @@ namespace MainWindow{
                     SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
                     mainScreenSurface = SDL_GetWindowSurface(mainWindow);
                     screenCharBuffer = vector<char>(width * height);
-                    screenAttrBuffer = vector<int>(width * height);
+                    screenColorBuffer = vector<char>(width * height);
                     return KEY_RESIZE;
                 }
                 return ERR;
@@ -499,6 +509,7 @@ namespace MainWindow{
                 return ERR;
             }
         }
+        return ERR;
     }
 }
 
@@ -551,7 +562,7 @@ int	move(int y, int x){
 
 int addch(const char c){
     screenCharBuffer[cursor] = c;
-    screenAttrBuffer[cursor] = currentAttr;
+    screenColorBuffer[cursor] = currentColor;
     cursor++;
     return 0;
 }
@@ -600,7 +611,7 @@ int	mvprintw(int y, int x, const char * s, ...){
 int	hline(const char c, int l){
     for(int i=0;cursor%width>=0 && i<=l;i++){
         screenCharBuffer[cursor] = c;
-        screenAttrBuffer[cursor] = currentAttr;
+        screenColorBuffer[cursor] = currentColor;
         cursor++;
     }
     return 0;
@@ -614,7 +625,7 @@ int	mvhline(int y, int x, const char c, int l){
 int	vline(const char c, int l){
     for(int i=0;cursor<width*height && i<=l;i++){
         screenCharBuffer[cursor] = c;
-        screenAttrBuffer[cursor] = currentAttr;
+        screenColorBuffer[cursor] = currentColor;
         cursor+=width;
     }
     return 0;
@@ -628,7 +639,7 @@ int	mvvline(int y, int x, const char c, int l){
 int clrtoeol(){
     for(;cursor%width>0;cursor++){
         screenCharBuffer[cursor] = 0;
-        screenAttrBuffer[cursor] = 0;
+        screenColorBuffer[cursor] = 0;
     }
     return 0;
 }
@@ -636,7 +647,7 @@ int clrtoeol(){
 int clrtobot(){
     for(;cursor<screenCharBuffer.size();cursor++){
         screenCharBuffer[cursor] = ' ';
-        screenAttrBuffer[cursor] = 0;
+        screenColorBuffer[cursor] = 0;
     }
     return 0;
 }
@@ -678,7 +689,7 @@ int getmaxy(int scr){
 }
 
 int attrset(int attr){
-    currentAttr = attr;
+    currentColor = attr >> 17;
     return 0;
 }
 

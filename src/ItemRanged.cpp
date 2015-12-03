@@ -15,7 +15,7 @@ void ItemRanged::save(vector<unsigned char>* data) {
     Utility::saveDouble(data, range);
 }
 
-void ItemRanged::load(unsigned char* data, int* position) {
+void ItemRanged::load(vector<unsigned char>* data, int* position) {
     ItemWeapon::load(data, position);
 
     range = Utility::loadDouble(data, position);

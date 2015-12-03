@@ -20,7 +20,7 @@ void TEChest::save(vector<unsigned char>* data) {
 
 }
 
-void TEChest::load(unsigned char* data, int* position) {
+void TEChest::load(vector<unsigned char>* data, int* position) {
     TileEntity::load(data, position);
 
     int size = Utility::loadInt(data, position);

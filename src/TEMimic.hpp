@@ -36,7 +36,7 @@ struct TEMimic : public TileEntity {
 
     virtual void save(vector<unsigned char>* data);
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
 };
 
 #endif /* defined(__Underneath__TEMimic__) */

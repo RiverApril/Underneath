@@ -164,7 +164,7 @@ int Entity::getEntityTypeId() {
     return ENTITY_TYPE_ENTITY;
 }
 
-void Entity::load(unsigned char* data, int* position) {
+void Entity::load(vector<unsigned char>* data, int* position) {
     //Entity::loadNew() loads the entityId
 
     uniqueId = Utility::loadInt(data, position);
@@ -179,7 +179,7 @@ void Entity::load(unsigned char* data, int* position) {
     solid = Utility::loadBool(data, position);
 }
 
-Entity* Entity::loadNew(unsigned char* data, int* position) {
+Entity* Entity::loadNew(vector<unsigned char>* data, int* position) {
     Entity* e;
 
     int type = Utility::loadInt(data, position);

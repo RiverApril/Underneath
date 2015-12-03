@@ -16,7 +16,7 @@ void TEStair::save(vector<unsigned char>* data) {
     Utility::saveString(data, levelName);
 }
 
-void TEStair::load(unsigned char* data, int* position) {
+void TEStair::load(vector<unsigned char>* data, int* position) {
     TileEntity::load(data, position);
 
     up = Utility::loadBool(data, position);

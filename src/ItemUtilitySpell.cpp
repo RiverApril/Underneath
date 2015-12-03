@@ -17,7 +17,7 @@ void ItemUtilitySpell::save(vector<unsigned char>* data) {
     Utility::saveBool(data, continuousUse);
 }
 
-void ItemUtilitySpell::load(unsigned char* data, int* position) {
+void ItemUtilitySpell::load(vector<unsigned char>* data, int* position) {
     Item::load(data, position);
 
     spellEffect = Utility::loadInt(data, position);

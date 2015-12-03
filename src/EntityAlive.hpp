@@ -76,7 +76,7 @@ public:
 
     virtual int getEntityTypeId();
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
 
     virtual void setActiveItemWeapon(ItemWeapon* newItemWeapon){
         console("ERROR - SET ACTIVE WEAPON FOR ALIVE");

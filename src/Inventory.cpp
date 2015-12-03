@@ -35,7 +35,7 @@ int Inventory::getCoinValue(Item* item){
 int Inventory::getWallet(){
     int amount = 0;
     for (Item* i : inventory) {
-        if(i->equalsExceptQty(ItemGenerator::iCoin)){
+        if(i->equalsExceptQty(ItemGenerator::coin->original())){
             amount += i->qty;
         }
     }
@@ -49,7 +49,7 @@ void Inventory::addToWallet(int amount){
     }else if(amount < 0){
         amount = -amount;
         for(Item* i : inventory){
-            if(i->equalsExceptQty(ItemGenerator::iCoin)){
+            if(i->equalsExceptQty(ItemGenerator::coin->original())){
                 if(i->qty > amount){
                     debugf("BEFORE: i->qty=%d  amount=%d", i->qty, amount);
                     i->qty -= amount;

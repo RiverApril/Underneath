@@ -25,7 +25,7 @@ const EffectId effMemory = 5;
 const EffectId effPurity = 6;
 
 struct Effect {
-    Effect(unsigned char* data, int* position);
+    Effect(vector<unsigned char>* data, int* position);
 
     Effect(EffectId eId, double timeLeft, double power, double meta = 0);
 
@@ -33,7 +33,7 @@ struct Effect {
 
     void save(vector<unsigned char>* data);
 
-    void load(unsigned char* data, int* position);
+    void load(vector<unsigned char>* data, int* position);
 
     EffectId eId = effDamage;
     double timeLeft = 0;

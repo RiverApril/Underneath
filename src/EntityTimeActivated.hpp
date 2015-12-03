@@ -47,7 +47,7 @@ public:
         return timeActivatedType == timeActivatedBomb || timeActivatedType == timeActivatedWallBomb;
     }
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
     
     
     

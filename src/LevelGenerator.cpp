@@ -257,9 +257,18 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
                     te->addItem(ItemGenerator::makeCoins((rand() % 30) + 1));
                     tileEntityList.push_back(te);
                     continue;
-                } else if (rand() % 12 == 0) {
+                } else if (rand() % 10 == 0) {
                     TEChest* te = new TEChest(Point2(i, j));
                     te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 0, 0, 1, 100));
+                    tileEntityList.push_back(te);
+                    continue;
+                } else if (rand() % 20 == 0){
+                    TEChest* te = new TEChest(Point2(i, j));
+                    if(rand() % 2 == 0){
+                        te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 0, 1, 0, 100));
+                    }else{
+                        te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 1, 0, 0, 100));
+                    }
                     tileEntityList.push_back(te);
                     continue;
                 }

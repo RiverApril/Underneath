@@ -36,7 +36,7 @@ void ItemArmor::save(vector<unsigned char>* data) {
     }
 }
 
-void ItemArmor::load(unsigned char* data, int* position) {
+void ItemArmor::load(vector<unsigned char>* data, int* position) {
     ItemEquipable::load(data, position);
 
     int size = Utility::loadInt(data, position);

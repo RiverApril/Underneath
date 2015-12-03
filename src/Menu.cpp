@@ -137,12 +137,13 @@ namespace Ui {
                 setColor(C_WHITE);*/
                 int len = stringLengthWithColored(consoleBuffer[p]) / (terminalSize.x - 2);
                 i -= len;
+                mvprintw(i, 0, "  ");
                 i -= printMultiLineColoredString(i, 2, consoleBuffer[p]) - 1;
                 i += len;
             }
             j++;
         }
-        mvprintw(topY, 0, (consoleScroll > -(consoleBuffer.size())+(bottomY - topY)) ? "^" : " ");
+        mvprintw(topY, 0, ((int) consoleBuffer.size()) - j + (consoleScroll) > 0 ? "^" : " ");
         mvprintw(bottomY - 1, 0, (consoleScroll < 0) ? "v" : " ");
 
         move(bottomY, 2);

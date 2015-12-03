@@ -43,7 +43,7 @@ public:
 
     virtual void save(vector<unsigned char>* data);
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
 
     virtual bool equalsExceptQty(Item* other) {
         ItemUtilitySpell* otherW = dynamic_cast<ItemUtilitySpell*> (other);

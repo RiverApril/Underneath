@@ -34,7 +34,7 @@ void ItemWeapon::save(vector<unsigned char>* data) {
     }
 }
 
-void ItemWeapon::load(unsigned char* data, int* position) {
+void ItemWeapon::load(vector<unsigned char>* data, int* position) {
     ItemEquipable::load(data, position);
 
     baseDamage = Utility::loadDouble(data, position);

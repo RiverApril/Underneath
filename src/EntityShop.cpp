@@ -60,7 +60,7 @@ void EntityShop::save(vector<unsigned char>* data) {
 
 }
 
-void EntityShop::load(unsigned char* data, int* position) {
+void EntityShop::load(vector<unsigned char>* data, int* position) {
     EntityAi::load(data, position);
 
     int size = Utility::loadInt(data, position);

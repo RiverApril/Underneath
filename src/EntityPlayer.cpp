@@ -283,7 +283,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
             level->setTile(posOfTile, Tiles::tileOpenDoor);
             return interactDelay;
         } else if (tid == Tiles::tileLockedDoor->getIndex()) {
-            if(containsItemEqualingExceptQty(ItemGenerator::iSmallKey, 1)){
+            if(containsItemEqualingExceptQty(ItemGenerator::smallKey->original(), 1)){
             	level->setTile(posOfTile, Tiles::tileOpenDoor);
                 consolef("Opened the door using up a &%cKey&%c.", Ui::cc(C_LIGHT_MAGENTA), Ui::cc(C_WHITE));
             	return interactDelay;
@@ -472,7 +472,7 @@ void EntityPlayer::save(vector<unsigned char>* data) {
 
 }
 
-void EntityPlayer::load(unsigned char* data, int* position) {
+void EntityPlayer::load(vector<unsigned char>* data, int* position) {
     EntityAlive::load(data, position);
     abilities.load(data, position);
     abilityPoints = Utility::loadInt(data, position);

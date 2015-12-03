@@ -73,7 +73,7 @@ struct Point2 {
 
     static void save(Point2 p, vector<unsigned char>* data);
 
-    static Point2 load(unsigned char* data, int* position);
+    static Point2 load(vector<unsigned char>* data, int* position);
 
     void set(int i) {
         this->x = i;
@@ -120,7 +120,7 @@ struct Point3 {
 
     void save(vector<unsigned char>* data);
 
-    static Point3 load(unsigned char* data, int* position);
+    static Point3 load(vector<unsigned char>* data, int* position);
 
     void set(int i) {
         this->x = i;

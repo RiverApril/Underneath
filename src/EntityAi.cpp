@@ -306,13 +306,33 @@ void EntityAi::dropLoots(Level* level){
     Verbalizer::defeatedEnemy(this, xp);
 
     level->currentWorld->currentPlayer->gainXp(xp);
+    level->newEntity(new EntityItem(ItemGenerator::makeCoins((rand()%(int)maxHp*2)), pos));
 
-    vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand() % 10) == 0 ? 1 : 0, (rand() % 10) == 0 ? 1 : 0, (rand() % 5) == 0 ? 2 : 0, 20);
+    /*vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand() % 10) == 0 ? 1 : 0, (rand() % 10) == 0 ? 1 : 0, (rand() % 5) == 0 ? 2 : 0, 20);
     //if(rand()%5==0){
     //drops.push_back(Item::clone(activeItemWeapon));
     //}
     for (Item* i : drops) {
         level->newEntity(new EntityItem(i, pos));
+    }*/
+
+    if(drops.size() > 0){
+        int dropCount = 0;
+        while(rand()%((dropCount+1)*3)==0){
+            dropCount++;
+        }
+
+        while(dropCount > 0){
+            pair<int, ItemGenerator::ItemBase*> p = drops[rand()%drops.size()];
+
+            if(p.first > 0 && (rand()%p.first == 0)){
+                Item* it = ItemGenerator::createItemFromBase(p.second, level->getDifficulty());
+                if(it){
+                    level->newEntity(new EntityItem(it, pos));
+                }
+                dropCount--;
+            }
+        }
     }
 }
 
@@ -361,7 +381,7 @@ void EntityAi::save(vector<unsigned char>* data) {
     Utility::saveInt(data, activeItemWeaponIndex);
 }
 
-void EntityAi::load(unsigned char* data, int* position) {
+void EntityAi::load(vector<unsigned char>* data, int* position) {
     EntityAlive::load(data, position);
     ai = Utility::loadInt(data, position);
     agro = Utility::loadBool(data, position);

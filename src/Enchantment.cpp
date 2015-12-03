@@ -13,7 +13,7 @@ string enchantmentName(Enchantment e) {
     return effectName(e.effectId, e.meta);
 }
 
-Enchantment::Enchantment(unsigned char* data, int* position) {
+Enchantment::Enchantment(vector<unsigned char>* data, int* position) {
     load(data, position);
 }
 
@@ -33,7 +33,7 @@ void Enchantment::save(vector<unsigned char>* data) {
     Utility::saveDouble(data, meta);
 }
 
-void Enchantment::load(unsigned char* data, int* position) {
+void Enchantment::load(vector<unsigned char>* data, int* position) {
     effectId = Utility::loadInt(data, position);
     chance = Utility::loadInt(data, position);
     power = Utility::loadDouble(data, position);

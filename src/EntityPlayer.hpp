@@ -48,7 +48,7 @@ public:
 
     virtual void save(vector<unsigned char>* data);
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
 
     virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
 

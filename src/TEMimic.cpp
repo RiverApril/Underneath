@@ -13,7 +13,7 @@ void TEMimic::save(vector<unsigned char>* data) {
     TileEntity::save(data);
 }
 
-void TEMimic::load(unsigned char* data, int* position) {
+void TEMimic::load(vector<unsigned char>* data, int* position) {
     TileEntity::load(data, position);
 }
 

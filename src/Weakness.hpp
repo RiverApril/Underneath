@@ -22,7 +22,7 @@ struct Weakness {
 
     void save(vector<unsigned char>* data);
 
-    void load(unsigned char* data, int* position);
+    void load(vector<unsigned char>* data, int* position);
 };
 
 #endif /* defined(__Underneath__Weakness__) */

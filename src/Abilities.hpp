@@ -119,7 +119,7 @@ struct Abilities {
         }
     }
 
-    void load(unsigned char* data, int* position) {
+    void load(vector<unsigned char>* data, int* position) {
         for (int i = 0; i < abilityCount; i++) {
             list[i] = Utility::loadType<T>(data, position);
         }

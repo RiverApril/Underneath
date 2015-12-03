@@ -15,7 +15,7 @@ void ItemCombatSpell::save(vector<unsigned char>* data) {
     Utility::saveInt(data, manaCost);
 }
 
-void ItemCombatSpell::load(unsigned char* data, int* position) {
+void ItemCombatSpell::load(vector<unsigned char>* data, int* position) {
     ItemRanged::load(data, position);
 
     manaCost = Utility::loadInt(data, position);

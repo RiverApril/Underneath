@@ -30,9 +30,6 @@ Only designed to be used with Underneath
 #define KEY_DC 0512
 #define ERR (-1)
 
-#define A_BLINK 0x00000800
-#define A_COLOR 0x03fe0000
-
 #define TRUE true
 
 #define COLORS 0x1000000
@@ -46,6 +43,8 @@ namespace MainWindow{
     bool initSDL();
     bool initMedia();
     //SDL_Surface* loadImage(const char* path);
+
+    //void makeFontSurface(SDL_Surface* surf, int original, int color, int trans);
 
     Uint32 getpixel(SDL_Surface *surface, int x, int y);
     void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);

@@ -18,7 +18,7 @@ void ItemPotion::save(vector<unsigned char>* data) {
     }
 }
 
-void ItemPotion::load(unsigned char* data, int* position) {
+void ItemPotion::load(vector<unsigned char>* data, int* position) {
     Item::load(data, position);
 
     int size = Utility::loadInt(data, position);

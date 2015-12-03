@@ -41,7 +41,7 @@ namespace WorldLoader {
     World* create(string name, Abilities<int> playerAbilities);
     bool changeLevel(World* world, Point2 entrance, string newName);
     bool deleteWorld(string name);
-    unsigned char* readData(FILE* file);
+    vector<unsigned char>* readData(FILE* file);
 
 }
 

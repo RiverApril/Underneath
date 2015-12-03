@@ -33,13 +33,13 @@ struct TileEntity {
 
     virtual void save(vector<unsigned char>* data);
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
 
     virtual int getTileEntityTypeId() {
         return TILE_ENTITY_TYPE_NONE;
     }
 
-    static TileEntity* loadNew(unsigned char* data, int* position);
+    static TileEntity* loadNew(vector<unsigned char>* data, int* position);
 
     Point2 pos = Point2(0, 0);
 

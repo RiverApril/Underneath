@@ -59,7 +59,7 @@ namespace Utility {
         }
     }
 
-    double loadDouble(unsigned char* data, int* position) {
+    double loadDouble(vector<unsigned char>* data, int* position) {
 
         union {
             double d;
@@ -72,39 +72,38 @@ namespace Utility {
         return uDoubleBytes.d;
     }
 
-    int loadInt(unsigned char* data, int* position) {
+    int loadInt(vector<unsigned char>* data, int* position) {
         return ((loadUnsignedChar(data, position) << 24) |
                 (loadUnsignedChar(data, position) << 16) |
                 (loadUnsignedChar(data, position) << 8) |
                 (loadUnsignedChar(data, position) << 0));
     }
 
-    unsigned long loadUnsignedLong(unsigned char* data, int* position) {
+    unsigned long loadUnsignedLong(vector<unsigned char>* data, int* position) {
         return ((((unsigned long) loadUnsignedChar(data, position)) << 24) |
                 (((unsigned long) loadUnsignedChar(data, position)) << 16) |
                 (((unsigned long) loadUnsignedChar(data, position)) << 8) |
                 (((unsigned long) loadUnsignedChar(data, position)) << 0));
     }
 
-    unsigned char loadUnsignedChar(unsigned char* data, int* position) {
-        unsigned char l = data[*position];
+    unsigned char loadUnsignedChar(vector<unsigned char>* data, int* position) {
+        if(data->size() <= *position){
+            throw 1;
+        }
+        unsigned char l = (*data)[*position];
         *position += 1;
         return l;
     }
 
-    int8_t loadInt8Bit(unsigned char* data, int* position) {
-        int8_t l = (int8_t) (data[*position]);
-        *position += 1;
-        return l;
+    int8_t loadInt8Bit(vector<unsigned char>* data, int* position) {
+        return (int8_t) loadUnsignedChar(data, position);
     }
 
-    bool loadBool(unsigned char* data, int* position) {
-        bool l = ((char) (data[*position])) == 'T';
-        *position += 1;
-        return l;
+    bool loadBool(vector<unsigned char>* data, int* position) {
+        return ((char) loadUnsignedChar(data, position)) == 'T';
     }
 
-    string loadString(unsigned char* data, int* position) {
+    string loadString(vector<unsigned char>* data, int* position) {
         int count = loadInt(data, position);
         string l;
         for (int i = 0; i < count; i++) {

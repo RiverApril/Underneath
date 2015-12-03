@@ -53,18 +53,18 @@ namespace WorldLoader {
         return l;
     }
 
-    unsigned char* readData(FILE* file) {
+    vector<unsigned char>* readData(FILE* file) {
         fseek(file, 0, SEEK_END);
         long fileSize = ftell(file);
         rewind(file);
 
-        unsigned char* buffer = new unsigned char[fileSize];
+        unsigned char buffer[fileSize];
         fread(buffer, fileSize, 1, file);
         /*printf("Length: %ld\n", fileSize);
         for(int i=0;i<fileSize;i++){
             printf("%X, ", buffer[i]);
         }*/
-        return buffer;
+        return new vector<unsigned char>(buffer, buffer+fileSize);
     }
 
     World* load(World* world, string name, string optionalStartLevel) {
@@ -80,87 +80,99 @@ namespace WorldLoader {
             fileWorldInfo = fopen((dir + "world.info").c_str(), "rb");
             if (fileWorldInfo != nullptr) {
 
-                unsigned char* data = readData(fileWorldInfo);
+                vector<unsigned char>* data = readData(fileWorldInfo);
 
                 int* position = new int(0);
 
-                if(world == nullptr){
-                	world = new World(name);
-                }else{
-                    world->name = name;
-                }
+                try {
 
-                world->seed = Utility::loadType<unsigned int>(data, position);
-
-                world->worldTime = Utility::loadDouble(data, position);
-                world->worldLastTime = world->worldTime;
-
-                int levelCount = Utility::loadInt(data, position);
-
-                string currentLevelName = Utility::loadString(data, position);
-                //int playerUniqueId = Utility::loadInt(data, position);
-
-                world->currentLevel = nullptr;
-
-                for (int i = 0; i < levelCount; i++) {
-                    string levelName;
-
-                    levelName = Utility::loadString(data, position);
-
-                    world->levels.push_back(levelName);
-                    if (levelName.compare(optionalStartLevel) == 0) {
-                        currentLevelName = levelName;
+                    if(world == nullptr){
+                        world = new World(name);
+                    }else{
+                        world->name = name;
                     }
-                }
 
-                //throw Utility::FileExceptionLoad("No current level");
+                    world->seed = Utility::loadType<unsigned int>(data, position);
 
-                //levelName.lvl
-                FILE* fileLevel;
+                    world->worldTime = Utility::loadDouble(data, position);
+                    world->worldLastTime = world->worldTime;
 
-                fileLevel = fopen((dir + (currentLevelName) + ".lvl").c_str(), "rb");
+                    int levelCount = Utility::loadInt(data, position);
 
-                if (fileLevel != nullptr) {
+                    string currentLevelName = Utility::loadString(data, position);
+                    //int playerUniqueId = Utility::loadInt(data, position);
 
-                    unsigned char* levelData = readData(fileLevel);
+                    world->currentLevel = nullptr;
 
-                    int* levelPosition = new int(0);
+                    for (int i = 0; i < levelCount; i++) {
+                        string levelName;
 
-                    Point2 levelSize = Point2::load(levelData, levelPosition);
+                        levelName = Utility::loadString(data, position);
 
-                    int levelDifficulty = Utility::loadInt(levelData, levelPosition);
-
-                    Level* level = new Level(world, currentLevelName, levelSize, levelDifficulty);
-
-                    level->load(levelData, levelPosition);
-
-                    world->currentLevel = level;
-
-                    delete[] levelData;
-
-                    delete levelPosition;
-
-                }
-
-                fclose(fileLevel);
-                //
-
-                if (world->currentLevel != nullptr) {
-                	world->currentPlayer = dynamic_cast<EntityPlayer*> (Entity::loadNew(data, position));
-                    world->currentLevel->newEntity(world->currentPlayer, false);
-                    debugf("Loaded Entity Player with uid: %d", world->currentPlayer->uniqueId);
-                }
-
-                /*if (world->currentLevel != nullptr) {
-                    for (size_t i = 0; i < world->currentLevel->entityCount(); i++) {
-                        if (world->currentLevel->entityList[i]->uniqueId == playerUniqueId) {
-                            world->currentPlayer = dynamic_cast<EntityPlayer*> (world->currentLevel->entityList[i]);
-                            debugf("Setting currentPlayer to entity with uid: %d", world->currentPlayer->uniqueId);
+                        world->levels.push_back(levelName);
+                        if (levelName.compare(optionalStartLevel) == 0) {
+                            currentLevelName = levelName;
                         }
                     }
-                }*/
 
-                delete[] data;
+                    //throw Utility::FileExceptionLoad("No current level");
+
+                    //levelName.lvl
+                    FILE* fileLevel;
+
+                    fileLevel = fopen((dir + (currentLevelName) + ".lvl").c_str(), "rb");
+
+                    if (fileLevel != nullptr) {
+
+                        vector<unsigned char>* levelData = readData(fileLevel);
+
+                        int* levelPosition = new int(0);
+
+                        try{
+
+                            Point2 levelSize = Point2::load(levelData, levelPosition);
+
+                            int levelDifficulty = Utility::loadInt(levelData, levelPosition);
+
+                            Level* level = new Level(world, currentLevelName, levelSize, levelDifficulty);
+
+                            level->load(levelData, levelPosition);
+
+                            world->currentLevel = level;
+
+                        }catch(int e){
+                            debugf("Failed to load level");
+                        }
+
+                        delete levelData;
+
+                        delete levelPosition;
+
+                    }
+
+                    fclose(fileLevel);
+                    //
+
+                    if (world->currentLevel != nullptr) {
+                        world->currentPlayer = dynamic_cast<EntityPlayer*> (Entity::loadNew(data, position));
+                        world->currentLevel->newEntity(world->currentPlayer, false);
+                        debugf("Loaded Entity Player with uid: %d", world->currentPlayer->uniqueId);
+                    }
+
+                    /*if (world->currentLevel != nullptr) {
+                        for (size_t i = 0; i < world->currentLevel->entityCount(); i++) {
+                            if (world->currentLevel->entityList[i]->uniqueId == playerUniqueId) {
+                                world->currentPlayer = dynamic_cast<EntityPlayer*> (world->currentLevel->entityList[i]);
+                                debugf("Setting currentPlayer to entity with uid: %d", world->currentPlayer->uniqueId);
+                            }
+                        }
+                    }*/
+
+                }catch(int e){
+                    debugf("Failed to load level");
+                }
+
+                delete data;
 
                 delete position;
             }
@@ -296,24 +308,32 @@ namespace WorldLoader {
         fileWorldInfo = fopen((dir + "world.info").c_str(), "rb");
         if (fileWorldInfo != nullptr) {
 
-            unsigned char* data = readData(fileWorldInfo);
+            vector<unsigned char>* data = readData(fileWorldInfo);
 
             int* position = new int(0);
 
-            Utility::loadType<unsigned int>(data, position);
-            /*double worldTime = */Utility::loadDouble(data, position); // worldTime
-            int levelCount = Utility::loadInt(data, position); // levelCount
-            /*string worldName = */Utility::loadString(data, position); // World Name
-            //Utility::loadInt(data, position);
+            try {
+
+                Utility::loadType<unsigned int>(data, position);
+                /*double worldTime = */Utility::loadDouble(data, position); // worldTime
+                int levelCount = Utility::loadInt(data, position); // levelCount
+                /*string worldName = */Utility::loadString(data, position); // World Name
+                //Utility::loadInt(data, position);
 
 
-            for (int i = 0; i < levelCount; i++) {
-                string levelName = Utility::loadString(data, position);
-                //debugf("levelName: %s", levelName.c_str());
-                remove((dir + levelName + ".lvl").c_str());
+                for (int i = 0; i < levelCount; i++) {
+                    string levelName = Utility::loadString(data, position);
+                    //debugf("levelName: %s", levelName.c_str());
+                    remove((dir + levelName + ".lvl").c_str());
+                }
+
+                //No need to load player
+
+
+
+            }catch(int e){
+                debugf("Failed to load level");
             }
-
-            //No need to load player
 
             delete position;
             fclose(fileWorldInfo);

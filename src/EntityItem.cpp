@@ -68,10 +68,15 @@ int EntityItem::getEntityTypeId() {
 
 void EntityItem::save(vector<unsigned char>* data) {
     Entity::save(data);
-    item->save(data);
+    Utility::saveBool(data, item != nullptr);
+    if(item){
+    	item->save(data);
+    }
 }
 
-void EntityItem::load(unsigned char* data, int* position) {
+void EntityItem::load(vector<unsigned char>* data, int* position) {
     Entity::load(data, position);
-    item = Item::loadNew(data, position);
+    if(Utility::loadBool(data, position)){
+    	item = Item::loadNew(data, position);
+    }
 }

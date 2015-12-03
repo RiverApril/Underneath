@@ -26,7 +26,7 @@ void Item::save(vector<unsigned char>* data) {
     Utility::saveInt(data, coinValue);
 }
 
-void Item::load(unsigned char* data, int* position) {
+void Item::load(vector<unsigned char>* data, int* position) {
     name = Utility::loadString(data, position);
     pluralName = Utility::loadString(data, position);
     qty = Utility::loadInt(data, position);
@@ -96,7 +96,7 @@ Item* Item::clone(Item* oldI) {
 
 }
 
-Item* Item::loadNew(unsigned char* data, int* position) {
+Item* Item::loadNew(vector<unsigned char>* data, int* position) {
     Item* e;
 
     int type = Utility::loadInt(data, position);

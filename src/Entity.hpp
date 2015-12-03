@@ -81,9 +81,9 @@ public:
         return false;
     }
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
 
-    static Entity* loadNew(unsigned char* data, int* position);
+    static Entity* loadNew(vector<unsigned char>* data, int* position);
 
     int uniqueId = 0;
 

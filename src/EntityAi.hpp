@@ -10,6 +10,7 @@
 #define __Underneath__EntityAi__
 
 #include "EntityAlive.hpp"
+#include "ItemGenerator.hpp"
 
 typedef int AiType;
 
@@ -50,7 +51,7 @@ public:
 
     virtual int getEntityTypeId();
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
 
     virtual void setActiveItemWeapon(ItemWeapon* newItemWeapon);
 
@@ -94,6 +95,8 @@ public:
 
 
     double attackMultiplier = 1;
+
+    vector<pair<int, ItemGenerator::ItemBase*>> drops;
 
 protected:
     int ai = aiNone;

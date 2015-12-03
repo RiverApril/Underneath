@@ -12,13 +12,13 @@
 #include "Effect.hpp"
 
 struct Enchantment {
-    Enchantment(unsigned char* data, int* position);
+    Enchantment(vector<unsigned char>* data, int* position);
 
     Enchantment(EffectId effectId, int chance, double power, double time, double meta = 0);
 
     void save(vector<unsigned char>* data);
 
-    void load(unsigned char* data, int* position);
+    void load(vector<unsigned char>* data, int* position);
 
     EffectId effectId = effDamage;
     int chance = 1; //higher mean less likely

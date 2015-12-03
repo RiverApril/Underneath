@@ -20,7 +20,7 @@ void ItemEquipable::save(vector<unsigned char>* data) {
     Utility::saveInt(data, durability);
 }
 
-void ItemEquipable::load(unsigned char* data, int* position) {
+void ItemEquipable::load(vector<unsigned char>* data, int* position) {
     Item::load(data, position);
 
     minimumAbilities.load(data, position);

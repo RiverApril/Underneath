@@ -94,7 +94,7 @@ bool isBadEffect(Effect e){
     }
 }
 
-Effect::Effect(unsigned char* data, int* position) {
+Effect::Effect(vector<unsigned char>* data, int* position) {
     load(data, position);
 }
 
@@ -116,7 +116,7 @@ void Effect::save(vector<unsigned char>* data) {
     Utility::saveDouble(data, meta);
 }
 
-void Effect::load(unsigned char* data, int* position) {
+void Effect::load(vector<unsigned char>* data, int* position) {
     eId = Utility::loadInt(data, position);
     timeLeft = Utility::loadDouble(data, position);
     power = Utility::loadDouble(data, position);

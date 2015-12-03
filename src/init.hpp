@@ -32,7 +32,8 @@ bool* init(int argc, char* argv[]){
     }
 
 
-    debug("Working Directory: " + (string(workingDirectory)));
+    string s1 = ("Working Directory: " + (string(workingDirectory)));
+    string s2 = "";
 
     CustomWorkingDirectory = Utility::readTextFile("customUnderneathWorkingDirectory.txt", "./");
     CustomWorkingDirectory = CustomWorkingDirectory.substr(0, CustomWorkingDirectory.find_last_of('/') + 1);
@@ -41,7 +42,7 @@ bool* init(int argc, char* argv[]){
     ArtDir = UnderneathDir + "art";
 
     if (CustomWorkingDirectory.length() > 0) {
-        debug("Custom Working Directory: " + CustomWorkingDirectory);
+        s2 = ("Custom Working Directory: " + CustomWorkingDirectory);
     }
 
     Tiles::initTiles();
@@ -52,6 +53,9 @@ bool* init(int argc, char* argv[]){
     EnemyGenerator::initEnemies();
     Settings::loadSettings(UnderneathDir + "settings.txt");
     Random::setup();
+
+    debug(s1);
+    debug(s2);
 
 
     mainMenu = new Ui::MenuMain();

@@ -17,7 +17,7 @@ void TileEntity::save(vector<unsigned char>* data) {
     Point2::save(pos, data);
 }
 
-void TileEntity::load(unsigned char* data, int* position) {
+void TileEntity::load(vector<unsigned char>* data, int* position) {
     pos = Point2::load(data, position);
 }
 
@@ -61,7 +61,7 @@ TileEntity* TileEntity::clone(TileEntity* oldI) {
 
 }
 
-TileEntity* TileEntity::loadNew(unsigned char* data, int* position) {
+TileEntity* TileEntity::loadNew(vector<unsigned char>* data, int* position) {
     TileEntity* e;
 
     int type = Utility::loadInt(data, position);

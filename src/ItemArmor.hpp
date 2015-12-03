@@ -18,14 +18,14 @@ struct Defense {
         this->damageType = damType;
         this->amount = amount;
     }
-    Defense(unsigned char* data, int* position) {
+    Defense(vector<unsigned char>* data, int* position) {
         load(data, position);
     }
     void save(vector<unsigned char>* data){
         Utility::saveInt(data, damageType);
         Utility::saveDouble(data, amount);
     }
-    void load(unsigned char* data, int* position){
+    void load(vector<unsigned char>* data, int* position){
         damageType = Utility::loadInt(data, position);
         amount = Utility::loadDouble(data, position);
     }
@@ -58,7 +58,7 @@ public:
 
     virtual void save(vector<unsigned char>* data);
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
 
     virtual bool instantUse() {
         return false;

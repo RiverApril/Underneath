@@ -94,7 +94,7 @@ void EntityTimeActivated::save(vector<unsigned char>* data) {
     Utility::saveDouble(data, radius);
 }
 
-void EntityTimeActivated::load(unsigned char* data, int* position) {
+void EntityTimeActivated::load(vector<unsigned char>* data, int* position) {
     Entity::load(data, position);
     name = Utility::loadString(data, position);
     timeActivatedType = Utility::loadInt(data, position);

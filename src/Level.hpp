@@ -134,7 +134,7 @@ public:
 
     void save(vector<unsigned char>*);
 
-    void load(unsigned char* data, int*position);
+    void load(vector<unsigned char>* data, int*position);
 
     vector<Entity*> entityList;
     vector<Entity*> deleteEntityList;

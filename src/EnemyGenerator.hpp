@@ -16,7 +16,7 @@ namespace EnemyGenerator {
 
     struct EntityBase {
 
-        EntityBase(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase weaponBase, string weaponName, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0) {
+        EntityBase(int weight, string name, char icon, AiType ai, int maxHp, ItemGenerator::WeaponBase* weaponBase, string weaponName, Ui::Color color, double difficultyWeightMulti, int weaponDifficultyAdd = 0) {
             this->weight = weight;
             this->name = name;
             this->icon = icon;
@@ -33,13 +33,14 @@ namespace EnemyGenerator {
         AiType ai = 0;
         int maxHp = 10;
         int color = C_LIGHT_RED;
-        ItemGenerator::WeaponBase weaponBase;
+        ItemGenerator::WeaponBase* weaponBase;
         string weaponName = "";
         int weaponDifficultyAdd = 0;
         double difficultyWeightMulti = 1;
         vector<Weakness> weaknesses;
         double moveDelay = 1.5;
         double attackMultiplier = 1;
+        vector<pair<int, ItemGenerator::ItemBase*>> drops;
 
 
         int weight = 0;
@@ -73,6 +74,8 @@ namespace EnemyGenerator {
     EntityAi* makeRandomEntity(int difficulty);
 
     EntityAi* makeEntity(EntityBase* we, int difficulty);
+
+    void addStandardDrops(EntityBase* b, double rarityMult = 1, bool magical = false);
 
 }
 

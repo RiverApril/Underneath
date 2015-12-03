@@ -639,7 +639,7 @@ void Level::save(vector<unsigned char>* data) {
     debugf("%d Tile Entities Saved.", (int) tileEntityList.size());
 }
 
-void Level::load(unsigned char* data, int* position) {
+void Level::load(vector<unsigned char>* data, int* position) {
 
     //these happen beforehand:
     //load size

@@ -256,7 +256,7 @@ void EntityAlive::save(vector<unsigned char>* data) {
     }
 }
 
-void EntityAlive::load(unsigned char* data, int* position) {
+void EntityAlive::load(vector<unsigned char>* data, int* position) {
     Entity::load(data, position);
     dead = Utility::loadBool(data, position);
     maxHp = Utility::loadDouble(data, position);

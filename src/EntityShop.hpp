@@ -30,7 +30,7 @@ public:
 
     virtual int getEntityTypeId();
 
-    virtual void load(unsigned char* data, int* position);
+    virtual void load(vector<unsigned char>* data, int* position);
 
     virtual int getCoinValue(Item* item);
 
