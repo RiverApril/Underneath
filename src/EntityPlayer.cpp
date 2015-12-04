@@ -129,8 +129,24 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                             hurt(damSuffocation, maxHp * 2);
                         }
                         break;
-                    case spellBarrier:
-                        if(level->tileAt(posToInteract)->hasFlag(tileFlagReplaceable)){
+                    case spellBarrier:{
+                        bool success = false;
+                        for(int i=-1;i<=1;i++){
+                            for(int j=-1;j<=1;j++){
+                                Point2 p = posToInteract+Point2(i, j);
+                                if(level->tileAt(p)->hasFlag(tileFlagReplaceable)){
+                                    if(level->firstEntityHere(p) == nullptr){
+                                        level->setTile(p, Tiles::tileBreakable);
+                                        success = true;
+                                    }
+                                }
+                            }
+                        }
+                        if(!success){
+                            consolef("&%cAll tiles are ocupied", Ui::cc(C_LIGHT_RED));
+                            return 0;
+                        }
+                        /*if(level->tileAt(posToInteract)->hasFlag(tileFlagReplaceable)){
                             if(level->firstEntityHere(posToInteract) == nullptr){
                                 level->setTile(posToInteract, Tiles::tileBreakable);
                             }else{
@@ -140,8 +156,9 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         }else{
                             consolef("&%cTile ocupied", Ui::cc(C_LIGHT_RED));
                             return 0;
-                        }
+                        }*/
                         break;
+                    }
                     case spellDebugPlaceWall:
                         level->setTile(posToInteract, Tiles::tileWall);
                         break;
@@ -264,7 +281,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                                 World* cw = level->currentWorld;
                                 WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
                                 cw->currentLevel->menuGame = level->menuGame;
-                                level->menuGame->fadeIn = fadeInMin;
+                                cw->currentLevel->menuGame->fadeIn = fadeInMin;
                                 //level no longer the currentLevel
                                 return delay;
                             }

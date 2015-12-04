@@ -509,7 +509,7 @@ namespace Ui {
                     if(selectMode == selectModeWalk){
                         Point2 t = targetPosition;
                         changeMode(modeEntityPlayerControl);
-                        vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, tileFlagSolid);
+                        vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, tileFlagSolid, false, true);
                         path.push_back(t);
                         bool pathExplored = true;
                         if(!Settings::seeEverything){

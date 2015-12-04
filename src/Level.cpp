@@ -446,7 +446,7 @@ void Level::actuallyRemoveTileEntityUnsafe(TileEntity* e) {
     debugf("Failed to Remove Tile Entity: %d", e->getTileEntityTypeId());
 }
 
-vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities) {
+vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored) {
     vector<vector<int>> map = vector<vector<int>>(size.x, vector<int>(size.y));
 
     for (size_t i = 0; i < size.x; i++) {
@@ -467,9 +467,11 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
             int v = map[from.x][from.y];
             while (v > 0) {
                 bool leave = false;
+                bool rx = rand()%2==0;
+                bool ry = rand()%2==0;
                 for (int i = -1; i <= 1 && !leave; i++) {
                     for (int j = -1; j <= 1 && !leave; j++) {
-                        Point2 p = Point2(i + l.x, j + l.y);
+                        Point2 p = Point2(l.x + (rx?i:-i), l.y + (ry?j:-j));
                         if ((abs(i) + abs(j)) == 1) {
                             if (inRange(p)) {
                                 if (map[p.x][p.y] < v && map[p.x][p.y] != -1) {
@@ -488,12 +490,14 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
             }
             return path;
         } else {
+            bool rx = rand()%2==0;
+            bool ry = rand()%2==0;
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
-                    Point2 p = Point2(i + c.x, j + c.y);
+                    Point2 p = Point2(c.x + (rx?i:-i), c.y + (ry?j:-j));
                     if ((abs(i) + abs(j)) == 1) {
                         if (inRange(p)) {
-                            if (tileAt(p)->hasFlag(requiredFlag) && tileAt(p)->doesNotHaveFlag(bannedFlag)) {
+                            if (tileAt(p)->hasFlag(requiredFlag) && tileAt(p)->doesNotHaveFlag(bannedFlag) && (!mustBeExplored || getExplored(p))) {
                                 bool ent = false;
                                 if(careAboutEntities && p != to && p != from){
                                     for(Entity* e : entityList){
@@ -524,8 +528,8 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
     return vector<Point2>();
 }
 
-bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities) {
-    return !(getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities).empty());
+bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored) {
+    return !(getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities, mustBeExplored).empty());
 
     /*vector<vector<char>> map = vector<vector<char>>(size.x, vector<char>(size.y));
     for(int i=0;i<size.x;i++){

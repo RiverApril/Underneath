@@ -32,36 +32,36 @@ namespace EnemyGenerator {
         goblinScout = atl(new EntityBase(100, "Goblin Scout", 'g', aiAttackAndFleeAtLowHealth, 50, ItemGenerator::wKnife, "", C_LIGHT_GREEN, 1.0));
         goblinScout->weaknesses.push_back(Weakness(damPoison, 2));
         addStandardDrops(goblinScout);
-        goblinScout->drops.emplace_back(30, ItemGenerator::wKnife);
-        goblinScout->drops.emplace_back(30, ItemGenerator::wAxe);
-        goblinScout->drops.emplace_back(30, ItemGenerator::wSword);
+        goblinScout->drops.emplace_back(10, ItemGenerator::wKnife);
+        goblinScout->drops.emplace_back(10, ItemGenerator::wAxe);
+        goblinScout->drops.emplace_back(10, ItemGenerator::wSword);
 
         goblinWarrier = atl(new EntityBase(50, "Goblin Warrior", 'w', aiAttack, 75, ItemGenerator::wSword, "", C_DARK_GREEN, 1.0));
         goblinWarrier->weaknesses.push_back(Weakness(damPoison, 2));
         addStandardDrops(goblinWarrier);
-        goblinWarrier->drops.emplace_back(30, ItemGenerator::wSword);
-        goblinWarrier->drops.emplace_back(30, ItemGenerator::wSpear);
+        goblinWarrier->drops.emplace_back(10, ItemGenerator::wSword);
+        goblinWarrier->drops.emplace_back(10, ItemGenerator::wSpear);
 
         goblinArcher = atl(new EntityBase(50, "Goblin Archer", 'a', aiAttackAndFleeAtLowHealth, 25, ItemGenerator::wBow, "", C_LIGHT_GREEN, 1.0));
         goblinArcher->weaknesses.push_back(Weakness(damPoison, 2));
         goblinArcher->weaknesses.push_back(Weakness(damBlunt, 1.25));
         goblinArcher->moveDelay = 1.2;
         addStandardDrops(goblinArcher);
-        goblinArcher->drops.emplace_back(30, ItemGenerator::wBow);
-        goblinArcher->drops.emplace_back(30, ItemGenerator::wCrossbow);
+        goblinArcher->drops.emplace_back(10, ItemGenerator::wBow);
+        goblinArcher->drops.emplace_back(10, ItemGenerator::wCrossbow);
 
-        ItemGenerator::WeaponBase* snakeWeapon = ItemGenerator::wNatural;
+        ItemGenerator::WeaponBase* snakeWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
         snakeWeapon->damageType = damPierce;
         snakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 20, 30, 1, 1, 30, 50, damPoison));
-        snake = atl(new EntityBase(20, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_BLUE, 1.0));
+        snake = atl(new EntityBase(5, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_BLUE, 1.0));
         snake->attackMultiplier *= .75;
         addStandardDrops(snake, 1, true);
 
-        troll = atl(new EntityBase(20, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
+        troll = atl(new EntityBase(5, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));
         troll->moveDelay = 1.8;
         addStandardDrops(troll);
-        troll->drops.emplace_back(30, ItemGenerator::wMace);
+        troll->drops.emplace_back(10, ItemGenerator::wMace);
 
         wraith = atl(new EntityBase(2, "Wraith", 'W', aiAttack, 200, ItemGenerator::wSpear, "", C_DARK_GRAY, 2.0, 2));
         wraith->weaknesses.push_back(Weakness(damFire, 2));
@@ -71,17 +71,17 @@ namespace EnemyGenerator {
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
         wraith->moveDelay = 1.8;
         addStandardDrops(wraith, .2, true);
-        wraith->drops.emplace_back(20, ItemGenerator::wFireItemCombatSpell);
-        wraith->drops.emplace_back(20, ItemGenerator::wFrostItemCombatSpell);
-        wraith->drops.emplace_back(20, ItemGenerator::wShockItemCombatSpell);
-        wraith->drops.emplace_back(20, ItemGenerator::wHealingCombatSpell);
+        wraith->drops.emplace_back(10, ItemGenerator::wFireItemCombatSpell);
+        wraith->drops.emplace_back(10, ItemGenerator::wFrostItemCombatSpell);
+        wraith->drops.emplace_back(10, ItemGenerator::wShockItemCombatSpell);
+        wraith->drops.emplace_back(10, ItemGenerator::wHealingCombatSpell);
 
         slime = atl(new EntityBase(75, "Slime", 's', aiAttack, 40, ItemGenerator::wNatural, "Goo", C_LIGHT_YELLOW, 1.0));
         slime->weaknesses.push_back(Weakness(damSharp, .25));
         slime->weaknesses.push_back(Weakness(damPierce, .25));
         addStandardDrops(slime);
 
-        ItemGenerator::WeaponBase* myconidWeapon = ItemGenerator::wNatural;
+        ItemGenerator::WeaponBase* myconidWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
         myconidWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effLSD, 20, 30, 0, 0, 20, 40));
         myconidWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effMemory, 20, 30, 0, 0, 50, 100));
         myconid = atl(new EntityBase(20, "Myconid", 'm', aiAttack, 50, myconidWeapon, "Finger", C_LIGHT_MAGENTA, 1.0));

@@ -131,6 +131,18 @@ namespace ItemGenerator {
         WeaponBase() {
         }
 
+        WeaponBase(WeaponBase* other) {
+            this->names = other->names;
+            this->damage = other->damage;
+            this->useDelay = other->useDelay;
+            this->damageType = other->damageType;
+            this->weaponType = other->weaponType;
+            this->arts = other->arts;
+            this->range = other->range;
+            this->manaCost = other->manaCost;
+            this->enchs = other->enchs;
+        }
+
         WeaponBase(vector<vector<string>> names, double damage, double useDelay, DamageType damageType, WeaponType weaponType) {
             this->names = names;
             this->damage = damage;
