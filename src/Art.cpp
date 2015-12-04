@@ -74,8 +74,14 @@ namespace Arts {
 
     int artLongbow;
     int artRecurveBow;
-
     int artCrossbow;
+
+    int artBoots;
+    int artCuirass;
+    int artGloves;
+    int artGauntlets;
+    int artBracers;
+    int artCowl;
 
     void loadArts() {
 
@@ -86,6 +92,10 @@ namespace Arts {
 
         Arts::artTitle = Arts::loadNew(ArtDir + "/", "title", ArtFiles::title);
         Arts::artGameOver = Arts::loadNew(ArtDir + "/", "gameover", ArtFiles::gameover);
+
+        Arts::artCoin = Arts::loadNew(ArtDir + "/", "coin", ArtFiles::coin);
+        Arts::artSmallKey = Arts::loadNew(ArtDir + "/", "smallkey", ArtFiles::smallkey);
+
 
         Arts::artScroll = Arts::loadNew(ArtDir + "/", "scroll", ArtFiles::scroll);
         Arts::artScrollFire = Arts::loadNew(ArtDir + "/", "scrollFire", ArtFiles::scrollFire);
@@ -135,8 +145,12 @@ namespace Arts {
         Arts::artRecurveBow = Arts::loadNew(ArtDir + "/", "recurvebow", ArtFiles::recurvebow);
         Arts::artCrossbow = Arts::loadNew(ArtDir + "/", "crossbow", ArtFiles::crossbow);
 
-        Arts::artCoin = Arts::loadNew(ArtDir + "/", "coin", ArtFiles::coin);
-        Arts::artSmallKey = Arts::loadNew(ArtDir + "/", "smallkey", ArtFiles::smallkey);
+
+        Arts::artBoots = Arts::loadNew(ArtDir + "/", "boots", ArtFiles::boots);
+        Arts::artCuirass = Arts::loadNew(ArtDir + "/", "cuirass", ArtFiles::cuirass);
+        Arts::artGloves = Arts::loadNew(ArtDir + "/", "gloves", ArtFiles::gloves);
+        Arts::artGauntlets = Arts::loadNew(ArtDir + "/", "gauntlets", ArtFiles::gauntlets);
+        Arts::artBracers = Arts::loadNew(ArtDir + "/", "braces", ArtFiles::bracers);
 
         Point2 compassInSize = Point2Neg1;
 

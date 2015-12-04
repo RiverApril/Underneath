@@ -118,6 +118,12 @@ namespace ItemGenerator {
         vector<EquipSlot> viableSlots;
         vector<DefenseRange> defences;
         vector<EnchantmentBase*> enchs;
+        vector<int> arts = {-1};
+
+        ArmorBase* setArts(vector<int> artIndecies) {
+            this->arts = artIndecies;
+            return this;
+        }
     };
 
     struct WeaponBase : ItemBase{

@@ -187,15 +187,15 @@ namespace ItemGenerator {
 
 
 
-        aLeatherChest = atl(new ArmorBase({{"Leather Cuirass", "Leather Cuirasses"}}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}));
+        aLeatherChest = atl(new ArmorBase({{"Leather Cuirass", "Leather Cuirasses"}}, {slotBody}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .20), DefenseRange(damBlunt, .01, .05)}))->setArts({Arts::artCuirass});
 
-        aLeatherHelm = atl(new ArmorBase({{"Leather Coif"}}, {slotHead}, {DefenseRange(damSharp, .01, .06), DefenseRange(damPierce, .01, .03)}));
+        aLeatherHelm = atl(new ArmorBase({{"Leather Cowl"}}, {slotHead}, {DefenseRange(damSharp, .01, .06), DefenseRange(damPierce, .01, .03)}))->setArts({Arts::artCowl});
 
-        aLeatherLeggings = atl(new ArmorBase({{"Leather Greaves", "Pairs of Leather Greaves"}}, {slotLegs}, {DefenseRange(damSharp, .01, .05), DefenseRange(damPierce, .01, .02)}));
+        aLeatherLeggings = atl(new ArmorBase({{"Leather Greaves", "Pairs of Leather Greaves"}}, {slotLegs}, {DefenseRange(damSharp, .01, .05), DefenseRange(damPierce, .01, .02)}))->setArts({Arts::artBracers});
 
-        aLeatherBoots = atl(new ArmorBase({{"Leather Boots", "Pairs of Leather Boots"}}, {slotFeet}, {DefenseRange(damSharp, .01, .04), DefenseRange(damPierce, .01, .02)}));
+        aLeatherBoots = atl(new ArmorBase({{"Leather Boots", "Pairs of Leather Boots"}}, {slotFeet}, {DefenseRange(damSharp, .01, .04), DefenseRange(damPierce, .01, .02)}))->setArts({Arts::artBoots});
 
-        aLeatherGloves = atl(new ArmorBase({{"Leather Gloves", "Pairs of Leather Gloves"}, {"Leather Bracers", "Pairs of Leather Bracers"}, {"Leather Vambraces", "Pairs of Leather Vambraces"}}, {slotHands}, {DefenseRange(damSharp, .01, .03), DefenseRange(damPierce, .01, .02)}));
+        aLeatherGloves = atl(new ArmorBase({{"Leather Gloves", "Pairs of Leather Gloves"}, {"Leather Gauntlets", "Pairs of Leather Gauntlets"}, {"Leather Bracers", "Pairs of Leather Bracers"}, {"Leather Vambraces", "Pairs of Leather Vambraces"}}, {slotHands}, {DefenseRange(damSharp, .01, .03), DefenseRange(damPierce, .01, .02)}))->setArts({Arts::artGloves, Arts::artGauntlets, Arts::artBracers, Arts::artBracers});
 
 
 
@@ -502,12 +502,14 @@ namespace ItemGenerator {
 
     ItemArmor* createArmorFromBase(ArmorBase* base, int itemDifficulty){
         size_t ni = rand() % base->names.size();
+        size_t arti = min(ni, base->arts.size() - 1);
 
         ItemArmor* a;
 
         a = new ItemArmor();
 
         a->setName(base->names[ni]);
+        a->artIndex = base->arts[arti];
         a->viableSlots = base->viableSlots;
         for(DefenseRange dr : base->defences){
             if(rand() % dr.chance == 0){

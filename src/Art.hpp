@@ -98,6 +98,14 @@ namespace Arts {
     extern int artRecurveBow;
     extern int artCrossbow;
 
+
+    extern int artBoots;
+    extern int artCuirass;
+    extern int artGloves;
+    extern int artGauntlets;
+    extern int artBracers;
+    extern int artCowl;
+
 }
 
 #endif /* defined(__Underneath__Art__) */
