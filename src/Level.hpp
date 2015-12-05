@@ -145,8 +145,6 @@ public:
     vector<TileEntity*> tileEntityList;
     vector<TileEntity*> deleteTileEntityList;
 
-    Ui::MenuGame* menuGame;
-
     Point2 stairDownPos;
 
 private:

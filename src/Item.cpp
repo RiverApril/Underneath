@@ -27,6 +27,7 @@ void Item::save(vector<unsigned char>* data) {
 }
 
 void Item::load(vector<unsigned char>* data, int* position) {
+    //loads id before
     name = Utility::loadString(data, position);
     pluralName = Utility::loadString(data, position);
     qty = Utility::loadInt(data, position);

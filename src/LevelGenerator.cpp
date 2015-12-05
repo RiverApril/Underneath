@@ -153,9 +153,9 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
             	setTile(Point2(x, y), Tiles::tileGrass);
             }
         });
-        if(rand()%3 == 0){
+        if(rand()%3 != 0){
             if(tileAt(p)->getIndex() == Tiles::tileGrass->getIndex()){
-                setTile(p, Tiles::tileFloor);
+                setTile(p, Tiles::tilePath);
             }
         }
     }

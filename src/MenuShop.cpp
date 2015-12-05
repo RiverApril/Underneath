@@ -65,7 +65,7 @@ namespace Ui {
             }
         } else if (in == Key::take) {
             if (from->inventory.size() > 0 && selected < from->inventory.size()) {
-                if(to->getWallet() >= from->inventory[selected]->coinValue){
+                if(to->getWallet() >= from->inventory[selected]->coinValue && from->inventory[selected]->coinValue >= 0){
                     debugf("Coin Value: %d   Wallet: %d", from->inventory[selected]->coinValue, to->getWallet());
                     Item* take;
                     if (from->inventory[selected]->qty == 1) {
@@ -86,7 +86,7 @@ namespace Ui {
 
         } else if (in == Key::takeStack) {
             if (from->inventory.size() > 0 && selected < from->inventory.size()) {
-                if(to->getWallet() >= (from->inventory[selected]->coinValue * from->inventory[selected]->qty)){
+                if(to->getWallet() >= (from->inventory[selected]->coinValue * from->inventory[selected]->qty) && from->inventory[selected]->coinValue >= 0){
                     Item* take;
                     take = from->inventory[selected];
                     from->removeItem(from->inventory[selected], false);

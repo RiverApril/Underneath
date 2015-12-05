@@ -14,6 +14,7 @@
 #include "Verbalizer.hpp"
 #include "ItemPotion.hpp"
 #include "ItemUtilitySpell.hpp"
+#include "ItemSpecial.hpp"
 #include "EnemyGenerator.hpp"
 #include "EntityTimeActivated.hpp"
 #include "Icon.hpp"
@@ -71,6 +72,31 @@ double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract) {
 
 double EntityPlayer::moveRelative(Point2 p, Level* level) {
     return moveAbsalute(p + pos, level, true);
+}
+
+double EntityPlayer::useItemOnOther(Item* itemToUse, Item* itemToBeUsedOn){
+    ItemSpecial* is = dynamic_cast<ItemSpecial*>(itemToUse);
+    if(is){
+        ItemEquipable* ie = dynamic_cast<ItemEquipable*>(itemToBeUsedOn);
+        if(ie){
+            if(ie->durability < INFINITY){
+                int rep = repairToolPower();
+                ie->durability += rep;
+                consolef("Repaired item %d durability points.", rep);
+                if (itemToUse->qty == 1) {
+                    removeItem(itemToUse, true);
+                } else {
+                    itemToUse->qty -= 1;
+                }
+                return interactDelay;
+            }
+        }
+    }
+    return 0;
+}
+
+int EntityPlayer::repairToolPower(){
+    return (abilities[iSTR] * 10) + (abilities[iDEX] * 15) + 100;
 }
 
 double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item) {
@@ -240,7 +266,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                         case TILE_ENTITY_TYPE_CHEST:
                         {
                             if (tid == Tiles::tileChest->getIndex()) {
-                                level->menuGame->openMenu(new Ui::MenuChest(dynamic_cast<TEChest*> (te), this, level->currentWorld));
+                                level->currentWorld->menuGame->openMenu(new Ui::MenuChest(dynamic_cast<TEChest*> (te), this, level->currentWorld));
                             } else if (tid == Tiles::tileCrate->getIndex()) {
                                 TEChest* c = dynamic_cast<TEChest*> (te);
                                 for (Item* i : c->inventory) {
@@ -278,10 +304,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                             TEStair* s = dynamic_cast<TEStair*> (te);
                             if (s) {
                                 int delay = interactDelay;
-                                World* cw = level->currentWorld;
                                 WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
-                                cw->currentLevel->menuGame = level->menuGame;
-                                cw->currentLevel->menuGame->fadeIn = fadeInMin;
                                 //level no longer the currentLevel
                                 return delay;
                             }
@@ -331,6 +354,9 @@ double EntityPlayer::calcDamageMultiplier(ItemWeapon* weapon) {
         }
         x *= getAttackMultiplierFromEffectsAndArmor(weapon->damageType);
     }
+    if(weapon->durability < 0){
+        x /= 2;
+    }
     return x;
 }
 
@@ -357,7 +383,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             level->removeEntity(e, true);
             return 0;
         }else if(is){
-            level->menuGame->openMenu(new Ui::MenuShop(is, this, level->currentWorld));
+            level->currentWorld->menuGame->openMenu(new Ui::MenuShop(is, this, level->currentWorld));
             return interactDelay;
         }
 
@@ -405,7 +431,9 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
 
                 if(weapon->durability < INFINITY){
                     if(weapon->durability < 0){
-                        x /= 2;
+                        consolef("&%cYour weapon is broken!", Ui::cc(C_LIGHT_RED));
+                    }else if(weapon->durability < 16){
+                        consolef("&%cYour weapon is almost broken!", Ui::cc(C_LIGHT_RED));
                     }
                     weapon->durability--;
                 }

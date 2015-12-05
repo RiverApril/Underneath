@@ -41,6 +41,10 @@ public:
         return ITEM_TYPE_UTILITY_SPELL;
     }
 
+    virtual UseType getUseType(){
+        return useInWorld;
+    }
+
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(vector<unsigned char>* data, int* position);
@@ -52,10 +56,6 @@ public:
        		 	&& (spellEffect == otherW->spellEffect)
         		&& (manaCost == otherW->manaCost)
         		&& (continuousUse == otherW->continuousUse);
-    }
-
-    virtual bool instantUse() {
-        return false;
     }
 
     SpellEffect spellEffect = 0;

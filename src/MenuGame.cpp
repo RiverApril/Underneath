@@ -13,6 +13,7 @@
 #include "MenuYesNo.hpp"
 #include "MenuDebug.hpp"
 #include "MenuMessage.hpp"
+#include "MenuUseInInv.hpp"
 #include "EntityAi.hpp"
 #include "Math.hpp"
 #include "Utility.hpp"
@@ -44,7 +45,7 @@ namespace Ui {
                 currentLevel->setAndUnsetDisplayEntities();
         }*/
         if (initSuccess) {
-            currentLevel->menuGame = this;
+            currentWorld->menuGame = this;
         }else{
             openMenu(new MenuMessage(formatString("Unable to load world: \"%s\"", worldName.c_str())));
         }
@@ -88,6 +89,12 @@ namespace Ui {
     bool MenuGame::openUi() {
         debug("Open MenuGame Ui");
 
+        if(reopenInventory){
+            reopenInventory = false;
+            openMenu(new MenuInv(currentPlayer, currentWorld, useItem));
+            return true;
+        }
+
         if (*saveAnswer == aYes) {
 
             WorldLoader::save(currentWorld);
@@ -108,20 +115,26 @@ namespace Ui {
         }
 
         if (*useItem != -1) {
-            if (currentPlayer->inventory[*useItem]->instantUse()) {
+            UseType use = currentPlayer->inventory[*useItem]->getUseType();
+            if (use == useInstant) {
                 timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->inventory[*useItem]);
                 int selected = *useItem;
                 *useItem = -1;
                 MenuInv* m = new MenuInv(currentPlayer, currentWorld, useItem);
                 m->selected = selected;
                 openMenu(m);
-            } else{
+            } else if(use == useInWorld){
                 itemToBeUsedRange = INFINITY;
                 itemToBeUsed = currentPlayer->inventory[*useItem];
                 targetPosition = currentPlayer->pos;
                 changeMode(modeSelectPosition);
                 selectMode = selectModeAttack;
                 *useItem = -1;
+            } else if(use == useInInventory){
+                MenuUseInInv* m = new MenuUseInInv(currentPlayer, currentWorld, *useItem);
+                *useItem = -1;
+                openMenu(m);
+                reopenInventory = true;
             }
         }
 
@@ -523,7 +536,6 @@ namespace Ui {
                         if(path.size() > 0 && pathExplored){
                             timeout(20);
                             console("Walking to target position...");
-                            bool c = true;
                             for(Point2 p : path) {
                                 /*vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
                                 for (Entity* e : nearest) {
@@ -538,13 +550,11 @@ namespace Ui {
                                     timePassed = currentPlayer->tryToMoveRelative(d, currentLevel);
                                 }else{
                                     console("Next Path fragment is too far.");
-                                    c = false;
                                     break;
                                 }
                                 MenuGame::update();
                                 if (getch() != ERR) {
                                     console("Stopped walking.");
-                                    c = false;
                                     break;
                                 }
                             }
@@ -586,7 +596,7 @@ namespace Ui {
 
                                         EntityAlive* a = dynamic_cast<EntityAlive*>(e);
                                         if(a){
-                                            consolef("%s - HP:[%.0f/%.0f]", a->getName().c_str(), a->getHp(), a->getMaxHp());
+                                            consolef("%s  HP:[%.0f/%.0f]", a->getName().c_str(), a->getHp(), a->getMaxHp());
                                             EntityAi* eai = dynamic_cast<EntityAi*>(a);
                                             if(eai){
                                                 ItemWeapon* w = eai->getActiveItemWeapon();

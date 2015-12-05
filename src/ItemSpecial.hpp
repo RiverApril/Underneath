@@ -14,7 +14,10 @@
 #include "Abilities.hpp"
 
 typedef int SpecialType;
-const SpecialType specialtyCompass = 0;
+const SpecialType specialtyCoin = 0;
+const SpecialType specialtyKey = 1;
+const SpecialType specialtyCompass = 2;
+const SpecialType specialtyRepairer = 3;
 
 
 class ItemSpecial : public Item {
@@ -43,6 +46,16 @@ public:
 
     bool operator< (ItemSpecial& b){
         return this->specialty < b.specialty;
+    }
+
+    virtual UseType getUseType(){
+        switch (specialty) {
+            case specialtyRepairer:
+                return useInInventory;
+                
+            default:
+                return useInstant;
+        }
     }
     
     

@@ -117,6 +117,10 @@ namespace EnemyGenerator {
             b->drops.emplace_back((int)(50*rarityMult), ItemGenerator::potionElementalAttack);
             b->drops.emplace_back((int)(50*rarityMult), ItemGenerator::potionElementalDefense);
         }
+        b->drops.emplace_back((int)(40*rarityMult), ItemGenerator::scrollRelocate);
+        b->drops.emplace_back((int)(80*rarityMult), ItemGenerator::scrollRemoteUse);
+        b->drops.emplace_back((int)(40*rarityMult), ItemGenerator::scrollBarrier);
+        b->drops.emplace_back((int)(20*rarityMult), ItemGenerator::repairHammer);
     }
 
     void cleanupEnemies() {

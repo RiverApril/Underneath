@@ -13,7 +13,7 @@ namespace Animator {
 
     void renderRangedAttack(Point2 from, Point2 to, Icon* icon, Level* level, int length){
 
-        if(!level->menuGame){
+        if(!level->currentWorld->menuGame){
             return;
         }
 
@@ -31,7 +31,7 @@ namespace Animator {
 
 
             if(i < line.size()){
-            	Point2 pos = line[i] - level->menuGame->viewPos;
+            	Point2 pos = line[i] - level->currentWorld->menuGame->viewPos;
 
                 Ui::setColor(icon->getFgColor(Ui::tick, pos, level), icon->getBgColor(Ui::tick, pos, level));
             	mvaddch(pos.y, pos.x, icon->getChar(Ui::tick, pos, level));
@@ -40,9 +40,9 @@ namespace Animator {
             }
 
             if(j >= 0){
-                Point2 pos = line[j] - level->menuGame->viewPos;
+                Point2 pos = line[j] - level->currentWorld->menuGame->viewPos;
                 move(pos.y, pos.x);
-                level->menuGame->drawTileAt(line[j]);
+                level->currentWorld->menuGame->drawTileAt(line[j]);
             }
 
             j++;
@@ -74,7 +74,7 @@ namespace Animator {
 
             for(double a = 0; a<ma;a+=maDivTau){
                 Point2 pos = Point2(sin(maDivTau*a)*r, cos(maDivTau*a)*r);
-                pos += center-level->menuGame->viewPos;
+                pos += center-level->currentWorld->menuGame->viewPos;
 
                 mvaddch(pos.y, pos.x, icon.getChar(Ui::tick, pos, level));
             }

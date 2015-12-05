@@ -60,10 +60,6 @@ public:
 
     virtual void load(vector<unsigned char>* data, int* position);
 
-    virtual bool instantUse() {
-        return false;
-    }
-
     ItemArmor* addEnchantment(Enchantment e) {
         enchantments.push_back(e);
         return this;

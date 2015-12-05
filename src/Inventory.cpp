@@ -8,6 +8,7 @@
 
 #include "Inventory.hpp"
 #include "ItemGenerator.hpp"
+#include "ItemSpecial.hpp"
 
 bool Inventory::addItem(Item* newItem, int qty) {
     if(qty != -1){
@@ -35,7 +36,8 @@ int Inventory::getCoinValue(Item* item){
 int Inventory::getWallet(){
     int amount = 0;
     for (Item* i : inventory) {
-        if(i->equalsExceptQty(ItemGenerator::coin->original())){
+        ItemSpecial* is = dynamic_cast<ItemSpecial*>(i);
+        if(is && is->specialty == specialtyCoin){
             amount += i->qty;
         }
     }

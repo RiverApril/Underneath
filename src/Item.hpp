@@ -25,6 +25,11 @@ const int ITEM_TYPE_UTILITY_SPELL = 7;
 const int ITEM_TYPE_ITEMSPECIAL = 8;
 const int ITEM_TYPE_TIME_ACTIVATED = 9;
 
+typedef int UseType;
+const UseType useInstant = 0;
+const UseType useInWorld = 1;
+const UseType useInInventory = 2;
+
 class Item {
 public:
 
@@ -57,8 +62,8 @@ public:
         return equalsExceptQty(other) && other->qty == qty;
     }
 
-    virtual bool instantUse() {
-        return true;
+    virtual UseType getUseType(){
+        return useInstant;
     }
 
     virtual bool equalsExceptQty(Item* other) {

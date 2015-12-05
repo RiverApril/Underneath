@@ -32,6 +32,10 @@ public:
 
     double moveAbsalute(Point2, Level* level, bool canInteract);
 
+    double useItemOnOther(Item* itemToUse, Item* itemToBeUsedOn);
+    
+    int repairToolPower();
+
     double interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item);
 
     double interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item);

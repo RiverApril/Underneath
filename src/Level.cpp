@@ -382,8 +382,8 @@ void Level::randomTileUpdate(Point2 p){
 }
 
 void Level::renderMenuGame(double displayTime) {
-    if (menuGame != nullptr) {
-        menuGame->render(displayTime);
+    if (currentWorld->menuGame != nullptr) {
+        currentWorld->menuGame->render(displayTime);
     }
 }
 
@@ -615,9 +615,14 @@ void Level::save(vector<unsigned char>* data) {
     for (size_t i = 0; i < size.x; i++) {
         for (size_t j = 0; j < size.y; j++) {
             Utility::saveUInt8Bit(data, tileGrid[i][j].index);
+        }
+    }
+    for (size_t i = 0; i < size.x; i++) {
+        for (size_t j = 0; j < size.y; j++) {
             Utility::saveBool(data, tileGrid[i][j].explored);
         }
     }
+
     int count = 0;
     for (size_t i = 0; i < entityList.size(); i++) {
 	    if(entityList[i]->getEntityTypeId() != ENTITY_TYPE_PLAYER){
@@ -655,6 +660,13 @@ void Level::load(vector<unsigned char>* data, int* position) {
     for (size_t i = 0; i < size.x; i++) {
         for (size_t j = 0; j < size.y; j++) {
             tileGrid[i][j].index = Utility::loadInt8Bit(data, position);
+        }
+    }
+
+
+
+    for (size_t i = 0; i < size.x; i++) {
+        for (size_t j = 0; j < size.y; j++) {
             tileGrid[i][j].explored = Utility::loadBool(data, position);
         }
     }

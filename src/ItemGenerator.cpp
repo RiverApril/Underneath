@@ -21,6 +21,7 @@ namespace ItemGenerator {
 
     ExactItemBase* coin;
     ExactItemBase* smallKey;
+    ExactItemBase* repairHammer;
 
     vector<ArmorBase*> armorList;
     vector<Condition*> conditionList;
@@ -89,15 +90,15 @@ namespace ItemGenerator {
 
     void initItemTemplates() {
 
-        Item* c = new Item("Coin");
-        c->artIndex = Arts::artCoin;
-        c->coinValue = -1;
+        Item* c = new ItemSpecial(specialtyCoin);
         coin = new ExactItemBase(c);
 
-        Item* k = new Item("Key");
-        k->artIndex = Arts::artSmallKey;
-        k->coinValue = 1000;
+        Item* k = new ItemSpecial(specialtyKey);
         smallKey = new ExactItemBase(k);
+
+        Item* r = new ItemSpecial(specialtyRepairer);
+        repairHammer = new ExactItemBase(r);
+        
 
         potionHealth = atl(new PotionBase({{"Health Potion"}}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100), 100);
         potionMana = atl(new PotionBase({{"Mana Potion"}}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100), 80);
@@ -407,8 +408,8 @@ namespace ItemGenerator {
     }
 
     Item* createRandAltLoot(int itemDifficulty) {
-        int r = rand() % 8;
-        if(r < 4) {// 1/2 for potion
+        int r = rand() % 16;
+        if(r < 8) {// 1/2 for potion
             PotionBase* pb;
             int i;
             do{
@@ -418,11 +419,15 @@ namespace ItemGenerator {
             pb = potionList[i];
 
             return createPotionFromBase(pb, itemDifficulty);
-        } else if(r < 6) {// 1/4 for scroll
+        } else if(r < 10) {// 1/4 for scroll
             ScrollBase* sb = scrollList[rand() % scrollList.size()];
             return createScrollFromBase(sb);
-        } else {// 1/4 for bomb
-            return new ItemTimeActivated(rand()%10==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10));
+        } else {// 1/4 for bomb or hammer
+            if(rand()%2==0){
+                return new ItemTimeActivated(rand()%2==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10));
+            }else{
+                return createItemFromBase(repairHammer, itemDifficulty);
+            }
         }
     }
 
@@ -453,7 +458,7 @@ namespace ItemGenerator {
             w = new ItemWeapon();
         }
         if(w->durability != INFINITY){
-            w->durability = (rand()%400)+50;
+            w->durability = (rand()%200)+50;
         }
         w->baseDamage = base->damage;
         w->useDelay = base->useDelay;
@@ -695,9 +700,27 @@ namespace ItemGenerator {
         }else if(is){//Special
 
             switch (is->specialty) {
+
+                case specialtyCoin:{
+                    value = -1;
+                    break;
+                }
+
+                case specialtyKey:{
+                    value = 1000;
+                    break;
+                }
+
                 case specialtyCompass:{
                     value = -1;
+                    break;
                 }
+
+                case specialtyRepairer:{
+                    value = 200;
+                    break;
+                }
+
                 default:{
                     value = -1;
                 }

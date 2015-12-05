@@ -11,6 +11,9 @@
 
 class EntityPlayer;
 class Level;
+namespace Ui{
+	class MenuGame;
+}
 
 #include "Global.hpp"
 #include "Geometry.hpp"
@@ -31,6 +34,7 @@ public:
     double worldTime = 0.0;
     double worldLastTime = 0.0;
     unsigned int seed = 0;
+    Ui::MenuGame* menuGame;
 
 };
 

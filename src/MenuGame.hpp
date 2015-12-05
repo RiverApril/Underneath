@@ -50,6 +50,8 @@ namespace Ui {
 
         bool initSuccess;
 
+        bool reopenInventory = false;
+
         World* currentWorld;
         yesNo* saveAnswer = new yesNo(aUndefined);
         int* useItem = new int(-1);

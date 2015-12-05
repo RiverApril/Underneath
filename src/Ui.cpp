@@ -355,7 +355,7 @@ namespace Ui {
         return a;
     }
 
-    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string playerDisplayName, string invDisplayName, bool selectedLeft, bool showPrice, bool flashImportantInfo) {
+    void drawInventory(World* currentWorld, EntityPlayer* player, int selectedY/*, int scrollOffset*/, Inventory* secondaryInv, string playerDisplayName, string invDisplayName, bool selectedLeft, bool showPrice, bool flashImportantInfo, int highlightIndex) {
 
         int columnX = 0;
         int columnWidth = (terminalSize.x) / (secondaryInv == nullptr ? 2 : 3);
@@ -407,8 +407,20 @@ namespace Ui {
                 Item* item = inv[i];
 
                 setColor(((ii == 0) == selectedLeft) ? C_WHITE : C_LIGHT_GRAY);
+
+                ItemEquipable* equipable = dynamic_cast<ItemEquipable*>(item);
+                if(equipable){
+                    if(equipable->durability < 0){
+                        setColor(((ii == 0) == selectedLeft) ? C_LIGHT_RED : C_DARK_RED);
+                    }
+                }
+
                 if (i == selectedY && (((ii == 0) == selectedLeft))) {
                     setColor(C_BLACK, C_WHITE);
+                }
+
+                if(i == highlightIndex && selectedLeft && tick%10<5){
+                    setColor(C_BLACK, C_LIGHT_CYAN);
                 }
 
                 char pre = '-';
@@ -418,7 +430,7 @@ namespace Ui {
                     EquipSlot slot = player->getSlot(equippable);
                     pre = ItemEquipable::equipSlotAbr(slot);
                 }
-                string displayName;
+                string displayName = formatString("%c ", pre);
 
                 if(showPrice){
                     if(item->coinValue > 0){
@@ -426,7 +438,7 @@ namespace Ui {
                     }else if(item->coinValue == 0){
                         displayName += "(Free) ";
                     }else if(item->coinValue == -1){
-                        displayName += "(-) ";
+                        displayName += "";
                     }
                 }
                 if(item->qty != 1){
@@ -435,14 +447,14 @@ namespace Ui {
 
                 displayName += formatString("%s", item->getName(item->qty != 1).c_str());
 
-                int w = columnX + columnWidth - 3;
+                int w = columnWidth - 6;
 
                 if(displayName.size() > w){
-                    displayName = displayName.substr(0, w-3)+"...";
+                    displayName = displayName.substr(0, w)+"...";
                 }
 
-                mvprintw(y, columnX, "%c ", pre);
-                y += printMultiLineString(y, columnX + 2, displayName, w+2);
+                //mvprintw(y, columnX, "%c ", pre);
+                y += printMultiLineString(y, columnX, displayName, columnX + columnWidth - 1);
 
             }
 
@@ -680,6 +692,11 @@ namespace Ui {
                             }else{
                                 a += printMultiLineString(a, columnX, d.c_str());
                             }
+                            break;
+                        }
+                        case specialtyRepairer:{
+                            printMultiLineString(a++, columnX, "Use on a weapon to increase durability.");
+                            printMultiLineString(a++, columnX, formatString("+%d durability on use.", player->repairToolPower()));
                             break;
                         }
                     }

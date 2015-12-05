@@ -37,8 +37,8 @@ public:
 
     virtual void load(vector<unsigned char>* data, int* position);
 
-    virtual bool instantUse() {
-        return false;
+    virtual UseType getUseType() {
+        return useInWorld;
     }
 
     ItemWeapon* addEnchantment(Enchantment e) {

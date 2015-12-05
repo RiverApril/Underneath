@@ -13,8 +13,23 @@ ItemSpecial::ItemSpecial(SpecialType specialty) : Item(""){
     this->specialty = specialty;
 
     switch (specialty) {
+
+        case specialtyCoin:
+            name = "Coin";
+            artIndex = Arts::artCoin;
+            break;
+
+        case specialtyKey:
+            name = "Key";
+            artIndex = Arts::artSmallKey;
+            break;
+
         case specialtyCompass:
             name = "Compass";
+            break;
+
+        case specialtyRepairer:
+            name = "Repair Hammer";
             break;
 
         default:

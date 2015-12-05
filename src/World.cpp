@@ -11,6 +11,7 @@
 #include "ItemGenerator.hpp"
 #include "ItemSpecial.hpp"
 #include "ItemTimeActivated.hpp"
+#include "MenuGame.hpp"
 
 World::World(string n) {
     levels = vector<string>();
@@ -377,7 +378,7 @@ namespace WorldLoader {
         }while((weapon->baseDamage / weapon->useDelay) < 5 || (weapon->baseDamage / weapon->useDelay) > 6);
         world->currentPlayer->setActiveItemWeapon(weapon);
         world->currentPlayer->addItem(new ItemSpecial(specialtyCompass));
-        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
+        world->currentPlayer->addItem(ItemGenerator::createPotionFromBase(ItemGenerator::potionHealth, world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
         world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
@@ -429,7 +430,7 @@ namespace WorldLoader {
             }
         }
         debug("Level not found, creating a new one...");
-
+		
         int newDifficulty = world->currentLevel->getDifficulty() + 1;
         Point2 newSize = (world->currentLevel->getSize() * 1.1).truncate();
         EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentPlayer));
