@@ -9,8 +9,6 @@
 #include "EnemyGenerator.hpp"
 #include "Level.hpp"
 #include "EntityItem.hpp"
-#include "ItemGenerator.hpp"
-#include "EntityAi.hpp"
 
 
 namespace EnemyGenerator {
