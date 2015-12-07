@@ -96,7 +96,7 @@ public:
 
     double attackMultiplier = 1;
 
-    vector<pair<int, ItemGenerator::ItemBase*>> drops;
+    int lootProfileIndex = -1;
 
 protected:
     int ai = aiNone;

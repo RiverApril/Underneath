@@ -76,5 +76,8 @@ void EntityShop::load(vector<unsigned char>* data, int* position) {
 
 int EntityShop::getCoinValue(Item* item){
     int value = ItemGenerator::calculateItemValue(item);
+    if(value < 0){
+        return value;
+    }
     return value * 1.5;
 }

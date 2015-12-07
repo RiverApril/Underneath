@@ -199,7 +199,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                     }
                     case spellDebugPlaceShop:{
                         EntityShop* e = new EntityShop("Shop keeper", aiNone, 'S', posToInteract, C_LIGHT_MAGENTA, 100);
-                        e->addItems(ItemGenerator::createRandLoots(level->getDifficulty(), 0, 10, 10, 10, 2));
+                        //e->addItems(ItemGenerator::createRandLoots(level->getDifficulty(), , 0, 10, 10, 10, 2));
                         level->newEntity(e);
                         break;
                     }
@@ -266,13 +266,24 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                         case TILE_ENTITY_TYPE_CHEST:
                         {
                             if (tid == Tiles::tileChest->getIndex()) {
-                                level->currentWorld->menuGame->openMenu(new Ui::MenuChest(dynamic_cast<TEChest*> (te), this, level->currentWorld));
+                                TEChest* tec = dynamic_cast<TEChest*> (te);
+                                if(tec->lootProfileIndex != -1){
+                                    tec->addItems(ItemGenerator::makeLoot(tec->lootProfileIndex, level->getDifficulty(), (rand()%500), 10, 15, 2));
+                                    tec->lootProfileIndex = -1;
+                                }
+                                level->currentWorld->menuGame->openMenu(new Ui::MenuChest(tec, this, level->currentWorld));
                             } else if (tid == Tiles::tileCrate->getIndex()) {
-                                TEChest* c = dynamic_cast<TEChest*> (te);
-                                for (Item* i : c->inventory) {
+                                TEChest* tec = dynamic_cast<TEChest*> (te);
+
+                                if(tec->lootProfileIndex != -1){
+                                    tec->addItems(ItemGenerator::makeLoot(tec->lootProfileIndex, level->getDifficulty(), (rand()%50), 1, 1, 10));
+                                    tec->lootProfileIndex = -1;
+                                }
+
+                                for (Item* i : tec->inventory) {
                                     level->newEntity(new EntityItem(Item::clone(i), posOfTile));
                                 }
-                                level->removeTileEntity(c);
+                                level->removeTileEntity(tec);
                                 level->setTile(posOfTile, Tiles::tileFloor);
                             }
                             return interactDelay;

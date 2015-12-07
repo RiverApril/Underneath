@@ -209,40 +209,6 @@ namespace Commands {
         }
     };
 
-    struct CommandWep : Command {
-
-        string help() {
-            return "Gives a weapon to the player";
-        }
-
-        string usage() {
-            return "wep <weaponType> <difficulty>";
-        }
-
-        string defaultName() {
-            return "wep";
-        }
-
-        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
-            MenuGame* mg = dynamic_cast<MenuGame*> (currentMenu);
-            if (mg) {
-                if (arguments.size() == 2) {
-                    int wepType = Utility::parseInt(arguments[0]);
-                    int diff = Utility::parseInt(arguments[1]);
-                    Item* i = ItemGenerator::createItemWeaponFromType(wepType, diff);
-                    mg->currentWorld->currentPlayer->addItem(i);
-                    consolef("ItemWeapon given");
-                    return true;
-                } else {
-                    console("Impropper use of command.");
-                }
-            } else {
-                console("Must be ingame to add.");
-            }
-            return false;
-        }
-    };
-
     struct CommandNextKey : Command {
 
         string help() {
@@ -399,7 +365,6 @@ namespace Commands {
         commandList.push_back(new CommandEcho());
         commandList.push_back(new CommandEffect());
         commandList.push_back(new CommandXp());
-        commandList.push_back(new CommandWep());
         commandList.push_back(new CommandNextKey());
         commandList.push_back(new CommandGodMode());
         commandList.push_back(new CommandClear());

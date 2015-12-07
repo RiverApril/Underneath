@@ -245,7 +245,8 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
 
             if (tileGrid[i][j].index == (int8_t) Tiles::tileChest->getIndex()) {
                 TEChest* te = new TEChest(Point2(i, j));
-                te->addItems(ItemGenerator::createRandLoots(difficulty, difficulty * 100, 5, 5, 5, 10));
+                //te->addItems(ItemGenerator::createRandLoots(difficulty, difficulty * 100, 5, 5, 5, 10));
+                te->lootProfileIndex = ItemGenerator::lootProfileChest;
                 tileEntityList.push_back(te);
                 chestCount++;
                 continue;
@@ -259,16 +260,8 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
                     continue;
                 } else if (rand() % 10 == 0) {
                     TEChest* te = new TEChest(Point2(i, j));
-                    te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 0, 0, 1, 100));
-                    tileEntityList.push_back(te);
-                    continue;
-                } else if (rand() % 20 == 0){
-                    TEChest* te = new TEChest(Point2(i, j));
-                    if(rand() % 2 == 0){
-                        te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 0, 1, 0, 100));
-                    }else{
-                        te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 1, 0, 0, 100));
-                    }
+                    //te->addItems(ItemGenerator::createRandLoots(difficulty, 0, 0, 0, 1, 100));
+                    te->lootProfileIndex = ItemGenerator::lootProfileCrate;
                     tileEntityList.push_back(te);
                     continue;
                 }
@@ -586,7 +579,7 @@ namespace LevelGenerator {
                         level->setTile(lastDoorLocation, Tiles::tileLockedDoor);
                     }else{
                         EntityShop* e = new EntityShop("Merchant", aiNone, 'M', r->pos + (r->size/2), C_LIGHT_MAGENTA, 100);
-                        e->addItems(ItemGenerator::createRandLoots(level->getDifficulty(), 9000, 10, 10, 20, 2));
+                        e->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, level->getDifficulty(), (rand()%9000)+1000, 10, 20, 2));
                         e->addItem(ItemGenerator::makeCoins(1000));
                         level->newEntity(e);
                     }

@@ -374,16 +374,16 @@ namespace WorldLoader {
             if(weapon != nullptr){
                 delete weapon;
             }
-            weapon = ItemGenerator::applyRandConditionToItemWeapon(ItemGenerator::createItemWeaponFromType(wepMelee, 0), 0);
+            ItemGenerator::WeaponBase* wepBase;
+            do{
+                wepBase = ItemGenerator::weaponList[rand()%(ItemGenerator::weaponList.size())];
+            }while(wepBase == nullptr || wepBase->weaponType != wepMelee);
+            weapon = ItemGenerator::createItemWeaponFromBase(wepBase, 0);
         }while((weapon->baseDamage / weapon->useDelay) < 5 || (weapon->baseDamage / weapon->useDelay) > 6);
         world->currentPlayer->setActiveItemWeapon(weapon);
         world->currentPlayer->addItem(new ItemSpecial(specialtyCompass));
-        world->currentPlayer->addItem(ItemGenerator::createPotionFromBase(ItemGenerator::potionHealth, world->currentLevel->getDifficulty()));
-        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        world->currentPlayer->addItem(ItemGenerator::createRandAltLoot(world->currentLevel->getDifficulty()));
-        //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedBomb, 15, 1000, 5, 1), 10);
-        //world->currentPlayer->addItem(new ItemTimeActivated(timeActivatedWallBomb, 15, 1000, 5, 1), 10);
+
+        world->currentPlayer->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfilePlayer, world->currentLevel->getDifficulty(), (rand()%90)+10, 4, 5, 5));
 
         world->currentLevel->newEntity(world->currentPlayer);
 

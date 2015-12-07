@@ -12,6 +12,7 @@
 void TEChest::save(vector<unsigned char>* data) {
     TileEntity::save(data);
 
+    Utility::saveInt(data, lootProfileIndex);
     Utility::saveInt(data, (int) inventory.size());
 
     forVector(inventory, i) {
@@ -23,6 +24,7 @@ void TEChest::save(vector<unsigned char>* data) {
 void TEChest::load(vector<unsigned char>* data, int* position) {
     TileEntity::load(data, position);
 
+    lootProfileIndex = Utility::loadInt(data, position);
     int size = Utility::loadInt(data, position);
 
     repeat(size, i) {
@@ -34,6 +36,8 @@ void TEChest::load(vector<unsigned char>* data, int* position) {
 TEChest* TEChest::cloneUnsafe(TEChest* oldE, TEChest* newE) {
 
     TileEntity::cloneUnsafe(oldE, newE);
+
+    newE->lootProfileIndex = oldE->lootProfileIndex;
 
     forVector(oldE->inventory, i) {
         newE->inventory.push_back(Item::clone(oldE->inventory[i]));

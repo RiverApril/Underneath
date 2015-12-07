@@ -81,7 +81,7 @@ struct Inventory {
         }
     }
 
-    virtual bool addItem(Item* newItem, int qty = -1);
+    virtual bool addItem(Item* newItem);
 
     virtual int getCoinValue(Item* item);
 

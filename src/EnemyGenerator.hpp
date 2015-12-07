@@ -40,7 +40,8 @@ namespace EnemyGenerator {
         vector<Weakness> weaknesses;
         double moveDelay = 1.5;
         double attackMultiplier = 1;
-        vector<pair<int, ItemGenerator::ItemBase*>> drops;
+
+        int lootProfileIndex = -1;
 
 
         int weight = 0;
@@ -74,8 +75,6 @@ namespace EnemyGenerator {
     EntityAi* makeRandomEntity(int difficulty);
 
     EntityAi* makeEntity(EntityBase* we, int difficulty);
-
-    void addStandardDrops(EntityBase* b, double rarityMult = 1, bool magical = false);
 
 }
 

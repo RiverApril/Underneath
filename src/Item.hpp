@@ -71,7 +71,7 @@ public:
                 && getItemTypeId() == other->getItemTypeId()
                 &&(name.compare(other->name) == 0)
                 &&(artIndex == other->artIndex)
-                &&(coinValue == other->coinValue);
+                /*&&(coinValue == other->coinValue)*/;
     }
 
     virtual string getName(bool plural){

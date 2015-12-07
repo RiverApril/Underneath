@@ -38,6 +38,8 @@ struct TEChest : public TileEntity, public Inventory {
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(vector<unsigned char>* data, int* position);
+
+    int lootProfileIndex = -1;
 };
 
 #endif /* defined(__Underneath__TEChest__) */

@@ -1,5 +1,5 @@
 //
-//  ItemGenerator.h
+//  ItemGenerator.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 1/25/15.
@@ -14,6 +14,7 @@
 #include "ItemPotion.hpp"
 #include "ItemUtilitySpell.hpp"
 #include "ItemArmor.hpp"
+#include "ItemTimeActivated.hpp"
 
 
 namespace ItemGenerator {
@@ -65,7 +66,7 @@ namespace ItemGenerator {
         double meta;
     };
 
-    struct Condition {
+    /*struct Condition {
 
         Condition() {
         }
@@ -90,7 +91,7 @@ namespace ItemGenerator {
         Vector2 useDelay = Vector2One;
         Vector2 manaCost = Vector2One;
         vector<WeaponType> applicableWeaponTypes;
-    };
+    };*/
 
     struct DefenseRange{
         DefenseRange(DamageType damageType, double amountMin, double amountMax, int chance = 1){
@@ -222,19 +223,63 @@ namespace ItemGenerator {
         SpellEffect eff = 0;
     };
 
+    struct BombBase : ItemBase{
+
+        BombBase() {
+        }
+
+        BombBase(vector<vector<string> > names, TimeActivatedType type, double minTime, double maxTime, double minPower, double maxPower, double minRadius, double maxRadius) {
+            this->names = names;
+            this->timeActivedType = type;
+            this->time = Vector2(minTime, maxTime);
+            this->power = Vector2(minPower, maxPower);
+            this->radius = Vector2(minRadius, maxRadius);
+        }
+
+
+        vector<vector<string> >  names = {{""}};
+        TimeActivatedType timeActivedType;
+        Vector2 time;
+        Vector2 power;
+        Vector2 radius;
+
+    };
+
+
+
+
+    struct LootProfile{
+
+        LootProfile(bool standard, bool magical, vector<pair<int, ItemGenerator::ItemBase*> > bases = {}){
+            this->standard = standard;
+            this->magical = magical;
+            this->bases = bases;
+        }
+
+        double standard;
+        double magical;
+        vector<pair<int, ItemGenerator::ItemBase*> > bases;
+        
+    };
+
     ArmorBase* atl(ArmorBase* a);
-    Condition* atl(Condition* c);
+    //Condition* atl(Condition* c);
     WeaponBase* atl(WeaponBase* w);
     PotionBase* atl(PotionBase* p, int of100);
     ScrollBase* atl(ScrollBase* s);
+    BombBase* atl(BombBase* b);
+    int atl(LootProfile* lp);
 
 
     extern vector<ArmorBase*> armorList;
-    extern vector<Condition*> conditionList;
+    //extern vector<Condition*> conditionList;
     extern vector<WeaponBase*> weaponList;
     extern vector<ScrollBase*> scrollList;
     extern vector<PotionBase*> potionList;
     extern vector<int> potionChanceList;
+    extern vector<BombBase*> bombBaseList;
+	
+    extern vector<LootProfile*> lootProfileList;
 
     extern ExactItemBase* coin;
     extern ExactItemBase* smallKey;
@@ -254,6 +299,9 @@ namespace ItemGenerator {
     extern ScrollBase* scrollRemoteUse;
     extern ScrollBase* scrollRelocate;
     extern ScrollBase* scrollBarrier;
+
+    extern BombBase* bombWallSmall;
+    extern BombBase* bombWallLarge;
 
     extern WeaponBase* wKnife;
     extern WeaponBase* wSword;
@@ -286,21 +334,26 @@ namespace ItemGenerator {
     extern ArmorBase* aGoldenRing;
     extern ArmorBase* aJewelRing;
 
+    extern int lootProfileChest;
+    extern int lootProfileCrate;
+    extern int lootProfileShop;
+    extern int lootProfilePlayer;
 
-    vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty, int keyMaxQty);
 
-    Item* createRandAltLoot(int itemDifficulty);
+    //vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty, int keyMaxQty);
 
-    ItemWeapon* createRandItemWeapon(int itemDifficulty);
+    //Item* createRandAltLoot(int itemDifficulty);
 
-    ItemArmor* createRandArmor(int itemDifficulty);
+    //ItemWeapon* createRandItemWeapon(int itemDifficulty);
 
-    ItemWeapon* createRandItemWeapon(int itemDifficulty);
+    //ItemArmor* createRandArmor(int itemDifficulty);
 
-    WeaponBase* getRandWeaponBase(WeaponType w, DamageType d);
-    WeaponBase* getRandWeaponBase(WeaponType w);
-    WeaponBase* getRandWeaponBase();
-    ArmorBase* getRandArmorBase();
+    //ItemWeapon* createRandItemWeapon(int itemDifficulty);
+
+    //WeaponBase* getRandWeaponBase(WeaponType w, DamageType d);
+    //WeaponBase* getRandWeaponBase(WeaponType w);
+    //WeaponBase* getRandWeaponBase();
+    //ArmorBase* getRandArmorBase();
 
     Item* createItemFromBase(ItemBase* base, int itemDifficulty);
     ItemWeapon* createItemWeaponFromBase(WeaponBase* base, int itemDifficulty);
@@ -309,13 +362,16 @@ namespace ItemGenerator {
 
     Enchantment createEnchantmentFromBase(EnchantmentBase* base);
 
-    ItemWeapon* createItemWeaponFromType(WeaponType w, DamageType d, int itemDifficulty);
-    ItemWeapon* createItemWeaponFromType(WeaponType w, int itemDifficulty);
+    //ItemWeapon* createItemWeaponFromType(WeaponType w, DamageType d, int itemDifficulty);
+    //ItemWeapon* createItemWeaponFromType(WeaponType w, int itemDifficulty);
 
-    ItemWeapon* applyConditionToItemWeapon(ItemWeapon* w, Condition* c, int itemDifficulty, bool prependName = true);
+    //ItemWeapon* applyConditionToItemWeapon(ItemWeapon* w, Condition* c, int itemDifficulty, bool prependName = true);
 
-    ItemWeapon* applyRandConditionToItemWeapon(ItemWeapon* w, int itemDifficulty, bool prependName = true);
+    //ItemWeapon* applyRandConditionToItemWeapon(ItemWeapon* w, int itemDifficulty, bool prependName = true);
 
+
+
+    vector<Item*> makeLoot(int lootProfileIndex, int difficulty, int coinCount, int lootMin, int lootMax, int lootExtraProb);
 
 
     ItemUtilitySpell* createScrollFromBase(ScrollBase* sb);

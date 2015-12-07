@@ -9,7 +9,7 @@
 #include "ItemSpecial.hpp"
 #include "Utility.hpp"
 
-ItemSpecial::ItemSpecial(SpecialType specialty) : Item(""){
+ItemSpecial::ItemSpecial(SpecialType specialty) : ItemSpecial(){
     this->specialty = specialty;
 
     switch (specialty) {
@@ -46,6 +46,7 @@ void ItemSpecial::save(vector<unsigned char>* data){
 void ItemSpecial::load(vector<unsigned char>* data, int* position){
     Item::load(data, position);
     specialty = Utility::loadInt(data, position);
+
 }
 
 ItemSpecial* ItemSpecial::cloneUnsafe(ItemSpecial* oldE, ItemSpecial* newE){

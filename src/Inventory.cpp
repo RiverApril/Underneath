@@ -10,11 +10,11 @@
 #include "ItemGenerator.hpp"
 #include "ItemSpecial.hpp"
 
-bool Inventory::addItem(Item* newItem, int qty) {
-    if(qty != -1){
-        newItem->qty = qty;
+bool Inventory::addItem(Item* newItem) {
+    if(newItem->qty <= 0){
+        newItem->qty = 1;
     }
-    if (newItem != nullptr) {
+    if (newItem) {
         for (Item* i : inventory) {
             if (i->equalsExceptQty(newItem)) {
                 i->qty += newItem->qty;
