@@ -22,14 +22,15 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
     debug("Gen: Start");
 
     if(distanceSquared(stairUpPos, center) < deepRing*deepRing){
-        debugf("Gen: distanceSquared(stairUpPos, center) < deepRing*deepRing  ==  distanceSqared({%d, %d}, {%d, %d}) < %d*%d  ==  %d < %d", stairUpPos.x, stairUpPos.y, center.x, center.y, deepRing, deepRing, distanceSquared(stairUpPos, center), deepRing*deepRing);
         return Point2Neg1;
     }
 
+    int8_t ind = (int8_t) Tiles::tileUnset->getIndex();
+
     for (int i = 0; i < size.x; i++) {
+        debugf("Gen: set tile [%d][0-%d]", i, size.y);
         for (int j = 0; j < size.y; j++) {
-            debugf("Gen: set tile [%d][%d]", i, j);
-            tileGrid[i][j].index = (int8_t) Tiles::tileUnset->getIndex();
+            tileGrid[i][j].index = ind;
             tileGrid[i][j].explored = false;
         }
     }
