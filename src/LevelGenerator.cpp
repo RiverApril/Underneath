@@ -16,7 +16,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
 
     Point2 center = size / 2;
 
-    int ring = center.xPlusY() * .2;
+    int ring = center.xPlusY() * .3;
     int deepRing = center.xPlusY() * .5;
 
     debug("Gen: Start");
@@ -161,6 +161,10 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
     debug("Gen: Added Bunnies");
 
     vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
+    if(path.size() == 0){
+        debug("Gen: No path found");
+        return Point2Neg1;
+    }
     for(Point2 p : path){
         Utility::executeGrid(p-1, p+1, [this](int x, int y){
             if(tileAt(Point2(x, y))->getIndex() == Tiles::tileTree->getIndex()){
@@ -178,15 +182,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
 
     debug("Gen: Done");
 
-    if(canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
-        debug("Gen: Success");
-        return stairUpPos;
-    }else{
-
-        debug("Gen: Failed, trying it anyway");
-        return stairUpPos;
-        return Point2Neg1;
-    }
+    return stairUpPos;
 
 
 }
