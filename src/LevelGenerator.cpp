@@ -28,7 +28,6 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
     int8_t ind = (int8_t) Tiles::tileUnset->getIndex();
 
     for (int i = 0; i < size.x; i++) {
-        debugf("Gen: set tile [%d][0-%d]", i, size.y);
         for (int j = 0; j < size.y; j++) {
             tileGrid[i][j].index = ind;
             tileGrid[i][j].explored = false;
@@ -184,7 +183,8 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
         return stairUpPos;
     }else{
 
-        debug("Gen: Failed");
+        debug("Gen: Failed, trying it anyway");
+        return stairUpPos;
         return Point2Neg1;
     }
 
