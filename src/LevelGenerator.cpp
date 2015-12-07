@@ -19,6 +19,8 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
     int ring = center.xPlusY() * .2;
     int deepRing = center.xPlusY() * .5;
 
+    debug("Gen: Start");
+
     if(distanceSquared(stairUpPos, center) < deepRing*deepRing){
         return Point2Neg1;
     }
@@ -29,6 +31,8 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
             tileGrid[i][j].explored = false;
         }
     }
+
+    debug("Gen: Filled all to unset");
 
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
@@ -48,6 +52,8 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
             }*/
         }
     }
+
+    debug("Gen: Filled in Trees and Grass");
 
 
     //RUIN
@@ -86,6 +92,8 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
 
 
     setTile(door, Tiles::tileDoor);
+
+    debug("Gen: Created Ruin");
 
 
     /*int r = (rand() % 3) + 2;
@@ -137,6 +145,8 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
     setTile(stairDownPos, Tiles::tileStairDown);
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor 1"));
 
+    debug("Gen: Floor down placed");
+
 
     int count = (rand() % 20)+5;
 
@@ -145,6 +155,8 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
         e->pos = findRandomOfType(Tiles::tileGrass->getIndex());
         newEntity(e);
     }
+
+    debug("Gen: Added Bunnies");
 
     vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
     for(Point2 p : path){
@@ -160,9 +172,16 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
         }
     }
 
+    debug("Gen: Added the path");
+
+    debug("Gen: Done");
+
     if(canPathTo(stairUpPos, stairDownPos, tileFlagPathable)){
+        debug("Gen: Success");
         return stairUpPos;
     }else{
+
+        debug("Gen: Failed");
         return Point2Neg1;
     }
 
