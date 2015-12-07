@@ -9,8 +9,13 @@
 #ifndef __Underneath__EnemyGenerator__
 #define __Underneath__EnemyGenerator__
 
-#include "ItemGenerator.hpp"
+#include "Global.hpp"
 #include "EntityAi.hpp"
+
+namespace ItemGenerator{
+    struct WeaponBase;
+}
+
 
 namespace EnemyGenerator {
 
