@@ -34,6 +34,7 @@ parser.add_argument("-o", "--optimize", action="store_true")
 parser.add_argument("-d", "--debug", action="store_true")
 parser.add_argument("-t", "--notart", action="store_true")
 parser.add_argument("-w", "--windows", action="store_true")
+parser.add_argument("--compiler", help="specify compiler")
 
 args = parser.parse_args()
 
@@ -72,7 +73,11 @@ if args.optimize:
 if systemName == "Windows" or args.windows:
     compiler = "i686-w64-mingw32-c++"
     compilerFlags += " -D WIN32"
-
+    
+if args.compiler:
+    compiler = args.compiler;
+    
+print("    # Using compiler: \""+compiler+"\"")
 
 compilerFlags = optimization+" "+compilerFlags;
 
