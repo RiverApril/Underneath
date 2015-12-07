@@ -15,6 +15,7 @@ namespace Settings{
 
     extern bool godMode;
     extern bool debugMode;
+    extern bool logFile;
     extern bool showFollowPaths;
     extern bool seeEverything;
     extern bool cheatKeysEnabled;

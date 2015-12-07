@@ -15,6 +15,7 @@ namespace Settings{
 
     bool godMode = false;
     bool debugMode = false;
+    bool logFile = false;
     bool showFollowPaths = false;
     bool seeEverything = false;
     bool cheatKeysEnabled = false;
@@ -25,6 +26,7 @@ namespace Settings{
         new SettingBool("Auto Save", &autoSave),
         new SettingLabel(""),
         new SettingBool("Debug Output", &debugMode),
+        new SettingBool("Log File", &logFile),
         new SettingBool("God Mode", &godMode),
         new SettingBool("Show AI Paths", &showFollowPaths),
         new SettingBool("X-ray Vision", &seeEverything),

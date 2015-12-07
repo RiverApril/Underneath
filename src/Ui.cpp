@@ -25,6 +25,10 @@ void debug(string s) {
     if (Settings::debugMode) {
         console("DEBUG: " + s);
     }
+    if(Settings::logFile){
+        ofstream log_file(string(UnderneathDir)+"debug.log", ios_base::out | ios_base::app );
+        log_file << s << endl;
+    }
 }
 
 void console(string s) {
@@ -40,6 +44,10 @@ void console(string s) {
     }
     consoleBuffer.push_back(s.substr(lastI));*/
     consoleBuffer.push_back(s);
+    if(Settings::logFile){
+        ofstream log_file(string(UnderneathDir)+"console.log", ios_base::out | ios_base::app );
+        log_file << s << endl;
+    }
 }
 
 void debugf(string format, ...) {

@@ -42,6 +42,7 @@ namespace EnemyGenerator {
         double attackMultiplier = 1;
 
         int lootProfileIndex = -1;
+        int maxLootDrop = 0;
 
 
         int weight = 0;

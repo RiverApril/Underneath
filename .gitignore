@@ -1,6 +1,7 @@
 #Underneath:
 settings.txt
 worlds/
+*.log
 
 #Python Build Script:
 obj/

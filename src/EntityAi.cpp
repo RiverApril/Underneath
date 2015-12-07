@@ -335,7 +335,7 @@ void EntityAi::dropLoots(Level* level){
             }
         }
     }*/
-    vector<Item*> drops = ItemGenerator::makeLoot(lootProfileIndex, level->getDifficulty(), rand()%(int)(maxHp*level->getDifficulty()), 0, 0, 1);
+    vector<Item*> drops = ItemGenerator::makeLoot(lootProfileIndex, level->getDifficulty(), rand()%(int)(maxHp*level->getDifficulty()), 0, maxLootDrop, 3);
     for(Item* i : drops){
         level->newEntity(new EntityItem(i, pos));
     }
@@ -353,6 +353,7 @@ EntityAi* EntityAi::cloneUnsafe(EntityAi* oldE, EntityAi* newE) {
     newE->attackMultiplier = oldE->attackMultiplier;
     newE->lastKnownTargetPos = oldE->lastKnownTargetPos;
     newE->lootProfileIndex = oldE->lootProfileIndex;
+    newE->maxLootDrop = oldE->maxLootDrop;
 
     forVector(oldE->inventory, i) {
         if (oldE->inventory[i] == oldE->activeItemWeapon) {
@@ -376,6 +377,7 @@ void EntityAi::save(vector<unsigned char>* data) {
     Utility::saveDouble(data, lastAttackTime);
     Utility::saveDouble(data, attackMultiplier);
     Utility::saveInt(data, lootProfileIndex);
+    Utility::saveInt(data, maxLootDrop);
     Point2::save(lastKnownTargetPos, data);
 
     int activeItemWeaponIndex = -1;
@@ -397,6 +399,7 @@ void EntityAi::load(vector<unsigned char>* data, int* position) {
     lastAttackTime = Utility::loadDouble(data, position);
     attackMultiplier = Utility::loadDouble(data, position);
     lootProfileIndex = Utility::loadInt(data, position);
+    maxLootDrop = Utility::loadInt(data, position);
     lastKnownTargetPos = Point2::load(data, position);
 
 

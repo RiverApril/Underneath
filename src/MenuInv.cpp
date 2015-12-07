@@ -93,7 +93,7 @@ namespace Ui {
             selected = 0;
         }
 
-		Ui::drawInventory(currentWorld, player, selected, nullptr, "", "", true, false, flashImportantInfo>0);
+		Ui::drawInventory(currentWorld, player, selected, nullptr, player->getName()+"'s Inventory", "", true, false, flashImportantInfo>0);
 
         flashImportantInfo--;
 

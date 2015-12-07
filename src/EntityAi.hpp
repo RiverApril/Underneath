@@ -98,6 +98,8 @@ public:
 
     int lootProfileIndex = -1;
 
+    int maxLootDrop = 0;
+
 protected:
     int ai = aiNone;
 

@@ -63,6 +63,7 @@ namespace EnemyGenerator {
         troll->weaknesses.push_back(Weakness(damFire, 4));
         troll->moveDelay = 1.8;
         troll->lootProfileIndex = atl(new LootProfile(true, false, {make_pair(10, wMace)}));
+        troll->maxLootDrop = 2;
 
 
         wraith = atl(new EntityBase(2, "Wraith", 'W', aiAttack, 200, ItemGenerator::wSpear, "", C_DARK_GRAY, 2.0, 2));
@@ -73,6 +74,7 @@ namespace EnemyGenerator {
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
         wraith->moveDelay = 1.8;
         troll->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(10, wFireItemCombatSpell), make_pair(10, wFrostItemCombatSpell), make_pair(10, wShockItemCombatSpell), make_pair(10, wHealingCombatSpell)}));
+        troll->maxLootDrop = 4;
 
 
         slime = atl(new EntityBase(75, "Slime", 's', aiAttack, 40, ItemGenerator::wNatural, "Goo", C_LIGHT_YELLOW, 1.0));
@@ -149,6 +151,7 @@ namespace EnemyGenerator {
         e->moveDelay = we->moveDelay;
         e->attackMultiplier = we->attackMultiplier;
         e->lootProfileIndex = we->lootProfileIndex;
+        e->maxLootDrop = we->maxLootDrop;
         ItemWeapon* weapon = ItemGenerator::createItemWeaponFromBase(we->weaponBase, difficulty + we->weaponDifficultyAdd);
         if (we->weaponName.size() > 0) {
             weapon->getName(false) = we->weaponName;

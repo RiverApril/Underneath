@@ -45,13 +45,16 @@ bool* init(int argc, char* argv[]){
         s2 = ("Custom Working Directory: " + CustomWorkingDirectory);
     }
 
+    Settings::loadSettings(UnderneathDir + "settings.txt");
+
+    debug("Underneath Start");
+
     Tiles::initTiles();
     Arts::loadArts();
     ItemGenerator::initItemTemplates();
     Ui::initNCurses(false);
     Commands::initCommands();
     EnemyGenerator::initEnemies();
-    Settings::loadSettings(UnderneathDir + "settings.txt");
     Random::setup();
 
     debug(s1);
