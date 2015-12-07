@@ -22,7 +22,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
     debug("Gen: Start");
 
     if(distanceSquared(stairUpPos, center) < deepRing*deepRing){
-        debug("Gen: distanceSquared(stairUpPos, center) < deepRing*deepRing");
+        debugf("Gen: distanceSquared(stairUpPos, center) < deepRing*deepRing  ==  distanceSqared({%d, %d}, {%d, %d}) < %d*%d  ==  %d < %d", stairUpPos.x, stairUpPos.y, center.x, center.y, deepRing, deepRing, distanceSquared(stairUpPos, center), deepRing*deepRing);
         return Point2Neg1;
     }
 
