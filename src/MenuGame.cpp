@@ -65,16 +65,21 @@ namespace Ui {
 
     bool MenuGame::init(string worldName, Abilities<int> playerAbilities) {
 
+        debug("MenuGame::init()");
+
         if (worldName.size() == 0) {
             return false;
         }
 
         if (WorldLoader::exists(worldName)) {
             currentWorld = WorldLoader::load(nullptr, worldName);
+            debug("Attempting to load world...");
             if (currentWorld == nullptr) {
+                debug("Failed to load world, creating a new one...");
                 currentWorld = WorldLoader::create(worldName, playerAbilities);
             }
         } else {
+            debug("Creating new world...");
             currentWorld = WorldLoader::create(worldName, playerAbilities);
         }
         if (currentWorld == nullptr || currentLevel == nullptr) {
