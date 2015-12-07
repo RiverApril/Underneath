@@ -95,27 +95,12 @@ namespace Ui {
         }
 
         mvprintw(b++, terminalSize.x/2 + 3, "Defenses:");
-        
 
-        map<DamageType, double> calculatedDefenses;
-
-        for(pair<EquipSlot, ItemEquipable*> p : player->equipedItems){
-            if(p.second){
-                ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
-                if(armor){
-                    for(Defense d : armor->defenses){
-                        if(calculatedDefenses.count(d.damageType)){
-                            calculatedDefenses[d.damageType] += d.amount;
-                        }else{
-                            calculatedDefenses[d.damageType] = d.amount;
-                        }
-                    }
-                }
+        for (DamageType d = 0; d<damageTypeCount;d++) {
+            double dm = player->getDefenseMultiplierFromArmor(d, false);
+            if(dm > 0){
+                mvprintw(b++, terminalSize.x/2 + 5, "%s: %d%%", damageTypeName(d).c_str(), (int)(dm*100));
             }
-        }
-
-        for (pair<DamageType, double> d : calculatedDefenses) {
-            mvprintw(b++, terminalSize.x/2 + 5, "%s: %d%%", damageTypeName(d.first).c_str(), (int)(d.second*100.0));
         }
 
         printCenter(terminalSize.y - 2, abilityInfo[selected]);

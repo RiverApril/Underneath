@@ -32,6 +32,8 @@ const DamageType damDebug = 9;
 const DamageType damSuffocation = 10;
 const DamageType damExplosion = 11;
 
+const DamageType damageTypeCount = 12;
+
 string damageTypeName(DamageType d);
 
 Ui::Color damageTypeColor(DamageType d);

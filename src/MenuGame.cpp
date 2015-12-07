@@ -124,7 +124,7 @@ namespace Ui {
                 m->selected = selected;
                 openMenu(m);
             } else if(use == useInWorld){
-                itemToBeUsedRange = INFINITY;
+                itemToBeUsedRange = 1000000;
                 itemToBeUsed = currentPlayer->inventory[*useItem];
                 targetPosition = currentPlayer->pos;
                 changeMode(modeSelectPosition);
@@ -161,9 +161,9 @@ namespace Ui {
     }
 
     void MenuGame::viewUpdate() {
-        if(currentWorld != nullptr){
-            if(currentLevel != nullptr){
-                if (currentPlayer != nullptr) {
+        if(currentWorld){
+            if(currentLevel){
+                if (currentPlayer) {
                     if(controlMode == modeSelectPosition){
                         viewPos = targetPosition;
                     }else{
@@ -516,7 +516,7 @@ namespace Ui {
                 if(controlMode == modeEntityPlayerControl){
                     changeMode(modeSelectPosition);
                     selectMode = selectModeWalk;
-                    itemToBeUsedRange = INFINITY;
+                    itemToBeUsedRange = 1000000;
                     targetPosition = currentPlayer->pos;
                 } else if(controlMode == modeSelectPosition){
                     if(selectMode == selectModeWalk){
@@ -575,7 +575,7 @@ namespace Ui {
                 if(controlMode == modeEntityPlayerControl){
                     changeMode(modeSelectPosition);
                     selectMode = selectModeInspect;
-                    itemToBeUsedRange = INFINITY;
+                    itemToBeUsedRange = 1000000;
                     targetPosition = currentPlayer->pos;
                 } else if(controlMode == modeSelectPosition){
                     if(selectMode == selectModeInspect){
@@ -817,10 +817,10 @@ namespace Ui {
 
             for (size_t i = 0; i < nearestEntities.size() && a < terminalSize.y; i++) {
                 Entity* nearestEntity = nearestEntities[i];
-                if (nearestEntity != nullptr) {
+                if (nearestEntity && !nearestEntity->removed) {
                     Ui::setColor(C_WHITE);
 
-                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("[&%c%c&%c] %s ", cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE), nearestEntity->getName().c_str()) );
+                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("[&%c%c&%c] %s ", cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE), nearestEntity->getName().c_str()));
 
 
                     EntityAlive* alive = dynamic_cast<EntityAlive*> (nearestEntity);

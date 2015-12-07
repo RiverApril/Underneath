@@ -107,9 +107,7 @@ public:
 
     int artIndex = -1;
 
-    bool operator< (Item& b){
-        return this->getItemTypeId() < b.getItemTypeId();
-    }
+    bool operator< (Item& b);
 
 
 

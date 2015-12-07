@@ -134,7 +134,7 @@ public:
         return (pow(l, 2)+(5*l)+20);
     }
 
-    double getDefenseMultiplierFromArmor(DamageType damType){
+    double getDefenseMultiplierFromArmor(DamageType damType, bool reduceDurability){
 
 
         double def = 0;
@@ -144,10 +144,23 @@ public:
                 ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
                 if(armor){
                     for(Defense d : armor->defenses){
-                        if(d.damageType == damType){
-                            armor->durability--;
+                        if(d.damageType == damType || d.damageType == -1){
+                            if(reduceDurability){
+                                if(armor->durability > -1){
+                                    if(armor->durability == 0){
+                                        consolef("&%cA peice of your armor is broken!", Ui::cc(C_LIGHT_RED));
+                                    }else if(armor->durability < 16){
+                                        consolef("&%cA peice of your armor is almost broken!", Ui::cc(C_LIGHT_RED));
+                                    }
+                                    if(armor->durability > 0){
+                                        armor->durability--;
+                                    }
+                                }
+                            }
                             if(armor->durability > 0){
                                 def += d.amount;
+                            }else{
+                                def += d.amount / 2;
                             }
                         }
                     }

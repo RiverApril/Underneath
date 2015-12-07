@@ -79,7 +79,7 @@ double EntityPlayer::useItemOnOther(Item* itemToUse, Item* itemToBeUsedOn){
     if(is){
         ItemEquipable* ie = dynamic_cast<ItemEquipable*>(itemToBeUsedOn);
         if(ie){
-            if(ie->durability < INFINITY){
+            if(ie->durability > -1){
                 int rep = repairToolPower();
                 ie->durability += rep;
                 consolef("Repaired item %d durability points.", rep);
@@ -440,13 +440,15 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             if (weapon) {
                 timeSinceCombat = 0;
 
-                if(weapon->durability < INFINITY){
-                    if(weapon->durability < 0){
+                if(weapon->durability > -1){
+                    if(weapon->durability <= 0){
                         consolef("&%cYour weapon is broken!", Ui::cc(C_LIGHT_RED));
                     }else if(weapon->durability < 16){
                         consolef("&%cYour weapon is almost broken!", Ui::cc(C_LIGHT_RED));
                     }
-                    weapon->durability--;
+                    if(weapon->durability > 0){
+                        weapon->durability--;
+                    }
                 }
 
                 double d = a->hurt(weapon, x);
@@ -677,7 +679,7 @@ double EntityPlayer::hurt(DamageType damageType, double amount, double damageMul
         return 0;
     }
 
-    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(damageType);
+    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(damageType, true);
 
     return EntityAlive::hurt(damageType, amount, damageMultiplier);
 }
@@ -692,7 +694,7 @@ double EntityPlayer::hurt(ItemWeapon* w, double damageMultiplier) {
         return 0;
     }
 
-    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType);
+    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType, true);
 
     return EntityAlive::hurt(w, damageMultiplier);
 }

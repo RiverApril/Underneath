@@ -487,7 +487,7 @@ namespace Ui {
                 if(equipable){
                     if(equipable->durability < 0){
                         setColor(C_LIGHT_RED);
-                        a += printMultiLineString(a, columnX, "ITEM BROKEN damage halved");
+                        a += printMultiLineString(a, columnX, "ITEM BROKEN Effectiveness halved");
                     }
                     a += printMultiLineString(a, columnX, formatString("Durability: %d", equipable->durability));
                     setColor(C_LIGHT_GRAY, C_BLACK);

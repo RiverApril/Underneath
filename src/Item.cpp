@@ -152,3 +152,40 @@ Item* Item::loadNew(vector<unsigned char>* data, int* position) {
 
     return e;
 }
+
+bool Item::operator< (Item& b){
+    if(this->getItemTypeId() == b.getItemTypeId()){
+        switch (this->getItemTypeId()) {
+            case ITEM_TYPE_ITEM:
+                return this->qty < b.qty;
+
+            case ITEM_TYPE_EQUIPABLE:
+                return *dynamic_cast<ItemEquipable*>(this) < dynamic_cast<ItemEquipable&>(b);
+
+            case ITEM_TYPE_WEAPON:
+                return *dynamic_cast<ItemWeapon*>(this) < dynamic_cast<ItemWeapon&>(b);
+
+            case ITEM_TYPE_RANGED:
+                return *dynamic_cast<ItemRanged*>(this) < dynamic_cast<ItemRanged&>(b);
+
+            case ITEM_TYPE_COMBAT_SPELL:
+                return *dynamic_cast<ItemCombatSpell*>(this) < dynamic_cast<ItemCombatSpell&>(b);
+
+            case ITEM_TYPE_POTION:
+                return *dynamic_cast<ItemPotion*>(this) < dynamic_cast<ItemPotion&>(b);
+
+            case ITEM_TYPE_UTILITY_SPELL:
+                return *dynamic_cast<ItemUtilitySpell*>(this) < dynamic_cast<ItemUtilitySpell&>(b);
+
+            case ITEM_TYPE_ITEMSPECIAL:
+                return *dynamic_cast<ItemSpecial*>(this) < dynamic_cast<ItemSpecial&>(b);
+
+            case ITEM_TYPE_TIME_ACTIVATED:
+                return *dynamic_cast<ItemTimeActivated*>(this) < dynamic_cast<ItemTimeActivated&>(b);
+
+            case ITEM_TYPE_ARMOR:
+                return *dynamic_cast<ItemArmor*>(this) < dynamic_cast<ItemArmor&>(b);
+        }
+    }
+    return this->getItemTypeId() < b.getItemTypeId();
+}

@@ -151,6 +151,7 @@ namespace Arts {
         Arts::artGloves = Arts::loadNew(ArtDir + "/", "gloves", ArtFiles::gloves);
         Arts::artGauntlets = Arts::loadNew(ArtDir + "/", "gauntlets", ArtFiles::gauntlets);
         Arts::artBracers = Arts::loadNew(ArtDir + "/", "braces", ArtFiles::bracers);
+        Arts::artCowl = Arts::loadNew(ArtDir + "/", "cowl", ArtFiles::cowl);
 
         Point2 compassInSize = Point2Neg1;
 

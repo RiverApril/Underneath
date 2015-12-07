@@ -26,7 +26,7 @@ public:
         this->baseDamage = baseDamage;
         this->damageType = damFire;
         this->manaCost = manaCost;
-        this->durability = INFINITY;
+        this->durability = -1;
     }
 
     virtual int getItemTypeId() {

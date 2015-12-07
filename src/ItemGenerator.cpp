@@ -530,7 +530,7 @@ namespace ItemGenerator {
         } else {
             w = new ItemWeapon();
         }
-        if(w->durability != INFINITY){
+        if(w->durability != -1){
             w->durability = (rand()%200)+50;
         }
         w->baseDamage = base->damage;
@@ -585,7 +585,9 @@ namespace ItemGenerator {
         ItemArmor* a;
 
         a = new ItemArmor();
-
+        if(a->durability != -1){
+            a->durability = (rand()%300)+100;
+        }
         a->setName(base->names[ni]);
         a->artIndex = base->arts[arti];
         a->viableSlots = base->viableSlots;
