@@ -33,6 +33,7 @@ namespace Utility {
     void saveUInt8Bit(vector<unsigned char>* data, uint8_t n);
     void saveBool(vector<unsigned char>* data, bool n);
     void saveString(vector<unsigned char>* data, string n);
+    void save8Bits(vector<unsigned char>* data, bool b[8]);
 
     template <typename T>
     void saveType(vector<unsigned char>* data, T n) {
@@ -58,6 +59,7 @@ namespace Utility {
     int8_t loadInt8Bit(vector<unsigned char>* data, int* position);
     bool loadBool(vector<unsigned char>* data, int* position);
     string loadString(vector<unsigned char>* data, int* position);
+    void load8Bits(vector<unsigned char>* data, int* position, bool b[8]);
 
     template <typename T>
     T loadType(vector<unsigned char>* data, int* position) {

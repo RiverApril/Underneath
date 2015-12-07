@@ -51,6 +51,16 @@ namespace Utility {
         data->push_back((unsigned char) (n ? 'T' : 'F'));
     }
 
+    void save8Bits(vector<unsigned char>* data, bool b[8]){
+        unsigned char c = 0;
+        for(int i=0;i<8;i++){
+            if(b[i]){
+                c |= 1 << i;
+            }
+        }
+        data->push_back(c);
+    }
+
     void saveString(vector<unsigned char>* data, string n) {
         size_t count = n.size();
         saveInt(data, (int) count);
@@ -101,6 +111,13 @@ namespace Utility {
 
     bool loadBool(vector<unsigned char>* data, int* position) {
         return ((char) loadUnsignedChar(data, position)) == 'T';
+    }
+
+    void load8Bits(vector<unsigned char>* data, int* position, bool b[8]){
+        unsigned char c = loadUnsignedChar(data, position);
+        for(int i=0;i<8;i++){
+            b[i] = (c >> i) & 1;
+        }
     }
 
     string loadString(vector<unsigned char>* data, int* position) {

@@ -617,9 +617,16 @@ void Level::save(vector<unsigned char>* data) {
             Utility::saveUInt8Bit(data, tileGrid[i][j].index);
         }
     }
+    bool b[8] = {false, false, false, false, false, false, false, false};
+    int bi = 0;
     for (size_t i = 0; i < size.x; i++) {
         for (size_t j = 0; j < size.y; j++) {
-            Utility::saveBool(data, tileGrid[i][j].explored);
+            b[bi] = tileGrid[i][j].explored;
+            bi++;
+            if(bi==8){
+                Utility::save8Bits(data, b);
+                bi = 0;
+            }
         }
     }
 
@@ -663,11 +670,16 @@ void Level::load(vector<unsigned char>* data, int* position) {
         }
     }
 
-
-
+    bool b[8];
+    int bi = 8;
     for (size_t i = 0; i < size.x; i++) {
         for (size_t j = 0; j < size.y; j++) {
-            tileGrid[i][j].explored = Utility::loadBool(data, position);
+            if(bi==8){
+                Utility::load8Bits(data, position, b);
+                bi = 0;
+            }
+            tileGrid[i][j].explored = b[bi];
+            bi++;
         }
     }
     debug("Loaded " + to_string(size.x) + " x " + to_string(size.y) + " Tiles");
