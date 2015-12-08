@@ -158,6 +158,7 @@ namespace Ui {
 
     void Menu::_update() {
 
+
         if (subMenu != nullptr) {
             subMenu->_update();
         } else {

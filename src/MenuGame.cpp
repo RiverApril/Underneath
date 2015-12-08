@@ -209,7 +209,7 @@ namespace Ui {
 
                     if (currentLevel->inRange(p)) {
                         Entity* e = nullptr;
-                        int d = INT16_MIN;
+                        int d = -1000000;
                         for (Entity* ei : currentLevel->entityList) {
                             if (ei) {
                                 if (!ei->removed) {

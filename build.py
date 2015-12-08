@@ -70,14 +70,22 @@ if args.optimize:
     executableName += "_Optim"
 
 
-if systemName == "Windows" or args.windows:
+if systemName == "Windows":
+    #Windows compiler name here (I haven't done this in a while)
+    compilerFlags += " -D WIN32"
+
+if systemName == "Linux" and args.windows:
     compiler = "i686-w64-mingw32-c++"
     compilerFlags += " -D WIN32"
-    
+
+if systemName == "Darwin" and args.windows:
+    compiler = "i586-mingw32-c++"
+    compilerFlags += " -D WIN32"
+
+
+
 if args.compiler:
     compiler = args.compiler;
-    
-print("    # Using compiler: \""+compiler+"\"")
 
 compilerFlags = optimization+" "+compilerFlags;
 
@@ -105,11 +113,10 @@ else:
     else:
         libraryFlags = "-lncurses"
 
-
-if systemName == "Darwin":
-    executableName += "_OSX"
-elif systemName == "Windows" or args.windows:
+if systemName == "Windows" or args.windows:
     executableName += "_Windows.exe"
+elif systemName == "Darwin":
+    executableName += "_OSX"
 else:
     executableName += "_"+systemName
 
@@ -136,6 +143,8 @@ if os.path.isfile(executableName):
     os.rename(executableName, executableName+"_outdated")
 
 skipCount = 0
+    
+print("    # Using compiler: "+compiler)
 
 if not args.linkonly:
     print("    # Building: "+executableName);
