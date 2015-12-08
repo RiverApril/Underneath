@@ -270,7 +270,7 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
                 continue;
             }
 
-            if (tileGrid[i][j].index == (int8_t) Tiles::tileCrate->getIndex()) {
+            /*if (tileGrid[i][j].index == (int8_t) Tiles::tileCrate->getIndex()) {
                 if (rand() % 6 == 0) {
                     TEChest* te = new TEChest(Point2(i, j));
                     te->addItem(ItemGenerator::makeCoins((rand() % 30) + 1));
@@ -283,7 +283,7 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
                     tileEntityList.push_back(te);
                     continue;
                 }
-            }
+            }*/
         }
     }
 

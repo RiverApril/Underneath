@@ -272,19 +272,6 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                                     tec->lootProfileIndex = -1;
                                 }
                                 level->currentWorld->menuGame->openMenu(new Ui::MenuChest(tec, this, level->currentWorld));
-                            } else if (tid == Tiles::tileCrate->getIndex()) {
-                                TEChest* tec = dynamic_cast<TEChest*> (te);
-
-                                if(tec->lootProfileIndex != -1){
-                                    tec->addItems(ItemGenerator::makeLoot(tec->lootProfileIndex, level->getDifficulty(), (rand()%50), 1, 1, 10));
-                                    tec->lootProfileIndex = -1;
-                                }
-
-                                for (Item* i : tec->inventory) {
-                                    level->newEntity(new EntityItem(Item::clone(i), posOfTile));
-                                }
-                                level->removeTileEntity(tec);
-                                level->setTile(posOfTile, Tiles::tileFloor);
                             }
                             return interactDelay;
                         }
@@ -347,6 +334,23 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
         } else if (tid == Tiles::tileBreakable->getIndex()) {
             level->setTile(posOfTile, Tiles::tileRubble);
             return interactDelay;
+        } else if (tid == Tiles::tileCrate->getIndex()) {
+
+            if(rand()%3 == 0){
+
+                vector<Item*> items;
+
+                if(rand()%3 == 0){
+                    items = ItemGenerator::makeLoot(ItemGenerator::lootProfileCrate, level->getDifficulty(), (rand()%50), 1, 1, 10);
+                }else{
+                    items.push_back(ItemGenerator::makeCoins((rand() % 30) + 1));
+                }
+
+                for (Item* i : items) {
+                    level->newEntity(new EntityItem(Item::clone(i), posOfTile));
+                }
+                level->setTile(posOfTile, Tiles::tileFloor);
+            }
         }
     }
 
