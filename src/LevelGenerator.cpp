@@ -465,7 +465,7 @@ namespace LevelGenerator {
                 }
 
                 grid[p.x][p.y] = 'v';
-                level->setTile(p, Tiles::tileDoor);
+                level->setTile(p, (rand()%100==0)?Tiles::tileSecretDoor:Tiles::tileDoor);
 
                 if(level->inRange(p2)){
                     grid[p2.x][p2.y] = 'v';

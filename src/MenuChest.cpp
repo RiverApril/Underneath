@@ -102,7 +102,7 @@ namespace Ui {
             selected = 0;
         }
 
-        Ui::drawInventory(currentWorld, user, selected/*, scrollOffset*/, chest, user->getName()+"'s Inventory", "%s's Inventory", "Chest", selectedLeft);
+        Ui::drawInventory(currentWorld, user, selected/*, scrollOffset*/, chest, formatString("%s's Inventory", user->getName().c_str()), "Chest", selectedLeft);
 
     }
 }

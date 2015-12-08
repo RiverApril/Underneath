@@ -328,9 +328,6 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
             }else{
                 consolef("This door requires a &%cKey&%c.", Ui::cc(C_LIGHT_MAGENTA), Ui::cc(C_WHITE));
             }
-        } else if (tid == Tiles::tileCrate->getIndex()) {
-            level->setTile(posOfTile, Tiles::tileFloor);
-            return interactDelay;
         } else if (tid == Tiles::tileBreakable->getIndex()) {
             level->setTile(posOfTile, Tiles::tileRubble);
             return interactDelay;
@@ -349,8 +346,9 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                 for (Item* i : items) {
                     level->newEntity(new EntityItem(Item::clone(i), posOfTile));
                 }
-                level->setTile(posOfTile, Tiles::tileFloor);
             }
+            level->setTile(posOfTile, Tiles::tileFloor);
+            return interactDelay;
         }
     }
 
@@ -564,7 +562,7 @@ double EntityPlayer::useDelay(Item* item) {
     } else {
         d = 1;
     }
-    return d * interactDelay;
+    return d * interactDelay*10;
 
 }
 
