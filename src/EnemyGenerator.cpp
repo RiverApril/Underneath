@@ -99,7 +99,7 @@ namespace EnemyGenerator {
 
 
         bunny = new EntityBase(0, "Bunny", 'b', aiFlee | aiMoveRandom, 10, ItemGenerator::wNatural, "Claws", C_LIGHT_WHITE, 0);
-        bunny->moveDelay = 0.8;
+        bunny->moveDelay = 0.5;
         
 
 

@@ -96,20 +96,7 @@ public:
 
     virtual bool removeItem(Item* item, bool deleteItem);
 
-    void updateVariablesForAbilities() {
-        moveDelay = 1.0 - ((double) (abilities[iSPD]) / maxAbilities[iSPD]);
-        if (outOfCombatHealing) {
-            healDelay = .5;
-            manaDelay = .5;
-        } else {
-            healDelay = 20.0 - ((double) (abilities[iCON]) / (maxAbilities[iCON] / 20.0));
-            manaDelay = 20.0 - ((double) (abilities[iWIS]) / (maxAbilities[iWIS] / 20.0));
-        }
-        interactDelay = .1;
-
-        maxHp = 100 + (((double) (abilities[iCON]) / maxAbilities[iCON]) * 500);
-        maxMp = 0 + (((double) (abilities[iWIS]) / maxAbilities[iWIS]) * 500);
-    }
+    void updateVariablesForAbilities();
 
     Abilities<int> abilities;
     int abilityPoints = 0;
@@ -117,7 +104,8 @@ public:
     double xp = 0;
     double nextLevelXp = 0;
 
-    Abilities<int> maxAbilities = Abilities<int>(100, 100, 100, 100, 100, 100, 100);
+    //                                           STR     DEX     INT     AGI     SPD     CON     WIS
+    Abilities<int> maxAbilities = Abilities<int>(999999, 999999, 999999, 999999, 999999, 999999, 999999);
 
     void gainXp(double amount);
 
@@ -129,71 +117,11 @@ public:
     bool leveledUp = false;
 
 
-    int xpForLevel(int l){
-        l+=1;
-        return (pow(l, 2)+(5*l)+20);
-    }
+    int xpForLevel(int l);
 
-    double getDefenseMultiplierFromArmor(DamageType damType, bool reduceDurability){
+    double getDefenseMultiplierFromArmor(DamageType damType, bool reduceDurability);
 
-
-        double def = 0;
-
-        for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
-            if(p.second){
-                ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
-                if(armor){
-                    for(Defense d : armor->defenses){
-                        if(d.damageType == damType || d.damageType == -1){
-                            if(reduceDurability){
-                                if(armor->durability > -1){
-                                    if(armor->durability == 0){
-                                        consolef("&%cA peice of your armor is broken!", Ui::cc(C_LIGHT_RED));
-                                    }else if(armor->durability < 16){
-                                        consolef("&%cA peice of your armor is almost broken!", Ui::cc(C_LIGHT_RED));
-                                    }
-                                    if(armor->durability > 0){
-                                        armor->durability--;
-                                    }
-                                }
-                            }
-                            if(armor->durability > 0){
-                                def += d.amount;
-                            }else{
-                                def += d.amount / 2;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return def;
-    }
-
-    double getAttackMultiplierFromEffectsAndArmor(DamageType damType){
-        double d = 1;
-        for(Effect eff : effects){
-            if(eff.eId == effBuffAttack){
-                if((int)eff.meta == damType){
-                    d += eff.power;
-                }
-            }
-        }
-        for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
-            ItemArmor* a = dynamic_cast<ItemArmor*>(p.second);
-            if(a){
-                for(Enchantment e : a->enchantments){
-                    if(e.effectId == effBuffAttack){
-                        if((int)e.meta == damType){
-                            d += e.power;
-                        }
-                    }
-                }
-            }
-        }
-        return d;
-    }
+    double getAttackMultiplierFromEffectsAndArmor(DamageType damType);
 
 
     double useDelay(Item* item);
@@ -201,11 +129,15 @@ public:
     map<EquipSlot, ItemEquipable*> equipedItems;
 
 
-protected:
-
-
     double moveDelay = 1;
     double interactDelay = .1;
+    double dodgeChance = 0;
+    double strMult = 1;
+    double dexMult = 1;
+    double intMult = 1;
+
+
+protected:
     int timeSinceCombat = 0;
     bool outOfCombatHealing = false;
 

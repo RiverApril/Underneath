@@ -361,11 +361,11 @@ double EntityPlayer::calcDamageMultiplier(ItemWeapon* weapon) {
     double x = 1;
     if (weapon) {
         if (weapon->weaponType == wepMelee) {
-            x = 1 + (((double) abilities[iSTR] / (double) maxAbilities[iSTR]) * 10.0);
+            x = strMult;
         } else if (weapon->weaponType == wepRanged) {
-            x = 1 + (((double) abilities[iDEX] / (double) maxAbilities[iDEX]) * 10.0);
+            x = dexMult;
         } else if (weapon->weaponType == wepMagic) {
-            x = 1 + (((double) abilities[iINT] / (double) maxAbilities[iINT]) * 10.0);
+            x = intMult;
         }
         x *= getAttackMultiplierFromEffectsAndArmor(weapon->damageType);
     }
@@ -564,7 +564,7 @@ double EntityPlayer::useDelay(Item* item) {
     } else {
         d = 1;
     }
-    return d * (1 - ((double) abilities[iAGI] / maxAbilities[iAGI]));
+    return d * interactDelay;
 
 }
 
@@ -693,12 +693,100 @@ double EntityPlayer::hurt(ItemWeapon* w, double damageMultiplier) {
     if(Settings::godMode){
         return 0;
     }
-    double chance = (((double) abilities[iAGI] / maxAbilities[iAGI]) / 2);
-    if (rand() < (RAND_MAX * chance)) {
-        return 0;
-    }
 
     damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType, true);
 
     return EntityAlive::hurt(w, damageMultiplier);
+}
+
+void EntityPlayer::updateVariablesForAbilities() {
+    moveDelay = max(1*pow(0.98, abilities[iSPD]), 0.0001);
+    if (outOfCombatHealing) {
+        healDelay = max(.5*pow(0.96, abilities[iCON]), 0.0001);
+        manaDelay = max(.5*pow(0.96, abilities[iWIS]), 0.0001);
+    } else {
+        healDelay = max(20*pow(0.96, abilities[iCON]), 0.0001);
+        manaDelay = max(20*pow(0.96, abilities[iWIS]), 0.0001);
+    }
+    interactDelay = max(.1*pow(0.96, abilities[iSPD]), 0.0001);
+
+    maxHp = 100 + (abilities[iCON] * 5);
+    maxMp = 0 + (abilities[iWIS] * 5);
+
+    dodgeChance = max(1*pow(0.995, abilities[iAGI]), 0.0001);
+
+    strMult = 1 + (((double) abilities[iSTR]/10.0));
+    dexMult = 1 + (((double) abilities[iDEX]/10.0));
+    intMult = 1 + (((double) abilities[iINT]/10.0));
+}
+
+int EntityPlayer::xpForLevel(int l){
+    l+=1;
+    return (pow(l, 2)+(5*l)+20);
+}
+
+double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType, bool reduceDurability){
+
+    if(reduceDurability){
+        if (rand() > (RAND_MAX * dodgeChance)) {
+            return 1;
+        }
+    }
+
+    double def = 0;
+
+    for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
+        if(p.second){
+            ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
+            if(armor){
+                for(Defense d : armor->defenses){
+                    if(d.damageType == damType || d.damageType == -1){
+                        if(reduceDurability){
+                            if(armor->durability > -1){
+                                if(armor->durability == 0){
+                                    consolef("&%cA peice of your armor is broken!", Ui::cc(C_LIGHT_RED));
+                                }else if(armor->durability < 16){
+                                    consolef("&%cA peice of your armor is almost broken!", Ui::cc(C_LIGHT_RED));
+                                }
+                                if(armor->durability > 0){
+                                    armor->durability--;
+                                }
+                            }
+                        }
+                        if(armor->durability > 0){
+                            def += d.amount;
+                        }else{
+                            def += d.amount / 2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return def;
+}
+
+double EntityPlayer::getAttackMultiplierFromEffectsAndArmor(DamageType damType){
+    double d = 1;
+    for(Effect eff : effects){
+        if(eff.eId == effBuffAttack){
+            if((int)eff.meta == damType){
+                d += eff.power;
+            }
+        }
+    }
+    for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
+        ItemArmor* a = dynamic_cast<ItemArmor*>(p.second);
+        if(a){
+            for(Enchantment e : a->enchantments){
+                if(e.effectId == effBuffAttack){
+                    if((int)e.meta == damType){
+                        d += e.power;
+                    }
+                }
+            }
+        }
+    }
+    return d;
 }

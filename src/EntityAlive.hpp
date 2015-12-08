@@ -112,6 +112,9 @@ public:
         return d;
     }
 
+    double healDelay = 20;
+    double manaDelay = 20;
+
 protected:
     string name;
     double maxHp = 30;
@@ -121,10 +124,8 @@ protected:
     bool dead = false;
 
     double lastHealTime = 0;
-    double healDelay = 20;
 
     double lastManaTime = 0;
-    double manaDelay = 20;
 
 };
 

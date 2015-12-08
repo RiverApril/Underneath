@@ -42,7 +42,7 @@ namespace Ui {
 
         } else if (in == '\n') {
             if (player->abilityPoints > 0) {
-                if (player->abilities[selected] < player->maxAbilities[selected]) {
+                if (player->abilities[selected] < player->maxAbilities[selected]-1) {
                     //openMenu(new MenuYesNo(formatString("Are you sure you want to spend a skill point on %s?", abilityNames[selected].c_str()), shouldSpendPoint, true));
 
                     player->abilityPoints--;
@@ -82,24 +82,38 @@ namespace Ui {
         a++;
         int b = a;
 
-        mvprintw(a++, 1, "Abilities:");
+        mvprintw(b++, 1, "Abilities:");
 
         for (int i = 0; i < abilityCount; i++) {
             if (i == selected) {
                 setColor(C_BLACK, C_WHITE);
             }
-            mvprintw(a++, 3, "%s: %d", abilityNamesRightAligned[i].c_str(), player->abilities[i]);
+            mvprintw(b++, 3, "%s: %d", abilityNamesRightAligned[i].c_str(), player->abilities[i]);
             if (i == selected) {
                 setColor(C_WHITE);
             }
         }
 
-        mvprintw(b++, terminalSize.x/2 + 3, "Defenses:");
+        b = a;
+
+        mvprintw(b++, terminalSize.x/3, "Values:");
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %d%%", "Melee Attack", (int)(player->strMult*100));
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %d%%", "Range Attack", (int)(player->dexMult*100));
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %d%%", "Magic Attack", (int)(player->intMult*100));
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %d%%", "Dodge Chance", 100-(int)(player->dodgeChance*100));
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Interact Delay", player->interactDelay);
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Move Delay", player->moveDelay);
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Heal Delay", player->healDelay);
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Mana Delay", player->manaDelay);
+
+        b = a;
+
+        mvprintw(b++, terminalSize.x/3*2, "Defenses:");
 
         for (DamageType d = 0; d<damageTypeCount;d++) {
             double dm = player->getDefenseMultiplierFromArmor(d, false);
             if(dm > 0){
-                mvprintw(b++, terminalSize.x/2 + 5, "%s: %d%%", damageTypeName(d).c_str(), (int)(dm*100));
+                mvprintw(b++, terminalSize.x/3*2 + 2, "%s: %d%%", damageTypeName(d).c_str(), (int)(dm*100));
             }
         }
 
