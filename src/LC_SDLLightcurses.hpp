@@ -35,7 +35,7 @@ Only designed to be used with Underneath
 #define COLORS 0x1000000
 
 
-#define COLOR_PAIR(n) ((((int)n) << 17) & A_COLOR)
+#define COLOR_PAIR(n) (((int)n) << 17)
 
 
 namespace MainWindow{

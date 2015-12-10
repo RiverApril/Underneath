@@ -151,8 +151,8 @@ namespace Ui {
         if (consoleInputMode) {
             Ui::setColor(C_DARK_GREEN);
             mvprintw(bottomY, 2, "> %s", consoleInput.c_str());
-            Ui::setColor(C_LIGHT_GREEN, C_BLACK, A_BLINK);
-            mvprintw(bottomY, 4 + (int) consoleInput.length(), "_");
+            Ui::setColor(C_LIGHT_GREEN, C_BLACK);
+            mvprintw(bottomY, 4 + (int) consoleInput.length(), tick%10>=5?"_":" ");
         }
     }
 

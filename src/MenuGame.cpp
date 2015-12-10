@@ -184,8 +184,6 @@ namespace Ui {
         Ui::Color fg = C_LIGHT_RED;
         Ui::Color bg = C_BLACK;
         char symbol = ' ';
-        int attr = 0;
-
 
         bool inView = false;
         if (currentLevel != nullptr) {
@@ -244,12 +242,10 @@ namespace Ui {
                 if (controlMode == modeSelectEntity) {
                     if (p == targetPosition) {
                         bg = C_LIGHT_BLUE;
-                        attr = A_BLINK;
                     }
                 } else if (controlMode == modeSelectPosition) {
                     if (p == targetPosition) {
                         bg = C_LIGHT_GREEN;
-                        attr = A_BLINK;
                     }
 
                 }
@@ -282,7 +278,7 @@ namespace Ui {
             symbol = '?';
         }
 
-        setColor(fg, bg, attr);
+        setColor(fg, bg);
         addch(symbol);
     }
 
@@ -726,8 +722,7 @@ namespace Ui {
             }
         }
         setColor((controlMode == modeAdjustBorder) ? C_BLACK : C_WHITE,
-                (controlMode == modeAdjustBorder) ? C_LIGHT_YELLOW : C_BLACK,
-                (controlMode == modeAdjustBorder) ? A_BLINK : 0);
+                (controlMode == modeAdjustBorder) ? C_LIGHT_YELLOW : C_BLACK);
 
         for (int j = 0; j < gameArea.y; j++) {
             mvaddch(j, gameArea.x, '|');
