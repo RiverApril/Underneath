@@ -45,4 +45,8 @@ namespace Math {
         return (int) (a > 0 ? floor(a) : ceil(a));
     }
 
+    bool aproxEqual(double a, double b, double epsilon){
+        return abs(a - b) < epsilon;
+    }
+
 }

@@ -41,7 +41,7 @@ ItemEquipable* ItemEquipable::cloneUnsafe(ItemEquipable* oldE, ItemEquipable* ne
 
 bool ItemEquipable::equalsExceptQty(Item* other) {
     ItemEquipable* otherW = dynamic_cast<ItemEquipable*> (other);
-    return Item::equalsExceptQty(other)
-            &&(otherW)
+    return (otherW)
+    		&&Item::equalsExceptQty(other)
             &&(otherW->minimumAbilities == minimumAbilities);
 }

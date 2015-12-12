@@ -12,13 +12,13 @@
 void ItemCombatSpell::save(vector<unsigned char>* data) {
     ItemRanged::save(data);
 
-    Utility::saveInt(data, manaCost);
+    Utility::saveDouble(data, manaCost);
 }
 
 void ItemCombatSpell::load(vector<unsigned char>* data, int* position) {
     ItemRanged::load(data, position);
 
-    manaCost = Utility::loadInt(data, position);
+    manaCost = Utility::loadDouble(data, position);
 }
 
 ItemCombatSpell* ItemCombatSpell::cloneUnsafe(ItemCombatSpell* oldE, ItemCombatSpell* newE) {

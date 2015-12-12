@@ -40,37 +40,15 @@ namespace Ui {
                 }
                 currentWorld->currentLevel->newEntity(new EntityItem(drop, player->pos));
             }
-        } else if (in == Key::dropAll) {
-            if (player->inventory.size() > 0 && selected < player->inventory.size()) {
-                Item* drop;
-                drop = player->inventory[selected];
-                player->removeItem(player->inventory[selected], false);
-                currentWorld->currentLevel->newEntity(new EntityItem(drop, player->pos));
-            }
         } else if (in == Key::equip) {
             ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (player->inventory[selected]);
             if (equipable) {
-                EquipSlot slot = player->getSlot(equipable);
-                if(slot){
-                    player->equipItem(nullptr, slot);
-                }else{
-                    if(!player->equipItem(equipable)){
-                        flashImportantInfo = flashTimeMax;
-                    }
+                if(!player->equipItem(equipable)){
+                    flashImportantInfo = flashTimeMax;
                 }
             }else{
                 *useItem = selected;
                 closeThisMenu();
-            }
-        } else if (in == Key::equipPrimary) {
-            ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (player->inventory[selected]);
-            if (equipable) {
-                EquipSlot slot = player->getSlot(equipable);
-                if(slot){
-                    player->equipItem(nullptr, slot);
-                }else{
-                    player->equipItem(equipable, equipable->getViableSlots()[0]);
-                }
             }
         } else if (in == Key::interact) {
             *useItem = selected;

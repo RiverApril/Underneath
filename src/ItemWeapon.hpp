@@ -14,6 +14,7 @@
 #include "Enchantment.hpp"
 #include "Ui.hpp"
 #include "DamageType.hpp"
+#include "Math.hpp"
 
 const vector<EquipSlot> weaponSlots = {slotWep1, slotWep2};
 
@@ -48,12 +49,12 @@ public:
 
     virtual bool equalsExceptQty(Item* other) {
         ItemWeapon* otherW = dynamic_cast<ItemWeapon*> (other);
-        return ItemEquipable::equalsExceptQty(other)
-                &&(otherW)
-                &&(baseDamage == otherW->baseDamage)
-                &&(damageType == otherW->damageType)
-                &&(enchantments == otherW->enchantments)
-        		&&(useDelay == otherW->useDelay);
+        return (otherW)
+        		&& ItemEquipable::equalsExceptQty(otherW)
+                && Math::aproxEqual(baseDamage, otherW->baseDamage)
+                && (damageType == otherW->damageType)
+                && (enchantments == otherW->enchantments)
+        		&& Math::aproxEqual(useDelay, otherW->useDelay);
     }
 
     virtual vector<EquipSlot> getViableSlots(){

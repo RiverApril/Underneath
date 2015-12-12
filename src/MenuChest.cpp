@@ -34,35 +34,6 @@ namespace Ui {
         } else if (in == Key::uiDown) {
             selected++;
 
-        } else if (in == Key::equip) {
-            if (selectedLeft) {
-                ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (user->inventory[selected]);
-                if (equipable) {
-                    EquipSlot slot = user->getSlot(equipable);
-                    if(slot){
-                        user->equipItem(nullptr, slot);
-                    }else{
-                        user->equipItem(equipable);
-                    }
-                }
-            } else {
-                MenuChest::handleInput(Key::take);
-            }
-
-        } else if (in == Key::equipPrimary) {
-            if (selectedLeft) {
-                ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (user->inventory[selected]);
-                if (equipable) {
-                    EquipSlot slot = user->getSlot(equipable);
-                    if(slot){
-                        user->equipItem(nullptr, slot);
-                    }else{
-                        user->equipItem(equipable, equipable->getViableSlots()[0]);
-                    }
-                }
-            } else {
-                MenuChest::handleInput(Key::take);
-            }
         } else if (in == Key::take) {
             if (from->inventory.size() > 0 && selected < from->inventory.size()) {
                 Item* take;

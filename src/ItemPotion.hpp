@@ -44,9 +44,9 @@ public:
 
     virtual bool equalsExceptQty(Item* other) {
         ItemPotion* otherW = dynamic_cast<ItemPotion*> (other);
-        return Item::equalsExceptQty(other)
-                && (otherW)
-                && (effects == otherW->effects);
+        return (otherW)
+            && Item::equalsExceptQty(other)
+            && (effects == otherW->effects);
     }
 
     vector<Effect> effects;

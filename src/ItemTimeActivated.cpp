@@ -8,6 +8,7 @@
 
 #include "ItemTimeActivated.hpp"
 #include "Utility.hpp"
+#include "Math.hpp"
 
 ItemTimeActivated::ItemTimeActivated(TimeActivatedType timeActivatedType, double time, double power, double radius) : Item(""){
     this->timeActivatedType = timeActivatedType;
@@ -63,10 +64,10 @@ ItemTimeActivated* ItemTimeActivated::cloneUnsafe(ItemTimeActivated* oldE, ItemT
 
 bool ItemTimeActivated::equalsExceptQty(Item* other){
     ItemTimeActivated* otherW = dynamic_cast<ItemTimeActivated*>(other);
-    return Item::equalsExceptQty(other)
-    &&(otherW)
-    &&(otherW->timeActivatedType == timeActivatedType)
-    &&(otherW->time == time)
-    &&(otherW->power == power)
-    &&(otherW->radius == radius);
+    return (otherW)
+    	&& Item::equalsExceptQty(other)
+        && (otherW->timeActivatedType == timeActivatedType)
+        && Math::aproxEqual(otherW->time, time)
+        && Math::aproxEqual(otherW->power, power)
+        && Math::aproxEqual(otherW->radius, radius);
 }

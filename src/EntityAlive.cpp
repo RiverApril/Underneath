@@ -73,9 +73,9 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
                     }
                     break;
                 case effHeal:
-                    if (e->meta == 0) {
+                    if ((int)e->meta == 0) {
                         heal(e->power * m);
-                    } else if (e->meta == 1) {
+                    } else if ((int)e->meta == 1) {
                         healMana(e->power * m);
                     }
                     break;

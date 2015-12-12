@@ -505,6 +505,9 @@ namespace Ui {
                         }
                         timePassed = 1;
                         MenuGame::update();
+                        if(!currentPlayer){
+                            return;
+                        }
                         if (getch() != ERR) {
                             console("Stopped waiting.");
                             c = false;
@@ -554,6 +557,9 @@ namespace Ui {
                                     break;
                                 }
                                 MenuGame::update();
+                                if(!currentPlayer){
+                                    return;
+                                }
                                 if (getch() != ERR) {
                                     console("Stopped walking.");
                                     break;

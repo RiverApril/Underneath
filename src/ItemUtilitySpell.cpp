@@ -13,7 +13,7 @@ void ItemUtilitySpell::save(vector<unsigned char>* data) {
     Item::save(data);
 
     Utility::saveInt(data, spellEffect);
-    Utility::saveInt(data, manaCost);
+    Utility::saveDouble(data, manaCost);
     Utility::saveBool(data, continuousUse);
 }
 
@@ -21,7 +21,7 @@ void ItemUtilitySpell::load(vector<unsigned char>* data, int* position) {
     Item::load(data, position);
 
     spellEffect = Utility::loadInt(data, position);
-    manaCost = Utility::loadInt(data, position);
+    manaCost = Utility::loadDouble(data, position);
     continuousUse = Utility::loadBool(data, position);
 }
 

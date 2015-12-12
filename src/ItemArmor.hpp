@@ -72,11 +72,11 @@ public:
 
     virtual bool equalsExceptQty(Item* other) {
         ItemArmor* otherW = dynamic_cast<ItemArmor*> (other);
-        return ItemEquipable::equalsExceptQty(other)
-        &&(otherW)
-        &&(defenses == otherW->defenses)
-        &&(enchantments == otherW->enchantments)
-        &&(viableSlots == otherW->viableSlots);
+        return (otherW)
+        	&& ItemEquipable::equalsExceptQty(other)
+            && (defenses == otherW->defenses)
+            && (enchantments == otherW->enchantments)
+            && (viableSlots == otherW->viableSlots);
     }
 
     virtual bool canBeEquipedHere(EquipSlot e) {

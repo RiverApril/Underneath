@@ -11,6 +11,7 @@
 
 #include "Global.hpp"
 #include "Item.hpp"
+#include "Math.hpp"
 
 typedef int SpellEffect;
 
@@ -51,15 +52,15 @@ public:
 
     virtual bool equalsExceptQty(Item* other) {
         ItemUtilitySpell* otherW = dynamic_cast<ItemUtilitySpell*> (other);
-        return Item::equalsExceptQty(other)
-                && (otherW)
-       		 	&& (spellEffect == otherW->spellEffect)
-        		&& (manaCost == otherW->manaCost)
+        return (otherW)
+        		&& Item::equalsExceptQty(other)
+                && (spellEffect == otherW->spellEffect)
+        		&& Math::aproxEqual(manaCost, otherW->manaCost)
         		&& (continuousUse == otherW->continuousUse);
     }
 
     SpellEffect spellEffect = 0;
-    int manaCost = 0; // -1 means one use without mana cost
+    double manaCost = 0; // -1 means one use without mana cost
     bool continuousUse = false;
 
     virtual string getExtendedName() {

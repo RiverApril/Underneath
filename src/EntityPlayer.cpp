@@ -590,18 +590,39 @@ bool EntityPlayer::removeItem(Item* item, bool deleteItem) {
     return Inventory::removeItem(item, deleteItem);
 }
 
-bool EntityPlayer::equipItem(ItemEquipable* newItem, bool forceDefaultSlot){
+bool EntityPlayer::equipItem(ItemEquipable* newItem){
     if(newItem){
         vector<EquipSlot> vs = newItem->getViableSlots();
         if(vs.size() > 0){
-            if(!forceDefaultSlot){
+            EquipSlot currentSlot = slotNone;
+            for(EquipSlot slot : vs){
+                if(newItem == equipedItems[slot]){
+                    currentSlot = slot;
+                    break;
+                }
+            }
+            if(currentSlot == slotNone){
                 for(EquipSlot slot : vs){
-                    if(equipedItems[slot] == nullptr){
+                    if(!equipedItems[slot]){
                         return equipItem(newItem, slot);
                     }
                 }
+                return equipItem(newItem, vs[vs.size()-1]);
+            }else{
+                if(currentSlot == vs[0]){
+                    return equipItem(nullptr, currentSlot);
+                }else{
+                    int x = slotNone;
+                    for(int i=(int)vs.size()-1;i>=0;i--){
+                        if(equipedItems[vs[i]] && vs[i] != currentSlot){
+                            x = vs[i];
+                            break;
+                        }
+                    }
+                    equipItem(equipedItems[x], currentSlot);
+                    return equipItem(newItem, x);
+                }
             }
-            return equipItem(newItem, vs[0]);
         }
     }
     return false;

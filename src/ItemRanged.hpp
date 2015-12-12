@@ -37,9 +37,9 @@ public:
 
     virtual bool equalsExceptQty(Item* other) {
         ItemRanged* otherR = dynamic_cast<ItemRanged*> (other);
-        return ItemWeapon::equalsExceptQty(other)
-                &&(otherR)
-                &&(range == otherR->range);
+        return (otherR)
+        		&& ItemWeapon::equalsExceptQty(other)
+                && Math::aproxEqual(range, otherR->range);
     }
 
     double range = 4;

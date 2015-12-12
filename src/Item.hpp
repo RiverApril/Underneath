@@ -59,7 +59,9 @@ public:
     static Item* loadNew(vector<unsigned char>* data, int* position);
 
     bool equals(Item* other) {
-        return equalsExceptQty(other) && other->qty == qty;
+        return other
+        	&& other->qty == qty
+        	&& equalsExceptQty(other);
     }
 
     virtual UseType getUseType(){
@@ -69,8 +71,9 @@ public:
     virtual bool equalsExceptQty(Item* other) {
         return other
                 && getItemTypeId() == other->getItemTypeId()
-                &&(name.compare(other->name) == 0)
-                &&(artIndex == other->artIndex)
+        		&& (name.compare(other->name) == 0)
+        		&& (pluralName.compare(other->pluralName) == 0)
+                && (artIndex == other->artIndex)
                 /*&&(coinValue == other->coinValue)*/;
     }
 

@@ -11,6 +11,7 @@
 
 #include "Global.hpp"
 #include "ItemRanged.hpp"
+#include "Math.hpp"
 
 class ItemCombatSpell : public ItemRanged {
 public:
@@ -39,12 +40,12 @@ public:
 
     virtual bool equalsExceptQty(Item* other) {
         ItemCombatSpell* otherS = dynamic_cast<ItemCombatSpell*> (other);
-        return ItemRanged::equalsExceptQty(other)
-                &&(otherS)
-                &&(manaCost == otherS->manaCost);
+        return (otherS)
+        		&& ItemRanged::equalsExceptQty(other)
+        		&& Math::aproxEqual(manaCost, otherS->manaCost);
     }
 
-    int manaCost = 0;
+    double manaCost = 0;
 
     bool operator< (ItemCombatSpell& b){
         return this->damageType < b.damageType;

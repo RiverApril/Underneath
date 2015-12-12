@@ -38,9 +38,8 @@ namespace Key {
 
     //In inventory
     int drop = 'd';
-    int dropAll = 'D';
+    //int dropAll = 'D';
     int equip = 'e';
-    int equipPrimary = 'E';
     int sortInv = 's';
 
     //In chest
@@ -67,9 +66,8 @@ vector<KeyBind> keybindings = {
     KeyBind("Ui Left", &Key::uiLeft, keyCatUi),
     KeyBind("Ui Right", &Key::uiRight, keyCatUi),
     KeyBind("Equip Item", &Key::equip, keyCatUi),
-    KeyBind("Equip Item as Primary", &Key::equipPrimary, keyCatUi),
     KeyBind("Drop Item", &Key::drop, keyCatUi),
-    KeyBind("Drop Stack", &Key::dropAll, keyCatUi),
+    //KeyBind("Drop Stack", &Key::dropAll, keyCatUi),
     KeyBind("Transfer Item", &Key::take, keyCatUi),
     KeyBind("Transfer Stack", &Key::takeStack, keyCatUi),
     KeyBind("Sort Inventory", &Key::sortInv, keyCatUi),

@@ -299,7 +299,7 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
 
 void EntityAi::dropLoots(Level* level){
 
-    if(!isHostile()){
+    if(!getActiveItemWeapon()){
         return;
     }
 

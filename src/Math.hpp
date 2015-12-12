@@ -37,6 +37,8 @@ namespace Math {
     int roundAwayFrom0(double a);
     int roundToward0(double a);
 
+    bool aproxEqual(double a, double b, double epsilon = 0.00001);
+
 }
 
 

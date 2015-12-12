@@ -61,7 +61,7 @@ ItemSpecial* ItemSpecial::cloneUnsafe(ItemSpecial* oldE, ItemSpecial* newE){
 
 bool ItemSpecial::equalsExceptQty(Item* other){
     ItemSpecial* otherW = dynamic_cast<ItemSpecial*>(other);
-    return Item::equalsExceptQty(other)
-    &&(otherW)
-    &&(otherW->specialty == specialty);
+    return (otherW)
+    	&& Item::equalsExceptQty(other)
+    	&& (otherW->specialty == specialty);
 }
