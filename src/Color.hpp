@@ -9,7 +9,7 @@
 #ifndef __Underneath__Color__
 #define __Underneath__Color__
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(useSDLLightCurses)
     #define C_DARK_BLACK 0x0 // white when background is black
     #define C_DARK_BLUE 0x1
     #define C_DARK_GREEN 0x2

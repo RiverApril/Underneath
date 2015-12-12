@@ -56,8 +56,8 @@ objectExtention = "opp"
 
 
 compiler = "g++"
-compilerFlags = "-std=c++11"
-libraryFlags = "-lncurses"
+compilerFlags = "-std=gnu++11"
+libraryFlags = ""
 
 optimization = "-g -O0"
 
@@ -65,60 +65,71 @@ executableName = "Underneath"
 
 compileAll = args.all
 
+
 if args.optimize:
     optimization = "-O3"
     executableName += "_Optim"
 
-
-if systemName == "Windows":
-    #Windows compiler name here (I haven't done this in a while)
-    compilerFlags += " -D WIN32"
-
-if systemName == "Linux" and args.windows:
-    compiler = "i686-w64-mingw32-c++"
-    compilerFlags += " -D WIN32"
-
-if systemName == "Darwin" and args.windows:
-    compiler = "i586-mingw32-c++"
-    compilerFlags += " -D WIN32"
+compilerFlags = optimization+" "+compilerFlags;
 
 
 
 if args.compiler:
     compiler = args.compiler;
 
-compilerFlags = optimization+" "+compilerFlags;
-
 if args.sdl:
     executableName += "_SDL"
     compilerFlags += " -D useSDLLightCurses"
-
-    if systemName == "Windows" or args.windows:
-        compilerFlags += " `/usr/i686-w64-mingw32/bin/sdl2-config --cflags`"
-        libraryFlags  = " `/usr/i686-w64-mingw32/bin/sdl2-config --libs` -lSDL2_image -static -static-libgcc -static-libstdc++"
-    elif systemName == "Darwin":
-        compilerFlags += " -I/usr/local/include"
-        libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
-        libraryFlags += " `sdl2-config --libs`"
-    else:
-        compilerFlags += " `sdl2-config --cflags`"
-        libraryFlags  = " `sdl2-config --libs` -lSDL2_image"
-
 else:
     executableName += "_Term"
-    if systemName == "Windows" or args.windows:
-        libraryFlags = "-lpdcurses -static -static-libgcc -static-libstdc++"
-    elif systemName == "Darwin":
-        libraryFlags = "-lncurses"
-    else:
-        libraryFlags = "-lncurses"
 
-if systemName == "Windows" or args.windows:
+
+if args.windows:
+
+    if systemName == "Darwin":
+        compiler = "i586-mingw32-c++"
+        compilerFlags += " -D WIN32"
+        if args.sdl:
+            libraryFlags += ""
+    elif systemName == "Linux":
+        compiler = "i686-w64-mingw32-c++"
+        compilerFlags += " -D WIN32"
+
+    if args.sdl:
+        libraryFlags = "-lSDL2main -lSDL2 -lSDL2_image"
+        print("    # The Windows executable will require the following dll files:")
+        print("    #   SDL2.dll")
+        print("    #   SDL2_image.dll")
+        print("    #   zlib1.dll")
+        print("    #   libpng16-16.dll")
+    else:
+        libraryFlags = "-lpdcurses -static -static-libgcc -static-libstdc++"
+        print("    # The Windows executable will require the following dll file:")
+        print("    #   pdcurses.dll")
+else:
+    if args.sdl:
+        if systemName == "Darwin":
+            compilerFlags += " -I/usr/local/include"
+            libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
+            libraryFlags += " `sdl2-config --libs`"
+        elif systemName == "Linux":
+            compilerFlags += " `sdl2-config --cflags`"
+            libraryFlags  = " `sdl2-config --libs` -lSDL2_image"
+
+    else:
+        if systemName == "Darwin":
+            libraryFlags = "-lncurses"
+        elif systemName == "Linux":
+            libraryFlags = "-lncurses"
+
+if args.windows:
     executableName += "_Windows.exe"
 elif systemName == "Darwin":
     executableName += "_OSX"
 else:
     executableName += "_"+systemName
+
+
 
 
 objectDirectory += "/"+executableName
