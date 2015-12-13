@@ -197,7 +197,7 @@ namespace Utility {
         throw ParseException("Number out of range: " + to_string(number));
     }
 
-    string toString(int num, int base){
+    /*string toString(int num, int base){
         if(base < 1 || base > 62){
             throw ParseException("Base out of range: " + to_string(base));
         }else{
@@ -230,7 +230,7 @@ namespace Utility {
 
             return final;
         }
-    }
+    }*/
 
     double parseDouble(string s, int base, double defaultIfException) {
         try {

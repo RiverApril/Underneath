@@ -59,7 +59,7 @@ compiler = "g++"
 compilerFlags = "-std=gnu++11"
 libraryFlags = ""
 
-optimization = "-g -O0"
+optimization = "-g -O0 -Wall"
 
 executableName = "Underneath"
 

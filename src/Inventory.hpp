@@ -11,7 +11,8 @@
 
 #include "ItemWeapon.hpp"
 
-struct Inventory {
+class Inventory {
+public:
 
     Inventory() {
 

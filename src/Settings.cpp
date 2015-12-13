@@ -51,7 +51,7 @@ namespace Settings{
                     lines += ((char)*bind.key);
                     lines += "'";
                 }else{
-                    lines += Utility::toString(*bind.key);
+                    lines += formatString("%d", *bind.key);
                 }
                 lines += "\n";
             }
