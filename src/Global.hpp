@@ -85,7 +85,7 @@ using namespace std;
 
 #endif
 
-#define forVector(list, i) for(int i=0;i<list.size();i++)
+#define forVector(list, i) for(int i=0;i<(int)list.size();i++)
 
 #define repeat(n, i) for(int i=0;i<n;i++)
 
