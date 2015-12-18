@@ -31,7 +31,7 @@ namespace Ui {
             }
         }else if(in == Key::uiDown){
             selected++;
-            if (selected >= keybindings.size()) {
+            if (selected >= (int)keybindings.size()) {
                 selected = 0;
             }
 
@@ -70,7 +70,7 @@ namespace Ui {
 
         int y = 1;
 
-        for(int i=0;i<keybindings.size();i++){
+        for(int i=0;i<(int)keybindings.size();i++){
             if(i == selected){
                 setColor(C_BLACK, C_WHITE);
             }

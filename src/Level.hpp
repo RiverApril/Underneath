@@ -80,7 +80,7 @@ public:
 
     bool canSee(Point2 origin, Point2 test, double range);
 
-    size_t entityCount();
+    int entityCount();
 
     bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0, bool careAboutEntities = false, bool mustBeExplored = false);
 

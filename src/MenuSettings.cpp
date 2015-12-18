@@ -30,7 +30,7 @@ namespace Ui {
             }
         }else if(in == Key::uiDown){
             selected++;
-            if (selected >= Settings::settingList.size()) {
+            if (selected >= (int)Settings::settingList.size()) {
                 selected = 0;
             }
 

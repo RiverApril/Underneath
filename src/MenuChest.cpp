@@ -35,7 +35,7 @@ namespace Ui {
             selected++;
 
         } else if (in == Key::take) {
-            if (from->inventory.size() > 0 && selected < from->inventory.size()) {
+            if ((int)from->inventory.size() > 0 && selected < (int)from->inventory.size()) {
                 Item* take;
                 if (from->inventory[selected]->qty == 1) {
                     take = from->inventory[selected];
@@ -50,7 +50,7 @@ namespace Ui {
             }
 
         } else if (in == Key::takeStack) {
-            if (from->inventory.size() > 0 && selected < from->inventory.size()) {
+            if ((int)from->inventory.size() > 0 && selected < (int)from->inventory.size()) {
                 Item* take;
                 take = from->inventory[selected];
                 from->removeItem(from->inventory[selected], false);
@@ -69,7 +69,7 @@ namespace Ui {
         if (selected < 0) {
             selected = (int) from->inventory.size() - 1;
         }
-        if (selected >= from->inventory.size()) {
+        if (selected >= (int)from->inventory.size()) {
             selected = 0;
         }
 

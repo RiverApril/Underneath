@@ -24,8 +24,8 @@ Level::Level(World* w, string n, Point2 s, int d) {
     size = s;
     tileGrid = vector<vector < TileData >> (size.x, vector<TileData>(size.y));
 
-    for (size_t i = 0; i < size.x; i++) {
-        for (size_t j = 0; j < size.y; j++) {
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
             tileGrid[i][j].index = (int8_t) Tiles::tileUnset->getIndex();
             tileGrid[i][j].explored = false;
             //tileGrid[i][j].entity = nullptr;
@@ -321,10 +321,10 @@ vector<Entity*> Level::getAllVisableEntities(Point2 origin, double range, vector
         }
     }
 
-    size_t n = list.size();
+    int n = list.size();
 
-    for (size_t x = 0; x < n; x++) {
-        for (size_t y = 0; y < n - 1; y++) {
+    for (int x = 0; x < n; x++) {
+        for (int y = 0; y < n - 1; y++) {
             if (distanceSquared(nearestTo, list[y]->pos) > distanceSquared(nearestTo, list[y + 1]->pos)) {
                 Entity* temp = list[y + 1];
                 list[y + 1] = list[y];
@@ -338,13 +338,13 @@ vector<Entity*> Level::getAllVisableEntities(Point2 origin, double range, vector
 
 }
 
-size_t Level::entityCount() {
-    return entityList.size();
+int Level::entityCount() {
+    return (int)entityList.size();
 }
 
 bool Level::update(double deltaTime, double time, Point2 viewPos) {
     bool u = false;
-    for (int i = 0; i < entityList.size(); i++) {
+    for (int i = 0; i < (int)entityList.size(); i++) {
         Entity* e = entityList[i];
         if (!e->removed) {
             if (e->update(deltaTime, time, this)) {
@@ -387,12 +387,6 @@ void Level::renderMenuGame(double displayTime) {
     }
 }
 
-/*void Level::setAndUnsetDisplayEntities(){
-    for (size_t i=0; i<entityList.size(); i++) {
-        entityList.at(i)->setAndUnsetDisplayEntity(shared_from_this());
-    }
-}*/
-
 Entity* Level::newEntity(Entity* newE, bool setUID) {
     if(setUID){
         //if(nextUniqueId == 0){
@@ -420,7 +414,7 @@ void Level::removeTileEntity(TileEntity* e) {
 }
 
 void Level::actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity) {
-    for (int i = 0; i < entityList.size(); i++) {
+    for (int i = 0; i < (int)entityList.size(); i++) {
         if (e->uniqueId == entityList[i]->uniqueId) {
             entityList.erase(entityList.begin() + i);
             debug("Removed Entity: " + e->getName());
@@ -435,7 +429,7 @@ void Level::actuallyRemoveEntityUnsafe(Entity* e, bool deleteEntity) {
 }
 
 void Level::actuallyRemoveTileEntityUnsafe(TileEntity* e) {
-    for (size_t i = 0; i < tileEntityList.size(); i++) {
+    for (int i = 0; i < (int)tileEntityList.size(); i++) {
         if (e == tileEntityList[i]) {
             tileEntityList.erase(tileEntityList.begin()+(long) i);
             debugf("Deleting Tile Entity: %d", e->getTileEntityTypeId());
@@ -449,8 +443,8 @@ void Level::actuallyRemoveTileEntityUnsafe(TileEntity* e) {
 vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored) {
     vector<vector<int>> map = vector<vector<int>>(size.x, vector<int>(size.y));
 
-    for (size_t i = 0; i < size.x; i++) {
-        for (size_t j = 0; j < size.y; j++) {
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
             map[i][j] = -1;
         }
     }
@@ -612,20 +606,20 @@ void Level::save(vector<unsigned char>* data) {
     Utility::saveInt(data, nextUniqueId);
 
     Point2::save(stairDownPos, data);
-    for (size_t i = 0; i < size.x; i++) {
-        for (size_t j = 0; j < size.y; j++) {
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
             Utility::saveUInt8Bit(data, tileGrid[i][j].index);
         }
     }
 
-    for (size_t i = 0; i < size.x; i++) {
-        for (size_t j = 0; j < size.y; j++) {
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
             Utility::saveBool(data, tileGrid[i][j].explored);
         }
     }
 
     int count = 0;
-    for (size_t i = 0; i < entityList.size(); i++) {
+    for (int i = 0; i < (int)entityList.size(); i++) {
 	    if(entityList[i]->getEntityTypeId() != ENTITY_TYPE_PLAYER){
             count++;
         }
@@ -658,14 +652,14 @@ void Level::load(vector<unsigned char>* data, int* position) {
 
     stairDownPos = Point2::load(data, position);
 
-    for (size_t i = 0; i < size.x; i++) {
-        for (size_t j = 0; j < size.y; j++) {
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
             tileGrid[i][j].index = Utility::loadInt8Bit(data, position);
         }
     }
 
-    for (size_t i = 0; i < size.x; i++) {
-        for (size_t j = 0; j < size.y; j++) {
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
             tileGrid[i][j].explored = Utility::loadBool(data, position);
         }
     }

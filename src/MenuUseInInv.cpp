@@ -41,7 +41,7 @@ namespace Ui {
         if (selected < 0) {
             selected = (int) player->inventory.size() - 1;
         }
-        if (selected >= player->inventory.size()) {
+        if (selected >= (int) player->inventory.size()) {
             selected = 0;
         }
 

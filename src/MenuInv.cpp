@@ -28,7 +28,7 @@ namespace Ui {
         } else if (in == Key::uiDown) {
             selected++;
         } else if (in == Key::drop) {
-            if (player->inventory.size() > 0 && selected < player->inventory.size()) {
+            if ((int)player->inventory.size() > 0 && selected < (int)player->inventory.size()) {
                 Item* drop;
                 if (player->inventory[selected]->qty == 1) {
                     drop = player->inventory[selected];
@@ -67,7 +67,7 @@ namespace Ui {
         if (selected < 0) {
             selected = (int) player->inventory.size() - 1;
         }
-        if (selected >= player->inventory.size()) {
+        if (selected >= (int)player->inventory.size()) {
             selected = 0;
         }
 

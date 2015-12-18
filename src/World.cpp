@@ -56,11 +56,14 @@ namespace WorldLoader {
 
     vector<unsigned char>* readData(FILE* file) {
         fseek(file, 0, SEEK_END);
-        long fileSize = ftell(file);
+        size_t fileSize = ftell(file);
         rewind(file);
 
         unsigned char buffer[fileSize];
-        fread(buffer, fileSize, 1, file);
+        size_t r = fread(buffer, fileSize, 1, file);
+        if(r != fileSize){
+            throw Utility::FileExceptionLoad("File size was not equal to the expected.");
+        }
         /*printf("Length: %ld\n", fileSize);
         for(int i=0;i<fileSize;i++){
             printf("%X, ", buffer[i]);

@@ -139,7 +139,7 @@ namespace EnemyGenerator {
 
     void setIntervals(int difficulty) {
         total = 0;
-        for (int i = 0; i < enemyWeightList.size(); i++) {
+        for (int i = 0; i < (int)enemyWeightList.size(); i++) {
             total += enemyWeightList[i]->weight * enemyWeightList[i]->difficultyWeightMulti * (difficulty + 1);
             enemyWeightList[i]->interval = total;
         }
