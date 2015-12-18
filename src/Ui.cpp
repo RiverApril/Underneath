@@ -221,7 +221,7 @@ namespace Ui {
             maxX = terminalSize.x;
         }
         int w = maxX - x;
-        for (int i = 0; i < s.length(); i += w) {
+        for (int i = 0; i < (int)s.length(); i += w) {
             string ss = s.substr(i, w);
             if (ss.length() > 0) {
                 if (ss[0] == ' ') {
@@ -310,7 +310,7 @@ namespace Ui {
     int stringLengthWithColored(string s){
         bool lookingForCode = false;
         int l = 0;
-        for (int i = 0; i < s.length(); i++) {
+        for (int i = 0; i < (int)s.length(); i++) {
             if(lookingForCode){
                 lookingForCode = false;
                 if(s[i] == escapeColorCode){
@@ -333,7 +333,7 @@ namespace Ui {
         }
         move(y, x);
         bool lookingForCode = false;
-        for (int i = 0; i < s.length(); i++) {
+        for (int i = 0; i < (int)s.length(); i++) {
             if (!(s[i] == ' ' && b == 0)) {
                 if (addChColor(s[i], &lookingForCode)) {
                     b++;
@@ -457,7 +457,7 @@ namespace Ui {
 
                 int w = columnWidth - 6;
 
-                if(displayName.size() > w){
+                if((int)displayName.size() > w){
                     displayName = displayName.substr(0, w)+"...";
                 }
 
@@ -697,7 +697,7 @@ namespace Ui {
 
 
                             Arts::getArt(Arts::compassOut)->printAt(Point2(columnX, a));
-							if (Arts::compassInList.size() > frame) {
+							if ((int)Arts::compassInList.size() > frame) {
 								Arts::getArt(Arts::compassInList[frame])->printAt(Point2(columnX, a) + Arts::compassInOffset);
                             }else{
                                 a += printMultiLineString(a, columnX, d.c_str());

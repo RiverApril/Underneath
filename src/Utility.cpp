@@ -97,7 +97,7 @@ namespace Utility {
     }
 
     unsigned char loadUnsignedChar(vector<unsigned char>* data, int* position) {
-        if(data->size() <= *position){
+        if((int)data->size() <= *position){
             throw 1;
         }
         unsigned char l = (*data)[*position];
@@ -164,7 +164,7 @@ namespace Utility {
 
     string repeatString(string s, int qty) {
         string v = "";
-        for (size_t i = 0; i < qty; i++) {
+        for (int i = 0; i < qty; i++) {
             v += s;
         }
         return v;

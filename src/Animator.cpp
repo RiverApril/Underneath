@@ -27,10 +27,10 @@ namespace Animator {
 
         timeout(10);
 
-        for(int i=1; i < line.size() || j < line.size(); i++){
+        for(int i=1; i < (int)line.size() || j < (int)line.size(); i++){
 
 
-            if(i < line.size()){
+            if(i < (int)line.size()){
             	Point2 pos = line[i] - level->currentWorld->menuGame->viewPos;
 
                 Ui::setColor(icon->getFgColor(Ui::tick, pos, level), icon->getBgColor(Ui::tick, pos, level));

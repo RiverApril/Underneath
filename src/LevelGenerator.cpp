@@ -663,8 +663,8 @@ namespace LevelGenerator {
 
         vector<vector<char>> grid = vector<vector<char>>(size.x, vector<char>(size.y));
 
-        for (int i = 0; i < grid.size(); i++) {
-            for (int j = 0; j < grid[0].size(); j++) {
+        for (int i = 0; i < (int)grid.size(); i++) {
+            for (int j = 0; j < (int)grid[0].size(); j++) {
                 grid[i][j] = 'u';
             }
         }

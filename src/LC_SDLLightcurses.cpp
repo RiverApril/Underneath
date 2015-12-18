@@ -62,8 +62,8 @@ namespace MainWindow{
 
     int currentColor = 0;
 
-    int rgbColorWhite;
-    int rgbColorBlack;
+    unsigned int rgbColorWhite;
+    unsigned int rgbColorBlack;
 
     bool shiftIsDown = false;
 
@@ -645,7 +645,7 @@ int clrtoeol(){
 }
 
 int clrtobot(){
-    for(;cursor<screenCharBuffer.size();cursor++){
+    for(;cursor<(int)screenCharBuffer.size();cursor++){
         screenCharBuffer[cursor] = ' ';
         screenColorBuffer[cursor] = 0;
     }

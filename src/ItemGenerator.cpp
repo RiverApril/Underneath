@@ -846,7 +846,7 @@ namespace ItemGenerator {
 
     vector<Item*> makeLoot(int lootProfileIndex, int difficulty, int coinCount, int lootMin, int lootMax, int lootExtraProb){
 
-        if(lootProfileIndex == -1 || lootProfileIndex >= lootProfileList.size()){
+        if(lootProfileIndex == -1 || lootProfileIndex >= (int)lootProfileList.size()){
             return {};
         }
 
