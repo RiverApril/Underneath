@@ -15,32 +15,6 @@
 
 //#define primaryLeftHand false
 
-typedef int EquipSlot;
-
-const EquipSlot slotNone = 0;
-const EquipSlot slotWep1 = 1;
-const EquipSlot slotWep2 = 2;
-const EquipSlot slotHands = 3;
-const EquipSlot slotHead = 4;
-const EquipSlot slotBody = 5;
-const EquipSlot slotFeet = 6;
-const EquipSlot slotLegs = 7;
-const EquipSlot slotFinger1 = 8;
-const EquipSlot slotFinger2 = 9;
-const EquipSlot slotFinger3 = 10;
-const EquipSlot slotFinger4 = 11;
-const EquipSlot slotFav1 = 12;
-const EquipSlot slotFav2 = 13;
-const EquipSlot slotFav3 = 14;
-const EquipSlot slotFav4 = 15;
-const EquipSlot slotFav5 = 16;
-const EquipSlot slotFav6 = 17;
-const EquipSlot slotFav7 = 18;
-const EquipSlot slotFav8 = 19;
-const EquipSlot slotFav9 = 20;
-const EquipSlot slotFav0 = 21;
-const EquipSlot slotMAX = slotFav0;
-
 class ItemEquipable : public Item {
 public:
 
@@ -242,7 +216,7 @@ public:
     virtual bool equalsExceptQty(Item* other);
 
     virtual bool canBeEquipedHere(EquipSlot e) {
-        if(e >= slotFav1 && e <= slotFav0){
+        if(Item::canBeEquipedHere(e)){
             return true;
         }
         vector<EquipSlot> vs = getViableSlots();

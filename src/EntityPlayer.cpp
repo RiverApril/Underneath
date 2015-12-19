@@ -492,9 +492,9 @@ EntityPlayer* EntityPlayer::cloneUnsafe(EntityPlayer* oldE, EntityPlayer* newE) 
     newE->outOfCombatHealing = oldE->outOfCombatHealing;
 
     forVector(oldE->inventory, i) {
-        for(pair<EquipSlot, ItemEquipable*> p : oldE->equipedItems){
+        for(pair<EquipSlot, Item*> p : oldE->equipedItems){
             if (oldE->inventory[i] == p.second) {
-                newE->equipedItems[p.first] = dynamic_cast<ItemEquipable*> (newE->inventory[i]);
+                newE->equipedItems[p.first] = newE->inventory[i];
             }
         }
     }
@@ -520,7 +520,7 @@ void EntityPlayer::save(vector<unsigned char>* data) {
 
     Utility::saveInt(data, (int)equipedItems.size());
 
-    for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
+    for(pair<EquipSlot, Item*> p : equipedItems){
     	forVector(inventory, i) {
             if (inventory[i] == p.second) {
                 Utility::saveInt(data, p.first);
@@ -547,7 +547,7 @@ void EntityPlayer::load(vector<unsigned char>* data, int* position) {
     for(int i=0;i<size;i++){
         int slot = Utility::loadInt(data, position);
         int index = Utility::loadInt(data, position);
-        equipedItems[slot] = dynamic_cast<ItemEquipable*>(inventory[index]);
+        equipedItems[slot] = inventory[index];
     }
 	
     updateVariablesForAbilities();
@@ -581,7 +581,7 @@ void EntityPlayer::gainXp(double amount) {
 
 bool EntityPlayer::removeItem(Item* item, bool deleteItem) {
     if (item) {
-        for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
+        for(pair<EquipSlot, Item*> p : equipedItems){
             if (item == p.second) {
                 equipItem(nullptr, p.first);
             }
@@ -628,9 +628,17 @@ bool EntityPlayer::equipItem(ItemEquipable* newItem){
     return false;
 }
 
-bool EntityPlayer::equipItem(ItemEquipable* newItem, EquipSlot slot){
+bool EntityPlayer::equipItem(Item* newItem, EquipSlot slot){
 
     try{
+
+        if(newItem){
+            if(getSlot(newItem) == slot){
+                equipItem(nullptr, slot);
+                return true;
+            }
+        	equipItem(nullptr, getSlot(newItem));
+        }
 
         bool alreadyHave = false;
 
@@ -648,35 +656,42 @@ bool EntityPlayer::equipItem(ItemEquipable* newItem, EquipSlot slot){
                 equipedItems[slot] = newItem;
             }
 
-            if(slot == 0 || slot > slotMAX){
-                consolef("Slot out of range: %d", slot);
-                throw false;
-            }
-
-            for (int i = 0; i < abilityCount; i++) {
-                if (newItem->minimumAbilities[i] > abilities[i]) {
-                    consolef("Ability %s too high: %d", abilityAbr[i].c_str(), newItem->minimumAbilities[i]);
-                    throw false;
-                }
-            }
-
             if(!newItem->canBeEquipedHere(slot)){
                 consolef("Cannot be equipped here: %d", slot);
                 throw false;
             }
 
-            for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
-                if(p.second){
-                    if(p.second->blocksSlot(slot, p.first)){
-                        equipedItems[p.first] = nullptr;
+            if(slot == 0 || slot > slotMAX){
+                consolef("Slot out of range: %d", slot);
+                throw false;
+            }
+            ItemEquipable* eqp = dynamic_cast<ItemEquipable*>(newItem);
+            if(eqp){
+
+                for (int i = 0; i < abilityCount; i++) {
+                    if (eqp->minimumAbilities[i] > abilities[i]) {
+                        consolef("Ability %s too high: %d", abilityAbr[i].c_str(), eqp->minimumAbilities[i]);
+                        throw false;
                     }
                 }
+
+                for(pair<EquipSlot, Item*> p : equipedItems){
+                    if(p.second){
+                        ItemEquipable* eqpSec = dynamic_cast<ItemEquipable*>(p.second);
+                        if(eqpSec){
+                            if(eqpSec->blocksSlot(slot, p.first)){
+                                equipedItems[p.first] = nullptr;
+                            }
+                        }
+                    }
+                }
+
             }
 
 
 
             if(alreadyHave){
-                equipedItems[slot] = dynamic_cast<ItemEquipable*> (newItem);
+                equipedItems[slot] = newItem;
                 throw true;
             }else{
                 throw false;
@@ -754,7 +769,7 @@ double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType, bool redu
 
     double def = 0;
 
-    for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
+    for(pair<EquipSlot, Item*> p : equipedItems){
         if(p.second){
             ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
             if(armor){
@@ -795,7 +810,7 @@ double EntityPlayer::getAttackMultiplierFromEffectsAndArmor(DamageType damType){
             }
         }
     }
-    for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
+    for(pair<EquipSlot, Item*> p : equipedItems){
         ItemArmor* a = dynamic_cast<ItemArmor*>(p.second);
         if(a){
             for(Enchantment e : a->enchantments){

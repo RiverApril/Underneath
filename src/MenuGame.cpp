@@ -647,32 +647,91 @@ namespace Ui {
                         }
                     }
                 }
-            } else if(Settings::cheatKeysEnabled){
-                if (in == 'r') {
-                    Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
-                    timePassed += currentPlayer->moveAbsalute(p, currentLevel, false);
+            }else {
+                int slot = -1;
+                if(in == Key::fav1){
+                    slot = slotFav1;
+                }else if(in == Key::fav2){
+                    slot = slotFav2;
+                }else if(in == Key::fav3){
+                    slot = slotFav3;
+                }else if(in == Key::fav4){
+                    slot = slotFav4;
+                }else if(in == Key::fav5){
+                    slot = slotFav5;
+                }else if(in == Key::fav6){
+                    slot = slotFav6;
+                }else if(in == Key::fav7){
+                    slot = slotFav7;
+                }else if(in == Key::fav8){
+                    slot = slotFav8;
+                }else if(in == Key::fav9){
+                    slot = slotFav9;
+                }else if(in == Key::fav0){
+                    slot = slotFav0;
+                }
 
-                } else if (in == 'R') {
-                    Point2 p = currentLevel->stairDownPos;
-                    consolef("Stair Down: %s", p.toString().c_str());
-                    //timePassed += currentPlayer->moveAbsalute(p, currentLevel);
-                    currentPlayer->pos = p;
+                if(slot >= 0){
+                    Item* it = currentPlayer->getEquiped(slot);
+                    if(it){
+                        UseType use = it->getUseType();
+                        if (use == useInstant) {
+                            timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, it);
+                        } else if(use == useInWorld){
+                            ItemWeapon* wep = dynamic_cast<ItemWeapon*>(it);
+                            ItemRanged* rng = dynamic_cast<ItemRanged*>(it);
+                            if(!rng && wep){
+                                changeMode(modeSelectDirection);
+                                itemToBeUsed = it;
+                            }else{
+                                itemToBeUsedRange = 1000000;
+                                itemToBeUsed = it;
+                                targetPosition = currentPlayer->pos;
+                                changeMode(modeSelectPosition);
+                                selectMode = selectModeAttack;
+                            }
+                        } else if(use == useInInventory){
+                            int i = -1;
+                            forVector(currentPlayer->inventory, i){
+                                if(currentPlayer->inventory[i] == it){
 
-                } else if (in == '[') {
-                    currentPlayer->hurt(damDebug, 1);
+                                }
+                            }
+                            if(i >= 0){
+                                MenuUseInInv* m = new MenuUseInInv(currentPlayer, currentWorld, i);
+                                openMenu(m);
+                            }
+                        }
+                    }
+                }
 
-                } else if (in == ']') {
-                    currentPlayer->heal(1);
+                if(Settings::cheatKeysEnabled){
+                    if (in == 'r') {
+                        Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
+                        timePassed += currentPlayer->moveAbsalute(p, currentLevel, false);
 
-                } else if (in == '{') {
-                    currentPlayer->hurt(damDebug, 10);
+                    } else if (in == 'R') {
+                        Point2 p = currentLevel->stairDownPos;
+                        consolef("Stair Down: %s", p.toString().c_str());
+                        //timePassed += currentPlayer->moveAbsalute(p, currentLevel);
+                        currentPlayer->pos = p;
 
-                } else if (in == '}') {
-                    currentPlayer->heal(10);
+                    } else if (in == '[') {
+                        currentPlayer->hurt(damDebug, 1);
 
-                } else if (in == 'D') {
-                    openMenu(new MenuDebug(currentWorld));
+                    } else if (in == ']') {
+                        currentPlayer->heal(1);
 
+                    } else if (in == '{') {
+                        currentPlayer->hurt(damDebug, 10);
+
+                    } else if (in == '}') {
+                        currentPlayer->heal(10);
+
+                    } else if (in == 'D') {
+                        openMenu(new MenuDebug(currentWorld));
+
+                    }
                 }
             }
         }
@@ -716,6 +775,8 @@ namespace Ui {
         viewUpdate();
         move(0, 0);
         clrtobot();
+        
+        printConsole(gameArea.y + 1);
 
         if(fadeIn < fadeInMax){
             fadeIn++;
@@ -841,6 +902,17 @@ namespace Ui {
 
             }
 
+            for(int i=1;i<=10;i++){
+                Item* it = currentPlayer->getEquiped(slotFav1+i-1);
+                if(it){
+                    //string s = it->getName(it->qty!=1)+"   ";
+                    //string ss = s.substr((tick/5)%(s.size()-3), 3);
+                    mvprintw(gameArea.y-2, (i-1)*4, "+-%d-+", i==10?0:i);
+                	mvprintw(gameArea.y-1, (i-1)*4, "|%3s|", (it->getName(it->qty!=1).substr(0, 3)).c_str());
+                	mvprintw(gameArea.y, (i-1)*4, "+---+");
+                }
+            }
+
 
         } else {
             //printCenterOffset(gameArea.y / 2, -(borderSize.x / 2), "G a m e   O v e r");
@@ -862,7 +934,6 @@ namespace Ui {
 
 
 
-        printConsole(gameArea.y + 1);
 
         //refresh();
     }

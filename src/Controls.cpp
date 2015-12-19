@@ -46,6 +46,17 @@ namespace Key {
     int take = 't';
     int takeStack = 'T';
 
+    int fav1 = '1';
+    int fav2 = '2';
+    int fav3 = '3';
+    int fav4 = '4';
+    int fav5 = '5';
+    int fav6 = '6';
+    int fav7 = '7';
+    int fav8 = '8';
+    int fav9 = '9';
+    int fav0 = '0';
+
 }
 
 vector<KeyBind> keybindings = {
@@ -72,7 +83,18 @@ vector<KeyBind> keybindings = {
     KeyBind("Transfer Stack", &Key::takeStack, keyCatUi),
     KeyBind("Sort Inventory", &Key::sortInv, keyCatUi),
 
-    KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer)
+    KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer),
+
+    KeyBind("Favorite 1", &Key::fav1, keyCatPlayer | keyCatUi),
+    KeyBind("Favorite 2", &Key::fav2, keyCatPlayer | keyCatUi),
+    KeyBind("Favorite 3", &Key::fav3, keyCatPlayer | keyCatUi),
+    KeyBind("Favorite 4", &Key::fav4, keyCatPlayer | keyCatUi),
+    KeyBind("Favorite 5", &Key::fav5, keyCatPlayer | keyCatUi),
+    KeyBind("Favorite 6", &Key::fav6, keyCatPlayer | keyCatUi),
+    KeyBind("Favorite 7", &Key::fav7, keyCatPlayer | keyCatUi),
+    KeyBind("Favorite 8", &Key::fav8, keyCatPlayer | keyCatUi),
+    KeyBind("Favorite 9", &Key::fav9, keyCatPlayer | keyCatUi),
+    KeyBind("Favorite 0", &Key::fav0, keyCatPlayer | keyCatUi),
 };
 
 vector<int> reservedKeys = {

@@ -333,6 +333,8 @@ namespace ItemGenerator {
     extern ArmorBase* aMailGloves;
     extern ArmorBase* aGoldenRing;
     extern ArmorBase* aJewelRing;
+    
+    extern ArmorBase* aLuckyFoot;
 
     extern int lootProfileChest;
     extern int lootProfileCrate;

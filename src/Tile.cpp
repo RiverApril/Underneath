@@ -76,6 +76,8 @@ namespace Tiles {
     Tile* tilePillar;
     Tile* tileBreakable;
 
+    Tile* tileWater;
+
     Tile* tileEdge;
     Tile* tileUnset;
 

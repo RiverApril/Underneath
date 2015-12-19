@@ -26,3 +26,7 @@ Ui::Color RandomColorIcon::getBgColor(unsigned long tick, Point2 pos, Level* lvl
 }
 
 
+
+char AnimatedIcon::getChar(unsigned long tick, Point2 pos, Level* lvl){
+    return i[((tick/speed)+(randomStart?Random::randomFromPoint(pos):0))%i.size()];
+}

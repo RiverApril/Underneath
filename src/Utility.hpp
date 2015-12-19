@@ -130,6 +130,8 @@ namespace Utility {
 
     void executeGrid(Point2 min, Point2 max, function<void(int, int)> process);
 
+    void executeOval(Point2 center, Point2 radii, function<void(int, int)> process);
+
     vector<Point2> plotLine(Point2 a, Point2 b);
 
     string capitalize(string s);

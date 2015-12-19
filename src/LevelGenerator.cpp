@@ -147,7 +147,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
     setTile(stairDownPos, Tiles::tileStairDown);
     tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor 1"));
 
-    debug("Gen: Floor down placed");
+    debug("Gen: Stair down placed");
 
 
     int count = (rand() % 20)+5;

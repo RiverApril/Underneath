@@ -63,6 +63,17 @@ namespace Key {
     extern int take;
     extern int takeStack;
 
+    extern int fav1;
+    extern int fav2;
+    extern int fav3;
+    extern int fav4;
+    extern int fav5;
+    extern int fav6;
+    extern int fav7;
+    extern int fav8;
+    extern int fav9;
+    extern int fav0;
+
 }
 
 extern vector<KeyBind> keybindings;

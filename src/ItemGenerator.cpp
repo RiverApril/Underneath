@@ -94,6 +94,8 @@ namespace ItemGenerator {
     ArmorBase* aGoldenRing;
     ArmorBase* aJewelRing;
 
+    ArmorBase* aLuckyFoot;
+
     int lootProfileChest;
     int lootProfileCrate;
     int lootProfileShop;
@@ -226,6 +228,7 @@ namespace ItemGenerator {
         aMailGloves = atl(new ArmorBase({{"Mail Gloves", "Pairs of Mail Gloves"}, {"Mail Gauntlets", "Pairs of Mail Gauntlets"}}, {slotHands}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}));
 
 
+        aLuckyFoot = atl(new ArmorBase({{"Lucky Rabbit's Foot"}, {"Lucky Bunny Paw"}}, {slotNeck}, {DefenseRange(damExplosion, .8, .9)}));
 
 
         aGoldenRing = atl(new ArmorBase({{"Golden Ring"}, {"Silver Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}));

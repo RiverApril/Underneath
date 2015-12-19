@@ -70,7 +70,17 @@ bool* init(int argc, char* argv[]){
 }
 
 void update(){
-    mainMenu->_handleInput(getch());
+    int g = getch();
+    if(g == KEY_ESCAPE){//27
+        int gg = getch();
+        int ic = 1;
+        while(gg != -1){
+            g |= gg << 8*ic;
+            gg = getch();
+            ic++;
+        }
+    }
+    mainMenu->_handleInput(g);
     mainMenu->_update();
 }
 
