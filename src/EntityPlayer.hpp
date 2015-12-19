@@ -78,8 +78,8 @@ public:
         return dynamic_cast<ItemWeapon*>(equipedItems[slotWep2]);
     }
 
-    EquipSlot getSlot(ItemEquipable* e){
-        for(pair<EquipSlot, ItemEquipable*> p : equipedItems){
+    EquipSlot getSlot(Item* e){
+        for(pair<EquipSlot, Item*> p : equipedItems){
             if(p.second == e){
                 return p.first;
             }
@@ -87,7 +87,7 @@ public:
         return slotNone;
     }
 
-    virtual ItemEquipable* getEquiped(EquipSlot slot) {
+    virtual Item* getEquiped(EquipSlot slot) {
         if(equipedItems.count(slot) <= 0){
             return nullptr;
         }
@@ -110,7 +110,7 @@ public:
     void gainXp(double amount);
 
     bool equipItem(ItemEquipable* newItem);
-    bool equipItem(ItemEquipable* newItem, EquipSlot slot);
+    bool equipItem(Item* newItem, EquipSlot slot);
 
 
     //don't need to save
@@ -126,7 +126,7 @@ public:
 
     double useDelay(Item* item);
 
-    map<EquipSlot, ItemEquipable*> equipedItems;
+    map<EquipSlot, Item*> equipedItems;
 
 
     double moveDelay = 1;

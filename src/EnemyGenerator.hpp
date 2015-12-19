@@ -42,7 +42,7 @@ namespace EnemyGenerator {
         double attackMultiplier = 1;
 
         int lootProfileIndex = -1;
-        int maxLootDrop = 0;
+        int maxLootDrop = 1;
 
 
         int weight = 0;
@@ -60,6 +60,7 @@ namespace EnemyGenerator {
 
     extern EntityBase* mimic;
     extern EntityBase* bunny;
+    extern EntityBase* rat;
 
     extern vector<EntityBase*> enemyWeightList;
 

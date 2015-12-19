@@ -28,6 +28,7 @@ namespace EnemyGenerator {
 
     EntityBase* mimic;
     EntityBase* bunny;
+    EntityBase* rat;
 
     void initEnemies() {
 
@@ -100,6 +101,11 @@ namespace EnemyGenerator {
 
         bunny = new EntityBase(0, "Bunny", 'b', aiFlee | aiMoveRandom, 10, ItemGenerator::wNatural, "Claws", C_LIGHT_WHITE, 0);
         bunny->moveDelay = 0.5;
+        bunny->lootProfileIndex = atl(new LootProfile(false, false, {make_pair(1, aLuckyFoot)}));
+
+
+        rat = new EntityBase(10, "Rat", 'r', aiFlee | aiMoveRandom, 8, ItemGenerator::wNatural, "Teeth", C_LIGHT_GRAY, 0);
+        rat->moveDelay = 0.5;
         
 
 

@@ -321,7 +321,7 @@ vector<Entity*> Level::getAllVisableEntities(Point2 origin, double range, vector
         }
     }
 
-    int n = list.size();
+    int n = (int)list.size();
 
     for (int x = 0; x < n; x++) {
         for (int y = 0; y < n - 1; y++) {

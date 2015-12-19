@@ -84,11 +84,11 @@ namespace WorldLoader {
             fileWorldInfo = fopen((dir + "world.info").c_str(), "rb");
             if (fileWorldInfo != nullptr) {
 
-                vector<unsigned char>* data = readData(fileWorldInfo);
-
-                int* position = new int(0);
-
                 try {
+
+                    vector<unsigned char>* data = readData(fileWorldInfo);
+
+                    int* position = new int(0);
 
                     if(world == nullptr){
                         world = new World(name);
@@ -128,11 +128,11 @@ namespace WorldLoader {
 
                     if (fileLevel != nullptr) {
 
-                        vector<unsigned char>* levelData = readData(fileLevel);
-
-                        int* levelPosition = new int(0);
-
                         try{
+
+                            vector<unsigned char>* levelData = readData(fileLevel);
+
+                            int* levelPosition = new int(0);
 
                             Point2 levelSize = Point2::load(levelData, levelPosition);
 
@@ -144,13 +144,13 @@ namespace WorldLoader {
 
                             world->currentLevel = level;
 
+                            delete levelData;
+
+                            delete levelPosition;
+
                         }catch(int e){
                             debugf("Failed to load level");
                         }
-
-                        delete levelData;
-
-                        delete levelPosition;
 
                     }
 
@@ -170,15 +170,15 @@ namespace WorldLoader {
                                 debugf("Setting currentPlayer to entity with uid: %d", world->currentPlayer->uniqueId);
                             }
                         }
-                    }*/
+                     }*/
+
+                    delete data;
+
+                    delete position;
 
                 }catch(int e){
                     debugf("Failed to load level");
                 }
-
-                delete data;
-
-                delete position;
             }
             fclose(fileWorldInfo);
             //
@@ -312,11 +312,11 @@ namespace WorldLoader {
         fileWorldInfo = fopen((dir + "world.info").c_str(), "rb");
         if (fileWorldInfo != nullptr) {
 
-            vector<unsigned char>* data = readData(fileWorldInfo);
-
-            int* position = new int(0);
-
             try {
+
+                vector<unsigned char>* data = readData(fileWorldInfo);
+
+                int* position = new int(0);
 
                 Utility::loadType<unsigned int>(data, position);
                 /*double worldTime = */Utility::loadDouble(data, position); // worldTime
@@ -334,12 +334,12 @@ namespace WorldLoader {
                 //No need to load player
 
 
+                delete position;
 
-            }catch(int e){
-                debugf("Failed to load level");
+
+            }catch(Utility::FileExceptionLoad e){
+                debugf("Failed to load level: "+e.description);
             }
-
-            delete position;
             fclose(fileWorldInfo);
         }
         //

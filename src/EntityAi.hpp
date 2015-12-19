@@ -98,7 +98,7 @@ public:
 
     int lootProfileIndex = -1;
 
-    int maxLootDrop = 0;
+    int maxLootDrop = 1;
 
 protected:
     int ai = aiNone;

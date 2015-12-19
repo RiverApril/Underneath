@@ -79,15 +79,6 @@ public:
             && (viableSlots == otherW->viableSlots);
     }
 
-    virtual bool canBeEquipedHere(EquipSlot e) {
-        for(EquipSlot slot : viableSlots){
-            if(slot == e){
-                return true;
-            }
-        }
-        return false;
-    }
-
     virtual vector<EquipSlot> getViableSlots(){
         return viableSlots;
     }

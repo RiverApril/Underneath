@@ -431,12 +431,15 @@ namespace Ui {
                     setColor(C_BLACK, C_LIGHT_CYAN);
                 }
 
-                char pre = '-';
+                char pre;
+
+                EquipSlot slot = player->getSlot(item);
+                pre = ItemEquipable::equipSlotAbr(slot);
 
                 ItemEquipable* equippable = dynamic_cast<ItemEquipable*>(item);
-                if(equippable){
-                    EquipSlot slot = player->getSlot(equippable);
-                    pre = ItemEquipable::equipSlotAbr(slot);
+                
+                if(!equippable && slot == slotNone){
+                    pre = '-';
                 }
                 string displayName = formatString("%c ", pre);
 

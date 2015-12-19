@@ -422,6 +422,16 @@ namespace Utility {
         }
     }
 
+    void executeOval(Point2 center, Point2 radii, function<void(int, int)> process){
+        for(int i = center.x-radii.x; i <= center.x+radii.x; i++){
+            for(int j = center.y-radii.y; j <= center.y+radii.y; j++){
+                if( (pow(i-center.x, 2)/(double)radii.x) + (pow(j-center.y, 2)/(double)radii.y) <= 1.0){
+                    process(i, j);
+                }
+            }
+        }
+    }
+
     vector<Point2> plotLine(Point2 a, Point2 b){
         vector<Point2> line = vector<Point2>();
 
