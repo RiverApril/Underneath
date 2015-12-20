@@ -16,7 +16,7 @@ My development is primarily in Linux and some in MacOSX. I have successfully com
 
 ### Compiling:
 
-I made a compile script with python, I origonally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to python. I haven't compiled in a long time directly from Windows itself, only using Linux mingw32.
+I made a compile script with python, I origonally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to python. I haven't compiled in a long time directly from Windows itself, only using mingw32.
 
 To build the terminal version run the following in the repository directory:
 ```
@@ -28,7 +28,7 @@ or
 ```
 
 
-To try the work-in-progress SDL2 port use the -s flag: (This hasn't been implemented in windows)
+To compile using the SDL2 port, use the -s flag: 
 ```
 python build.py -s
 ```
