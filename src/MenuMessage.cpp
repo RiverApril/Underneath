@@ -42,7 +42,7 @@ namespace Ui {
         setColor(C_WHITE);
         move(0, 0);
         clrtobot();
-        int y = (int)(terminalSize.y - message.size()) / 2;
+        int y = (int)(terminalSize.y - (message.size()+3)) / 2;
         for(string line : message){
         	printCenter(y++, line);
         }

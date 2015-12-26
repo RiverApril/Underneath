@@ -764,7 +764,11 @@ namespace Ui {
             }
 
             if(currentPlayer->leveledUp){
-                openMenu(new MenuMessage({"Level up!", "", ""}));
+                vector<string> message = Arts::getArt(Arts::artLevelUp)->printToVector();
+                message.push_back("");
+                message.push_back("");
+                message.push_back("");
+                openMenu(new MenuMessage(message));
                 currentPlayer->leveledUp = false;
             }
         }
