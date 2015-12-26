@@ -17,14 +17,14 @@ void ItemEquipable::save(vector<unsigned char>* data) {
     Item::save(data);
 
     minimumAbilities.save(data);
-    Utility::saveInt(data, durability);
+    //Utility::saveInt(data, durability);
 }
 
 void ItemEquipable::load(vector<unsigned char>* data, int* position) {
     Item::load(data, position);
 
     minimumAbilities.load(data, position);
-    durability = Utility::loadInt(data, position);
+    //durability = Utility::loadInt(data, position);
 }
 
 ItemEquipable* ItemEquipable::cloneUnsafe(ItemEquipable* oldE, ItemEquipable* newE) {
@@ -32,7 +32,7 @@ ItemEquipable* ItemEquipable::cloneUnsafe(ItemEquipable* oldE, ItemEquipable* ne
     Item::cloneUnsafe(oldE, newE);
 
     newE->minimumAbilities = oldE->minimumAbilities;
-    newE->durability = oldE->durability;
+    //newE->durability = oldE->durability;
 
 
     return newE;

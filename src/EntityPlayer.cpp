@@ -75,7 +75,7 @@ double EntityPlayer::moveRelative(Point2 p, Level* level) {
 }
 
 double EntityPlayer::useItemOnOther(Item* itemToUse, Item* itemToBeUsedOn){
-    ItemSpecial* is = dynamic_cast<ItemSpecial*>(itemToUse);
+    /*ItemSpecial* is = dynamic_cast<ItemSpecial*>(itemToUse);
     if(is){
         ItemEquipable* ie = dynamic_cast<ItemEquipable*>(itemToBeUsedOn);
         if(ie){
@@ -91,7 +91,7 @@ double EntityPlayer::useItemOnOther(Item* itemToUse, Item* itemToBeUsedOn){
                 return interactDelay;
             }
         }
-    }
+    }*/
     return 0;
 }
 
@@ -367,9 +367,9 @@ double EntityPlayer::calcDamageMultiplier(ItemWeapon* weapon) {
         }
         x *= getAttackMultiplierFromEffectsAndArmor(weapon->damageType);
     }
-    if(weapon->durability < 0){
+    /*if(weapon->durability < 0){
         x /= 2;
-    }
+    }*/
     return x;
 }
 
@@ -442,7 +442,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             if (weapon) {
                 timeSinceCombat = 0;
 
-                if(weapon->durability > -1){
+                /*if(weapon->durability > -1){
                     if(weapon->durability <= 0){
                         consolef("&%cYour weapon is broken!", Ui::cc(C_LIGHT_RED));
                     }else if(weapon->durability < 16){
@@ -451,7 +451,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                     if(weapon->durability > 0){
                         weapon->durability--;
                     }
-                }
+                }*/
 
                 double d = a->hurt(weapon, x);
                 Verbalizer::attack(this, a, weapon, d);
@@ -717,7 +717,7 @@ double EntityPlayer::hurt(DamageType damageType, double amount, double damageMul
         return 0;
     }
 
-    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(damageType, true);
+    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(damageType);
 
     return EntityAlive::hurt(damageType, amount, damageMultiplier);
 }
@@ -728,7 +728,7 @@ double EntityPlayer::hurt(ItemWeapon* w, double damageMultiplier) {
         return 0;
     }
 
-    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType, true);
+    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType);
 
     return EntityAlive::hurt(w, damageMultiplier);
 }
@@ -759,13 +759,13 @@ int EntityPlayer::xpForLevel(int l){
     return (pow(l, 2)+(5*l)+20);
 }
 
-double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType, bool reduceDurability){
+double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType/*, bool reduceDurability*/){
 
-    if(reduceDurability){
+    /*if(reduceDurability){
         if (rand() > (RAND_MAX * dodgeChance)) {
             return 1;
         }
-    }
+    }*/
 
     double def = 0;
 
@@ -775,7 +775,7 @@ double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType, bool redu
             if(armor){
                 for(Defense d : armor->defenses){
                     if(d.damageType == damType || d.damageType == -1){
-                        if(reduceDurability){
+                        /*if(reduceDurability){
                             if(armor->durability > -1){
                                 if(armor->durability == 0){
                                     consolef("&%cA peice of your armor is broken!", Ui::cc(C_LIGHT_RED));
@@ -786,12 +786,12 @@ double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType, bool redu
                                     armor->durability--;
                                 }
                             }
-                        }
-                        if(armor->durability > 0){
+                        }*/
+                        //if(armor->durability > 0){
                             def += d.amount;
-                        }else{
-                            def += d.amount / 2;
-                        }
+                        //}else{
+                            //def += d.amount / 2;
+                        //}
                     }
                 }
             }

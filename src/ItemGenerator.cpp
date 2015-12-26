@@ -21,7 +21,7 @@ namespace ItemGenerator {
 
     ExactItemBase* coin;
     ExactItemBase* smallKey;
-    ExactItemBase* repairHammer;
+    //ExactItemBase* repairHammer;
 
     vector<ArmorBase*> armorList;
     //vector<Condition*> conditionList;
@@ -109,8 +109,8 @@ namespace ItemGenerator {
         Item* k = new ItemSpecial(specialtyKey);
         smallKey = new ExactItemBase(k);
 
-        Item* r = new ItemSpecial(specialtyRepairer);
-        repairHammer = new ExactItemBase(r);
+        //Item* r = new ItemSpecial(specialtyRepairer);
+        //repairHammer = new ExactItemBase(r);
         
 
         potionHealth = atl(new PotionBase({{"Health Potion"}}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100), 100);
@@ -533,9 +533,9 @@ namespace ItemGenerator {
         } else {
             w = new ItemWeapon();
         }
-        if(w->durability != -1){
+        /*if(w->durability != -1){
             w->durability = (rand()%200)+50;
-        }
+        }*/
         w->baseDamage = base->damage;
         w->useDelay = base->useDelay;
         w->setName(base->names[ni]);
@@ -588,9 +588,9 @@ namespace ItemGenerator {
         ItemArmor* a;
 
         a = new ItemArmor();
-        if(a->durability != -1){
+        /*if(a->durability != -1){
             a->durability = (rand()%300)+100;
-        }
+        }*/
         a->setName(base->names[ni]);
         a->artIndex = base->arts[arti];
         a->viableSlots = base->viableSlots;
@@ -759,7 +759,7 @@ namespace ItemGenerator {
 
             }
 
-            value += ie->durability/8;
+            //value += ie->durability/8;
         }else if(ip){//Potion
 
             value += 10;
@@ -867,7 +867,7 @@ namespace ItemGenerator {
             loots.emplace_back((int)(40), scrollRelocate);
             loots.emplace_back((int)(80), scrollRemoteUse);
             loots.emplace_back((int)(40), scrollBarrier);
-            loots.emplace_back((int)(20), repairHammer);
+            //loots.emplace_back((int)(20), repairHammer);
         }
         if(lp->magical){
             loots.emplace_back((int)(20), potionMana);
