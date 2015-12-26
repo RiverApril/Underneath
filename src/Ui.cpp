@@ -418,9 +418,9 @@ namespace Ui {
 
                 ItemEquipable* equipable = dynamic_cast<ItemEquipable*>(item);
                 if(equipable){
-                    if(equipable->durability == 0){
+                    /*if(equipable->durability == 0){
                         setColor(((ii == 0) == selectedLeft) ? C_LIGHT_RED : C_DARK_RED);
-                    }
+                    }*/
                 }
 
                 if (i == selectedY && (((ii == 0) == selectedLeft))) {
@@ -496,14 +496,14 @@ namespace Ui {
                 setColor(C_LIGHT_GRAY, C_BLACK);
 
                 if(equipable){
-                    if(equipable->durability == 0){
+                    /*if(equipable->durability == 0){
                         setColor(C_LIGHT_RED);
                         a += printMultiLineString(a, columnX, "ITEM BROKEN Effectiveness halved");
                     }
                     if(equipable->durability >= 0){
                     	a += printMultiLineString(a, columnX, formatString("Durability: %d", equipable->durability));
                     	setColor(C_LIGHT_GRAY, C_BLACK);
-                    }
+                    }*/
                 }
 
                 if(item->coinValue > 0){

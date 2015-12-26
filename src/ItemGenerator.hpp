@@ -283,7 +283,7 @@ namespace ItemGenerator {
 
     extern ExactItemBase* coin;
     extern ExactItemBase* smallKey;
-    extern ExactItemBase* repairHammer;
+    //extern ExactItemBase* repairHammer;
 
     extern PotionBase* potionHealth;
     extern PotionBase* potionMana;

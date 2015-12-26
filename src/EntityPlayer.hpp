@@ -119,7 +119,7 @@ public:
 
     int xpForLevel(int l);
 
-    double getDefenseMultiplierFromArmor(DamageType damType, bool reduceDurability);
+    double getDefenseMultiplierFromArmor(DamageType damType/*, bool reduceDurability*/);
 
     double getAttackMultiplierFromEffectsAndArmor(DamageType damType);
 

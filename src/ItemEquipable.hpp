@@ -246,7 +246,7 @@ public:
         }
     }
 
-    int durability = 100;
+    //int durability = 100;
 
 
 protected:
