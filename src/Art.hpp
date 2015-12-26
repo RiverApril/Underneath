@@ -23,6 +23,8 @@ struct Art {
 
     void printCenter(int y, int xOffset = 0);
 
+    vector<string> printToVector(int xOffset = 0);
+
     vector<string> lines;
     Point2 size;
     string name;
@@ -48,6 +50,7 @@ namespace Arts {
 
     extern int artTitle;
     extern int artGameOver;
+    extern int artLevelUp;
 
     extern int artCoin;
     extern int artSmallKey;

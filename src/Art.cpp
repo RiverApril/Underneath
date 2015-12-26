@@ -25,6 +25,7 @@ namespace Arts {
 
     int artTitle;
     int artGameOver;
+    int artLevelUp;
 
     int artCoin;
     int artSmallKey;
@@ -92,6 +93,7 @@ namespace Arts {
 
         Arts::artTitle = Arts::loadNew(ArtDir + "/", "title", ArtFiles::title);
         Arts::artGameOver = Arts::loadNew(ArtDir + "/", "gameover", ArtFiles::gameover);
+        Arts::artLevelUp = Arts::loadNew(ArtDir + "/", "levelup", ArtFiles::levelup);
 
         Arts::artCoin = Arts::loadNew(ArtDir + "/", "coin", ArtFiles::coin);
         Arts::artSmallKey = Arts::loadNew(ArtDir + "/", "smallkey", ArtFiles::smallkey);
@@ -321,4 +323,13 @@ void Art::printCenter(int y, int xOffset) {
     for (int i = 0; i < (int)lines.size(); i++) {
         mvprintw(y + i, (Ui::terminalSize.x / 2)+xOffset-((w - 1) / 2), lines[i].c_str());
     }
+}
+
+vector<string> Art::printToVector(int xOffset){
+    vector<string> s;
+    int w = getSize().x;
+    for (string line : lines) {
+        s.push_back(line + string(w-line.length(), ' '));
+    }
+    return s;
 }
