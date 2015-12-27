@@ -66,11 +66,17 @@ namespace Ui {
         clrtobot();
         setColor(C_WHITE);
 
-        mvprintw(0, 0, "Controls - auto saves on escape");
+        int y = 0;
+        mvprintw(y++, 0, "Controls - auto saves on escape");
+        mvhline(y++, 0, '-', terminalSize.x);
 
-        int y = 1;
 
-        for(int i=0;i<(int)keybindings.size();i++){
+        int countI = terminalSize.y - 3;
+        int midI = (countI / 2) + selected;
+        int minI = max(0, midI - countI);
+        int maxI = min(midI + countI, (int) keybindings.size());
+
+        for (int i = minI; i < maxI; i++) {
             if(i == selected){
                 setColor(C_BLACK, C_WHITE);
             }

@@ -60,14 +60,8 @@ namespace WorldLoader {
         rewind(file);
 
         unsigned char buffer[fileSize];
-        size_t r = fread(buffer, fileSize, 1, file);
-        if(r != fileSize){
-            throw Utility::FileExceptionLoad("File size was not equal to the expected.");
-        }
-        /*printf("Length: %ld\n", fileSize);
-        for(int i=0;i<fileSize;i++){
-            printf("%X, ", buffer[i]);
-        }*/
+        fread(buffer, fileSize, 1, file);
+
         return new vector<unsigned char>(buffer, buffer+fileSize);
     }
 

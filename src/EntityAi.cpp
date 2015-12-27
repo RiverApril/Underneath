@@ -335,7 +335,7 @@ void EntityAi::dropLoots(Level* level){
             }
         }
     }*/
-    vector<Item*> drops = ItemGenerator::makeLoot(lootProfileIndex, level->getDifficulty(), rand()%(int)(maxHp*level->getDifficulty()), 0, maxLootDrop, 3);
+    vector<Item*> drops = ItemGenerator::makeLoot(lootProfileIndex, level->getDifficulty(), rand()%(int)(maxHp*max(1, level->getDifficulty())), 0, maxLootDrop, 3);
     for(Item* i : drops){
         level->newEntity(new EntityItem(i, pos));
     }

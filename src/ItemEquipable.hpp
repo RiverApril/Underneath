@@ -42,6 +42,8 @@ public:
                 return 'O';
             case slotFinger4:
                 return 'O';
+            case slotNeck:
+                return 'N';
             case slotFav1:
                 return '1';
             case slotFav2:
@@ -94,6 +96,8 @@ public:
                 return "Left Middle Finger";
             case slotFinger4:
                 return "Right Middle Finger";
+            case slotNeck:
+                return "Neck";
             case slotFav1:
                 return "Favorite Slot 1";
             case slotFav2:
@@ -140,6 +144,9 @@ public:
             case slotNone:
                 return "on";
 
+            case slotNeck:
+                return "around";
+
             case slotFav1:
             case slotFav2:
             case slotFav3:
@@ -177,6 +184,8 @@ public:
             case slotFinger3:
             case slotFinger4:
                 return "Finger";
+            case slotNeck:
+                return "Neck";
 
             case slotFav1:
             case slotFav2:

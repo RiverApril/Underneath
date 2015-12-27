@@ -22,7 +22,9 @@
 #define iCON 5
 #define iWIS 6
 
-#define abilityCount 7
+#define iLUK 7
+
+#define abilityCount 8
 
 using namespace std;
 
@@ -33,7 +35,8 @@ static const string abilityAbr[abilityCount] = {
     "AGI",
     "SPD",
     "CON",
-    "WIS"
+    "WIS",
+    "LUK"
 };
 
 static const string abilityNames[abilityCount] = {
@@ -43,7 +46,8 @@ static const string abilityNames[abilityCount] = {
     "Agility",
     "Speed",
     "Constitution",
-    "Wisdom"
+    "Wisdom",
+    "Luck"
 };
 
 static const string abilityNamesRightAligned[abilityCount] = {
@@ -53,7 +57,8 @@ static const string abilityNamesRightAligned[abilityCount] = {
     "      Agility",
     "        Speed",
     " Constitution",
-    "       Wisdom"
+    "       Wisdom",
+    "         Luck"
 };
 
 static const string abilityInfo[abilityCount] = {
@@ -63,7 +68,8 @@ static const string abilityInfo[abilityCount] = {
     "Dodge Chance and Attack Speed.",
     "Movement Speed.",
     "Max Health.",
-    "Max Mana."
+    "Max Mana.",
+    "General Luck."
 };
 
 template <typename T>
@@ -87,7 +93,7 @@ struct Abilities {
         }
     }
 
-    Abilities(T str, T dex, T inte, T agi, T spd, T con, T wis) {
+    Abilities(T str, T dex, T inte, T agi, T spd, T con, T wis, T luk) {
         list[iSTR] = str;
         list[iDEX] = dex;
         list[iINT] = inte;
@@ -95,6 +101,7 @@ struct Abilities {
         list[iSPD] = spd;
         list[iCON] = con;
         list[iWIS] = wis;
+        list[iLUK] = luk;
     }
 
     T list[abilityCount];

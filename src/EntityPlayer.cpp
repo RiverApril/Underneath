@@ -518,14 +518,23 @@ void EntityPlayer::save(vector<unsigned char>* data) {
     Utility::saveInt(data, timeSinceCombat);
     Utility::saveBool(data, outOfCombatHealing);
 
-    Utility::saveInt(data, (int)equipedItems.size());
+    int size = 0;
+    for(pair<EquipSlot, Item*> p : equipedItems){
+        if(p.second){
+            size++;
+        }
+    }
+
+    Utility::saveInt(data, size);
 
     for(pair<EquipSlot, Item*> p : equipedItems){
-    	forVector(inventory, i) {
-            if (inventory[i] == p.second) {
-                Utility::saveInt(data, p.first);
-                Utility::saveInt(data, i);
-                break;
+        forVector(inventory, i) {
+            if(p.second){
+                if (inventory[i] == p.second) {
+                    Utility::saveInt(data, p.first);
+                    Utility::saveInt(data, i);
+                    break;
+                }
             }
         }
     }
