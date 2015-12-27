@@ -91,6 +91,8 @@ using namespace std;
 
 #define KEY_ESCAPE 27
 
+int getchSafe();
+
 
 extern char workingDirectory[FILENAME_MAX];
 

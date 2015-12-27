@@ -75,18 +75,26 @@ Level::~Level() {
 
 }
 
-bool Level::getExplored(Point2 p) {
-    if (inRange(p)) {
-        return tileGrid[p.x][p.y].explored;
+bool Level::getExplored(int x, int y) {
+    if (inRange(x, y)) {
+        return tileGrid[x][y].explored;
     } else {
         return false;
     }
 }
 
-void Level::setExplored(Point2 p, bool a) {
-    if (inRange(p)) {
-        tileGrid[p.x][p.y].explored = a;
+void Level::setExplored(int x, int y, bool a) {
+    if (inRange(x, y)) {
+        tileGrid[x][y].explored = a;
     }
+}
+
+bool Level::getExplored(Point2 p) {
+    return getExplored(p.x, p.y);
+}
+
+void Level::setExplored(Point2 p, bool a) {
+    setExplored(p.x, p.y, a);
 }
 
 /*Entity* Level::getDisplayEntity(Point2 p){
@@ -447,6 +455,10 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
         for (int j = 0; j < size.y; j++) {
             map[i][j] = -1;
         }
+    }
+
+    if(!inRange(to) || !inRange(from)){
+        return vector<Point2>();
     }
 
     queue<Point2> priorityQueue;

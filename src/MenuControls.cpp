@@ -44,7 +44,7 @@ namespace Ui {
 
             int newKey;
             do{
-                newKey = getch();
+                newKey = getchSafe();
             }while(newKey == ERR);
 
             bool set = true;
@@ -67,7 +67,7 @@ namespace Ui {
         setColor(C_WHITE);
 
         int y = 0;
-        mvprintw(y++, 0, "Controls - auto saves on escape");
+        mvprintw(y++, 0, "Controls");
         mvhline(y++, 0, '-', terminalSize.x);
 
 

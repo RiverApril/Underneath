@@ -229,7 +229,7 @@ namespace Commands {
             addstr("Waiting for key...");
             int in;
             do{
-            	in = getch();
+            	in = getchSafe();
             }while(in == ERR);
             consolef("Key pressed: int(%d) name: %s", in, keyDisplayName(in).c_str());
             currentMenu->update();

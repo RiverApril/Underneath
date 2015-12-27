@@ -22,8 +22,8 @@
 #include "ItemUtilitySpell.hpp"
 #include "Settings.hpp"
 
-#define currentPlayer currentWorld->currentPlayer
-#define currentLevel currentWorld->currentLevel
+#define currentPlayer (currentWorld->currentPlayer)
+#define currentLevel (currentWorld->currentLevel)
 
 
 namespace Ui {
@@ -468,7 +468,7 @@ namespace Ui {
                             }
                             timePassed = 1;
                             MenuGame::update();
-                            if (getch() != ERR) {
+                            if (getchSafe() != ERR) {
                                 console("Wait canceled.");
                                 break;
                             }
@@ -508,7 +508,7 @@ namespace Ui {
                         if(!currentPlayer){
                             return;
                         }
-                        if (getch() != ERR) {
+                        if (getchSafe() != ERR) {
                             console("Stopped waiting.");
                             c = false;
                         }
@@ -516,7 +516,7 @@ namespace Ui {
                     timeout(defaultTimeout);
                 }
 
-            }  else if (in == Key::walk) {
+            } else if (in == Key::walk) {
                 if(controlMode == modeEntityPlayerControl){
                     changeMode(modeSelectPosition);
                     selectMode = selectModeWalk;
@@ -540,6 +540,7 @@ namespace Ui {
                         if(path.size() > 0 && pathExplored){
                             timeout(20);
                             console("Walking to target position...");
+                            bool c = true;
                             for(Point2 p : path) {
                                 /*vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
                                 for (Entity* e : nearest) {
@@ -549,6 +550,25 @@ namespace Ui {
                                         break;
                                     }
                                 }*/
+                                vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
+                                for (Entity* e : nearest) {
+                                    if (e->isHostile()) {
+                                        console("A hostile is near!");
+                                        c = false;
+                                        break;
+                                    }
+                                }
+                                for(Effect e : currentPlayer->effects){
+                                    if(e.eId == effDamage && e.power < 0){
+                                        console("You have an effect that is lowering your health!");
+                                        c = false;
+                                        break;
+                                    }
+                                }
+                                if(!c){
+                                    break;
+                                }
+
                                 Point2 d = p-currentPlayer->pos;
                                 if(abs(d.x) <= 1 && abs(d.y) <= 1){
                                     timePassed = currentPlayer->tryToMoveRelative(d, currentLevel);
@@ -560,7 +580,7 @@ namespace Ui {
                                 if(!currentPlayer){
                                     return;
                                 }
-                                if (getch() != ERR) {
+                                if (getchSafe() != ERR) {
                                     console("Stopped walking.");
                                     break;
                                 }
@@ -576,6 +596,84 @@ namespace Ui {
                             console("No expolored path found.");
                         }
                     }
+                }
+
+            }  else if (in == Key::explore) {
+                if(controlMode == modeEntityPlayerControl){
+                    timeout(20);
+                    console("Exploring... Press any key to stop.");
+                    bool c = true;
+                    while (c) {
+                        vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
+                        for (Entity* e : nearest) {
+                            if (e->isHostile()) {
+                                console("A hostile is near!");
+                                c = false;
+                                break;
+                            }
+                        }
+                        for(Effect e : currentPlayer->effects){
+                            if(e.eId == effDamage && e.power < 0){
+                                console("You have an effect that is lowering your health!");
+                                c = false;
+                                break;
+                            }
+                        }
+
+                        Point2 next = Point2Neg1;
+                        size_t count = SIZE_T_MAX;
+
+                        vector<Point2> possibilityList;
+
+                        Utility::executeGrid(currentPlayer->pos-currentPlayer->viewDistance, currentPlayer->pos+currentPlayer->viewDistance, [this, &possibilityList](int x, int y){
+                            if(currentLevel->inRange(x, y) && !currentLevel->getExplored(x, y)){
+                                int nearExplored = false;
+                                Utility::execute4Around(x, y, [this, &nearExplored](int x, int y){
+                                    if(currentLevel->getExplored(x, y) && currentLevel->tileAt(x, y)->hasFlag(tileFlagPathable)){
+                                        nearExplored = true;
+                                        return;
+                                    }
+                                });
+                                if(nearExplored){
+                                    possibilityList.push_back(Point2(x, y));
+                                }
+                            }
+                        });
+
+                        vector<Point2> path;
+
+                        for(Point2 p : possibilityList){
+                            path = currentLevel->getPathTo(p, currentPlayer->pos, tileFlagPathable, 0, true, true);
+                            if(path.size() > 0){
+                                if(next == Point2Neg1 || next == path[0]){
+                                    next = path[0];
+                                    count = path.size();
+                                }else{
+                                    if(path.size() < count){
+                                        next = path[0];
+                                        count = path.size();
+                                    }
+                                }
+                            }
+                        }
+
+                        if(next != Point2Neg1){
+                        	timePassed = currentPlayer->moveAbsalute(next, currentLevel, true);
+                        }else{
+                            console("No unexplored area found nearby.");
+                            c = false;
+                            timePassed = 0;
+                        }
+                        MenuGame::update();
+                        if(!currentPlayer){
+                            return;
+                        }
+                        if (getchSafe() != ERR) {
+                            console("Stopped exploring.");
+                            c = false;
+                        }
+                    }
+                    timeout(defaultTimeout);
                 }
 
             } else if (in == Key::inspect) {

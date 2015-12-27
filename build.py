@@ -8,6 +8,7 @@ import errno
 import shutil
 import filecmp
 #import datetime
+import subprocess
 from subprocess import call
 
 
@@ -34,6 +35,7 @@ parser.add_argument("-o", "--optimize", action="store_true")
 parser.add_argument("-d", "--debug", action="store_true")
 parser.add_argument("-t", "--notart", action="store_true")
 parser.add_argument("-w", "--windows", action="store_true")
+parser.add_argument("-i", "--dontCheckIncludes", action="store_true")
 parser.add_argument("--compiler", help="specify compiler")
 
 args = parser.parse_args()
@@ -140,7 +142,7 @@ hppList = [a.replace("."+sourceExtention, "."+headerExtention) for a in cppList]
 oppList = [a.replace(sourceDirectory+"/", objectDirectory+"/") for a in [a.replace("."+sourceExtention, "."+objectExtention) for a in cppList]]
 cppCopyList = [a.replace(sourceDirectory+"/", copyDirectory+"/") for a in cppList]
 hppCopyList = [a.replace(sourceDirectory+"/", copyDirectory+"/") for a in hppList]
-
+hppDiffList = [False] * len(hppList)
 
 mkdir_p(objectDirectory)
 mkdir_p(copyDirectory)
@@ -154,30 +156,78 @@ if os.path.isfile(executableName):
     os.rename(executableName, executableName+"_outdated")
 
 skipCount = 0
-    
+
 print("    # Using compiler: "+compiler)
 
 if not args.linkonly:
     print("    # Building: "+executableName);
 
+    headersChanged = False
+
+    if not compileAll and not args.dontCheckIncludes:
+
+        for i in range(len(hppList)):
+
+            hppExists = os.path.isfile(hppList[i])
+
+            if hppExists:
+                if os.path.isfile(hppCopyList[i]):
+                    hppDiffList[i] = not filecmp.cmp(hppList[i], hppCopyList[i])
+                    if hppDiffList[i]:
+                        headersChanged = True
+            else:
+                hppDiffList[i] = False
+
+
+            if hppExists:
+                shutil.copy(hppList[i], hppCopyList[i])
+
+
+        #print hppDiffList
+
+
     for i in range(len(cppList)):
+
+
 
         cppDiff = True
         hppDiff = True
+        otherHppDiff = False
 
         hppExists = os.path.isfile(hppList[i])
 
-        if os.path.isfile(cppCopyList[i]):
-            cppDiff = not filecmp.cmp(cppList[i], cppCopyList[i])
+        if not compileAll:
 
-        if hppExists:
-            if os.path.isfile(hppCopyList[i]):
-                hppDiff = not filecmp.cmp(hppList[i], hppCopyList[i])
-        else:
-            hppDiff = False
+            if os.path.isfile(cppCopyList[i]):
+                cppDiff = not filecmp.cmp(cppList[i], cppCopyList[i])
+
+            if hppExists:
+                if os.path.isfile(hppCopyList[i]):
+                    hppDiff = not filecmp.cmp(hppList[i], hppCopyList[i])
+            else:
+                hppDiff = False
+
+            if not args.dontCheckIncludes and headersChanged:
+
+                command = compiler+" -MM "+compilerFlags+" -c "+cppList[i]
+                if args.debug:
+                    print("    . Executing: \""+command+"\"")
+                proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+                includeList = [x.strip() for x in proc.stdout.read().split(" ")]
+                includeList = includeList[2:]
+                includeList = [x for x in includeList if x != "" and x != "\\"]
+                #print(includeList)
+                for inc in includeList:
+                    if inc in hppList:
+                        if hppDiffList[hppList.index(inc)]:
+                            #print inc
+                            #print hppDiffList.index(inc)
+                            #print hppDiffList[includeList.index(inc)]
+                            otherHppDiff = True
+                            break
 
 
-        if compileAll or cppDiff or hppDiff:
+        if compileAll or cppDiff or hppDiff or otherHppDiff:
             print("    + Compiling: "+cppList[i])
             command = compiler+" "+compilerFlags+" -c "+cppList[i]+" -o "+oppList[i]
             if args.debug:
@@ -185,8 +235,6 @@ if not args.linkonly:
             returnCode = call(command, shell=True)
             if returnCode == 0:
                 shutil.copy(cppList[i], cppCopyList[i])
-                if hppExists:
-                    shutil.copy(hppList[i], hppCopyList[i])
             else:
                 break
         else:
