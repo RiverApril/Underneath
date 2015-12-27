@@ -9,6 +9,7 @@
 #include "Effect.hpp"
 #include "Utility.hpp"
 #include "Ui.hpp"
+#include "Abilities.hpp"
 
 string effectName(EffectId eid, double meta) {
     switch (eid) {
@@ -32,6 +33,9 @@ string effectName(EffectId eid, double meta) {
 
         case effPurity:
             return "Purity";
+
+        case effBuffAbility:
+            return "Buff "+abilityNames[(size_t)meta];
 
         default:
             return "UNDEFINED";
@@ -61,6 +65,9 @@ Ui::Color effectColor(EffectId eid, double meta) {
         case effPurity:
             return C_LIGHT_BLUE;
 
+        case effBuffAbility:
+            return C_LIGHT_YELLOW;
+
         default:
             return C_LIGHT_GREEN;
     }
@@ -88,6 +95,9 @@ bool isBadEffect(Effect e){
 
         case effPurity:
             return false;
+
+        case effBuffAbility:
+            return e.power < 0;
 
         default:
             return false;

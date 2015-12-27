@@ -23,6 +23,7 @@ const EffectId effBuffDefense = 3;
 const EffectId effLSD = 4;
 const EffectId effMemory = 5;
 const EffectId effPurity = 6;
+const EffectId effBuffAbility = 7;
 
 struct Effect {
     Effect(vector<unsigned char>* data, int* position);

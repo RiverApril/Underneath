@@ -583,8 +583,8 @@ namespace LevelGenerator {
             if(!addedWalls){
                 int doors = 0;
                 Point2 lastDoorLocation = Point2Neg1;
-                Utility::executeBorder(r->pos, r->size, [&r, &level, &doors, &lastDoorLocation](int x, int y){
-                    if(level->tileAt(r->pos + Point2(x, y))->hasFlag(tileFlagDoor)){
+                Utility::executeBorder(r->pos, r->pos+r->size, [&r, &level, &doors, &lastDoorLocation](int x, int y){
+                    if(level->tileAt(x, y)->hasFlag(tileFlagDoor)){
                         doors++;
                         lastDoorLocation = r->pos + Point2(x, y);
                     }
@@ -596,10 +596,18 @@ namespace LevelGenerator {
                         level->setTile(r->pos + (r->size/2), Tiles::tileChest);
                         level->setTile(lastDoorLocation, Tiles::tileLockedDoor);
                     }else{
-                        EntityShop* e = new EntityShop("Merchant", aiNone, 'M', r->pos + (r->size/2), C_LIGHT_MAGENTA, 100);
-                        e->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, level->getDifficulty(), (rand()%9000)+1000, 10, 20, 2));
-                        e->addItem(ItemGenerator::makeCoins(1000));
-                        level->newEntity(e);
+                        int c = 0;
+                        Utility::executeBorder(r->pos + (r->size/2)-1, r->pos + (r->size/2)+1, [&level, &c](int x, int y){
+                            if(level->tileAt(x, y)->hasFlag(tileFlagPathable)){
+                                c++;
+                            }
+                        });
+                        if(c == 0){
+                            EntityShop* e = new EntityShop("Merchant", aiNone, 'M', r->pos + (r->size/2), C_LIGHT_MAGENTA, 100);
+                            e->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, level->getDifficulty(), (rand()%9000)+1000, 10, 20, 2));
+                            e->addItem(ItemGenerator::makeCoins(1000));
+                            level->newEntity(e);
+                        }
                     }
                 }
                 addedWalls = true;
