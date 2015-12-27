@@ -621,7 +621,7 @@ namespace Ui {
                         }
 
                         Point2 next = Point2Neg1;
-                        size_t count = SIZE_T_MAX;
+                        size_t count = 1000000;
 
                         vector<Point2> possibilityList;
 
