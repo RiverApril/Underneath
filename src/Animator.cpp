@@ -48,7 +48,7 @@ namespace Animator {
             j++;
 
             for(int i=0;i<5;i++){
-                getch();
+                getchSafe();
             }
             refresh();
         }
@@ -80,7 +80,7 @@ namespace Animator {
             }
 
             for(int i=0;i<5;i++){
-                getch();
+                getchSafe();
             }
             refresh();
         }

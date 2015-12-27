@@ -113,7 +113,7 @@ namespace Tiles {
         tileStairDown = new Tile(new BasicIcon('v',  C_LIGHT_GREEN, bg), "stair down", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
 
         tileChest = new Tile(new BasicIcon('+', C_LIGHT_GREEN, bg), "chest", tileFlagSolid | tileFlagHasTileEntity);
-        tileCrate = new Tile(new BasicIcon('+', C_DARK_YELLOW, bg), "crate", tileFlagSolid | tileFlagHasTileEntity);
+        tileCrate = new Tile(new BasicIcon('+', C_DARK_YELLOW, bg), "crate", tileFlagSolid | tileFlagHasTileEntity | tileFlagPathable);
 
 
         tileRubble = new Tile(new RandomIcon({'#', '#', '#', ','}, C_LIGHT_GRAY, bg), "rubble", tileFlagPathable | tileFlagReplaceable, new RandomIcon({'#', '#', '#', ','}, C_DARK_GRAY, bg));

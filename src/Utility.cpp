@@ -432,6 +432,13 @@ namespace Utility {
         }
     }
 
+    void execute4Around(int x, int y, function<void(int, int)> process){
+        process(x+1, y);
+        process(x-1, y);
+        process(x, y+1);
+        process(x, y-1);
+    }
+
     vector<Point2> plotLine(Point2 a, Point2 b){
         vector<Point2> line = vector<Point2>();
 

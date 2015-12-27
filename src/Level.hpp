@@ -44,6 +44,9 @@ public:
     bool getExplored(Point2 p);
     void setExplored(Point2 p, bool a);
 
+    bool getExplored(int x, int y);
+    void setExplored(int x, int y, bool a);
+
     string getName() {
         return name;
     }

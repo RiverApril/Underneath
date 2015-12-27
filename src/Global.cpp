@@ -24,6 +24,20 @@
 	int ESCDELAY;
 #endif
 
+int getchSafe(){
+    int g = getch();
+    if(g == KEY_ESCAPE){//27
+        int gg = getch();
+        int ic = 1;
+        while(gg != -1){
+            g |= gg << 8*ic;
+            gg = getch();
+            ic++;
+        }
+    }
+    return g;
+}
+
 char workingDirectory[FILENAME_MAX];
 
 bool running;

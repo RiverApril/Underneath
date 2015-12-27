@@ -40,6 +40,7 @@ namespace Key {
     extern int waitUntilHealed;
     extern int wait;
     extern int walk;
+    extern int explore;
 
     //Open UI
     extern int inventory;
