@@ -107,6 +107,8 @@ extern string ArtDir;
 
 
 #define defaultTimeout 100
+#define fastTimeout 10
+
 
 
 

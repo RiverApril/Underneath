@@ -232,9 +232,9 @@ namespace ItemGenerator {
         aLuckyFoot->enchs.push_back(new EnchantmentBase(effBuffAbility, 1, 1, 1, 3, 0, 0, iLUK));
 
 
-        aGoldenRing = atl(new ArmorBase({{"Golden Ring"}, {"Silver Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}));
+        aGoldenRing = atl(new ArmorBase({{"Golden Ring"}, {"Silver Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}))->setArts({Arts::artRing});
 
-        aJewelRing = atl(new ArmorBase({{"Golden Garnet Ring"}, {"Silver Amethyst Ring"}, {"Silver Garnet Ring"}, {"Golden Amethyst Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .20, 10), DefenseRange(damIce, .01, .20, 10), DefenseRange(damShock, .01, .20, 10)}));
+        aJewelRing = atl(new ArmorBase({{"Golden Garnet Ring"}, {"Silver Amethyst Ring"}, {"Silver Garnet Ring"}, {"Golden Amethyst Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .20, 10), DefenseRange(damIce, .01, .20, 10), DefenseRange(damShock, .01, .20, 10)}))->setArts({Arts::artJewelRing});;
 
 
 

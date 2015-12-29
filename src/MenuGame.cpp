@@ -447,7 +447,7 @@ namespace Ui {
                 if(controlMode == modeEntityPlayerControl){
                     if(currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()){
                         unsigned char b = 1;
-                        timeout(20);
+                        timeout(fastTimeout);
                         while ((currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()) && b) {
                             vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
                             for (Entity* e : nearest) {
@@ -486,7 +486,7 @@ namespace Ui {
 
             } else if (in == Key::wait) {
                 if(controlMode == modeEntityPlayerControl){
-                    timeout(20);
+                    timeout(fastTimeout);
                     console("Waiting indefinitely. Press any key to stop waiting.");
                     bool c = true;
                     while (c) {
@@ -540,7 +540,7 @@ namespace Ui {
                             }
                         }
                         if(path.size() > 0 && pathExplored){
-                            timeout(20);
+                            timeout(fastTimeout);
                             console("Walking to target position...");
                             bool c = true;
                             for(Point2 p : path) {
@@ -602,7 +602,7 @@ namespace Ui {
 
             }  else if (in == Key::explore) {
                 if(controlMode == modeEntityPlayerControl){
-                    timeout(20);
+                    timeout(fastTimeout);
                     console("Exploring... Press any key to stop.");
                     bool c = true;
                     while (c) {

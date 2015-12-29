@@ -109,6 +109,9 @@ namespace Arts {
     extern int artBracers;
     extern int artCowl;
 
+    extern int artRing;
+    extern int artJewelRing;
+
 }
 
 #endif /* defined(__Underneath__Art__) */
