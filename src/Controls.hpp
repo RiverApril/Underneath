@@ -41,6 +41,7 @@ namespace Key {
     extern int wait;
     extern int walk;
     extern int explore;
+    extern int instantInteract;
 
     //Open UI
     extern int inventory;

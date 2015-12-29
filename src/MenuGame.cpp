@@ -441,7 +441,9 @@ namespace Ui {
                         itemToBeUsed = wep;
                     }
                 }
-            } else if(in == Key::waitUntilHealed) {
+            } else if(in == Key::instantInteract){
+                timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->getActiveItemWeapon());
+            }else if(in == Key::waitUntilHealed) {
                 if(controlMode == modeEntityPlayerControl){
                     if(currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()){
                         unsigned char b = 1;
