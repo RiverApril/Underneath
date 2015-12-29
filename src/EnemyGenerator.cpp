@@ -54,24 +54,31 @@ namespace EnemyGenerator {
 
         ItemGenerator::WeaponBase* snakeWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
         snakeWeapon->damageType = damPierce;
-        snakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 20, 30, 1, 1, 30, 50, damPoison));
-        snake = atl(new EntityBase(5, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_BLUE, 1.0));
+        snakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 20, 30, 1, 5, 30, 50, damPoison));
+        snake = atl(new EntityBase(15, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_BLUE, 1.0));
         snake->attackMultiplier *= .75;
         snake->lootProfileIndex = atl(new LootProfile(true, true, {}));
 
 
-        troll = atl(new EntityBase(5, "Troll", 't', aiAttack, 100, ItemGenerator::wMace, "", C_LIGHT_RED, 1.5, 1));
+		ItemGenerator::WeaponBase* trollWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wMace);
+        trollWeapon->damage *= 1.2;
+        trollWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 20, 25, 1, 5, 10, 20, damIce));
+        troll = atl(new EntityBase(10, "Troll", 't', aiAttack, 100, trollWeapon, "Cold Mace", C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));
         troll->moveDelay = 1.8;
         troll->lootProfileIndex = atl(new LootProfile(true, false, {make_pair(10, wMace)}));
         troll->maxLootDrop = 2;
 
 
-        wraith = atl(new EntityBase(2, "Wraith", 'W', aiAttack, 200, ItemGenerator::wSpear, "", C_DARK_GRAY, 2.0, 2));
+        ItemGenerator::WeaponBase* wraithWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wAxe);
+        wraithWeapon->damage *= 2;
+        wraithWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 10, 20, 5, 10, 5, 20, damBlood));
+        wraith = atl(new EntityBase(5, "Wraith", 'W', aiAttack, 200, wraithWeapon, "Bloody Double Axe", C_DARK_GRAY, 2.0, 2));
         wraith->weaknesses.push_back(Weakness(damFire, 2));
         wraith->weaknesses.push_back(Weakness(damIce, 2));
         wraith->weaknesses.push_back(Weakness(damShock, 2));
         wraith->weaknesses.push_back(Weakness(damSharp, .5));
+        wraith->weaknesses.push_back(Weakness(damPierce, .5));
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
         wraith->moveDelay = 1.8;
         troll->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(10, wFireItemCombatSpell), make_pair(10, wFrostItemCombatSpell), make_pair(10, wShockItemCombatSpell), make_pair(10, wHealingCombatSpell)}));
@@ -104,7 +111,7 @@ namespace EnemyGenerator {
         bunny->lootProfileIndex = atl(new LootProfile(false, false, {make_pair(1, aLuckyFoot)}));
 
 
-        rat = new EntityBase(10, "Rat", 'r', aiFlee | aiMoveRandom, 8, ItemGenerator::wNatural, "Teeth", C_LIGHT_GRAY, 0);
+        rat = atl(new EntityBase(10, "Rat", 'r', aiFlee | aiMoveRandom, 8, ItemGenerator::wNatural, "Teeth", C_LIGHT_GRAY, 0));
         rat->moveDelay = 0.5;
         
 

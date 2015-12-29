@@ -24,6 +24,7 @@ namespace Key {
     int wait = 'w';
     int walk = 'e';
     int explore = 't';
+    int instantInteract = 'j';
 
     //Open UI
     int inventory = 'i';
@@ -71,6 +72,7 @@ vector<KeyBind> keybindings = {
     KeyBind("Auto Walk", &Key::walk, keyCatPlayer),
     KeyBind("Wait", &Key::wait, keyCatPlayer),
     KeyBind("Auto Explore", &Key::explore, keyCatPlayer),
+    KeyBind("Instant Interact", &Key::instantInteract, keyCatPlayer),
     KeyBind("Wait until Healed", &Key::waitUntilHealed, keyCatPlayer),
     KeyBind("Open Inventory", &Key::inventory, keyCatPlayer | keyCatUi),
     KeyBind("Open Skills", &Key::statsMenu, keyCatPlayer),
