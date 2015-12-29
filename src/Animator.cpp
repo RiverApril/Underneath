@@ -25,7 +25,7 @@ namespace Animator {
 
         int j = 1-length;
 
-        timeout(10);
+        timeout(fastTimeout);
 
         for(int i=1; i < (int)line.size() || j < (int)line.size(); i++){
 
@@ -64,7 +64,7 @@ namespace Animator {
 
         RandomIcon icon = RandomIcon({'~', '*', '&'}, 0/*Irrelevant*/, C_BLACK);
 
-        timeout(10);
+        timeout(fastTimeout);
 
         for(int r=0;r<radius;r++){
             double ma = ((r+1)*p);

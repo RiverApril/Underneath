@@ -84,6 +84,9 @@ namespace Arts {
     int artBracers;
     int artCowl;
 
+    int artRing;
+    int artJewelRing;
+
     void loadArts() {
 
         //mkdir(ArtDir.c_str(), 0777);
@@ -154,6 +157,9 @@ namespace Arts {
         Arts::artGauntlets = Arts::loadNew(ArtDir + "/", "gauntlets", ArtFiles::gauntlets);
         Arts::artBracers = Arts::loadNew(ArtDir + "/", "braces", ArtFiles::bracers);
         Arts::artCowl = Arts::loadNew(ArtDir + "/", "cowl", ArtFiles::cowl);
+
+        Arts::artRing = Arts::loadNew(ArtDir + "/", "ring", ArtFiles::ring);
+        Arts::artJewelRing = Arts::loadNew(ArtDir + "/", "jewelRing", ArtFiles::jewelRing);
 
         Point2 compassInSize = Point2Neg1;
 
