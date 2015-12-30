@@ -20,7 +20,9 @@ My development is primarily in MacOSX and some in Linux. I have successfully com
 Executables:
 - Terminal: [Underneath Optimized Terminal Linux](Underneath_Optim_Term_Linux)
 - SDL: [Underneath Optimized SDL Linux](Underneath_Optim_SDL_Linux)
+
 No extra libs should be required to run.
+
 To enable full color in the **Terminal** version, you most likely need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
 
 
