@@ -240,8 +240,10 @@ if not args.linkonly:
         else:
             skipCount += 1
 
-
-print("    . Skipped "+str(skipCount)+" compilations.")
+if args.linkonly:
+    print("    . Skipped all compilations.")
+else:
+    print("    . Skipped "+str(skipCount)+" compilations.")
 
 if returnCode == 0:
     print("    ~ Linking: "+executableName);

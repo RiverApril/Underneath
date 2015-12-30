@@ -1,22 +1,40 @@
 Underneath
-==========
+===
 
 A dungeon crawler with ASCII graphics lightly based on the classic game Rogue
-----------------------------------------------------------
 
-### Written in c++ 11
+
+### Written in c++11
 
 This program uses standard c++ libraries and ncurses (pdcurses in Windows).
 SDL version uses SDL2 and SDL_Image.
 
-My development is primarily in Linux and some in MacOSX. I have successfully compiled for Windows using MinGW on Linux.
+My development is primarily in MacOSX and some in Linux. I have successfully compiled for Windows using MinGW on Linux.
 
 
 ---
 
-### Compiling:
+## Latest Builds:
 
-I made a compile script with python, I origonally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to python. I haven't compiled in a long time directly from Windows itself, only using mingw32.
+#### Linux:
+Executables:
+- Terminal: [Underneath Optimized Terminal Linux](Underneath_Optim_Term_Linux)
+- SDL: [Underneath Optimized SDL Linux](Underneath_Optim_SDL_Linux)
+No extra libs should be required to run.
+To enable full color in the **Terminal** version, you most likely need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
+
+
+#### Mac OSX:
+
+
+#### Windows:
+
+
+---
+
+## Compiling:
+
+I made a compile script with python, I origonally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to python. I haven't compiled in a long time directly from Windows itself. So the windows builds are compiled on linux and mac using mingw32
 
 To build the terminal version run the following in the repository directory:
 ```
@@ -54,7 +72,9 @@ All flags:
 -o  Optimization level 3 (default 0)
 -d  Print all commands that the build.py is executing
 -t  Do not remake ArtFiles.hpp
--w  Use "i686-w64-mingw32-c++" as the compiler (this is to build for windows on linux)
+-i  Don't check included headers (makes compiling faster, but doesn't recompile cpp files if only included headers were modified)
+-w  Use mingw32 compiler (Mac: i586-mingw32-c++, Linux: i686-w64-mingw32-c++)
+--compiler COMPILER  Specify the compiler manually
 ```
 
 ---
