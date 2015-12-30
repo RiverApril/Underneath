@@ -1,47 +1,47 @@
-Underneath
-===
+# Underneath
 
-A dungeon crawler with ASCII graphics lightly based on the classic game Rogue
+A dungeon crawler with old-school style ASCII graphics.
 
 
 ### Written in c++11
 
 This program uses standard c++ libraries and ncurses (pdcurses in Windows).
-SDL version uses SDL2 and SDL_Image.
+SDL version uses SDL2 and SDL2_Image.
 
-My development is primarily in MacOSX and some in Linux. I have successfully compiled for Windows using MinGW on Linux.
+My development is primarily in MacOSX and some in Linux. I have successfully compiled for Windows using MinGW on Linux and Mac. Good luck compiling locally on Windows, I haven't succesfully done that in a while.
 
 
 ---
 
 ## Latest Builds:
 
-### Linux:
+#### Linux:
 ##### Terminal version:
 - Executable: [Underneath_Optim_Term_Linux](Underneath_Optim_Term_Linux)
 - To enable full color, you most likely need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
 
-##### SDL Version:
+##### SDL2 Version:
 - Executable: [Underneath_Optim_SDL_Linux](Underneath_Optim_SDL_Linux)
 - Font image file: [font.png](font.png)
 
+---
 
-
-### Mac OSX:
+#### Mac OSX:
 ##### Terminal version:
 - Executable: [Underneath_Optim_Term_OSX](Underneath_Optim_Term_OSX)
 
-##### SDL Version:
+##### SDL2 Version:
 - Executable: [Underneath_Optim_SDL_OSX](Underneath_Optim_SDL_OSX)
 - Font image file: [font.png](font.png)
 
+---
 
-### Windows:
+#### Windows:
 ##### Terminal version:
 - Executable: [Underneath_Optim_Term_Windows.exe](Underneath_Optim_Term_Windows.exe)
 - DLL file: [pdcurses.dll](pdcurses.dll)
 
-##### SDL Version:
+##### SDL2 Version:
 - Executable: [Underneath_Optim_SDL_Windows.exe](Underneath_Optim_SDL_Windows.exe)
 - Font image file: [font.png](font.png)
 - DLL files:
