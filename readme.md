@@ -16,21 +16,39 @@ My development is primarily in MacOSX and some in Linux. I have successfully com
 
 ## Latest Builds:
 
-#### Linux:
-Executables:
-- Terminal: [Underneath Optimized Terminal Linux](Underneath_Optim_Term_Linux)
-- SDL: [Underneath Optimized SDL Linux](Underneath_Optim_SDL_Linux)
+### Linux:
+##### Terminal version:
+- Executable: [Underneath_Optim_Term_Linux](Underneath_Optim_Term_Linux)
+- To enable full color, you most likely need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
 
-No extra libs should be required to run.
-
-To enable full color in the **Terminal** version, you most likely need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
-
-
-#### Mac OSX:
+##### SDL Version:
+- Executable: [Underneath_Optim_SDL_Linux](Underneath_Optim_SDL_Linux)
+- Font image file: [font.png](font.png)
 
 
-#### Windows:
 
+### Mac OSX:
+##### Terminal version:
+- Executable: [Underneath_Optim_Term_OSX](Underneath_Optim_Term_OSX)
+
+##### SDL Version:
+- Executable: [Underneath_Optim_SDL_OSX](Underneath_Optim_SDL_OSX)
+- Font image file: [font.png](font.png)
+
+
+### Windows:
+##### Terminal version:
+- Executable: [Underneath_Optim_Term_Windows.exe](Underneath_Optim_Term_Windows.exe)
+- DLL file: [pdcurses.dll](pdcurses.dll)
+
+##### SDL Version:
+- Executable: [Underneath_Optim_SDL_Windows.exe](Underneath_Optim_SDL_Windows.exe)
+- Font image file: [font.png](font.png)
+- DLL files:
+  - [SDL2.dll](SDL2.dll)
+  - [SDL2_image.dll](SDL2_image.dll)
+  - [zlib1.dll](zlib1.dll)
+  - [libpng16-16.dll](libpng16-16.dll)
 
 ---
 
