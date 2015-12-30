@@ -20,7 +20,7 @@ My development is primarily in MacOSX and some in Linux. I have successfully com
 - Executable: [Underneath_Optim_Term_Linux](Underneath_Optim_Term_Linux)
 - To enable full color, you most likely need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
 
-##### SDL2 Version:
+##### SDL2 version:
 - Executable: [Underneath_Optim_SDL_Linux](Underneath_Optim_SDL_Linux)
 - Font image file: [font.png](font.png)
 
@@ -30,7 +30,7 @@ My development is primarily in MacOSX and some in Linux. I have successfully com
 ##### Terminal version:
 - Executable: [Underneath_Optim_Term_OSX](Underneath_Optim_Term_OSX)
 
-##### SDL2 Version:
+##### SDL2 version:
 - Executable: [Underneath_Optim_SDL_OSX](Underneath_Optim_SDL_OSX)
 - Font image file: [font.png](font.png)
 
@@ -41,7 +41,7 @@ My development is primarily in MacOSX and some in Linux. I have successfully com
 - Executable: [Underneath_Optim_Term_Windows.exe](Underneath_Optim_Term_Windows.exe)
 - DLL file: [pdcurses.dll](pdcurses.dll)
 
-##### SDL2 Version:
+##### SDL2 version:
 - Executable: [Underneath_Optim_SDL_Windows.exe](Underneath_Optim_SDL_Windows.exe)
 - Font image file: [font.png](font.png)
 - DLL files:
