@@ -107,8 +107,12 @@ namespace EnemyGenerator {
 
 
         bunny = new EntityBase(0, "Bunny", 'b', aiFlee | aiMoveRandom, 10, ItemGenerator::wNatural, "Claws", C_LIGHT_WHITE, 0);
-        bunny->moveDelay = 0.5;
-        bunny->lootProfileIndex = atl(new LootProfile(false, false, {make_pair(1, aLuckyFoot)}));
+        bunny->moveDelay = 0.4;
+        LootProfile* lp = new LootProfile(false, false, {make_pair(1, easterEgg)});
+        lp->canBeModifiedByRandomness = false;
+        lp->allowCoins = false;
+        bunny->lootProfileIndex = atl(lp);
+        bunny->minLootDrop = 1;
 
 
         rat = atl(new EntityBase(10, "Rat", 'r', aiFlee | aiMoveRandom, 8, ItemGenerator::wNatural, "Teeth", C_LIGHT_GRAY, 0));
@@ -165,6 +169,7 @@ namespace EnemyGenerator {
         e->attackMultiplier = we->attackMultiplier;
         e->lootProfileIndex = we->lootProfileIndex;
         e->maxLootDrop = we->maxLootDrop;
+        e->minLootDrop = we->minLootDrop;
         ItemWeapon* weapon = ItemGenerator::createItemWeaponFromBase(we->weaponBase, difficulty + we->weaponDifficultyAdd);
         if (we->weaponName.size() > 0) {
             weapon->getName(false) = we->weaponName;

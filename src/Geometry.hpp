@@ -140,6 +140,7 @@ struct Vector2 {
     bool operator!=(const Vector2 other);
     void set(const Vector2 other);
     void set(const Point2 other);
+    double randomRange();
     Point2 roundAwayFrom0();
     Point2 roundToward0();
     Point2 truncate();
@@ -173,7 +174,7 @@ struct Vector2 {
 };
 
 
-int distanceSquared(Point2 a, Point2 b);
+double distanceSquared(Point2 a, Point2 b);
 
 extern Point2 Point2Zero;
 extern Point2 Point2Left;

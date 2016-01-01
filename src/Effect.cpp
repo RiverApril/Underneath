@@ -73,6 +73,37 @@ Ui::Color effectColor(EffectId eid, double meta) {
     }
 }
 
+string effectPowerString(EffectId eid, double power){
+    switch (eid) {
+        case effDamage:
+            return formatString("%.2f", power);
+
+        case effHeal:
+            return formatString("%.2f", power);
+
+        case effBuffAttack:
+            return Utility::intToRomanNumerals(power);
+
+        case effBuffDefense:
+            return Utility::intToRomanNumerals(power);
+
+        case effLSD:
+            return "";
+
+        case effMemory:
+            return "";
+
+        case effPurity:
+            return "";
+
+        case effBuffAbility:
+            return formatString("%.2f", power);
+            
+        default:
+            return formatString("%.2f", power);
+    }
+}
+
 bool isBadEffect(Effect e){
     switch (e.eId) {
         case effDamage:

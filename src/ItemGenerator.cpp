@@ -51,6 +51,7 @@ namespace ItemGenerator {
 
     BombBase* bombWallSmall;
     BombBase* bombWallLarge;
+    BombBase* easterEgg;
 
     WeaponBase* wKnife;
     WeaponBase* wSword;
@@ -93,8 +94,6 @@ namespace ItemGenerator {
     ArmorBase* aMailGloves;
     ArmorBase* aGoldenRing;
     ArmorBase* aJewelRing;
-
-    ArmorBase* aLuckyFoot;
 
     int lootProfileChest;
     int lootProfileCrate;
@@ -161,6 +160,9 @@ namespace ItemGenerator {
         bombWallLarge = atl(new BombBase({{"Large Destructive Explosive", "Large Destructive Explosives"}}, timeActivatedWallBomb, 10, 15, 1000, 2000, 5, 20));
 
 
+        easterEgg = new BombBase({{"Easter Egg"}}, timeActivatedWallBomb, 1, 1, 30, 70, 10, 20);
+
+
 
         wKnife = atl(new WeaponBase({{"Knife", "Knives"}, {"Dagger"}, {"Cleaver"}}, 0.25, 1.0/3, damSharp, wepMelee))->setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver});
         wSword = atl(new WeaponBase({{"Longsword"}, {"Cutlass", "Cutlasses"}, {"Katana"}, {"Machete"}, {"Gladius", "Gladii"}, {"Scimitar"}, {"Rapier"}, {"Short Sword"}, {"Broadsword"}, {"Saber"}, {"Claymore"}}, 1, 1, damSharp, wepMelee))->setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore});
@@ -171,16 +173,16 @@ namespace ItemGenerator {
         wBow = atl(new WeaponBase({{"Longbow"}, {"Bow"}, {"Recurve Bow"}}, .5, 1, damPierce, wepRanged))->ranged(20)->setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow});
         wCrossbow = atl(new WeaponBase({{"Crossbow"}, {"Scorpion"}}, 0.6, 0.8, damPierce, wepRanged))->ranged(10)->setArts({Arts::artCrossbow});
 
-        wFireItemCombatSpell = atl(new WeaponBase({{"Ignite Spell"}, {"Scorch Spell"}, {"Burn Spell"}}, 1, .2, damFire, wepMagic))->magical(8, 2)->setArts({Arts::artScrollFire});
+        wFireItemCombatSpell = atl(new WeaponBase({{"Ignite Spell"}, {"Scorch Spell"}, {"Burn Spell"}}, 1, .2, damFire, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFire});
         wFireItemCombatSpell->enchs.push_back(new EnchantmentBase(effDamage, 6, 12, 1, 2, 5, 10, damFire));
 
-        wFrostItemCombatSpell = atl(new WeaponBase({{"Freeze Spell"}, {"Chill Spell"}}, 1, .2, damIce, wepMagic))->magical(8, 2)->setArts({Arts::artScrollFrost});
+        wFrostItemCombatSpell = atl(new WeaponBase({{"Freeze Spell"}, {"Chill Spell"}}, 1, .2, damIce, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFrost});
         wFrostItemCombatSpell->enchs.push_back(new EnchantmentBase(effDamage, 6, 12, 1, 2, 5, 10, damIce));
 
-        wShockItemCombatSpell = atl(new WeaponBase({{"Electrocute Spell"}, {"Shock Spell"}, {"Zap Spell"}}, 1, .2, damShock, wepMagic))->magical(8, 2)->setArts({Arts::artScrollShock});
+        wShockItemCombatSpell = atl(new WeaponBase({{"Electrocute Spell"}, {"Shock Spell"}, {"Zap Spell"}}, 1, .2, damShock, wepMagic))->magical(8, 3)->setArts({Arts::artScrollShock});
         wShockItemCombatSpell->enchs.push_back(new EnchantmentBase(effDamage, 6, 12, 1, 2, 5, 10, damShock));
 
-        wHealingCombatSpell = atl(new WeaponBase({{"Healing Spell"}}, 0, .2, damNone, wepMagic))->magical(8, 2)->setArts({Arts::artScrollHeal});
+        wHealingCombatSpell = atl(new WeaponBase({{"Healing Spell"}}, 0, .2, damNone, wepMagic))->magical(8, 3)->setArts({Arts::artScrollHeal});
         wHealingCombatSpell->enchs.push_back(new EnchantmentBase(effHeal, 1, 1, 10, 30, 0, 0));
 
 
@@ -228,10 +230,6 @@ namespace ItemGenerator {
         aMailGloves = atl(new ArmorBase({{"Mail Gloves", "Pairs of Mail Gloves"}, {"Mail Gauntlets", "Pairs of Mail Gauntlets"}}, {slotHands}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}));
 
 
-        aLuckyFoot = new ArmorBase({{"Lucky Rabbit's Foot"}, {"Lucky Bunny Paw"}}, {slotNeck}, {});
-        aLuckyFoot->enchs.push_back(new EnchantmentBase(effBuffAbility, 1, 1, 1, 3, 0, 0, iLUK));
-
-
         aGoldenRing = atl(new ArmorBase({{"Golden Ring"}, {"Silver Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}))->setArts({Arts::artRing});
 
         aJewelRing = atl(new ArmorBase({{"Golden Garnet Ring"}, {"Silver Amethyst Ring"}, {"Silver Garnet Ring"}, {"Golden Amethyst Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .20, 10), DefenseRange(damIce, .01, .20, 10), DefenseRange(damShock, .01, .20, 10)}))->setArts({Arts::artJewelRing});;
@@ -253,10 +251,10 @@ namespace ItemGenerator {
 
         vector<pair<int, ItemBase*>> l2;
         for(ItemBase* ib : weaponList){
-            l2.emplace_back(90, ib);
+            l2.emplace_back(250, ib);
         }
         for(ItemBase* ib : armorList){
-            l2.emplace_back(80, ib);
+            l2.emplace_back(150, ib);
         }
         lootProfileCrate = atl(new LootProfile(true, true, l2));
 
@@ -571,6 +569,10 @@ namespace ItemGenerator {
         if(s){
             return createScrollFromBase(s);
         }
+        BombBase* bb = dynamic_cast<BombBase*>(b);
+        if(bb){
+            return createBombFromBase(bb);
+        }
         ExactItemBase* e = dynamic_cast<ExactItemBase*>(b);
         if(e){
             return e->createCopy();
@@ -602,8 +604,28 @@ namespace ItemGenerator {
                 a->defenses.push_back(def);
             }
         }
+        for(EnchantmentBase* e :  base->enchs){
+            a->enchantments.push_back(createEnchantmentFromBase(e));
+        }
 
         return a;
+    }
+
+    ItemTimeActivated* createBombFromBase(BombBase* base){
+        size_t ni = rand() % base->names.size();
+        size_t arti = min(ni, base->arts.size() - 1);
+        
+        ItemTimeActivated* b = new ItemTimeActivated();
+
+        b->setName(base->names[ni]);
+        b->artIndex = base->arts[arti];
+        b->timeActivatedType = base->timeActivedType;
+        b->power = base->power.randomRange();
+        b->time = base->time.randomRange();
+        b->radius = base->radius.randomRange();
+
+
+        return b;
     }
 
     /*ItemWeapon* applyConditionToItemWeapon(ItemWeapon* w, Condition* c, int itemDifficulty, bool prependName) {
@@ -712,7 +734,7 @@ namespace ItemGenerator {
 
                     ItemCombatSpell* ic = dynamic_cast<ItemCombatSpell*>(item);
                     if(ic){//Combat Spell
-                        value += Math::max(100.0 - ic->manaCost, 1.0) * 5;
+                        value += max(100.0 - ic->manaCost, 1.0) * 5;
                     }else{//Ranged Weapon
 
                     }
@@ -850,7 +872,7 @@ namespace ItemGenerator {
 
     vector<Item*> makeLoot(int lootProfileIndex, int difficulty, int coinCount, int lootMin, int lootMax, int lootExtraProb){
 
-        if(lootProfileIndex == -1 || lootProfileIndex >= (int)lootProfileList.size()){
+        if(lootProfileIndex <= -1 || lootProfileIndex >= (int)lootProfileList.size()){
             return {};
         }
 
@@ -880,7 +902,7 @@ namespace ItemGenerator {
 
         vector<Item*> items;
 
-        if(coinCount > 0){
+        if(coinCount > 0 && lp->allowCoins){
             items.push_back(makeCoins(coinCount));
         }
 

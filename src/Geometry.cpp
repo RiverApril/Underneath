@@ -280,12 +280,16 @@ void Vector2::set(Point2 other) {
     this->y = other.y;
 }
 
+double Vector2::randomRange(){
+    return ::randomRange(x, y);
+}
+
 Point2 Vector2::roundAwayFrom0() {
-    return Point2(Math::roundAwayFrom0(this->x), Math::roundAwayFrom0(this->y));
+    return Point2(::roundAwayFrom0(this->x), ::roundAwayFrom0(this->y));
 }
 
 Point2 Vector2::roundToward0() {
-    return Point2(Math::roundToward0(this->x), Math::roundToward0(this->y));
+    return Point2(::roundToward0(this->x), ::roundToward0(this->y));
 }
 
 Point2 Vector2::truncate() {
@@ -383,8 +387,8 @@ Vector2* Vector2::operator/=(Vector2 other){
 }
 
 
-int distanceSquared(Point2 a, Point2 b) {
-    return (int) Math::distanceSquared(a.x, a.y, b.x, b.y);
+double distanceSquared(Point2 a, Point2 b) {
+    return distanceSquared(a.x, a.y, b.x, b.y);
 }
 
 string Vector2::toString() {

@@ -41,7 +41,7 @@ namespace Ui {
 
         if(in == KEY_ESCAPE){
             running = false;
-        } else if(in == '\n'){
+        } else if(in == Key::interact || in == '\n'){
             switch (selection) {
                 case 0:
                     openMenu(new MenuWorldSelect());

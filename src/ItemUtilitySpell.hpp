@@ -55,7 +55,7 @@ public:
         return (otherW)
         		&& Item::equalsExceptQty(other)
                 && (spellEffect == otherW->spellEffect)
-        		&& Math::aproxEqual(manaCost, otherW->manaCost)
+        		&& aproxEqual(manaCost, otherW->manaCost)
         		&& (continuousUse == otherW->continuousUse);
     }
 

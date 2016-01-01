@@ -10,6 +10,7 @@
 #include "Level.hpp"
 #include "EntityItem.hpp"
 #include "EntityShop.hpp"
+#include "MenuDialog.hpp"
 #include "MenuChest.hpp"
 #include "Verbalizer.hpp"
 #include "ItemPotion.hpp"
@@ -198,8 +199,9 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         break;
                     }
                     case spellDebugPlaceShop:{
-                        EntityShop* e = new EntityShop("Shop keeper", aiNone, 'S', posToInteract, C_LIGHT_MAGENTA, 100);
-                        //e->addItems(ItemGenerator::createRandLoots(level->getDifficulty(), , 0, 10, 10, 10, 2));
+                        EntityShop* e = new EntityShop("Merchant", aiNone, 'M', pos, C_LIGHT_MAGENTA, 100);
+                        e->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, level->getDifficulty(), (rand()%9000)+1000, 10, 20, 2));
+                        e->addItem(ItemGenerator::makeCoins(1000));
                         level->newEntity(e);
                         break;
                     }
@@ -268,7 +270,8 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                             if (tid == Tiles::tileChest->getIndex()) {
                                 TEChest* tec = dynamic_cast<TEChest*> (te);
                                 if(tec->lootProfileIndex != -1){
-                                    tec->addItems(ItemGenerator::makeLoot(tec->lootProfileIndex, level->getDifficulty(), (rand()%500), 10, 15, 2));
+                                    int l = abilities[iLUK];
+                                    tec->addItems(ItemGenerator::makeLoot(tec->lootProfileIndex, level->getDifficulty(), (rand()%500), 5, 10+l, 5));
                                     tec->lootProfileIndex = -1;
                                 }
                                 level->currentWorld->menuGame->openMenu(new Ui::MenuChest(tec, this, level->currentWorld));
@@ -337,10 +340,12 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
 
                 vector<Item*> items;
 
+                int l = abilities[iLUK];
+
                 if(rand()%3 == 0){
-                    items = ItemGenerator::makeLoot(ItemGenerator::lootProfileCrate, level->getDifficulty(), (rand()%50), 1, 1, 10);
+                    items = ItemGenerator::makeLoot(ItemGenerator::lootProfileCrate, level->getDifficulty(), (rand()%(50+l*4)), 1, 1, max(1, 10-(l)));
                 }else{
-                    items.push_back(ItemGenerator::makeCoins((rand() % 30) + 1));
+                    items.push_back(ItemGenerator::makeCoins((rand() % (30+l*2)) + 1));
                 }
 
                 for (Item* i : items) {
@@ -396,7 +401,14 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             level->removeEntity(e, true);
             return 0;
         }else if(is){
-            level->currentWorld->menuGame->openMenu(new Ui::MenuShop(is, this, level->currentWorld));
+            level->currentWorld->menuGame->openMenu(new Ui::MenuDialog({"Welcome! I'm glad I found someone down here.", "Would you like to trade wares?"}, {"Trade", "No thanks"}, [this, &is, &level](Ui::MenuDialog* menu, int result){
+                if(result == 0){
+                    menu->surMenu->openMenu(new Ui::MenuShop(is, this, level->currentWorld));
+                }
+                //result 1 is cancel
+                //result -1 is escape
+                //these will just exit
+            }));
             return interactDelay;
         }
 
@@ -420,6 +432,11 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             }
 
             double x = calcDamageMultiplier(weapon);
+
+            if(rand()%max(2, 100-abilities[iLUK])==0){
+                x *= 2;
+                consolef("&%cCritical!", Ui::cc(C_LIGHT_GREEN));
+            }
 
             if (spell) {
                 if (mp >= spell->manaCost) {

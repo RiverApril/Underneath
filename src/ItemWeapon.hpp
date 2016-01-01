@@ -51,10 +51,10 @@ public:
         ItemWeapon* otherW = dynamic_cast<ItemWeapon*> (other);
         return (otherW)
         		&& ItemEquipable::equalsExceptQty(otherW)
-                && Math::aproxEqual(baseDamage, otherW->baseDamage)
+                && aproxEqual(baseDamage, otherW->baseDamage)
                 && (damageType == otherW->damageType)
                 && (enchantments == otherW->enchantments)
-        		&& Math::aproxEqual(useDelay, otherW->useDelay);
+        		&& aproxEqual(useDelay, otherW->useDelay);
     }
 
     virtual vector<EquipSlot> getViableSlots(){

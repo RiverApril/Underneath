@@ -29,20 +29,34 @@ namespace Animator {
 
         for(int i=1; i < (int)line.size() || j < (int)line.size(); i++){
 
+            /*if(level->tileAt(line[i])->hasFlag(tileFlagTall)){
+                Utility::execute4Around(line[i].x, line[i].y, [&level, &line, &i](int x, int y){
+                    Point2 p = Point2(x, y);
+                    if(!level->tileAt(x, y)->hasFlag(tileFlagTall) && distanceSquared(line[i], p) <= 1){
+                        line[i] = p;
+                        return;
+                    }
+                });
+            }*/
+
 
             if(i < (int)line.size()){
-            	Point2 pos = line[i] - level->currentWorld->menuGame->viewPos;
+                if(line[i] > level->currentWorld->menuGame->viewPos && line[i] < level->currentWorld->menuGame->viewPos+level->currentWorld->menuGame->gameArea){
+                    Point2 pos = line[i] - level->currentWorld->menuGame->viewPos;
 
-                Ui::setColor(icon->getFgColor(Ui::tick, pos, level), icon->getBgColor(Ui::tick, pos, level));
-            	mvaddch(pos.y, pos.x, icon->getChar(Ui::tick, pos, level));
+                    Ui::setColor(icon->getFgColor(Ui::tick, pos, level), icon->getBgColor(Ui::tick, pos, level));
+                    mvaddch(pos.y, pos.x, icon->getChar(Ui::tick, pos, level));
+                }
 
                 //level->setTile(line[i], Tiles::tileDebug2);
             }
 
             if(j >= 0){
-                Point2 pos = line[j] - level->currentWorld->menuGame->viewPos;
-                move(pos.y, pos.x);
-                level->currentWorld->menuGame->drawTileAt(line[j]);
+                if(line[j] > level->currentWorld->menuGame->viewPos && line[j] < level->currentWorld->menuGame->viewPos+level->currentWorld->menuGame->gameArea){
+                	Point2 pos = line[j] - level->currentWorld->menuGame->viewPos;
+                	move(pos.y, pos.x);
+                	level->currentWorld->menuGame->drawTileAt(line[j]);
+                }
             }
 
             j++;

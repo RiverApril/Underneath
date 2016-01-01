@@ -67,7 +67,7 @@ bool ItemTimeActivated::equalsExceptQty(Item* other){
     return (otherW)
     	&& Item::equalsExceptQty(other)
         && (otherW->timeActivatedType == timeActivatedType)
-        && Math::aproxEqual(otherW->time, time)
-        && Math::aproxEqual(otherW->power, power)
-        && Math::aproxEqual(otherW->radius, radius);
+        && aproxEqual(otherW->time, time)
+        && aproxEqual(otherW->power, power)
+        && aproxEqual(otherW->radius, radius);
 }

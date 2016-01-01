@@ -236,8 +236,14 @@ namespace ItemGenerator {
             this->radius = Vector2(minRadius, maxRadius);
         }
 
+        BombBase* setArts(vector<int> artIndecies) {
+            this->arts = artIndecies;
+            return this;
+        }
 
-        vector<vector<string> >  names = {{""}};
+
+        vector<vector<string> > names = {{""}};
+        vector<int> arts = {-1};
         TimeActivatedType timeActivedType;
         Vector2 time;
         Vector2 power;
@@ -258,6 +264,8 @@ namespace ItemGenerator {
 
         double standard;
         double magical;
+        bool canBeModifiedByRandomness = true;
+        bool allowCoins = true;
         vector<pair<int, ItemGenerator::ItemBase*> > bases;
         
     };
@@ -302,6 +310,7 @@ namespace ItemGenerator {
 
     extern BombBase* bombWallSmall;
     extern BombBase* bombWallLarge;
+    extern BombBase* easterEgg;
 
     extern WeaponBase* wKnife;
     extern WeaponBase* wSword;
@@ -333,8 +342,6 @@ namespace ItemGenerator {
     extern ArmorBase* aMailGloves;
     extern ArmorBase* aGoldenRing;
     extern ArmorBase* aJewelRing;
-    
-    extern ArmorBase* aLuckyFoot;
 
     extern int lootProfileChest;
     extern int lootProfileCrate;
@@ -361,6 +368,7 @@ namespace ItemGenerator {
     ItemWeapon* createItemWeaponFromBase(WeaponBase* base, int itemDifficulty);
     ItemArmor* createArmorFromBase(ArmorBase* base, int itemDifficulty);
     ItemPotion* createPotionFromBase(PotionBase* pb, int itemDifficulty);
+    ItemTimeActivated* createBombFromBase(BombBase* base);
 
     Enchantment createEnchantmentFromBase(EnchantmentBase* base);
 

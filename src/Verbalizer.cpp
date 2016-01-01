@@ -40,7 +40,23 @@ namespace Verbalizer {
 
     void attack(EntityAlive* attacker, EntityAlive* underAttack, ItemWeapon* weapon, double damage) {
 
-        EntityPlayer* playerAttacker = dynamic_cast<EntityPlayer*> (attacker);
+        //You deal 2.56 damage to the Golbin Archer
+        //The Golbin Archer dealt 2.65 damage to you.
+
+		EntityPlayer* playerAttacker = dynamic_cast<EntityPlayer*> (attacker);
+
+        const char* white = colorCode(C_WHITE).c_str();
+        const char* green = colorCode(C_LIGHT_GREEN).c_str();
+        const char* blue = colorCode(C_LIGHT_BLUE).c_str();
+        const char* red = colorCode(C_LIGHT_RED).c_str();
+
+        if(playerAttacker){
+            consolef("You deal %s%.2f damage%s to the %s%s%s.", green, damage, white, blue, underAttack->getName().c_str(), white);
+        }else{
+            consolef("The %s%s%s dealt %s%.2f damage%s to you.", blue, attacker->getName().c_str(), white, red, damage, white);
+        }
+
+        /*EntityPlayer* playerAttacker = dynamic_cast<EntityPlayer*> (attacker);
         EntityPlayer* playerUnderAttack = dynamic_cast<EntityPlayer*> (underAttack);
 
         string attackerString = colorCode(C_LIGHT_BLUE) + attacker->getName();
@@ -67,7 +83,7 @@ namespace Verbalizer {
                 colorCode(C_WHITE) + " with " + their + " " +
                 colorCode(C_LIGHT_RED) + weapon->getName(false);
 
-        consolef(verbal, damage);
+        consolef(verbal, damage);*/
 
 
     }

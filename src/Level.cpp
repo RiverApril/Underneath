@@ -210,11 +210,12 @@ bool Level::canSee(Point2 origin, Point2 test, double range) {
         return true;
     }
 
-    if (Math::distanceSquared(origin.x, origin.y, test.x, test.y) > range * range) {
+    if (distanceSquared(origin, test) > range * range) {
         return false;
     }
 
-    bool hitAWall = false;
+    bool hitAWall1 = false;
+    bool hitAWall2 = false;
 
     Vector2 v;
 
@@ -228,20 +229,17 @@ bool Level::canSee(Point2 origin, Point2 test, double range) {
             Point2 p = v.roundAwayFrom0();
 
             if (p != Point2Zero && (origin+p) != test && tileAt(origin + p)->isTall()) {
-                hitAWall = true;
+                hitAWall1 = true;
                 break;
             }
         }
     }
 
-    if(hitAWall){
+    Point2 t = test;
+    test = origin;
+    origin = t;
 
-        hitAWall = false;
-
-        Point2 t = test;
-        test = origin;
-        origin = t;
-
+    if(hitAWall1){
         Vector2 step = ((test - origin) / ((double) range));
 
         for (double i = 0; i <= range; i += .1) {
@@ -251,14 +249,14 @@ bool Level::canSee(Point2 origin, Point2 test, double range) {
             Point2 p = v.roundAwayFrom0();
 
             if (p != Point2Zero && (origin+p) != test && tileAt(origin + p)->isTall()) {
-                hitAWall = true;
+                hitAWall2 = true;
                 break;
             }
         }
-        return !hitAWall;
-    }else{
-        return !hitAWall;
     }
+
+    return (!hitAWall1 || !hitAWall2);
+
 }
 
 Entity* Level::getClosestVisableEntity(Point2 origin, double range, Entity* notMe) {
@@ -505,7 +503,7 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
                         if (inRange(p)) {
                             if (tileAt(p)->hasFlag(requiredFlag) && tileAt(p)->doesNotHaveFlag(bannedFlag) && (!mustBeExplored || getExplored(p))) {
                                 bool ent = false;
-                                if(careAboutEntities && p != to && p != from){
+                                if((!mustBeExplored || getExplored(p)) && careAboutEntities && p != to && p != from){
                                     for(Entity* e : entityList){
                                         if(e){
                                             if(e->isSolid()){
