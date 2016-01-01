@@ -18,11 +18,11 @@ double distanceSquared(double x, double y);
 
 double randomRange(double min, double max);
 
-template <typename T> const T abs(const T a) {
+/*template <typename T> const T abs(const T a) {
     return (a < 0) ? -a : a;
 }
 
-/*template <typename T> const T min(const T a, const T b) {
+template <typename T> const T min(const T a, const T b) {
     return (a < b) ? a : b;
 }
 
