@@ -42,7 +42,7 @@ public:
         ItemCombatSpell* otherS = dynamic_cast<ItemCombatSpell*> (other);
         return (otherS)
         		&& ItemRanged::equalsExceptQty(other)
-        		&& Math::aproxEqual(manaCost, otherS->manaCost);
+        		&& aproxEqual(manaCost, otherS->manaCost);
     }
 
     double manaCost = 0;

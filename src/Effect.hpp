@@ -46,6 +46,8 @@ bool isBadEffect(Effect e);
 
 string effectName(EffectId eid, double meta);
 
+string effectPowerString(EffectId eid, double power);
+
 Ui::Color effectColor(EffectId eid, double meta);
 
 bool operator==(const Effect a, const Effect b);

@@ -329,7 +329,7 @@ namespace Commands {
     struct CommandKillall : Command {
 
         string help() {
-            return "Kills all nearby hostiles";
+            return "Kills all nearby hostiles or all hostiles on the map if [everything] is used.";
         }
 
         string usage() {

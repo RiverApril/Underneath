@@ -57,15 +57,16 @@ namespace Ui {
             closeThisMenu();
             return;
         }
-        if (selected < 0) {
-            selected = 0;
-        }
-        if (selected >= abilityCount) {
-            selected = abilityCount - 1;
-        }
     }
 
     void MenuStats::update() {
+
+        if (selected < 0) {
+        	selected = abilityCount - 1;
+    	}
+        if (selected >= abilityCount) {
+            selected = 0;
+        }
         setColor(C_WHITE);
         move(0, 0);
         clrtobot();

@@ -59,10 +59,6 @@ public:
         return activeItemWeapon;
     }
 
-    void setMoveDelay(double newDelay) {
-        moveDelay = newDelay;
-    }
-
     virtual bool removeItem(Item* item, bool deleteItem);
 
     bool equipItem(ItemEquipable* newItem);
@@ -99,6 +95,7 @@ public:
     int lootProfileIndex = -1;
 
     int maxLootDrop = 1;
+    int minLootDrop = 0;
 
 protected:
     int ai = aiNone;

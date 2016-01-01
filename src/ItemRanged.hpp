@@ -39,7 +39,7 @@ public:
         ItemRanged* otherR = dynamic_cast<ItemRanged*> (other);
         return (otherR)
         		&& ItemWeapon::equalsExceptQty(other)
-                && Math::aproxEqual(range, otherR->range);
+                && aproxEqual(range, otherR->range);
     }
 
     double range = 4;

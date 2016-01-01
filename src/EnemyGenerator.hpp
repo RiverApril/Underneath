@@ -43,6 +43,7 @@ namespace EnemyGenerator {
 
         int lootProfileIndex = -1;
         int maxLootDrop = 1;
+        int minLootDrop = 0;
 
 
         int weight = 0;

@@ -104,7 +104,7 @@ namespace Ui {
         flashImportantInfo--;
 
         /*setColor(C_WHITE);
-        int minI = Math::max(0, scrollOffset);
+        int minI = max(0, scrollOffset);
         int maxI = player->inventory.size() - scrollOffset;
         move(0, 0);
         clrtobot();

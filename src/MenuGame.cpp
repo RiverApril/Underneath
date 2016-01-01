@@ -913,10 +913,10 @@ namespace Ui {
             p = currentPlayer->pos;
             mvprintw(a, gameArea.x + 1, "%s", currentPlayer->getName().c_str());
 
-            const int hp = Math::roundToInt(currentPlayer->getHp());
-            const int maxHp = Math::roundToInt(currentPlayer->getMaxHp());
-            const int mp = Math::roundToInt(currentPlayer->getMp());
-            const int maxMp = Math::roundToInt(currentPlayer->getMaxMp());
+            const int hp = roundToInt(currentPlayer->getHp());
+            const int maxHp = roundToInt(currentPlayer->getMaxHp());
+            const int mp = roundToInt(currentPlayer->getMp());
+            const int maxMp = roundToInt(currentPlayer->getMaxMp());
 
             a++;
 
@@ -996,8 +996,8 @@ namespace Ui {
 
                     EntityAlive* alive = dynamic_cast<EntityAlive*> (nearestEntity);
                     if (alive) {
-                        const int hp = Math::roundToInt(alive->getHp());
-                        const int maxHp = Math::roundToInt(alive->getMaxHp());
+                        const int hp = roundToInt(alive->getHp());
+                        const int maxHp = roundToInt(alive->getMaxHp());
 
                         a += printMultiLineColoredString(a, gameArea.x + 2, formatString("HP: &%c%s&%c ", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (gameArea.x + 1) - 5)).c_str(), cc(C_WHITE)) );
                     }

@@ -335,7 +335,14 @@ void EntityAi::dropLoots(Level* level){
             }
         }
     }*/
-    vector<Item*> drops = ItemGenerator::makeLoot(lootProfileIndex, level->getDifficulty(), rand()%(int)(maxHp*max(1, level->getDifficulty())), 0, maxLootDrop, 3);
+    int ll = 0;
+    int er = 0;
+    if(ItemGenerator::lootProfileList[lootProfileIndex]->canBeModifiedByRandomness){
+    	int l = level->currentWorld->currentPlayer->abilities[iLUK];
+    	ll = maxLootDrop==0?0:((rand()%max(2, 100-l))==0?min(1, l/10):0);
+        er = 3;
+    }
+    vector<Item*> drops = ItemGenerator::makeLoot(lootProfileIndex, level->getDifficulty(), rand()%(int)(maxHp*max(1, level->getDifficulty())), minLootDrop, maxLootDrop+ll, er);
     for(Item* i : drops){
         level->newEntity(new EntityItem(i, pos));
     }
@@ -348,12 +355,14 @@ EntityAi* EntityAi::cloneUnsafe(EntityAi* oldE, EntityAi* newE) {
 
     newE->ai = oldE->ai;
     newE->agro = oldE->agro;
+    newE->moveDelay = oldE->moveDelay;
     newE->lastMoveTime = oldE->lastMoveTime;
     newE->lastAttackTime = oldE->lastAttackTime;
     newE->attackMultiplier = oldE->attackMultiplier;
     newE->lastKnownTargetPos = oldE->lastKnownTargetPos;
     newE->lootProfileIndex = oldE->lootProfileIndex;
     newE->maxLootDrop = oldE->maxLootDrop;
+    newE->minLootDrop = oldE->minLootDrop;
 
     forVector(oldE->inventory, i) {
         if (oldE->inventory[i] == oldE->activeItemWeapon) {
@@ -373,11 +382,13 @@ void EntityAi::save(vector<unsigned char>* data) {
     EntityAlive::save(data);
     Utility::saveInt(data, ai);
     Utility::saveBool(data, agro);
+    Utility::saveDouble(data, moveDelay);
     Utility::saveDouble(data, lastMoveTime);
     Utility::saveDouble(data, lastAttackTime);
     Utility::saveDouble(data, attackMultiplier);
     Utility::saveInt(data, lootProfileIndex);
     Utility::saveInt(data, maxLootDrop);
+    Utility::saveInt(data, minLootDrop);
     Point2::save(lastKnownTargetPos, data);
 
     int activeItemWeaponIndex = -1;
@@ -395,11 +406,13 @@ void EntityAi::load(vector<unsigned char>* data, int* position) {
     EntityAlive::load(data, position);
     ai = Utility::loadInt(data, position);
     agro = Utility::loadBool(data, position);
+    moveDelay = Utility::loadDouble(data, position);
     lastMoveTime = Utility::loadDouble(data, position);
     lastAttackTime = Utility::loadDouble(data, position);
     attackMultiplier = Utility::loadDouble(data, position);
     lootProfileIndex = Utility::loadInt(data, position);
     maxLootDrop = Utility::loadInt(data, position);
+    minLootDrop = Utility::loadInt(data, position);
     lastKnownTargetPos = Point2::load(data, position);
 
 

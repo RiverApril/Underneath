@@ -355,7 +355,27 @@ namespace Ui {
             a += printMultiLineString(a, columnX, formatString("Enchantments:"));
             for (Enchantment e : enchantments) {
                 setColor(effectColor(e.effectId, e.meta));
-                a += printMultiLineString(a, columnX, formatString("   %s %s (1/%d chance, lasts for %.2ft)", enchantmentName(e).c_str(), Utility::intToRomanNumerals((int)e.power).c_str(), e.chance, e.time));
+                string s = "   "+enchantmentName(e);
+                string ss = effectPowerString(e.effectId, e.power);
+                if(e.power != 1 || ss.size() > 0){
+                    s += " "+ss;
+                }
+                if(e.chance != 1 || e.time > 0){
+                    s += " (";
+                }
+                if(e.chance != 1){
+                    s += formatString("1/%d", e.chance);
+                }
+                if(e.chance != 1 && e.time > 0){
+                    s += ", ";
+                }
+                if(e.time > 0){
+                    s += formatString("lasts for %.2ft", e.time);
+                }
+                if(e.chance != 1 || e.time > 0){
+                    s += ")";
+                }
+                a += printMultiLineString(a, columnX, s);
 
             }
             a++;
@@ -402,8 +422,8 @@ namespace Ui {
 
 
             int midI = (countI / 2) + selectedY;
-            int minI = Math::max(0, midI - countI);
-            int maxI = Math::min(midI + countI, (int) inv.size());
+            int minI = max(0, midI - countI);
+            int maxI = min(midI + countI, (int) inv.size());
             if (((ii == 0) != selectedLeft)) {
                 setColor(C_LIGHT_GRAY);
             }
@@ -781,10 +801,10 @@ namespace Ui {
             mvvline(2, columnX + columnWidth - 1, '|', terminalSize.y - 2);
         }
 
-        const int hp = Math::roundToInt(player->getHp());
-        const int maxHp = Math::roundToInt(player->getMaxHp());
-        const int mp = Math::roundToInt(player->getMp());
-        const int maxMp = Math::roundToInt(player->getMaxMp());
+        const int hp = roundToInt(player->getHp());
+        const int maxHp = roundToInt(player->getMaxHp());
+        const int mp = roundToInt(player->getMp());
+        const int maxMp = roundToInt(player->getMaxMp());
 
         move(0, terminalSize.x - 15);
         clrtoeol();
@@ -805,7 +825,7 @@ namespace Ui {
 
         /*
          setColor(C_WHITE);
-         int minI = Math::max(0, scrollOffset);
+         int minI = max(0, scrollOffset);
          int maxI = (int)inv->inventory.size() - scrollOffset;
          if(inv->inventory.size() == 0){
          minI = 0;

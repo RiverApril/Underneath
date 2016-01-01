@@ -16,7 +16,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
 
     Point2 center = size / 2;
 
-    int ring = center.xPlusY() * .3;
+    int ring = center.xPlusY() * .2;
     int deepRing = center.xPlusY() * .5;
 
     debug("Gen: Start");
@@ -210,6 +210,7 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
 
 
             vector<LevelGenerator::Room*>* rooms = LevelGenerator::createRooms(stairUpPos, 1000, size);
+            this->entityList.clear();
             LevelGenerator::makeRoomsAndPaths(rooms, this);
 
             debugf("generated");
@@ -586,7 +587,7 @@ namespace LevelGenerator {
                 Utility::executeBorder(r->pos, r->pos+r->size, [&r, &level, &doors, &lastDoorLocation](int x, int y){
                     if(level->tileAt(x, y)->hasFlag(tileFlagDoor)){
                         doors++;
-                        lastDoorLocation = r->pos + Point2(x, y);
+                        lastDoorLocation = Point2(x, y);
                     }
                 });
 
@@ -594,7 +595,7 @@ namespace LevelGenerator {
                     //Chest
                     if (rand() % 2 == 0) {
                         level->setTile(r->pos + (r->size/2), Tiles::tileChest);
-                        level->setTile(lastDoorLocation, Tiles::tileLockedDoor);
+                        level->setTile(lastDoorLocation, rand()%2==0?Tiles::tileSecretDoor:Tiles::tileLockedDoor);
                     }else{
                         int c = 0;
                         Utility::executeBorder(r->pos + (r->size/2)-1, r->pos + (r->size/2)+1, [&level, &c](int x, int y){
@@ -602,7 +603,7 @@ namespace LevelGenerator {
                                 c++;
                             }
                         });
-                        if(c == 0){
+                        if(c == 8){
                             EntityShop* e = new EntityShop("Merchant", aiNone, 'M', r->pos + (r->size/2), C_LIGHT_MAGENTA, 100);
                             e->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, level->getDifficulty(), (rand()%9000)+1000, 10, 20, 2));
                             e->addItem(ItemGenerator::makeCoins(1000));

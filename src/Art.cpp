@@ -307,7 +307,7 @@ namespace Arts {
 Point2 Art::calcSize() {
     int w = 0;
     for (string line : lines) {
-        w = Math::max(w, (int) line.length());
+        w = max(w, (int) line.length());
     }
     size.x = w;
     size.y = (int) lines.size();
