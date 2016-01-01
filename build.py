@@ -58,7 +58,7 @@ objectExtention = "opp"
 
 
 compiler = "g++"
-compilerFlags = "-std=gnu++11"
+compilerFlags = "-std=gnu++11 -m32"
 libraryFlags = ""
 
 optimization = "-g -O0 -Wall"
