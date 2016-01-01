@@ -123,7 +123,7 @@ namespace Tiles {
         tileGrass = new Tile(new RandomColorIcon({',', '.', '\'', '`', ' ', ' ', ' '}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "grass", tileFlagPathable | tileFlagReplaceable, new RandomIcon({',', '.', '\'', '`', ' ', ' ', ' '}, C_DARK_GRAY, bg));
         tilePath = new Tile(new BasicIcon('.', C_DARK_YELLOW, bg), "path", tileFlagPathable | tileFlagReplaceable, new BasicIcon({'.'}, C_DARK_GRAY, bg));
 
-        tilePillar = new Tile(new RandomIcon({'I'}, C_WHITE, bg), "pillar", tileFlagSolid);
+        tilePillar = new Tile(new RandomIcon({'I'}, C_WHITE, bg), "pillar", tileFlagSolid | tileFlagTall);
         tileBreakable = new Tile(new BasicIcon('#', C_BLACK, C_WHITE), "breakable wall", tileFlagSolid | tileFlagTall | tileFlagPathable, new BasicIcon('#', C_BLACK, C_DARK_GRAY));
 
         tileEdge = new Tile(new BasicIcon(' ',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
