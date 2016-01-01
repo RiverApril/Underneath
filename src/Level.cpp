@@ -590,7 +590,7 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
                 EntityAlive* a = dynamic_cast<EntityAlive*>(e);
                 if(a){
                     if(distanceSquared(a->pos, pos) <= radius*radius){
-                        a->hurt(damExplosion, attackPower);
+                        a->hurt(this, damExplosion, attackPower);
                     }
                 }
             }

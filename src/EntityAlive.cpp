@@ -55,7 +55,7 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
 
             switch (e->eId) {
                 case effDamage:
-                    hurt((int) e->meta, e->power * m);
+                    hurt(level, (int) e->meta, e->power * m);
                     switch ((DamageType)(int)e->meta) {
                         case damBlood:
                             if(level->tileAt(pos)->hasFlag(tileFlagReplaceable)){
@@ -65,11 +65,6 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
 
                         default:
                             break;
-                    }
-                    if(rand() % 20 == 0){
-                        if(level->tileAt(pos)->hasFlag(tileFlagReplaceable)){
-                            level->setTile(pos, Tiles::tileBloodFloor);
-                        }
                     }
                     break;
                 case effHeal:
@@ -119,11 +114,17 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
     return Entity::update(deltaTime, time, level);
 }
 
-double EntityAlive::hurt(DamageType damageType, double amount, double damageMultiplier) {
+double EntityAlive::hurt(Level* level, DamageType damageType, double amount, double damageMultiplier) {
 
     damageMultiplier *= 1.0 - getDefenseMultiplierFromEffects(damageType);
 
     amount *= damageMultiplier;
+
+    if(rand() % 20 == 0){
+        if(level->tileAt(pos)->hasFlag(tileFlagReplaceable)){
+            level->setTile(pos, Tiles::tileBloodFloor);
+        }
+    }
 
     //double amoutBeforeWeaknesses = amount;
 
@@ -142,7 +143,7 @@ double EntityAlive::hurt(DamageType damageType, double amount, double damageMult
     return amount;
 }
 
-double EntityAlive::hurt(ItemWeapon* w, double damageMultiplier) {
+double EntityAlive::hurt(Level* level, ItemWeapon* w, double damageMultiplier) {
     double d = w->baseDamage * Random::randDouble(.5, 1);
     for (Enchantment ench : w->enchantments) {
         if (rand() % ench.chance == 0) {
@@ -150,7 +151,7 @@ double EntityAlive::hurt(ItemWeapon* w, double damageMultiplier) {
         }
     }
 
-    return EntityAlive::hurt(w->damageType, d, damageMultiplier);
+    return EntityAlive::hurt(level, w->damageType, d, damageMultiplier);
 }
 
 void EntityAlive::addEffect(Effect e) {

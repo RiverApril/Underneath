@@ -54,9 +54,9 @@ public:
 
     virtual void load(vector<unsigned char>* data, int* position);
 
-    virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
+    virtual double hurt(Level* level, DamageType damageType, double amount, double damageMultiplier = 1);
 
-    virtual double hurt(ItemWeapon* w, double damageMultiplier = 1);
+    virtual double hurt(Level* level, ItemWeapon* w, double damageMultiplier = 1);
 
     virtual double heal(double amount) {
         double a = EntityAlive::heal(amount);

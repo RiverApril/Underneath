@@ -60,9 +60,9 @@ public:
         return !dead;
     }
 
-    virtual double hurt(DamageType damageType, double amount, double damageMultiplier = 1);
+    virtual double hurt(Level* level, DamageType damageType, double amount, double damageMultiplier = 1);
 
-    virtual double hurt(ItemWeapon* w, double damageMultiplier = 1);
+    virtual double hurt(Level* level, ItemWeapon* w, double damageMultiplier = 1);
 
     void addEffect(Effect e);
 

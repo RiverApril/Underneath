@@ -243,7 +243,7 @@ void EntityAi::attackAi(double time, Level* level){
     }
     if (attack) {
         while (lastAttackTime + activeItemWeapon->useDelay <= time) {
-            double d = target->hurt(activeItemWeapon, getAttackMultiplierFromEffects(activeItemWeapon->damageType));
+            double d = target->hurt(level, activeItemWeapon, getAttackMultiplierFromEffects(activeItemWeapon->damageType));
             Verbalizer::attack(this, target, activeItemWeapon, d);
             ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(activeItemWeapon);
             BasicIcon* icon;
@@ -269,14 +269,14 @@ void EntityAi::attackAi(double time, Level* level){
 
 }
 
-double EntityAi::hurt(DamageType damageType, double amount, double damageMultiplier) {
+double EntityAi::hurt(Level* level, DamageType damageType, double amount, double damageMultiplier) {
     agro = true;
-    return EntityAlive::hurt(damageType, amount, damageMultiplier);
+    return EntityAlive::hurt(level, damageType, amount, damageMultiplier);
 }
 
-double EntityAi::hurt(ItemWeapon* w, double damageMultiplier) {
+double EntityAi::hurt(Level* level, ItemWeapon* w, double damageMultiplier) {
     agro = true;
-    return EntityAlive::hurt(w, damageMultiplier);
+    return EntityAlive::hurt(level, w, damageMultiplier);
 }
 
 bool EntityAi::update(double deltaTime, double time, Level* level) {

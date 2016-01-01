@@ -48,7 +48,6 @@ namespace Tiles {
 
 
     Tile* tileFloor;
-    //Tile* tilePath;
     Tile* tileBloodFloor;
 
     Tile* tileWall;
@@ -100,7 +99,7 @@ namespace Tiles {
         tileBloodFloor = new Tile(new BasicIcon('.', C_LIGHT_RED, C_BLACK), "bloody floor", tileFlagPathable | tileFlagReplaceable);
 
         tileWall = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "wall", tileFlagSolid | tileFlagTall, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
-        tilePonyWall = new Tile(new BasicIcon('.', C_BLACK, C_LIGHT_GRAY), "pony wall", tileFlagSolid, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
+        tilePonyWall = new Tile(new BasicIcon(' ', C_BLACK, C_LIGHT_GRAY), "pony wall", tileFlagSolid, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
 
         tileDoor = new Tile(new BasicIcon('%', C_BLACK, C_WHITE), "door", tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity, new BasicIcon('%', C_BLACK, C_DARK_GRAY));
         tileSecretDoor = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "definitely a wall", tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagSecretPathable | tileFlagHasTileEntity, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
@@ -127,7 +126,7 @@ namespace Tiles {
         tilePillar = new Tile(new RandomIcon({'I'}, C_WHITE, bg), "pillar", tileFlagSolid);
         tileBreakable = new Tile(new BasicIcon('#', C_BLACK, C_WHITE), "breakable wall", tileFlagSolid | tileFlagTall | tileFlagPathable, new BasicIcon('#', C_BLACK, C_DARK_GRAY));
 
-        tileEdge = new Tile(new BasicIcon(' ',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon('.', C_BLACK, C_DARK_GRAY));
+        tileEdge = new Tile(new BasicIcon(' ',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
         tileUnset = new Tile(new BasicIcon('X',  C_LIGHT_MAGENTA, bg), "unset", tileFlagSolid | tileFlagTall | tileFlagIndestructable);
 
         tileDebug1 = new Tile(new BasicIcon('1', C_LIGHT_GREEN, bg), "debug 1", tileFlagPathable | tileFlagReplaceable);
