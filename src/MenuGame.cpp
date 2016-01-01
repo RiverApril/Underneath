@@ -817,13 +817,13 @@ namespace Ui {
                         currentPlayer->pos = p;
 
                     } else if (in == '[') {
-                        currentPlayer->hurt(damDebug, 1);
+                        currentPlayer->hurt(currentLevel, damDebug, 1);
 
                     } else if (in == ']') {
                         currentPlayer->heal(1);
 
                     } else if (in == '{') {
-                        currentPlayer->hurt(damDebug, 10);
+                        currentPlayer->hurt(currentLevel, damDebug, 10);
 
                     } else if (in == '}') {
                         currentPlayer->heal(10);

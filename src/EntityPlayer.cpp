@@ -153,7 +153,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                             posToInteract = level->findRandomWithoutFlag(tileFlagSolid);
                         }
                         if (!moveAbsalute(posToInteract, level, false)) {
-                            hurt(damSuffocation, maxHp * 2);
+                            hurt(level, damSuffocation, maxHp * 2);
                         }
                         break;
                     case spellBarrier:{
@@ -443,7 +443,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                     mp -= spell->manaCost;
 
                     timeSinceCombat = 0;
-                    double d = a->hurt(spell, x + 1);
+                    double d = a->hurt(level, spell, x + 1);
                     Verbalizer::attack(this, a, spell, d);
 
                     BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
@@ -470,7 +470,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                     }
                 }*/
 
-                double d = a->hurt(weapon, x);
+                double d = a->hurt(level, weapon, x);
                 Verbalizer::attack(this, a, weapon, d);
 
                 BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
@@ -737,7 +737,7 @@ void EntityPlayer::setActiveItemWeapon(ItemWeapon* newItemWeapon) {
     equipItem(newItemWeapon);
 }
 
-double EntityPlayer::hurt(DamageType damageType, double amount, double damageMultiplier) {
+double EntityPlayer::hurt(Level* level, DamageType damageType, double amount, double damageMultiplier) {
     timeSinceCombat = 0;
     if(Settings::godMode){
         return 0;
@@ -745,10 +745,10 @@ double EntityPlayer::hurt(DamageType damageType, double amount, double damageMul
 
     damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(damageType);
 
-    return EntityAlive::hurt(damageType, amount, damageMultiplier);
+    return EntityAlive::hurt(level, damageType, amount, damageMultiplier);
 }
 
-double EntityPlayer::hurt(ItemWeapon* w, double damageMultiplier) {
+double EntityPlayer::hurt(Level* level, ItemWeapon* w, double damageMultiplier) {
     timeSinceCombat = 0;
     if(Settings::godMode){
         return 0;
@@ -756,7 +756,7 @@ double EntityPlayer::hurt(ItemWeapon* w, double damageMultiplier) {
 
     damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType);
 
-    return EntityAlive::hurt(w, damageMultiplier);
+    return EntityAlive::hurt(level, w, damageMultiplier);
 }
 
 void EntityPlayer::updateVariablesForAbilities() {
