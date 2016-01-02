@@ -150,7 +150,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         break;
                     case spellRelocate:
                         if (posToInteract == pos) {
-                            posToInteract = level->findRandomWithoutFlag(tileFlagSolid);
+                            posToInteract = level->findRandomWithoutFlag(solidity);
                         }
                         if (!moveAbsalute(posToInteract, level, false)) {
                             hurt(level, damSuffocation, maxHp * 2);
@@ -161,7 +161,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         for(int i=-1;i<=1;i++){
                             for(int j=-1;j<=1;j++){
                                 Point2 p = posToInteract+Point2(i, j);
-                                if(level->tileAt(p)->hasFlag(tileFlagReplaceable)){
+                                if(level->tileAt(p)->hasAllOfFlags(tileFlagReplaceable)){
                                     if(level->firstEntityHere(p) == nullptr){
                                         level->setTile(p, Tiles::tileBreakable);
                                         success = true;
@@ -221,7 +221,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
 
         for (Entity* e : level->entityList) {
             if (e->uniqueId != uniqueId) { //Don't interact with yourself yet.
-                if (!needToBeSolid || e->isSolid()) {
+                if (!needToBeSolid || (bool)(e->solidity & solidity)) {
                     if (e->pos == posToInteract) {
                         double d = interactWithEntity(level, e, posToInteract, item);
                         if (d > 0) {
@@ -257,7 +257,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
     }
 
     if (use) {
-        if (Tiles::tileList[tid]->hasFlag(tileFlagHasTileEntity)) {
+        if (Tiles::tileList[tid]->hasAllOfFlags(tileFlagHasTileEntity)) {
 
             for (TileEntity* te : level->tileEntityList) {
                 //debugf("te's pos: %s", te->pos.toString().c_str());
@@ -320,7 +320,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                 level->setTile(posOfTile, Tiles::tileDoor);
                 return interactDelay;
             }
-        } else if (Tiles::tileList[tid]->hasFlag(tileFlagDoor)) {
+        } else if (Tiles::tileList[tid]->hasAllOfFlags(tileFlagDoor)) {
             level->setTile(posOfTile, Tiles::tileOpenDoor);
             return interactDelay;
         } else if (tid == Tiles::tileLockedDoor->getIndex()) {

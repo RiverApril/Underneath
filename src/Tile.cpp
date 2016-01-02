@@ -98,36 +98,36 @@ namespace Tiles {
         tileFloor = new Tile(new BasicIcon('.', C_WHITE, C_BLACK), "floor", tileFlagPathable | tileFlagReplaceable);
         tileBloodFloor = new Tile(new BasicIcon('.', C_LIGHT_RED, C_BLACK), "bloody floor", tileFlagPathable | tileFlagReplaceable);
 
-        tileWall = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "wall", tileFlagSolid | tileFlagTall, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
-        tilePonyWall = new Tile(new BasicIcon(' ', C_BLACK, C_LIGHT_GRAY), "pony wall", tileFlagSolid, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
+        tileWall = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "wall", tileFlagSolidBoth, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
+        tilePonyWall = new Tile(new BasicIcon(' ', C_BLACK, C_LIGHT_GRAY), "pony wall", tileFlagSolidOnGround, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
 
-        tileDoor = new Tile(new BasicIcon('%', C_BLACK, C_WHITE), "door", tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity, new BasicIcon('%', C_BLACK, C_DARK_GRAY));
-        tileSecretDoor = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "definitely a wall", tileFlagSolid | tileFlagTall | tileFlagDoor | tileFlagSecretPathable | tileFlagHasTileEntity, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
+        tileDoor = new Tile(new BasicIcon('%', C_BLACK, C_WHITE), "door", tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity, new BasicIcon('%', C_BLACK, C_DARK_GRAY));
+        tileSecretDoor = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "definitely a wall", tileFlagSolidBoth | tileFlagDoor | tileFlagSecretPathable | tileFlagHasTileEntity, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
         tileOpenDoor = new Tile(new BasicIcon('/', C_WHITE, bg), "open door", tileFlagPathable);
 
-        tileLockedDoor = new Tile(new BasicIcon('%', C_LIGHT_MAGENTA, C_WHITE), "locked door", tileFlagSolid | tileFlagTall | tileFlagSecretPathable, new BasicIcon('%', C_DARK_MAGENTA, C_DARK_GRAY));
+        tileLockedDoor = new Tile(new BasicIcon('%', C_LIGHT_MAGENTA, C_WHITE), "locked door", tileFlagSolidBoth | tileFlagSecretPathable, new BasicIcon('%', C_DARK_MAGENTA, C_DARK_GRAY));
 
 
         tileStairUp = new Tile(new BasicIcon('^',  C_LIGHT_GREEN, bg), "stair up", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
         tileStairDown = new Tile(new BasicIcon('v',  C_LIGHT_GREEN, bg), "stair down", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
 
-        tileChest = new Tile(new BasicIcon('+', C_LIGHT_GREEN, bg), "chest", tileFlagSolid | tileFlagHasTileEntity);
-        tileCrate = new Tile(new BasicIcon('+', C_DARK_YELLOW, bg), "crate", tileFlagSolid | tileFlagHasTileEntity | tileFlagPathable);
+        tileChest = new Tile(new BasicIcon('+', C_LIGHT_GREEN, bg), "chest", tileFlagSolidOnGround | tileFlagHasTileEntity);
+        tileCrate = new Tile(new BasicIcon('+', C_DARK_YELLOW, bg), "crate", tileFlagSolidOnGround | tileFlagHasTileEntity | tileFlagPathable);
 
 
         tileRubble = new Tile(new BasicIcon('#', C_LIGHT_GRAY, bg), "rubble", tileFlagPathable | tileFlagReplaceable, new BasicIcon('#', C_DARK_GRAY, bg));
         tileCorpse = new Tile(new BasicIcon('&', C_LIGHT_RED, bg), "corpse", tileFlagPathable | tileFlagReplaceable, new BasicIcon('&', C_DARK_GRAY, bg));
         tileBones = new Tile(new BasicIcon('&', C_LIGHT_GRAY, bg), "bones", tileFlagPathable | tileFlagReplaceable, new BasicIcon('.', C_DARK_GRAY, bg));
 
-        tileTree = new Tile(new RandomColorIcon({'T', 't'}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "tree", tileFlagSolid | tileFlagTall, new RandomIcon({'T', 't'}, C_DARK_GRAY, bg));
+        tileTree = new Tile(new RandomColorIcon({'T', 't'}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "tree", tileFlagSolidBoth, new RandomIcon({'T', 't'}, C_DARK_GRAY, bg));
         tileGrass = new Tile(new RandomColorIcon({',', '.', '\'', '`', ' ', ' ', ' '}, {C_LIGHT_GREEN, C_LIGHT_GREEN, C_DARK_GREEN}, {bg}), "grass", tileFlagPathable | tileFlagReplaceable, new RandomIcon({',', '.', '\'', '`', ' ', ' ', ' '}, C_DARK_GRAY, bg));
         tilePath = new Tile(new BasicIcon('.', C_DARK_YELLOW, bg), "path", tileFlagPathable | tileFlagReplaceable, new BasicIcon({'.'}, C_DARK_GRAY, bg));
 
-        tilePillar = new Tile(new RandomIcon({'I'}, C_WHITE, bg), "pillar", tileFlagSolid | tileFlagTall);
-        tileBreakable = new Tile(new BasicIcon('#', C_BLACK, C_WHITE), "breakable wall", tileFlagSolid | tileFlagTall | tileFlagPathable, new BasicIcon('#', C_BLACK, C_DARK_GRAY));
+        tilePillar = new Tile(new RandomIcon({'I'}, C_WHITE, bg), "pillar", tileFlagSolidBoth);
+        tileBreakable = new Tile(new BasicIcon('#', C_BLACK, C_WHITE), "breakable wall", tileFlagSolidBoth | tileFlagPathable, new BasicIcon('#', C_BLACK, C_DARK_GRAY));
 
-        tileEdge = new Tile(new BasicIcon(' ',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolid | tileFlagTall | tileFlagIndestructable, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
-        tileUnset = new Tile(new BasicIcon('X',  C_LIGHT_MAGENTA, bg), "unset", tileFlagSolid | tileFlagTall | tileFlagIndestructable);
+        tileEdge = new Tile(new BasicIcon(' ',  C_LIGHT_RED, C_WHITE), "edge", tileFlagSolidBoth | tileFlagIndestructable, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
+        tileUnset = new Tile(new BasicIcon('X',  C_LIGHT_MAGENTA, bg), "unset", tileFlagSolidBoth | tileFlagIndestructable);
 
         tileDebug1 = new Tile(new BasicIcon('1', C_LIGHT_GREEN, bg), "debug 1", tileFlagPathable | tileFlagReplaceable);
         tileDebug2 = new Tile(new BasicIcon('2', C_LIGHT_GREEN, bg), "debug 2", tileFlagPathable | tileFlagReplaceable);

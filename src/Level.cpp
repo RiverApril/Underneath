@@ -135,7 +135,7 @@ Point2 Level::findRandomWithFlag(TileFlag flags) {
         p.x = rand() % size.x;
         p.y = rand() % size.y;
 
-    } while (!(tileAt(p)->hasFlag(flags)));
+    } while (tileAt(p)->doesNotHaveAllOfFlags(flags));
     return p;
 }
 
@@ -145,7 +145,7 @@ Point2 Level::findRandomWithoutFlag(TileFlag flags) {
         p.x = rand() % size.x;
         p.y = rand() % size.y;
 
-    } while ((tileAt(p)->hasFlag(flags)));
+    } while ((tileAt(p)->hasAnyOfFlags(flags)));
     return p;
 }
 
@@ -228,7 +228,7 @@ bool Level::canSee(Point2 origin, Point2 test, double range) {
 
             Point2 p = v.roundAwayFrom0();
 
-            if (p != Point2Zero && (origin+p) != test && tileAt(origin + p)->isTall()) {
+            if (p != Point2Zero && (origin+p) != test && tileAt(origin + p)->hasAllOfFlags(tileFlagSolidBoth)) {
                 hitAWall1 = true;
                 break;
             }
@@ -248,7 +248,7 @@ bool Level::canSee(Point2 origin, Point2 test, double range) {
 
             Point2 p = v.roundAwayFrom0();
 
-            if (p != Point2Zero && (origin+p) != test && tileAt(origin + p)->isTall()) {
+            if (p != Point2Zero && (origin+p) != test && tileAt(origin + p)->hasAllOfFlags(tileFlagSolidBoth)) {
                 hitAWall2 = true;
                 break;
             }
@@ -446,7 +446,7 @@ void Level::actuallyRemoveTileEntityUnsafe(TileEntity* e) {
     debugf("Failed to Remove Tile Entity: %d", e->getTileEntityTypeId());
 }
 
-vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored) {
+vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored, TileFlag requiredEitherFlag) {
     vector<vector<int>> map = vector<vector<int>>(size.x, vector<int>(size.y));
 
     for (int i = 0; i < size.x; i++) {
@@ -501,12 +501,12 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
                     Point2 p = Point2(c.x + (rx?i:-i), c.y + (ry?j:-j));
                     if ((abs(i) + abs(j)) == 1) {
                         if (inRange(p)) {
-                            if (tileAt(p)->hasFlag(requiredFlag) && tileAt(p)->doesNotHaveFlag(bannedFlag) && (!mustBeExplored || getExplored(p))) {
+                            if (tileAt(p)->hasAllOfFlags(requiredFlag) && tileAt(p)->doesNotHaveAnyOfFlags(bannedFlag) && tileAt(p)->hasAnyOfFlags(requiredEitherFlag) && (!mustBeExplored || getExplored(p))) {
                                 bool ent = false;
                                 if((!mustBeExplored || getExplored(p)) && careAboutEntities && p != to && p != from){
                                     for(Entity* e : entityList){
                                         if(e){
-                                            if(e->isSolid()){
+                                            if(!(bool)(e->solidity & requiredFlag) || (bool)(e->solidity & bannedFlag)){
                                                 if(e->pos == p){
                                                     ent = true;
                                                     break;
@@ -532,8 +532,8 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
     return vector<Point2>();
 }
 
-bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored) {
-    return !(getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities, mustBeExplored).empty());
+bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored, TileFlag requiredAnyFlag) {
+    return !(getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities, mustBeExplored, requiredAnyFlag).empty());
 
     /*vector<vector<char>> map = vector<vector<char>>(size.x, vector<char>(size.y));
     for(int i=0;i<size.x;i++){
@@ -577,7 +577,7 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
             for (int j=-radius; j<=radius; j++) {
                 if( ((i*i) + (j*j)) <= radius*radius){
                     Point2 p = pos+Point2(i, j);
-                    if(!tileAt(p)->hasFlag(tileFlagIndestructable)){
+                    if(!tileAt(p)->hasAllOfFlags(tileFlagIndestructable)){
                         setTile(p, Tiles::tileRubble);
                     }
                 }
@@ -602,8 +602,8 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
 void Level::placeNewEntityAi(EntityAi* e, Point2 entrance) {
     Point2 p;
     do {
-        p = Point2(findRandomWithoutFlag(tileFlagSolid));
-    } while (!canPathTo(entrance, p, tileFlagPathable | tileFlagSecretPathable) || canPathTo(entrance, p, tileFlagAll, tileFlagSolid));
+        p = Point2(findRandomWithoutFlag(e->solidity));
+    } while (!canPathTo(entrance, p, tileFlagPathable) || canSee(entrance, p, e->viewDistance*2));
 
     e->pos = p;
     newEntity(e);

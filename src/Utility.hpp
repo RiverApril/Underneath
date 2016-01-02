@@ -28,6 +28,7 @@ namespace Utility {
 
     void saveDouble(vector<unsigned char>* data, double n);
     void saveInt(vector<unsigned char>* data, int n);
+    void saveUnsignedInt(vector<unsigned char>* data, unsigned int n);
     void saveUnsignedLong(vector<unsigned char>* data, unsigned long n);
     void saveUnsignedChar(vector<unsigned char>* data, unsigned char n);
     void saveUInt8Bit(vector<unsigned char>* data, uint8_t n);
@@ -54,6 +55,7 @@ namespace Utility {
 
     double loadDouble(vector<unsigned char>* data, int* position);
     int loadInt(vector<unsigned char>* data, int* position);
+    unsigned int loadUnsignedInt(vector<unsigned char>* data, int* position);
     unsigned long loadUnsignedLong(vector<unsigned char>* data, int* position);
     unsigned char loadUnsignedChar(vector<unsigned char>* data, int* position);
     int8_t loadInt8Bit(vector<unsigned char>* data, int* position);

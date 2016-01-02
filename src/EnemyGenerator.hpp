@@ -40,6 +40,7 @@ namespace EnemyGenerator {
         vector<Weakness> weaknesses;
         double moveDelay = 1.5;
         double attackMultiplier = 1;
+        TileFlag solidity = tileFlagSolidOnGround;
 
         int lootProfileIndex = -1;
         int maxLootDrop = 1;
@@ -55,6 +56,7 @@ namespace EnemyGenerator {
     extern EntityBase* goblinArcher;
     extern EntityBase* troll;
     extern EntityBase* wraith;
+    extern EntityBase* drake;
     extern EntityBase* slime;
     extern EntityBase* myconid;
     extern EntityBase* snake;

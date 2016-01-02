@@ -37,13 +37,13 @@ Entity::~Entity() {
 }
 
 bool Entity::tryToMoveAbsalute(Point2 p, Level* level) {
-    if (!level->tileAt(p)->isSolid()) {
+    if (level->tileAt(p)->doesNotHaveAnyOfFlags(solidity)) {
         bool block = false;
         for (Entity* e : level->entityList) {
             if (e->uniqueId == uniqueId) {
                 continue;
             }
-            if (e->isSolid()) {
+            if ((bool)(e->solidity & solidity)) {
                 if (e->pos == p) {
                     block = true;
                     break;
@@ -95,7 +95,7 @@ Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE) {
     newE->lastPos = oldE->lastPos;
     newE->fgColor = oldE->fgColor;
     newE->bgColor = oldE->bgColor;
-    newE->solid = oldE->solid;
+    newE->solidity = oldE->solidity;
 
     return newE;
 }
@@ -157,7 +157,7 @@ void Entity::save(vector<unsigned char>* data) {
 
     Utility::saveUnsignedChar(data, (unsigned char) fgColor);
     Utility::saveUnsignedChar(data, (unsigned char) bgColor);
-    Utility::saveBool(data, solid);
+    Utility::saveUnsignedInt(data, solidity);
 }
 
 int Entity::getEntityTypeId() {
@@ -176,7 +176,7 @@ void Entity::load(vector<unsigned char>* data, int* position) {
 
     fgColor = (char) Utility::loadUnsignedChar(data, position);
     bgColor = (char) Utility::loadUnsignedChar(data, position);
-    solid = Utility::loadBool(data, position);
+    solidity = Utility::loadUnsignedInt(data, position);
 }
 
 Entity* Entity::loadNew(vector<unsigned char>* data, int* position) {

@@ -21,7 +21,7 @@ EntityAlive::EntityAlive(string name, char icon, Point2 startPos, Ui::Color colo
     this->name = name;
     this->maxHp = maxHp;
     this->hp = this->maxHp;
-    this->solid = true;
+    this->solidity = tileFlagSolidOnGround;
 
 }
 
@@ -32,7 +32,7 @@ EntityAlive::~EntityAlive() {
 bool EntityAlive::update(double deltaTime, double time, Level* level) {
 
     if (dead) {
-        if(level->tileAt(pos)->hasFlag(tileFlagReplaceable)){
+        if(level->tileAt(pos)->hasAllOfFlags(tileFlagReplaceable)){
             level->setTile(pos, Tiles::tileCorpse);
         }
         level->removeEntity(this, true);
@@ -58,7 +58,7 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
                     hurt(level, (int) e->meta, e->power * m);
                     switch ((DamageType)(int)e->meta) {
                         case damBlood:
-                            if(level->tileAt(pos)->hasFlag(tileFlagReplaceable)){
+                            if(level->tileAt(pos)->hasAllOfFlags(tileFlagReplaceable)){
                                 level->setTile(pos, Tiles::tileBloodFloor);
                             }
                             break;
@@ -121,7 +121,7 @@ double EntityAlive::hurt(Level* level, DamageType damageType, double amount, dou
     amount *= damageMultiplier;
 
     if(rand() % 20 == 0){
-        if(level->tileAt(pos)->hasFlag(tileFlagReplaceable)){
+        if(level->tileAt(pos)->hasAllOfFlags(tileFlagReplaceable)){
             level->setTile(pos, Tiles::tileBloodFloor);
         }
     }
