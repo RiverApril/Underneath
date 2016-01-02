@@ -107,7 +107,7 @@ void EntityAi::moveAi(double time, Level* level) {
                 runToPos.x = pos.x + (rand() % viewDistance)-(viewDistance/2);
                 runToPos.y = pos.y + (rand() % viewDistance)-(viewDistance/2);
 
-                path = level->getPathTo(runToPos, pos, tileFlagAll, tileFlagSolid, true);
+                path = level->getPathTo(runToPos, pos, 0, solidity, true);
 
                 if(level->getPathTo(target->pos, runToPos, target->viewDistance, false).size() < path.size()){
                     path.clear();
@@ -144,9 +144,9 @@ void EntityAi::moveAi(double time, Level* level) {
                 speed.x = 0;
                 speed.y = 0;
             } else {
-                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid, true);
+                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, 0, solidity, true);
                 if(path.empty()){
-                    path = level->getPathTo(lastKnownTargetPos, pos, tileFlagAll, tileFlagSolid, false);
+                    path = level->getPathTo(lastKnownTargetPos, pos, 0, solidity, false);
                 }
                 if(!path.empty()){
                     if(Settings::showFollowPaths){
@@ -177,7 +177,7 @@ void EntityAi::moveAi(double time, Level* level) {
                 for(int j=-1;j<=1;j++){
                     if(abs(i) != abs(j)){
                         Point2 p = pos+Point2(i, j);
-                        if(p != lastPos && !level->tileAt(p)->hasFlag(tileFlagSolid)){
+                        if(p != lastPos && level->tileAt(p)->doesNotHaveAnyOfFlags(solidity)){
                             possibilities.push_back(Point2(i, j));
                         }
                     }

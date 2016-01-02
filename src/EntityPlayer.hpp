@@ -45,11 +45,7 @@ public:
     double calcDamageMultiplier(ItemWeapon* weapon);
 
     virtual int getEntityTypeId();
-
-    virtual int getRenderDepth() {
-        return 1;
-    }
-
+    
     virtual void save(vector<unsigned char>* data);
 
     virtual void load(vector<unsigned char>* data, int* position);

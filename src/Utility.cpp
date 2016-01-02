@@ -32,6 +32,13 @@ namespace Utility {
         data->push_back((unsigned char) (n & 0xFF));
     }
 
+    void saveUnsignedInt(vector<unsigned char>* data, unsigned int n) {
+        data->push_back((unsigned char) ((n >> 24) & 0xFF));
+        data->push_back((unsigned char) ((n >> 16) & 0xFF));
+        data->push_back((unsigned char) ((n >> 8) & 0xFF));
+        data->push_back((unsigned char) (n & 0xFF));
+    }
+
     void saveUnsignedLong(vector<unsigned char>* data, unsigned long n) {
         data->push_back((unsigned char) ((n >> 24) & 0xFF));
         data->push_back((unsigned char) ((n >> 16) & 0xFF));
@@ -83,6 +90,13 @@ namespace Utility {
     }
 
     int loadInt(vector<unsigned char>* data, int* position) {
+        return ((loadUnsignedChar(data, position) << 24) |
+                (loadUnsignedChar(data, position) << 16) |
+                (loadUnsignedChar(data, position) << 8) |
+                (loadUnsignedChar(data, position) << 0));
+    }
+
+    unsigned int loadUnsignedInt(vector<unsigned char>* data, int* position) {
         return ((loadUnsignedChar(data, position) << 24) |
                 (loadUnsignedChar(data, position) << 16) |
                 (loadUnsignedChar(data, position) << 8) |

@@ -58,7 +58,7 @@ objectExtention = "opp"
 
 
 compiler = "g++"
-compilerFlags = "-std=gnu++11 -m32"
+compilerFlags = "-std=gnu++11"
 libraryFlags = ""
 
 optimization = "-g -O0 -Wall"
@@ -126,10 +126,13 @@ else:
 
 if args.windows:
     executableName += "_Windows.exe"
+    compilerFlags += "  -m32"
 elif systemName == "Darwin":
     executableName += "_OSX"
+    #compilerFlags += "  -m32"
 else:
     executableName += "_"+systemName
+    compilerFlags += "  -m32"
 
 
 

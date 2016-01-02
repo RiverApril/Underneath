@@ -13,6 +13,7 @@
 #include "Ui.hpp"
 #include "Geometry.hpp"
 #include "Icon.hpp"
+#include "Tile.hpp"
 
 class Level;
 
@@ -45,10 +46,6 @@ public:
 
     //void setAndUnsetDisplayEntity(Level* level);
 
-    virtual bool isSolid() {
-        return solid;
-    }
-
     virtual string getName() {
         return "NO_NAME";
     }
@@ -70,7 +67,7 @@ public:
     virtual int getEntityTypeId();
 
     virtual int getRenderDepth() {
-        return 0;
+        return (solidity & tileFlagSolidInAir)?1:0;
     }
 
     virtual void setTimes(double time) {
@@ -95,9 +92,10 @@ public:
     Ui::Color fgColor;
     Ui::Color bgColor;
 
+    TileFlag solidity = 0;
+
 protected:
     Point2 lastPos;
-    bool solid = false;
 
     template<class Super, class Sub>
     static Sub* makeNewAndClone(Super* oldT);

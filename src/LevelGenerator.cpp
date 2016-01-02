@@ -306,7 +306,7 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
 
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
-            if(!tileAt(Point2(i, j))->hasFlag(tileFlagSolid)){
+            if(!tileAt(Point2(i, j))->hasAnyOfFlags(tileFlagSolidBoth)){
                 nonsolidAccessableTileCount++;
             }else{
                 unaccessableTileCount++;
@@ -495,16 +495,16 @@ namespace LevelGenerator {
                 for (int j = 0; j < level->getSize().y; j++) {
                     if (level->indexAt(Point2(i, j)) == Tiles::tileFloor->getIndex()) {
                         int paths = 0;
-                        if (level->tileAt(Point2(i + 1, j))->hasFlag(tileFlagPathable)) {
+                        if (level->tileAt(Point2(i + 1, j))->hasAllOfFlags(tileFlagPathable)) {
                             paths++;
                         }
-                        if (level->tileAt(Point2(i - 1, j))->hasFlag(tileFlagPathable)) {
+                        if (level->tileAt(Point2(i - 1, j))->hasAllOfFlags(tileFlagPathable)) {
                             paths++;
                         }
-                        if (level->tileAt(Point2(i, j + 1))->hasFlag(tileFlagPathable)) {
+                        if (level->tileAt(Point2(i, j + 1))->hasAllOfFlags(tileFlagPathable)) {
                             paths++;
                         }
-                        if (level->tileAt(Point2(i, j - 1))->hasFlag(tileFlagPathable)) {
+                        if (level->tileAt(Point2(i, j - 1))->hasAllOfFlags(tileFlagPathable)) {
                             paths++;
                         }
                         if (paths == 1) {
@@ -585,7 +585,7 @@ namespace LevelGenerator {
                 int doors = 0;
                 Point2 lastDoorLocation = Point2Neg1;
                 Utility::executeBorder(r->pos, r->pos+r->size, [&r, &level, &doors, &lastDoorLocation](int x, int y){
-                    if(level->tileAt(x, y)->hasFlag(tileFlagDoor)){
+                    if(level->tileAt(x, y)->hasAllOfFlags(tileFlagDoor)){
                         doors++;
                         lastDoorLocation = Point2(x, y);
                     }
@@ -599,7 +599,7 @@ namespace LevelGenerator {
                     }else{
                         int c = 0;
                         Utility::executeBorder(r->pos + (r->size/2)-1, r->pos + (r->size/2)+1, [&level, &c](int x, int y){
-                            if(level->tileAt(x, y)->hasFlag(tileFlagPathable)){
+                            if(level->tileAt(x, y)->hasAllOfFlags(tileFlagPathable)){
                                 c++;
                             }
                         });
@@ -684,10 +684,10 @@ namespace LevelGenerator {
             for (int j = 0; j < size.y; j++) {
                 Point2 p = Point2(i, j) + room->pos;
                 level->setTile(p, grid[i][j] == 'v' ? Tiles::tileFloor->getIndex() : Tiles::tileWall->getIndex());
-                if (level->tileAt(p - Point2(-1, 0))->hasFlag(tileFlagDoor) ||
-                        level->tileAt(p - Point2(1, 0))->hasFlag(tileFlagDoor) ||
-                        level->tileAt(p - Point2(0, -1))->hasFlag(tileFlagDoor) ||
-                        level->tileAt(p - Point2(0, 1))->hasFlag(tileFlagDoor)) {
+                if (level->tileAt(p - Point2(-1, 0))->hasAllOfFlags(tileFlagDoor) ||
+                        level->tileAt(p - Point2(1, 0))->hasAllOfFlags(tileFlagDoor) ||
+                        level->tileAt(p - Point2(0, -1))->hasAllOfFlags(tileFlagDoor) ||
+                        level->tileAt(p - Point2(0, 1))->hasAllOfFlags(tileFlagDoor)) {
                     level->setTile(p, Tiles::tileFloor);
                 }
             }

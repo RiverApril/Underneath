@@ -13,16 +13,20 @@
 #include "Ui.hpp"
 #include "Icon.hpp"
 
-typedef int TileFlag;
-const TileFlag tileFlagSolid = 1 << 0;
-const TileFlag tileFlagTall = 1 << 1;
+typedef unsigned int TileFlag;
+const TileFlag tileFlagSolidOnGround = 1 << 0;
+const TileFlag tileFlagSolidInAir = 1 << 1;
+const TileFlag tileFlagSolidBoth = tileFlagSolidOnGround | tileFlagSolidInAir;
 const TileFlag tileFlagDoor = 1 << 2;
 const TileFlag tileFlagPathable = 1 << 3;
 const TileFlag tileFlagSecretPathable = 1 << 4;
 const TileFlag tileFlagHasTileEntity = 1 << 5;
 const TileFlag tileFlagIndestructable = 1 << 6;
 const TileFlag tileFlagReplaceable = 1 << 7;
-const TileFlag tileFlagAll = 0xFFFFFFFF;
+
+const TileFlag tileFlagAll = tileFlagSolidOnGround | tileFlagSolidInAir | tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable;
+
+
 
 class Tile {
 public:
@@ -42,20 +46,20 @@ public:
     //Ui::Color getFgColor(bool inView);
     //Ui::Color getBgColor(bool inView);
 
-    bool isSolid() {
-        return flags & tileFlagSolid;
+    bool hasAllOfFlags(TileFlag flag) {
+        return (flags & flag) == flag;
     }
 
-    bool isTall() {
-        return flags & tileFlagTall;
-    }
-
-    bool hasFlag(TileFlag flag) {
+    bool hasAnyOfFlags(TileFlag flag) {
         return flags & flag;
     }
 
-    bool doesNotHaveFlag(TileFlag flag) {
-        return !(flags & flag);
+    bool doesNotHaveAnyOfFlags(TileFlag flag) {
+        return !hasAnyOfFlags(flag);
+    }
+
+    bool doesNotHaveAllOfFlags(TileFlag flag) {
+        return !hasAllOfFlags(flag);
     }
 
 private:

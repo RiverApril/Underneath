@@ -528,7 +528,7 @@ namespace Ui {
                     if(selectMode == selectModeWalk){
                         Point2 t = targetPosition;
                         changeMode(modeEntityPlayerControl);
-                        vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, tileFlagSolid, false, true);
+                        vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, currentPlayer->solidity, false, true);
                         path.push_back(t);
                         bool pathExplored = true;
                         if(!Settings::seeEverything){
@@ -631,7 +631,7 @@ namespace Ui {
                             if(currentLevel->inRange(x, y) && !currentLevel->getExplored(x, y)){
                                 int nearExplored = false;
                                 Utility::execute4Around(x, y, [this, &nearExplored](int x, int y){
-                                    if(currentLevel->getExplored(x, y) && currentLevel->tileAt(x, y)->hasFlag(tileFlagPathable)){
+                                    if(currentLevel->getExplored(x, y) && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagPathable)){
                                         nearExplored = true;
                                         return;
                                     }
@@ -807,7 +807,7 @@ namespace Ui {
 
                 if(Settings::cheatKeysEnabled){
                     if (in == 'r') {
-                        Point2 p = currentLevel->findRandomWithoutFlag(tileFlagSolid);
+                        Point2 p = currentLevel->findRandomWithoutFlag(currentPlayer->solidity);
                         timePassed += currentPlayer->moveAbsalute(p, currentLevel, false);
 
                     } else if (in == 'R') {

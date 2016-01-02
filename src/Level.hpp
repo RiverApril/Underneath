@@ -85,9 +85,9 @@ public:
 
     int entityCount();
 
-    bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0, bool careAboutEntities = false, bool mustBeExplored = false);
+    bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll);
 
-    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0, bool careAboutEntities = false, bool mustBeExplored = false);
+    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag = 0, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll);
 
     Point2 generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel);
 

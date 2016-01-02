@@ -22,6 +22,7 @@ namespace EnemyGenerator {
     EntityBase* goblinArcher;
     EntityBase* troll;
     EntityBase* wraith;
+    EntityBase* drake;
     EntityBase* slime;
     EntityBase* myconid;
     EntityBase* snake;
@@ -84,8 +85,22 @@ namespace EnemyGenerator {
         troll->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(10, wFireItemCombatSpell), make_pair(10, wFrostItemCombatSpell), make_pair(10, wShockItemCombatSpell), make_pair(10, wHealingCombatSpell)}));
         troll->maxLootDrop = 4;
 
+        ItemGenerator::WeaponBase* drakeWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
+        drakeWeapon->damage *= 3;
+        drakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 5, 10, 10, 15, 5, 10, damFire));
+        drakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 30, 50, 10, 15, 20, 30, damFire));
+        drake = atl(new EntityBase(1, "Drake", 'D', aiAttack, 500, drakeWeapon, "Teeth", C_LIGHT_RED, 2.0, 2));
+        drake->weaknesses.push_back(Weakness(damSharp, .1));
+        drake->weaknesses.push_back(Weakness(damBlunt, .1));
+        drake->weaknesses.push_back(Weakness(damPierce, .1));
+        drake->weaknesses.push_back(Weakness(damIce, 2));
+        drake->moveDelay = .75;
+        drake->solidity = tileFlagSolidInAir;
+        drake->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(10, wFireItemCombatSpell), make_pair(10, wFrostItemCombatSpell), make_pair(10, wShockItemCombatSpell), make_pair(10, wHealingCombatSpell)}));
+        troll->maxLootDrop = 10;
 
-        slime = atl(new EntityBase(75, "Slime", 's', aiAttack, 40, ItemGenerator::wNatural, "Goo", C_LIGHT_YELLOW, 1.0));
+
+        slime = atl(new EntityBase(30, "Slime", 's', aiAttack, 40, ItemGenerator::wNatural, "Goo", C_LIGHT_YELLOW, 1.0));
         slime->weaknesses.push_back(Weakness(damSharp, .25));
         slime->weaknesses.push_back(Weakness(damPierce, .25));
         slime->lootProfileIndex = atl(new LootProfile(true, false));
@@ -170,6 +185,7 @@ namespace EnemyGenerator {
         e->lootProfileIndex = we->lootProfileIndex;
         e->maxLootDrop = we->maxLootDrop;
         e->minLootDrop = we->minLootDrop;
+        e->solidity = we->solidity;
         ItemWeapon* weapon = ItemGenerator::createItemWeaponFromBase(we->weaponBase, difficulty + we->weaponDifficultyAdd);
         if (we->weaponName.size() > 0) {
             weapon->getName(false) = we->weaponName;
