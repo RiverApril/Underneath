@@ -17,38 +17,38 @@ My development is primarily in MacOSX and some in Linux. I have successfully com
 
 #### Linux:
 ##### Terminal version:
-- Executable: [Underneath_Optim_Term_Linux](https://github.com/user/repo/raw/master/Underneath_Optim_Term_Linux)
+- Executable: [Underneath_Optim_Term_Linux](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_Term_Linux)
 - To enable full color, you most likely need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
 
 ##### SDL2 version:
-- Executable: [Underneath_Optim_SDL_Linux](https://github.com/user/repo/raw/master/Underneath_Optim_SDL_Linux)
-- Font image file: [font.png](https://github.com/user/repo/raw/master/font.png)
+- Executable: [Underneath_Optim_SDL_Linux](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_SDL_Linux)
+- Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
 
 ---
 
 #### Mac OSX:
 ##### Terminal version:
-- Executable: [Underneath_Optim_Term_OSX](https://github.com/user/repo/raw/master/Underneath_Optim_Term_OSX)
+- Executable: [Underneath_Optim_Term_OSX](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_Term_OSX)
 
 ##### SDL2 version:
-- Executable: [Underneath_Optim_SDL_OSX](https://github.com/user/repo/raw/master/Underneath_Optim_SDL_OSX)
-- Font image file: [font.png](https://github.com/user/repo/raw/master/font.png)
+- Executable: [Underneath_Optim_SDL_OSX](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_SDL_OSX)
+- Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
 
 ---
 
 #### Windows:
 ##### Terminal version:
-- Executable: [Underneath_Optim_Term_Windows.exe](https://github.com/user/repo/raw/master/Underneath_Optim_Term_Windows.exe)
-- DLL file: [pdcurses.dll](https://github.com/user/repo/raw/master/pdcurses.dll)
+- Executable: [Underneath_Optim_Term_Windows.exe](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_Term_Windows.exe)
+- DLL file: [pdcurses.dll](https://github.com/nedearb/Underneath/raw/master/pdcurses.dll)
 
 ##### SDL2 version:
-- Executable: [Underneath_Optim_SDL_Windows.exe](https://github.com/user/repo/raw/master/Underneath_Optim_SDL_Windows.exe)
-- Font image file: [font.png](https://github.com/user/repo/raw/master/font.png)
+- Executable: [Underneath_Optim_SDL_Windows.exe](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_SDL_Windows.exe)
+- Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
 - DLL files:
-  - [SDL2.dll](https://github.com/user/repo/raw/master/SDL2.dll)
-  - [SDL2_image.dll](https://github.com/user/repo/raw/master/SDL2_image.dll)
-  - [zlib1.dll](https://github.com/user/repo/raw/master/zlib1.dll)
-  - [libpng16-16.dll](https://github.com/user/repo/raw/master/libpng16-16.dll)
+  - [SDL2.dll](https://github.com/nedearb/Underneath/raw/master/SDL2.dll)
+  - [SDL2_image.dll](https://github.com/nedearb/Underneath/raw/master/SDL2_image.dll)
+  - [zlib1.dll](https://github.com/nedearb/Underneath/raw/master/zlib1.dll)
+  - [libpng16-16.dll](https://github.com/nedearb/Underneath/raw/master/libpng16-16.dll)
 
 ---
 
