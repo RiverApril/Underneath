@@ -133,11 +133,18 @@ class ColorAnimatedIcon : public Icon{
     vector<char> i = {'?'};
     vector<Ui::Color> fg = {C_DARK_BLACK};
     vector<Ui::Color> bg = {C_LIGHT_WHITE};
+    bool randomStart = false;
 
 public:
-    virtual char getChar(unsigned long tick, Point2 pos, Level* lvl){
-        return i[(tick/speed)%i.size()];
+    ColorAnimatedIcon(vector<char> i, int speed, vector<Ui::Color> fg, vector<Ui::Color> bg, bool randomStart = false){
+        this->i = i;
+        this->speed = speed;
+        this->fg = fg;
+        this->bg = bg;
+        this->randomStart = randomStart;
     }
+
+    virtual char getChar(unsigned long tick, Point2 pos, Level* lvl);
 
     virtual Ui::Color getFgColor(unsigned long tick, Point2 pos, Level* lvl){
         return fg[(tick/speed)%fg.size()];
