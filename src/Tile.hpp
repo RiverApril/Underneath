@@ -23,8 +23,9 @@ const TileFlag tileFlagSecretPathable = 1 << 4;
 const TileFlag tileFlagHasTileEntity = 1 << 5;
 const TileFlag tileFlagIndestructable = 1 << 6;
 const TileFlag tileFlagReplaceable = 1 << 7;
+const TileFlag tileFlagFlammable = 1 << 8;
 
-const TileFlag tileFlagAll = tileFlagSolidOnGround | tileFlagSolidInAir | tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable;
+const TileFlag tileFlagAll = tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable | tileFlagFlammable;
 
 
 
@@ -103,6 +104,9 @@ namespace Tiles {
     extern Tile* tileTree;
     extern Tile* tileGrass;
     extern Tile* tilePath;
+
+    extern Tile* tileFire;
+    extern Tile* tileAsh;
 
     extern Tile* tilePillar;
     extern Tile* tileBreakable;

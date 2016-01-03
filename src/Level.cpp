@@ -384,6 +384,13 @@ void Level::randomTileUpdate(Point2 p){
 		setTile(p, Tiles::tileBones);
     }else if(index == Tiles::tileBloodFloor->getIndex()){
         setTile(p, Tiles::tileFloor);
+    }else if(index == Tiles::tileFire->getIndex()){
+        Utility::execute4Around(p.x, p.y, [this](int x, int y){
+            if(this->tileAt(x, y)->hasAllOfFlags(tileFlagFlammable)){
+                setTile(x, y, Tiles::tileFire);
+            }
+        });
+        setTile(p, Tiles::tileAsh);
     }
 }
 
@@ -577,8 +584,12 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
             for (int j=-radius; j<=radius; j++) {
                 if( ((i*i) + (j*j)) <= radius*radius){
                     Point2 p = pos+Point2(i, j);
-                    if(!tileAt(p)->hasAllOfFlags(tileFlagIndestructable)){
-                        setTile(p, Tiles::tileRubble);
+                    if(tileAt(p)->doesNotHaveAnyOfFlags(tileFlagIndestructable)){
+                        if(tileAt(p)->hasAllOfFlags(tileFlagFlammable)){
+                            setTile(p, rand()%5==0?Tiles::tileFire:Tiles::tileAsh);
+                        }else{
+                        	setTile(p, Tiles::tileRubble);
+                        }
                     }
                 }
             }
