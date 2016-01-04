@@ -7,7 +7,7 @@ worlds/
 obj/
 src/ArtFiles.hpp
 *.pyc
-Underneath_Unoptim_*
+Underneath_*
 
 #Xcode
 Underneath.xcodeproj/
