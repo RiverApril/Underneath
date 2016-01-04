@@ -7,6 +7,7 @@ import os
 import errno
 import shutil
 import filecmp
+import sys
 #import datetime
 import subprocess
 from subprocess import call
@@ -31,11 +32,13 @@ parser.add_argument("-s", "--sdl", action="store_true")
 parser.add_argument("-a", "--all", action="store_true")
 parser.add_argument("-l", "--linkonly", action="store_true")
 parser.add_argument("-r", "--run", action="store_true")
-parser.add_argument("-o", "--optimize", action="store_true")
+parser.add_argument("-u", "--unoptimized", action="store_true")
 parser.add_argument("-d", "--debug", action="store_true")
 parser.add_argument("-t", "--notart", action="store_true")
 parser.add_argument("-w", "--windows", action="store_true")
 parser.add_argument("-i", "--dontCheckIncludes", action="store_true")
+parser.add_argument("--use64", action="store_true")
+parser.add_argument("--use32", action="store_true")
 parser.add_argument("--compiler", help="specify compiler")
 
 args = parser.parse_args()
@@ -46,6 +49,22 @@ if not args.notart:
     import compileArt
 
 systemName = platform.system()
+system64Bit = sys.maxsize > 2**32
+build64Bit = False
+
+if system64Bit:
+    build64Bit = True
+
+if args.use64 and args.use32:
+    print "Cannot use --use64 and --use32 at the same time."
+    exit()
+
+if args.use64:
+    build64Bit = True
+    
+if args.use32:
+    build64Bit = False
+    
 
 
 sourceDirectory = "src"
@@ -61,16 +80,18 @@ compiler = "g++"
 compilerFlags = "-std=gnu++11"
 libraryFlags = ""
 
-optimization = "-g -O0 -Wall"
+optimization = ""
 
 executableName = "Underneath"
 
 compileAll = args.all
 
 
-if args.optimize:
+if args.unoptimized:
+    executableName += "_Unoptim"
+    optimization = "-g -O0 -Wall"
+else:
     optimization = "-O3"
-    executableName += "_Optim"
 
 compilerFlags = optimization+" "+compilerFlags;
 
@@ -125,14 +146,22 @@ else:
             libraryFlags = "-lncurses"
 
 if args.windows:
-    executableName += "_Windows.exe"
-    compilerFlags += "  -m32"
+    if build64Bit:
+        executableName += "_Windows_64.exe"
+        compilerFlags += "  -m64"
+    else:
+        executableName += "_Windows_32.exe"
+        compilerFlags += "  -m32"
 elif systemName == "Darwin":
     executableName += "_OSX"
-    #compilerFlags += "  -m32"
+    #OSX 32 bit is obsolete
 else:
-    executableName += "_"+systemName
-    compilerFlags += "  -m32"
+    if build64Bit:
+        executableName += "_"+systemName+"_64"
+        compilerFlags += "  -m64"
+    else:
+        executableName += "_"+systemName+"_32"
+        compilerFlags += "  -m32"
 
 
 
