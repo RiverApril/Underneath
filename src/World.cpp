@@ -60,7 +60,8 @@ namespace WorldLoader {
         rewind(file);
 
         unsigned char buffer[fileSize];
-        fread(buffer, fileSize, 1, file);
+        size_t rb = fread(buffer, fileSize, 1, file);
+        debugf("Measured size: %d  Read size: %d", fileSize, rb);
 
         return new vector<unsigned char>(buffer, buffer+fileSize);
     }
