@@ -17,38 +17,40 @@ My development is primarily in MacOSX and some in Linux. I have successfully com
 
 #### Linux:
 ##### Terminal version:
-- Executable: [Underneath_Optim_Term_Linux](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_Term_Linux)
-- To enable full color, you most likely need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
+- 64-bit Executable: [Underneath_Term_Linux_64](https://github.com/nedearb/Underneath/raw/master/Underneath_Term_Linux_64)
+- 32-bit Executable: [Underneath_Term_Linux_32](https://github.com/nedearb/Underneath/raw/master/Underneath_Term_Linux_32)
+- To enable full color, you may need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
 
 ##### SDL2 version:
-- Executable: [Underneath_Optim_SDL_Linux](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_SDL_Linux)
+- 64-bit Executable: [Underneath_SDL_Linux_64](https://github.com/nedearb/Underneath/raw/master/Underneath_SDL_Linux_64)
+- 32-bit Executable: [Underneath_SDL_Linux_32](https://github.com/nedearb/Underneath/raw/master/Underneath_SDL_Linux_32)
 - Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
 
 ---
 
 #### Mac OSX:
 ##### Terminal version:
-- Executable: [Underneath_Optim_Term_OSX](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_Term_OSX)
+- Executable: [Underneath_Term_OSX](https://github.com/nedearb/Underneath/raw/master/Underneath_Term_OSX)
 
 ##### SDL2 version:
-- Executable: [Underneath_Optim_SDL_OSX](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_SDL_OSX)
+- Executable: [Underneath_SDL_OSX](https://github.com/nedearb/Underneath/raw/master/Underneath_SDL_OSX)
 - Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
 
 ---
 
 #### Windows:
 ##### Terminal version:
-- Executable: [Underneath_Optim_Term_Windows.exe](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_Term_Windows.exe)
-- DLL file: [pdcurses.dll](https://github.com/nedearb/Underneath/raw/master/pdcurses.dll)
+- 32-bit Executable: [Underneath_Term_Windows_32.exe](https://github.com/nedearb/Underneath/raw/master/Underneath_Term_Windows_32.exe)
+- 32-bit DLL file: [pdcurses.dll](https://github.com/nedearb/Underneath/raw/master/pdcurses.dll)
 
 ##### SDL2 version:
-- Executable: [Underneath_Optim_SDL_Windows.exe](https://github.com/nedearb/Underneath/raw/master/Underneath_Optim_SDL_Windows.exe)
-- Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
-- DLL files:
+- 32-bit Executable: [Underneath_SDL_Windows_32.exe](https://github.com/nedearb/Underneath/raw/master/Underneath_SDL_Windows_32.exe)
+- 32-bit DLL files:
   - [SDL2.dll](https://github.com/nedearb/Underneath/raw/master/SDL2.dll)
   - [SDL2_image.dll](https://github.com/nedearb/Underneath/raw/master/SDL2_image.dll)
   - [zlib1.dll](https://github.com/nedearb/Underneath/raw/master/zlib1.dll)
   - [libpng16-16.dll](https://github.com/nedearb/Underneath/raw/master/libpng16-16.dll)
+- Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
 
 ---
 
@@ -89,11 +91,11 @@ All flags:
 -r  Run after successful build
 -a  Compile all sources (it defaults to only ones that have changed)
 -l  Link only, don't compile sources
--o  Optimization level 3 (default 0)
+-u  Optimization level 0 (default 3) and show warnings
 -d  Print all commands that the build.py is executing
 -t  Do not remake ArtFiles.hpp
 -i  Don't check included headers (makes compiling faster, but doesn't recompile cpp files if only included headers were modified)
--w  Use mingw32 compiler (Mac: i586-mingw32-c++, Linux: i686-w64-mingw32-c++)
+-w  Use Windows mingw32 compiler (Mac: i586-mingw32-c++, Linux: i686-w64-mingw32-c++)
 --compiler COMPILER  Specify the compiler manually
 ```
 
