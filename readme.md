@@ -13,46 +13,6 @@ My development is primarily in MacOSX and some in Linux. I have successfully com
 
 ---
 
-## Latest Builds:
-
-#### Linux:
-##### Terminal version:
-- 64-bit Executable: [Underneath_Term_Linux_64](https://github.com/nedearb/Underneath/raw/master/Underneath_Term_Linux_64)
-- 32-bit Executable: [Underneath_Term_Linux_32](https://github.com/nedearb/Underneath/raw/master/Underneath_Term_Linux_32)
-- To enable full color, you may need to add `export TERM=xterm-256color` to your `~/.bashrc` file.
-
-##### SDL2 version:
-- 64-bit Executable: [Underneath_SDL_Linux_64](https://github.com/nedearb/Underneath/raw/master/Underneath_SDL_Linux_64)
-- 32-bit Executable: [Underneath_SDL_Linux_32](https://github.com/nedearb/Underneath/raw/master/Underneath_SDL_Linux_32)
-- Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
-
----
-
-#### Mac OSX:
-##### Terminal version:
-- Executable: [Underneath_Term_OSX](https://github.com/nedearb/Underneath/raw/master/Underneath_Term_OSX)
-
-##### SDL2 version:
-- Executable: [Underneath_SDL_OSX](https://github.com/nedearb/Underneath/raw/master/Underneath_SDL_OSX)
-- Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
-
----
-
-#### Windows:
-##### Terminal version:
-- 32-bit Executable: [Underneath_Term_Windows_32.exe](https://github.com/nedearb/Underneath/raw/master/Underneath_Term_Windows_32.exe)
-- 32-bit DLL file: [pdcurses.dll](https://github.com/nedearb/Underneath/raw/master/pdcurses.dll)
-
-##### SDL2 version:
-- 32-bit Executable: [Underneath_SDL_Windows_32.exe](https://github.com/nedearb/Underneath/raw/master/Underneath_SDL_Windows_32.exe)
-- 32-bit DLL files:
-  - [SDL2.dll](https://github.com/nedearb/Underneath/raw/master/SDL2.dll)
-  - [SDL2_image.dll](https://github.com/nedearb/Underneath/raw/master/SDL2_image.dll)
-  - [zlib1.dll](https://github.com/nedearb/Underneath/raw/master/zlib1.dll)
-  - [libpng16-16.dll](https://github.com/nedearb/Underneath/raw/master/libpng16-16.dll)
-- Font image file: [font.png](https://github.com/nedearb/Underneath/raw/master/font.png)
-
----
 
 ## Compiling:
 
