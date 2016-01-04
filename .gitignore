@@ -12,20 +12,5 @@ Underneath_*
 #Xcode
 Underneath.xcodeproj/
 
-#Android:
-Underneath.iml
-.gradle/
-build/
-local.properties
-app/app.iml
-.idea/libraries/
-.idea/gradle.xml
-.idea/misc.xml
-.idea/vcs.xml
-.idea/workspace.xml
-
-#Android Source Copy:
-app/src/main/jni/underneath/
-
 #Git BFG
 .git.bfg-report/
