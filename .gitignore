@@ -26,3 +26,6 @@ app/app.iml
 
 #Android Source Copy:
 app/src/main/jni/underneath/
+
+#Git BFG
+.git.bfg-report/
