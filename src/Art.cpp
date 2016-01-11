@@ -155,7 +155,7 @@ namespace Arts {
         Arts::artCuirass = Arts::loadNew(ArtDir + "/", "cuirass", ArtFiles::cuirass);
         Arts::artGloves = Arts::loadNew(ArtDir + "/", "gloves", ArtFiles::gloves);
         Arts::artGauntlets = Arts::loadNew(ArtDir + "/", "gauntlets", ArtFiles::gauntlets);
-        Arts::artBracers = Arts::loadNew(ArtDir + "/", "braces", ArtFiles::bracers);
+        Arts::artBracers = Arts::loadNew(ArtDir + "/", "bracers", ArtFiles::bracers);
         Arts::artCowl = Arts::loadNew(ArtDir + "/", "cowl", ArtFiles::cowl);
 
         Arts::artRing = Arts::loadNew(ArtDir + "/", "ring", ArtFiles::ring);
