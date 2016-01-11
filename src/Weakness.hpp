@@ -1,5 +1,5 @@
 //
-//  Weakness.h
+//  Weakness.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/16/15.

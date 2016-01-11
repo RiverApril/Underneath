@@ -15,7 +15,7 @@
         return mkdir(filename);
     }
 #else
-	#ifdef useSDLLightCurses
+	#ifdef useSDLGraphics
 		int ESCDELAY;
 	#endif
 #endif

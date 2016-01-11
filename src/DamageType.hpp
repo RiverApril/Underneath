@@ -1,5 +1,5 @@
 //
-//  DamageType.h
+//  DamageType.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 4/29/15.

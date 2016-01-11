@@ -1,5 +1,5 @@
 //
-//  TileEntity.h
+//  TileEntity.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 2/20/15.

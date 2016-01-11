@@ -1,5 +1,5 @@
 //
-//  EnemyGenerator.h
+//  EnemyGenerator.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/4/15.

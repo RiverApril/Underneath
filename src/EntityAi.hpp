@@ -1,5 +1,5 @@
 //
-//  EntityAi.h
+//  EntityAi.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/18/14.

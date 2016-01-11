@@ -1,5 +1,5 @@
 //
-//  LevelGenerator.h
+//  LevelGenerator.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/27/14.

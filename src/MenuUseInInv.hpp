@@ -6,8 +6,8 @@
 //  Copyright © 2015 Braeden Atlee. All rights reserved.
 //
 
-#ifndef MenuUseInInv_hpp
-#define MenuUseInInv_hpp
+#ifndef __Underneath__MenuUseInInv__
+#define __Underneath__MenuUseInInv__
 
 #include "Menu.hpp"
 #include "EntityPlayer.hpp"

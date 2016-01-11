@@ -1,5 +1,5 @@
 //
-//  Enchantment.h
+//  Enchantment.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/6/15.

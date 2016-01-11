@@ -1,5 +1,5 @@
 //
-//  TEStair.h
+//  TEStair.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 2/20/15.

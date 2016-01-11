@@ -1,5 +1,5 @@
 //
-//  MenuChest.h
+//  MenuChest.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 2/26/15.

@@ -1,5 +1,5 @@
 //
-//  ItemArmor.h
+//  ItemArmor.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 4/29/15.

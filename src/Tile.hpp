@@ -1,5 +1,5 @@
 //
-//  Tile.h
+//  Tile.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 9/29/14.

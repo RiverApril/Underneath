@@ -1,5 +1,5 @@
 //
-//  Math.h
+//  Math.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/18/14.

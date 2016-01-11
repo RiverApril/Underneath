@@ -1,5 +1,5 @@
 //
-//  ItemCombatSpell.h
+//  ItemCombatSpell.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 12/16/14.

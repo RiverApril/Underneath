@@ -1,5 +1,5 @@
 //
-//  EntityTimeActivated.h
+//  EntityTimeActivated.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 4/11/15.

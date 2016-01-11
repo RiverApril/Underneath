@@ -1,5 +1,5 @@
 //
-//  Entity.h
+//  Entity.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/1/14.
