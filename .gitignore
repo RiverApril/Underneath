@@ -9,8 +9,12 @@ src/ArtFiles.hpp
 *.pyc
 Underneath_*
 
-#Xcode
+#Xcode:
 Underneath.xcodeproj/
 
-#Git BFG
+#Git BFG:
 .git.bfg-report/
+
+
+#YSE Audio:
+YSELog.txt
