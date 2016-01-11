@@ -1,5 +1,5 @@
 //
-//  ItemSpecial.h
+//  ItemSpecial.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 4/2/15.

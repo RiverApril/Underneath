@@ -1,19 +1,26 @@
+//
+//  SDLCursesPort.hpp
+//  Underneath
+//
+//  Created by Braeden Atlee on 1/10/16.
+//  Copyright (c) 2014 Braeden Atlee. All rights reserved.
+//
 
-#ifdef useSDLLightCurses
-#ifndef __SDLCursesLight__lightcurses__
-#define __SDLCursesLight__lightcurses__
+
+// Super Basic Curses port to SDL
+// Many Commands are dummies
+// Only designed to be used with Underneath
+
+
+#ifdef useSDLGraphics
+#ifndef __Underneath__SDLCursesPort__
+#define __Underneath__SDLCursesPort__
 
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-/*
 
-Super Basic Curses port to SDL
-Many Commands are dummies
-Only designed to be used with Underneath
-
-*/
 
 #define stdscr 1
 

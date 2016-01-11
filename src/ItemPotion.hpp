@@ -1,5 +1,5 @@
 //
-//  ItemPotion.h
+//  ItemPotion.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/2/15.

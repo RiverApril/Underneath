@@ -1,5 +1,5 @@
 //
-//  EntityAlive.h
+//  EntityAlive.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/2/14.

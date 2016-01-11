@@ -1,5 +1,5 @@
 //
-//  EntityPlayer.h
+//  EntityPlayer.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/18/14.

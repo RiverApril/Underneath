@@ -1,6 +1,14 @@
+//
+//  SDLCursesPort.cpp
+//  Underneath
+//
+//  Created by Braeden Atlee on 1/10/16.
+//  Copyright (c) 2014 Braeden Atlee. All rights reserved.
+//
 
-#ifdef useSDLLightCurses
-#include "LC_SDLLightcurses.hpp"
+
+#ifdef useSDLGraphics
+#include "SDLCursesPort.hpp"
 
 #include <iostream>
 #include <sstream>

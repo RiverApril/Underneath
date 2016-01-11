@@ -1,5 +1,5 @@
 //
-//  EntityItem.h
+//  EntityItem.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/15/14.

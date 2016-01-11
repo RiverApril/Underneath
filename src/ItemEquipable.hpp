@@ -1,5 +1,5 @@
 //
-//  ItemEquipable.h
+//  ItemEquipable.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/15/15.

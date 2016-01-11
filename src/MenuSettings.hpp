@@ -1,5 +1,5 @@
 //
-//  MenuSettings.h
+//  MenuSettings.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 7/19/15.

@@ -6,8 +6,8 @@
 //  Copyright © 2015 Braeden Atlee. All rights reserved.
 //
 
-#ifndef MenuDialog_hpp
-#define MenuDialog_hpp
+#ifndef __Underneath__MenuDialog__
+#define __Underneath__MenuDialog__
 
 #include "Menu.hpp"
 

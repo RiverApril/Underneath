@@ -1,5 +1,5 @@
 //
-//  Icon.h
+//  Icon.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 4/15/15.

@@ -1,5 +1,5 @@
 //
-//  Global.h
+//  Global.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 9/29/14.
@@ -34,8 +34,8 @@
 
 using namespace std;
 
-#ifdef useSDLLightCurses
-    #include "LC_SDLLightcurses.hpp"
+#ifdef useSDLGraphics
+    #include "SDLCursesPort.hpp"
     extern int ESCDELAY;
 #endif
 
@@ -77,7 +77,7 @@ using namespace std;
 
     #define GetCurrentDir getcwd
 
-    #ifndef useSDLLightCurses
+    #ifndef useSDLGraphics
         #ifndef __ANDROID__
             #include <ncurses.h>
         #endif

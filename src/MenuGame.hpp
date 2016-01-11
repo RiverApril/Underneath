@@ -1,5 +1,5 @@
 //
-//  MenuGame.h
+//  MenuGame.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 10/19/14.

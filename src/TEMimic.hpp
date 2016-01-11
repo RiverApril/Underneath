@@ -1,5 +1,5 @@
 //
-//  TEMimic.h
+//  TEMimic.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/28/15.

@@ -1,5 +1,5 @@
 //
-//  ItemRanged.h
+//  ItemRanged.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 1/22/15.

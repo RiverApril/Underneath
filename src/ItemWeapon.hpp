@@ -1,5 +1,5 @@
 //
-//  ItemWeapon.h
+//  ItemWeapon.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 11/11/14.

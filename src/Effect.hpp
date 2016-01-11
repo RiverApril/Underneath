@@ -1,5 +1,5 @@
 //
-//  Effect.h
+//  Effect.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 3/2/14.

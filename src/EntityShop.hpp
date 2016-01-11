@@ -1,5 +1,5 @@
 //
-//  EntityShop.h
+//  EntityShop.hpp
 //  Underneath
 //
 //  Created by Braeden Atlee on 7/21/15.
