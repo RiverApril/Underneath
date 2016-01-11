@@ -31,6 +31,8 @@ namespace Ui {
 
         bool init(string worldName, Abilities<int> playerAbilities);
 
+        void levelHasChanged();
+
         bool openUi();
         void closeUi();
         void handleInput(int in);

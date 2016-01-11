@@ -29,6 +29,7 @@ def mkdir_p(path):
 
 parser = argparse.ArgumentParser(description="Compile Underneath.")
 parser.add_argument("-s", "--sdl", action="store_true")
+parser.add_argument("-y", "--audioYSE", action="store_true")
 parser.add_argument("-a", "--all", action="store_true")
 parser.add_argument("-l", "--linkonly", action="store_true")
 parser.add_argument("-r", "--run", action="store_true")
@@ -77,7 +78,7 @@ objectExtention = "opp"
 
 
 compiler = "g++"
-compilerFlags = "-std=gnu++11"
+compilerFlags = "-std=gnu++11 "
 libraryFlags = ""
 
 optimization = ""
@@ -102,24 +103,25 @@ if args.compiler:
 
 if args.sdl:
     executableName += "_SDL"
-    compilerFlags += " -D useSDLLightCurses"
+    compilerFlags += " -D useSDLGraphics"
 else:
     executableName += "_Term"
 
+if args.audioYSE:
+    executableName += "_YSEAUDIO"
+    compilerFlags += " -D useYSEAudio -D NDEBUG"
 
 if args.windows:
 
     if systemName == "Darwin":
         compiler = "i586-mingw32-c++"
         compilerFlags += " -D WIN32"
-        if args.sdl:
-            libraryFlags += ""
     elif systemName == "Linux":
         compiler = "i686-w64-mingw32-c++"
         compilerFlags += " -D WIN32"
 
     if args.sdl:
-        libraryFlags = "-lSDL2main -lSDL2 -lSDL2_image"
+        libraryFlags += " -lSDL2main -lSDL2 -lSDL2_image"
         print("    # The Windows executable will require the following dll files:")
         print("    #   SDL2.dll")
         print("    #   SDL2_image.dll")
@@ -133,17 +135,26 @@ else:
     if args.sdl:
         if systemName == "Darwin":
             compilerFlags += " -I/usr/local/include"
-            libraryFlags = "-L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
+            libraryFlags += " -L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
             libraryFlags += " `sdl2-config --libs`"
         elif systemName == "Linux":
             compilerFlags += " `sdl2-config --cflags`"
-            libraryFlags  = " `sdl2-config --libs` -lSDL2_image"
+            libraryFlags  += " `sdl2-config --libs` -lSDL2_image"
 
     else:
         if systemName == "Darwin":
-            libraryFlags = "-lncurses"
+            libraryFlags += " -lncurses"
         elif systemName == "Linux":
-            libraryFlags = "-lncurses"
+            libraryFlags += " -lncurses"
+
+    if args.audioYSE:
+        if systemName == "Darwin":
+            compilerFlags += " -I/usr/local/include"
+            libraryFlags += " /usr/local/lib/libyse.dylib"
+        elif systemName == "Linux":
+            print("ERROR TODO for linux")
+            exit()
+
 
 if args.windows:
     if build64Bit:

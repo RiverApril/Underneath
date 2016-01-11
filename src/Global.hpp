@@ -85,6 +85,7 @@ using namespace std;
 
 #endif
 
+
 #define forVector(list, i) for(int i=0;i<(int)list.size();i++)
 
 #define repeat(n, i) for(int i=0;i<n;i++)
@@ -104,6 +105,7 @@ extern string CustomWorkingDirectory;
 extern string UnderneathDir;
 extern string WorldsDir;
 extern string ArtDir;
+extern string AudioDir;
 
 
 #define defaultTimeout 100
