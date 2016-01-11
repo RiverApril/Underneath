@@ -305,7 +305,9 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                             TEStair* s = dynamic_cast<TEStair*> (te);
                             if (s) {
                                 int delay = interactDelay;
+                                World* cw = level->currentWorld;
                                 WorldLoader::changeLevel(level->currentWorld, s->pos, s->levelName);
+                                cw->menuGame->levelHasChanged();
                                 //level no longer the currentLevel
                                 return delay;
                             }

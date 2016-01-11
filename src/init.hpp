@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Braeden Atlee. All rights reserved.
 //
 
+#include "Global.hpp"
 #include "Command.hpp"
 #include "MenuMain.hpp"
 #include "Tile.hpp"
@@ -17,6 +18,8 @@
 #include "Level.hpp"
 #include "Settings.hpp"
 #include "Random.hpp"
+#include "Audio.hpp"
+
 
 Ui::MenuMain* mainMenu;
 
@@ -31,7 +34,7 @@ bool* init(int argc, char* argv[]){
         exit(errno);
     }
 
-
+    
     string s1 = ("Working Directory: " + (string(workingDirectory)));
     string s2 = "";
 
@@ -40,6 +43,7 @@ bool* init(int argc, char* argv[]){
     UnderneathDir = CustomWorkingDirectory;
     WorldsDir = UnderneathDir + "worlds";
     ArtDir = UnderneathDir + "art";
+    AudioDir = UnderneathDir + "audio";
 
     if (CustomWorkingDirectory.length() > 0) {
         s2 = ("Custom Working Directory: " + CustomWorkingDirectory);
@@ -56,6 +60,9 @@ bool* init(int argc, char* argv[]){
     Commands::initCommands();
     EnemyGenerator::initEnemies();
     Random::setup();
+    Audio::initAudio();
+
+    Audio::playSound(Audio::soundMenu);
 
     debug(s1);
     debug(s2);
@@ -72,6 +79,7 @@ bool* init(int argc, char* argv[]){
 void update(){
     mainMenu->_handleInput(getchSafe());
     mainMenu->_update();
+    Audio::update();
 }
 
 int cleanup(){
@@ -85,6 +93,7 @@ int cleanup(){
     Tiles::cleanupTiles();
     Commands::cleanupCommands();
     ItemGenerator::cleanupItemTemplates();
+    Audio::cleanupAudio();
 
     return 0;
 }

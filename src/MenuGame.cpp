@@ -21,6 +21,7 @@
 #include "ItemRanged.hpp"
 #include "ItemUtilitySpell.hpp"
 #include "Settings.hpp"
+#include "Audio.hpp"
 
 #define currentPlayer (currentWorld->currentPlayer)
 #define currentLevel (currentWorld->currentLevel)
@@ -63,6 +64,16 @@ namespace Ui {
         delete spinyIcon;
     }
 
+    void MenuGame::levelHasChanged(){
+
+        if(currentLevel->getDifficulty() == 0){
+            Audio::setBgMusic(Audio::soundMenu);
+        }else{
+            Audio::setBgMusic(Audio::soundTheme);
+        }
+
+    }
+
     bool MenuGame::init(string worldName, Abilities<int> playerAbilities) {
 
         debug("MenuGame::init()");
@@ -85,6 +96,8 @@ namespace Ui {
         if (currentWorld == nullptr || currentLevel == nullptr) {
             return false;
         }
+        
+        levelHasChanged();
 
         fadeIn = fadeInMin;
 

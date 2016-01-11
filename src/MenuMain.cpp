@@ -14,6 +14,7 @@
 #include "MenuControls.hpp"
 #include "MenuSettings.hpp"
 #include "Settings.hpp"
+#include "Audio.hpp"
 
 namespace Ui {
 
@@ -24,6 +25,9 @@ namespace Ui {
     }
 
     bool MenuMain::openUi() {
+
+        Audio::setBgMusic(Audio::soundMenu);
+
         move(0, 0);
         clrtobot();
         return true;

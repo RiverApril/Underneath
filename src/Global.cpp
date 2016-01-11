@@ -48,3 +48,4 @@ string CustomWorkingDirectory;
 string UnderneathDir;
 string WorldsDir;
 string ArtDir;
+string AudioDir;
