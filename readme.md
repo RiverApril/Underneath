@@ -7,10 +7,12 @@ A dungeon crawler with old-school style ASCII graphics.
 
 This program uses standard c++ libraries and ncurses (pdcurses in Windows).
 SDL version uses SDL2 and SDL2_Image.
-The only currently working version with music uses the [YSE library](http://www.attr-x.net/yse/). I intend to replace this with a lighter and more open licence in the future.
+The only currently working version with music uses the [YSE library](http://www.attr-x.net/yse/). I intend to replace this with a lighter and more openly licenced library in the future.
 
-My development is primarily in MacOSX and some in Linux. I have successfully compiled for Windows using MinGW on Linux and Mac. Good luck compiling locally on Windows, I haven't succesfully done that in a while.
+My development is primarily in MacOSX and some in Linux. I have successfully compiled for Windows using MinGW on Linux and Mac. Good luck compiling locally on Windows, I haven't succesfully done that in a while (although I am not very well versed in windows development).
 
+
+I currently have a Copyright on all of my source code files, this may change in the future. 
 
 ---
 
