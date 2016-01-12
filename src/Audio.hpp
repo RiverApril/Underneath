@@ -26,10 +26,10 @@ namespace Audio {
 
     Sound* loadAudioFile(string path);
 
-    void playSound(Sound* s);
-    void stopSound(Sound* s);
+    bool playSound(Sound* s);
+    bool stopSound(Sound* s);
 
-    void setBgMusic(Sound* s);
+    bool setBgMusic(Sound* s);
 
 
 
