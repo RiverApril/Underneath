@@ -139,11 +139,12 @@ namespace Audio{
             debugf("Mix_OpenAudio() Error:: %s\n", Mix_GetError());
             return;
         }
+        
+        debugf("Initalized Audio");
+        success = true;
 
         soundMenu = loadAudioFile(AudioDir+"/menu.ogg");
         soundTheme = loadAudioFile(AudioDir+"/theme.ogg");
-        
-        success = true;
     }
 
     void cleanupAudio(){
@@ -169,6 +170,7 @@ namespace Audio{
             delete s;
             return nullptr;
         }
+        debugf("Loaded file: \"%s\"", path.c_str());
         
         soundList.push_back(s);
         return s;

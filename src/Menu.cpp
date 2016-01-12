@@ -129,6 +129,7 @@ namespace Ui {
                 break;
             }
             int p = ((int) consoleBuffer.size()) - j + (consoleScroll);
+            mvprintw(i, 0, "  ");
             if (p < (int)consoleBuffer.size() && p >= 0) {
                 /*bool lookingForCode = false;
                 for (char c : consoleBuffer[p]) {
@@ -137,7 +138,6 @@ namespace Ui {
                 setColor(C_WHITE);*/
                 int len = stringLengthWithColored(consoleBuffer[p]) / (terminalSize.x - 2);
                 i -= len;
-                mvprintw(i, 0, "  ");
                 i -= printMultiLineColoredString(i, 2, consoleBuffer[p]) - 1;
                 i += len;
             }
