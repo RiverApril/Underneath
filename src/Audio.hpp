@@ -26,9 +26,6 @@ namespace Audio {
 
     Sound* loadAudioFile(string path);
 
-    bool playSound(Sound* s);
-    bool stopSound(Sound* s);
-
     bool setBgMusic(Sound* s);
 
 

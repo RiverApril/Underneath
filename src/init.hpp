@@ -62,8 +62,6 @@ bool* init(int argc, char* argv[]){
     Random::setup();
     Audio::initAudio();
 
-    Audio::playSound(Audio::soundMenu);
-
     debug(s1);
     debug(s2);
 

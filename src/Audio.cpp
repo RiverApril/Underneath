@@ -10,6 +10,7 @@
 #include "Global.hpp"
 #include "Ui.hpp"
 #include "Audio.hpp"
+#include "Settings.hpp"
 
 
 namespace Audio{
@@ -54,39 +55,33 @@ namespace Audio{
 
     Sound* loadAudioFile(string path){
         Sound* s = new Sound();
-        s->yseSound.create(path.c_str(), NULL, true);
+        s->yseSound.create(path.c_str(), &YSE::ChannelMusic(), true);
         if (!s->yseSound.isValid()) {
             debugf("Failed to load sound file: %s", path.c_str());
             delete s;
             return nullptr;
         }
+        s->yseSound.setLooping(true);
         soundList.push_back(s);
         return s;
     }
 
-    void playSound(Sound* s){
-        if(s){
-        	s->yseSound.play();
-        }
-    }
-
-    void stopSound(Sound* s){
-        if(s){
-        	s->yseSound.stop();
-        }
-    }
-
-    void setBgMusic(Sound* s){
+    bool setBgMusic(Sound* s){
         if(s != bgMusic){
             if(bgMusic && bgMusic->yseSound.isPlaying()){
                 bgMusic->yseSound.fadeAndStop(2000);
             }
             bgMusic = s;
-            bgMusic->yseSound.setTime(0);
-            bgMusic->yseSound.play();
-            bgMusic->yseSound.setVolume(0, 0);
-            bgMusic->yseSound.setVolume(1, 2000);
+            if(bgMusic){
+                //bgMusic->yseSound.setTime(0);
+                YSE::ChannelMusic().setVolume(Settings::musicVolume/100.0f);
+                bgMusic->yseSound.play();
+                bgMusic->yseSound.setVolume(0, 0);
+                bgMusic->yseSound.setVolume(1, 2000);
+            }
+            return true;
         }
+        return false;
     }
 }
 
@@ -389,6 +384,10 @@ namespace Audio{
     bool setBgMusic(Sound* s){
         debugf("Sound unimplemented, sound cannot be played.");
         return false;
+    }
+
+    void setGlobalVolume(float v){
+
     }
 }
 

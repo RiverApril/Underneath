@@ -34,8 +34,14 @@ namespace Ui {
                 selected = 0;
             }
 
+        }else if(in == Key::uiLeft){
+            Settings::settingList[selected]->cycleValue(false);
+            
+        }else if(in == Key::uiRight){
+            Settings::settingList[selected]->cycleValue(true);
+
         }else if(in == '\n'){
-            Settings::settingList[selected]->cycleValue();
+            Settings::settingList[selected]->cycleValue(true);
         }
     }
 
@@ -55,7 +61,7 @@ namespace Ui {
             if(sl){
                 mvprintw(a++, 1, "%s", setting->name.c_str());
             }else{
-            	mvprintw(a++, 3, "%s - %s", setting->stringValue().c_str(), setting->name.c_str());
+            	mvprintw(a++, 3, "%s - %s", setting->renderValue().c_str(), setting->name.c_str());
             }
         }
 
