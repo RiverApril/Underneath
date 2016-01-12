@@ -129,7 +129,7 @@ namespace Ui {
                 break;
             }
             int p = ((int) consoleBuffer.size()) - j + (consoleScroll);
-            if (p < (int)consoleBuffer.size()) {
+            if (p < (int)consoleBuffer.size() && p >= 0) {
                 /*bool lookingForCode = false;
                 for (char c : consoleBuffer[p]) {
                     addChColor(c, &lookingForCode);

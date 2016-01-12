@@ -28,9 +28,8 @@ def mkdir_p(path):
 
 
 parser = argparse.ArgumentParser(description="Compile Underneath.")
-parser.add_argument("-s", "--sdl", action="store_true")
-parser.add_argument("-y", "--YSEAudio", action="store_true")
-parser.add_argument("-p", "--portAudio", action="store_true")
+parser.add_argument("-s", "--SDLGraphics", action="store_true")
+parser.add_argument("-S", "--SDLAudio", action="store_true")
 parser.add_argument("-a", "--all", action="store_true")
 parser.add_argument("-l", "--linkonly", action="store_true")
 parser.add_argument("-r", "--run", action="store_true")
@@ -102,19 +101,15 @@ compilerFlags = optimization+" "+compilerFlags;
 if args.compiler:
     compiler = args.compiler;
 
-if args.sdl:
-    executableName += "_SDL"
+if args.SDLGraphics:
+    executableName += "_SDLGraphics"
     compilerFlags += " -D useSDLGraphics"
 else:
     executableName += "_Term"
 
-if args.YSEAudio:
-    executableName += "_YSEAudio"
-    compilerFlags += " -D useYSEAudio -D NDEBUG"
-
-if args.portAudio:
-    executableName += "_PortAudio"
-    compilerFlags += " -D usePortAudio"
+if args.SDLAudio:
+    executableName += "_SDLAudio"
+    compilerFlags += " -D useSDLAudio"
 
 if args.windows:
 
@@ -137,7 +132,7 @@ if args.windows:
         print("    # The Windows executable will require the following dll file:")
         print("    #   pdcurses.dll")
 else:
-    if args.sdl:
+    if args.SDLGraphics:
         if systemName == "Darwin":
             compilerFlags += " -I/usr/local/include"
             libraryFlags += " -L/usr/local/lib `sdl2-config --cflags` -lSDL2_image"
@@ -152,21 +147,14 @@ else:
         elif systemName == "Linux":
             libraryFlags += " -lncurses"
 
-    if args.YSEAudio:
+    if args.SDLAudio:
         if systemName == "Darwin":
             compilerFlags += " -I/usr/local/include"
-            libraryFlags += " /usr/local/lib/libyse.dylib"
+            libraryFlags += " -L/usr/local/lib `sdl2-config --cflags` -lSDL2_mixer"
+            libraryFlags += " `sdl2-config --libs`"
         elif systemName == "Linux":
-            print("ERROR TODO for linux")
-            exit()
-
-    if args.portAudio:
-        if systemName == "Darwin":
-            compilerFlags += " -I/usr/local/include"
-            libraryFlags += " /usr/local/lib/libportaudio.dylib"
-        elif systemName == "Linux":
-            print("ERROR TODO for linux")
-            exit()
+            compilerFlags += " `sdl2-config --cflags`"
+            libraryFlags  += " `sdl2-config --libs` -lSDL2_mixer"
 
 
 if args.windows:

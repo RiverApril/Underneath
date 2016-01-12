@@ -22,7 +22,7 @@ namespace Audio{
 
 }
 
-
+/*
 #ifdef useYSEAudio
 #define implementedAudio
 
@@ -47,6 +47,9 @@ namespace Audio{
 
     void cleanupAudio(){
         YSE::System().close();
+        for(Sound* sound : soundList){
+            delete sound;
+        }
     }
 
     void update(){
@@ -87,15 +90,111 @@ namespace Audio{
 
 
 #endif
-
+*/
 
 
 
 #ifdef useSDLAudio
 #define implementedAudio
 
-#include <SDL2_mixer/SDL_mixer.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
+namespace Audio{
+    
+    bool success = false;
+    
+    struct Sound{
+        
+        Mix_Music* mixMusic;
+        
+    };
+
+    Sound* bgMusic = nullptr;
+    
+}
+
+void musicFinished(){
+    debugf("Music fade complete");
+    if(Audio::bgMusic){
+        debugf("Playing next music");
+        Mix_FadeInMusic(Audio::bgMusic->mixMusic, -1, 2000);
+        debugf("Fading in music");
+    }
+}
+
+namespace Audio{
+
+
+    void initAudio(){
+        if(SDL_Init(SDL_INIT_AUDIO) == -1){
+            debugf("Failed to initalize SDL Audio. Error: %s\n", SDL_GetError());
+            return;
+        }
+        if(Mix_Init(MIX_INIT_OGG) == -1){
+            debugf("Failed to initalize Mix OGG. Error: %s\n", Mix_GetError());
+            return;
+        }
+        if(Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) == -1){
+            debugf("Mix_OpenAudio() Error:: %s\n", Mix_GetError());
+            return;
+        }
+
+        soundMenu = loadAudioFile(AudioDir+"/menu.ogg");
+        soundTheme = loadAudioFile(AudioDir+"/theme.ogg");
+        
+        success = true;
+    }
+
+    void cleanupAudio(){
+        for(Sound* sound : soundList){
+            Mix_FreeMusic(sound->mixMusic);
+            delete sound;
+        }
+    }
+
+    void update(){
+        
+        
+    }
+
+    Sound* loadAudioFile(string path){
+        if(!success){
+            return nullptr;
+        }
+        Sound* s = new Sound();
+        s->mixMusic = Mix_LoadMUS(path.c_str());
+        if(!s->mixMusic){
+            debugf("Failed to load file: \"%s\". Error: %s\n", path.c_str(), Mix_GetError());
+            delete s;
+            return nullptr;
+        }
+        
+        soundList.push_back(s);
+        return s;
+    }
+
+    bool setBgMusic(Sound* s){
+        if(!success){
+            return false;
+        }
+        if(s != bgMusic){
+            Mix_VolumeMusic((int)((Settings::musicVolume/100.0)*MIX_MAX_VOLUME));
+            if(bgMusic && Mix_PlayingMusic()){
+                Mix_FadeOutMusic(2000);
+                Mix_HookMusicFinished(musicFinished);
+                debugf("Fading out music...");
+            }
+            bgMusic = s;
+            if(bgMusic && !Mix_PlayingMusic()){
+                Mix_FadeInMusic(bgMusic->mixMusic, -1, 2000);
+                debugf("Fading in music");
+            }
+            return true;
+        }
+        return false;
+    }
+}
 
 
 
@@ -122,16 +221,6 @@ namespace Audio{
     Sound* loadAudioFile(string path){
         debugf("Sound unimplemented, sound cannot be loaded.");
         return nullptr;
-    }
-
-    bool playSound(Sound* s){
-        debugf("Sound unimplemented, sound cannot be played.");
-        return false;
-    }
-
-    bool stopSound(Sound* s){
-        debugf("Sound unimplemented, sound cannot be stopped.");
-        return false;
     }
 
     bool setBgMusic(Sound* s){

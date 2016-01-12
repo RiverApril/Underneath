@@ -23,7 +23,8 @@ namespace Random {
 
     void setup();
 
-    template <typename T> const T choose(int count, ...) {
+    template <typename T>
+    const T choose(int count, ...) {
         vector<T> options;
         va_list args;
         va_start(args, count);
