@@ -46,9 +46,6 @@ namespace MainWindow{
 
     bool initSDL();
     bool initMedia();
-    //SDL_Surface* loadImage(const char* path);
-
-    //void makeFontSurface(SDL_Surface* surf, int original, int color, int trans);
 
 
     void operationThreadFunction();

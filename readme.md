@@ -5,11 +5,12 @@ A dungeon crawler with old-school style ASCII graphics.
 
 ### Written in c++11
 
-This program uses standard c++ libraries and ncurses (pdcurses in Windows).
-SDL version uses SDL2 and SDL2_Image.
-The only currently working version with music uses the [YSE library](http://www.attr-x.net/yse/). I intend to replace this with a lighter and more openly licenced library in the future.
+This program uses standard c++ libraries.  
+The terminal graphics version uses ncurses (pdcurses on windows).  
+The SDL2 graphics version uses SDL2 and SDL2_Image libraries. (use the -s (lowercase s) flag during compile)  
+The version with music uses the SDL2_mixer library. (use the -S (uppercase S) flag during compile)  
 
-My development is primarily in MacOSX and some in Linux. I have successfully compiled for Windows using MinGW on Linux and Mac. Good luck compiling locally on Windows, I haven't succesfully done that in a while (although I am not very well versed in windows development).
+My development is primarily in MacOSX and some in Linux. I have successfully compiled for Windows using MinGW on Linux and Mac. Good luck compiling locally on Windows, I haven't successfully done that in a while (although I am not very well versed in windows development).
 
 
 I currently have a Copyright on all of my source code files, this may change in the future. 
@@ -19,7 +20,7 @@ I currently have a Copyright on all of my source code files, this may change in 
 
 ## Compiling:
 
-I made a compile script with python, I origonally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to python. I haven't compiled in a long time directly from Windows itself. So the windows builds are compiled on linux and mac using mingw32
+I made a compile script with python, I originally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to python. I haven't compiled in a long time directly from Windows itself. So the windows builds are compiled on linux and mac using mingw32
 
 To build the terminal version run the following in the repository directory:
 ```
@@ -31,7 +32,7 @@ or
 ```
 
 
-To compile using the SDL2 port, use the -s flag: 
+To compile using the SDL2 Graphics port, use the -s flag: 
 ```
 python build.py -s
 ```
@@ -46,14 +47,14 @@ To run immediately after building use the -r flag.
 python build.py -r
 ```
 
-Flags can be used together.
+Flags can be used together.  
 All flags:
 ```
 -h  List all flags
 -r  Run after successful build
 
--s  Compile using SDL instead of Curses
--y  Compile with the YSE Audio Library
+-s  Compile using SDL2 Graphics instead of Curses
+-S  Compile with the SDL2 Mixer Audio Library (no audio by default)
 
 -a  Compile all sources (it defaults to only ones that have changed)
 -i  Don't check included headers (makes compiling faster, but doesn't recompile cpp files if only included headers were modified)

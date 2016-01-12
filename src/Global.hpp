@@ -18,6 +18,7 @@
 #include <functional>
 #include <algorithm>
 #include <stdint.h>
+#include <stdarg.h>
 
 
 #include <time.h>
