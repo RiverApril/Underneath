@@ -29,7 +29,8 @@ def mkdir_p(path):
 
 parser = argparse.ArgumentParser(description="Compile Underneath.")
 parser.add_argument("-s", "--sdl", action="store_true")
-parser.add_argument("-y", "--audioYSE", action="store_true")
+parser.add_argument("-y", "--YSEAudio", action="store_true")
+parser.add_argument("-p", "--portAudio", action="store_true")
 parser.add_argument("-a", "--all", action="store_true")
 parser.add_argument("-l", "--linkonly", action="store_true")
 parser.add_argument("-r", "--run", action="store_true")
@@ -107,9 +108,13 @@ if args.sdl:
 else:
     executableName += "_Term"
 
-if args.audioYSE:
-    executableName += "_YSEAUDIO"
+if args.YSEAudio:
+    executableName += "_YSEAudio"
     compilerFlags += " -D useYSEAudio -D NDEBUG"
+
+if args.portAudio:
+    executableName += "_PortAudio"
+    compilerFlags += " -D usePortAudio"
 
 if args.windows:
 
@@ -147,10 +152,18 @@ else:
         elif systemName == "Linux":
             libraryFlags += " -lncurses"
 
-    if args.audioYSE:
+    if args.YSEAudio:
         if systemName == "Darwin":
             compilerFlags += " -I/usr/local/include"
             libraryFlags += " /usr/local/lib/libyse.dylib"
+        elif systemName == "Linux":
+            print("ERROR TODO for linux")
+            exit()
+
+    if args.portAudio:
+        if systemName == "Darwin":
+            compilerFlags += " -I/usr/local/include"
+            libraryFlags += " /usr/local/lib/libportaudio.dylib"
         elif systemName == "Linux":
             print("ERROR TODO for linux")
             exit()
