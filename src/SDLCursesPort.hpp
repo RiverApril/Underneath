@@ -17,9 +17,6 @@
 #define __Underneath__SDLCursesPort__
 
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-
 
 
 #define stdscr 1
@@ -53,8 +50,6 @@ namespace MainWindow{
 
     //void makeFontSurface(SDL_Surface* surf, int original, int color, int trans);
 
-    Uint32 getpixel(SDL_Surface *surface, int x, int y);
-    void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
 
     void operationThreadFunction();
 
