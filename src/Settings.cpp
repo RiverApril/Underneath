@@ -10,6 +10,7 @@
 #include "Controls.hpp"
 #include "Ui.hpp"
 #include "Utility.hpp"
+#include "Audio.hpp"
 
 namespace Settings{
 
@@ -19,11 +20,13 @@ namespace Settings{
     bool showFollowPaths = false;
     bool seeEverything = false;
     bool cheatKeysEnabled = false;
+    int musicVolume = 50;
 
     bool autoSave = true;
 
     vector<Setting*> settingList = {
         new SettingBool("Auto Save", &autoSave),
+        new SettingPercent("Music Volume", &musicVolume, 1),
         new SettingLabel(""),
         new SettingBool("Debug Output", &debugMode),
         new SettingBool("Log File", &logFile),
@@ -149,11 +152,13 @@ namespace Settings{
                 }
             } while (c != EOF);
             fclose(file);
+
             return true;
         } else {
             debug("Failed to load settings at: " + path);
             return false;
         }
+
     }
 
 

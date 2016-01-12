@@ -19,6 +19,7 @@ namespace Settings{
     extern bool showFollowPaths;
     extern bool seeEverything;
     extern bool cheatKeysEnabled;
+    extern int musicVolume; //0-100
 
     extern bool autoSave;
 
@@ -32,6 +33,10 @@ namespace Settings{
 
         virtual ~Setting(){}
 
+        virtual string renderValue(){
+            return "";
+        }
+
         virtual string stringValue(){
             return "ERROR";
         }
@@ -40,7 +45,7 @@ namespace Settings{
             return false;
         }
 
-        virtual void cycleValue(){
+        virtual void cycleValue(bool right){
 
         }
     };
@@ -53,6 +58,10 @@ namespace Settings{
 
         ~SettingLabel(){}
 
+        string renderValue(){
+            return "";
+        }
+
         string stringValue(){
             return "";
         }
@@ -61,7 +70,7 @@ namespace Settings{
             return true;
         }
 
-        virtual void cycleValue(){}
+        virtual void cycleValue(bool right){}
     };
 
     struct SettingBool : Setting{
@@ -74,23 +83,64 @@ namespace Settings{
 
         ~SettingBool(){}
 
+        string renderValue(){
+            return (*value)?" On":"Off";
+        }
+
         string stringValue(){
-            return (*value)?" ON":"OFF";
+            return (*value)?"true":"false";
         }
 
         bool setValue(string text){
-            if(text.compare(" ON") == 0){
+            if(text.compare("true") == 0){
                 *value = true;
                 return true;
-            }else if(text.compare("OFF") == 0){
+            }else if(text.compare("false") == 0){
                 *value = false;
                 return true;
             }
             return false;
         }
 
-        virtual void cycleValue(){
+        virtual void cycleValue(bool right){
             *value = !*value;
+        }
+    };
+
+    struct SettingPercent : Setting{
+
+        int* value;
+
+        int step;
+
+        SettingPercent(string name, int* value, int step) : Setting(name){
+            this->value = value;
+            this->step = step;
+        }
+
+        ~SettingPercent(){}
+
+        string renderValue(){
+            return to_string(*value)+"%";
+        }
+
+        string stringValue(){
+            return to_string(*value);
+        }
+
+        bool setValue(string text){
+            *value = stoi(text);
+            return false;
+        }
+
+        virtual void cycleValue(bool right){
+            *value += right?step:-step;
+            if(*value > 100){
+                *value = 0;
+            }
+            while(*value < 0){
+                *value = 100;
+            }
         }
     };
 
