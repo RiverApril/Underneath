@@ -156,6 +156,8 @@ private:
 
     vector<vector<TileData> > tileGrid;
 
+    vector<vector<int>> pathMap;
+
     string name;
 
     int difficulty = 1;
