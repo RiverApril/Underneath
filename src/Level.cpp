@@ -24,6 +24,8 @@ Level::Level(World* w, string n, Point2 s, int d) {
     size = s;
     tileGrid = vector<vector < TileData >> (size.x, vector<TileData>(size.y));
 
+    pathMap = vector<vector<int>>(size.x, vector<int>(size.y));
+
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
             tileGrid[i][j].index = (int8_t) Tiles::tileUnset->getIndex();
@@ -454,11 +456,10 @@ void Level::actuallyRemoveTileEntityUnsafe(TileEntity* e) {
 }
 
 vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored, TileFlag requiredEitherFlag) {
-    vector<vector<int>> map = vector<vector<int>>(size.x, vector<int>(size.y));
 
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
-            map[i][j] = -1;
+            pathMap[i][j] = -1;
         }
     }
 
@@ -475,7 +476,7 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
         if (c == from) {
             vector<Point2> path;
             Point2 l = from;
-            int v = map[from.x][from.y];
+            int v = pathMap[from.x][from.y];
             while (v > 0) {
                 bool leave = false;
                 bool rx = rand()%2==0;
@@ -485,8 +486,8 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
                         Point2 p = Point2(l.x + (rx?i:-i), l.y + (ry?j:-j));
                         if ((abs(i) + abs(j)) == 1) {
                             if (inRange(p)) {
-                                if (map[p.x][p.y] < v && map[p.x][p.y] != -1) {
-                                    v = map[p.x][p.y];
+                                if (pathMap[p.x][p.y] < v && pathMap[p.x][p.y] != -1) {
+                                    v = pathMap[p.x][p.y];
                                     l = p;
                                     leave = true;
                                     path.push_back(l);
@@ -523,8 +524,8 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
                                     }
                                 }
                                 if(!ent){
-                                    if (map[p.x][p.y] == -1) {
-                                        map[p.x][p.y] = map[c.x][c.y] + 1;
+                                    if (pathMap[p.x][p.y] == -1) {
+                                        pathMap[p.x][p.y] = pathMap[c.x][c.y] + 1;
                                         priorityQueue.push(p);
                                     }
                                 }
