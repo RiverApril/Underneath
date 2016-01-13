@@ -8,7 +8,7 @@ A dungeon crawler with old-school style ASCII graphics.
 This program uses standard c++ libraries.  
 The terminal graphics version uses ncurses (pdcurses on windows).  
 The SDL2 graphics version uses SDL2 and SDL2_Image libraries. (use the -s flag during compile)  
-The version with music uses the SDL2_mixer library. (use the -S flag during compile)  
+The version with music uses the SDL2_mixer library. (use the -m flag during compile)  
 
 My development is primarily in MacOSX and some in Linux. I have successfully compiled for Windows using MinGW on Linux and Mac. Good luck compiling locally on Windows, I haven't successfully done that in a while (although I am not very well versed in windows development).
 
@@ -54,7 +54,7 @@ All flags:
 -r  Run after successful build
 
 -s  Compile using SDL2 Graphics instead of Curses
--S  Compile with the SDL2 Mixer Audio Library (no audio by default)
+-m  Compile with the SDL2 Mixer Audio Library (no audio by default)
 
 -a  Compile all sources (it defaults to only ones that have changed)
 -i  Don't check included headers (makes compiling faster, but doesn't recompile cpp files if only included headers were modified)
