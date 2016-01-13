@@ -777,9 +777,9 @@ void EntityPlayer::updateVariablesForAbilities() {
 
     dodgeChance = max(1*pow(0.995, abilities[iAGI]), 0.0001);
 
-    strMult = 1 + (((double) abilities[iSTR]/10.0));
-    dexMult = 1 + (((double) abilities[iDEX]/10.0));
-    intMult = 1 + (((double) abilities[iINT]/10.0));
+    strMult = 1 + (((double) abilities[iSTR]*0.075));
+    dexMult = 1 + (((double) abilities[iDEX]*0.075));
+    intMult = 1 + (((double) abilities[iINT]*0.075));
 }
 
 int EntityPlayer::xpForLevel(int l){
