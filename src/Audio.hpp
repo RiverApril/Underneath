@@ -9,6 +9,8 @@
 #ifndef __Underneath__Audio__
 #define __Underneath__Audio__
 
+#define FADE_TIME 2000
+
 namespace Audio {
 
     struct Sound;

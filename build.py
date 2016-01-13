@@ -118,17 +118,26 @@ if args.windows:
         compiler = "i686-w64-mingw32-c++"
         compilerFlags += " -D WIN32"
 
+    print("    # The Windows executable will require the following dll files:")
+        
     if args.SDLGraphics:
         libraryFlags += " -lSDL2main -lSDL2 -lSDL2_image"
-        print("    # The Windows executable will require the following dll files:")
         print("    #   SDL2.dll")
         print("    #   SDL2_image.dll")
         print("    #   zlib1.dll")
         print("    #   libpng16-16.dll")
     else:
-        libraryFlags = "-lpdcurses -static -static-libgcc -static-libstdc++"
-        print("    # The Windows executable will require the following dll file:")
+        libraryFlags += " -lpdcurses"
         print("    #   pdcurses.dll")
+        
+    if args.SDLAudio:
+        libraryFlags += " -lSDL2main  -lSDL2 -lSDL2_mixer"
+        print("    #   SDL2_mixer.dll")
+        print("    #   libogg-0.dll")
+        
+    libraryFlags += " -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic"
+        
+        
 else:
     if args.SDLGraphics:
         if systemName == "Darwin":

@@ -106,21 +106,13 @@ namespace Audio{
     
     struct Sound{
         
-        Mix_Music* mixMusic;
+        Mix_Chunk* mixChunk;
+        int index;
         
     };
 
     Sound* bgMusic = nullptr;
     
-}
-
-void musicFinished(){
-    debugf("Music fade complete");
-    if(Audio::bgMusic){
-        debugf("Playing next music");
-        Mix_FadeInMusic(Audio::bgMusic->mixMusic, -1, 2000);
-        debugf("Fading in music");
-    }
 }
 
 namespace Audio{
@@ -145,11 +137,12 @@ namespace Audio{
 
         soundMenu = loadAudioFile(AudioDir+"/menu.ogg");
         soundTheme = loadAudioFile(AudioDir+"/theme.ogg");
+        
+        Mix_AllocateChannels((int)soundList.size());
     }
 
     void cleanupAudio(){
         for(Sound* sound : soundList){
-            Mix_FreeMusic(sound->mixMusic);
             delete sound;
         }
     }
@@ -164,14 +157,15 @@ namespace Audio{
             return nullptr;
         }
         Sound* s = new Sound();
-        s->mixMusic = Mix_LoadMUS(path.c_str());
-        if(!s->mixMusic){
+        s->mixChunk = Mix_LoadWAV_RW(SDL_RWFromFile(path.c_str(), "rb"), 1);
+        if(!s->mixChunk){
             debugf("Failed to load file: \"%s\". Error: %s\n", path.c_str(), Mix_GetError());
             delete s;
             return nullptr;
         }
         debugf("Loaded file: \"%s\"", path.c_str());
         
+        s->index = soundList.size();
         soundList.push_back(s);
         return s;
     }
@@ -181,16 +175,18 @@ namespace Audio{
             return false;
         }
         if(s != bgMusic){
-            Mix_VolumeMusic((int)((Settings::musicVolume/100.0)*MIX_MAX_VOLUME));
-            if(bgMusic && Mix_PlayingMusic()){
-                Mix_FadeOutMusic(2000);
-                Mix_HookMusicFinished(musicFinished);
-                debugf("Fading out music...");
+            if(s){
+                Mix_Volume(s->index, (int)((Settings::musicVolume/100.0)*MIX_MAX_VOLUME));
+            }
+            if(bgMusic && Mix_Playing(bgMusic->index)){
+                Mix_FadeOutChannel(bgMusic->index, FADE_TIME);
+                if(s){
+                    Mix_FadeInChannel(s->index, s->mixChunk, -1, FADE_TIME);
+                }
             }
             bgMusic = s;
-            if(bgMusic && !Mix_PlayingMusic()){
-                Mix_FadeInMusic(bgMusic->mixMusic, -1, 2000);
-                debugf("Fading in music");
+            if(bgMusic){
+                Mix_FadeInChannel(bgMusic->index, bgMusic->mixChunk, -1, FADE_TIME);
             }
             return true;
         }
