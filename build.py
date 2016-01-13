@@ -102,13 +102,11 @@ if args.compiler:
     compiler = args.compiler;
 
 if args.SDLGraphics:
-    executableName += "_SDLGraphics"
+    executableName += "_SDLgfx"
     compilerFlags += " -D useSDLGraphics"
-else:
-    executableName += "_Term"
 
 if args.SDLAudio:
-    executableName += "_SDLAudio"
+    executableName += "_SDLaud"
     compilerFlags += " -D useSDLAudio"
 
 if args.windows:
@@ -120,7 +118,7 @@ if args.windows:
         compiler = "i686-w64-mingw32-c++"
         compilerFlags += " -D WIN32"
 
-    if args.sdl:
+    if args.SDLGraphics:
         libraryFlags += " -lSDL2main -lSDL2 -lSDL2_image"
         print("    # The Windows executable will require the following dll files:")
         print("    #   SDL2.dll")

@@ -67,7 +67,7 @@ using namespace std;
         return ss.str();
     }
 
-    #ifndef useSDLLightCurses
+    #ifndef useSDLGraphics
         #include "curses.h"
         extern int ESCDELAY;
     #endif
