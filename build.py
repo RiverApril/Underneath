@@ -29,7 +29,7 @@ def mkdir_p(path):
 
 parser = argparse.ArgumentParser(description="Compile Underneath.")
 parser.add_argument("-s", "--SDLGraphics", action="store_true")
-parser.add_argument("-S", "--SDLAudio", action="store_true")
+parser.add_argument("-m", "--SDLAudio", action="store_true")
 parser.add_argument("-a", "--all", action="store_true")
 parser.add_argument("-l", "--linkonly", action="store_true")
 parser.add_argument("-r", "--run", action="store_true")

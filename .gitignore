@@ -15,6 +15,6 @@ Underneath.xcodeproj/
 #Git BFG:
 .git.bfg-report/
 
-
-#YSE Audio:
-YSELog.txt
+#Tags:
+.tags
+.tags1

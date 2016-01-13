@@ -45,15 +45,10 @@ namespace Verbalizer {
 
 		EntityPlayer* playerAttacker = dynamic_cast<EntityPlayer*> (attacker);
 
-        const char* white = colorCode(C_WHITE).c_str();
-        const char* green = colorCode(C_LIGHT_GREEN).c_str();
-        const char* blue = colorCode(C_LIGHT_BLUE).c_str();
-        const char* red = colorCode(C_LIGHT_RED).c_str();
-
         if(playerAttacker){
-            consolef("You deal %s%.2f damage%s to the %s%s%s.", green, damage, white, blue, underAttack->getName().c_str(), white);
+            consolef("You deal %s%.2f damage%s to the %s%s%s.", colorCode(C_LIGHT_GREEN).c_str(), damage, colorCode(C_WHITE).c_str(), colorCode(C_LIGHT_BLUE).c_str(), underAttack->getName().c_str(), colorCode(C_WHITE).c_str());
         }else{
-            consolef("The %s%s%s dealt %s%.2f damage%s to you.", blue, attacker->getName().c_str(), white, red, damage, white);
+            consolef("The %s%s%s dealt %s%.2f damage%s to you.", colorCode(C_LIGHT_BLUE).c_str(), attacker->getName().c_str(), colorCode(C_WHITE).c_str(), colorCode(C_LIGHT_RED).c_str(), damage, colorCode(C_WHITE).c_str());
         }
 
         /*EntityPlayer* playerAttacker = dynamic_cast<EntityPlayer*> (attacker);
