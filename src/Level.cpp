@@ -373,9 +373,16 @@ bool Level::update(double deltaTime, double time, Point2 viewPos) {
         deleteTileEntityList.erase(deleteTileEntityList.begin());
     }
 
-    for(int i=0;i<20;i++){
-        randomTileUpdate(Point2(rand() % size.x, rand() % size.y));
+
+    for(Point2 p = Point2Zero; p.x < size.x; p.x++){
+        for(p.y = 0; p.y < size.y; p.y++){
+            regularTileUpdate(p);
+            if(rand()%50==0){
+                randomTileUpdate(p);
+            }
+        }
     }
+
 
     return u;
 }
@@ -386,7 +393,12 @@ void Level::randomTileUpdate(Point2 p){
 		setTile(p, Tiles::tileBones);
     }else if(index == Tiles::tileBloodFloor->getIndex()){
         setTile(p, Tiles::tileFloor);
-    }else if(index == Tiles::tileFire->getIndex()){
+    }
+}
+
+void Level::regularTileUpdate(Point2 p){
+    int index = indexAt(p);
+    if(index == Tiles::tileFire->getIndex() && rand()%10==0){
         Utility::execute4Around(p.x, p.y, [this](int x, int y){
             if(this->tileAt(x, y)->hasAllOfFlags(tileFlagFlammable)){
                 setTile(x, y, Tiles::tileFire);
@@ -470,6 +482,8 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
     queue<Point2> priorityQueue;
     priorityQueue.push(to);
 
+    Point2 p;
+
     while (!priorityQueue.empty()) {
         Point2 c = priorityQueue.front();
         priorityQueue.pop();
@@ -483,7 +497,8 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
                 bool ry = rand()%2==0;
                 for (int i = -1; i <= 1 && !leave; i++) {
                     for (int j = -1; j <= 1 && !leave; j++) {
-                        Point2 p = Point2(l.x + (rx?i:-i), l.y + (ry?j:-j));
+                        p.x = l.x + (rx?i:-i);
+                        p.y = l.y + (ry?j:-j);
                         if ((abs(i) + abs(j)) == 1) {
                             if (inRange(p)) {
                                 if (pathMap[p.x][p.y] < v && pathMap[p.x][p.y] != -1) {
