@@ -46,7 +46,7 @@ Ui::Color damageTypeColor(DamageType d) {
         case damPierce:
             return C_LIGHT_GRAY;
         case damFire:
-            return C_LIGHT_YELLOW;
+            return C_LIGHT_RED;
         case damIce:
             return C_LIGHT_CYAN;
         case damShock:
@@ -55,8 +55,6 @@ Ui::Color damageTypeColor(DamageType d) {
             return C_LIGHT_GREEN;
         case damBlood:
             return C_LIGHT_RED;
-        case damDebug:
-            return C_WHITE;
         case damExplosion:
             return C_LIGHT_YELLOW;
         default:
