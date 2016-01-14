@@ -36,7 +36,7 @@ public:
     
     int repairToolPower();
 
-    double interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item);
+    double interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item, bool okayToInteractWithSelf);
 
     double interactWithTile(Level* level, int tid, Point2 posOfTile, Item* item);
 

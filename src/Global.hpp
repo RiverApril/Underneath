@@ -110,7 +110,7 @@ extern string AudioDir;
 
 
 #define defaultTimeout 100
-#define fastTimeout 10
+#define fastTimeout 1
 
 
 

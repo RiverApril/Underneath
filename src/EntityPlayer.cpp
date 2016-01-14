@@ -66,7 +66,7 @@ double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract) {
     if (tryToMoveAbsalute(p, level)) {
         return moveDelay;
     } else if(canInteract) {
-        return interact(level, p, true, getActiveItemWeapon());
+        return interact(level, p, true, getActiveItemWeapon(), false);
     }
     return 0;
 }
@@ -100,7 +100,7 @@ int EntityPlayer::repairToolPower(){
     return (abilities[iSTR] * 10) + (abilities[iDEX] * 15) + 100;
 }
 
-double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item) {
+double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item, bool okayToInteractWithSelf) {
 
 
 
@@ -143,7 +143,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
             if (use) {
                 switch (s->spellEffect) {
                     case spellRemoteUse:
-                        if (!interact(level, posToInteract, false, nullptr)) {
+                        if (!interact(level, posToInteract, false, nullptr, false)) {
                             consolef("&%cFailed to interact", Ui::cc(C_LIGHT_RED));
                             return 0;
                         }
@@ -237,7 +237,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
             return delay;
         }else{
             //If there is no tile to interact with, try interacting with yourself.
-            if(posToInteract == pos){
+            if(posToInteract == pos && okayToInteractWithSelf){
             	return interactWithEntity(level, this, posToInteract, item);
             }
         }
@@ -417,7 +417,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
     }
 
     EntityAlive* a = dynamic_cast<EntityAlive*> (e);
-    if (a && e->uniqueId != uniqueId) {
+    if (a/* && (e->uniqueId != uniqueId)*/) {
         if (item != nullptr) {
             ItemWeapon* weapon = dynamic_cast<ItemWeapon*> (item);
             ItemRanged* ranged = dynamic_cast<ItemRanged*> (item);
