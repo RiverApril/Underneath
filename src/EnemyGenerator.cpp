@@ -82,8 +82,8 @@ namespace EnemyGenerator {
         wraith->weaknesses.push_back(Weakness(damPierce, .5));
         wraith->weaknesses.push_back(Weakness(damBlunt, .5));
         wraith->moveDelay = 1.8;
-        troll->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(10, wFireItemCombatSpell), make_pair(10, wFrostItemCombatSpell), make_pair(10, wShockItemCombatSpell), make_pair(10, wHealingCombatSpell)}));
-        troll->maxLootDrop = 4;
+        wraith->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(20, wFireItemCombatSpell), make_pair(20, wFrostItemCombatSpell), make_pair(20, wShockItemCombatSpell), make_pair(20, wHealingCombatSpell)}));
+        wraith->maxLootDrop = 4;
 
         ItemGenerator::WeaponBase* drakeWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
         drakeWeapon->damage *= 3;
@@ -97,7 +97,7 @@ namespace EnemyGenerator {
         drake->moveDelay = .75;
         drake->solidity = tileFlagSolidInAir;
         drake->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(10, wFireItemCombatSpell), make_pair(10, wFrostItemCombatSpell), make_pair(10, wShockItemCombatSpell), make_pair(10, wHealingCombatSpell)}));
-        troll->maxLootDrop = 10;
+        drake->maxLootDrop = 10;
 
 
         slime = atl(new EntityBase(30, "Slime", 's', aiAttack, 40, ItemGenerator::wNatural, "Goo", C_LIGHT_YELLOW, 1.0));
