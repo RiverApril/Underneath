@@ -135,7 +135,7 @@ namespace Ui {
         if (*useItem != -1) {
             UseType use = currentPlayer->inventory[*useItem]->getUseType();
             if (use == useInstant) {
-                timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->inventory[*useItem]);
+                timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->inventory[*useItem], false);
                 int selected = *useItem;
                 *useItem = -1;
                 MenuInv* m = new MenuInv(currentPlayer, currentWorld, useItem);
@@ -302,7 +302,7 @@ namespace Ui {
 
             Item* i = itemToBeUsed!=nullptr? itemToBeUsed : currentPlayer->getActiveItemWeapon();
 
-            timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos + p, false, i);
+            timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos + p, false, i, false);
 
             changeMode(modeEntityPlayerControl);
 
@@ -423,7 +423,9 @@ namespace Ui {
                 ItemWeapon* wep = (in == Key::interact)?currentPlayer->getActiveItemWeapon():currentPlayer->getSecondaryItemWeapon();
                 if (controlMode == modeSelectDirection) {
 
-                    timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, itemToBeUsed);
+                    ItemWeapon* w = dynamic_cast<ItemWeapon*>(itemToBeUsed);
+
+                    timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, itemToBeUsed, w?w->baseDamage==0:true);
 
                     itemToBeUsed = nullptr;
                     changeMode(modeEntityPlayerControl);
@@ -431,8 +433,9 @@ namespace Ui {
                     if(selectMode == selectModeAttack){
 
                         ItemUtilitySpell* us = dynamic_cast<ItemUtilitySpell*>(itemToBeUsed);
+                        ItemWeapon* w = dynamic_cast<ItemWeapon*>(itemToBeUsed);
 
-                        timePassed += currentPlayer->interact(currentLevel, targetPosition, false, itemToBeUsed);
+                        timePassed += currentPlayer->interact(currentLevel, targetPosition, false, itemToBeUsed, w?w->baseDamage==0:true);
 
                         if(!(us && us->continuousUse)){
                             changeMode(modeEntityPlayerControl);
@@ -455,7 +458,7 @@ namespace Ui {
                     }
                 }
             } else if(in == Key::instantInteract){
-                timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->getActiveItemWeapon());
+                timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->getActiveItemWeapon(), false);
             }else if(in == Key::waitUntilHealed) {
                 if(controlMode == modeEntityPlayerControl){
                     if(currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()){
@@ -793,7 +796,7 @@ namespace Ui {
                     if(it){
                         UseType use = it->getUseType();
                         if (use == useInstant) {
-                            timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, it);
+                            timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, it, false);
                         } else if(use == useInWorld){
                             ItemWeapon* wep = dynamic_cast<ItemWeapon*>(it);
                             ItemRanged* rng = dynamic_cast<ItemRanged*>(it);
