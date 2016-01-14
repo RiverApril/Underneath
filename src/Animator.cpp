@@ -61,9 +61,10 @@ namespace Animator {
 
             j++;
 
-            for(int i=0;i<5;i++){
-                getchSafe();
+            if(getchSafe() != ERR){
+                break;
             }
+
             refresh();
         }
 
@@ -93,8 +94,8 @@ namespace Animator {
                 mvaddch(pos.y, pos.x, icon.getChar(Ui::tick, pos, level));
             }
 
-            for(int i=0;i<5;i++){
-                getchSafe();
+            if(getchSafe() != ERR){
+                break;
             }
             refresh();
         }
