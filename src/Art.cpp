@@ -319,7 +319,7 @@ Point2 Art::getSize() {
 }
 
 void Art::printAt(Point2 pos) {
-    for (size_t i = 0; i < lines.size(); i++) {
+    for (int i = 0; i < lines.size(); i++) {
         mvaddstr(pos.y + i, pos.x, lines[i].c_str());
     }
 }

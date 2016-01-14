@@ -306,7 +306,9 @@ void EntityAi::dropLoots(Level* level){
     int xp = rand() % (int) maxHp;
     Verbalizer::defeatedEnemy(this, xp);
 
-    level->currentWorld->currentPlayer->gainXp(xp);
+    if(level->currentWorld->currentPlayer){
+    	level->currentWorld->currentPlayer->gainXp(xp);
+    }
     //level->newEntity(new EntityItem(ItemGenerator::makeCoins((rand()%(int)maxHp*2)), pos));
 
     /*vector<Item*> drops = ItemGenerator::createRandLoots(level->getDifficulty(), level->getDifficulty() * 100, (rand() % 10) == 0 ? 1 : 0, (rand() % 10) == 0 ? 1 : 0, (rand() % 5) == 0 ? 2 : 0, 20);

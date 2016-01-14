@@ -165,7 +165,7 @@ namespace Audio{
         }
         debugf("Loaded file: \"%s\"", path.c_str());
         
-        s->index = soundList.size();
+        s->index = (int)soundList.size();
         soundList.push_back(s);
         return s;
     }
