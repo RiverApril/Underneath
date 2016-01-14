@@ -15,9 +15,9 @@
 #define keyCatUi 2
 
 struct KeyBind{
-    int* key = nullptr;
-    int catagory = 0;
-    string name = "UNDEFINED";
+    int* key;
+    int catagory;
+    string name;
 
     KeyBind(string name, int* key, int catagory){
         this->name = name;
@@ -54,6 +54,7 @@ namespace Key {
     extern int uiDown;
     extern int uiLeft;
     extern int uiRight;
+    extern int console;
 
     //In inventory
     extern int drop;
@@ -78,7 +79,7 @@ namespace Key {
 
 }
 
-extern vector<KeyBind> keybindings;
+extern vector<KeyBind*> keybindings;
 
 extern vector<int> reservedKeys;
 

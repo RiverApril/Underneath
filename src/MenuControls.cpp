@@ -39,8 +39,8 @@ namespace Ui {
             move(0, 0);
             clrtobot();
             printCenter(terminalSize.y/2 - 2, "Press any key to asign (case sensitive)");
-            printCenter(terminalSize.y/2 - 1, "\"%s\"", keybindings[selected].name.c_str());
-            printCenter(terminalSize.y/2 + 1, "Currently asigned as [ %s ]", keyDisplayName(*(keybindings[selected].key)).c_str());
+            printCenter(terminalSize.y/2 - 1, "\"%s\"", keybindings[selected]->name.c_str());
+            printCenter(terminalSize.y/2 + 1, "Currently asigned as [ %s ]", keyDisplayName(*(keybindings[selected]->key)).c_str());
 
             int newKey;
             do{
@@ -54,7 +54,7 @@ namespace Ui {
                 }
             }
             if(set){
-                *(keybindings[selected].key) = newKey;
+                *(keybindings[selected]->key) = newKey;
             }else{
                 openMenu(new MenuMessage("Sorry, that key is reserved."));
             }
@@ -81,8 +81,8 @@ namespace Ui {
                 setColor(C_BLACK, C_WHITE);
             }
             bool conflict = false;
-            for(KeyBind b : keybindings){
-                if((b.catagory & keybindings[i].catagory) && b.key != keybindings[i].key && *b.key == *keybindings[i].key){
+            for(KeyBind* b : keybindings){
+                if((b->catagory & keybindings[i]->catagory) && b->key != keybindings[i]->key && *b->key == *keybindings[i]->key){
                     conflict = true;
                 }
             }
@@ -95,9 +95,9 @@ namespace Ui {
                 mvaddch(y, 0, '-');
             }
 
-            mvprintw(y, 2, "[ %s ]", keyDisplayName(*keybindings[i].key).c_str());
-            mvprintw(y, 17, keybindings[i].name.c_str());
-            mvprintw(y++, terminalSize.x-8, "%s %s", (keybindings[i].catagory & keyCatUi)?"UI":"  ", (keybindings[i].catagory & keyCatPlayer)?"GAME":"    ");
+            mvprintw(y, 2, "[ %s ]", keyDisplayName(*keybindings[i]->key).c_str());
+            mvprintw(y, 17, keybindings[i]->name.c_str());
+            mvprintw(y++, terminalSize.x-8, "%s %s", (keybindings[i]->catagory & keyCatUi)?"UI":"  ", (keybindings[i]->catagory & keyCatPlayer)?"GAME":"    ");
 
             setColor(C_WHITE, C_BLACK);
         }

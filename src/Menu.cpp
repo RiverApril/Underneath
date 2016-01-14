@@ -9,6 +9,7 @@
 #include "Menu.hpp"
 #include "Command.hpp"
 #include "MenuMain.hpp"
+#include "Controls.hpp"
 
 //yesNo aYes = 'y';
 //yesNo aNo = 'n';
@@ -61,59 +62,44 @@ namespace Ui {
                     running = false;
             }
             if (!consoleHandleInput(in)) {
-                switch (in) {
-                    case '`':
-                        consoleInputMode = true;
-                        break;
-
-                    default:
-                        handleInput(in);
-                        break;
-                }
+                handleInput(in);
             }
         }
     }
 
     bool Menu::consoleHandleInput(int in) {
         if (consoleInputMode) {
-            switch (in) {
-                case '`':
-                    consoleInputMode = false;
-                    break;
+            if(in == KEY_BACKSPACE || in == 8 || in == 127){
+                if (consoleInput.length() > 0) {
+                    consoleInput = consoleInput.substr(0, consoleInput.length() - 1);
+                }
 
-                case KEY_BACKSPACE:
-                case 8: //Backspace
-                case 127: //Delete
-                    if (consoleInput.length() > 0) {
-                        consoleInput = consoleInput.substr(0, consoleInput.length() - 1);
-                    }
-                    break;
+            }else if(in == '\n'){
+                Commands::execute(consoleInput, this);
+                consoleInputMode = false;
+                consoleInput = "";
+                consoleScroll = 0;
 
-                case KEY_ENTER:
-                case 13:
-                case '\n':
-                    Commands::execute(consoleInput, this);
-                case KEY_ESCAPE:
-                    consoleInputMode = false;
-                    consoleInput = "";
-                    consoleScroll = 0;
-                    break;
+            }else if(in == KEY_ESCAPE){
+                consoleInputMode = false;
+                consoleInput = "";
+                consoleScroll = 0;
 
-                case KEY_UP:
-                    consoleScroll--;
-                    break;
+            }else if(in == Key::uiUp){
+                consoleScroll--;
 
-                case KEY_DOWN:
-                    consoleScroll++;
-                    break;
+            }else if(in == Key::uiDown){
+                consoleScroll++;
 
-                default:
-                    if ((in >= 32 && in <= 126)) {
-                        consoleInput += (char) in;
-                    }
-                    break;
+            }else if ((in >= 32 && in <= 126)) {
+                consoleInput += (char) in;
             }
             return true;
+        }else{
+            if(in == Key::console){
+                consoleInputMode = true;
+                return true;
+            }
         }
         return false;
     }
@@ -122,7 +108,7 @@ namespace Ui {
         setColor(C_WHITE);
         int j = 1;
         for (int i = bottomY - 1; i >= topY; i--) {
-            move(i, 2);
+            move(i, 0);
             clrtoeol();
             move(i, 2);
             if ((((int) consoleBuffer.size()) - j) < 0) {

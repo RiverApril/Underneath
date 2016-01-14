@@ -46,15 +46,15 @@ namespace Settings{
 
             string lines = "";
 
-            for(KeyBind bind : keybindings){
-                lines += bind.name;
+            for(KeyBind* bind : keybindings){
+                lines += bind->name;
                 lines += ":";
-                if(*bind.key >= 32 && *bind.key < 127){
+                if(*bind->key >= 32 && *bind->key < 127){
                     lines += "'";
-                    lines += ((char)*bind.key);
+                    lines += ((char)*bind->key);
                     lines += "'";
                 }else{
-                    lines += formatString("%d", *bind.key);
+                    lines += formatString("%d", *bind->key);
                 }
                 lines += "\n";
             }
@@ -104,14 +104,14 @@ namespace Settings{
                 c = fgetc(file);
                 if (c == '\n') {
 
-                    for(KeyBind bind : keybindings){
-                        if(settingId.compare(bind.name) == 0){
+                    for(KeyBind* bind : keybindings){
+                        if(settingId.compare(bind->name) == 0){
                             if(line.size() == 3 && line[0]=='\'' && line[2]=='\''){
-                                *bind.key = (int)line[1];
+                                *bind->key = (int)line[1];
                             }else{
                                 try {
                                     int keyCode = Utility::parseIntUnstable(line);
-                                    *bind.key = keyCode;
+                                    *bind->key = keyCode;
                                 } catch (Utility::ParseException) {
 
                                 }

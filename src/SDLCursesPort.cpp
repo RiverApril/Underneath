@@ -508,7 +508,7 @@ namespace MainWindow{
 
                     case SDLK_LSHIFT:
                     case SDLK_RSHIFT:
-                        shiftIsDown = true;
+                        shiftIsDown = false;
                         return ERR;
 
                     default:
@@ -560,7 +560,7 @@ void timeout(int timeout){
 }
 
 int getch(){
-    update(); 
+    //update();
     int c = MainWindow::getCode();
     //if(c!=-1)printf("Key code: 0x%X\n", c);
     return c;
@@ -620,10 +620,12 @@ int	mvprintw(int y, int x, const char * s, ...){
 }
 
 int	hline(const char c, int l){
-    for(int i=0;cursor%width>=0 && i<=l;i++){
+    int j = 0;
+    for(int i=cursor%width && j<=l;i<width;i++){
         screenCharBuffer[cursor] = c;
         screenColorBuffer[cursor] = currentColor;
         cursor++;
+        j++;
     }
     return 0;
 }
@@ -648,15 +650,17 @@ int	mvvline(int y, int x, const char c, int l){
 }
 
 int clrtoeol(){
-    for(;cursor%width>0;cursor++){
-        screenCharBuffer[cursor] = 0;
+    for(int i=cursor%width;i<width;i++){
+        screenCharBuffer[cursor] = ' ';
         screenColorBuffer[cursor] = 0;
+        cursor++;
     }
+
     return 0;
 }
 
 int clrtobot(){
-    for(;cursor<(int)screenCharBuffer.size();cursor++){
+    for(;cursor<width*height;cursor++){
         screenCharBuffer[cursor] = ' ';
         screenColorBuffer[cursor] = 0;
     }
