@@ -37,6 +37,7 @@ namespace Key {
     int uiDown = KEY_DOWN;
     int uiLeft = KEY_LEFT;
     int uiRight = KEY_RIGHT;
+    int console = '`';
 
     //In inventory
     int drop = 'd';
@@ -61,44 +62,45 @@ namespace Key {
 
 }
 
-vector<KeyBind> keybindings = {
-    KeyBind("Move Up", &Key::moveUp, keyCatPlayer),
-    KeyBind("Move Down", &Key::moveDown, keyCatPlayer),
-    KeyBind("Move Left", &Key::moveLeft, keyCatPlayer),
-    KeyBind("Move Right", &Key::moveRight, keyCatPlayer),
-    KeyBind("Interact / Use / Attack", &Key::interact, keyCatPlayer | keyCatUi),
-    KeyBind("Secondary Attack", &Key::secondaryAttack, keyCatPlayer),
-    KeyBind("Examine", &Key::inspect, keyCatPlayer),
-    KeyBind("Auto Walk", &Key::walk, keyCatPlayer),
-    KeyBind("Wait", &Key::wait, keyCatPlayer),
-    KeyBind("Auto Explore", &Key::explore, keyCatPlayer),
-    KeyBind("Instant Interact", &Key::instantInteract, keyCatPlayer),
-    KeyBind("Wait until Healed", &Key::waitUntilHealed, keyCatPlayer),
-    KeyBind("Open Inventory", &Key::inventory, keyCatPlayer | keyCatUi),
-    KeyBind("Open Skills", &Key::statsMenu, keyCatPlayer),
-    KeyBind("Ui Up", &Key::uiUp, keyCatUi),
-    KeyBind("Ui Down", &Key::uiDown, keyCatUi),
-    KeyBind("Ui Left", &Key::uiLeft, keyCatUi),
-    KeyBind("Ui Right", &Key::uiRight, keyCatUi),
-    KeyBind("Equip Item", &Key::equip, keyCatUi),
-    KeyBind("Drop Item", &Key::drop, keyCatUi),
+vector<KeyBind*> keybindings = {
+    new KeyBind("Move Up", &Key::moveUp, keyCatPlayer),
+    new KeyBind("Move Down", &Key::moveDown, keyCatPlayer),
+    new KeyBind("Move Left", &Key::moveLeft, keyCatPlayer),
+    new KeyBind("Move Right", &Key::moveRight, keyCatPlayer),
+    new KeyBind("Interact / Use / Attack", &Key::interact, keyCatPlayer | keyCatUi),
+    new KeyBind("Secondary Attack", &Key::secondaryAttack, keyCatPlayer),
+    new KeyBind("Examine", &Key::inspect, keyCatPlayer),
+    new KeyBind("Auto Walk", &Key::walk, keyCatPlayer),
+    new KeyBind("Wait", &Key::wait, keyCatPlayer),
+    new KeyBind("Auto Explore", &Key::explore, keyCatPlayer),
+    new KeyBind("Instant Interact", &Key::instantInteract, keyCatPlayer),
+    new KeyBind("Wait until Healed", &Key::waitUntilHealed, keyCatPlayer),
+    new KeyBind("Open Inventory", &Key::inventory, keyCatPlayer | keyCatUi),
+    new KeyBind("Open Skills", &Key::statsMenu, keyCatPlayer),
+    new KeyBind("Ui Up", &Key::uiUp, keyCatUi),
+    new KeyBind("Ui Down", &Key::uiDown, keyCatUi),
+    new KeyBind("Ui Left", &Key::uiLeft, keyCatUi),
+    new KeyBind("Ui Right", &Key::uiRight, keyCatUi),
+    new KeyBind("Equip Item", &Key::equip, keyCatUi),
+    new KeyBind("Drop Item", &Key::drop, keyCatUi),
     //KeyBind("Drop Stack", &Key::dropAll, keyCatUi),
-    KeyBind("Transfer Item", &Key::take, keyCatUi),
-    KeyBind("Transfer Stack", &Key::takeStack, keyCatUi),
-    KeyBind("Sort Inventory", &Key::sortInv, keyCatUi),
+    new KeyBind("Transfer Item", &Key::take, keyCatUi),
+    new KeyBind("Transfer Stack", &Key::takeStack, keyCatUi),
+    new KeyBind("Sort Inventory", &Key::sortInv, keyCatUi),
 
-    KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer),
+    new KeyBind("Open Console", &Key::adjustConsole, keyCatPlayer | keyCatUi),
+    new KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer),
 
-    KeyBind("Favorite 1", &Key::fav1, keyCatPlayer | keyCatUi),
-    KeyBind("Favorite 2", &Key::fav2, keyCatPlayer | keyCatUi),
-    KeyBind("Favorite 3", &Key::fav3, keyCatPlayer | keyCatUi),
-    KeyBind("Favorite 4", &Key::fav4, keyCatPlayer | keyCatUi),
-    KeyBind("Favorite 5", &Key::fav5, keyCatPlayer | keyCatUi),
-    KeyBind("Favorite 6", &Key::fav6, keyCatPlayer | keyCatUi),
-    KeyBind("Favorite 7", &Key::fav7, keyCatPlayer | keyCatUi),
-    KeyBind("Favorite 8", &Key::fav8, keyCatPlayer | keyCatUi),
-    KeyBind("Favorite 9", &Key::fav9, keyCatPlayer | keyCatUi),
-    KeyBind("Favorite 0", &Key::fav0, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 1", &Key::fav1, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 2", &Key::fav2, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 3", &Key::fav3, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 4", &Key::fav4, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 5", &Key::fav5, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 6", &Key::fav6, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 7", &Key::fav7, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 8", &Key::fav8, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 9", &Key::fav9, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 0", &Key::fav0, keyCatPlayer | keyCatUi),
 };
 
 vector<int> reservedKeys = {
