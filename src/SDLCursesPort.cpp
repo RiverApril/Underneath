@@ -381,17 +381,7 @@ namespace MainWindow{
         return optimizedSurface;
     }*/
 
-    int getCode(){
-        int tick = SDL_GetTicks();
-        SDL_Event e;
-        while(SDL_PollEvent(&e)==0){
-            int lastTick = SDL_GetTicks();
-            if(lastTick - tick > inputTimeout){
-                return ERR;
-            }
-            //SDL_Delay(1);
-        }
-
+    int getCodeFromEvent(SDL_Event e){
         switch(e.type){
             case SDL_QUIT:{
                 return KEY_EXIT;
@@ -442,60 +432,60 @@ namespace MainWindow{
                                 if(e.key.keysym.sym >= 'a' && e.key.keysym.sym <= 'z'){
                                     return e.key.keysym.sym += ('A'-'a');
                                 }else{
-	                                switch (e.key.keysym.sym) {
-	                                    case '`':
-	                                        return '~';
-	                                    case '1':
-	                                        return '!';
-	                                    case '2':
-	                                        return '@';
-	                                    case '3':
-	                                        return '#';
-	                                    case '4':
-	                                        return '$';
-	                                    case '5':
-	                                        return '%';
-	                                    case '6':
-	                                        return '^';
-	                                    case '7':
-	                                        return '&';
-	                                    case '8':
-	                                        return '*';
-	                                    case '9':
-	                                        return '(';
-	                                    case '0':
-	                                        return ')';
-	                                    case '-':
-	                                        return '_';
-	                                    case '=':
-	                                        return '+';
-	                                    case '[':
-	                                        return '{';
-	                                    case ']':
-	                                        return '}';
-	                                    case '\\':
-	                                        return '|';
-	                                    case ';':
-	                                        return ':';
-	                                    case '\'':
-	                                        return '"';
-	                                    case ',':
-	                                        return '<';
-	                                    case '.':
-	                                        return '>';
-	                                    case '/':
-	                                        return '?';
+                                    switch (e.key.keysym.sym) {
+                                        case '`':
+                                            return '~';
+                                        case '1':
+                                            return '!';
+                                        case '2':
+                                            return '@';
+                                        case '3':
+                                            return '#';
+                                        case '4':
+                                            return '$';
+                                        case '5':
+                                            return '%';
+                                        case '6':
+                                            return '^';
+                                        case '7':
+                                            return '&';
+                                        case '8':
+                                            return '*';
+                                        case '9':
+                                            return '(';
+                                        case '0':
+                                            return ')';
+                                        case '-':
+                                            return '_';
+                                        case '=':
+                                            return '+';
+                                        case '[':
+                                            return '{';
+                                        case ']':
+                                            return '}';
+                                        case '\\':
+                                            return '|';
+                                        case ';':
+                                            return ':';
+                                        case '\'':
+                                            return '"';
+                                        case ',':
+                                            return '<';
+                                        case '.':
+                                            return '>';
+                                        case '/':
+                                            return '?';
 
-	                                    default:
-	                                        break;
-	                                }
+                                        default:
+                                            break;
+                                    }
                                 }
                             }else{
                                 if(e.key.keysym.sym >= 'A' && e.key.keysym.sym <= 'Z'){
                                     return e.key.keysym.sym -= ('A'-'a');
                                 }else{
-                            		return e.key.keysym.sym;
-                            	}
+                                    return e.key.keysym.sym;
+                                }
                             }
                         }else{
                             return ERR;
@@ -505,12 +495,12 @@ namespace MainWindow{
             }
             case SDL_KEYUP:{
                 switch (e.key.keysym.sym) {
-
+                        
                     case SDLK_LSHIFT:
                     case SDLK_RSHIFT:
                         shiftIsDown = false;
                         return ERR;
-
+                        
                     default:
                         return ERR;
                 }
@@ -521,6 +511,25 @@ namespace MainWindow{
             }
         }
         return ERR;
+    }
+
+    int getCode(){
+        int tick = SDL_GetTicks();
+        SDL_Event e;
+        while(SDL_PollEvent(&e)==0){
+            int lastTick = SDL_GetTicks();
+            if(lastTick - tick > inputTimeout){
+                return ERR;
+            }
+        }
+
+        int result = ERR;
+
+        do{
+            result = getCodeFromEvent(e);
+        }while(result == ERR && SDL_PollEvent(&e) != 0);
+
+        return result;
     }
 }
 
