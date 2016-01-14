@@ -487,6 +487,7 @@ namespace Ui {
                                 console("Wait canceled.");
                                 break;
                             }
+                            refresh();
                         }
                         timeout(defaultTimeout);
                         if(currentPlayer->getHp() == currentPlayer->getMaxHp() && currentPlayer->getMp() == currentPlayer->getMaxMp()){
@@ -527,6 +528,7 @@ namespace Ui {
                             console("Stopped waiting.");
                             c = false;
                         }
+                        refresh();
                     }
                     timeout(defaultTimeout);
                 }
@@ -599,6 +601,7 @@ namespace Ui {
                                     console("Stopped walking.");
                                     break;
                                 }
+                                refresh();
                             }
                             timeout(defaultTimeout);
                             Point2 d = targetPosition-currentPlayer->pos;
@@ -687,6 +690,7 @@ namespace Ui {
                             console("Stopped exploring.");
                             c = false;
                         }
+                        refresh();
                     }
                     timeout(defaultTimeout);
                 }
