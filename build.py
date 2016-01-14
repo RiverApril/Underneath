@@ -8,15 +8,8 @@ import errno
 import shutil
 import filecmp
 import sys
-#import datetime
 import subprocess
 from subprocess import call
-
-
-#def modification_date(filename):
-#    t = os.path.getmtime(filename)
-#    return datetime.datetime.fromtimestamp(t)
-
 
 def mkdir_p(path):
     try:
@@ -41,6 +34,7 @@ parser.add_argument("-i", "--dontCheckIncludes", action="store_true")
 parser.add_argument("--use64", action="store_true")
 parser.add_argument("--use32", action="store_true")
 parser.add_argument("--compiler", help="specify compiler")
+parser.add_argument("--app", action="store_true")
 
 args = parser.parse_args()
 
@@ -92,7 +86,7 @@ if args.unoptimized:
     executableName += "_Unoptim"
     optimization = "-g -O0 -Wall"
 else:
-    optimization = "-O3"
+    optimization = "-Os"
 
 compilerFlags = optimization+" "+compilerFlags;
 
@@ -307,7 +301,10 @@ if returnCode == 0:
         if os.path.isfile(executableName+"_outdated") and os.path.isfile(executableName):
             print("    - Deleteing outdated executable: "+executableName+"_outdated")
             os.remove(executableName+"_outdated")
-        if args.run and returnCode == 0:
+        if args.app:
+            print "    ~ Making App: "+executableName+".app";
+            call("./makeApp.sh "+executableName, shell=True)
+        if args.run:
             print("    > Running...")
             if systemName == "Windows":
                 os.system(executableName)
