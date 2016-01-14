@@ -455,10 +455,12 @@ namespace LevelGenerator {
                     p.x = r->pos.x + (r2?r->size.x:0);
                     p2.x = r->pos.x + (r2?r->size.x+1:-1);
 
-                    p.y = r->pos.y + (rand() % (r->size.y-1))+1;
+                    //p.y = r->pos.y + (rand() % (r->size.y-1))+1;
+                    p.y = r->pos.y + (r->size.y/2);
                     p2.y = p.y;
                 }else{
-                    p.x = r->pos.x + (rand() % (r->size.x-1))+1;
+                    //p.x = r->pos.x + (rand() % (r->size.x-1))+1;
+                    p.x = r->pos.x + (r->size.x/2);
                     p2.x = p.x;
 
                     p.y = r->pos.y + (r2?r->size.y:0);
