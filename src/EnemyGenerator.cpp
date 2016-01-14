@@ -55,7 +55,7 @@ namespace EnemyGenerator {
 
         ItemGenerator::WeaponBase* snakeWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
         snakeWeapon->damageType = damPierce;
-        snakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 20, 30, 1, 5, 30, 50, damPoison));
+        snakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 20, 30, 1, 1, 10, 20, damPoison));
         snake = atl(new EntityBase(15, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_BLUE, 1.0));
         snake->attackMultiplier *= .75;
         snake->lootProfileIndex = atl(new LootProfile(true, true, {}));
