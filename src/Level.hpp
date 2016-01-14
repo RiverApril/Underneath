@@ -100,6 +100,7 @@ public:
 
     bool update(double deltaTime, double time, Point2 viewPos);
 
+    void regularTileUpdate(Point2 p);
     void randomTileUpdate(Point2 p);
 
     //void setAndUnsetDisplayEntities();
