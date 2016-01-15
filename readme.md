@@ -8,46 +8,50 @@ A dungeon crawler with old-school style ASCII graphics.
 This program uses standard c++ libraries.  
 The terminal graphics version uses ncurses (pdcurses on windows).  
 The SDL2 graphics version uses SDL2 and SDL2_Image libraries. (use the -s flag during compile)  
-The version with music uses the SDL2_mixer library. (use the -m flag during compile)  
+The version with music uses SDL2 and SDL2_mixer libraries. (use the -m flag during compile)  
 
 My development is primarily in MacOSX and some in Linux. I have successfully compiled for Windows using MinGW on Linux and Mac. Good luck compiling locally on Windows, I haven't successfully done that in a while (although I am not very well versed in windows development).
 
 
-I currently have a Copyright on all of my source code files, this may change in the future. 
+Braeden Atlee reserves all rights to the souce code.
+Davalynn Towell reserves all rights to the audio files.
 
 ---
 
 
 ## Compiling:
 
-I made a compile script with python, I originally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to python. I haven't compiled in a long time directly from Windows itself. So the windows builds are compiled on linux and mac using mingw32
+I made a compile script with python, I originally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to a langueage I have mor experience with. I haven't compiled in a long time directly from Windows itself. So the windows builds are compiled on linux and mac using mingw32
 
 To build the terminal version run the following in the repository directory:
-```
-python build.py
-```
-or
 ```
 ./build.py
 ```
 
-
-To compile using the SDL2 Graphics port, use the -s flag: 
+To compile the version that runs in a window instead of the terminal, use the following flag: 
 ```
-python build.py -s
+./build.py -s
+```
+
+To compile with audio, use the following flag: 
+```
+./build.py -m
 ```
 
 If you need to completely rebuild all of the files you can use the -a flag to ensure no files are skipped.
 ```
-python build.py -a
+./build.py -a
 ```
 
 To run immediately after building use the -r flag.
 ```
-python build.py -r
+./build.py -r
 ```
 
-Flags can be used together.  
+Flags can be used together, for example to build and run all with SDL2 Graphics, Music and debug optimization:
+```
+./build.py -smaur
+```
 All flags:
 ```
 -h  List all flags
