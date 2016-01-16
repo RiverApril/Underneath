@@ -17,14 +17,13 @@
 #define iINT 2
 
 #define iAGI 3
-#define iSPD 4
 
-#define iCON 5
-#define iWIS 6
+#define iCON 4
+#define iWIS 5
 
-#define iLUK 7
+#define iLUK 6
 
-#define abilityCount 8
+#define abilityCount 7
 
 using namespace std;
 
@@ -33,7 +32,6 @@ static const string abilityAbr[abilityCount] = {
     "DEX",
     "INT",
     "AGI",
-    "SPD",
     "CON",
     "WIS",
     "LUK"
@@ -44,7 +42,6 @@ static const string abilityNames[abilityCount] = {
     "Dexterity",
     "Intelligence",
     "Agility",
-    "Speed",
     "Constitution",
     "Wisdom",
     "Luck"
@@ -55,7 +52,6 @@ static const string abilityNamesRightAligned[abilityCount] = {
     "    Dexterity",
     " Intelligence",
     "      Agility",
-    "        Speed",
     " Constitution",
     "       Wisdom",
     "         Luck"
@@ -65,8 +61,7 @@ static const string abilityInfo[abilityCount] = {
     "Melee attack damage.",
     "Ranged attack damage.",
     "Magic attack damage.",
-    "Dodge Chance and Attack Speed.",
-    "Movement Speed.",
+    "Dodge Chance, Attack Speed, and Movement Speed.",
     "Max Health.",
     "Max Mana.",
     "General Luck."
@@ -93,32 +88,17 @@ struct Abilities {
         }
     }
 
-    Abilities(T str, T dex, T inte, T agi, T spd, T con, T wis, T luk) {
+    Abilities(T str, T dex, T inte, T agi, T con, T wis, T luk) {
         list[iSTR] = str;
         list[iDEX] = dex;
         list[iINT] = inte;
         list[iAGI] = agi;
-        list[iSPD] = spd;
         list[iCON] = con;
         list[iWIS] = wis;
         list[iLUK] = luk;
     }
 
     T list[abilityCount];
-
-    /*
-
-    T* STR = *(&list+iSTR); //Melee Attack Power
-    T* DEX = *(&list+iDEX); //Ranged Attack Power
-    T* INT = *(&list+iINT); //Magic Attack Power
-
-    T* AGI = *(&list+iAGI); //Dodge Chance & Attack Speed
-    T* SPD = *(&list+iSPD); //Movement Speed
-
-    T* CON = *(&list+iCON); //Health Regeneration Speed
-    T* WIS = *(&list+iWIS); //Mana Regeneration Speed
-
-     */
 
     void save(vector<unsigned char>* data) {
         for (int i = 0; i < abilityCount; i++) {

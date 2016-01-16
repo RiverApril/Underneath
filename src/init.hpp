@@ -65,7 +65,6 @@ bool* init(int argc, char* argv[]){
     debug(s1);
     debug(s2);
 
-
     mainMenu = new Ui::MenuMain();
     mainMenu->_openUi();
     
@@ -81,11 +80,12 @@ void update(){
 }
 
 int cleanup(){
+    Settings::saveSettings(UnderneathDir + "settings.txt");
+
     endwin();
 
     delete mainMenu;
-
-    Settings::saveSettings(UnderneathDir + "settings.txt");
+    
     EnemyGenerator::cleanupEnemies();
     Arts::cleanupArts();
     Tiles::cleanupTiles();

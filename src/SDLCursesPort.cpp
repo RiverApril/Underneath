@@ -61,7 +61,7 @@ namespace MainWindow{
     int charHeight = 12;
 
     int imageCharsPerLine = 16;
-    int imageLineCount = 16;
+    int imageLineCount = 6;
     int imageCharWidth = 7;
     int imageCharHeight = 12;
 
@@ -83,8 +83,14 @@ namespace MainWindow{
         if(x > surface->w || y > surface->h){
             return 0;
         }
-        int bpp = surface->format->BytesPerPixel;
-        /* Here p is the address to the pixel we want to retrieve */
+
+        Uint32 *pixels = (Uint32 *)surface->pixels;
+
+        //Get the requested pixel
+        return pixels[ ( y * surface->w ) + x ];
+
+        /*int bpp = surface->format->BytesPerPixel;
+        // Here p is the address to the pixel we want to retrieve
         Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
         switch(bpp) {
@@ -108,8 +114,8 @@ namespace MainWindow{
             break;
 
         default:
-            return 0;       /* shouldn't happen, but avoids warnings */
-        }
+            return 0;       // shouldn't happen, but avoids warnings
+        }*/
     }
 
     void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel) {
@@ -272,6 +278,12 @@ namespace MainWindow{
         return success;
     }
 
+    void cleanupSDL(){
+        SDL_DestroyWindow(mainWindow);
+        IMG_Quit();
+        SDL_Quit();
+    }
+
     /*void makeFontSurface(SDL_Surface* surf, int original, int color, int trans){
         SDL_LockSurface(surf);
 
@@ -289,11 +301,23 @@ namespace MainWindow{
     bool initMedia(){
     	bool success = true;
 
-    	fontSurface = IMG_Load("font.png");
-    	if(fontSurface == NULL) {
-    		printf("Failed to load image\n");
+        string img = "font.png";
+
+    	fontSurface = IMG_Load(img.c_str());
+    	if(!fontSurface) {
+    		printf("Failed to load image: \"%s\"\n", img.c_str());
     		success = false;
-    	}
+        }
+        imageCharWidth = fontSurface->w / imageCharsPerLine;
+        imageCharHeight = fontSurface->h / imageLineCount;
+        charWidth = imageCharWidth;
+        charHeight = imageCharHeight;
+
+        printf("Font Image Width = %d\n", fontSurface->w);
+        printf("Font Image Height = %d\n", fontSurface->h);
+
+        printf("Char Width (%d/%d) = %d\n", fontSurface->w, imageCharsPerLine, imageCharWidth);
+        printf("Char Height (%d/%d) = %d\n", fontSurface->h, imageLineCount, imageCharHeight);
 
     	return success;
     }
@@ -303,8 +327,8 @@ namespace MainWindow{
         SDL_Rect src;
         SDL_Rect dst;
 
-        src.w = charWidth;
-        src.h = charHeight;
+        src.w = imageCharWidth;
+        src.h = imageCharHeight;
 
         dst.w = charWidth;
         dst.h = charHeight;
@@ -317,7 +341,7 @@ namespace MainWindow{
                 c = ((j*width)+i);
 
                 src.x = (((int)screenCharBuffer[c]-32)%imageCharsPerLine)*imageCharWidth;
-                src.y = (((int)screenCharBuffer[c]-32)/imageLineCount)*imageCharHeight;
+                src.y = (((int)screenCharBuffer[c]-32)/imageCharsPerLine)*imageCharHeight;
 
                 dst.x = (c%width)*charWidth;
                 dst.y = (c/width)*charHeight;
@@ -682,7 +706,7 @@ int refresh(){
 }
 
 int endwin(){
-    //Dummy
+    cleanupSDL();
     return 0;
 }
 

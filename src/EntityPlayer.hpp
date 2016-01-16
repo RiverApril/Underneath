@@ -100,8 +100,8 @@ public:
     double xp = 0;
     double nextLevelXp = 0;
 
-    //                                           STR     DEX     INT     AGI     SPD     CON     WIS     LUK
-    Abilities<int> maxAbilities = Abilities<int>(999999, 999999, 999999, 999999, 999999, 999999, 999999, 999999);
+    //                                           STR     DEX     INT     AGI     CON     WIS     LUK
+    Abilities<int> maxAbilities = Abilities<int>(999999, 999999, 999999, 999999, 999999, 999999, 999999);
 
     void gainXp(double amount);
 

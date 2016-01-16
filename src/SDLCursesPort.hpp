@@ -47,6 +47,8 @@ namespace MainWindow{
     bool initSDL();
     bool initMedia();
 
+    void cleanupSDL();
+
 
     void operationThreadFunction();
 

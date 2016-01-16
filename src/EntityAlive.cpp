@@ -35,7 +35,9 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
         if(level->tileAt(pos)->hasAllOfFlags(tileFlagReplaceable)){
             level->setTile(pos, Tiles::tileCorpse);
         }
-        level->removeEntity(this, true);
+        if(getEntityTypeId() != ENTITY_TYPE_PLAYER){
+            level->removeEntity(this, true);
+        }
     } else {
         while (lastHealTime + healDelay <= time) {
             heal(1);

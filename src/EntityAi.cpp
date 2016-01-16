@@ -129,6 +129,17 @@ void EntityAi::moveAi(double time, Level* level) {
 
                 speed = path[0]-pos;
 
+            }else{
+                speed.x = pos.x > target->pos.x ? 1 : (pos.x < target->pos.x ? -1 : 0);
+                speed.y = pos.y > target->pos.y ? 1 : (pos.y < target->pos.y ? -1 : 0);
+            }
+
+            if(speed.x != 0 && speed.y != 0){
+                if((rand()&1)==0){
+                    speed.y = 0;
+                }else{
+                    speed.x = 0;
+                }
             }
         }
     }

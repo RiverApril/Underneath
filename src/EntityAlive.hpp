@@ -115,13 +115,14 @@ public:
     double healDelay = 20;
     double manaDelay = 20;
 
+    bool dead = false;
+
 protected:
     string name;
     double maxHp = 30;
     double hp = maxHp;
     double maxMp = 0;
     double mp = maxMp;
-    bool dead = false;
 
     double lastHealTime = 0;
 
