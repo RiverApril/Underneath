@@ -15,8 +15,7 @@
 
 namespace Ui {
 
-    MenuInv::MenuInv(EntityPlayer* player, World* w, int* useItem) : Menu() {
-        this->player = player;
+    MenuInv::MenuInv(World* w, int* useItem) : Menu() {
         this->currentWorld = w;
         this->useItem = useItem;
         *useItem = -1;
@@ -28,22 +27,22 @@ namespace Ui {
         } else if (in == Key::uiDown) {
             selected++;
         } else if (in == Key::drop) {
-            if ((int)player->inventory.size() > 0 && selected < (int)player->inventory.size()) {
+            if ((int)currentWorld->currentPlayer->inventory.size() > 0 && selected < (int)currentWorld->currentPlayer->inventory.size()) {
                 Item* drop;
-                if (player->inventory[selected]->qty == 1) {
-                    drop = player->inventory[selected];
-                    player->removeItem(player->inventory[selected], false);
+                if (currentWorld->currentPlayer->inventory[selected]->qty == 1) {
+                    drop = currentWorld->currentPlayer->inventory[selected];
+                    currentWorld->currentPlayer->removeItem(currentWorld->currentPlayer->inventory[selected], false);
                 } else {
-                    player->inventory[selected]->qty -= 1;
-                    drop = Item::clone(player->inventory[selected]);
+                    currentWorld->currentPlayer->inventory[selected]->qty -= 1;
+                    drop = Item::clone(currentWorld->currentPlayer->inventory[selected]);
                     drop->qty = 1;
                 }
-                currentWorld->currentLevel->newEntity(new EntityItem(drop, player->pos));
+                currentWorld->currentLevel->newEntity(new EntityItem(drop, currentWorld->currentPlayer->pos));
             }
         } else if (in == Key::equip) {
-            ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (player->inventory[selected]);
+            ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (currentWorld->currentPlayer->inventory[selected]);
             if (equipable) {
-                if(!player->equipItem(equipable)){
+                if(!currentWorld->currentPlayer->equipItem(equipable)){
                     flashImportantInfo = flashTimeMax;
                 }
             }else{
@@ -58,7 +57,7 @@ namespace Ui {
             closeThisMenu();
             return;
         }else if (in == Key::sortInv){
-            sort(player->inventory.begin(), player->inventory.end(), comparePointer<Item>);
+            sort(currentWorld->currentPlayer->inventory.begin(), currentWorld->currentPlayer->inventory.end(), comparePointer<Item>);
             return;
         }else{
 
@@ -86,20 +85,22 @@ namespace Ui {
             }
 
             if(slot >= 0){
-                player->equipItem(player->inventory[selected], slot);
+                currentWorld->currentPlayer->equipItem(currentWorld->currentPlayer->inventory[selected], slot);
             }
         }
     }
 
     void MenuInv::update() {
         if (selected < 0) {
-            selected = (int) player->inventory.size() - 1;
+            selected = (int) currentWorld->currentPlayer->inventory.size() - 1;
         }
-        if (selected >= (int)player->inventory.size()) {
+        if (selected >= (int) currentWorld->currentPlayer->inventory.size()) {
             selected = 0;
         }
 
-		Ui::drawInventory(currentWorld, player, selected, nullptr, player->getName()+"'s Inventory", "", true, false, flashImportantInfo>0);
+        if(currentWorld->currentPlayer){
+			Ui::drawInventory(currentWorld, currentWorld->currentPlayer, selected, nullptr, currentWorld->currentPlayer->getName()+"'s Inventory", "", true, false, flashImportantInfo>0);
+        }
 
         flashImportantInfo--;
 

@@ -88,7 +88,7 @@ vector<KeyBind*> keybindings = {
     new KeyBind("Transfer Stack", &Key::takeStack, keyCatUi),
     new KeyBind("Sort Inventory", &Key::sortInv, keyCatUi),
 
-    new KeyBind("Open Console", &Key::adjustConsole, keyCatPlayer | keyCatUi),
+    new KeyBind("Open Console", &Key::console, keyCatPlayer | keyCatUi),
     new KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer),
 
     new KeyBind("Favorite 1", &Key::fav1, keyCatPlayer | keyCatUi),

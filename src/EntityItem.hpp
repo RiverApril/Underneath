@@ -30,7 +30,7 @@ public:
     virtual int getEntityTypeId();
 
     virtual int getRenderDepth() {
-        return -1;
+        return -2;
     }
 
     virtual char getIcon(Point2 p, double time, Level* level);

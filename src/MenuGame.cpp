@@ -109,7 +109,7 @@ namespace Ui {
 
         if(reopenInventory){
             reopenInventory = false;
-            openMenu(new MenuInv(currentPlayer, currentWorld, useItem));
+            openMenu(new MenuInv(currentWorld, useItem));
             return true;
         }
 
@@ -138,7 +138,7 @@ namespace Ui {
                 timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->inventory[*useItem], false);
                 int selected = *useItem;
                 *useItem = -1;
-                MenuInv* m = new MenuInv(currentPlayer, currentWorld, useItem);
+                MenuInv* m = new MenuInv(currentWorld, useItem);
                 m->selected = selected;
                 openMenu(m);
             } else if(use == useInWorld){
@@ -199,91 +199,95 @@ namespace Ui {
         char symbol = ' ';
 
         bool inView = false;
-        if (currentLevel != nullptr) {
-            if (currentPlayer != nullptr) {
-                if (currentLevel->canSee(p, currentPlayer->pos, currentPlayer->viewDistance) || Settings::seeEverything) {
+        if (currentLevel) {
+            if(currentPlayer){
+                if ((currentLevel->canSee(p, currentPlayer->pos, currentPlayer->viewDistance) || Settings::seeEverything)) {
                     inView = true;
                 }
-                if(inView){
-                    currentLevel->setExplored(p, true);
+            }else{
+                if ((currentLevel->canSee(p, viewPos+(gameArea/2), 1000) || Settings::seeEverything)) {
+                    inView = true;
                 }
-                if (!currentLevel->getExplored(p)) {
-                    symbol = ' ';
-                } else {
-                    Tile* tempTile = currentLevel->tileAt(p);
+            }
+            if(inView){
+                currentLevel->setExplored(p, true);
+            }
+            if (!currentLevel->getExplored(p)) {
+                symbol = ' ';
+            } else {
+                Tile* tempTile = currentLevel->tileAt(p);
 
-                    Icon* tempIcon = tempTile->getIcon(inView);
+                Icon* tempIcon = tempTile->getIcon(inView);
 
-                    fg = tempIcon->getFgColor(tick, p, currentLevel);
-                    bg = tempIcon->getBgColor(tick, p, currentLevel);
-                    symbol = tempIcon->getChar(tick, p, currentLevel);
+                fg = tempIcon->getFgColor(tick, p, currentLevel);
+                bg = tempIcon->getBgColor(tick, p, currentLevel);
+                symbol = tempIcon->getChar(tick, p, currentLevel);
 
-                    if (currentLevel->inRange(p)) {
-                        Entity* e = nullptr;
-                        int d = -1000000;
-                        for (Entity* ei : currentLevel->entityList) {
-                            if (ei) {
-                                if (!ei->removed) {
-                                    if (ei->pos == p) {
-                                        int dd = ei->getRenderDepth();
-                                        if (d < dd) {
-                                            e = ei;
-                                            d = dd;
-                                        }
+                if (currentLevel->inRange(p)) {
+                    Entity* e = nullptr;
+                    int d = -1000000;
+                    for (Entity* ei : currentLevel->entityList) {
+                        if (ei) {
+                            if (!ei->removed) {
+                                if (ei->pos == p) {
+                                    int dd = ei->getRenderDepth();
+                                    if (d < dd) {
+                                        e = ei;
+                                        d = dd;
                                     }
                                 }
                             }
                         }
-                        if (e) {
+                    }
+                    if (e) {
 
-                            if (inView) {
-                                if (currentPlayer == e && controlMode == modeSelectDirection) {
-                                    fg = e->getBgColor(tick, p, currentLevel);
-                                    bg = e->getFgColor(tick, p, currentLevel);
-                                } else {
-                                    fg = e->getFgColor(tick, p, currentLevel);
-                                    bg = e->getBgColor(tick, p, currentLevel);
-                                }
-
-                                symbol = e->getChar(tick, p, currentLevel);
-
+                        if (inView) {
+                            if (controlMode == modeSelectDirection && currentPlayer == e) {
+                                fg = e->getBgColor(tick, p, currentLevel);
+                                bg = e->getFgColor(tick, p, currentLevel);
+                            } else {
+                                fg = e->getFgColor(tick, p, currentLevel);
+                                bg = e->getBgColor(tick, p, currentLevel);
                             }
 
+                            symbol = e->getChar(tick, p, currentLevel);
+
                         }
+
                     }
                 }
-                if (controlMode == modeSelectEntity) {
-                    if (p == targetPosition) {
-                        bg = C_LIGHT_BLUE;
-                    }
-                } else if (controlMode == modeSelectPosition) {
-                    if (p == targetPosition) {
-                        bg = C_LIGHT_GREEN;
-                    }
-
+            }
+            if (controlMode == modeSelectEntity) {
+                if (p == targetPosition) {
+                    bg = C_LIGHT_BLUE;
                 }
-
-                if(currentPlayer->hasEffect(effMemory)){
-                    if(!inView){
-                        bg = C_BLACK;
-                        fg = C_BLACK;
-                        symbol = ' ';
-                    }
+            } else if (controlMode == modeSelectPosition) {
+                if (p == targetPosition) {
+                    bg = C_LIGHT_GREEN;
                 }
 
-                if(currentPlayer->hasEffect(effLSD)){
-                    if(bg != C_BLACK){
-                        bg = (((int)((currentWorld->worldTime+100)*2.7))+p.y-p.x) % 16;
-                    }else{
-                    	fg = (((int)((currentWorld->worldTime+100)*2.3))+p.x-p.y) % 16;
-                    }
+            }
+
+            if(currentPlayer && currentPlayer->hasEffect(effMemory)){
+                if(!inView){
+                    bg = C_BLACK;
+                    fg = C_BLACK;
+                    symbol = ' ';
                 }
-                if(fadeIn < fadeInMax){
-                    if(distanceSquared(p, currentPlayer->pos) > fadeIn*fadeIn){
-                        bg = C_BLACK;
-                        fg = C_BLACK;
-                        symbol = ' ';
-                    }
+            }
+
+            if(currentPlayer && currentPlayer->hasEffect(effLSD)){
+                if(bg != C_BLACK){
+                    bg = (((int)((currentWorld->worldTime+100)*2.7))+p.y-p.x) % 16;
+                }else{
+                    fg = (((int)((currentWorld->worldTime+100)*2.3))+p.x-p.y) % 16;
+                }
+            }
+            if(currentPlayer && fadeIn < fadeInMax){
+                if(distanceSquared(p, currentPlayer->pos) > fadeIn*fadeIn){
+                    bg = C_BLACK;
+                    fg = C_BLACK;
+                    symbol = ' ';
                 }
             }
         } else {
@@ -345,7 +349,7 @@ namespace Ui {
             if (controlMode != modeEntityPlayerControl) {
                 changeMode(modeEntityPlayerControl);
             } else {
-                if (currentPlayer == nullptr) {
+                if (!currentPlayer || currentPlayer->dead) {
                     WorldLoader::deleteWorld(currentWorld->name);
 
                     delete currentWorld;
@@ -372,7 +376,7 @@ namespace Ui {
 
         } else if (in == Key::inventory) {
             if (currentPlayer != nullptr) {
-                openMenu(new MenuInv(currentPlayer, currentWorld, useItem));
+                openMenu(new MenuInv(currentWorld, useItem));
             }
 
         } else if (in == Key::statsMenu) {
@@ -461,7 +465,7 @@ namespace Ui {
                 timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->getActiveItemWeapon(), false);
             }else if(in == Key::waitUntilHealed) {
                 if(controlMode == modeEntityPlayerControl){
-                    if(currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()){
+                    if(currentPlayer && (currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp())){
                         unsigned char b = 1;
                         timeout(fastTimeout);
                         while ((currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()) && b) {
@@ -486,6 +490,9 @@ namespace Ui {
                             }
                             timePassed = 1;
                             MenuGame::update();
+                            if(!currentPlayer){
+                                return;
+                            }
                             if (getchSafe() != ERR) {
                                 console("Wait canceled.");
                                 break;
@@ -493,7 +500,7 @@ namespace Ui {
                             refresh();
                         }
                         timeout(defaultTimeout);
-                        if(currentPlayer->getHp() == currentPlayer->getMaxHp() && currentPlayer->getMp() == currentPlayer->getMaxMp()){
+                        if(currentPlayer && currentPlayer->getHp() == currentPlayer->getMaxHp() && currentPlayer->getMp() == currentPlayer->getMaxMp()){
                             console("Fully healed.");
                         }
                     }else{
@@ -928,7 +935,7 @@ namespace Ui {
 
         int a = 0;
 
-        if (currentPlayer != nullptr) {
+        if (currentPlayer) {
 
             p = currentPlayer->pos;
             mvprintw(a, gameArea.x + 1, "%s", currentPlayer->getName().c_str());
@@ -1037,8 +1044,9 @@ namespace Ui {
                 }
             }
 
+        }
 
-        } else {
+        if(!currentPlayer || currentPlayer->dead){
             //printCenterOffset(gameArea.y / 2, -(borderSize.x / 2), "G a m e   O v e r");
             //printCenterOffset(gameArea.y / 2 + 3, -(borderSize.x / 2), "Press Escape to return to the Main Menu.");
 
@@ -1047,7 +1055,7 @@ namespace Ui {
             printCenterOffset(gameArea.y / 2 + 3 + ((int)a->lines.size()/2), -(borderSize.x / 2), "Press Escape to return to the Main Menu.");
         }
 
-        if(currentLevel != nullptr){
+        if(currentLevel){
             //currentLevel->menuGame = this;
 
             if (Settings::debugMode) {

@@ -762,7 +762,7 @@ double EntityPlayer::hurt(Level* level, ItemWeapon* w, double damageMultiplier) 
 }
 
 void EntityPlayer::updateVariablesForAbilities() {
-    moveDelay = max(1*pow(0.98, abilities[iSPD]), 0.0001);
+    moveDelay = max(1*pow(0.98, abilities[iAGI]), 0.0001);
     if (outOfCombatHealing) {
         healDelay = max(.5*pow(0.96, abilities[iCON]), 0.0001);
         manaDelay = max(.5*pow(0.96, abilities[iWIS]), 0.0001);
@@ -770,7 +770,7 @@ void EntityPlayer::updateVariablesForAbilities() {
         healDelay = max(20*pow(0.96, abilities[iCON]), 0.0001);
         manaDelay = max(20*pow(0.96, abilities[iWIS]), 0.0001);
     }
-    interactDelay = max(.1*pow(0.96, abilities[iSPD]), 0.0001);
+    interactDelay = max(.1*pow(0.96, abilities[iAGI]), 0.0001);
 
     maxHp = 100 + (abilities[iCON] * 5);
     maxMp = 0 + (abilities[iWIS] * 5);
