@@ -117,6 +117,9 @@ public:
 
     bool dead = false;
 
+    double moveDelay = 1.5;
+    double dodgeChance = 0;
+
 protected:
     string name;
     double maxHp = 30;

@@ -87,8 +87,6 @@ public:
         return d*attackMultiplier;
     }
 
-    double moveDelay = 1.5; //TODO should vary
-
 
     double attackMultiplier = 1;
 
