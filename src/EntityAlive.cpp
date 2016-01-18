@@ -137,6 +137,11 @@ double EntityAlive::hurt(Level* level, DamageType damageType, double amount, dou
         }
     }
 
+    /*if (dodgeChance > 0 && rand() % (int)(dodgeChance*10000) > (dodgeChance*5000)) {
+        amount = 0;
+        consolef("Dodged!");
+    }*/
+
 
     hp -= amount;
     if (hp <= 0 && !dead) {

@@ -125,9 +125,7 @@ public:
     map<EquipSlot, Item*> equipedItems;
 
 
-    double moveDelay = 1;
     double interactDelay = .1;
-    double dodgeChance = 0;
     double strMult = 1;
     double dexMult = 1;
     double intMult = 1;
@@ -135,7 +133,6 @@ public:
 
 protected:
     int timeSinceCombat = 0;
-    bool outOfCombatHealing = false;
 
     void setNextLevelXp() {
         nextLevelXp = xpForLevel(level);

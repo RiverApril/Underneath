@@ -630,7 +630,7 @@ void Level::placeNewEntityAi(EntityAi* e, Point2 entrance) {
     Point2 p;
     do {
         p = Point2(findRandomWithoutFlag(e->solidity));
-    } while (!canPathTo(entrance, p, tileFlagPathable) || canSee(entrance, p, e->viewDistance*2));
+    } while (!canPathTo(entrance, p, tileFlagPathable) || canPathTo(entrance, p, tileFlagIsTile, e->solidity));
 
     e->pos = p;
     newEntity(e);

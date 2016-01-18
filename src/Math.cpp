@@ -27,7 +27,7 @@ double randomRange(double min, double max) {
     if (min > max) {
         return randomRange(max, min);
     } else {
-        return ((rand() / (double) RAND_MAX)*(max - min))+min;
+        return (((rand()%10000) / 10000.0)*(max - min))+min;
     }
 }
 

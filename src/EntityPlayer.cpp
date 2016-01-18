@@ -46,17 +46,7 @@ bool EntityPlayer::update(double deltaTime, double time, Level* level) {
     if (dead) {
         level->currentWorld->currentPlayer = nullptr;
     }
-    if (timeSinceCombat > 30) {
-        if (!outOfCombatHealing) {
-            lastHealTime = time;
-            lastManaTime = time;
-            outOfCombatHealing = true;
-            updateVariablesForAbilities();
-        }
-    } else {
-        outOfCombatHealing = false;
-        updateVariablesForAbilities();
-    }
+
     timeSinceCombat += deltaTime;
 
     return EntityAlive::update(deltaTime, time, level);
@@ -508,7 +498,6 @@ EntityPlayer* EntityPlayer::cloneUnsafe(EntityPlayer* oldE, EntityPlayer* newE) 
     newE->xp = oldE->xp;
     newE->nextLevelXp = oldE->nextLevelXp;
     newE->timeSinceCombat = oldE->timeSinceCombat;
-    newE->outOfCombatHealing = oldE->outOfCombatHealing;
 
     forVector(oldE->inventory, i) {
         for(pair<EquipSlot, Item*> p : oldE->equipedItems){
@@ -535,7 +524,6 @@ void EntityPlayer::save(vector<unsigned char>* data) {
     Utility::saveDouble(data, xp);
     Utility::saveDouble(data, nextLevelXp);
     Utility::saveInt(data, timeSinceCombat);
-    Utility::saveBool(data, outOfCombatHealing);
 
     int size = 0;
     for(pair<EquipSlot, Item*> p : equipedItems){
@@ -568,7 +556,6 @@ void EntityPlayer::load(vector<unsigned char>* data, int* position) {
     xp = Utility::loadDouble(data, position);
     nextLevelXp = Utility::loadDouble(data, position);
     timeSinceCombat = Utility::loadInt(data, position);
-    outOfCombatHealing = Utility::loadBool(data, position);
 
     int size = Utility::loadInt(data, position);
 
@@ -763,14 +750,9 @@ double EntityPlayer::hurt(Level* level, ItemWeapon* w, double damageMultiplier) 
 
 void EntityPlayer::updateVariablesForAbilities() {
     moveDelay = max(1*pow(0.98, abilities[iAGI]), 0.0001);
-    if (outOfCombatHealing) {
-        healDelay = max(.5*pow(0.96, abilities[iCON]), 0.0001);
-        manaDelay = max(.5*pow(0.96, abilities[iWIS]), 0.0001);
-    } else {
-        healDelay = max(20*pow(0.96, abilities[iCON]), 0.0001);
-        manaDelay = max(20*pow(0.96, abilities[iWIS]), 0.0001);
-    }
-    interactDelay = max(.1*pow(0.96, abilities[iAGI]), 0.0001);
+    healDelay = max(20*pow(0.96, abilities[iCON]), 0.0001);
+    manaDelay = max(20*pow(0.96, abilities[iWIS]), 0.0001);
+    interactDelay = max(.1*pow(0.99, abilities[iAGI]), 0.0001);
 
     maxHp = 100 + (abilities[iCON] * 5);
     maxMp = 0 + (abilities[iWIS] * 5);
@@ -787,13 +769,7 @@ int EntityPlayer::xpForLevel(int l){
     return (pow(l, 2)+(5*l)+20);
 }
 
-double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType/*, bool reduceDurability*/){
-
-    /*if(reduceDurability){
-        if (rand() > (RAND_MAX * dodgeChance)) {
-            return 1;
-        }
-    }*/
+double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType){
 
     double def = 0;
 

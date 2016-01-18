@@ -15,7 +15,7 @@ namespace Random {
     unsigned char predefinedRandomGrid[PREDEFINED_RANDOM_GRID_SIZE][PREDEFINED_RANDOM_GRID_SIZE];
 
     double randDouble(double min, double max) {
-        return min + ((rand() / (double) RAND_MAX) * (max - min));
+        return (((rand()%10000) / 10000.0)*(max - min))+min;
     }
 
     int randomFromPoint(Point2 seed){

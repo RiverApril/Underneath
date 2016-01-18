@@ -107,9 +107,9 @@ void EntityAi::moveAi(double time, Level* level) {
                 runToPos.x = pos.x + (rand() % viewDistance)-(viewDistance/2);
                 runToPos.y = pos.y + (rand() % viewDistance)-(viewDistance/2);
 
-                path = level->getPathTo(runToPos, pos, 0, solidity, true);
+                path = level->getPathTo(runToPos, pos, tileFlagIsTile, solidity, true);
 
-                if(level->getPathTo(target->pos, runToPos, target->viewDistance, false).size() < path.size()){
+                if(level->getPathTo(target->pos, runToPos, tileFlagIsTile, solidity, false).size() < path.size()){
                     path.clear();
                 }
             };
@@ -151,13 +151,12 @@ void EntityAi::moveAi(double time, Level* level) {
         if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
             debugf("Last Known Target Position: %d,%d", lastKnownTargetPos.x, lastKnownTargetPos.y);
             ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
-            if (r && canSeeTarget && (distanceSquared(target->pos, pos) < (r->range * r->range))) {
-                speed.x = 0;
-                speed.y = 0;
-            } else {
-                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, 0, solidity, true);
+            double dis = distanceSquared(target->pos, pos);
+            double rng = r?(r->range * r->range):0;
+            if (!canSeeTarget || (r && dis > rng)) {
+                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, solidity, true);
                 if(path.empty()){
-                    path = level->getPathTo(lastKnownTargetPos, pos, 0, solidity, false);
+                    path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, solidity, false);
                 }
                 if(!path.empty()){
                     if(Settings::showFollowPaths){
@@ -178,6 +177,9 @@ void EntityAi::moveAi(double time, Level* level) {
 
                 }
 
+            }else if(r && dis < rng){
+                speed.x = pos.x > target->pos.x ? 1 : (pos.x < target->pos.x ? -1 : 0);
+                speed.y = pos.y > target->pos.y ? 1 : (pos.y < target->pos.y ? -1 : 0);
             }
 
         }
@@ -243,7 +245,7 @@ void EntityAi::attackAi(double time, Level* level){
             } else {
                 ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
                 if (r) {
-                    if (level->canSee(pos, target->pos, r->range) && canSeeTarget) {
+                    if (canSeeTarget && level->canSee(pos, target->pos, r->range)) {
                         attack = true;
                     }
 
@@ -257,12 +259,10 @@ void EntityAi::attackAi(double time, Level* level){
             double d = target->hurt(level, activeItemWeapon, getAttackMultiplierFromEffects(activeItemWeapon->damageType));
             Verbalizer::attack(this, target, activeItemWeapon, d);
             ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(activeItemWeapon);
-            BasicIcon* icon;
+            BasicIcon* icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), C_BLACK);
             if(spell){
-                icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), C_BLACK);
             	Animator::renderRangedAttack(pos, target->pos, icon, level, 8);
             }else{
-                icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), C_BLACK);
                 Animator::renderRangedAttack(pos, target->pos, icon, level, 1);
             }
             delete icon;

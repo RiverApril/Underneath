@@ -24,8 +24,9 @@ const TileFlag tileFlagHasTileEntity = 1 << 5;
 const TileFlag tileFlagIndestructable = 1 << 6;
 const TileFlag tileFlagReplaceable = 1 << 7;
 const TileFlag tileFlagFlammable = 1 << 8;
+const TileFlag tileFlagIsTile = 1 << 9;
 
-const TileFlag tileFlagAll = tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable | tileFlagFlammable;
+const TileFlag tileFlagAll = tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable | tileFlagFlammable | tileFlagIsTile;
 
 
 
