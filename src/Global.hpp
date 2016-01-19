@@ -110,7 +110,11 @@ extern string AudioDir;
 
 
 #define defaultTimeout 100
-#define fastTimeout 1
+#ifdef useSDLGraphics
+	#define fastTimeout 1
+#else
+	#define fastTimeout 10
+#endif
 
 
 

@@ -40,13 +40,15 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
         }
     } else {
         while (lastHealTime + healDelay <= time) {
-            heal(1);
+            heal(healMultiplier);
             lastHealTime += healDelay;
         }
         while (lastManaTime + manaDelay <= time) {
-            healMana(1);
+            healMana(healMultiplier);
             lastManaTime += manaDelay;
         }
+
+        healMultiplier *= 1.01;
 
         bool removebad = false;
 
@@ -127,6 +129,8 @@ double EntityAlive::hurt(Level* level, DamageType damageType, double amount, dou
             level->setTile(pos, Tiles::tileBloodFloor);
         }
     }
+
+    healMultiplier = 1;
 
     //double amoutBeforeWeaknesses = amount;
 

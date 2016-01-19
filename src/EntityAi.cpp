@@ -153,7 +153,7 @@ void EntityAi::moveAi(double time, Level* level) {
             ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
             double dis = distanceSquared(target->pos, pos);
             double rng = r?(r->range * r->range):0;
-            if (!canSeeTarget || (r && dis > rng)) {
+            if (!r || (dis > rng || !canSeeTarget)) {
                 vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, solidity, true);
                 if(path.empty()){
                     path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, solidity, false);

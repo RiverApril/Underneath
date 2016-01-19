@@ -120,6 +120,8 @@ public:
     double moveDelay = 1.5;
     double dodgeChance = 0;
 
+    double healMultiplier = 1;
+
 protected:
     string name;
     double maxHp = 30;
