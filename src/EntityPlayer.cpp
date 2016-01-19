@@ -49,6 +49,8 @@ bool EntityPlayer::update(double deltaTime, double time, Level* level) {
 
     timeSinceCombat += deltaTime;
 
+    healMultiplier *= 1.01; //also happens in EntityAlive::update() but players should heal faster
+
     return EntityAlive::update(deltaTime, time, level);
 }
 

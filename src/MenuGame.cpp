@@ -491,6 +491,7 @@ namespace Ui {
                             timePassed = 1;
                             MenuGame::update();
                             if(!currentPlayer){
+                                timeout(defaultTimeout);
                                 return;
                             }
                             if (getchSafe() != ERR) {
@@ -532,6 +533,7 @@ namespace Ui {
                         timePassed = 1;
                         MenuGame::update();
                         if(!currentPlayer){
+                            timeout(defaultTimeout);
                             return;
                         }
                         if (getchSafe() != ERR) {
@@ -605,6 +607,7 @@ namespace Ui {
                                 }
                                 MenuGame::update();
                                 if(!currentPlayer){
+                                    timeout(defaultTimeout);
                                     return;
                                 }
                                 if (getchSafe() != ERR) {
@@ -694,6 +697,7 @@ namespace Ui {
                         }
                         MenuGame::update();
                         if(!currentPlayer){
+                            timeout(defaultTimeout);
                             return;
                         }
                         if (getchSafe() != ERR) {
