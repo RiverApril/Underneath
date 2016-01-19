@@ -44,8 +44,11 @@ namespace MainWindow{
 
 
     SDL_Window* mainWindow;
-    SDL_Surface* mainScreenSurface;
-    SDL_Surface* fontSurface;
+    SDL_Renderer* mainRenderer;
+    //SDL_Surface* mainScreenSurface;
+    //SDL_Surface* fontSurface;
+    SDL_Texture* fontFgTexture;
+    SDL_Texture* fontBgTexture;
 
     thread operationThread;
 
@@ -73,8 +76,9 @@ namespace MainWindow{
 
     int currentColor = 0;
 
-    unsigned int rgbColorWhite;
-    unsigned int rgbColorBlack;
+    Uint32 colorWhite;
+    Uint32 colorBlack;
+    Uint32 colorClear;
 
     bool shiftIsDown = false;
 
@@ -86,7 +90,6 @@ namespace MainWindow{
 
         Uint32 *pixels = (Uint32 *)surface->pixels;
 
-        //Get the requested pixel
         return pixels[ ( y * surface->w ) + x ];
 
         /*int bpp = surface->format->BytesPerPixel;
@@ -122,8 +125,13 @@ namespace MainWindow{
         if(x > surface->w || y > surface->h){
             return;
         }
-        int bpp = surface->format->BytesPerPixel;
-        /* Here p is the address to the pixel we want to set */
+
+        Uint32 *pixels = (Uint32 *)surface->pixels;
+
+        pixels[ ( y * surface->w ) + x ] = pixel;
+
+        /*int bpp = surface->format->BytesPerPixel;
+
         Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
         switch(bpp) {
@@ -150,7 +158,7 @@ namespace MainWindow{
             case 4:
                 *(Uint32 *)p = pixel;
                 break;
-        }
+        }*/
     }
     //
 
@@ -251,31 +259,34 @@ namespace MainWindow{
 
     bool initSDL(){
         printf("Init SDL\n");
-        bool success = true;
 
         if(SDL_Init(SDL_INIT_VIDEO) < 0){
             printf("Failed to initalize SDL. Error: %s\n", SDL_GetError());
-            success = false;
-        }else{
-            mainWindow = SDL_CreateWindow("Underneath", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width*charWidth, height*charHeight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-            if(mainWindow == NULL){
-                printf("Failed to create window. Error: %s\n", SDL_GetError());
-                success = false;
-            }else{
-                int imgFlags = IMG_INIT_PNG;
-                if(!(IMG_Init(imgFlags) & imgFlags) ){
-                    printf("Failed to initalize SDL Image. Error: %s\n", IMG_GetError());
-                    success = false;
-                }else{
-                    mainScreenSurface = SDL_GetWindowSurface(mainWindow);
-                    rgbColorWhite = SDL_MapRGB(mainScreenSurface->format, 0xFF, 0xFF, 0xFF);
-                    rgbColorBlack = SDL_MapRGB(mainScreenSurface->format, 0, 0, 0);
-                    //printf("White = 0x%X  Black = 0x%X\n", rgbColorWhite, rgbColorBlack);
-                }
-            }
+            return false;
+        }
+        mainWindow = SDL_CreateWindow("Underneath", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width*charWidth, height*charHeight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+        if(mainWindow == NULL){
+            printf("Failed to create window. Error: %s\n", SDL_GetError());
+            return false;
+        }
+        int imgFlags = IMG_INIT_PNG;
+        if(!(IMG_Init(imgFlags) & imgFlags) ){
+            printf("Failed to initalize SDL Image. Error: %s\n", IMG_GetError());
+            return false;
         }
 
-        return success;
+        mainRenderer = SDL_CreateRenderer(mainWindow, -1, SDL_RENDERER_ACCELERATED);
+        if(!mainRenderer){
+            printf("SDL_CreateRenderer: %s\n", SDL_GetError());
+            return false;
+        }
+
+        colorWhite = 0xFFFFFFFF;
+        colorBlack = 0xFF000000;
+        colorClear = 0x00000000;
+
+
+        return initMedia();
     }
 
     void cleanupSDL(){
@@ -299,30 +310,79 @@ namespace MainWindow{
     }*/
 
     bool initMedia(){
-    	bool success = true;
 
         string img = "font.png";
 
-    	fontSurface = IMG_Load(img.c_str());
-    	if(!fontSurface) {
+        SDL_Surface* surfaceFg = IMG_Load(img.c_str());
+        SDL_Surface* surfaceBg = IMG_Load(img.c_str());
+    	if(!surfaceFg) {
     		printf("Failed to load image: \"%s\"\n", img.c_str());
-    		success = false;
+            return false;
         }
-        imageCharWidth = fontSurface->w / imageCharsPerLine;
-        imageCharHeight = fontSurface->h / imageLineCount;
+        if(!surfaceBg) {
+            printf("Failed to load image: \"%s\"\n", img.c_str());
+            return false;
+        }
+
+
+        SDL_LockSurface(surfaceFg);
+        for(int i=0;i<surfaceFg->w;i++){
+            for(int j=0;j<surfaceFg->h;j++){
+                //printf("Pixel before [%d, %d] = 0x%X\n", i, j, getpixel(surfaceFg, i, j));
+                if(getpixel(surfaceFg, i, j) == colorBlack){
+                    putpixel(surfaceFg, i, j, colorClear);
+                }
+                //printf("Pixel after [%d, %d] = 0x%X\n", i, j, getpixel(surfaceFg, i, j));
+            }
+        }
+        SDL_UnlockSurface(surfaceFg);
+
+
+        SDL_LockSurface(surfaceBg);
+        for(int i=0;i<surfaceBg->w;i++){
+            for(int j=0;j<surfaceBg->h;j++){
+                if(getpixel(surfaceBg, i, j) == colorWhite){
+                    putpixel(surfaceBg, i, j, colorClear);
+                }
+                if(getpixel(surfaceBg, i, j) == colorBlack){
+                    putpixel(surfaceBg, i, j, colorWhite);
+                }
+            }
+        }
+        SDL_UnlockSurface(surfaceBg);
+
+        fontFgTexture = SDL_CreateTextureFromSurface(mainRenderer, surfaceFg);
+        fontBgTexture = SDL_CreateTextureFromSurface(mainRenderer, surfaceBg);
+        if(!fontFgTexture){
+            printf("Failed to convert surface to texture for image: \"%s\"\n", img.c_str());
+            return false;
+        }
+        if(!fontBgTexture){
+            printf("Failed to convert surface to texture for image: \"%s\"\n", img.c_str());
+            return false;
+        }
+
+        imageCharWidth = surfaceFg->w / imageCharsPerLine;
+        imageCharHeight = surfaceFg->h / imageLineCount;
         charWidth = imageCharWidth;
         charHeight = imageCharHeight;
 
-        printf("Font Image Width = %d\n", fontSurface->w);
-        printf("Font Image Height = %d\n", fontSurface->h);
+        printf("Font Image Width = %d\n", surfaceFg->w);
+        printf("Font Image Height = %d\n", surfaceFg->h);
 
-        printf("Char Width (%d/%d) = %d\n", fontSurface->w, imageCharsPerLine, imageCharWidth);
-        printf("Char Height (%d/%d) = %d\n", fontSurface->h, imageLineCount, imageCharHeight);
+        printf("Char Width (%d/%d) = %d\n", surfaceFg->w, imageCharsPerLine, imageCharWidth);
+        printf("Char Height (%d/%d) = %d\n", surfaceFg->h, imageLineCount, imageCharHeight);
 
-    	return success;
+
+        SDL_FreeSurface(surfaceFg);
+        SDL_FreeSurface(surfaceBg);
+
+    	return true;
     }
 
     void update(){
+
+        SDL_RenderClear(mainRenderer);
 
         SDL_Rect src;
         SDL_Rect dst;
@@ -333,7 +393,7 @@ namespace MainWindow{
         dst.w = charWidth;
         dst.h = charHeight;
 
-        int c, colorfg, colorbg, fgColorCode, bgColorCode;
+        int c, fgColorCode, bgColorCode;
 
         for(int i=0;i<width;i++){
             for(int j=0;j<height;j++){
@@ -349,7 +409,17 @@ namespace MainWindow{
                 fgColorCode = ((screenColorBuffer[c])) & 0xF;
                 bgColorCode = (((screenColorBuffer[c])) >> 4) & 0xF;
 
-                SDL_BlitSurface(fontSurface, &src, mainScreenSurface, &dst);
+                SDL_SetTextureColorMod(fontBgTexture, redFromCode(bgColorCode), greenFromCode(bgColorCode), blueFromCode(bgColorCode));
+
+                SDL_RenderCopy(mainRenderer, fontBgTexture, &src, &dst);
+
+                SDL_SetTextureColorMod(fontFgTexture, redFromCode(fgColorCode), greenFromCode(fgColorCode), blueFromCode(fgColorCode));
+
+                SDL_RenderCopy(mainRenderer, fontFgTexture, &src, &dst);
+
+
+
+                /*SDL_BlitSurface(fontSurface, &src, mainScreenSurface, &dst);
 
                 //SDL_BlitSurface(fontFgSurface[fgColorCode], &src, mainScreenSurface, &dst);
                 //SDL_BlitSurface(fontBgSurface[bgColorCode], &src, mainScreenSurface, &dst);
@@ -378,13 +448,14 @@ namespace MainWindow{
                 }
 
 
-                SDL_UnlockSurface(mainScreenSurface);
+                SDL_UnlockSurface(mainScreenSurface);*/
 
             }
         }
 
+        SDL_RenderPresent(mainRenderer);
 
-		SDL_UpdateWindowSurface(mainWindow);
+		//SDL_UpdateWindowSurface(mainWindow);
     }
 
     /*SDL_Surface* loadImage(const char* path){
@@ -414,8 +485,9 @@ namespace MainWindow{
                 if(e.window.event == SDL_WINDOWEVENT_RESIZED){
                     width = (int)ceil(e.window.data1 / (double)charWidth);
                     height = (int)ceil(e.window.data2 / (double)charHeight);
-                    SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
-                    mainScreenSurface = SDL_GetWindowSurface(mainWindow);
+                    SDL_RenderSetLogicalSize(mainRenderer, width*charWidth, height*charHeight);
+                    //SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
+                    //mainScreenSurface = SDL_GetWindowSurface(mainWindow);
                     screenCharBuffer = vector<char>(width * height);
                     screenColorBuffer = vector<char>(width * height);
                     return KEY_RESIZE;
@@ -561,7 +633,7 @@ using namespace MainWindow;
 
 
 bool initscr(){
-    return initSDL() && initMedia();
+    return initSDL();
 }
 
 void start_color(){
