@@ -409,13 +409,24 @@ namespace MainWindow{
                 fgColorCode = ((screenColorBuffer[c])) & 0xF;
                 bgColorCode = (((screenColorBuffer[c])) >> 4) & 0xF;
 
-                SDL_SetTextureColorMod(fontBgTexture, redFromCode(bgColorCode), greenFromCode(bgColorCode), blueFromCode(bgColorCode));
+                if(fgColorCode == 0 && bgColorCode == 0){
+                    fgColorCode = 0xF;
+                }
 
-                SDL_RenderCopy(mainRenderer, fontBgTexture, &src, &dst);
+                if(bgColorCode > 0){
 
-                SDL_SetTextureColorMod(fontFgTexture, redFromCode(fgColorCode), greenFromCode(fgColorCode), blueFromCode(fgColorCode));
+                    SDL_SetTextureColorMod(fontBgTexture, redFromCode(bgColorCode), greenFromCode(bgColorCode), blueFromCode(bgColorCode));
 
-                SDL_RenderCopy(mainRenderer, fontFgTexture, &src, &dst);
+                    SDL_RenderCopy(mainRenderer, fontBgTexture, &src, &dst);
+
+                }
+
+                if(fgColorCode > 0){
+
+                    SDL_SetTextureColorMod(fontFgTexture, redFromCode(fgColorCode), greenFromCode(fgColorCode), blueFromCode(fgColorCode));
+
+                    SDL_RenderCopy(mainRenderer, fontFgTexture, &src, &dst);
+                }
 
 
 
