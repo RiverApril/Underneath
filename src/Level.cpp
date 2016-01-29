@@ -705,7 +705,9 @@ void Level::load(vector<unsigned char>* data, int* position) {
     int entityCount = Utility::loadInt(data, position);
     debugf("%d Entities to Load...", entityCount);
     for (int i = 0; i < entityCount; i++) {
-        entityList.push_back(Entity::loadNew(data, position));
+        Entity* e = Entity::loadNew(data, position);
+        e->setTimes(currentWorld->worldTime);
+        entityList.push_back(e);
     }
     debugf("Loaded %d Entities", (int) entityList.size());
 
