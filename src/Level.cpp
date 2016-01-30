@@ -16,6 +16,7 @@
 #include "EnemyGenerator.hpp"
 #include "Utility.hpp"
 #include "Settings.hpp"
+#include "Random.hpp"
 
 Level::Level(World* w, string n, Point2 s, int d) {
     currentWorld = w;
@@ -595,12 +596,13 @@ bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag ba
 }
 
 void Level::explode(Point2 pos, double radius, double attackPower, bool destroyTiles){
+    double radiusSquared = radius*radius;
     if(destroyTiles){
         for(int i=-radius; i<=radius; i++){
             for (int j=-radius; j<=radius; j++) {
-                if( ((i*i) + (j*j)) <= radius*radius){
+                if( ((i*i) + (j*j)) <= radiusSquared){
                     Point2 p = pos+Point2(i, j);
-                    if(tileAt(p)->doesNotHaveAnyOfFlags(tileFlagIndestructable)){
+                    if(tileAt(p)->doesNotHaveAnyOfFlags(tileFlagIndestructable) && rand()%20!=0){
                         if(tileAt(p)->hasAllOfFlags(tileFlagFlammable)){
                             setTile(p, rand()%5==0?Tiles::tileFire:Tiles::tileAsh);
                         }else{
@@ -616,8 +618,10 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
             if(!e->removed){
                 EntityAlive* a = dynamic_cast<EntityAlive*>(e);
                 if(a){
-                    if(distanceSquared(a->pos, pos) <= radius*radius){
-                        a->hurt(this, damExplosion, attackPower);
+                    double disS = distanceSquared(a->pos, pos);
+                    if(disS <= radiusSquared){
+                        a->hurt(this, damExplosion, attackPower*(((radiusSquared)-disS))/(radiusSquared));
+                        a->addEffect(Effect(effDamage, Random::randDouble(5, 10), 1, damFire));
                     }
                 }
             }

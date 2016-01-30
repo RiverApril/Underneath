@@ -144,9 +144,10 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         if (posToInteract == pos) {
                             posToInteract = level->findRandomWithoutFlag(solidity);
                         }
-                        if (!moveAbsalute(posToInteract, level, false)) {
+                        pos = posToInteract; //force move, may cause death
+                        /*if (!moveAbsalute(posToInteract, level, false)) {
                             hurt(level, damSuffocation, maxHp * 2);
-                        }
+                        }*/
                         break;
                     case spellBarrier:{
                         bool success = false;
