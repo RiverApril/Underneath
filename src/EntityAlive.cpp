@@ -39,6 +39,13 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
             level->removeEntity(this, true);
         }
     } else {
+        Tile* tile = level->tileAt(pos);
+        if(tile->hasAnyOfFlags(solidity)){
+            hurt(level, damSuffocation, maxHp * maxHp);
+        }else if(tile->getIndex() == Tiles::tileFire->getIndex()){
+            addEffect(Effect(effDamage, Random::randDouble(4, 8), 1, damFire));
+        }
+
         while (lastHealTime + healDelay <= time) {
             heal(healMultiplier);
             lastHealTime += healDelay;
@@ -168,9 +175,10 @@ double EntityAlive::hurt(Level* level, ItemWeapon* w, double damageMultiplier) {
 void EntityAlive::addEffect(Effect e) {
 
     forVector(effects, i) {
-        Effect ei = effects[i];
-        if (e.eId == ei.eId && ei.power == e.power && e.meta == ei.meta) {
-            ei.timeLeft = max(e.timeLeft, ei.timeLeft);
+        Effect* ei = &effects[i];
+        if (e.eId == ei->eId && e.meta == ei->meta) {
+            ei->power = max(e.power, ei->power);
+            ei->timeLeft = max(e.timeLeft, ei->timeLeft);
             return;
         }
     }
