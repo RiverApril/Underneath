@@ -1053,13 +1053,15 @@ namespace Ui {
             
             for(int i=0;i<10;i++){
                 if(f[i] == 'I'){
-                    fw[i] = ((terminalSize.x - borderSize.x) / ic);
+                    Item* it = currentPlayer->getEquiped(slotFav1+i);
+                    fw[i] = min((terminalSize.x - borderSize.x) / ic, (int)it->getName(it->qty!=1).size()+1);
                 }else{
                     fw[i] = 0;
                 }
             }
-            
+
             char dashes[] = "----------------------------------------------------------------";
+            char spaces[] = "                                                                ";
             
             int x = 0;
             
@@ -1067,11 +1069,10 @@ namespace Ui {
                 Item* it = currentPlayer->getEquiped(slotFav1+i);
                 if(it){
                     mvprintw(gameArea.y-2, x, "+%.*s%1d%.*s+", fw[i]/2-1, dashes, i==9?0:(i+1), ((fw[i]%2==1)?1:0)+fw[i]/2-1, dashes);
-                    mvprintw(gameArea.y-1, x, "|");
+                    mvprintw(gameArea.y-1, x, "|%.*s|", fw[i]-1, spaces);
                     string s = it->getName(it->qty!=1);
-                    s = s.substr(0, fw[i]-2);
-                    mvprintw(gameArea.y-1, (x+fw[i]/2)-(s.size()/2), "%.*s", fw[i]-2, s.c_str());
-                    mvprintw(gameArea.y-1, x + fw[i], "|");
+                    s = s.substr(0, fw[i]-1);
+                    mvprintw(gameArea.y-1, (int)((x+fw[i]*.5)-((int)s.size()*.5))+1, "%.*s", fw[i]-1, s.c_str());
                     mvprintw(gameArea.y, x, "+%.*s+", fw[i]-1, dashes);
                 }
                 x += fw[i];

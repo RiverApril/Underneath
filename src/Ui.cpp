@@ -221,6 +221,9 @@ namespace Ui {
             maxX = terminalSize.x;
         }
         int w = maxX - x;
+        if(w <= 0){
+            return a;
+        }
         for (int i = 0; i < (int)s.length(); i += w) {
             string ss = s.substr(i, w);
             if (ss.length() > 0) {

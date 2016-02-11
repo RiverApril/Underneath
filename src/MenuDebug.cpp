@@ -43,60 +43,167 @@ namespace Ui {
         clrtobot();
         setColor(C_WHITE);
 
-        /*for(int i=0;i<terminalSize.y;i++){
-            mvprintw(i, 0, "%2d: %d", i, currentWorld->currentPlayer->xpForLevel(i));
-        }*/
-        
-        move(0, 0);
-
-        if(artIndex == -1){
-
-            for(int i=0;i<0x10;i++){
-                for(int j=0;j<0x10;j++){
-                    setColor(i, j);
-                    addch('#');
-                }
-                addch('\n');
-            }
-
-            for(int i=0;i<0x10;i++){
-                for(int j=0;j<0x10;j++){
-                    printMultiLineColoredString(i, j+20, (string("&")+cc(i, j))+"#");
-                }
-            }
-
-        }else{
-            Art* a = Arts::getArt(artIndex);
-            printw("[%d] %s", artIndex, a->name.c_str());
-            a->printAt(Point2(0, 1));
-        }
-
         /*
+         To my favorite human...
+         To the best girlfriend...
+         To the one and only...
+         My love...
+         Happy Birthday Davalynn!!!
+         Davalynn, you are my best friend, someone I can talk to you about anything.
+         But you are more than my best friend, much more.
+         You are the love of my life.
+         I miss you everyday.
+         When we are apart, I feel torn in half, like part of me stayed stuck to you.
+         When I’m with you I feel safe. I feel at home.
+         I love to hug you, to hold you in my arms.
+         I hope your birthday is wonderful :)
+         I love you Dava.
+         */
 
-        int a = 0;
+        printCenter(terminalSize.y/2, "To my favorite human...");
+        while(getchSafe() == ERR);
+        move(0, 0);
+        clrtobot();
+        printCenter(terminalSize.y/2, "To the best girlfriend...");
+        while(getchSafe() == ERR);
+        move(0, 0);
+        clrtobot();
+        printCenter(terminalSize.y/2, "To the one and only...");
+        while(getchSafe() == ERR);
+        move(0, 0);
+        clrtobot();
+        printCenter(terminalSize.y/2, "My love...");
+        while(getchSafe() == ERR);
+        move(0, 0);
+        clrtobot();
+        vector<pair<Point2, int>> fireworks;
+        for(int i=0;i<10;i++){
+        	fireworks.push_back(make_pair(Point2(rand()%terminalSize.x, terminalSize.y+(rand()%20)), rand()%10));
+        }
+        int m = 0;
+        while(true){
+            move(0, 0);
+            clrtobot();
+            for(int i=0;i<fireworks.size();i++){
+                if(fireworks[i].first.y > terminalSize.y/2){
+                    fireworks[i].first.y--;
+                    mvaddch(fireworks[i].first.y, fireworks[i].first.x, '.');
+                }else{
+                    if(fireworks[i].second > 0){
+                        fireworks[i].second--;
+                        fireworks[i].first.y--;
+                        mvaddch(fireworks[i].first.y, fireworks[i].first.x, ',');
+                    }else if(fireworks[i].second <= -10){
+                        fireworks[i].first = Point2(rand()%terminalSize.x, terminalSize.y+(rand()%20));
+                        fireworks[i].second = rand()%10;
+                    }else{
+                        fireworks[i].second--;
+                        switch (fireworks[i].second) {
+                            case 0:
+                                mvaddch(fireworks[i].first.y, fireworks[i].first.x, ' ');
+                                break;
+                            case -1:
+                                mvaddch(fireworks[i].first.y, fireworks[i].first.x, '*');
+                                break;
+                            case -2:
+                                mvaddstr(fireworks[i].first.y-1, fireworks[i].first.x-1, " * ");
+                                mvaddstr(fireworks[i].first.y  , fireworks[i].first.x-1, "*.*");
+                                mvaddstr(fireworks[i].first.y+1, fireworks[i].first.x-1, " * ");
+                                break;
+                            case -3:
+                                mvaddstr(fireworks[i].first.y-2, fireworks[i].first.x-2, "  .  ");
+                                mvaddstr(fireworks[i].first.y-1, fireworks[i].first.x-2, " .*. ");
+                                mvaddstr(fireworks[i].first.y  , fireworks[i].first.x-2, ".*.*.");
+                                mvaddstr(fireworks[i].first.y+1, fireworks[i].first.x-2, " .*. ");
+                                mvaddstr(fireworks[i].first.y+2, fireworks[i].first.x-2, "  .  ");
+                                break;
+                            case -4:
+                                mvaddstr(fireworks[i].first.y-2, fireworks[i].first.x-2, " *.* ");
+                                mvaddstr(fireworks[i].first.y-1, fireworks[i].first.x-2, "*\\./*");
+                                mvaddstr(fireworks[i].first.y  , fireworks[i].first.x-2, "..*..");
+                                mvaddstr(fireworks[i].first.y+1, fireworks[i].first.x-2, "*/.\\*");
+                                mvaddstr(fireworks[i].first.y+2, fireworks[i].first.x-2, " *.* ");
+                                break;
+                            case -5:
+                                mvaddstr(fireworks[i].first.y-2, fireworks[i].first.x-2, " . . ");
+                                mvaddstr(fireworks[i].first.y-1, fireworks[i].first.x-2, ".   .");
+                                mvaddstr(fireworks[i].first.y  , fireworks[i].first.x-2, "  .  ");
+                                mvaddstr(fireworks[i].first.y+1, fireworks[i].first.x-2, ".   .");
+                                mvaddstr(fireworks[i].first.y+2, fireworks[i].first.x-2, " . . ");
+                                break;
+                            case -6:
 
-        mvvline(a, column1 - 1, '|', terminalSize.y);
-        mvvline(a, column2 - 1, '|', terminalSize.y);
-        mvvline(a, column3 - 1, '|', terminalSize.y);
+                                break;
+                            case -7:
 
-        mvprintw(a, column0, "Weapon");
-        mvprintw(a, column1, "Damage");
-        mvprintw(a, column2, "Delay");
-        mvprintw(a, column3, "Dam/Time");
+                                break;
+                            case -8:
 
-        a++;
+                                break;
+                            case -9:
+                                
+                                break;
+                        }
+                    }
+                }
+            }
+            switch (m) {
+                case 0:
+                    printCenter(terminalSize.y/2, "Happy Birthday Davalynn!!! :D");
+                    break;
+                case 1:
+                    printCenter(terminalSize.y/2-1, "Davalynn, you are my best friend, someone I can talk to you about anything.");
+                    break;
+                case 2:
+                    printCenter(terminalSize.y/2+1, "But you are more than my best friend, much more.");
+                    break;
+                case 3:
+                    printCenter(terminalSize.y/2, "You are the love of my life.");
+                    break;
+                case 4:
+                    printCenter(terminalSize.y/2, "I miss you everyday.");
+                    break;
+                case 5:
+                    printCenter(terminalSize.y/2, "When we are apart, I feel torn in half, like part of me stayed stuck to you.");
+                    break;
+                case 6:
+                    printCenter(terminalSize.y/2, "When I’m with you I feel safe. I feel at home.");
+                    break;
+                case 7:
+                    printCenter(terminalSize.y/2, "I love to hug you, to hold you in my arms.");
+                    break;
+                case 8:
+                    printCenter(terminalSize.y/2, "I hope your birthday is wonderful :)");
+                    break;
+                case 9:
+                    printCenter(terminalSize.y/2, "I love you Dava.");
+                    break;
+            }
 
-        mvhline(a, 0, '-', terminalSize.x);
+            if(getchSafe() != ERR){
+                m++;
+            }
 
-        a++;
+            if(m == 10){
+                break;
+            }
+        }
+        move(0, 0);
+        clrtobot();
+        printCenter(terminalSize.y/2, "I love you so much.");
+        while(getchSafe() == ERR);
+        move(0, 0);
+        clrtobot();
+        printCenter(terminalSize.y/2, "<3");
+        while(getchSafe() == ERR);
+        move(0, 0);
+        clrtobot();
+        printCenter(terminalSize.y/2, "The end x)");
+        while(getchSafe() == ERR);
+        move(0, 0);
+        clrtobot();
 
-        for (ItemGenerator::WeaponBase w : ItemGenerator::weaponList) {
-            mvprintw(a, column0, "%s", w.names[0].c_str());
-            mvprintw(a, column1, "%.2f", w.damage);
-            mvprintw(a, column2, "%.2f", w.useDelay);
-            mvprintw(a, column3, "%.2f", w.damage / w.useDelay);
-            a++;
-        }*/
+
 
     }
 
