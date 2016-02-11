@@ -1036,8 +1036,50 @@ namespace Ui {
                 }
 
             }
+            
+            char f[10];
+            int fw[10];
+            
+            int ic = 0;
 
-            for(int i=1;i<=10;i++){
+            for(int i=0;i<10;i++){
+                if(currentPlayer->getEquiped(slotFav1+i)){
+                    f[i] = 'I';
+                    ic ++;
+                }else{
+                    f[i] = 'E';
+                }
+            }
+            
+            for(int i=0;i<10;i++){
+                if(f[i] == 'I'){
+                    fw[i] = ((terminalSize.x - borderSize.x) / ic);
+                }else{
+                    fw[i] = 0;
+                }
+            }
+            
+            char dashes[] = "----------------------------------------------------------------";
+            
+            int x = 0;
+            
+            for(int i=0;i<10;i++){
+                Item* it = currentPlayer->getEquiped(slotFav1+i);
+                if(it){
+                    mvprintw(gameArea.y-2, x, "+%.*s%1d%.*s+", fw[i]/2-1, dashes, i==9?0:(i+1), ((fw[i]%2==1)?1:0)+fw[i]/2-1, dashes);
+                    mvprintw(gameArea.y-1, x, "|");
+                    string s = it->getName(it->qty!=1);
+                    s = s.substr(0, fw[i]-2);
+                    mvprintw(gameArea.y-1, (x+fw[i]/2)-(s.size()/2), "%.*s", fw[i]-2, s.c_str());
+                    mvprintw(gameArea.y-1, x + fw[i], "|");
+                    mvprintw(gameArea.y, x, "+%.*s+", fw[i]-1, dashes);
+                }
+                x += fw[i];
+            }
+            
+            
+
+            /*for(int i=1;i<=10;i++){
                 Item* it = currentPlayer->getEquiped(slotFav1+i-1);
                 if(it){
                     //string s = it->getName(it->qty!=1)+"   ";
@@ -1046,7 +1088,7 @@ namespace Ui {
                 	mvprintw(gameArea.y-1, (i-1)*4, "|%3s|", (it->getName(it->qty!=1).substr(0, 3)).c_str());
                 	mvprintw(gameArea.y, (i-1)*4, "+---+");
                 }
-            }
+            }*/
 
         }
 
