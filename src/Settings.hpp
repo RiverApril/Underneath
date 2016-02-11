@@ -129,7 +129,7 @@ namespace Settings{
         }
 
         bool setValue(string text){
-            *value = stoi(text);
+            *value = atoi(text.c_str());
             return false;
         }
 

@@ -129,7 +129,7 @@ if args.windows:
         print("    #   SDL2_mixer.dll")
         print("    #   libogg-0.dll")
         
-    libraryFlags += " -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic"
+    libraryFlags += " -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -Wl,-Bdynamic"
         
         
 else:
