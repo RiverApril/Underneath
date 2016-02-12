@@ -3,11 +3,12 @@ settings.txt
 worlds/
 *.log
 
-#Python Build Script:
+#Build Script:
 obj/
 src/ArtFiles.hpp
 *.pyc
 Underneath_*
+*.sh
 
 #Xcode:
 Underneath.xcodeproj/
