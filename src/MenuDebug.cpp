@@ -13,8 +13,7 @@
 
 namespace Ui {
 
-    MenuDebug::MenuDebug(World* w) : Menu() {
-        this->currentWorld = w;
+    MenuDebug::MenuDebug() : Menu() {
 
     }
 
@@ -23,18 +22,6 @@ namespace Ui {
         if(in == KEY_ESCAPE){
             closeThisMenu();
             return;
-        }else if(in == 'q'){
-            openMenu(new MenuMessage("Test 1", new MenuMessage("Test 2")));
-            return;
-        }else if(in == '['){
-            artIndex--;
-        }else if(in == ']'){
-            artIndex++;
-        }
-        if(artIndex >= (int)Arts::artList.size()){
-            artIndex = -1;
-        }else if(artIndex < -1){
-            artIndex = ((int)Arts::artList.size())-1;
         }
     }
 
@@ -94,8 +81,10 @@ namespace Ui {
                         fireworks[i].first.y--;
                         mvaddch(fireworks[i].first.y, fireworks[i].first.x, ',');
                     }else if(fireworks[i].second <= -10){
-                        fireworks[i].first = Point2(rand()%terminalSize.x, terminalSize.y+(rand()%20));
-                        fireworks[i].second = rand()%10;
+                        if(m == 0){
+                        	fireworks[i].first = Point2(rand()%terminalSize.x, terminalSize.y+(rand()%20));
+                        	fireworks[i].second = rand()%10;
+                        }
                     }else{
                         fireworks[i].second--;
                         switch (fireworks[i].second) {
@@ -152,10 +141,10 @@ namespace Ui {
                     printCenter(terminalSize.y/2, "Happy Birthday Davalynn!!! :D");
                     break;
                 case 1:
-                    printCenter(terminalSize.y/2-1, "Davalynn, you are my best friend, someone I can talk to you about anything.");
+                    printCenter(terminalSize.y/2, "Davalynn, you are my best friend, someone I can talk to you about anything.");
                     break;
                 case 2:
-                    printCenter(terminalSize.y/2+1, "But you are more than my best friend, much more.");
+                    printCenter(terminalSize.y/2, "But you are more than my best friend, much more.");
                     break;
                 case 3:
                     printCenter(terminalSize.y/2, "You are the love of my life.");
@@ -200,10 +189,7 @@ namespace Ui {
         clrtobot();
         printCenter(terminalSize.y/2, "The end x)");
         while(getchSafe() == ERR);
-        move(0, 0);
-        clrtobot();
-
-
+        closeThisMenu();
 
     }
 
