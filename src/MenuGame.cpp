@@ -860,7 +860,7 @@ namespace Ui {
                         currentPlayer->heal(10);
 
                     } else if (in == 'D') {
-                        openMenu(new MenuDebug(currentWorld));
+                        openMenu(new MenuDebug());
 
                     }
                 }

@@ -23,17 +23,13 @@ namespace Ui {
     class MenuDebug : public Menu {
     public:
 
-        MenuDebug(World* w);
+        MenuDebug();
 
         ~MenuDebug() {
         }
 
         void handleInput(int in);
         void update();
-
-        World* currentWorld;
-
-        int artIndex = 0;
 
     };
 }
