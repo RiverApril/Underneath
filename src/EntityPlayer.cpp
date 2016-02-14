@@ -49,8 +49,6 @@ bool EntityPlayer::update(double deltaTime, double time, Level* level) {
 
     timeSinceCombat += deltaTime;
 
-    healMultiplier *= 1.01; //also happens in EntityAlive::update() but players should heal faster
-
     return EntityAlive::update(deltaTime, time, level);
 }
 
@@ -753,8 +751,8 @@ double EntityPlayer::hurt(Level* level, ItemWeapon* w, double damageMultiplier) 
 
 void EntityPlayer::updateVariablesForAbilities() {
     moveDelay = max(1*pow(0.98, abilities[iAGI]), 0.0001);
-    healDelay = max(20*pow(0.96, abilities[iCON]), 0.0001);
-    manaDelay = max(20*pow(0.96, abilities[iWIS]), 0.0001);
+    healBase = 1 + (abilities[iCON]*0.01);
+    healManaBase = 1 + (abilities[iWIS]*0.01);
     interactDelay = max(.1*pow(0.99, abilities[iAGI]), 0.0001);
 
     maxHp = 100 + (abilities[iCON] * 5);

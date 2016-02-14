@@ -104,8 +104,8 @@ namespace Ui {
         mvprintw(b++, terminalSize.x/3 + 2, "%s: %d%%", "Dodge Chance", 100-(int)(player->dodgeChance*100));
         mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Interact Delay", player->interactDelay);
         mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Move Delay", player->moveDelay);
-        mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Heal Delay", player->healDelay);
-        mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Mana Delay", player->manaDelay);
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Heal Mult.", player->healBase);
+        mvprintw(b++, terminalSize.x/3 + 2, "%s: %.2f", "Mana Heal Mult.", player->healManaBase);
 
         b = a;
 
