@@ -45,17 +45,12 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
         }else if(tile->getIndex() == Tiles::tileFire->getIndex()){
             addEffect(Effect(effDamage, Random::randDouble(4, 8), 1, damFire));
         }
-
-        while (lastHealTime + healDelay <= time) {
-            heal(healMultiplier);
-            lastHealTime += healDelay;
-        }
-        while (lastManaTime + manaDelay <= time) {
-            healMana(healMultiplier);
-            lastManaTime += manaDelay;
-        }
-
-        healMultiplier *= 1.01;
+        
+        heal((healMultiplier*healBase)*deltaTime);
+        healMana((healManaMultiplier*healManaBase)*deltaTime);
+            
+        healMultiplier *= 1+(.01*deltaTime);
+        healManaMultiplier *= 1+(.01*deltaTime);
 
         bool removebad = false;
 
@@ -137,7 +132,8 @@ double EntityAlive::hurt(Level* level, DamageType damageType, double amount, dou
         }
     }
 
-    healMultiplier = 1;
+    healMultiplier = 0.05;
+    healManaMultiplier = 0.05;
 
     //double amoutBeforeWeaknesses = amount;
 

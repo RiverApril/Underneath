@@ -87,8 +87,6 @@ public:
     }
 
     virtual void setTimes(double time) {
-        lastHealTime = time;
-        lastManaTime = time;
         Entity::setTimes(time);
     }
 
@@ -112,15 +110,16 @@ public:
         return d;
     }
 
-    double healDelay = 20;
-    double manaDelay = 20;
-
     bool dead = false;
 
     double moveDelay = 1.5;
     double dodgeChance = 0;
+    
+    double healBase = 1;
+    double healManaBase = 1;
 
-    double healMultiplier = 1;
+    double healMultiplier = 0.05;
+    double healManaMultiplier = 0.05;
 
 protected:
     string name;
@@ -128,10 +127,6 @@ protected:
     double hp = maxHp;
     double maxMp = 0;
     double mp = maxMp;
-
-    double lastHealTime = 0;
-
-    double lastManaTime = 0;
 
 };
 
