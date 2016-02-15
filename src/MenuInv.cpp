@@ -49,6 +49,15 @@ namespace Ui {
                 *useItem = selected;
                 closeThisMenu();
             }
+        } else if (in == Key::secondaryAttack) {
+            ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (currentWorld->currentPlayer->inventory[selected]);
+            if (equipable) {
+                if(equipable->canBeEquipedHere(slotWep2)){
+                    if(!currentWorld->currentPlayer->equipItem(equipable, slotWep2)){
+                        flashImportantInfo = flashTimeMax;
+                    }
+                }
+            }
         } else if (in == Key::interact) {
             *useItem = selected;
             closeThisMenu();
