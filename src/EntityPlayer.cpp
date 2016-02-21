@@ -314,6 +314,9 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                 return interactDelay;
             }
         } else if (Tiles::tileList[tid]->hasAllOfFlags(tileFlagDoor)) {
+            if(Tiles::tileList[tid]->getIndex() == Tiles::tileSecretDoor->getIndex()){
+                consolef("You found a secret door!");
+            }
             level->setTile(posOfTile, Tiles::tileOpenDoor);
             return interactDelay;
         } else if (tid == Tiles::tileLockedDoor->getIndex()) {
@@ -363,11 +366,8 @@ double EntityPlayer::calcDamageMultiplier(ItemWeapon* weapon) {
         } else if (weapon->weaponType == wepMagic) {
             x = intMult;
         }
-        x *= getAttackMultiplierFromEffectsAndArmor(weapon->damageType);
+        x *= getAttackMultiplierFromEffectsAndEquips(weapon->damageType);
     }
-    /*if(weapon->durability < 0){
-        x /= 2;
-    }*/
     return x;
 }
 
@@ -561,7 +561,7 @@ void EntityPlayer::load(vector<unsigned char>* data, int* position) {
     int size = Utility::loadInt(data, position);
 
     for(int i=0;i<size;i++){
-        int slot = Utility::loadInt(data, position);
+        EquipSlot slot = (EquipSlot)Utility::loadInt(data, position);
         int index = Utility::loadInt(data, position);
         equipedItems[slot] = inventory[index];
     }
@@ -628,7 +628,7 @@ bool EntityPlayer::equipItem(ItemEquipable* newItem){
                 if(currentSlot == vs[0]){
                     return equipItem(nullptr, currentSlot);
                 }else{
-                    int x = slotNone;
+                    EquipSlot x = slotNone;
                     for(int i=(int)vs.size()-1;i>=0;i--){
                         if(equipedItems[vs[i]] && vs[i] != currentSlot){
                             x = vs[i];
@@ -677,7 +677,7 @@ bool EntityPlayer::equipItem(Item* newItem, EquipSlot slot){
                 throw false;
             }
 
-            if(slot == 0 || slot > slotMAX){
+            if(slot == slotNone || slot >= slotQty){
                 consolef("Slot out of range: %d", slot);
                 throw false;
             }
@@ -728,25 +728,32 @@ void EntityPlayer::setActiveItemWeapon(ItemWeapon* newItemWeapon) {
 }
 
 double EntityPlayer::hurt(Level* level, DamageType damageType, double amount, double damageMultiplier) {
-    timeSinceCombat = 0;
-    if(Settings::godMode){
-        return 0;
-    }
-
-    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(damageType);
+    damageMultiplier = hurtMiddleStep(level, damageType, damageMultiplier);
 
     return EntityAlive::hurt(level, damageType, amount, damageMultiplier);
 }
 
 double EntityPlayer::hurt(Level* level, ItemWeapon* w, double damageMultiplier) {
+    damageMultiplier = hurtMiddleStep(level, w->damageType, damageMultiplier);
+
+    return EntityAlive::hurt(level, w, damageMultiplier);
+}
+
+double EntityPlayer::hurtMiddleStep(Level* level, DamageType damageType, double damageMultiplier){
     timeSinceCombat = 0;
     if(Settings::godMode){
         return 0;
     }
 
-    damageMultiplier *= 1.0 - getDefenseMultiplierFromArmor(w->damageType);
+    damageMultiplier *= getRecivedDamageMultiplierFromArmorAndEquips(damageType);
 
-    return EntityAlive::hurt(level, w, damageMultiplier);
+    for(pair<EquipSlot, Item*> p : equipedItems){
+        if(p.second){
+
+        }
+    }
+
+    return damageMultiplier;
 }
 
 void EntityPlayer::updateVariablesForAbilities() {
@@ -770,33 +777,39 @@ int EntityPlayer::xpForLevel(int l){
     return (pow(l, 2)+(5*l)+20);
 }
 
-double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType){
+double EntityPlayer::getRecivedDamageMultiplierFromArmorAndEquips(DamageType damType){
 
-    double def = 0;
+    double def = 1;
 
     for(pair<EquipSlot, Item*> p : equipedItems){
         if(p.second){
             ItemArmor* armor = dynamic_cast<ItemArmor*>(p.second);
             if(armor){
                 for(Defense d : armor->defenses){
-                    if(d.damageType == damType || d.damageType == -1){
-                        /*if(reduceDurability){
-                            if(armor->durability > -1){
-                                if(armor->durability == 0){
-                                    consolef("&%cA peice of your armor is broken!", Ui::cc(C_LIGHT_RED));
-                                }else if(armor->durability < 16){
-                                    consolef("&%cA peice of your armor is almost broken!", Ui::cc(C_LIGHT_RED));
-                                }
-                                if(armor->durability > 0){
-                                    armor->durability--;
-                                }
-                            }
-                        }*/
-                        //if(armor->durability > 0){
-                            def += d.amount;
-                        //}else{
-                            //def += d.amount / 2;
-                        //}
+                    if(d.damageType == damType || d.damageType == damNone){
+                        def *= (1.0-d.amount);
+                    }
+                }
+            }
+        }
+    }
+
+    for(pair<EquipSlot, Item*> p : equipedItems){
+        ItemArmor* a = dynamic_cast<ItemArmor*>(p.second);
+        ItemWeapon* w = dynamic_cast<ItemWeapon*>(p.second);
+        if(a){
+            for(Enchantment e : a->enchantments){
+                if(e.style == eStyle_EnemyToSelf_SelfEff && e.effect.eId == effMultRecivedDamage){
+                    if((int)e.effect.meta == damType || e.effect.meta == damNone){
+                        def *= e.effect.power;
+                    }
+                }
+            }
+        }else if(w){
+            for(Enchantment e : w->enchantments){
+                if(e.style == eStyle_EnemyToSelf_SelfEff && e.effect.eId == effMultRecivedDamage){
+                    if((int)e.effect.meta == damType || e.effect.meta == damNone){
+                        def *= e.effect.power;
                     }
                 }
             }
@@ -806,22 +819,31 @@ double EntityPlayer::getDefenseMultiplierFromArmor(DamageType damType){
     return def;
 }
 
-double EntityPlayer::getAttackMultiplierFromEffectsAndArmor(DamageType damType){
+double EntityPlayer::getAttackMultiplierFromEffectsAndEquips(DamageType damType){
     double d = 1;
     for(Effect eff : effects){
-        if(eff.eId == effBuffAttack){
-            if((int)eff.meta == damType){
-                d += eff.power;
+        if(eff.eId == effMultRecivedDamage){
+            if((int)eff.meta == damType || eff.meta == damNone){
+                d *= eff.power;
             }
         }
     }
     for(pair<EquipSlot, Item*> p : equipedItems){
         ItemArmor* a = dynamic_cast<ItemArmor*>(p.second);
+        ItemWeapon* w = dynamic_cast<ItemWeapon*>(p.second);
         if(a){
             for(Enchantment e : a->enchantments){
-                if(e.effectId == effBuffAttack){
-                    if((int)e.meta == damType){
-                        d += e.power;
+                if(e.style == eStyle_SelfToEnemy_SelfEff && e.effect.eId == effMultRecivedDamage){
+                    if((int)e.effect.meta == damType || e.effect.meta == damNone){
+                        d *= e.effect.power;
+                    }
+                }
+            }
+        }else if(w){
+            for(Enchantment e : w->enchantments){
+                if(e.style == eStyle_SelfToEnemy_SelfEff && e.effect.eId == effMultRecivedDamage){
+                    if((int)e.effect.meta == damType || e.effect.meta == damNone){
+                        d *= e.effect.power;
                     }
                 }
             }

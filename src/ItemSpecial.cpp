@@ -45,7 +45,7 @@ void ItemSpecial::save(vector<unsigned char>* data){
 
 void ItemSpecial::load(vector<unsigned char>* data, int* position){
     Item::load(data, position);
-    specialty = Utility::loadInt(data, position);
+    specialty = (SpecialType)Utility::loadInt(data, position);
 
 }
 

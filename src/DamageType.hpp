@@ -12,27 +12,9 @@
 #include "Global.hpp"
 #include "Color.hpp"
 
-typedef int WeaponType;
+enum WeaponType{wepMelee, wepRanged, wepMagic};
 
-const WeaponType wepMelee = 0;
-const WeaponType wepRanged = 1;
-const WeaponType wepMagic = 2;
-
-typedef int DamageType;
-const DamageType damNone = 0;
-const DamageType damSharp = 1;
-const DamageType damBlunt = 2;
-const DamageType damPierce = 3;
-const DamageType damFire = 4;
-const DamageType damIce = 5;
-const DamageType damShock = 6;
-const DamageType damPoison = 7;
-const DamageType damBlood = 8;
-const DamageType damDebug = 9;
-const DamageType damSuffocation = 10;
-const DamageType damExplosion = 11;
-
-const DamageType damageTypeCount = 12;
+enum DamageType{damNone, damSharp, damBlunt, damPierce, damFire, damIce, damShock, damPoison, damBlood, damDebug, damSuffocation, damExplosion, damQty};
 
 string damageTypeName(DamageType d);
 

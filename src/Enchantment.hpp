@@ -11,24 +11,28 @@
 
 #include "Effect.hpp"
 
+
+enum EnchStyle{
+eStyle_SelfToEnemy_EnemyEff,    //Applied to enemy when weapon hits enemy s  -> e*
+eStyle_SelfToEnemy_SelfEff,     //Applied to self when weapon hits enemy  s* -> e
+eStyle_onTick_SelfEff,          //Applied to self on tick                 s*
+eStyle_EnemyToSelf_SelfEff,     //Applied to self when hit by enemy       s* <- e
+eStyle_EnemyToSelf_EnemyEff,    //Applied to enemy when hit by enemy      s  <- e*
+};
+
 struct Enchantment {
     Enchantment(vector<unsigned char>* data, int* position);
 
-    Enchantment(EffectId effectId, int chance, double power, double time, double meta = 0);
+    Enchantment(Effect effect, EnchStyle style, int chance);
 
     void save(vector<unsigned char>* data);
 
     void load(vector<unsigned char>* data, int* position);
 
-    EffectId effectId = effDamage;
-    int chance = 1; //higher mean less likely
-    double power = 1;
-    double time = 0;
-    double meta = 0;
-    //if effectId is effDamage: meta is DamageType
+    Effect effect = Effect();
+    int chance = 1; //higher mean less likely (1 out of chance)
+    EnchStyle style = eStyle_SelfToEnemy_EnemyEff;
 };
-
-string enchantmentName(Enchantment e);
 
 bool operator==(const Enchantment a, const Enchantment b);
 

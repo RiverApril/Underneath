@@ -70,7 +70,7 @@ namespace Ui {
             return;
         }else{
 
-            int slot = -1;
+            EquipSlot slot = slotNone;
             if(in == Key::fav1){
                 slot = slotFav1;
             }else if(in == Key::fav2){

@@ -176,7 +176,7 @@ void Entity::load(vector<unsigned char>* data, int* position) {
 
     fgColor = (char) Utility::loadUnsignedChar(data, position);
     bgColor = (char) Utility::loadUnsignedChar(data, position);
-    solidity = Utility::loadUnsignedInt(data, position);
+    solidity = (TileFlag)Utility::loadUnsignedInt(data, position);
 }
 
 Entity* Entity::loadNew(vector<unsigned char>* data, int* position) {

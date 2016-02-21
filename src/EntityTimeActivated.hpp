@@ -53,7 +53,7 @@ public:
     
 protected:
     string name = "";
-    TimeActivatedType timeActivatedType = 0;
+    TimeActivatedType timeActivatedType = timeActivatedDud;
     double timeLeft = 1;
     double power = 1;
     double radius = 4;

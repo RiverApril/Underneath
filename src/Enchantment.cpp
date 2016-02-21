@@ -9,44 +9,32 @@
 #include "Enchantment.hpp"
 #include "Utility.hpp"
 
-string enchantmentName(Enchantment e) {
-    return effectName(e.effectId, e.meta);
-}
-
 Enchantment::Enchantment(vector<unsigned char>* data, int* position) {
     load(data, position);
 }
 
-Enchantment::Enchantment(EffectId effectId, int chance, double power, double time, double meta) {
-    this->effectId = effectId;
+Enchantment::Enchantment(Effect effect, EnchStyle style, int chance) {
+    this->style = style;
+    this->effect = effect;
     this->chance = chance;
-    this->power = power;
-    this->time = time;
-    this->meta = meta;
 }
 
 void Enchantment::save(vector<unsigned char>* data) {
-    Utility::saveInt(data, effectId);
+    effect.save(data);
+    Utility::saveUnsignedChar(data, style);
     Utility::saveInt(data, chance);
-    Utility::saveDouble(data, power);
-    Utility::saveDouble(data, time);
-    Utility::saveDouble(data, meta);
 }
 
 void Enchantment::load(vector<unsigned char>* data, int* position) {
-    effectId = Utility::loadInt(data, position);
+    effect.load(data, position);
+    style = (EnchStyle)Utility::loadUnsignedChar(data, position);
     chance = Utility::loadInt(data, position);
-    power = Utility::loadDouble(data, position);
-    time = Utility::loadDouble(data, position);
-    meta = Utility::loadDouble(data, position);
 }
 
 bool operator==(const Enchantment a, const Enchantment b) {
-    return a.effectId == b.effectId
-            && a.chance == b.chance
-            && a.power == b.power
-    		&& a.time == b.time
-    		&& a.meta == b.meta;
+    return a.style == b.style
+    		&& a.chance == b.chance
+    		&& a.effect == b.effect;
 }
 
 bool operator!=(const Enchantment a, const Enchantment b) {

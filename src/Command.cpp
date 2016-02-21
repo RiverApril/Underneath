@@ -156,7 +156,7 @@ namespace Commands {
             if (mg) {
                 Effect e = Effect(effDamage, 10, 1);
                 if (arguments.size() > 0) {
-                    e.eId = Utility::parseInt(arguments[0].c_str());
+                    e.eId = (EffectId)Utility::parseInt(arguments[0].c_str());
                     if (arguments.size() > 1) {
                         e.timeLeft = Utility::parseInt(arguments[1].c_str());
                     }

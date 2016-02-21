@@ -32,6 +32,9 @@ namespace ItemGenerator {
     vector<PotionBase*> potionList;
     vector<int> potionChanceList;
 
+    vector<EnchantmentBase*> armorEnchantmentList;
+    vector<EnchantmentBase*> weaponEnchantmentList;
+
     vector<LootProfile*> lootProfileList;
 
     PotionBase* potionHealth;
@@ -119,27 +122,27 @@ namespace ItemGenerator {
         potionManaRegen = atl(new PotionBase({{"Mana Regeneration Potion"}}, {EffIdMeta(effHeal, 1)}, 2, 30, 1, 10), 50);
 
         potionPhysicalDefense = atl(new PotionBase({{"Physical Defense Potion"}}, {
-            EffIdMeta(effBuffDefense, damPierce),
-            EffIdMeta(effBuffDefense, damSharp),
-        	EffIdMeta(effBuffDefense, damBlunt)
-        }, 4, 60, .1, 1, false), 50);
+            EffIdMeta(effMultRecivedDamage, damPierce),
+            EffIdMeta(effMultRecivedDamage, damSharp),
+        	EffIdMeta(effMultRecivedDamage, damBlunt)
+        }, 4, 60, .9, .5, false), 50);
 
         potionElementalDefense = atl(new PotionBase({{"Elemental Defense Potion"}}, {
-            EffIdMeta(effBuffDefense, damFire),
-            EffIdMeta(effBuffDefense, damIce),
-            EffIdMeta(effBuffDefense, damShock)
-        }, 2, 30, .1, 1, false), 25);
+            EffIdMeta(effMultRecivedDamage, damFire),
+            EffIdMeta(effMultRecivedDamage, damIce),
+            EffIdMeta(effMultRecivedDamage, damShock)
+        }, 2, 30, .9, .7, false), 25);
 
         potionPhysicalAttack = atl(new PotionBase({{"Physical Attack Potion"}}, {
-            EffIdMeta(effBuffAttack, damPierce),
-            EffIdMeta(effBuffAttack, damSharp),
-            EffIdMeta(effBuffAttack, damBlunt)
+            EffIdMeta(effMultAttack, damPierce),
+            EffIdMeta(effMultAttack, damSharp),
+            EffIdMeta(effMultAttack, damBlunt)
         }, 4, 60, 1.1, 2, false), 50);
 
         potionElementalAttack = atl(new PotionBase({{"Elemental Attack Potion"}}, {
-            EffIdMeta(effBuffAttack, damFire),
-            EffIdMeta(effBuffAttack, damIce),
-            EffIdMeta(effBuffAttack, damShock)
+            EffIdMeta(effMultAttack, damFire),
+            EffIdMeta(effMultAttack, damIce),
+            EffIdMeta(effMultAttack, damShock)
         }, 2, 30, 1.1, 2, false), 25);
 
         //PotionBase potionPreventBad = atl(PotionBase({{"Purity Potion"}}, {EffIdMeta(effPurity, 0)}, 3, 30, 0, 0, false), 5);
@@ -151,9 +154,9 @@ namespace ItemGenerator {
         }, 2, 30, .1, 1, false));*/
 
 
-        scrollRemoteUse = atl(new ScrollBase({{"Scroll of Telekinesis", "Scrolls of Telekinesis"}}, spellRemoteUse));
-        scrollRelocate = atl(new ScrollBase({{"Scroll of Relocation", "Scrolls of Relocation"}}, spellRelocate));
-        scrollBarrier = atl(new ScrollBase({{"Scroll of Protection", "Scrolls of Protection"}}, spellBarrier));
+        scrollRemoteUse = atl(new ScrollBase({{"Telekinesis Scroll"}}, spellRemoteUse));
+        scrollRelocate = atl(new ScrollBase({{"Relocation Scroll"}}, spellRelocate));
+        scrollBarrier = atl(new ScrollBase({{"Protection Scroll"}}, spellBarrier));
 
 
         bombWallSmall = atl(new BombBase({{"Small Destructive Explosive", "Small Destructive Explosives"}}, timeActivatedWallBomb, 5, 10, 500, 1000, 1, 3));
@@ -173,17 +176,26 @@ namespace ItemGenerator {
         wBow = atl(new WeaponBase({{"Longbow"}, {"Bow"}, {"Recurve Bow"}}, .5, 1, damPierce, wepRanged))->ranged(20)->setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow});
         wCrossbow = atl(new WeaponBase({{"Crossbow"}, {"Scorpion"}}, 0.6, 0.8, damPierce, wepRanged))->ranged(10)->setArts({Arts::artCrossbow});
 
-        wFireItemCombatSpell = atl(new WeaponBase({{"Ignite Spell"}, {"Scorch Spell"}, {"Burn Spell"}}, 1, .2, damFire, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFire});
-        wFireItemCombatSpell->enchs.push_back(new EnchantmentBase(effDamage, 6, 12, 1, 2, 5, 10, damFire));
+        wFireItemCombatSpell = atl(new WeaponBase({{"Ignite Spell"}, {"Scorch Spell"}, {"Burn Spell"}}, 1, .8, damFire, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFire});
+        wFireItemCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damFire));
 
-        wFrostItemCombatSpell = atl(new WeaponBase({{"Freeze Spell"}, {"Chill Spell"}}, 1, .2, damIce, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFrost});
-        wFrostItemCombatSpell->enchs.push_back(new EnchantmentBase(effDamage, 6, 12, 1, 2, 5, 10, damIce));
+        wFrostItemCombatSpell = atl(new WeaponBase({{"Freeze Spell"}, {"Chill Spell"}}, 1, .8, damIce, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFrost});
+        wFrostItemCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damIce));
 
-        wShockItemCombatSpell = atl(new WeaponBase({{"Electrocute Spell"}, {"Shock Spell"}, {"Zap Spell"}}, 1, .2, damShock, wepMagic))->magical(8, 3)->setArts({Arts::artScrollShock});
-        wShockItemCombatSpell->enchs.push_back(new EnchantmentBase(effDamage, 6, 12, 1, 2, 5, 10, damShock));
+        wShockItemCombatSpell = atl(new WeaponBase({{"Electrocute Spell"}, {"Shock Spell"}, {"Zap Spell"}}, 1, .8, damShock, wepMagic))->magical(8, 3)->setArts({Arts::artScrollShock});
+        wShockItemCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damShock));
 
-        wHealingCombatSpell = atl(new WeaponBase({{"Healing Spell"}}, 0, .2, damNone, wepMagic))->magical(8, 3)->setArts({Arts::artScrollHeal});
-        wHealingCombatSpell->enchs.push_back(new EnchantmentBase(effHeal, 1, 1, 10, 30, 0, 0));
+        wHealingCombatSpell = atl(new WeaponBase({{"Healing Spell"}}, 0, .8, damNone, wepMagic))->magical(8, 3)->setArts({Arts::artScrollHeal});
+        wHealingCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effHeal, 1, 1, 10, 30, 0, 0));
+
+
+        atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effStun, 10, 30, 0, 0, 2, 5));
+        atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effMultRecivedDamage, 10, 20, .2, .5, 5, 10, damNone));
+        atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effMultAttack, 10, 20, .2, .5, 5, 10, damNone));
+        atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 10, 15, 1, 3, 5, 10, damBlood));
+
+        atlA(new EnchantmentBase(eStyle_EnemyToSelf_SelfEff, effMultAttack, 0, 0, 1.1, 1.5, 2, 5));
+        atlA(new EnchantmentBase(eStyle_EnemyToSelf_SelfEff, effPurity, 10, 20, 0, 0, 0, 0));
 
 
 
@@ -318,6 +330,16 @@ namespace ItemGenerator {
     BombBase* atl(BombBase* s) {
         bombBaseList.push_back(s);
         return s;
+    }
+
+    EnchantmentBase* atlA(EnchantmentBase* e) {
+        armorEnchantmentList.push_back(e);
+        return e;
+    }
+
+    EnchantmentBase* atlW(EnchantmentBase* e) {
+        weaponEnchantmentList.push_back(e);
+        return e;
     }
 
     int atl(LootProfile* lp){
@@ -581,7 +603,17 @@ namespace ItemGenerator {
     }
     
     Enchantment createEnchantmentFromBase(EnchantmentBase* base){
-        return Enchantment(base->effect, Random::randDouble(base->chance.x, base->chance.y), Random::randDouble(base->power.x, base->power.y), Random::randDouble(base->time.x, base->time.y), base->meta);
+        return Enchantment(Effect(base->effect, Random::randDouble(base->time.x, base->time.y), Random::randDouble(base->power.x, base->power.y), base->meta), base->style, Random::randDouble(base->chance.x, base->chance.y));
+    }
+
+    void applyRandomEnchantmentBaseToEnchantableBase(EnchantableBase* eb){
+        ArmorBase* ab = dynamic_cast<ArmorBase*>(eb);
+        WeaponBase* wb = dynamic_cast<WeaponBase*>(eb);
+        if(ab){
+            ab->enchs.push_back(armorEnchantmentList[rand()%armorEnchantmentList.size()]);
+        }else if(wb){
+            wb->enchs.push_back(weaponEnchantmentList[rand()%weaponEnchantmentList.size()]);
+        }
     }
 
     ItemArmor* createArmorFromBase(ArmorBase* base, int itemDifficulty){
@@ -745,16 +777,16 @@ namespace ItemGenerator {
 
                 for(Enchantment e : iw->enchantments){
                     double eValue = 0;
-                    switch(e.effectId){
+                    switch(e.effect.eId){
                         case effDamage:{
-                            eValue += e.power;
+                            eValue += e.effect.power;
                         }
                         default:{
-                            eValue += e.power / 3;
+                            eValue += e.effect.power / 3;
                         }
                     }
                     eValue += (50 - e.chance) * .25;
-                    eValue += (e.time) * .25;
+                    eValue += (e.effect.timeLeft) * .25;
                     value += eValue * .2;
                 }
 
@@ -770,9 +802,9 @@ namespace ItemGenerator {
 
                 for(Enchantment e : ia->enchantments){
                     double eValue = 0;
-                    switch(e.effectId){
+                    switch(e.effect.eId){
                         default:{
-                            eValue = e.power * .8;
+                            eValue = e.effect.power * .8;
                         }
                     }
                     value += eValue * .2;
@@ -890,13 +922,15 @@ namespace ItemGenerator {
             loots.emplace_back((int)(40), scrollRelocate);
             loots.emplace_back((int)(80), scrollRemoteUse);
             loots.emplace_back((int)(40), scrollBarrier);
+
+            loots.emplace_back((int)(100), smallKey);
             //loots.emplace_back((int)(20), repairHammer);
         }
         if(lp->magical){
-            loots.emplace_back((int)(20), potionMana);
-            loots.emplace_back((int)(40), potionManaRegen);
-            loots.emplace_back((int)(50), potionElementalAttack);
-            loots.emplace_back((int)(50), potionElementalDefense);
+            loots.emplace_back((int)(30), potionMana);
+            loots.emplace_back((int)(50), potionManaRegen);
+            loots.emplace_back((int)(60), potionElementalAttack);
+            loots.emplace_back((int)(60), potionElementalDefense);
         }
 
 
@@ -923,6 +957,15 @@ namespace ItemGenerator {
                 pair<int, ItemBase*> p = loots[rand()%loots.size()];
 
                 if(p.first > 0 && (rand()%p.first == 0)){
+
+                    EnchantableBase* eb = dynamic_cast<EnchantableBase*>(p.second);
+
+                    if(eb && lp->enchantChance > 0){
+                        if(rand() % lp->enchantChance == 0){
+                            applyRandomEnchantmentBaseToEnchantableBase(eb);
+                        }
+                    }
+
                     Item* it = createItemFromBase(p.second, difficulty);
                     if(it){
                         items.push_back(it);
@@ -931,6 +974,8 @@ namespace ItemGenerator {
                 }
             }
         }
+
+
         return items;
     }
 

@@ -14,18 +14,11 @@
 
 #define EFFECT_DELAY 1
 
-typedef int EffectId;
-
-const EffectId effDamage = 0;
-const EffectId effHeal = 1;
-const EffectId effBuffAttack = 2;
-const EffectId effBuffDefense = 3;
-const EffectId effLSD = 4;
-const EffectId effMemory = 5;
-const EffectId effPurity = 6;
-const EffectId effBuffAbility = 7;
+enum EffectId{effDamage, effHeal, effMultAttack, effMultRecivedDamage, effLSD, effMemory, effPurity, effBuffAbility, effStun};
 
 struct Effect {
+    Effect();
+
     Effect(vector<unsigned char>* data, int* position);
 
     Effect(EffectId eId, double timeLeft, double power, double meta = 0);

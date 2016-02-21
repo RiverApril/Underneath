@@ -19,10 +19,10 @@ string effectName(EffectId eid, double meta) {
         case effHeal:
             return "Heal";
 
-        case effBuffAttack:
+        case effMultAttack:
             return "Buff "+damageTypeName((DamageType) meta);
 
-        case effBuffDefense:
+        case effMultRecivedDamage:
             return "Resist "+damageTypeName((DamageType) meta);
 
         case effLSD:
@@ -37,6 +37,9 @@ string effectName(EffectId eid, double meta) {
         case effBuffAbility:
             return "Buff "+abilityNames[(size_t)meta];
 
+        case effStun:
+            return "Stun";
+
         default:
             return "UNDEFINED";
     }
@@ -50,10 +53,10 @@ Ui::Color effectColor(EffectId eid, double meta) {
         case effHeal:
             return C_LIGHT_GREEN;
 
-        case effBuffAttack:
+        case effMultAttack:
             return C_LIGHT_BLUE;
 
-        case effBuffDefense:
+        case effMultRecivedDamage:
             return C_LIGHT_BLUE;
 
         case effLSD:
@@ -66,6 +69,9 @@ Ui::Color effectColor(EffectId eid, double meta) {
             return C_LIGHT_BLUE;
 
         case effBuffAbility:
+            return C_LIGHT_YELLOW;
+
+        case effStun:
             return C_LIGHT_YELLOW;
 
         default:
@@ -81,11 +87,11 @@ string effectPowerString(EffectId eid, double power){
         case effHeal:
             return formatString("%.2f", power);
 
-        case effBuffAttack:
-            return Utility::intToRomanNumerals(power);
+        case effMultAttack:
+            return formatString("%.2f", power);
 
-        case effBuffDefense:
-            return Utility::intToRomanNumerals(power);
+        case effMultRecivedDamage:
+            return formatString("%.2f", power);
 
         case effLSD:
             return "";
@@ -98,6 +104,9 @@ string effectPowerString(EffectId eid, double power){
 
         case effBuffAbility:
             return formatString("%.2f", power);
+
+        case effStun:
+            return "";
             
         default:
             return formatString("%.2f", power);
@@ -112,10 +121,10 @@ bool isBadEffect(Effect e){
         case effHeal:
             return e.power < 0;
 
-        case effBuffAttack:
+        case effMultAttack:
             return e.power < 0;
 
-        case effBuffDefense:
+        case effMultRecivedDamage:
             return e.power < 0;
 
         case effLSD:
@@ -130,9 +139,16 @@ bool isBadEffect(Effect e){
         case effBuffAbility:
             return e.power < 0;
 
+        case effStun:
+            return true;
+
         default:
             return false;
     }
+}
+
+Effect::Effect(){
+    
 }
 
 Effect::Effect(vector<unsigned char>* data, int* position) {
@@ -158,7 +174,7 @@ void Effect::save(vector<unsigned char>* data) {
 }
 
 void Effect::load(vector<unsigned char>* data, int* position) {
-    eId = Utility::loadInt(data, position);
+    eId = (EffectId)Utility::loadInt(data, position);
     timeLeft = Utility::loadDouble(data, position);
     power = Utility::loadDouble(data, position);
     meta = Utility::loadDouble(data, position);

@@ -12,13 +12,21 @@
 #include "EntityAlive.hpp"
 #include "ItemGenerator.hpp"
 
-typedef int AiType;
+enum AiType{
+    aiNone = 0,
+    aiMoveRandom = 1 << 0,
+    aiAttack = 1 << 1,
+    aiFlee = 1 << 2,
+    aiAttackAndFleeAtLowHealth = 1 << 3,
+};
 
-const AiType aiNone = 0;
-const AiType aiMoveRandom = 1 << 0;
-const AiType aiAttack = 1 << 1;
-const AiType aiFlee = 1 << 2;
-const AiType aiAttackAndFleeAtLowHealth = 1 << 3;
+inline AiType operator| (AiType a, AiType b){
+    return static_cast<AiType>(static_cast<int>(a) | static_cast<int>(b));
+}
+
+inline AiType operator& (AiType a, AiType b){
+    return static_cast<AiType>(static_cast<int>(a) & static_cast<int>(b));
+}
 
 const double healthPercentLowerBoundry = .25;
 const double healthPercentUpperBoundry = .75;
@@ -75,16 +83,25 @@ public:
         return ai & aiAttack;
     }
 
-    double getAttackMultiplierFromEffects(DamageType damType){
+    double getAttackMultiplierFromEffectsAndEquips(DamageType damType){
         double d = 1;
         for(Effect eff : effects){
-            if(eff.eId == effBuffAttack){
-                if((int)eff.meta == damType){
-                    d += eff.power;
+            if(eff.eId == effMultRecivedDamage){
+                if((int)eff.meta == damType || eff.meta == damNone){
+                    d *= eff.power;
                 }
             }
         }
-        return d*attackMultiplier;
+        if(activeItemWeapon){
+            for(Enchantment e : activeItemWeapon->enchantments){
+                if(e.style == eStyle_SelfToEnemy_SelfEff && e.effect.eId == effMultRecivedDamage){
+                    if((int)e.effect.meta == damType || e.effect.meta == damNone){
+                        d *= e.effect.power;
+                    }
+                }
+            }
+        }
+        return d;
     }
 
 

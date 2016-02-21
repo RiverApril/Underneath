@@ -13,16 +13,7 @@
 #include "Item.hpp"
 #include "Math.hpp"
 
-typedef int SpellEffect;
-
-const SpellEffect spellRemoteUse = 0;
-const SpellEffect spellRelocate = 1;
-const SpellEffect spellBarrier = 2;
-
-const SpellEffect spellDebugPlaceWall = 101;
-const SpellEffect spellDebugPlaceFloor = 102;
-const SpellEffect spellDebugPlaceGoblin = 103;
-const SpellEffect spellDebugPlaceShop = 104;
+enum SpellEffect{spellRemoteUse, spellRelocate, spellBarrier, spellDebugPlaceWall, spellDebugPlaceFloor, spellDebugPlaceGoblin, spellDebugPlaceShop};
 
 class ItemUtilitySpell : public Item {
 public:
@@ -59,7 +50,7 @@ public:
         		&& (continuousUse == otherW->continuousUse);
     }
 
-    SpellEffect spellEffect = 0;
+    SpellEffect spellEffect = spellRelocate;
     double manaCost = 0; // -1 means one use without mana cost
     bool continuousUse = false;
 

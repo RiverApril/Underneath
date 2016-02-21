@@ -111,8 +111,8 @@ namespace Ui {
 
         mvprintw(b++, terminalSize.x/3*2, "Defenses:");
 
-        for (DamageType d = 0; d<damageTypeCount;d++) {
-            double dm = player->getDefenseMultiplierFromArmor(d);
+        for (DamageType d = damNone; d<damQty;d = (DamageType)((int)d+1)) {
+            double dm = 1.0 - player->getRecivedDamageMultiplierFromArmorAndEquips(d);
             if(dm > 0){
                 mvprintw(b++, terminalSize.x/3*2 + 2, "%s: %d%%", damageTypeName(d).c_str(), (int)(dm*100));
             }

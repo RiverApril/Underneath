@@ -31,9 +31,17 @@ EntityAi::~EntityAi() {
 }
 
 void EntityAi::lookAi(double time, Level* level){
-    if (target == nullptr) {
+    if (!target) {
         target = level->currentWorld->currentPlayer;
     }
+
+    if(!target || target->dead){
+        canSeeTarget = false;
+        agro = false;
+        return;
+    }
+
+    
 
     canSeeTarget = level->canSee(pos, target->pos, agro ? viewDistance * agroViewDistanceMultiplier : viewDistance);
     if (!canSeeTarget && agro) {
@@ -148,7 +156,7 @@ void EntityAi::moveAi(double time, Level* level) {
         bool pathEmpty = true;
         
 
-        if (lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
+        if (target && lastKnownTargetPos.x >= 0 && lastKnownTargetPos.y >= 0) {
             debugf("Last Known Target Position: %d,%d", lastKnownTargetPos.x, lastKnownTargetPos.y);
             ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
             double dis = distanceSquared(target->pos, pos);
@@ -239,7 +247,7 @@ void EntityAi::attackAi(double time, Level* level){
 
     bool attack = false;
     if (ai & aiAttack) {
-        if (activeItemWeapon != nullptr) {
+        if (activeItemWeapon != nullptr && target) {
             if (distanceSquared(pos, target->pos) <= 1) {
                 attack = true;
             } else {
@@ -256,7 +264,7 @@ void EntityAi::attackAi(double time, Level* level){
     }
     if (attack) {
         while (lastAttackTime + activeItemWeapon->useDelay <= time) {
-            double d = target->hurt(level, activeItemWeapon, getAttackMultiplierFromEffects(activeItemWeapon->damageType));
+            double d = target->hurt(level, activeItemWeapon, getAttackMultiplierFromEffectsAndEquips(activeItemWeapon->damageType));
             Verbalizer::attack(this, target, activeItemWeapon, d);
             ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(activeItemWeapon);
             BasicIcon* icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), C_BLACK);

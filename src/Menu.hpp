@@ -11,11 +11,7 @@
 
 #include "Ui.hpp"
 
-typedef char yesNo;
-
-const yesNo aYes = 'y';
-const yesNo aNo = 'n';
-const yesNo aUndefined = '?';
+enum yesNo{aYes, aNo, aUndefined};
 
 /*const char C_CODE_DARK_BLACK = '0';
 const char C_CODE_DARK_RED = '1';

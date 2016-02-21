@@ -290,6 +290,11 @@ namespace Arts {
             art->lines = fallback;
         }
         art->calcSize();
+        for(int i=0;i<art->lines.size();i++){
+            while(art->lines[i].size() < art->getSize().x){
+                art->lines[i] += " ";
+            }
+        }
         artList.push_back(art);
         return ((int) artList.size()) - 1;
     }

@@ -10,6 +10,8 @@
 
 string damageTypeName(DamageType d) {
     switch (d) {
+        case damNone:
+            return "Damage";
         case damSharp:
             return "Sharp";
         case damBlunt:
@@ -39,6 +41,8 @@ string damageTypeName(DamageType d) {
 
 Ui::Color damageTypeColor(DamageType d) {
     switch (d) {
+        case damNone:
+            return C_WHITE;
         case damSharp:
             return C_LIGHT_GRAY;
         case damBlunt:

@@ -48,7 +48,8 @@ namespace ItemGenerator {
         EnchantmentBase() {
         }
 
-        EnchantmentBase(EffectId effect, int chanceMin, int chanceMax, double powerMin, double powerMax, double timeMin, double timneMax, double meta = 0) {
+        EnchantmentBase(EnchStyle style, EffectId effect, int chanceMin, int chanceMax, double powerMin, double powerMax, double timeMin, double timneMax, double meta = 0) {
+            this->style = style;
             this->effect = effect;
             this->chance.x = chanceMin;
             this->chance.y = chanceMax;
@@ -63,6 +64,7 @@ namespace ItemGenerator {
         Point2 chance;
         Vector2 power;
         Vector2 time;
+        EnchStyle style;
         double meta;
     };
 
@@ -106,7 +108,11 @@ namespace ItemGenerator {
         int chance;
     };
 
-    struct ArmorBase : ItemBase{
+    struct EnchantableBase : ItemBase{
+        vector<EnchantmentBase*> enchs;
+    };
+
+    struct ArmorBase : EnchantableBase{
         ArmorBase(){
         }
 
@@ -118,7 +124,6 @@ namespace ItemGenerator {
         vector<vector<string>> names;
         vector<EquipSlot> viableSlots;
         vector<DefenseRange> defences;
-        vector<EnchantmentBase*> enchs;
         vector<int> arts = {-1};
 
         ArmorBase* setArts(vector<int> artIndecies) {
@@ -127,7 +132,7 @@ namespace ItemGenerator {
         }
     };
 
-    struct WeaponBase : ItemBase{
+    struct WeaponBase : EnchantableBase{
 
         WeaponBase() {
         }
@@ -176,7 +181,6 @@ namespace ItemGenerator {
         WeaponType weaponType = wepMelee;
         double range = -1;
         double manaCost = -1;
-        vector<EnchantmentBase*> enchs;
     };
 
     struct EffIdMeta {
@@ -220,7 +224,7 @@ namespace ItemGenerator {
         }
 
         vector<vector<string> >  names = {{""}};
-        SpellEffect eff = 0;
+        SpellEffect eff = spellRelocate;
     };
 
     struct BombBase : ItemBase{
@@ -262,6 +266,7 @@ namespace ItemGenerator {
             this->bases = bases;
         }
 
+        int enchantChance = 1; //higher mean less lickly, 1 = 100%, 10 = 10%, 20 = 5%, 50 = 2%
         double standard;
         double magical;
         bool canBeModifiedByRandomness = true;
@@ -276,7 +281,12 @@ namespace ItemGenerator {
     PotionBase* atl(PotionBase* p, int of100);
     ScrollBase* atl(ScrollBase* s);
     BombBase* atl(BombBase* b);
+
+    EnchantmentBase* atlA(EnchantmentBase* e);
+    EnchantmentBase* atlW(EnchantmentBase* e);
+
     int atl(LootProfile* lp);
+
 
 
     extern vector<ArmorBase*> armorList;
@@ -286,6 +296,9 @@ namespace ItemGenerator {
     extern vector<PotionBase*> potionList;
     extern vector<int> potionChanceList;
     extern vector<BombBase*> bombBaseList;
+
+    extern vector<EnchantmentBase*> armorEnchantmentList;
+    extern vector<EnchantmentBase*> weaponEnchantmentList;
 	
     extern vector<LootProfile*> lootProfileList;
 
@@ -371,6 +384,8 @@ namespace ItemGenerator {
     ItemTimeActivated* createBombFromBase(BombBase* base);
 
     Enchantment createEnchantmentFromBase(EnchantmentBase* base);
+
+    void applyRandomEnchantmentBaseToEnchantableBase(EnchantableBase* eb);
 
     //ItemWeapon* createItemWeaponFromType(WeaponType w, DamageType d, int itemDifficulty);
     //ItemWeapon* createItemWeaponFromType(WeaponType w, int itemDifficulty);

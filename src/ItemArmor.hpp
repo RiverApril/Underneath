@@ -26,12 +26,12 @@ struct Defense {
         Utility::saveDouble(data, amount);
     }
     void load(vector<unsigned char>* data, int* position){
-        damageType = Utility::loadInt(data, position);
+        damageType = (DamageType)Utility::loadInt(data, position);
         amount = Utility::loadDouble(data, position);
     }
     
     DamageType damageType;
-    double amount;
+    double amount; // incomingDamage * (1.0-amount) = actaulDamage
 };
 
 bool operator==(const Defense& a, const Defense& b);
@@ -60,11 +60,6 @@ public:
 
     virtual void load(vector<unsigned char>* data, int* position);
 
-    ItemArmor* addEnchantment(Enchantment e) {
-        enchantments.push_back(e);
-        return this;
-    }
-
     ItemArmor* addDefence(Defense e) {
         defenses.push_back(e);
         return this;
@@ -75,7 +70,6 @@ public:
         return (otherW)
         	&& ItemEquipable::equalsExceptQty(other)
             && (defenses == otherW->defenses)
-            && (enchantments == otherW->enchantments)
             && (viableSlots == otherW->viableSlots);
     }
 
@@ -84,8 +78,6 @@ public:
     }
 
     vector<Defense> defenses;
-    
-    vector<Enchantment> enchantments;
 
     vector<EquipSlot> viableSlots;
 
