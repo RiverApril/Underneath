@@ -55,7 +55,7 @@ namespace EnemyGenerator {
 
         ItemGenerator::WeaponBase* snakeWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
         snakeWeapon->damageType = damPierce;
-        snakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 20, 30, 1, 1, 10, 20, damPoison));
+        snakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 20, 30, 1, 1, 10, 20, damPoison));
         snake = atl(new EntityBase(15, "Serpant", 's', aiAttack, 75, snakeWeapon, "Fangs", C_LIGHT_BLUE, 1.0));
         snake->attackMultiplier *= .75;
         snake->lootProfileIndex = atl(new LootProfile(true, true, {}));
@@ -63,7 +63,7 @@ namespace EnemyGenerator {
 
 		ItemGenerator::WeaponBase* trollWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wMace);
         trollWeapon->damage *= 1.2;
-        trollWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 20, 25, 1, 5, 10, 20, damIce));
+        trollWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 20, 25, 1, 5, 10, 20, damIce));
         troll = atl(new EntityBase(10, "Troll", 't', aiAttack, 100, trollWeapon, "Cold Mace", C_LIGHT_RED, 1.5, 1));
         troll->weaknesses.push_back(Weakness(damFire, 4));
         troll->moveDelay = 1.8;
@@ -73,7 +73,7 @@ namespace EnemyGenerator {
 
         ItemGenerator::WeaponBase* wraithWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wAxe);
         wraithWeapon->damage *= 2;
-        wraithWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 10, 20, 5, 10, 5, 20, damBlood));
+        wraithWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 10, 20, 5, 10, 5, 20, damBlood));
         wraith = atl(new EntityBase(5, "Wraith", 'W', aiAttack, 200, wraithWeapon, "Bloody Double Axe", C_DARK_GRAY, 2.0, 2));
         wraith->weaknesses.push_back(Weakness(damFire, 2));
         wraith->weaknesses.push_back(Weakness(damIce, 2));
@@ -87,8 +87,8 @@ namespace EnemyGenerator {
 
         ItemGenerator::WeaponBase* drakeWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
         drakeWeapon->damage *= 3;
-        drakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 5, 10, 10, 15, 5, 10, damFire));
-        drakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effDamage, 30, 50, 10, 15, 20, 30, damFire));
+        drakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 5, 10, 10, 15, 5, 10, damFire));
+        drakeWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 30, 50, 10, 15, 20, 30, damFire));
         drake = atl(new EntityBase(1, "Drake", 'D', aiAttack, 500, drakeWeapon, "Teeth", C_LIGHT_RED, 2.0, 2));
         drake->weaknesses.push_back(Weakness(damSharp, .1));
         drake->weaknesses.push_back(Weakness(damBlunt, .1));
@@ -107,8 +107,8 @@ namespace EnemyGenerator {
 
 
         ItemGenerator::WeaponBase* myconidWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
-        myconidWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effLSD, 20, 30, 0, 0, 20, 40));
-        myconidWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(effMemory, 20, 30, 0, 0, 50, 100));
+        myconidWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effLSD, 20, 30, 0, 0, 20, 40, 0));
+        myconidWeapon->enchs.push_back(new ItemGenerator::EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effMemory, 20, 30, 0, 0, 50, 100, 0));
         myconid = atl(new EntityBase(20, "Myconid", 'm', aiAttack, 50, myconidWeapon, "Finger", C_LIGHT_MAGENTA, 1.0));
         myconid->weaknesses.push_back(Weakness(damFire, 4));
         myconid->attackMultiplier *= .5;

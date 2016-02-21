@@ -12,8 +12,7 @@
 #include "Global.hpp"
 #include "Item.hpp"
 #include "Abilities.hpp"
-
-//#define primaryLeftHand false
+#include "Enchantment.hpp"
 
 class ItemEquipable : public Item {
 public:
@@ -246,6 +245,13 @@ public:
     }
 
     Abilities<int> minimumAbilities = Abilities<int>(0);
+
+    ItemEquipable* addEnchantment(Enchantment e) {
+        enchantments.push_back(e);
+        return this;
+    }
+
+    vector<Enchantment> enchantments;
 
     bool operator< (ItemEquipable& b){
         if(this->getViableSlots().size() > 0 && b.getViableSlots().size() > 0){

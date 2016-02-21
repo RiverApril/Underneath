@@ -31,9 +31,7 @@ struct TileData {
     //Entity* entity = nullptr;
 };
 
-typedef int GenType;
-const GenType genTypeStartArea = 0;
-const GenType genTypeDungeon = 1;
+enum GenType{genTypeStartArea, genTypeDungeon};
 
 class Level {
 public:
@@ -85,9 +83,9 @@ public:
 
     int entityCount();
 
-    bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag = tileFlagIsTile, TileFlag bannedFlag = 0, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll);
+    bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag = tileFlagIsTile, TileFlag bannedFlag = tileFlagNone, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll);
 
-    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag = tileFlagIsTile, TileFlag bannedFlag = 0, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll);
+    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag = tileFlagIsTile, TileFlag bannedFlag = tileFlagNone, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll);
 
     Point2 generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel);
 

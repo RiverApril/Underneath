@@ -13,11 +13,7 @@
 #include "Item.hpp"
 #include "Abilities.hpp"
 
-typedef int SpecialType;
-const SpecialType specialtyCoin = 0;
-const SpecialType specialtyKey = 1;
-const SpecialType specialtyCompass = 2;
-const SpecialType specialtyRepairer = 3;
+enum SpecialType{specialtyCoin, specialtyKey, specialtyCompass, specialtyRepairer};
 
 
 class ItemSpecial : public Item {
@@ -42,7 +38,7 @@ public:
 
     virtual bool equalsExceptQty(Item* other);
 
-    SpecialType specialty = 0;
+    SpecialType specialty = specialtyCoin;
 
     bool operator< (ItemSpecial& b){
         return this->specialty < b.specialty;

@@ -14,6 +14,6 @@ void Weakness::save(vector<unsigned char>* data) {
 }
 
 void Weakness::load(vector<unsigned char>* data, int* position) {
-    damageType = Utility::loadInt(data, position);
+    damageType = (DamageType)Utility::loadInt(data, position);
     multiplier = Utility::loadDouble(data, position);
 }

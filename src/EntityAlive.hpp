@@ -98,12 +98,12 @@ public:
 
     int viewDistance = 10;
 
-    double getDefenseMultiplierFromEffects(DamageType damType){
-        double d = 0;
+    virtual double getRecivedDamageMultiplierFromEffects(DamageType damType){
+        double d = 1;
         for(Effect eff : effects){
-            if(eff.eId == effBuffDefense){
-                if((int)eff.meta == damType){
-                    d += eff.power;
+            if(eff.eId == effMultRecivedDamage){
+                if((int)eff.meta == damType || eff.meta == damNone){
+                    d *= eff.power;
                 }
             }
         }

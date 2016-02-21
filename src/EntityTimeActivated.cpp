@@ -10,7 +10,7 @@
 #include "Level.hpp"
 #include "Animator.hpp"
 
-EntityTimeActivated::EntityTimeActivated() : EntityTimeActivated("", 0, 1, 1, 2, Point2Zero) {
+EntityTimeActivated::EntityTimeActivated() : EntityTimeActivated("", timeActivatedDud, 1, 1, 2, Point2Zero) {
 
 }
 
@@ -53,6 +53,8 @@ void EntityTimeActivated::activate(Level* level){
         case timeActivatedWallBomb:
             level->explode(pos, radius, power, true);
             Animator::renderExposion(pos, radius, level, 1);
+            break;
+        default:
             break;
 
     }
@@ -97,7 +99,7 @@ void EntityTimeActivated::save(vector<unsigned char>* data) {
 void EntityTimeActivated::load(vector<unsigned char>* data, int* position) {
     Entity::load(data, position);
     name = Utility::loadString(data, position);
-    timeActivatedType = Utility::loadInt(data, position);
+    timeActivatedType = (TimeActivatedType)Utility::loadInt(data, position);
     timeLeft = Utility::loadDouble(data, position);
     power = Utility::loadDouble(data, position);
     radius = Utility::loadDouble(data, position);

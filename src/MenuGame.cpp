@@ -33,8 +33,8 @@ namespace Ui {
 
         printConsoleByDefault = false;
 
-        move(0, 0);
-        clrtobot();
+        //move(0, 0);
+        //clrtobot();
         //refresh();
 
         initSuccess = init(worldName, playerAbilities);
@@ -200,14 +200,12 @@ namespace Ui {
 
         bool inView = false;
         if (currentLevel) {
-            if(currentPlayer){
+            if(currentPlayer && !currentPlayer->dead){
                 if ((currentLevel->canSee(p, currentPlayer->pos, currentPlayer->viewDistance) || Settings::seeEverything)) {
                     inView = true;
                 }
             }else{
-                if ((currentLevel->canSee(p, viewPos+(gameArea/2), 1000) || Settings::seeEverything)) {
-                    inView = true;
-                }
+                inView = true;
             }
             if(inView){
                 currentLevel->setExplored(p, true);
@@ -674,7 +672,7 @@ namespace Ui {
                         vector<Point2> path;
 
                         for(Point2 p : possibilityList){
-                            path = currentLevel->getPathTo(p, currentPlayer->pos, tileFlagPathable, 0, true, true);
+                            path = currentLevel->getPathTo(p, currentPlayer->pos, tileFlagPathable, tileFlagNone, true, true);
                             if(path.size() > 0){
                                 if(next == Point2Neg1 || next == path[0]){
                                     next = path[0];
@@ -779,7 +777,7 @@ namespace Ui {
                     }
                 }
             }else {
-                int slot = -1;
+                EquipSlot slot = slotNone;
                 if(in == Key::fav1){
                     slot = slotFav1;
                 }else if(in == Key::fav2){
@@ -902,6 +900,8 @@ namespace Ui {
                 openMenu(new MenuMessage(message));
                 currentPlayer->leveledUp = false;
             }
+        }else{
+            timePassed += 1;
         }
 
     }
@@ -972,10 +972,8 @@ namespace Ui {
             for (size_t i = 0; i < currentPlayer->effects.size(); i++) {
                 Effect eff = currentPlayer->effects[i];
                 setColor(effectColor(eff.eId, eff.meta));
-                if(eff.eId == effBuffDefense){
+                if(eff.eId == effMultRecivedDamage || eff.eId == effMultAttack){
                     a += printMultiLineString(a, gameArea.x + 1, formatString("%s %d%% for %.2ft", effectName(eff.eId, eff.meta).c_str(), (int)(eff.power*100), eff.timeLeft));
-                }else if(eff.eId == effBuffAttack){
-                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %c%d%% for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.power>0?'+':'-', (int)abs((eff.power*100)-100), eff.timeLeft));
                 }else{
                     if(eff.power != 0){
                     	a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.power, eff.timeLeft));
@@ -1030,9 +1028,26 @@ namespace Ui {
                         const int hp = roundToInt(alive->getHp());
                         const int maxHp = roundToInt(alive->getMaxHp());
 
-                        a += printMultiLineColoredString(a, gameArea.x + 2, formatString("HP: &%c%s&%c ", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (gameArea.x + 1) - 5)).c_str(), cc(C_WHITE)) );
+                        a += printMultiLineColoredString(a, gameArea.x + 2, formatString("HP: &%c%s&%c ", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (gameArea.x + 1) - 5)).c_str(), cc(C_WHITE)));
+
+                        for (size_t i = 0; i < alive->effects.size(); i++) {
+                            Effect eff = alive->effects[i];
+                            setColor(effectColor(eff.eId, eff.meta));
+                            if(eff.eId == effMultRecivedDamage || eff.eId == effMultAttack){
+                                a += printMultiLineString(a, gameArea.x + 1, formatString("%s %d%%", effectName(eff.eId, eff.meta).c_str(), (int)(eff.power*100)));
+                            }else{
+                                if(eff.power != 0){
+                                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f", effectName(eff.eId, eff.meta).c_str(), eff.power));
+                                }else{
+                                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s", effectName(eff.eId, eff.meta).c_str()));
+                                }
+                            }
+                        }
                     }
                     a++;
+
+
+
                 }
 
             }

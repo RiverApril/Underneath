@@ -632,12 +632,16 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
 
 void Level::placeNewEntityAi(EntityAi* e, Point2 entrance) {
     Point2 p;
+    int attmpts = 0;
     do {
         p = Point2(findRandomWithoutFlag(e->solidity));
-    } while (!canPathTo(entrance, p, tileFlagPathable) || canPathTo(entrance, p, tileFlagIsTile, e->solidity));
+        attmpts++;
+    } while ((!canPathTo(entrance, p, tileFlagPathable) || canPathTo(entrance, p, tileFlagIsTile, e->solidity)) && attmpts < 1000);
 
-    e->pos = p;
-    newEntity(e);
+    if(attmpts < 1000){
+    	e->pos = p;
+    	newEntity(e);
+    }
 }
 
 void Level::save(vector<unsigned char>* data) {

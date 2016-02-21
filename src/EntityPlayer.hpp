@@ -54,6 +54,8 @@ public:
 
     virtual double hurt(Level* level, ItemWeapon* w, double damageMultiplier = 1);
 
+    double hurtMiddleStep(Level* level, DamageType damageType, double damageMultiplier);
+
     virtual double heal(double amount) {
         double a = EntityAlive::heal(amount);
         return a;
@@ -115,9 +117,9 @@ public:
 
     int xpForLevel(int l);
 
-    double getDefenseMultiplierFromArmor(DamageType damType/*, bool reduceDurability*/);
+    double getRecivedDamageMultiplierFromArmorAndEquips(DamageType damType/*, bool reduceDurability*/);
 
-    double getAttackMultiplierFromEffectsAndArmor(DamageType damType);
+    virtual double getAttackMultiplierFromEffectsAndEquips(DamageType damType);
 
 
     double useDelay(Item* item);

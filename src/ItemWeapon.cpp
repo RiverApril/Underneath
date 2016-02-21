@@ -38,7 +38,7 @@ void ItemWeapon::load(vector<unsigned char>* data, int* position) {
     ItemEquipable::load(data, position);
 
     baseDamage = Utility::loadDouble(data, position);
-    damageType = Utility::loadInt(data, position);
+    damageType = (DamageType)Utility::loadInt(data, position);
     useDelay = Utility::loadDouble(data, position);
 
     int size = Utility::loadInt(data, position);

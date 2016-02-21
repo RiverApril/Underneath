@@ -20,11 +20,6 @@ ItemArmor::ItemArmor(EquipSlot viableSlot, vector<Defense> defenses, string name
 void ItemArmor::save(vector<unsigned char>* data) {
     ItemEquipable::save(data);
 
-    Utility::saveInt(data, (int) enchantments.size());
-    for (Enchantment ench : enchantments) {
-        ench.save(data);
-    }
-
     Utility::saveInt(data, (int) defenses.size());
     for (Defense def : defenses) {
         def.save(data);
@@ -41,17 +36,12 @@ void ItemArmor::load(vector<unsigned char>* data, int* position) {
 
     int size = Utility::loadInt(data, position);
     for (int i = 0; i < size; i++) {
-        enchantments.push_back(Enchantment(data, position));
-    }
-
-    size = Utility::loadInt(data, position);
-    for (int i = 0; i < size; i++) {
         defenses.push_back(Defense(data, position));
     }
 
     size = Utility::loadInt(data, position);
     for (int i = 0; i < size; i++) {
-        viableSlots.push_back(Utility::loadInt(data, position));
+        viableSlots.push_back((EquipSlot)Utility::loadInt(data, position));
     }
 }
 

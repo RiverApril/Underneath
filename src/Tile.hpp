@@ -13,20 +13,30 @@
 #include "Ui.hpp"
 #include "Icon.hpp"
 
-typedef unsigned int TileFlag;
-const TileFlag tileFlagSolidOnGround = 1 << 0;
-const TileFlag tileFlagSolidInAir = 1 << 1;
-const TileFlag tileFlagSolidBoth = tileFlagSolidOnGround | tileFlagSolidInAir;
-const TileFlag tileFlagDoor = 1 << 2;
-const TileFlag tileFlagPathable = 1 << 3;
-const TileFlag tileFlagSecretPathable = 1 << 4;
-const TileFlag tileFlagHasTileEntity = 1 << 5;
-const TileFlag tileFlagIndestructable = 1 << 6;
-const TileFlag tileFlagReplaceable = 1 << 7;
-const TileFlag tileFlagFlammable = 1 << 8;
-const TileFlag tileFlagIsTile = 1 << 9;
+enum TileFlag{
+    tileFlagNone = 0,
+    tileFlagSolidOnGround = 1 << 0,
+    tileFlagSolidInAir = 1 << 1,
+    tileFlagSolidBoth = tileFlagSolidOnGround | tileFlagSolidInAir,
+    tileFlagDoor = 1 << 2,
+    tileFlagPathable = 1 << 3,
+    tileFlagSecretPathable = 1 << 4,
+    tileFlagHasTileEntity = 1 << 5,
+    tileFlagIndestructable = 1 << 6,
+    tileFlagReplaceable = 1 << 7,
+    tileFlagFlammable = 1 << 8,
+    tileFlagIsTile = 1 << 9,
 
-const TileFlag tileFlagAll = tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable | tileFlagFlammable | tileFlagIsTile;
+    tileFlagAll = tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable | tileFlagFlammable | tileFlagIsTile,
+};
+
+inline TileFlag operator| (TileFlag a, TileFlag b){
+    return static_cast<TileFlag>(static_cast<int>(a) | static_cast<int>(b));
+}
+
+inline TileFlag operator& (TileFlag a, TileFlag b){
+    return static_cast<TileFlag>(static_cast<int>(a) & static_cast<int>(b));
+}
 
 
 

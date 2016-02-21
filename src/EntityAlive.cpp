@@ -45,6 +45,12 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
         }else if(tile->getIndex() == Tiles::tileFire->getIndex()){
             addEffect(Effect(effDamage, Random::randDouble(4, 8), 1, damFire));
         }
+
+        if(hp<maxHp && ((int)hp)>0 && rand() % (int)(((double)hp/maxHp)*100.0) == 0){
+            if(tile->hasAllOfFlags(tileFlagReplaceable)){
+                level->setTile(pos, Tiles::tileBloodFloor);
+            }
+        }
         
         heal((healMultiplier*healBase)*deltaTime);
         healMana((healManaMultiplier*healManaBase)*deltaTime);
@@ -61,7 +67,7 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
 
             switch (e->eId) {
                 case effDamage:
-                    hurt(level, (int) e->meta, e->power * m);
+                    hurt(level, (DamageType)(int)e->meta, e->power * m);
                     switch ((DamageType)(int)e->meta) {
                         case damBlood:
                             if(level->tileAt(pos)->hasAllOfFlags(tileFlagReplaceable)){
@@ -80,12 +86,14 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
                         healMana(e->power * m);
                     }
                     break;
-                case effBuffAttack:
-                case effBuffDefense:
+                case effMultAttack:
+                case effMultRecivedDamage:
                     //Applies on damage and hurt
                     break;
                 case effPurity:
                     removebad = true;
+                    break;
+                default:
                     break;
 
             }
@@ -122,7 +130,7 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
 
 double EntityAlive::hurt(Level* level, DamageType damageType, double amount, double damageMultiplier) {
 
-    damageMultiplier *= 1.0 - getDefenseMultiplierFromEffects(damageType);
+    damageMultiplier *= getRecivedDamageMultiplierFromEffects(damageType);
 
     amount *= damageMultiplier;
 
@@ -149,7 +157,6 @@ double EntityAlive::hurt(Level* level, DamageType damageType, double amount, dou
         consolef("Dodged!");
     }*/
 
-
     hp -= amount;
     if (hp <= 0 && !dead) {
         die();
@@ -160,8 +167,8 @@ double EntityAlive::hurt(Level* level, DamageType damageType, double amount, dou
 double EntityAlive::hurt(Level* level, ItemWeapon* w, double damageMultiplier) {
     double d = w->baseDamage * Random::randDouble(.5, 1);
     for (Enchantment ench : w->enchantments) {
-        if (rand() % ench.chance == 0) {
-            addEffect(Effect(ench.effectId, ench.time, ench.power, ench.meta));
+        if (ench.style == eStyle_SelfToEnemy_EnemyEff && rand() % ench.chance == 0) {
+            addEffect(ench.effect);
         }
     }
 
@@ -200,6 +207,7 @@ double EntityAlive::heal(double amount) {
         hp = maxHp;
         return a;
     }
+
     return amount;
 }
 
@@ -213,6 +221,7 @@ double EntityAlive::healMana(double amount) {
         mp = maxMp;
         return a;
     }
+
     return amount;
 }
 

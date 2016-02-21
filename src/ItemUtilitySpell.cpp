@@ -20,7 +20,7 @@ void ItemUtilitySpell::save(vector<unsigned char>* data) {
 void ItemUtilitySpell::load(vector<unsigned char>* data, int* position) {
     Item::load(data, position);
 
-    spellEffect = Utility::loadInt(data, position);
+    spellEffect = (SpellEffect)Utility::loadInt(data, position);
     manaCost = Utility::loadDouble(data, position);
     continuousUse = Utility::loadBool(data, position);
 }

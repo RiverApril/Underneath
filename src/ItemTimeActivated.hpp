@@ -12,10 +12,7 @@
 #include "Global.hpp"
 #include "Item.hpp"
 
-typedef int TimeActivatedType;
-const TimeActivatedType timeActivatedBomb = 0;
-const TimeActivatedType timeActivatedWallBomb = 1;
-const TimeActivatedType timeActivatedDud = 2;
+enum TimeActivatedType{timeActivatedBomb, timeActivatedWallBomb, timeActivatedDud};
 
 
 class ItemTimeActivated : public Item {
@@ -40,7 +37,7 @@ public:
 
     virtual bool equalsExceptQty(Item* other);
 
-    TimeActivatedType timeActivatedType = 0;
+    TimeActivatedType timeActivatedType = timeActivatedDud;
     double time = 1;
     double power = 1;
     double radius = 4;

@@ -357,25 +357,25 @@ namespace Ui {
             a++;
             a += printMultiLineString(a, columnX, formatString("Enchantments:"));
             for (Enchantment e : enchantments) {
-                setColor(effectColor(e.effectId, e.meta));
-                string s = "   "+enchantmentName(e);
-                string ss = effectPowerString(e.effectId, e.power);
-                if(e.power != 1 || ss.size() > 0){
+                setColor(effectColor(e.effect.eId, e.effect.meta));
+                string s = "   "+effectName(e.effect.eId, e.effect.meta);
+                string ss = effectPowerString(e.effect.eId, e.effect.power);
+                if(e.effect.power != 1 || ss.size() > 0){
                     s += " "+ss;
                 }
-                if(e.chance != 1 || e.time > 0){
+                if(e.chance != 1 || e.effect.timeLeft > 0){
                     s += " (";
                 }
                 if(e.chance != 1){
                     s += formatString("1/%d", e.chance);
                 }
-                if(e.chance != 1 && e.time > 0){
+                if(e.chance != 1 && e.effect.timeLeft > 0){
                     s += ", ";
                 }
-                if(e.time > 0){
-                    s += formatString("lasts for %.2ft", e.time);
+                if(e.effect.timeLeft > 0){
+                    s += formatString("lasts for %.2ft", e.effect.timeLeft);
                 }
-                if(e.chance != 1 || e.time > 0){
+                if(e.chance != 1 || e.effect.timeLeft > 0){
                     s += ")";
                 }
                 a += printMultiLineString(a, columnX, s);
@@ -580,10 +580,8 @@ namespace Ui {
                     } else {
                         for (Effect e : potion->effects) {
                             if (e.timeLeft > 0) {
-                                if(e.eId == effBuffDefense){
+                                if(e.eId == effMultRecivedDamage || e.eId == effMultAttack){
                                     a += printMultiLineString(a, columnX, formatString("   %s %d%% for %.2ft", effectName(e.eId, e.meta).c_str(), (int)(e.power*100), e.timeLeft));
-                                }else if(e.eId == effBuffAttack){
-                                    a += printMultiLineString(a, columnX, formatString("   %s %c%d%% for %.2ft", effectName(e.eId, e.meta).c_str(), e.power>0?'+':'-', (int)abs((e.power*100)-100), e.timeLeft));
                                 }else{
                                     if(e.power == 0){
                                         a += printMultiLineString(a, columnX, formatString("   %s for %.2ft", effectName(e.eId, e.meta).c_str(), e.timeLeft));
@@ -735,6 +733,8 @@ namespace Ui {
                             printMultiLineString(a++, columnX, formatString("+%d durability on use.", player->repairToolPower()));
                             break;
                         }
+                        default:
+                            break;
                     }
                 } else if(itemTimeActivated){
                     switch (itemTimeActivated->timeActivatedType) {
@@ -743,6 +743,8 @@ namespace Ui {
                             a += printMultiLineString(a, columnX, formatString("Damage: %.2f", itemTimeActivated->power));
                             a += printMultiLineString(a, columnX, formatString("Radius: %.2f", itemTimeActivated->radius));
                             a += printMultiLineString(a, columnX, formatString("Fuse: %.2f", itemTimeActivated->time));
+                            break;
+                        default:
                             break;
                     }
                     switch (itemTimeActivated->timeActivatedType) {
@@ -753,6 +755,8 @@ namespace Ui {
                         case timeActivatedBomb:
                             setColor(C_LIGHT_RED);
                             a += printMultiLineString(a, columnX, "Will not destroy tiles.");
+                            break;
+                        default:
                             break;
                     }
                     setColor(C_WHITE);

@@ -43,7 +43,7 @@ void ItemTimeActivated::save(vector<unsigned char>* data){
 
 void ItemTimeActivated::load(vector<unsigned char>* data, int* position){
     Item::load(data, position);
-    timeActivatedType = Utility::loadInt(data, position);
+    timeActivatedType = (TimeActivatedType)Utility::loadInt(data, position);
     time = Utility::loadDouble(data, position);
     power = Utility::loadDouble(data, position);
     radius = Utility::loadDouble(data, position);

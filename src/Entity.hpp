@@ -92,7 +92,7 @@ public:
     Ui::Color fgColor;
     Ui::Color bgColor;
 
-    TileFlag solidity = 0;
+    TileFlag solidity = tileFlagNone;
 
 protected:
     Point2 lastPos;
