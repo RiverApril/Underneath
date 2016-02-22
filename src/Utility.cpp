@@ -453,6 +453,31 @@ namespace Utility {
         process(x, y-1);
     }
 
+    void spreadUnexploredTileExecute(Level* level, Point2 pos, int tileIndex, function<void(int, int)> process){
+        vector<vector<char>> grid = vector<vector<char>>(level->size.x, vector<char>(level->size.y));
+
+        for(int i=0;i<level->size.x;i++){
+            for(int j=0;j<level->size.y;j++){
+                grid[i][j] = 'u';
+            }
+        }
+
+        execute4Around(pos.x, pos.y, [level, &tileIndex, &process, &grid](int x, int y){
+            spreadUnexploredTileExecute_SUB_ORDER(level, Point2(x, y), tileIndex, process, grid);
+        });
+
+    }
+
+    void spreadUnexploredTileExecute_SUB_ORDER(Level* level, Point2 pos, int tileIndex, function<void(int, int)> process, vector<vector<char>>& grid){
+        if(grid[pos.x][pos.y] == 'u' && level->indexAt(pos) == tileIndex && !level->getExplored(pos)){
+            grid[pos.x][pos.y] = 'x';
+            process(pos.x, pos.y);
+            execute4Around(pos.x, pos.y, [level, &tileIndex, &process, &grid](int x, int y){
+                spreadUnexploredTileExecute_SUB_ORDER(level, Point2(x, y), tileIndex, process, grid);
+            });
+        }
+    }
+
     vector<Point2> plotLine(Point2 a, Point2 b){
         vector<Point2> line = vector<Point2>();
 

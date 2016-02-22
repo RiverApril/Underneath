@@ -636,12 +636,12 @@ void Level::placeNewEntityAi(EntityAi* e, Point2 entrance) {
     do {
         p = Point2(findRandomWithoutFlag(e->solidity));
         attmpts++;
-    } while ((!canPathTo(entrance, p, tileFlagPathable) || canPathTo(entrance, p, tileFlagIsTile, e->solidity)) && attmpts < 1000);
-
-    if(attmpts < 1000){
-    	e->pos = p;
-    	newEntity(e);
-    }
+        if(canPathTo(entrance, p, tileFlagPathable) && !canSee(entrance, p, e->viewDistance*2)){
+            e->pos = p;
+            newEntity(e);
+            return;
+        }
+    } while (attmpts < 1000);
 }
 
 void Level::save(vector<unsigned char>* data) {

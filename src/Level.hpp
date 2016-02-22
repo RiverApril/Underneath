@@ -149,9 +149,9 @@ public:
 
     Point2 stairDownPos;
 
-private:
-
     Point2 size;
+
+private:
 
     vector<vector<TileData> > tileGrid;
 

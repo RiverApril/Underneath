@@ -314,6 +314,17 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                 return interactDelay;
             }
         } else if (Tiles::tileList[tid]->hasAllOfFlags(tileFlagDoor)) {
+
+            EnemyGenerator::setIntervals(level->getDifficulty());
+
+            Utility::spreadUnexploredTileExecute(level, posOfTile, Tiles::tileFloor->getIndex(), [level](int x, int y){
+                if(rand() % 30 == 0){
+                    EntityAi* e = EnemyGenerator::makeRandomEntity(level->getDifficulty());
+                    e->pos = Point2(x, y);
+                    level->newEntity(e);
+                }
+            });
+
             if(Tiles::tileList[tid]->getIndex() == Tiles::tileSecretDoor->getIndex()){
                 consolef("You found a secret door!");
             }
