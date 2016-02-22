@@ -18,8 +18,11 @@ namespace Ui {
 
         MenuDialog(vector<string> messageList, vector<string> dialogOptions, function<void(MenuDialog*, int)> afterClose, bool escapable = true, int defaultSelect = 0);
 
-        ~MenuDialog() {
-        }
+        ~MenuDialog() {}
+
+        virtual bool openUi();
+
+        virtual void closeUi();
 
         void handleInput(int in);
         void update();
@@ -29,6 +32,8 @@ namespace Ui {
         bool escapable;
         vector<string> messageList;
         vector<string> dialogOptions;
+
+        int scrollTick;
 
         
     };

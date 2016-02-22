@@ -16,6 +16,16 @@ namespace Ui {
         this->dialogOptions = dialogOptions;
         this->afterClose = afterClose;
         this->selected = defaultSelect;
+        scrollTick = 0;
+    }
+
+    bool MenuDialog::openUi(){
+        timeout(fastTimeout);
+        return true;
+    }
+
+    void MenuDialog::closeUi(){
+        timeout(defaultTimeout);
     }
 
     void MenuDialog::handleInput(int in) {
@@ -45,15 +55,24 @@ namespace Ui {
         move(0, 0);
         clrtobot();
         int y = (int)(terminalSize.y - (messageList.size()+2+dialogOptions.size())) / 2;
+        int t = 0;
         for(string line : messageList){
-            printCenter(y++, line);
+            if(t < scrollTick){
+                printCenter(y++, line.substr(0, scrollTick-t));
+                t += line.size();
+            }
         }
         y+=2;
         int i = 0;
         for(string line : dialogOptions){
-            printCenter(y++, formatString("%s %s %s", selected == i?"-":" ", line.c_str(), selected == i?"-":" "));
+            if(t < scrollTick){
+                printCenter(y++, formatString("%s %s %s", selected == i?"-":" ", line.substr(0, scrollTick-t).c_str(), selected == i?"-":" "));
+                t += line.size();
+            }
             i++;
         }
+
+        scrollTick++;
 
 
 

@@ -68,9 +68,9 @@ public:
 
     bool hasEffect(EffectId eid);
 
-    virtual double heal(double amount);
+    virtual double heal(double amount, bool overload);
 
-    virtual double healMana(double amount);
+    virtual double healMana(double amount, bool overload);
 
     virtual void save(vector<unsigned char>* data);
 
