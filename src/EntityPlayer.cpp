@@ -405,7 +405,13 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             level->removeEntity(e, true);
             return 0;
         }else if(is){
-            level->currentWorld->menuGame->openMenu(new Ui::MenuDialog({"Welcome! I'm glad I found someone down here.", "Would you like to trade wares?"}, {"Trade", "No thanks"}, [this, &is, &level](Ui::MenuDialog* menu, int result){
+            vector<string> message;
+            if(rand()%5 == 0){
+                message = {"It's dangerous to go alone", "", "", "...but I'm not coming with you."};
+            }else{
+                message = {"Welcome! I'm glad I found someone down here.", "Would you like to trade wares?"};
+            }
+            level->currentWorld->menuGame->openMenu(new Ui::MenuDialog(message, {"Trade", "No thanks"}, [this, &is, &level](Ui::MenuDialog* menu, int result){
                 if(result == 0){
                     menu->surMenu->openMenu(new Ui::MenuShop(is, this, level->currentWorld));
                 }
@@ -477,9 +483,25 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                 double d = a->hurt(level, weapon, x);
                 Verbalizer::attack(this, a, weapon, d);
 
-                BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
-                Animator::renderRangedAttack(pos, posOfEntity, icon, level, 1);
-                delete icon;
+                if(ranged){
+                    switch (ranged->rangedType) {
+                        case rangedUnlimited:
+                            break;
+
+                        case rangedOneUse:
+                            removeItem(ranged, true);
+                            break;
+                        case rangedOneUseRecoverable:
+                            if(distanceSquared(posOfEntity, pos) > 1){
+                            	removeItem(ranged, false);
+                            	level->newEntity(new EntityItem(ranged, posOfEntity));
+                            }
+                            break;
+                    }
+                    BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
+                    Animator::renderRangedAttack(pos, posOfEntity, icon, level, 1);
+                    delete icon;
+                }
 
                 return useDelay(item);
             }

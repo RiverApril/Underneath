@@ -52,8 +52,8 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
             }
         }
         
-        heal((healMultiplier*healBase)*deltaTime);
-        healMana((healManaMultiplier*healManaBase)*deltaTime);
+        heal((healMultiplier*healBase)*deltaTime, false);
+        healMana((healManaMultiplier*healManaBase)*deltaTime, false);
             
         healMultiplier *= 1+(.01*deltaTime);
         healManaMultiplier *= 1+(.01*deltaTime);
@@ -81,9 +81,9 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
                     break;
                 case effHeal:
                     if ((int)e->meta == 0) {
-                        heal(e->power * m);
+                        heal(e->power * m, e->timeLeft == 0);
                     } else if ((int)e->meta == 1) {
-                        healMana(e->power * m);
+                        healMana(e->power * m, e->timeLeft == 0);
                     }
                     break;
                 case effMultAttack:
@@ -165,7 +165,7 @@ double EntityAlive::hurt(Level* level, DamageType damageType, double amount, dou
 }
 
 double EntityAlive::hurt(Level* level, ItemWeapon* w, double damageMultiplier) {
-    double d = w->baseDamage * Random::randDouble(.5, 1);
+    double d = w->baseDamage * Random::randDouble(.8, 1);
     for (Enchantment ench : w->enchantments) {
         if (ench.style == eStyle_SelfToEnemy_EnemyEff && rand() % ench.chance == 0) {
             addEffect(ench.effect);
@@ -197,12 +197,12 @@ bool EntityAlive::hasEffect(EffectId eid){
     return false;
 }
 
-double EntityAlive::heal(double amount) {
+double EntityAlive::heal(double amount, bool overload) {
     if (dead) {
         return 0;
     }
     hp += amount;
-    if (hp > maxHp) {
+    if (hp > maxHp && !overload) {
         double a = amount - (hp - maxHp);
         hp = maxHp;
         return a;
@@ -211,12 +211,12 @@ double EntityAlive::heal(double amount) {
     return amount;
 }
 
-double EntityAlive::healMana(double amount) {
+double EntityAlive::healMana(double amount, bool overload) {
     if (dead) {
         return 0;
     }
     mp += amount;
-    if (mp > maxMp) {
+    if (mp > maxMp && !overload) {
         double a = amount - (mp - maxMp);
         mp = maxMp;
         return a;

@@ -40,11 +40,12 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
         for (int j = 0; j < size.y; j++) {
             Point2 here = Point2(i, j);
 
-            setTile(here, Tiles::tileGrass);
             int distance = sqrt(distanceSquared(here, center));
 
             if((rand() % (distance+1)) > ring){
                 setTile(here, Tiles::tileTree);
+            }else{
+                setTile(here, Tiles::tileGrass);
             }
 
             /*if(distance > outerRing && (rand() % 10) != 0){
@@ -238,7 +239,7 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
             } else {
                 dist--;
                 debugf("distance between entance and exit: %d", dist);
-                if (dist < ((size.xPlusY() / 2) / 10)) {
+                if (dist < ((size.xPlusY() / 8))) {
                     pathNotFound = true;
                     break;
                 }

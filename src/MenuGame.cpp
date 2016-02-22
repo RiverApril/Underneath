@@ -849,13 +849,13 @@ namespace Ui {
                         currentPlayer->hurt(currentLevel, damDebug, 1);
 
                     } else if (in == ']') {
-                        currentPlayer->heal(1);
+                        currentPlayer->heal(1, true);
 
                     } else if (in == '{') {
                         currentPlayer->hurt(currentLevel, damDebug, 10);
 
                     } else if (in == '}') {
-                        currentPlayer->heal(10);
+                        currentPlayer->heal(10, true);
 
                     } else if (in == 'D') {
                         openMenu(new MenuDebug());

@@ -56,13 +56,13 @@ public:
 
     double hurtMiddleStep(Level* level, DamageType damageType, double damageMultiplier);
 
-    virtual double heal(double amount) {
-        double a = EntityAlive::heal(amount);
+    virtual double heal(double amount, bool overload) {
+        double a = EntityAlive::heal(amount, overload);
         return a;
     }
 
-    virtual double healMana(double amount) {
-        double a = EntityAlive::healMana(amount);
+    virtual double healMana(double amount, bool overload) {
+        double a = EntityAlive::healMana(amount, overload);
         return a;
     }
 

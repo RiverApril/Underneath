@@ -353,7 +353,7 @@ namespace WorldLoader {
         World* world = new World(name);
 
         debug("new Level()");
-        world->currentLevel = new Level(world, "Surface", Point2(100, 100), 0);
+        world->currentLevel = new Level(world, "Surface", Point2(120, 120), 0);
 
         srand(static_cast<unsigned int> (time(NULL)));
 
@@ -434,8 +434,8 @@ namespace WorldLoader {
         }
         debug("Level not found, creating a new one...");
 		
-        int newDifficulty = world->currentLevel->getDifficulty() + 1;
-        Point2 newSize = (world->currentLevel->getSize() * 1.1).truncate();
+        int newDifficulty = world->currentLevel->getDifficulty() + 2;
+        Point2 newSize = (world->currentLevel->getSize());
         EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentPlayer));
 
         world->currentLevel->actuallyRemoveEntityUnsafe(world->currentPlayer, true);

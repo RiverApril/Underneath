@@ -191,7 +191,7 @@ namespace ItemGenerator {
 
 
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effStun, 10, 30, 0, 0, 2, 5));
-        atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effMultRecivedDamage, 10, 20, .2, .5, 5, 10, damNone));
+        atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effMultRecivedDamage, 10, 20, 1.2, 1.5, 5, 10, damNone));
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effMultAttack, 10, 20, .2, .5, 5, 10, damNone));
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 10, 15, 1, 3, 5, 10, damBlood));
 
@@ -251,49 +251,62 @@ namespace ItemGenerator {
 
 
 
-
-        vector<pair<int, ItemBase*>> l1;
-        for(ItemBase* ib : weaponList){
-            l1.emplace_back(30, ib);
+        {
+            vector<pair<int, ItemBase*>> l;
+            for(ItemBase* ib : weaponList){
+                l.emplace_back(30, ib);
+            }
+            for(ItemBase* ib : armorList){
+                l.emplace_back(20, ib);
+            }
+            LootProfile* lp = new LootProfile(true, true, l);
+            lp->enchantChance = 20;
+            lootProfileChest = atl(lp);
         }
-        for(ItemBase* ib : armorList){
-            l1.emplace_back(20, ib);
+
+
+        {
+            vector<pair<int, ItemBase*>> l;
+            for(ItemBase* ib : weaponList){
+                l.emplace_back(250, ib);
+            }
+            for(ItemBase* ib : armorList){
+                l.emplace_back(150, ib);
+            }
+            LootProfile* lp = new LootProfile(true, true, l);
+            lp->enchantChance = 100;
+            lootProfileCrate = atl(lp);
         }
-        lootProfileChest = atl(new LootProfile(true, true, l1));
 
 
-        vector<pair<int, ItemBase*>> l2;
-        for(ItemBase* ib : weaponList){
-            l2.emplace_back(250, ib);
+        {
+            vector<pair<int, ItemBase*>> l;
+            for(ItemBase* ib : weaponList){
+                l.emplace_back(30, ib);
+            }
+            for(ItemBase* ib : armorList){
+                l.emplace_back(20, ib);
+            }
+            LootProfile* lp = new LootProfile(true, true, l);
+            lp->enchantChance = 20;
+            lootProfileShop = atl(lp);
         }
-        for(ItemBase* ib : armorList){
-            l2.emplace_back(150, ib);
+
+
+        {
+            vector<pair<int, ItemBase*>> l;
+            l.emplace_back(5, potionHealth);
+            l.emplace_back(10, potionRegen);
+            l.emplace_back(10, potionRemoveBad);
+            l.emplace_back(10, potionPhysicalAttack);
+            l.emplace_back(10, potionPhysicalDefense);
+            l.emplace_back(5, scrollBarrier);
+            l.emplace_back(5, scrollRelocate);
+            l.emplace_back(10, scrollRemoteUse);
+            l.emplace_back(10, bombWallSmall);
+            l.emplace_back(15, bombWallLarge);
+            lootProfilePlayer = atl(new LootProfile(false, false, l));
         }
-        lootProfileCrate = atl(new LootProfile(true, true, l2));
-
-
-        vector<pair<int, ItemBase*>> l3;
-        for(ItemBase* ib : weaponList){
-            l3.emplace_back(30, ib);
-        }
-        for(ItemBase* ib : armorList){
-            l3.emplace_back(20, ib);
-        }
-        lootProfileShop = atl(new LootProfile(true, true, l3));
-
-
-        vector<pair<int, ItemBase*>> l4;
-        l4.emplace_back(5, potionHealth);
-        l4.emplace_back(10, potionRegen);
-        l4.emplace_back(10, potionRemoveBad);
-        l4.emplace_back(10, potionPhysicalAttack);
-        l4.emplace_back(10, potionPhysicalDefense);
-        l4.emplace_back(5, scrollBarrier);
-        l4.emplace_back(5, scrollRelocate);
-        l4.emplace_back(10, scrollRemoteUse);
-        l4.emplace_back(10, bombWallSmall);
-        l4.emplace_back(15, bombWallLarge);
-        lootProfilePlayer = atl(new LootProfile(false, false, l4));
 
 
     }
@@ -546,7 +559,7 @@ namespace ItemGenerator {
         if (base->range != -1) {
             if (base->manaCost != -1) {
                 w = new ItemCombatSpell();
-                ((ItemCombatSpell*) w)->manaCost = (int) (base->manaCost * Random::randDouble(1.0, 2.0));
+                ((ItemCombatSpell*) w)->manaCost = (base->manaCost * Random::randDouble(1.0, 2.0));
                 //w->addEnchantment(Enchantment(effDamage, 10, 1, 6, base.damageType));
             } else {
                 w = new ItemRanged();
