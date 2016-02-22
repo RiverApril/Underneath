@@ -36,7 +36,7 @@ namespace EnemyGenerator {
         using namespace ItemGenerator;
 
 
-        goblinScout = atl(new EntityBase(100, "Goblin Scout", 'g', aiAttackAndFleeAtLowHealth, 50, ItemGenerator::wKnife, "", C_LIGHT_GREEN, 1.0));
+        goblinScout = atl(new EntityBase(100, "Goblin Scout", 'g', aiAttackAndFleeAtLowHealth, 50, ItemGenerator::wSword, "Scimitar", C_LIGHT_GREEN, 1.0));
         goblinScout->weaknesses.push_back(Weakness(damPoison, 2));
         goblinScout->lootProfileIndex = atl(new LootProfile(true, false, {make_pair(10, wKnife), make_pair(10, wAxe)}));
 

@@ -8,6 +8,7 @@
 
 #include "Utility.hpp"
 #include "Ui.hpp"
+#include "Level.hpp"
 
 
 namespace Utility {

@@ -13,12 +13,14 @@ void ItemRanged::save(vector<unsigned char>* data) {
     ItemWeapon::save(data);
 
     Utility::saveDouble(data, range);
+    Utility::saveInt(data, (int)rangedType);
 }
 
 void ItemRanged::load(vector<unsigned char>* data, int* position) {
     ItemWeapon::load(data, position);
 
     range = Utility::loadDouble(data, position);
+    rangedType = (RangedType)Utility::loadInt(data, position);
 }
 
 ItemRanged* ItemRanged::cloneUnsafe(ItemRanged* oldE, ItemRanged* newE) {
@@ -26,6 +28,7 @@ ItemRanged* ItemRanged::cloneUnsafe(ItemRanged* oldE, ItemRanged* newE) {
     ItemWeapon::cloneUnsafe(oldE, newE);
 
     newE->range = oldE->range;
+    newE->rangedType = oldE->rangedType;
 
 
     return newE;
