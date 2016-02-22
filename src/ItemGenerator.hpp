@@ -157,8 +157,9 @@ namespace ItemGenerator {
             this->weaponType = weaponType;
         }
 
-        WeaponBase* ranged(double range) {
+        WeaponBase* ranged(double range, RangedType rangedType = rangedUnlimited) {
             this->range = range;
+            this->rangedType = rangedType;
             return this;
         }
 
@@ -180,6 +181,7 @@ namespace ItemGenerator {
         DamageType damageType = damSharp;
         WeaponType weaponType = wepMelee;
         double range = -1;
+        RangedType rangedType = rangedUnlimited;
         double manaCost = -1;
     };
 
@@ -266,7 +268,7 @@ namespace ItemGenerator {
             this->bases = bases;
         }
 
-        int enchantChance = 1; //higher mean less lickly, 1 = 100%, 10 = 10%, 20 = 5%, 50 = 2%
+        int enchantChance = 0; //higher mean less lickly, 1 = 100%, 10 = 10%, 20 = 5%, 50 = 2%
         double standard;
         double magical;
         bool canBeModifiedByRandomness = true;

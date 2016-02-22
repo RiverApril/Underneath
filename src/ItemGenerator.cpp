@@ -167,7 +167,8 @@ namespace ItemGenerator {
 
 
 
-        wKnife = atl(new WeaponBase({{"Knife", "Knives"}, {"Dagger"}, {"Cleaver"}}, 0.25, 1.0/3, damSharp, wepMelee))->setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver});
+        wKnife = atl(new WeaponBase({{"Knife", "Knives"}, {"Dagger"}, {"Cleaver"}}, 0.25, 1.0/3, damSharp, wepMelee))->setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver})->ranged(8, rangedOneUseRecoverable);
+
         wSword = atl(new WeaponBase({{"Longsword"}, {"Cutlass", "Cutlasses"}, {"Katana"}, {"Machete"}, {"Gladius", "Gladii"}, {"Scimitar"}, {"Rapier"}, {"Short Sword"}, {"Broadsword"}, {"Saber"}, {"Claymore"}}, 1, 1, damSharp, wepMelee))->setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore});
         wAxe = atl(new WeaponBase({{"Axe"}, {"Hatchet"}, {"Double Axe"}}, 1.2, 1.2, damSharp, wepMelee))->setArts({Arts::artAxe, Arts::artAxe, Arts::artDoubleAxe});
         wMace = atl(new WeaponBase({{"Mace"}, {"Club"}, {"Flail"}, {"War Hammer"}}, 1.5, 1.5, damBlunt, wepMelee))->setArts({Arts::artMace, Arts::artClub, Arts::artFlail, Arts::artWarHammer});
@@ -551,6 +552,7 @@ namespace ItemGenerator {
                 w = new ItemRanged();
             }
             ((ItemRanged*) w)->range = base->range;
+            ((ItemRanged*) w)->rangedType = base->rangedType;
         } else {
             w = new ItemWeapon();
         }

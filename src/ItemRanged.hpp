@@ -12,6 +12,10 @@
 #include "Global.hpp"
 #include "ItemWeapon.hpp"
 
+enum RangedType{
+    rangedUnlimited, rangedOneUse, rangedOneUseRecoverable
+};
+
 class ItemRanged : public ItemWeapon {
 public:
 
@@ -43,6 +47,8 @@ public:
     }
 
     double range = 4;
+    RangedType rangedType;
+
 
     bool operator< (ItemRanged& b){
         return this->damageType < b.damageType;
