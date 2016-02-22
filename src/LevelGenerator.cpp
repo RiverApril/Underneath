@@ -315,7 +315,7 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
     }
 
 
-    debugf("Adding Entities...");
+    /*debugf("Adding Entities...");
 
     EnemyGenerator::setIntervals(difficulty);
 
@@ -338,7 +338,7 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
         debugf("%s x%d", p.first.c_str(), p.second);
     }
 
-    debugf("done");
+    debugf("done");*/
 
 
     return stairUpPos;
@@ -481,7 +481,7 @@ namespace LevelGenerator {
             for (int j = 0; j < size.y; j++) {
                 if(level->indexAt(Point2(i, j)) == Tiles::tileUnset->getIndex()){
                     if(grid[i][j] == 'v'){
-                        level->setTile(Point2(i, j), Tiles::tileFloor);
+                        level->setTile(Point2(i, j), Tiles::tileHall);
                     }else if(grid[i][j] == 'u'){
                         level->setTile(Point2(i, j), Tiles::tileWall);
                     }

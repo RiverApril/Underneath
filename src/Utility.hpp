@@ -12,6 +12,7 @@
 #include "Global.hpp"
 #include "Geometry.hpp"
 
+class Level;
 
 namespace Utility {
 
@@ -135,6 +136,10 @@ namespace Utility {
     void executeOval(Point2 center, Point2 radii, function<void(int, int)> process);
 
     void execute4Around(int x, int y, function<void(int, int)> process);
+
+    void spreadUnexploredTileExecute(Level* level, Point2 pos, int tileIndex, function<void(int, int)> process);
+
+    void spreadUnexploredTileExecute_SUB_ORDER(Level* level, Point2 pos, int tileIndex, function<void(int, int)> process, vector<vector<char>>& grid);
 
     vector<Point2> plotLine(Point2 a, Point2 b);
 
