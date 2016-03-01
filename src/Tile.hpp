@@ -26,8 +26,9 @@ enum TileFlag{
     tileFlagReplaceable = 1 << 7,
     tileFlagFlammable = 1 << 8,
     tileFlagIsTile = 1 << 9,
+    tileFlagMonsterSpawningDoor = 1 << 10,
 
-    tileFlagAll = tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable | tileFlagFlammable | tileFlagIsTile,
+    tileFlagAll = tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable | tileFlagFlammable | tileFlagIsTile | tileFlagMonsterSpawningDoor,
 };
 
 inline TileFlag operator| (TileFlag a, TileFlag b){
@@ -96,11 +97,13 @@ namespace Tiles {
 
     extern Tile* tileWall;
     extern Tile* tilePonyWall;
+    extern Tile* tileBookcase;
 
     extern Tile* tileDoor;
     extern Tile* tileSecretDoor;
     extern Tile* tileOpenDoor;
     extern Tile* tileLockedDoor;
+    extern Tile* tileNonThreateningDoor;
 
     extern Tile* tileStairUp;
     extern Tile* tileStairDown;

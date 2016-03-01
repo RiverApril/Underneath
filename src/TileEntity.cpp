@@ -10,7 +10,6 @@
 #include "Utility.hpp"
 #include "TEStair.hpp"
 #include "TEChest.hpp"
-#include "TEMimic.hpp"
 
 void TileEntity::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getTileEntityTypeId());
@@ -48,9 +47,6 @@ TileEntity* TileEntity::clone(TileEntity* oldI) {
         case TILE_ENTITY_TYPE_CHEST:
             return makeNewAndClone<TileEntity, TEChest>(oldI);
 
-        case TILE_ENTITY_TYPE_MIMIC:
-            return makeNewAndClone<TileEntity, TEMimic>(oldI);
-
         default:
             throw Utility::FileExceptionLoad("Tile Entity type unknown: " + to_string(type));
             return nullptr;
@@ -75,9 +71,6 @@ TileEntity* TileEntity::loadNew(vector<unsigned char>* data, int* position) {
             break;
         case TILE_ENTITY_TYPE_CHEST:
             e = new TEChest();
-            break;
-        case TILE_ENTITY_TYPE_MIMIC:
-            e = new TEMimic();
             break;
 
         default:
