@@ -53,9 +53,11 @@ namespace Tiles {
 
     Tile* tileWall;
     Tile* tilePonyWall;
+    Tile* tileBookcase;
 
     Tile* tileDoor;
     Tile* tileSecretDoor;
+    Tile* tileNonThreateningDoor;
     Tile* tileOpenDoor;
     Tile* tileLockedDoor;
 
@@ -105,11 +107,12 @@ namespace Tiles {
 
         tileWall = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "wall", tileFlagSolidBoth, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
         tilePonyWall = new Tile(new BasicIcon(' ', C_BLACK, C_LIGHT_GRAY), "pony wall", tileFlagSolidOnGround, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
+        tileBookcase = new Tile(new BasicIcon('=', C_WHITE, C_BLACK), "bookcase", tileFlagSolidBoth, new BasicIcon('=', C_WHITE, C_DARK_GRAY));
 
-        tileDoor = new Tile(new BasicIcon('%', C_BLACK, C_WHITE), "door", tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity | tileFlagFlammable, new BasicIcon('%', C_BLACK, C_DARK_GRAY));
-        tileSecretDoor = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "definitely a wall", tileFlagSolidBoth | tileFlagDoor | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagFlammable, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
+        tileDoor = new Tile(new BasicIcon('%', C_BLACK, C_WHITE), "door", tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity | tileFlagFlammable | tileFlagMonsterSpawningDoor, new BasicIcon('%', C_BLACK, C_DARK_GRAY));
+        tileNonThreateningDoor = new Tile(new BasicIcon('%', C_BLACK, C_WHITE), "door", tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity | tileFlagFlammable, new BasicIcon('%', C_BLACK, C_DARK_GRAY));
+        tileSecretDoor = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "definitely a wall", tileFlagSolidBoth | tileFlagDoor | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagFlammable | tileFlagMonsterSpawningDoor, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
         tileOpenDoor = new Tile(new BasicIcon('/', C_WHITE, bg), "open door", tileFlagPathable | tileFlagFlammable);
-
         tileLockedDoor = new Tile(new BasicIcon('%', C_LIGHT_MAGENTA, C_WHITE), "locked door", tileFlagSolidBoth | tileFlagSecretPathable, new BasicIcon('%', C_DARK_MAGENTA, C_DARK_GRAY));
 
 

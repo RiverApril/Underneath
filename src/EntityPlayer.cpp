@@ -270,27 +270,6 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                             return interactDelay;
                         }
 
-                        case TILE_ENTITY_TYPE_MIMIC:
-                        {
-                            EntityAi* e = EnemyGenerator::makeEntity(EnemyGenerator::mimic, level->getDifficulty());
-
-                            //Tile* t = Tiles::getTile(tid);
-
-                            ////Icon* was saying it was private, no idea why.
-                            //auto ti = t->getIcon(true);
-
-                            //e->defaultIcon = 'M';//ti->getChar(0, posOfTile, level);
-                            //e->fgColor = ti->getFgColor(0, posOfTile, level);
-                            //e->bgColor = ti->getBgColor(0, posOfTile, level);
-
-                            e->pos = posOfTile;
-
-                            level->newEntity(e);
-                            level->removeTileEntity(te);
-                            level->setTile(posOfTile, Tiles::tileFloor);
-                            return interactDelay;
-                        }
-
                         case TILE_ENTITY_TYPE_STAIR:
                         {
                             TEStair* s = dynamic_cast<TEStair*> (te);
@@ -313,7 +292,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                 level->setTile(posOfTile, Tiles::tileDoor);
                 return interactDelay;
             }
-        } else if (Tiles::tileList[tid]->hasAllOfFlags(tileFlagDoor)) {
+        } else if (Tiles::tileList[tid]->hasAllOfFlags(tileFlagDoor | tileFlagMonsterSpawningDoor)) {
 
             EnemyGenerator::setIntervals(level->getDifficulty());
 
@@ -324,6 +303,17 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                     level->newEntity(e);
                 }
             });
+            
+            if(rand() % 50 == 0){
+                
+                EntityAi* e = EnemyGenerator::makeEntity(EnemyGenerator::mimic, level->getDifficulty());
+                
+                e->pos = posOfTile;
+
+                level->newEntity(e);
+                level->setTile(posOfTile, Tiles::tileFloor);
+                consolef("Ahh! That's no door!");
+            }
 
             if(Tiles::tileList[tid]->getIndex() == Tiles::tileSecretDoor->getIndex()){
                 consolef("You found a secret door!");
