@@ -63,6 +63,10 @@ void Point2::add(int x, int y) {
     this->y += y;
 }
 
+Point2 Point2::abs(){
+    return Point2(x < 0 ? -x : x, y < 0 ? -y : y);
+}
+
 Point2 Point2::operator+(Point2 other) {
     return Point2(this->x + other.x, this->y + other.y);
 }

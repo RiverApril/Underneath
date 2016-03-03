@@ -260,6 +260,10 @@ void EntityAlive::save(vector<unsigned char>* data) {
     Utility::saveDouble(data, mp);
     Utility::saveInt(data, viewDistance);
     Utility::saveString(data, name);
+    Utility::saveInt(data, (int)weaknesses.size());
+    for(Weakness w : weaknesses){
+        w.save(data);
+    }
 
     //
     //int activeItemWeaponIndex = -1;
@@ -290,6 +294,10 @@ void EntityAlive::load(vector<unsigned char>* data, int* position) {
     mp = Utility::loadDouble(data, position);
     viewDistance = Utility::loadInt(data, position);
     name = Utility::loadString(data, position);
+    int wc = Utility::loadInt(data, position);
+    for(int i=0;i<wc;i++){
+        weaknesses.push_back(Weakness(data, position));
+    }
 
     //
     int size = Utility::loadInt(data, position);

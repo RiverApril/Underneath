@@ -11,11 +11,27 @@
 
 namespace Animator {
 
+    void renderFlash(Point2 p, Level* level, vector<char> chars, int speed, Ui::Color fg, Ui::Color bg){
+        Point2 pos = p - level->currentWorld->menuGame->viewPos;
+
+        int maxTick = speed * (int)chars.size();
+        timeout(fastTimeout);
+        for(int tick = 0; tick < maxTick; tick++){
+            Ui::setColor(fg, bg);
+            mvaddch(pos.y, pos.x, chars[tick/speed]);
+            refresh();
+            getchSafe();
+        }
+        timeout(defaultTimeout);
+    }
+
     void renderRangedAttack(Point2 from, Point2 to, Icon* icon, Level* level, int length){
 
         if(!level->currentWorld->menuGame){
             return;
         }
+
+        level->currentWorld->menuGame->render(level->currentWorld->worldTime);
 
         vector<Point2> line = Utility::plotLine(from, to);
 

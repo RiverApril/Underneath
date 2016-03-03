@@ -13,10 +13,12 @@
 
 struct Weakness {
 
-    Weakness(DamageType dam, double m) {
-        this->damageType = dam;
-        this->multiplier = m;
+    Weakness(DamageType dam, double m) : damageType(dam), multiplier(m){}
+    
+    Weakness(vector<unsigned char>* data, int* position) {
+        load(data, position);
     }
+
     DamageType damageType = damSharp;
     double multiplier = 1;
 

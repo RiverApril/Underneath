@@ -737,14 +737,14 @@ namespace Ui {
                                             if(eai){
                                                 ItemWeapon* w = eai->getActiveItemWeapon();
                                                 if(w){
-                                                    consolef("Weapon: %s  %.2f d/t (%.2f per %.2ft) ", damageTypeName(w->damageType).c_str(), w->baseDamage, w->useDelay, w->baseDamage / w->useDelay);
+                                                    consolef("Weapon: %s  %.2f d/t (%.2f per %.2ft) ", damageTypeName(w->damageType).c_str(), w->baseDamage / w->useDelay, w->baseDamage, w->useDelay);
                                                 }
                                             }
                                             for(Weakness w : a->weaknesses){
                                                 if(w.multiplier > 1){
-                                                    consolef("%d%% Weakness to %s", (int)(1/w.multiplier*100), damageTypeName(w.damageType).c_str());
-                                                }else{
-                                                    consolef("%d%% Resistance to %s", (int)((w.multiplier)*100), damageTypeName(w.damageType).c_str());
+                                                    consolef("%d%% Resistance to %s", (int)((1-w.multiplier)*100), damageTypeName(w.damageType).c_str());
+                                                }else if(w.multiplier < 1){
+                                                    consolef("%d%% Weakness to %s", (int)((w.multiplier-1)*100), damageTypeName(w.damageType).c_str());
                                                 }
                                             }
                                         }
@@ -973,12 +973,12 @@ namespace Ui {
                 Effect eff = currentPlayer->effects[i];
                 setColor(effectColor(eff.eId, eff.meta));
                 if(eff.eId == effMultRecivedDamage || eff.eId == effMultAttack){
-                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %d%% for %.2ft", effectName(eff.eId, eff.meta).c_str(), (int)(eff.power*100), eff.timeLeft));
+                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %d%% for %.2ft", effectName(eff).c_str(), (int)(eff.power*100), eff.timeLeft));
                 }else{
                     if(eff.power != 0){
-                    	a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.power, eff.timeLeft));
+                    	a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f for %.2ft", effectName(eff).c_str(), eff.power, eff.timeLeft));
                     }else{
-                        a += printMultiLineString(a, gameArea.x + 1, formatString("%s for %.2ft", effectName(eff.eId, eff.meta).c_str(), eff.timeLeft));
+                        a += printMultiLineString(a, gameArea.x + 1, formatString("%s for %.2ft", effectName(eff).c_str(), eff.timeLeft));
                     }
                 }
             }
@@ -1034,12 +1034,12 @@ namespace Ui {
                             Effect eff = alive->effects[i];
                             setColor(effectColor(eff.eId, eff.meta));
                             if(eff.eId == effMultRecivedDamage || eff.eId == effMultAttack){
-                                a += printMultiLineString(a, gameArea.x + 1, formatString("%s %d%%", effectName(eff.eId, eff.meta).c_str(), (int)(eff.power*100)));
+                                a += printMultiLineString(a, gameArea.x + 1, formatString("%s %d%%", effectName(eff).c_str(), (int)(eff.power*100)));
                             }else{
                                 if(eff.power != 0){
-                                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f", effectName(eff.eId, eff.meta).c_str(), eff.power));
+                                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f", effectName(eff).c_str(), eff.power));
                                 }else{
-                                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s", effectName(eff.eId, eff.meta).c_str()));
+                                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s", effectName(eff).c_str()));
                                 }
                             }
                         }

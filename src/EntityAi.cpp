@@ -17,6 +17,7 @@
 #include "EntityTimeActivated.hpp"
 #include "Animator.hpp"
 #include "Settings.hpp"
+#include "Math.hpp"
 
 EntityAi::EntityAi() : EntityAi("", aiNone, ' ', Point2Zero, C_WHITE, 1) {
 
@@ -151,7 +152,45 @@ void EntityAi::moveAi(double time, Level* level) {
             }
         }
     }
-    if (ai & aiAttack) {
+
+    bool tele = false;
+
+    if(ai & aiTeleport){
+        if(ai & aiAttack && activeItemWeapon){
+            ItemRanged* ir = dynamic_cast<ItemRanged*>(activeItemWeapon);
+            if(ir){
+                if(canSeeTarget){
+                    double rdis = sqrt(distanceSquared(target->pos, pos));
+                    if(rdis > ir->range || rdis < min(3.0, ir->range)){
+                        Point2 p;
+
+                        int l = 0;
+
+                        do{
+                            p.x = (rand()%((int)ir->range*2)) - ir->range + target->pos.x;
+                            p.y = (rand()%((int)ir->range*2)) - ir->range + target->pos.y;
+                            //level->setTile(p, Tiles::tileDebug4);
+                            if(level->canSee(pos, p, ir->range) && sqrt(distanceSquared(target->pos, p)) >= min(5.0, ir->range)){
+                                tryToMoveAbsalute(p, level);
+                                tele = true;
+                                break;
+                            }
+                            l++;
+                            if(l > 100){
+                                break;
+                            }
+
+                        }while(true);
+
+                    }
+                }
+            }
+        }else if(ai & aiFlee){
+
+        }
+    }
+
+    if (ai & aiAttack && !tele) {
 
         bool pathEmpty = true;
         

@@ -47,6 +47,8 @@ struct Point2 {
 
     void add(int x, int y);
 
+    Point2 abs();
+
     Point2 operator+(Point2 other);
     Point2 operator-(Point2 other);
     Point2 operator*(Point2 other);

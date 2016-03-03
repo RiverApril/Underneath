@@ -358,7 +358,7 @@ namespace Ui {
             a += printMultiLineString(a, columnX, formatString("Enchantments:"));
             for (Enchantment e : enchantments) {
                 setColor(effectColor(e.effect.eId, e.effect.meta));
-                string s = "   "+effectName(e.effect.eId, e.effect.meta);
+                string s = "   "+effectName(e.effect);
                 string ss = effectPowerString(e.effect.eId, e.effect.power);
                 if(e.effect.power != 1 || ss.size() > 0){
                     s += " "+ss;
@@ -581,19 +581,19 @@ namespace Ui {
                         for (Effect e : potion->effects) {
                             if (e.timeLeft > 0) {
                                 if(e.eId == effMultRecivedDamage || e.eId == effMultAttack){
-                                    a += printMultiLineString(a, columnX, formatString("   %s %d%% for %.2ft", effectName(e.eId, e.meta).c_str(), (int)(e.power*100), e.timeLeft));
+                                    a += printMultiLineString(a, columnX, formatString("   %s %d%% for %.2ft", effectName(e).c_str(), (int)(e.power*100), e.timeLeft));
                                 }else{
                                     if(e.power == 0){
-                                        a += printMultiLineString(a, columnX, formatString("   %s for %.2ft", effectName(e.eId, e.meta).c_str(), e.timeLeft));
+                                        a += printMultiLineString(a, columnX, formatString("   %s for %.2ft", effectName(e).c_str(), e.timeLeft));
                                     }else{
-                                        a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2ft", effectName(e.eId, e.meta).c_str(), e.power, e.timeLeft));
+                                        a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2ft", effectName(e).c_str(), e.power, e.timeLeft));
                                     }
                                 }
                             } else {
                                 if(e.power == 0){
-                                    a += printMultiLineString(a, columnX, formatString("   %s", effectName(e.eId, e.meta).c_str()));
+                                    a += printMultiLineString(a, columnX, formatString("   %s", effectName(e).c_str()));
                                 }else{
-                                    a += printMultiLineString(a, columnX, formatString("   %s %.2f", effectName(e.eId, e.meta).c_str(), e.power));
+                                    a += printMultiLineString(a, columnX, formatString("   %s %.2f", effectName(e).c_str(), e.power));
                                 }
                             }
                         }
