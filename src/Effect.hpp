@@ -37,7 +37,7 @@ struct Effect {
 
 bool isBadEffect(Effect e);
 
-string effectName(EffectId eid, double meta);
+string effectName(Effect eff);
 
 string effectPowerString(EffectId eid, double power);
 

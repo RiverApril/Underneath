@@ -18,6 +18,7 @@ enum AiType{
     aiAttack = 1 << 1,
     aiFlee = 1 << 2,
     aiAttackAndFleeAtLowHealth = 1 << 3,
+    aiTeleport = 1 << 4,
 };
 
 inline AiType operator| (AiType a, AiType b){

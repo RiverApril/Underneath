@@ -292,34 +292,40 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                 level->setTile(posOfTile, Tiles::tileDoor);
                 return interactDelay;
             }
-        } else if (Tiles::tileList[tid]->hasAllOfFlags(tileFlagDoor | tileFlagMonsterSpawningDoor)) {
+        } else if (Tiles::tileList[tid]->hasAllOfFlags(tileFlagDoor)) {
 
-            EnemyGenerator::setIntervals(level->getDifficulty());
+            if(Tiles::tileList[tid]->hasAllOfFlags(tileFlagMonsterSpawningDoor)){
 
-            Utility::spreadUnexploredTileExecute(level, posOfTile, Tiles::tileFloor->getIndex(), [level](int x, int y){
-                if(rand() % 30 == 0){
-                    EntityAi* e = EnemyGenerator::makeRandomEntity(level->getDifficulty());
-                    e->pos = Point2(x, y);
+                EnemyGenerator::setIntervals(level->getDifficulty());
+
+                Utility::spreadUnexploredTileExecute(level, posOfTile, Tiles::tileFloor->getIndex(), [level](int x, int y){
+                    if(rand() % 30 == 0){
+                        EntityAi* e = EnemyGenerator::makeRandomEntity(level->getDifficulty());
+                        e->pos = Point2(x, y);
+                        level->newEntity(e);
+                    }
+                });
+                
+                if(rand() % 50 == 0){
+                    
+                    EntityAi* e = EnemyGenerator::makeEntity(EnemyGenerator::mimic, level->getDifficulty());
+                    
+                    e->pos = posOfTile;
+
                     level->newEntity(e);
+                    level->setTile(posOfTile, Tiles::tileFloor);
+                    consolef("Ahh! That's no door!");
                 }
-            });
-            
-            if(rand() % 50 == 0){
-                
-                EntityAi* e = EnemyGenerator::makeEntity(EnemyGenerator::mimic, level->getDifficulty());
-                
-                e->pos = posOfTile;
 
-                level->newEntity(e);
-                level->setTile(posOfTile, Tiles::tileFloor);
-                consolef("Ahh! That's no door!");
+                if(Tiles::tileList[tid]->getIndex() == Tiles::tileSecretDoor->getIndex()){
+                    consolef("You found a secret door!");
+                }
+
             }
 
-            if(Tiles::tileList[tid]->getIndex() == Tiles::tileSecretDoor->getIndex()){
-                consolef("You found a secret door!");
-            }
             level->setTile(posOfTile, Tiles::tileOpenDoor);
             return interactDelay;
+
         } else if (tid == Tiles::tileLockedDoor->getIndex()) {
             if(containsItemEqualingExceptQty(ItemGenerator::smallKey->original(), 1)){
             	level->setTile(posOfTile, Tiles::tileOpenDoor);

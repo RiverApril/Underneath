@@ -26,6 +26,7 @@ namespace EnemyGenerator {
     EntityBase* slime;
     EntityBase* myconid;
     EntityBase* snake;
+    EntityBase* imp;
 
     EntityBase* mimic;
     EntityBase* bunny;
@@ -97,6 +98,7 @@ namespace EnemyGenerator {
         drake->moveDelay = .75;
         drake->solidity = tileFlagSolidInAir;
         drake->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(10, wFireItemCombatSpell), make_pair(10, wFrostItemCombatSpell), make_pair(10, wShockItemCombatSpell), make_pair(10, wHealingCombatSpell)}));
+        drake->minLootDrop = 1;
         drake->maxLootDrop = 10;
 
 
@@ -114,6 +116,14 @@ namespace EnemyGenerator {
         myconid->attackMultiplier *= .5;
         myconid->lootProfileIndex = atl(new LootProfile(true, true));
 
+
+        ItemGenerator::WeaponBase* impWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wShockItemCombatSpell);
+        impWeapon->manaCost = 0;
+        impWeapon->useDelay = 1.2;
+        imp = atl(new EntityBase(8, "Imp", 'i', aiAttack | aiMoveRandom | aiTeleport, 30, impWeapon, "Lightning", C_LIGHT_MAGENTA, 2));
+        imp->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(10, wFireItemCombatSpell), make_pair(10, wFrostItemCombatSpell), make_pair(10, wShockItemCombatSpell), make_pair(10, wHealingCombatSpell)}));
+        imp->solidity = tileFlagSolidInAir;
+        imp->maxLootDrop = 2;
 
 
         mimic = new EntityBase(0, "Mimic", 'M', aiAttack | aiMoveRandom, 75, ItemGenerator::wNatural, "Teeth", C_LIGHT_GREEN, 0);

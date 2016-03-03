@@ -14,6 +14,7 @@
 #include "EntityTimeActivated.hpp"
 #include "EntityShop.hpp"
 
+#include "Animator.hpp"
 #include "Level.hpp"
 #include "Math.hpp"
 #include "Utility.hpp"
@@ -51,6 +52,10 @@ bool Entity::tryToMoveAbsalute(Point2 p, Level* level) {
             }
         }
         if (!block) {
+            if(distanceSquared(pos, p) > 1){
+                Animator::renderFlash(pos, level, {defaultIcon, 'O', 'o', '.'}, 1, fgColor, bgColor);
+                Animator::renderFlash(p, level, {'.', 'o', 'O', defaultIcon}, 1, fgColor, bgColor);
+            }
             pos = p;
             return true;
         }

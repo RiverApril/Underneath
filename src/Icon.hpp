@@ -102,13 +102,14 @@ public:
 };
 
 class AnimatedIcon : public Icon{
-    int speed = 1;
-    vector<char> i = {'?'};
     Ui::Color fg = C_DARK_BLACK;
     Ui::Color bg = C_LIGHT_WHITE;
     bool randomStart = false;
 
 public:
+    int speed = 1;
+    vector<char> i = {'?'};
+
     AnimatedIcon(vector<char> i, int speed, Ui::Color fg, Ui::Color bg, bool randomStart = false){
         this->i = i;
         this->speed = speed;
@@ -129,13 +130,14 @@ public:
 };
 
 class ColorAnimatedIcon : public Icon{
-    int speed = 1;
-    vector<char> i = {'?'};
     vector<Ui::Color> fg = {C_DARK_BLACK};
     vector<Ui::Color> bg = {C_LIGHT_WHITE};
     bool randomStart = false;
 
 public:
+    int speed = 1;
+    vector<char> i = {'?'};
+    
     ColorAnimatedIcon(vector<char> i, int speed, vector<Ui::Color> fg, vector<Ui::Color> bg, bool randomStart = false){
         this->i = i;
         this->speed = speed;

@@ -93,7 +93,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
 
 
 
-    setTile(door, Tiles::tileDoor);
+    setTile(door, Tiles::tileNonThreateningDoor);
 
     debug("Gen: Created Ruin");
 
@@ -592,8 +592,10 @@ namespace LevelGenerator {
                     //Chest
                     if (rand() % 2 == 0) {
                         level->setTile(r->pos + (r->size/2), Tiles::tileChest);
-                        level->setTile(lastDoorLocation, rand()%2==0?Tiles::tileSecretDoor:Tiles::tileLockedDoor);
+                        level->setTile(lastDoorLocation, rand()%3==0?Tiles::tileSecretDoor:Tiles::tileLockedDoor);
                     }else{
+
+                        level->setTile(lastDoorLocation, Tiles::tileNonThreateningDoor);
                         
                         Utility::executeGrid(r->pos + 2, r->pos + (r->size) - 2, [&level, &r](int x, int y){
                             if((y - r->pos.y)%3==0 && rand() % 10 > 0){

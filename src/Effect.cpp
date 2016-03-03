@@ -11,19 +11,19 @@
 #include "Ui.hpp"
 #include "Abilities.hpp"
 
-string effectName(EffectId eid, double meta) {
-    switch (eid) {
+string effectName(Effect eff) {
+    switch (eff.eId) {
         case effDamage:
-            return damageTypeName((DamageType) meta);
+            return damageTypeName((DamageType) eff.meta);
 
         case effHeal:
             return "Heal";
 
         case effMultAttack:
-            return "Buff "+damageTypeName((DamageType) meta);
+            return "Buff "+damageTypeName((DamageType) eff.meta);
 
         case effMultRecivedDamage:
-            return "Resist "+damageTypeName((DamageType) meta);
+            return "Incoming "+string(damageTypeName((DamageType) eff.meta))+" Damage Multiplied";
 
         case effLSD:
             return "Psychedelic";
@@ -35,7 +35,7 @@ string effectName(EffectId eid, double meta) {
             return "Purity";
 
         case effBuffAbility:
-            return "Buff "+abilityNames[(size_t)meta];
+            return "Buff "+abilityNames[(size_t)eff.meta];
 
         case effStun:
             return "Stun";
@@ -125,7 +125,7 @@ bool isBadEffect(Effect e){
             return e.power < 0;
 
         case effMultRecivedDamage:
-            return e.power < 0;
+            return e.power < 1;
 
         case effLSD:
             return true;

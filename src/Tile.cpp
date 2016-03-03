@@ -107,7 +107,7 @@ namespace Tiles {
 
         tileWall = new Tile(new BasicIcon(' ', C_BLACK, C_WHITE), "wall", tileFlagSolidBoth, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
         tilePonyWall = new Tile(new BasicIcon(' ', C_BLACK, C_LIGHT_GRAY), "pony wall", tileFlagSolidOnGround, new BasicIcon(' ', C_BLACK, C_DARK_GRAY));
-        tileBookcase = new Tile(new BasicIcon('=', C_WHITE, C_BLACK), "bookcase", tileFlagSolidBoth, new BasicIcon('=', C_WHITE, C_DARK_GRAY));
+        tileBookcase = new Tile(new BasicIcon('=', C_WHITE, C_BLACK), "bookcase", tileFlagSolidBoth, new BasicIcon('=', C_DARK_GRAY, C_BLACK));
 
         tileDoor = new Tile(new BasicIcon('%', C_BLACK, C_WHITE), "door", tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity | tileFlagFlammable | tileFlagMonsterSpawningDoor, new BasicIcon('%', C_BLACK, C_DARK_GRAY));
         tileNonThreateningDoor = new Tile(new BasicIcon('%', C_BLACK, C_WHITE), "door", tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagHasTileEntity | tileFlagFlammable, new BasicIcon('%', C_BLACK, C_DARK_GRAY));
