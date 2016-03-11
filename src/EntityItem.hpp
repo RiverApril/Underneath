@@ -39,7 +39,7 @@ public:
         if (removed) {
             return "Item Removed";
         }
-        return !item ? "Null Item" : ((item->qty!=1?formatString("%d ", item->qty):"")+item->getName(item->qty != 1).c_str());
+        return item ? ((item->qty!=1?formatString("%d ", item->qty):"")+item->getName(item->qty != 1).c_str()) : "Null Item";
     }
 
     virtual Item* getItem() {

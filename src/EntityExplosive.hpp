@@ -26,7 +26,7 @@ public:
 
     ~EntityExplosive();
 
-    virtual void hit(Level* level);
+    virtual void hit(Level* level, HitType h, Point2 p);
 
     virtual void activate(Level* level);
 

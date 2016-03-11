@@ -175,6 +175,21 @@ int Level::indexAt(Point2 p) {
     return Tiles::tileEdge->getIndex();
 }
 
+bool Level::solidAt(Point2 p, TileFlag anyOf, bool checkEntities){
+    if(Tiles::getTile(indexAt(p))->hasAnyOfFlags(anyOf)){
+        return true;
+    }else{
+        for(Entity* e : entityList){
+            if(e->pos == p){
+                if(e->getSolidity() & anyOf){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 bool Level::setTile(int x, int y, int tile) {
     if (inRange(x, y)) {
         tileGrid[x][y].index = (int8_t) tile;

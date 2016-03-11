@@ -54,6 +54,10 @@ Sub* Item::makeNewAndClone(Super* oldT) {
 
 Item* Item::clone(Item* oldI) {
 
+    if(!oldI){
+        return nullptr;
+    }
+
     int type = oldI->getItemTypeId();
 
     switch (type) {

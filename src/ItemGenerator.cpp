@@ -934,29 +934,29 @@ namespace ItemGenerator {
         vector<pair<int, ItemBase*>> loots = lp->bases;
 
         if(lp->standard){
-            loots.emplace_back((int)(20), potionHealth);
-            loots.emplace_back((int)(40), potionRegen);
-            loots.emplace_back((int)(45), potionRemoveBad);
-            loots.emplace_back((int)(50), potionPhysicalAttack);
-            loots.emplace_back((int)(50), potionPhysicalDefense);
+            loots.emplace_back(20, potionHealth);
+            loots.emplace_back(40, potionRegen);
+            loots.emplace_back(45, potionRemoveBad);
+            loots.emplace_back(50, potionPhysicalAttack);
+            loots.emplace_back(50, potionPhysicalDefense);
 
-            loots.emplace_back((int)(40), scrollRelocate);
-            loots.emplace_back((int)(80), scrollRemoteUse);
-            loots.emplace_back((int)(40), scrollBarrier);
+            loots.emplace_back(40, scrollRelocate);
+            loots.emplace_back(80, scrollRemoteUse);
+            loots.emplace_back(40, scrollBarrier);
 
             loots.emplace_back(60, bombWallSmall);
             loots.emplace_back(80, bombWallLarge);
             loots.emplace_back(60, molotovCocktail);
             loots.emplace_back(70, landMine);
 
-            loots.emplace_back((int)(100), smallKey);
-            //loots.emplace_back((int)(20), repairHammer);
+            loots.emplace_back(100, smallKey);
+            //loots.emplace_back(20, repairHammer);
         }
         if(lp->magical){
-            loots.emplace_back((int)(30), potionMana);
-            loots.emplace_back((int)(50), potionManaRegen);
-            loots.emplace_back((int)(60), potionElementalAttack);
-            loots.emplace_back((int)(60), potionElementalDefense);
+            loots.emplace_back(30, potionMana);
+            loots.emplace_back(50, potionManaRegen);
+            loots.emplace_back(60, potionElementalAttack);
+            loots.emplace_back(60, potionElementalDefense);
         }
 
 
