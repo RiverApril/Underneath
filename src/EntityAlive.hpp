@@ -90,6 +90,10 @@ public:
         Entity::setTimes(time);
     }
 
+    virtual TileFlag getSolidity(){
+        return solidity;
+    }
+
     //vector<Item*> inventory;
 
     vector<Effect> effects;
@@ -120,6 +124,8 @@ public:
 
     double healMultiplier = 0.05;
     double healManaMultiplier = 0.05;
+
+    TileFlag solidity = tileFlagSolidOnGround;
 
 protected:
     string name;

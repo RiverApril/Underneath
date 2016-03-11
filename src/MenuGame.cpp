@@ -465,7 +465,7 @@ namespace Ui {
                 if(controlMode == modeEntityPlayerControl){
                     if(currentPlayer && (currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp())){
                         unsigned char b = 1;
-                        timeout(fastTimeout);
+                        timeout(fastestTimeout);
                         while ((currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp()) && b) {
                             vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
                             for (Entity* e : nearest) {
@@ -553,7 +553,7 @@ namespace Ui {
                     if(selectMode == selectModeWalk){
                         Point2 t = targetPosition;
                         changeMode(modeEntityPlayerControl);
-                        vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, currentPlayer->solidity, false, true);
+                        vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, currentPlayer->getSolidity(), false, true);
                         path.push_back(t);
                         bool pathExplored = true;
                         if(!Settings::seeEverything){
@@ -836,7 +836,7 @@ namespace Ui {
 
                 if(Settings::cheatKeysEnabled){
                     if (in == 'r') {
-                        Point2 p = currentLevel->findRandomWithoutFlag(currentPlayer->solidity);
+                        Point2 p = currentLevel->findRandomWithoutFlag(currentPlayer->getSolidity());
                         timePassed += currentPlayer->moveAbsalute(p, currentLevel, false);
 
                     } else if (in == 'R') {

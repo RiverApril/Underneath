@@ -13,11 +13,11 @@
 
 void TileEntity::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getTileEntityTypeId());
-    Point2::save(pos, data);
+    pos.save(data);
 }
 
 void TileEntity::load(vector<unsigned char>* data, int* position) {
-    pos = Point2::load(data, position);
+    Point2(data, position);
 }
 
 TileEntity* TileEntity::cloneUnsafe(TileEntity* oldE, TileEntity* newE) {

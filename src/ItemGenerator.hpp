@@ -14,7 +14,7 @@
 #include "ItemPotion.hpp"
 #include "ItemUtilitySpell.hpp"
 #include "ItemArmor.hpp"
-#include "ItemTimeActivated.hpp"
+#include "ItemExplosive.hpp"
 
 
 namespace ItemGenerator {
@@ -234,12 +234,13 @@ namespace ItemGenerator {
         BombBase() {
         }
 
-        BombBase(vector<vector<string> > names, TimeActivatedType type, double minTime, double maxTime, double minPower, double maxPower, double minRadius, double maxRadius) {
+        BombBase(vector<vector<string> > names, ExplosiveType type, double minTime, double maxTime, double minPower, double maxPower, double minRadius, double maxRadius, bool destroysTiles) {
             this->names = names;
             this->timeActivedType = type;
             this->time = Vector2(minTime, maxTime);
             this->power = Vector2(minPower, maxPower);
             this->radius = Vector2(minRadius, maxRadius);
+            this->destroysTiles = destroysTiles;
         }
 
         BombBase* setArts(vector<int> artIndecies) {
@@ -250,10 +251,11 @@ namespace ItemGenerator {
 
         vector<vector<string> > names = {{""}};
         vector<int> arts = {-1};
-        TimeActivatedType timeActivedType;
+        ExplosiveType timeActivedType;
         Vector2 time;
         Vector2 power;
         Vector2 radius;
+        bool destroysTiles;
 
     };
 
@@ -325,6 +327,8 @@ namespace ItemGenerator {
 
     extern BombBase* bombWallSmall;
     extern BombBase* bombWallLarge;
+    extern BombBase* landMine;
+    extern BombBase* molotovCocktail;
     extern BombBase* easterEgg;
 
     extern WeaponBase* wKnife;
@@ -383,7 +387,7 @@ namespace ItemGenerator {
     ItemWeapon* createItemWeaponFromBase(WeaponBase* base, int itemDifficulty);
     ItemArmor* createArmorFromBase(ArmorBase* base, int itemDifficulty);
     ItemPotion* createPotionFromBase(PotionBase* pb, int itemDifficulty);
-    ItemTimeActivated* createBombFromBase(BombBase* base);
+    ItemExplosive* createBombFromBase(BombBase* base);
 
     Enchantment createEnchantmentFromBase(EnchantmentBase* base);
 

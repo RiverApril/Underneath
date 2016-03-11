@@ -17,7 +17,7 @@
 #include "ItemUtilitySpell.hpp"
 #include "ItemSpecial.hpp"
 #include "EnemyGenerator.hpp"
-#include "EntityTimeActivated.hpp"
+#include "EntityExplosive.hpp"
 #include "Icon.hpp"
 #include "MenuShop.hpp"
 #include "Animator.hpp"
@@ -110,11 +110,11 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
             return interactDelay;
         }
 
-        ItemTimeActivated* ita = dynamic_cast<ItemTimeActivated*>(item);
+        ItemExplosive* ita = dynamic_cast<ItemExplosive*>(item);
         if(ita){
-            level->newEntity(new EntityTimeActivated(ita, posToInteract));
+            level->newEntity(new EntityExplosive(ita, pos, posToInteract, 1));
             if (item->qty == 1) {
-                removeItem(item, true);
+                removeItem(item, false);
             } else {
                 item->qty -= 1;
             }
@@ -140,7 +140,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         break;
                     case spellRelocate:
                         if (posToInteract == pos) {
-                            posToInteract = level->findRandomWithoutFlag(solidity);
+                            posToInteract = level->findRandomWithoutFlag(getSolidity());
                         }
                         pos = posToInteract; //force move, may cause death
                         /*if (!moveAbsalute(posToInteract, level, false)) {
@@ -212,7 +212,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
 
         for (Entity* e : level->entityList) {
             if (e->uniqueId != uniqueId) { //Don't interact with yourself yet.
-                if (!needToBeSolid || (bool)(e->solidity & solidity)) {
+                if (!needToBeSolid || (bool)(e->getSolidity() & getSolidity())) {
                     if (e->pos == posToInteract) {
                         double d = interactWithEntity(level, e, posToInteract, item);
                         if (d > 0) {
@@ -298,13 +298,23 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
 
                 EnemyGenerator::setIntervals(level->getDifficulty());
 
-                Utility::spreadUnexploredTileExecute(level, posOfTile, Tiles::tileFloor->getIndex(), [level](int x, int y){
-                    if(rand() % 30 == 0){
-                        EntityAi* e = EnemyGenerator::makeRandomEntity(level->getDifficulty());
-                        e->pos = Point2(x, y);
-                        level->newEntity(e);
-                    }
-                });
+                int aa = 0;
+                int ee = 0;
+                int tt = 0;
+
+                do{
+                    tt = 0;
+                    aa++;
+                    Utility::spreadUnexploredTileExecute(level, posOfTile, Tiles::tileFloor->getIndex(), [level, &tt, &ee](int x, int y){
+                        tt++;
+                        if(rand() % 30 == 0){
+                            EntityAi* e = EnemyGenerator::makeRandomEntity(level->getDifficulty());
+                            e->pos = Point2(x, y);
+                            level->newEntity(e);
+                            ee++;
+                        }
+                    });
+                }while(ee < max(1, (int)sqrt(tt)) && aa < 20 && tt > 0);
                 
                 if(rand() % 50 == 0){
                     
@@ -414,7 +424,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                 //result 1 is cancel
                 //result -1 is escape
                 //these will just exit
-            }));
+            }, true));
             return interactDelay;
         }
 
@@ -509,7 +519,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
         }
     }
 
-    EntityTimeActivated* eti = dynamic_cast<EntityTimeActivated*>(e);
+    EntityExplosive* eti = dynamic_cast<EntityExplosive*>(e);
     if(eti){
         eti->activate(level);
         return interactDelay;

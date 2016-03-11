@@ -15,7 +15,7 @@
 #include "ItemPotion.hpp"
 #include "ItemUtilitySpell.hpp"
 #include "ItemSpecial.hpp"
-#include "ItemTimeActivated.hpp"
+#include "ItemExplosive.hpp"
 #include "ItemArmor.hpp"
 #include "Settings.hpp"
 
@@ -510,7 +510,7 @@ namespace Ui {
                 ItemPotion* potion = dynamic_cast<ItemPotion*>(item);
                 ItemUtilitySpell* utilitySpell = dynamic_cast<ItemUtilitySpell*>(item);
                 ItemSpecial* itemSpecial = dynamic_cast<ItemSpecial*>(item);
-                ItemTimeActivated* itemTimeActivated = dynamic_cast<ItemTimeActivated*>(item);
+                ItemExplosive* itemExplosive = dynamic_cast<ItemExplosive*>(item);
 
                 int a = 2;
 
@@ -736,25 +736,20 @@ namespace Ui {
                         default:
                             break;
                     }
-                } else if(itemTimeActivated){
-                    switch (itemTimeActivated->timeActivatedType) {
-                        case timeActivatedWallBomb:
+                } else if(itemExplosive){
+                    switch (itemExplosive->explosiveType) {
                         case timeActivatedBomb:
-                            a += printMultiLineString(a, columnX, formatString("Damage: %.2f", itemTimeActivated->power));
-                            a += printMultiLineString(a, columnX, formatString("Radius: %.2f", itemTimeActivated->radius));
-                            a += printMultiLineString(a, columnX, formatString("Fuse: %.2f", itemTimeActivated->time));
+                            a += printMultiLineString(a, columnX, formatString("Damage: %.2f", itemExplosive->power));
+                            a += printMultiLineString(a, columnX, formatString("Radius: %.2f", itemExplosive->radius));
+                            a += printMultiLineString(a, columnX, formatString("Fuse: %.2f", itemExplosive->time));
                             break;
                         default:
                             break;
                     }
-                    switch (itemTimeActivated->timeActivatedType) {
-                        case timeActivatedWallBomb:
-                            setColor(C_LIGHT_RED);
-                            a += printMultiLineString(a, columnX, "Will destroy tiles.");
-                            break;
+                    switch (itemExplosive->explosiveType) {
                         case timeActivatedBomb:
                             setColor(C_LIGHT_RED);
-                            a += printMultiLineString(a, columnX, "Will not destroy tiles.");
+                            a += printMultiLineString(a, columnX, itemExplosive->destroysTiles ? "Will destroy tiles." : "Will not destroy tiles.");
                             break;
                         default:
                             break;
