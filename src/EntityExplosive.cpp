@@ -16,7 +16,9 @@ EntityExplosive::EntityExplosive() : EntityExplosive(nullptr, Point2Zero) {
 
 EntityExplosive::EntityExplosive(ItemExplosive* item, Point2 start, Point2 target, double z) : EntityMoving(start, z) {
     this->expl = item;
-    velocity = Vector3((target - start) * (1 - FRICTION), .5);
+    if(start != target){
+        velocity = Vector3(Vector2(target - start).normalize()*2, .5);
+    }
 }
 
 EntityExplosive::EntityExplosive(ItemExplosive* item, Point2 pos) : EntityMoving(pos, 0) {
@@ -64,10 +66,10 @@ Ui::Color EntityExplosive::getFgColor(unsigned long tick, Point2 pos, Level *lvl
                 return C_LIGHT_YELLOW;
 
             default:
-                return '!';
+                return C_LIGHT_RED;
         }
     }
-    return '!';
+    return C_LIGHT_RED;
 }
 
 void EntityExplosive::activate(Level* level){
@@ -89,8 +91,17 @@ void EntityExplosive::activate(Level* level){
     level->removeEntity(this, true);
 }
 
-void EntityExplosive::hit(Level* level){
-    activate(level);
+void EntityExplosive::hit(Level* level, HitType h, Point2 p){
+    if(expl){
+        switch (expl->explosiveType) {
+            case throwableBomb:
+                pos = p;
+                activate(level);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 bool EntityExplosive::update(double deltaTime, double time, Level* level) {

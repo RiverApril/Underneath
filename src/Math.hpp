@@ -11,6 +11,9 @@
 
 #define PI 3.14159265358979
 #define TAU (2*PI)
+#define HALF_PI (0.5*PI)
+#define QUARTER_PI (0.25*PI)
+#define EIGHTH_PI (0.125*PI)
 #define Deg1InRad (TAU/360)
 
 double distanceSquared(double ax, double ay, double bx, double by);

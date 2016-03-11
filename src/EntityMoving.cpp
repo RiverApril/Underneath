@@ -25,11 +25,15 @@ char EntityMoving::getChar(unsigned long tick, Point2 pos, Level* lvl) {
     return '-';
 }
 
+double EntityMoving::getFriction(){
+    return (location.z>0 ? AIR_FRICTION : GROUND_FRICTION);
+}
+
 bool EntityMoving::update(double deltaTime, double time, Level* level) {
 
     if(velocity != Vector3Zero){
 
-        velocity *= 1-((1-FRICTION) * deltaTime);
+        velocity *= 1-(getFriction() * deltaTime);
 
         velocity.z -= GRAVITY;
 
@@ -37,23 +41,31 @@ bool EntityMoving::update(double deltaTime, double time, Level* level) {
             velocity.z = 0;
         }
 
-        if(level->tileAt((location.xy() + (velocity.xy() * deltaTime)).floor())->doesNotHaveAnyOfFlags(tileFlagSolidBoth)){
+        Point2 p = (location.xy() + (velocity.xy() * deltaTime)).floor();
+
+        if(level->solidAt(p, tileFlagSolidBoth, true)){
             location += velocity * deltaTime;
         }else{
-            hit(level);
-            if(level->tileAt((location.xy() + (Vector2(velocity.x, 0) * deltaTime)).floor())->doesNotHaveAnyOfFlags(tileFlagSolidBoth)){
+            Point2 p1 = (location.xy() + (Vector2(velocity.x, 0) * deltaTime)).floor();
+            Point2 p2 = (location.xy() + (Vector2(0, velocity.y) * deltaTime)).floor();
+            if(level->solidAt(p1, tileFlagSolidBoth, true)){
                 velocity.y = 0;
                 location += velocity * deltaTime;
-            }else if(level->tileAt((location.xy() + (Vector2(0, velocity.y) * deltaTime)).floor())->doesNotHaveAnyOfFlags(tileFlagSolidBoth)){
+                hit(level, hitAngle, p1);
+            }else if(level->solidAt(p2, tileFlagSolidBoth, true)){
                 velocity.x = 0;
                 location += velocity * deltaTime;
+                hit(level, hitAngle, p2);
+            }else{
+                hit(level, hitNormal, p);
             }
         }
 
-        if(location.z < 0){
-            location.z = 0;
-        }
+    }
 
+    if(location.z <= 0){
+        location.z = 0;
+        hit(level, hitGround, location.xy().floor());
     }
 
 

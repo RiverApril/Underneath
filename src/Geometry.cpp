@@ -288,6 +288,10 @@ void Vector2::set(Point2 other) {
     this->y = other.y;
 }
 
+double Vector2::angleRad(){
+    return atan2(y, x);
+}
+
 double Vector2::randomRange(){
     return ::randomRange(x, y);
 }
@@ -314,6 +318,11 @@ Point2 Vector2::ceil() {
 
 Point2 Vector2::floor() {
     return Point2((int) ::floor(this->x), (int) ::floor(this->y));
+}
+
+Vector2 Vector2::normalize() {
+    double m = sqrt(x*x+y*y);
+    return Vector2(x/m, y/m);
 }
 
 Vector2 Vector2::operator+(double other) {

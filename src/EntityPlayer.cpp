@@ -507,6 +507,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                     BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
                     Animator::renderRangedAttack(pos, posOfEntity, icon, level, 1);
                     delete icon;
+
                 }
 
                 return useDelay(item);

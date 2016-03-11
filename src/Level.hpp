@@ -66,6 +66,7 @@ public:
     bool setTile(Point2 p, int tile);
     bool setTile(Point2 p, Tile* tile);
     int indexAt(Point2 p);
+    bool solidAt(Point2 p, TileFlag anyOf, bool checkEntities);
 
     Tile* tileAt(int x, int y);
     bool setTile(int x, int y, int tile);

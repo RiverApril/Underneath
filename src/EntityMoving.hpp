@@ -14,11 +14,11 @@
 #include "Entity.hpp"
 #include "ItemExplosive.hpp"
 
-#define AIR_FRICTION (.9)
-#define GROUND_FRICTION (.7)
+#define AIR_FRICTION (.1)
+#define GROUND_FRICTION (.3)
 #define GRAVITY (.1)
 
-#define FRICTION (location.z!=0 ? AIR_FRICTION : GROUND_FRICTION)
+enum HitType{hitNormal, hitGround, hitAngle};
 
 class EntityMoving : public Entity {
 public:
@@ -31,7 +31,9 @@ public:
 
     ~EntityMoving();
 
-    virtual void hit(Level* level){}
+    virtual double getFriction();
+
+    virtual void hit(Level* level, HitType h, Point2 p){}
 
     virtual bool update(double deltaTime, double time, Level* level);
 

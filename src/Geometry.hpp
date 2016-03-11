@@ -151,6 +151,9 @@ struct Vector2 {
     Point2 round();
     Point2 ceil();
     Point2 floor();
+    double angleRad();
+
+    Vector2 normalize();
 
     Vector2 operator+(double other);
     Vector2 operator-(double other);
