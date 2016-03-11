@@ -207,6 +207,16 @@ Entity* Level::firstEntityHere(Point2 p){
     return nullptr;
 }
 
+vector<Entity*> Level::allEntitiesHere(Point2 p){
+    vector<Entity*> v = {};
+    for(Entity* e : entityList){
+        if(e->pos == p){
+            v.push_back(e);
+        }
+    }
+    return v;
+}
+
 bool Level::canSee(Point2 origin, Point2 test, double range) {
 
     if(origin == test){
@@ -530,7 +540,7 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
                                 if((!mustBeExplored || getExplored(p)) && careAboutEntities && p != to && p != from){
                                     for(Entity* e : entityList){
                                         if(e){
-                                            if(!(bool)(e->solidity & requiredFlag) || (bool)(e->solidity & bannedFlag)){
+                                            if(!(bool)(e->getSolidity() & requiredFlag) || (bool)(e->getSolidity() & bannedFlag)){
                                                 if(e->pos == p){
                                                     ent = true;
                                                     break;
@@ -597,16 +607,21 @@ bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag ba
 
 void Level::explode(Point2 pos, double radius, double attackPower, bool destroyTiles){
     double radiusSquared = radius*radius;
-    if(destroyTiles){
-        for(int i=-radius; i<=radius; i++){
-            for (int j=-radius; j<=radius; j++) {
-                if( ((i*i) + (j*j)) <= radiusSquared){
-                    Point2 p = pos+Point2(i, j);
-                    if(tileAt(p)->doesNotHaveAnyOfFlags(tileFlagIndestructable) && rand()%20!=0){
+    for(int i=-radius; i<=radius; i++){
+        for (int j=-radius; j<=radius; j++) {
+            if( ((i*i) + (j*j)) <= radiusSquared){
+                Point2 p = pos+Point2(i, j);
+                if(tileAt(p)->doesNotHaveAnyOfFlags(tileFlagIndestructable) && rand()%20!=0){
+
+                    if(destroyTiles){
                         if(tileAt(p)->hasAllOfFlags(tileFlagFlammable)){
-                            setTile(p, rand()%5==0?Tiles::tileFire:Tiles::tileAsh);
+                            setTile(p, Tiles::tileFire);
                         }else{
-                        	setTile(p, Tiles::tileRubble);
+                            setTile(p, Tiles::tileRubble);
+                        }
+                    }else{
+                        if(tileAt(p)->hasAllOfFlags(tileFlagFlammable | tileFlagReplaceable)){
+                            setTile(p, Tiles::tileFire);
                         }
                     }
                 }
@@ -619,7 +634,7 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
                 EntityAlive* a = dynamic_cast<EntityAlive*>(e);
                 if(a){
                     double disS = distanceSquared(a->pos, pos);
-                    if(disS <= radiusSquared){
+                    if(canSee(pos, a->pos, radius)){
                         a->hurt(this, damExplosion, attackPower*(((radiusSquared)-disS))/(radiusSquared));
                         a->addEffect(Effect(effDamage, Random::randDouble(5, 10), 1, damFire));
                     }
@@ -646,11 +661,11 @@ void Level::placeNewEntityAi(EntityAi* e, Point2 entrance) {
 
 void Level::save(vector<unsigned char>* data) {
 
-    Point2::save(size, data);
+    size.save(data);
     Utility::saveInt(data, difficulty);
     Utility::saveInt(data, nextUniqueId);
 
-    Point2::save(stairDownPos, data);
+    stairDownPos.save(data);
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
             Utility::saveUInt8Bit(data, tileGrid[i][j].index);
@@ -695,7 +710,7 @@ void Level::load(vector<unsigned char>* data, int* position) {
     //load difficulty
     nextUniqueId = Utility::loadInt(data, position);
 
-    stairDownPos = Point2::load(data, position);
+    stairDownPos = Point2(data, position);
 
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {

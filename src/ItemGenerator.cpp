@@ -14,7 +14,7 @@
 #include "Art.hpp"
 #include "Entity.hpp"
 #include "ItemPotion.hpp"
-#include "ItemTimeActivated.hpp"
+#include "ItemExplosive.hpp"
 #include "ItemSpecial.hpp"
 
 namespace ItemGenerator {
@@ -54,6 +54,8 @@ namespace ItemGenerator {
 
     BombBase* bombWallSmall;
     BombBase* bombWallLarge;
+    BombBase* landMine;
+    BombBase* molotovCocktail;
     BombBase* easterEgg;
 
     WeaponBase* wKnife;
@@ -159,11 +161,15 @@ namespace ItemGenerator {
         scrollBarrier = atl(new ScrollBase({{"Protection Scroll"}}, spellBarrier));
 
 
-        bombWallSmall = atl(new BombBase({{"Small Destructive Explosive", "Small Destructive Explosives"}}, timeActivatedWallBomb, 5, 10, 500, 1000, 1, 3));
-        bombWallLarge = atl(new BombBase({{"Large Destructive Explosive", "Large Destructive Explosives"}}, timeActivatedWallBomb, 10, 15, 1000, 2000, 5, 20));
+        bombWallSmall = atl(new BombBase({{"Small Destructive Explosive"}}, timeActivatedBomb, 5, 10, 500, 1000, 1, 3, true));
+        bombWallLarge = atl(new BombBase({{"Large Destructive Explosive"}}, timeActivatedBomb, 10, 15, 1000, 2000, 5, 20, true));
+
+        landMine = atl(new BombBase({{"Pressure Mine"}}, pressureBomb, 0, 0, 200, 300, 5, 10, false));
+
+        molotovCocktail = atl(new BombBase({{"Molotov Cocktail"}}, throwableBomb, 0, 0, 10, 20, 2, 5, false));
 
 
-        easterEgg = new BombBase({{"Easter Egg"}}, timeActivatedWallBomb, 1, 1, 30, 70, 10, 20);
+        easterEgg = new BombBase({{"Easter Egg"}}, timeActivatedBomb, 1, 1, 30, 70, 10, 20, true);
 
 
 
@@ -305,6 +311,8 @@ namespace ItemGenerator {
             l.emplace_back(10, scrollRemoteUse);
             l.emplace_back(10, bombWallSmall);
             l.emplace_back(15, bombWallLarge);
+            l.emplace_back(10, molotovCocktail);
+            l.emplace_back(10, landMine);
             lootProfilePlayer = atl(new LootProfile(false, false, l));
         }
 
@@ -535,7 +543,7 @@ namespace ItemGenerator {
             return createScrollFromBase(sb);
         } else {// 1/4 for bomb or hammer
             if(rand()%2==0){
-                return new ItemTimeActivated(rand()%2==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10));
+                return new ItemExplosive(rand()%2==0?timeActivatedBomb:timeActivatedWallBomb, Random::randDouble(10, 20), Random::randDouble(50, 500), Random::randDouble(2, 10));
             }else{
                 return createItemFromBase(repairHammer, itemDifficulty);
             }
@@ -658,18 +666,19 @@ namespace ItemGenerator {
         return a;
     }
 
-    ItemTimeActivated* createBombFromBase(BombBase* base){
+    ItemExplosive* createBombFromBase(BombBase* base){
         size_t ni = rand() % base->names.size();
         size_t arti = min(ni, base->arts.size() - 1);
         
-        ItemTimeActivated* b = new ItemTimeActivated();
+        ItemExplosive* b = new ItemExplosive();
 
         b->setName(base->names[ni]);
         b->artIndex = base->arts[arti];
-        b->timeActivatedType = base->timeActivedType;
+        b->explosiveType = base->timeActivedType;
         b->power = base->power.randomRange();
         b->time = base->time.randomRange();
         b->radius = base->radius.randomRange();
+        b->destroysTiles = base->destroysTiles;
 
 
         return b;
@@ -762,7 +771,7 @@ namespace ItemGenerator {
         ItemEquipable* ie = dynamic_cast<ItemEquipable*>(item);
         ItemPotion* ip = dynamic_cast<ItemPotion*>(item);
         ItemSpecial* is = dynamic_cast<ItemSpecial*>(item);
-        ItemTimeActivated* it = dynamic_cast<ItemTimeActivated*>(item);
+        ItemExplosive* it = dynamic_cast<ItemExplosive*>(item);
         ItemUtilitySpell* iu = dynamic_cast<ItemUtilitySpell*>(item);
         if(ie){
 
@@ -876,14 +885,11 @@ namespace ItemGenerator {
 
         }else if(it){//Time Activated
 
-            switch (it->timeActivatedType) {
-                case timeActivatedWallBomb:
-                    value += 20;
-                    //no break intentional
+            switch (it->explosiveType) {
                 case timeActivatedBomb:
-                    value += it->radius * it->power;
+                    value += it->radius + (it->destroysTiles ? 20 : 0);
                     break;
-                case timeActivatedDud:
+                case dudBomb:
                     value = -1;
                     break;
 
@@ -937,6 +943,11 @@ namespace ItemGenerator {
             loots.emplace_back((int)(40), scrollRelocate);
             loots.emplace_back((int)(80), scrollRemoteUse);
             loots.emplace_back((int)(40), scrollBarrier);
+
+            loots.emplace_back(60, bombWallSmall);
+            loots.emplace_back(80, bombWallLarge);
+            loots.emplace_back(60, molotovCocktail);
+            loots.emplace_back(70, landMine);
 
             loots.emplace_back((int)(100), smallKey);
             //loots.emplace_back((int)(20), repairHammer);

@@ -10,7 +10,7 @@
 #include "Utility.hpp"
 #include "ItemGenerator.hpp"
 #include "ItemSpecial.hpp"
-#include "ItemTimeActivated.hpp"
+#include "ItemExplosive.hpp"
 #include "MenuGame.hpp"
 
 World::World(string n) {
@@ -129,7 +129,7 @@ namespace WorldLoader {
 
                             int* levelPosition = new int(0);
 
-                            Point2 levelSize = Point2::load(levelData, levelPosition);
+                            Point2 levelSize = Point2(levelData, levelPosition);
 
                             int levelDifficulty = Utility::loadInt(levelData, levelPosition);
 

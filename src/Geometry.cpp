@@ -20,8 +20,11 @@ Point2 Point2Down = Point2(0, 1);
 Point2 Point2One = Point2(1, 1);
 Point2 Point2Neg1 = Point2(-1, -1);
 
+Vector2 Vector2Zero = Vector2(0.0, 0.0);
 Vector2 Vector2One = Vector2(1, 1);
 Vector2 Vector2OneHalf = Vector2(.5, .5);
+
+Vector3 Vector3Zero = Vector3(0, 0, 0);
 
 //Point2:
 
@@ -155,15 +158,14 @@ string Point2::toString() {
     return to_string(x) + ", " + to_string(y);
 }
 
-void Point2::save(Point2 p, vector<unsigned char>* data) {
-    Utility::saveInt(data, p.x);
-    Utility::saveInt(data, p.y);
+void Point2::save(vector<unsigned char>* data) {
+    Utility::saveInt(data, x);
+    Utility::saveInt(data, y);
 }
 
-Point2 Point2::load(vector<unsigned char>* data, int* position) {
-    int x = Utility::loadInt(data, position);
-    int y = Utility::loadInt(data, position);
-    return Point2(x, y);
+Point2::Point2(vector<unsigned char>* data, int* position) {
+    x = Utility::loadInt(data, position);
+    y = Utility::loadInt(data, position);
 }
 
 //Point3:
@@ -258,8 +260,10 @@ void Point3::save(vector<unsigned char>* data) {
     Utility::saveInt(data, z);
 }
 
-Point3 Point3::load(vector<unsigned char>* data, int* position) {
-    return Point3(Utility::loadInt(data, position), Utility::loadInt(data, position), Utility::loadInt(data, position));
+Point3::Point3(vector<unsigned char>* data, int* position) {
+    x = Utility::loadInt(data, position);
+    y = Utility::loadInt(data, position);
+    z = Utility::loadInt(data, position);
 }
 
 //Vector2:
@@ -341,7 +345,7 @@ Vector2 Vector2::operator*(Point2 other){
 }
 
 Vector2 Vector2::operator/(Point2 other){
-    return Vector2(this->x * other.x, this->y * other.y);
+    return Vector2(this->x / other.x, this->y / other.y);
 }
 
 Vector2 Vector2::operator+(Vector2 other){
@@ -357,7 +361,7 @@ Vector2 Vector2::operator*(Vector2 other){
 }
 
 Vector2 Vector2::operator/(Vector2 other){
-    return Vector2(this->x * other.x, this->y * other.y);
+    return Vector2(this->x / other.x, this->y / other.y);
 }
 
 
@@ -388,6 +392,218 @@ Vector2* Vector2::operator/=(Vector2 other){
     this->x /= other.x;
     this->y /= other.y;
     return this;
+}
+
+
+Vector2* Vector2::operator+=(double other){
+    this->x += other;
+    this->y += other;
+    return this;
+}
+
+Vector2* Vector2::operator-=(double other){
+    this->x -= other;
+    this->y -= other;
+    return this;
+}
+
+Vector2* Vector2::operator*=(double other){
+    this->x *= other;
+    this->y *= other;
+    return this;
+}
+
+Vector2* Vector2::operator/=(double other){
+    this->x /= other;
+    this->y /= other;
+    return this;
+}
+
+void Vector2::save(vector<unsigned char>* data) {
+    Utility::saveDouble(data, x);
+    Utility::saveDouble(data, y);
+}
+
+Vector2::Vector2(vector<unsigned char>* data, int* position) {
+    x = Utility::loadDouble(data, position);
+    y = Utility::loadDouble(data, position);
+}
+
+//Vector3:
+
+
+
+Vector3::Vector3(double x, double y, double z) : x(x), y(y), z(z){}
+
+bool Vector3::operator==(Vector3 other) {
+    return this->x == other.x && this->y == other.y && this->z == other.z;
+}
+
+bool Vector3::operator!=(Vector3 other) {
+    return !(*this == other);
+}
+
+void Vector3::set(Vector3 other) {
+    this->x = other.x;
+    this->y = other.y;
+    this->z = other.z;
+}
+
+void Vector3::set(Point3 other) {
+    this->x = other.x;
+    this->y = other.y;
+    this->z = other.z;
+}
+
+Point3 Vector3::roundAwayFrom0() {
+    return Point3(::roundAwayFrom0(this->x), ::roundAwayFrom0(this->y), ::roundAwayFrom0(this->z));
+}
+
+Point3 Vector3::roundToward0() {
+    return Point3(::roundToward0(this->x), ::roundToward0(this->y), ::roundAwayFrom0(this->z));
+}
+
+Point3 Vector3::truncate() {
+    return Point3((int) (this->x), (int) (this->y), (int) (this->z));
+}
+
+Point3 Vector3::round() {
+    return Point3((int) ::round(this->x), (int) ::round(this->y), (int) ::round(this->z));
+}
+
+Point3 Vector3::ceil() {
+    return Point3((int) ::ceil(this->x), (int) ::ceil(this->y), (int) ::ceil(this->z));
+}
+
+Point3 Vector3::floor() {
+    return Point3((int) ::floor(this->x), (int) ::floor(this->y), (int) ::floor(this->z));
+}
+
+Vector2 Vector3::xy() {
+    return Vector2(x, y);
+}
+
+Vector3 Vector3::operator+(double other) {
+    return Vector3(this->x + other, this->y + other, this->z + other);
+}
+
+Vector3 Vector3::operator-(double other) {
+    return Vector3(this->x - other, this->y - other, this->z - other);
+}
+
+Vector3 Vector3::operator*(double other) {
+    return Vector3(this->x*other, this->y * other, this->z * other);
+}
+
+Vector3 Vector3::operator/(double other) {
+    return Vector3(this->x / other, this->y / other, this->z / other);
+}
+
+Vector3 Vector3::operator+(Point3 other){
+    return Vector3(this->x + other.x, this->y + other.y, this->z + other.y);
+}
+
+Vector3 Vector3::operator-(Point3 other){
+    return Vector3(this->x - other.x, this->y - other.y, this->z - other.z);
+}
+
+Vector3 Vector3::operator*(Point3 other){
+    return Vector3(this->x * other.x, this->y * other.y, this->z * other.z);
+}
+
+Vector3 Vector3::operator/(Point3 other){
+    return Vector3(this->x / other.x, this->y / other.y, this->z / other.z);
+}
+
+Vector3 Vector3::operator+(Vector3 other){
+    return Vector3(this->x + other.x, this->y + other.y, this->z + other.z);
+}
+
+Vector3 Vector3::operator-(Vector3 other){
+    return Vector3(this->x - other.x, this->y - other.y, this->z - other.z);
+}
+
+Vector3 Vector3::operator*(Vector3 other){
+    return Vector3(this->x * other.x, this->y * other.y, this->z * other.z);
+}
+
+Vector3 Vector3::operator/(Vector3 other){
+    return Vector3(this->x / other.x, this->y / other.y, this->z / other.z);
+}
+
+
+Vector3 Vector3::operator-(){
+    return Vector3(-this->x, -this->y, -this->z);
+}
+
+
+Vector3* Vector3::operator+=(Vector3 other){
+    this->x += other.x;
+    this->y += other.y;
+    this->z += other.z;
+    return this;
+}
+
+Vector3* Vector3::operator-=(Vector3 other){
+    this->x -= other.x;
+    this->y -= other.y;
+    this->z -= other.z;
+    return this;
+}
+
+Vector3* Vector3::operator*=(Vector3 other){
+    this->x *= other.x;
+    this->y *= other.y;
+    this->z *= other.z;
+    return this;
+}
+
+Vector3* Vector3::operator/=(Vector3 other){
+    this->x /= other.x;
+    this->y /= other.y;
+    this->z /= other.z;
+    return this;
+}
+
+
+Vector3* Vector3::operator+=(double other){
+    this->x += other;
+    this->y += other;
+    this->z += other;
+    return this;
+}
+
+Vector3* Vector3::operator-=(double other){
+    this->x -= other;
+    this->y -= other;
+    this->z -= other;
+    return this;
+}
+
+Vector3* Vector3::operator*=(double other){
+    this->x *= other;
+    this->y *= other;
+    this->z *= other;
+    return this;
+}
+
+Vector3* Vector3::operator/=(double other){
+    this->x /= other;
+    this->y /= other;
+    this->z /= other;
+    return this;
+}
+
+void Vector3::save(vector<unsigned char>* data) {
+    Utility::saveDouble(data, x);
+    Utility::saveDouble(data, y);
+    Utility::saveDouble(data, z);
+}
+
+Vector3::Vector3(vector<unsigned char>* data, int* position) {
+    x = Utility::loadDouble(data, position);
+    y = Utility::loadDouble(data, position);
+    z = Utility::loadDouble(data, position);
 }
 
 

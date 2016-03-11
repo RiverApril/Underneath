@@ -31,14 +31,18 @@ namespace Ui {
     void MenuDialog::handleInput(int in) {
         if (in == Key::uiUp) {
             selected--;
+            scrollTick = INT_MAX;
         } else if (in == Key::uiDown) {
             selected++;
+            scrollTick = INT_MAX;
         } else if (in == Key::interact || in == '\n') {
             closeThisMenu();
             afterClose(this, selected);
         } else if (escapable && in == KEY_ESCAPE) {
             closeThisMenu();
             afterClose(this, -1);
+        } else if(in != -1) {
+            scrollTick = INT_MAX;
         }
         
     }
@@ -72,7 +76,9 @@ namespace Ui {
             i++;
         }
 
-        scrollTick++;
+        if(scrollTick < INT_MAX){
+            scrollTick++;
+        }
 
 
 

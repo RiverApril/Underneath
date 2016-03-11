@@ -11,8 +11,9 @@
 #include "EntityAi.hpp"
 #include "EntityPlayer.hpp"
 #include "EntityItem.hpp"
-#include "EntityTimeActivated.hpp"
+#include "EntityExplosive.hpp"
 #include "EntityShop.hpp"
+#include "EntityMoving.hpp"
 
 #include "Animator.hpp"
 #include "Level.hpp"
@@ -27,7 +28,7 @@ Entity::Entity() : Entity(' ', Point2Zero, C_WHITE) {
 Entity::Entity(char icon, Point2 startPos, Ui::Color color) {
     this->defaultIcon = icon;
     this->fgColor = color;
-    this->bgColor = C_BLACK;
+    //this->bgColor = C_BLACK;
 
     pos = startPos;
     lastPos = startPos;
@@ -38,13 +39,13 @@ Entity::~Entity() {
 }
 
 bool Entity::tryToMoveAbsalute(Point2 p, Level* level) {
-    if (level->tileAt(p)->doesNotHaveAnyOfFlags(solidity)) {
+    if (level->tileAt(p)->doesNotHaveAnyOfFlags(getSolidity())) {
         bool block = false;
         for (Entity* e : level->entityList) {
             if (e->uniqueId == uniqueId) {
                 continue;
             }
-            if ((bool)(e->solidity & solidity)) {
+            if ((bool)(e->getSolidity() & getSolidity())) {
                 if (e->pos == p) {
                     block = true;
                     break;
@@ -53,8 +54,8 @@ bool Entity::tryToMoveAbsalute(Point2 p, Level* level) {
         }
         if (!block) {
             if(distanceSquared(pos, p) > 1){
-                Animator::renderFlash(pos, level, {defaultIcon, 'O', 'o', '.'}, 1, fgColor, bgColor);
-                Animator::renderFlash(p, level, {'.', 'o', 'O', defaultIcon}, 1, fgColor, bgColor);
+                Animator::renderFlash(pos, level, {defaultIcon, 'O', 'o', '.'}, 1, fgColor, getBgColor(0, pos, level));
+                Animator::renderFlash(p, level, {'.', 'o', 'O', defaultIcon}, 1, fgColor, getBgColor(0, pos, level));
             }
             pos = p;
             return true;
@@ -99,8 +100,7 @@ Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE) {
     newE->pos = oldE->pos;
     newE->lastPos = oldE->lastPos;
     newE->fgColor = oldE->fgColor;
-    newE->bgColor = oldE->bgColor;
-    newE->solidity = oldE->solidity;
+    //newE->bgColor = oldE->bgColor;
 
     return newE;
 }
@@ -133,8 +133,11 @@ Entity* Entity::clone(Entity* oldE) {
         case ENTITY_TYPE_ITEMENTITY:
             return makeNewAndClone<Entity, EntityItem>(oldE);
 
-        case ENTITY_TYPE_TIME_ACTIVATED:
-            return makeNewAndClone<Entity, EntityTimeActivated>(oldE);
+        case ENTITY_TYPE_EXPLOSIVE:
+            return makeNewAndClone<Entity, EntityExplosive>(oldE);
+
+        case ENTITY_TYPE_MOVING:
+            return makeNewAndClone<Entity, EntityMoving>(oldE);
 
         case ENTITY_TYPE_SHOP:
             return makeNewAndClone<Entity, EntityShop>(oldE);
@@ -149,6 +152,10 @@ Entity* Entity::clone(Entity* oldE) {
 
 }
 
+Ui::Color Entity::getBgColor(unsigned long tick, Point2 pos, Level* lvl){
+    return lvl->tileAt(pos)->getIcon(true)->getBgColor(tick, pos, lvl);
+}
+
 void Entity::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getEntityTypeId());
 
@@ -157,12 +164,11 @@ void Entity::save(vector<unsigned char>* data) {
 
     Utility::saveUnsignedChar(data, (unsigned char) defaultIcon);
 
-    Point2::save(pos, data);
-    Point2::save(lastPos, data);
+    pos.save(data);
+    lastPos.save(data);
 
     Utility::saveUnsignedChar(data, (unsigned char) fgColor);
-    Utility::saveUnsignedChar(data, (unsigned char) bgColor);
-    Utility::saveUnsignedInt(data, solidity);
+    //Utility::saveUnsignedChar(data, (unsigned char) bgColor);
 }
 
 int Entity::getEntityTypeId() {
@@ -176,12 +182,11 @@ void Entity::load(vector<unsigned char>* data, int* position) {
 
     defaultIcon = (char) Utility::loadUnsignedChar(data, position);
 
-    pos = Point2::load(data, position);
-    lastPos = Point2::load(data, position);
+    pos = Point2(data, position);
+    lastPos = Point2(data, position);
 
     fgColor = (char) Utility::loadUnsignedChar(data, position);
-    bgColor = (char) Utility::loadUnsignedChar(data, position);
-    solidity = (TileFlag)Utility::loadUnsignedInt(data, position);
+    //bgColor = (char) Utility::loadUnsignedChar(data, position);
 }
 
 Entity* Entity::loadNew(vector<unsigned char>* data, int* position) {
@@ -205,8 +210,11 @@ Entity* Entity::loadNew(vector<unsigned char>* data, int* position) {
         case ENTITY_TYPE_ITEMENTITY:
             e = new EntityItem();
             break;
-        case ENTITY_TYPE_TIME_ACTIVATED:
-            e = new EntityTimeActivated();
+        case ENTITY_TYPE_EXPLOSIVE:
+            e = new EntityExplosive();
+            break;
+        case ENTITY_TYPE_MOVING:
+            e = new EntityMoving();
             break;
         case ENTITY_TYPE_SHOP:
             e = new EntityShop();

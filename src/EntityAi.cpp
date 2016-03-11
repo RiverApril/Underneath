@@ -14,12 +14,13 @@
 #include "ItemGenerator.hpp"
 #include "EnemyGenerator.hpp"
 #include "EntityItem.hpp"
-#include "EntityTimeActivated.hpp"
+#include "EntityExplosive.hpp"
+#include "ItemExplosive.hpp"
 #include "Animator.hpp"
 #include "Settings.hpp"
 #include "Math.hpp"
 
-EntityAi::EntityAi() : EntityAi("", aiNone, ' ', Point2Zero, C_WHITE, 1) {
+EntityAi::EntityAi() : EntityAi("", 0, 0, Point2Zero, 0, 0) {
 
 }
 
@@ -116,9 +117,9 @@ void EntityAi::moveAi(double time, Level* level) {
                 runToPos.x = pos.x + (rand() % viewDistance)-(viewDistance/2);
                 runToPos.y = pos.y + (rand() % viewDistance)-(viewDistance/2);
 
-                path = level->getPathTo(runToPos, pos, tileFlagIsTile, solidity, true);
+                path = level->getPathTo(runToPos, pos, tileFlagIsTile, getSolidity(), true);
 
-                if(level->getPathTo(target->pos, runToPos, tileFlagIsTile, solidity, false).size() < path.size()){
+                if(level->getPathTo(target->pos, runToPos, tileFlagIsTile, getSolidity(), false).size() < path.size()){
                     path.clear();
                 }
             };
@@ -127,11 +128,11 @@ void EntityAi::moveAi(double time, Level* level) {
             if(!path.empty()){
                 if(Settings::showFollowPaths){
                     for(Point2 point : path){
-                        EntityTimeActivated* e = new EntityTimeActivated("path", timeActivatedDud, 2, 0, 0, point);
+                        EntityExplosive* e = new EntityExplosive(new ItemExplosive("path", dudBomb, 2, 0, 0, false), point);
                         e->fgColor = C_LIGHT_GREEN;
                         level->newEntity(e);
                     }
-                    EntityTimeActivated* e = new EntityTimeActivated("runToPos", timeActivatedDud, 2, 0, 0, runToPos);
+                    EntityExplosive* e = new EntityExplosive(new ItemExplosive("runToPos", dudBomb, 2, 0, 0, false), runToPos);
                     e->fgColor = C_LIGHT_MAGENTA;
                     level->newEntity(e);
                 }
@@ -201,18 +202,18 @@ void EntityAi::moveAi(double time, Level* level) {
             double dis = distanceSquared(target->pos, pos);
             double rng = r?(r->range * r->range):0;
             if (!r || (dis > rng || !canSeeTarget)) {
-                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, solidity, true);
+                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, getSolidity(), true);
                 if(path.empty()){
-                    path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, solidity, false);
+                    path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, getSolidity(), false);
                 }
                 if(!path.empty()){
                     if(Settings::showFollowPaths){
                         for(Point2 point : path){
-                            EntityTimeActivated* e = new EntityTimeActivated("path", timeActivatedDud, 2, 0, 0, point);
+                            EntityExplosive* e = new EntityExplosive(new ItemExplosive("path", dudBomb, 2, 0, 0, false), point);
                             e->fgColor = C_LIGHT_GREEN;
                             level->newEntity(e);
                         }
-                        EntityTimeActivated* e = new EntityTimeActivated("lastKnownTargetPos", timeActivatedDud, 2, 0, 0, lastKnownTargetPos);
+                        EntityExplosive* e = new EntityExplosive(new ItemExplosive("lastKnownTargetPos", dudBomb, 2, 0, 0, false), lastKnownTargetPos);
                         e->fgColor = C_LIGHT_MAGENTA;
                         level->newEntity(e);
                     }
@@ -237,7 +238,7 @@ void EntityAi::moveAi(double time, Level* level) {
                 for(int j=-1;j<=1;j++){
                     if(abs(i) != abs(j)){
                         Point2 p = pos+Point2(i, j);
-                        if(p != lastPos && level->tileAt(p)->doesNotHaveAnyOfFlags(solidity)){
+                        if(p != lastPos && level->tileAt(p)->doesNotHaveAnyOfFlags(getSolidity())){
                             possibilities.push_back(Point2(i, j));
                         }
                     }
@@ -303,16 +304,18 @@ void EntityAi::attackAi(double time, Level* level){
     }
     if (attack) {
         while (lastAttackTime + activeItemWeapon->useDelay <= time) {
-            double d = target->hurt(level, activeItemWeapon, getAttackMultiplierFromEffectsAndEquips(activeItemWeapon->damageType));
-            Verbalizer::attack(this, target, activeItemWeapon, d);
+
             ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(activeItemWeapon);
             BasicIcon* icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), C_BLACK);
             if(spell){
-            	Animator::renderRangedAttack(pos, target->pos, icon, level, 8);
+                Animator::renderRangedAttack(pos, target->pos, icon, level, 8);
             }else{
                 Animator::renderRangedAttack(pos, target->pos, icon, level, 1);
             }
             delete icon;
+
+            double d = target->hurt(level, activeItemWeapon, getAttackMultiplierFromEffectsAndEquips(activeItemWeapon->damageType));
+            Verbalizer::attack(this, target, activeItemWeapon, d);
             lastAttackTime += activeItemWeapon->useDelay;
         }
     }
@@ -398,9 +401,11 @@ void EntityAi::dropLoots(Level* level){
     int ll = 0;
     int er = 0;
     if(ItemGenerator::lootProfileList[lootProfileIndex]->canBeModifiedByRandomness){
-    	int l = level->currentWorld->currentPlayer->abilities[iLUK];
-    	ll = maxLootDrop==0?0:((rand()%max(2, 100-l))==0?min(1, l/10):0);
-        er = 3;
+        if(level->currentWorld->currentPlayer){
+            int l = level->currentWorld->currentPlayer->abilities[iLUK];
+            ll = maxLootDrop==0?0:((rand()%max(2, 100-l))==0?min(1, l/10):0);
+            er = 3;
+        }
     }
     vector<Item*> drops = ItemGenerator::makeLoot(lootProfileIndex, level->getDifficulty(), rand()%(int)(maxHp*max(1, level->getDifficulty())), minLootDrop, maxLootDrop+ll, er);
     for(Item* i : drops){
@@ -449,7 +454,7 @@ void EntityAi::save(vector<unsigned char>* data) {
     Utility::saveInt(data, lootProfileIndex);
     Utility::saveInt(data, maxLootDrop);
     Utility::saveInt(data, minLootDrop);
-    Point2::save(lastKnownTargetPos, data);
+    lastKnownTargetPos.save(data);
 
     int activeItemWeaponIndex = -1;
 
@@ -473,7 +478,7 @@ void EntityAi::load(vector<unsigned char>* data, int* position) {
     lootProfileIndex = Utility::loadInt(data, position);
     maxLootDrop = Utility::loadInt(data, position);
     minLootDrop = Utility::loadInt(data, position);
-    lastKnownTargetPos = Point2::load(data, position);
+    lastKnownTargetPos = Point2(data, position);
 
 
     int activeItemWeaponIndex = Utility::loadInt(data, position);

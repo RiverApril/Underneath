@@ -22,8 +22,9 @@ const int ENTITY_TYPE_ALIVE = 1;
 const int ENTITY_TYPE_AIENTITY = 2;
 const int ENTITY_TYPE_PLAYER = 3;
 const int ENTITY_TYPE_ITEMENTITY = 4;
-const int ENTITY_TYPE_TIME_ACTIVATED = 5;
+const int ENTITY_TYPE_EXPLOSIVE = 5;
 const int ENTITY_TYPE_SHOP = 6;
+const int ENTITY_TYPE_MOVING = 7;
 
 class Entity : Icon {
 public:
@@ -58,20 +59,22 @@ public:
         return fgColor;
     }
 
-    virtual Ui::Color getBgColor(unsigned long tick, Point2 pos, Level* lvl){
-        return bgColor;
-    }
+    virtual Ui::Color getBgColor(unsigned long tick, Point2 pos, Level* lvl);
 
     virtual void save(vector<unsigned char>* data);
 
     virtual int getEntityTypeId();
 
     virtual int getRenderDepth() {
-        return (solidity & tileFlagSolidInAir)?1:0;
+        return (getSolidity() & tileFlagSolidInAir)?1:0;
     }
 
     virtual void setTimes(double time) {
 
+    }
+
+    virtual TileFlag getSolidity(){
+        return tileFlagNone;
     }
 
     virtual bool isHostile() {
@@ -90,9 +93,6 @@ public:
 
     char defaultIcon = '?';
     Ui::Color fgColor;
-    Ui::Color bgColor;
-
-    TileFlag solidity = tileFlagNone;
 
 protected:
     Point2 lastPos;

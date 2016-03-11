@@ -14,7 +14,7 @@
 #include "ItemPotion.hpp"
 #include "ItemUtilitySpell.hpp"
 #include "ItemSpecial.hpp"
-#include "ItemTimeActivated.hpp"
+#include "ItemExplosive.hpp"
 #include "ItemArmor.hpp"
 
 void Item::save(vector<unsigned char>* data) {
@@ -82,7 +82,7 @@ Item* Item::clone(Item* oldI) {
             return makeNewAndClone<Item, ItemSpecial>(oldI);
 
         case ITEM_TYPE_TIME_ACTIVATED:
-            return makeNewAndClone<Item, ItemTimeActivated>(oldI);
+            return makeNewAndClone<Item, ItemExplosive>(oldI);
 
         case ITEM_TYPE_ARMOR:
             return makeNewAndClone<Item, ItemArmor>(oldI);
@@ -136,7 +136,7 @@ Item* Item::loadNew(vector<unsigned char>* data, int* position) {
             break;
 
         case ITEM_TYPE_TIME_ACTIVATED:
-            e = new ItemTimeActivated();
+            e = new ItemExplosive();
             break;
 
         case ITEM_TYPE_ARMOR:
@@ -181,7 +181,7 @@ bool Item::operator< (Item& b){
                 return *dynamic_cast<ItemSpecial*>(this) < dynamic_cast<ItemSpecial&>(b);
 
             case ITEM_TYPE_TIME_ACTIVATED:
-                return *dynamic_cast<ItemTimeActivated*>(this) < dynamic_cast<ItemTimeActivated&>(b);
+                return *dynamic_cast<ItemExplosive*>(this) < dynamic_cast<ItemExplosive&>(b);
 
             case ITEM_TYPE_ARMOR:
                 return *dynamic_cast<ItemArmor*>(this) < dynamic_cast<ItemArmor&>(b);

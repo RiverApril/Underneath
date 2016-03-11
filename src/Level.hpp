@@ -74,6 +74,8 @@ public:
     
     Entity* firstEntityHere(Point2 p);
 
+    vector<Entity*> allEntitiesHere(Point2 p);
+
     Entity* getClosestVisableEntity(Point2 origin, double range, Entity* notMe = nullptr);
     vector<Entity*> getAllVisableEntities(Point2 origin, double range, Entity* notMe, bool sort);
 
