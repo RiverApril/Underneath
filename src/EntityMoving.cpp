@@ -43,16 +43,16 @@ bool EntityMoving::update(double deltaTime, double time, Level* level) {
 
         Point2 p = (location.xy() + (velocity.xy() * deltaTime)).floor();
 
-        if(level->solidAt(p, tileFlagSolidBoth, true)){
+        if(!level->solidAt(p, tileFlagSolidBoth, true)){
             location += velocity * deltaTime;
         }else{
             Point2 p1 = (location.xy() + (Vector2(velocity.x, 0) * deltaTime)).floor();
             Point2 p2 = (location.xy() + (Vector2(0, velocity.y) * deltaTime)).floor();
-            if(level->solidAt(p1, tileFlagSolidBoth, true)){
+            if(!level->solidAt(p1, tileFlagSolidBoth, true)){
                 velocity.y = 0;
                 location += velocity * deltaTime;
                 hit(level, hitAngle, p1);
-            }else if(level->solidAt(p2, tileFlagSolidBoth, true)){
+            }else if(!level->solidAt(p2, tileFlagSolidBoth, true)){
                 velocity.x = 0;
                 location += velocity * deltaTime;
                 hit(level, hitAngle, p2);

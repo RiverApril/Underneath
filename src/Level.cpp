@@ -213,6 +213,15 @@ int Level::indexAt(int x, int y) {
     return Tiles::tileEdge->getIndex();
 }
 
+Entity* Level::getEnitity(int UID){
+    for(Entity* e : entityList){
+        if(e->uniqueId == UID){
+            return e;
+        }
+    }
+    return nullptr;
+}
+
 Entity* Level::firstEntityHere(Point2 p){
     for(Entity* e : entityList){
         if(e->pos == p){
@@ -425,11 +434,13 @@ void Level::randomTileUpdate(Point2 p){
 void Level::regularTileUpdate(Point2 p){
     int index = indexAt(p);
     if(index == Tiles::tileFire->getIndex() && rand()%10==0){
-        Utility::execute4Around(p.x, p.y, [this](int x, int y){
-            if(this->tileAt(x, y)->hasAllOfFlags(tileFlagFlammable)){
-                setTile(x, y, Tiles::tileFire);
-            }
-        });
+        if(rand()%3 != 0){
+            Utility::execute4Around(p.x, p.y, [this](int x, int y){
+                if(this->tileAt(x, y)->hasAllOfFlags(tileFlagFlammable)){
+                    setTile(x, y, Tiles::tileFire);
+                }
+            });
+        }
         setTile(p, Tiles::tileAsh);
     }
 }

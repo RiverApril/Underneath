@@ -308,7 +308,7 @@ namespace ItemGenerator {
             l.emplace_back(10, potionPhysicalDefense);
             l.emplace_back(5, scrollBarrier);
             l.emplace_back(5, scrollRelocate);
-            l.emplace_back(10, scrollRemoteUse);
+            l.emplace_back(5, scrollRemoteUse);
             l.emplace_back(10, bombWallSmall);
             l.emplace_back(15, bombWallLarge);
             l.emplace_back(10, molotovCocktail);
@@ -883,11 +883,17 @@ namespace ItemGenerator {
                 }
             }
 
-        }else if(it){//Time Activated
+        }else if(it){//Explosives
 
             switch (it->explosiveType) {
                 case timeActivatedBomb:
                     value += it->radius + (it->destroysTiles ? 20 : 0);
+                    break;
+                case pressureBomb:
+                    value += 20 + it->radius + (it->destroysTiles ? 20 : 0);
+                    break;
+                case throwableBomb:
+                    value += 30 + it->radius + (it->destroysTiles ? 100 : 0);
                     break;
                 case dudBomb:
                     value = -1;
@@ -941,7 +947,7 @@ namespace ItemGenerator {
             loots.emplace_back(50, potionPhysicalDefense);
 
             loots.emplace_back(40, scrollRelocate);
-            loots.emplace_back(80, scrollRemoteUse);
+            loots.emplace_back(40, scrollRemoteUse);
             loots.emplace_back(40, scrollBarrier);
 
             loots.emplace_back(60, bombWallSmall);

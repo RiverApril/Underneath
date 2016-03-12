@@ -112,7 +112,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
 
         ItemExplosive* ita = dynamic_cast<ItemExplosive*>(item);
         if(ita){
-            level->newEntity(new EntityExplosive(ita, pos, posToInteract, 1));
+            level->newEntity(new EntityExplosive(ita, pos, posToInteract, 1, uniqueId));
             if (item->qty == 1) {
                 removeItem(item, false);
             } else {
@@ -190,7 +190,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         break;
                     }
                     case spellDebugPlaceShop:{
-                        EntityShop* e = new EntityShop("Merchant", aiNone, 'M', pos, C_LIGHT_MAGENTA, 100);
+                        EntityShop* e = new EntityShop("Merchant", aiNone, 'M', posToInteract, C_LIGHT_MAGENTA, 100);
                         e->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, level->getDifficulty(), (rand()%9000)+1000, 10, 20, 2));
                         e->addItem(ItemGenerator::makeCoins(1000));
                         level->newEntity(e);

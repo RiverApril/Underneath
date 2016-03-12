@@ -177,6 +177,40 @@ namespace Commands {
         }
     };
 
+    struct CommandCoins : Command {
+
+        string help() {
+            return "Gives the player Coins";
+        }
+
+        string usage() {
+            return "coins <amount>";
+        }
+
+        string defaultName() {
+            return "coins";
+        }
+
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
+            MenuGame* mg = dynamic_cast<MenuGame*> (currentMenu);
+            if (mg) {
+                if (arguments.size() == 1) {
+                    int amount = Utility::parseInt(arguments[0]);
+                    mg->currentWorld->currentPlayer->addItem(ItemGenerator::makeCoins(amount));
+                    console("Added " + to_string(amount) + " coins");
+                    return true;
+                } else {
+                    console("Impropper use of command.");
+                }
+            } else {
+                console("Must be ingame to add.");
+            }
+            return false;
+        }
+
+
+    };
+
     struct CommandXp : Command {
 
         string help() {
@@ -365,6 +399,7 @@ namespace Commands {
         commandList.push_back(new CommandEcho());
         commandList.push_back(new CommandEffect());
         commandList.push_back(new CommandXp());
+        commandList.push_back(new CommandCoins());
         commandList.push_back(new CommandNextKey());
         commandList.push_back(new CommandGodMode());
         commandList.push_back(new CommandClear());

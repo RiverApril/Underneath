@@ -72,6 +72,8 @@ public:
     bool setTile(int x, int y, int tile);
     bool setTile(int x, int y, Tile* tile);
     int indexAt(int x, int y);
+
+    Entity* getEnitity(int UID);
     
     Entity* firstEntityHere(Point2 p);
 

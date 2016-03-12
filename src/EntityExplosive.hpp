@@ -20,7 +20,7 @@ public:
 
     EntityExplosive();
 
-    EntityExplosive(ItemExplosive* item, Point2 start, Point2 target, double z);
+    EntityExplosive(ItemExplosive* item, Point2 start, Point2 target, double z, int ignoreUID);
 
     EntityExplosive(ItemExplosive* item, Point2 pos);
 
@@ -58,6 +58,7 @@ public:
     
 protected:
     ItemExplosive* expl = nullptr;
+    int ignoreUID = -1;
 
     
 };
