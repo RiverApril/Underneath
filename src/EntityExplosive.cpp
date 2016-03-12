@@ -14,8 +14,9 @@ EntityExplosive::EntityExplosive() : EntityExplosive(nullptr, Point2Zero) {
 
 }
 
-EntityExplosive::EntityExplosive(ItemExplosive* item, Point2 start, Point2 target, double z) : EntityMoving(start, z) {
+EntityExplosive::EntityExplosive(ItemExplosive* item, Point2 start, Point2 target, double z, int ignoreUID) : EntityMoving(start, z) {
     this->expl = item;
+    this->ignoreUID = ignoreUID;
     if(start != target){
         velocity = Vector3(Vector2(target - start).normalize()*2, .5);
     }
@@ -75,9 +76,9 @@ Ui::Color EntityExplosive::getFgColor(unsigned long tick, Point2 pos, Level *lvl
 void EntityExplosive::activate(Level* level){
     if(expl){
         switch (expl->explosiveType) {
+            case throwableBomb:
             case timeActivatedBomb:
             case pressureBomb:
-            case throwableBomb:
                 level->explode(pos, expl->radius, expl->power, false);
                 Animator::renderExposion(pos, expl->radius, level, 1);
                 break;
@@ -94,10 +95,17 @@ void EntityExplosive::activate(Level* level){
 void EntityExplosive::hit(Level* level, HitType h, Point2 p){
     if(expl){
         switch (expl->explosiveType) {
-            case throwableBomb:
+            case throwableBomb:{
+                if(h != hitGround){
+                    Entity* e = level->getEnitity(ignoreUID);
+                    if(e && e->pos == pos){
+                        break;
+                    }
+                }
                 pos = p;
                 activate(level);
                 break;
+            }
             default:
                 break;
         }

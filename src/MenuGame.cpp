@@ -487,6 +487,7 @@ namespace Ui {
                                 console("Waiting until fully healed...");
                             }
                             timePassed = 1;
+                            tick++;
                             MenuGame::update();
                             if(!currentPlayer){
                                 timeout(defaultTimeout);
@@ -529,6 +530,7 @@ namespace Ui {
                             }
                         }
                         timePassed = 1;
+                        tick++;
                         MenuGame::update();
                         if(!currentPlayer){
                             timeout(defaultTimeout);
@@ -603,6 +605,7 @@ namespace Ui {
                                     console("Next Path fragment is too far.");
                                     break;
                                 }
+                                tick++;
                                 MenuGame::update();
                                 if(!currentPlayer){
                                     timeout(defaultTimeout);

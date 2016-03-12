@@ -446,12 +446,21 @@ namespace Ui {
                     }*/
                 }
 
+                bool cantAfford = false;
+
+                if(showPrice && ii == 1){
+                    if(item->coinValue > player->getWallet()){
+                        cantAfford = true;
+                        setColor(C_DARK_RED, C_BLACK);
+                    }
+                }
+
                 if (i == selectedY && (((ii == 0) == selectedLeft))) {
-                    setColor(C_BLACK, C_WHITE);
+                    setColor(C_BLACK, cantAfford?C_DARK_RED:C_WHITE);
                 }
 
                 if(i == highlightIndex && selectedLeft && tick%10<5){
-                    setColor(C_BLACK, C_LIGHT_CYAN);
+                    setColor(C_BLACK, cantAfford?C_LIGHT_RED:C_LIGHT_CYAN);
                 }
 
                 char pre;
