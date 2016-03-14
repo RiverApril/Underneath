@@ -29,7 +29,7 @@ string effectName(Effect eff) {
             return "Psychedelic";
 
         case effMemory:
-            return "Where am I?";
+            return "Lost";
 
         case effPurity:
             return "Purity";

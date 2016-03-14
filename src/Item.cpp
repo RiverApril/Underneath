@@ -193,3 +193,7 @@ bool Item::operator< (Item& b){
     }
     return this->getItemTypeId() < b.getItemTypeId();
 }
+
+bool comparePrice(Item* a, Item* b){
+    return a->coinValue < b->coinValue;
+}

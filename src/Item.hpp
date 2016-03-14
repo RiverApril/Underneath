@@ -143,4 +143,6 @@ template <typename T> bool comparePointer(T* a, T* b){
     return *a < *b;
 }
 
+bool comparePrice(Item* a, Item* b);
+
 #endif /* defined(__Underneath__Item__) */
