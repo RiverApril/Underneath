@@ -65,6 +65,8 @@ namespace Ui {
     }
 
     void MenuGame::levelHasChanged(){
+        
+        fadeIn = fadeInMin;
 
         if(currentLevel->getDifficulty() == 0){
             Audio::setBgMusic(Audio::soundMenu);
@@ -99,7 +101,6 @@ namespace Ui {
         
         levelHasChanged();
 
-        fadeIn = fadeInMin;
 
         return true;
     }

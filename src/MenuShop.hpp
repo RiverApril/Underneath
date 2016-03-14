@@ -23,6 +23,8 @@ namespace Ui {
         ~MenuShop() {
         }
 
+        bool openUi();
+
         void handleInput(int in);
         void update();
 

@@ -79,8 +79,8 @@ void EntityExplosive::activate(Level* level){
             case throwableBomb:
             case timeActivatedBomb:
             case pressureBomb:
-                level->explode(pos, expl->radius, expl->power, false);
                 Animator::renderExposion(pos, expl->radius, level, 1);
+                level->explode(pos, expl->radius, expl->power, expl->destroysTiles);
                 break;
             default:
                 break;

@@ -24,6 +24,11 @@ namespace Ui {
         this->currentWorld = w;
     }
 
+    bool MenuShop::openUi(){
+        sort(shop->inventory.begin(), shop->inventory.end(), comparePrice);
+        return true;
+    }
+
     void MenuShop::handleInput(int in) {
         if (in == Key::uiLeft || in == Key::uiRight) {
             selectedLeft = !selectedLeft;

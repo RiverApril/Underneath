@@ -490,9 +490,9 @@ namespace Ui {
 
                 displayName += formatString("%s", item->getName(item->qty != 1).c_str());
 
-                int w = columnWidth - 6;
+                int w = columnWidth - 4;
 
-                if((int)displayName.size() > w){
+                if((int)displayName.size() > w+3){
                     displayName = displayName.substr(0, w)+"...";
                 }
 
