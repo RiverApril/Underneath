@@ -303,16 +303,13 @@ namespace ItemGenerator {
             vector<pair<int, ItemBase*>> l;
             l.emplace_back(5, potionHealth);
             l.emplace_back(10, potionRegen);
-            l.emplace_back(10, potionRemoveBad);
-            l.emplace_back(10, potionPhysicalAttack);
-            l.emplace_back(10, potionPhysicalDefense);
             l.emplace_back(5, scrollBarrier);
             l.emplace_back(5, scrollRelocate);
             l.emplace_back(5, scrollRemoteUse);
             l.emplace_back(10, bombWallSmall);
             l.emplace_back(15, bombWallLarge);
             l.emplace_back(10, molotovCocktail);
-            l.emplace_back(10, landMine);
+            l.emplace_back(15, landMine);
             lootProfilePlayer = atl(new LootProfile(false, false, l));
         }
 
