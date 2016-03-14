@@ -314,7 +314,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                             ee++;
                         }
                     });
-                }while(ee < max(1, (int)sqrt(tt)) && aa < 20 && tt > 0);
+                }while(ee < max(1, (int)pow(tt, 1/6)) && aa < 20 && tt > 0);
                 
                 if(rand() % 50 == 0){
                     

@@ -638,7 +638,7 @@ namespace Ui {
                         }else if(player->getMp() < utilitySpell->manaCost){
                             setColor(C_BLACK, C_LIGHT_YELLOW);
                         }
-                        a += printMultiLineString(a, columnX, formatString("Mana Cost: %d", utilitySpell->manaCost));
+                        a += printMultiLineString(a, columnX, formatString("Mana Cost: %.2f", utilitySpell->manaCost));
                         setColor(C_LIGHT_GRAY, C_BLACK);
                     }
                 } else if(armor){
@@ -667,7 +667,7 @@ namespace Ui {
                     if (ranged) {
                         a += printMultiLineString(a, columnX, formatString("Range: %.2f", ranged->range));
                         if (spell) {
-                            a += printMultiLineString(a, columnX, formatString("Mana Cost: %d", spell->manaCost));
+                            a += printMultiLineString(a, columnX, formatString("Mana Cost: %.2f", spell->manaCost));
                         }
                     }
                     //if (!spell) {

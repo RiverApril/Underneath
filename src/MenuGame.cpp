@@ -588,7 +588,7 @@ namespace Ui {
                                     }
                                 }
                                 for(Effect e : currentPlayer->effects){
-                                    if(e.eId == effDamage && e.power < 0){
+                                    if(e.eId == effDamage && e.power > 0){
                                         console("You have an effect that is lowering your health!");
                                         c = false;
                                         break;
@@ -645,7 +645,7 @@ namespace Ui {
                             }
                         }
                         for(Effect e : currentPlayer->effects){
-                            if(e.eId == effDamage && e.power < 0){
+                            if(e.eId == effDamage && e.power > 0){
                                 console("You have an effect that is lowering your health!");
                                 c = false;
                                 break;
@@ -657,11 +657,11 @@ namespace Ui {
 
                         vector<Point2> possibilityList;
 
-                        Utility::executeGrid(currentPlayer->pos-currentPlayer->viewDistance, currentPlayer->pos+currentPlayer->viewDistance, [this, &possibilityList](int x, int y){
+                        Utility::executeGrid(currentPlayer->pos-currentPlayer->viewDistance*2, currentPlayer->pos+currentPlayer->viewDistance*2, [this, &possibilityList](int x, int y){
                             if(currentLevel->inRange(x, y) && !currentLevel->getExplored(x, y)){
                                 int nearExplored = false;
                                 Utility::execute4Around(x, y, [this, &nearExplored](int x, int y){
-                                    if(currentLevel->getExplored(x, y) && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagPathable)){
+                                    if(currentLevel->getExplored(x, y) && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagPathable)  && currentLevel->tileAt(x, y)->doesNotHaveAllOfFlags(currentPlayer->getSolidity())){
                                         nearExplored = true;
                                         return;
                                     }
@@ -690,6 +690,12 @@ namespace Ui {
                         }
 
                         if(next != Point2Neg1){
+                            Utility::execute4Around(next.x, next.y, [this, &c](int x, int y){
+                                if(currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagDoor)){
+                                    console("Oh a door");
+                                    c = false;
+                                }
+                            });
                         	timePassed = currentPlayer->moveAbsalute(next, currentLevel, true);
                         }else{
                             console("No unexplored area found nearby.");
