@@ -489,7 +489,7 @@ namespace LevelGenerator {
             changed = false;
             for (int i = 0; i < level->getSize().x; i++) {
                 for (int j = 0; j < level->getSize().y; j++) {
-                    if (level->indexAt(i, j) == Tiles::tileFloor->getIndex()) {
+                    if (level->indexAt(i, j) == Tiles::tileHall->getIndex()) {
                         int paths = 0;
                         if (level->tileAt(i + 1, j)->hasAnyOfFlags(tileFlagPathable | tileFlagDoor | tileFlagSecretPathable)) {
                             paths++;

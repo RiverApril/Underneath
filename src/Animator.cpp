@@ -60,8 +60,8 @@ namespace Animator {
                 if(line[i] > level->currentWorld->menuGame->viewPos && line[i] < level->currentWorld->menuGame->viewPos+level->currentWorld->menuGame->gameArea){
                     Point2 pos = line[i] - level->currentWorld->menuGame->viewPos;
 
-                    Ui::setColor(icon->getFgColor(Ui::tick, pos, level), level->tileAt(pos)->getIcon(true)->getBgColor(Ui::tick, pos, level));
-                    mvaddch(pos.y, pos.x, icon->getChar(Ui::tick, pos, level));
+                    Ui::setColor(icon->getFgColor(Ui::tick, line[i], level), level->tileAt(line[i])->getIcon(true)->getBgColor(Ui::tick, line[i], level));
+                    mvaddch(pos.y, pos.x, icon->getChar(Ui::tick, line[i], level));
                 }
 
                 //level->setTile(line[i], Tiles::tileDebug2);
@@ -103,11 +103,11 @@ namespace Animator {
 
             for(double a = 0; a<ma;a+=maDivTau){
                 Point2 pos = Point2(sin(maDivTau*a)*r, cos(maDivTau*a)*r);
-                pos += center-level->currentWorld->menuGame->viewPos;
-
+                Point2 p2 = pos + (center - level->currentWorld->menuGame->viewPos);
+                
                 Ui::setColor(r<(radius/3)?C_LIGHT_RED:C_LIGHT_YELLOW, level->tileAt(pos)->getIcon(true)->getBgColor(Ui::tick, pos, level));
 
-                mvaddch(pos.y, pos.x, chars[rand()%chars.size()]);
+                mvaddch(p2.y, p2.x, chars[rand()%chars.size()]);
             }
 
             if(getchSafe() != ERR){
