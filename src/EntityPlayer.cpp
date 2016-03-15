@@ -22,6 +22,7 @@
 #include "MenuShop.hpp"
 #include "Animator.hpp"
 #include "Settings.hpp"
+#include "ItemAreaOfEffectWeapon.hpp"
 
 EntityPlayer::EntityPlayer() : EntityPlayer("", ' ', Point2Zero, C_WHITE, Abilities<int>()) {
 
@@ -244,6 +245,14 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
     if (weapon) {
         if (distanceSquared(posOfTile, pos) > 1) {
             use = false;
+            ItemAreaOfEffectWeapon* aoe = dynamic_cast<ItemAreaOfEffectWeapon*>(item);
+            if(aoe){
+                BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
+                Animator::renderRangedAttack(pos, posOfTile, icon, level, 4);
+                Animator::renderExposion(posOfTile, aoe->radius, level, 1);
+                level->explode(posOfTile, aoe->radius, aoe->baseDamage, false);
+
+            }
         }
     }
 
@@ -436,6 +445,11 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             ItemWeapon* weapon = dynamic_cast<ItemWeapon*> (item);
             ItemRanged* ranged = dynamic_cast<ItemRanged*> (item);
             ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*> (item);
+            ItemAreaOfEffectWeapon* aoe = dynamic_cast<ItemAreaOfEffectWeapon*> (item);
+
+            if(aoe){
+                return 0;
+            }
 
             if (ranged) {
                 if (distanceSquared(pos, posOfEntity) > ranged->range * ranged->range) {

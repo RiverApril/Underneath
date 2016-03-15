@@ -32,16 +32,17 @@ char EntityItem::getIcon(Point2 p, double time, Level* level) {
         return defaultIcon;
     }
     switch (item->getItemTypeId()) {
-        case ITEM_TYPE_ITEM:
+        case itemTypeItem:
             return '*';
-        case ITEM_TYPE_WEAPON:
-            return '(';
-        case ITEM_TYPE_RANGED:
+        case itemTypeWeapon:
+            return '/';
+        case itemTypeRanged:
             return ')';
-        case ITEM_TYPE_COMBAT_SPELL:
+        case itemTypeCombatSpell:
             return '~';
-        case ITEM_TYPE_UTILITY_SPELL:
+        case itemTypeUtilitySpell:
             return '~';
+
 
         default:
             return '*';

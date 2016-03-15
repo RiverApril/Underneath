@@ -71,6 +71,8 @@ namespace ItemGenerator {
     WeaponBase* wFrostItemCombatSpell;
     WeaponBase* wShockItemCombatSpell;
 
+    WeaponBase* wFireballSpell;
+
     WeaponBase* wHealingCombatSpell;
 
     WeaponBase* wNatural;
@@ -161,15 +163,15 @@ namespace ItemGenerator {
         scrollBarrier = atl(new ScrollBase({{"Protection Scroll"}}, spellBarrier));
 
 
-        bombWallSmall = atl(new BombBase({{"Small Destructive Explosive"}}, timeActivatedBomb, 5, 10, 500, 1000, 1, 3, true));
-        bombWallLarge = atl(new BombBase({{"Large Destructive Explosive"}}, timeActivatedBomb, 10, 15, 1000, 2000, 5, 20, true));
+        bombWallSmall = atl(new BombBase({{"Small Destructive Explosive"}}, timeActivatedBomb, 5, 10, 500, 1000, 1, 3, true))->setArts({Arts::artBomb});
+        bombWallLarge = atl(new BombBase({{"Large Destructive Explosive"}}, timeActivatedBomb, 10, 15, 1000, 2000, 5, 20, true))->setArts({Arts::artBomb});
 
-        landMine = atl(new BombBase({{"Pressure Mine"}}, pressureBomb, 0, 0, 200, 300, 5, 10, false));
+        landMine = atl(new BombBase({{"Pressure Explosive"}}, pressureBomb, 0, 0, 200, 300, 5, 10, true))->setArts({Arts::artLandMine});
 
-        molotovCocktail = atl(new BombBase({{"Molotov Cocktail"}}, throwableBomb, 0, 0, 10, 20, 2, 5, false));
+        molotovCocktail = atl(new BombBase({{"Molotov Cocktail"}}, throwableBomb, 0, 0, 10, 20, 2, 5, false))->setArts({Arts::artMolotovCocktail});
 
 
-        easterEgg = new BombBase({{"Easter Egg"}}, timeActivatedBomb, 1, 1, 30, 70, 10, 20, true);
+        easterEgg = (new BombBase({{"Easter Egg"}}, timeActivatedBomb, 1, 1, 30, 70, 10, 20, true))->setArts({Arts::artEasterEgg});
 
 
 
@@ -195,6 +197,8 @@ namespace ItemGenerator {
         wHealingCombatSpell = atl(new WeaponBase({{"Healing Spell"}}, 0, .8, damNone, wepMagic))->magical(8, 3)->setArts({Arts::artScrollHeal});
         wHealingCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effHeal, 1, 1, 10, 30, 0, 0));
 
+        wFireballSpell = atl(new WeaponBase({{"Fireball Spell"}}, 2, 1.5, damFire, wepMagic))->magical(16, 5, 5)->setArts({Arts::artScrollFire});
+        wFireballSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damFire));
 
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effStun, 10, 30, 0, 0, 2, 5));
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effMultRecivedDamage, 10, 20, 1.2, 1.5, 5, 10, damNone));
@@ -514,6 +518,10 @@ namespace ItemGenerator {
 
             case spellRemoteUse:
                 utilitySpell->artIndex = Arts::artScrollHand;
+                break;
+
+            case spellBarrier:
+                utilitySpell->artIndex = Arts::artScrollShield;
                 break;
 
             default:

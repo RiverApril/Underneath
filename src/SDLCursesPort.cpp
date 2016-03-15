@@ -57,14 +57,14 @@ namespace MainWindow{
     int width = 100;
     int height = 30;
 
-    vector<char> screenCharBuffer = vector<char>(width * height);
-    vector<char> screenColorBuffer = vector<char>(width * height);
+    vector<unsigned int> screenCharBuffer = vector<unsigned int>(width * height);
+    vector<unsigned char> screenColorBuffer = vector<unsigned char>(width * height);
 
     int charWidth = 7;
     int charHeight = 12;
 
     int imageCharsPerLine = 16;
-    int imageLineCount = 6;
+    int imageLineCount = 11;
     int imageCharWidth = 7;
     int imageCharHeight = 12;
 
@@ -380,6 +380,26 @@ namespace MainWindow{
     	return true;
     }
 
+    int srcX(int cc){
+        switch (cc) {
+            case (194<<8)+162://¢
+                return 0*imageCharWidth;
+                
+            default:
+                return (((int)cc-32)%imageCharsPerLine)*imageCharWidth;
+        }
+    }
+
+    int srcY(int cc){
+        switch (cc) {
+            case (194<<8)+162://¢
+                return 6*imageCharHeight;
+                
+            default:
+                return (((int)cc-32)/imageCharsPerLine)*imageCharHeight;
+        }
+    }
+
     void update(){
 
         SDL_RenderClear(mainRenderer);
@@ -400,8 +420,8 @@ namespace MainWindow{
 
                 c = ((j*width)+i);
 
-                src.x = (((int)screenCharBuffer[c]-32)%imageCharsPerLine)*imageCharWidth;
-                src.y = (((int)screenCharBuffer[c]-32)/imageCharsPerLine)*imageCharHeight;
+                src.x = srcX(screenCharBuffer[c]);
+                src.y = srcY(screenCharBuffer[c]);
 
                 dst.x = (c%width)*charWidth;
                 dst.y = (c/width)*charHeight;
@@ -499,8 +519,8 @@ namespace MainWindow{
                     SDL_RenderSetLogicalSize(mainRenderer, width*charWidth, height*charHeight);
                     //SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
                     //mainScreenSurface = SDL_GetWindowSurface(mainWindow);
-                    screenCharBuffer = vector<char>(width * height);
-                    screenColorBuffer = vector<char>(width * height);
+                    screenCharBuffer = vector<unsigned int>(width * height);
+                    screenColorBuffer = vector<unsigned char>(width * height);
                     return KEY_RESIZE;
                 }
                 return ERR;
@@ -688,9 +708,13 @@ int	move(int y, int x){
 }
 
 int addch(const char c){
-    screenCharBuffer[cursor] = c;
-    screenColorBuffer[cursor] = currentColor;
-    cursor++;
+    if(cursor > 0 && screenCharBuffer[cursor-1] > 127 && c < 0){
+        screenCharBuffer[cursor-1] = (screenCharBuffer[cursor-1]<<8)+(unsigned char)c;
+    }else{
+    	screenCharBuffer[cursor] = (unsigned char)c;
+    	screenColorBuffer[cursor] = currentColor;
+    	cursor++;
+    }
     return 0;
 }
 

@@ -16,6 +16,7 @@
 #include "ItemSpecial.hpp"
 #include "ItemExplosive.hpp"
 #include "ItemArmor.hpp"
+#include "ItemAreaOfEffectWeapon.hpp"
 
 void Item::save(vector<unsigned char>* data) {
     Utility::saveInt(data, getItemTypeId());
@@ -61,35 +62,38 @@ Item* Item::clone(Item* oldI) {
     int type = oldI->getItemTypeId();
 
     switch (type) {
-        case ITEM_TYPE_ITEM:
+        case itemTypeItem:
             return makeNewAndClone<Item, Item>(oldI);
 
-        case ITEM_TYPE_EQUIPABLE:
+        case itemTypeEquipable:
             return makeNewAndClone<Item, ItemEquipable>(oldI);
 
-        case ITEM_TYPE_WEAPON:
+        case itemTypeWeapon:
             return makeNewAndClone<Item, ItemWeapon>(oldI);
 
-        case ITEM_TYPE_RANGED:
+        case itemTypeRanged:
             return makeNewAndClone<Item, ItemRanged>(oldI);
 
-        case ITEM_TYPE_COMBAT_SPELL:
+        case itemTypeCombatSpell:
             return makeNewAndClone<Item, ItemCombatSpell>(oldI);
 
-        case ITEM_TYPE_POTION:
+        case itemTypePotion:
             return makeNewAndClone<Item, ItemPotion>(oldI);
 
-		case ITEM_TYPE_UTILITY_SPELL:
+		case itemTypeUtilitySpell:
             return makeNewAndClone<Item, ItemUtilitySpell>(oldI);
 
-        case ITEM_TYPE_ITEMSPECIAL:
+        case itemTypeSpecial:
             return makeNewAndClone<Item, ItemSpecial>(oldI);
 
-        case ITEM_TYPE_TIME_ACTIVATED:
+        case itemTypeExplosive:
             return makeNewAndClone<Item, ItemExplosive>(oldI);
 
-        case ITEM_TYPE_ARMOR:
+        case itemTypeArmor:
             return makeNewAndClone<Item, ItemArmor>(oldI);
+
+        case itemTypeAofWeapon:
+            return makeNewAndClone<Item, ItemAreaOfEffectWeapon>(oldI);
 
         default:
             throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));
@@ -107,44 +111,48 @@ Item* Item::loadNew(vector<unsigned char>* data, int* position) {
     int type = Utility::loadInt(data, position);
 
     switch (type) {
-        case ITEM_TYPE_ITEM:
+        case itemTypeItem:
             e = new Item();
             break;
 
-        case ITEM_TYPE_EQUIPABLE:
+        case itemTypeEquipable:
             e = new ItemEquipable();
             break;
 
-        case ITEM_TYPE_WEAPON:
+        case itemTypeWeapon:
             e = new ItemWeapon();
             break;
 
-        case ITEM_TYPE_RANGED:
+        case itemTypeRanged:
             e = new ItemRanged();
             break;
 
-        case ITEM_TYPE_COMBAT_SPELL:
+        case itemTypeCombatSpell:
             e = new ItemCombatSpell();
             break;
 
-        case ITEM_TYPE_POTION:
+        case itemTypePotion:
             e = new ItemPotion();
             break;
 
-        case ITEM_TYPE_UTILITY_SPELL:
+        case itemTypeUtilitySpell:
             e = new ItemUtilitySpell();
             break;
 
-        case ITEM_TYPE_ITEMSPECIAL:
+        case itemTypeSpecial:
             e = new ItemSpecial();
             break;
 
-        case ITEM_TYPE_TIME_ACTIVATED:
+        case itemTypeExplosive:
             e = new ItemExplosive();
             break;
 
-        case ITEM_TYPE_ARMOR:
+        case itemTypeArmor:
             e = new ItemArmor();
+            break;
+
+        case itemTypeAofWeapon:
+            e = new ItemAreaOfEffectWeapon();
             break;
 
         default:
@@ -160,35 +168,38 @@ Item* Item::loadNew(vector<unsigned char>* data, int* position) {
 bool Item::operator< (Item& b){
     if(this->getItemTypeId() == b.getItemTypeId()){
         switch (this->getItemTypeId()) {
-            case ITEM_TYPE_ITEM:
+            case itemTypeItem:
                 return this->qty < b.qty;
 
-            case ITEM_TYPE_EQUIPABLE:
+            case itemTypeEquipable:
                 return *dynamic_cast<ItemEquipable*>(this) < dynamic_cast<ItemEquipable&>(b);
 
-            case ITEM_TYPE_WEAPON:
+            case itemTypeWeapon:
                 return *dynamic_cast<ItemWeapon*>(this) < dynamic_cast<ItemWeapon&>(b);
 
-            case ITEM_TYPE_RANGED:
+            case itemTypeRanged:
                 return *dynamic_cast<ItemRanged*>(this) < dynamic_cast<ItemRanged&>(b);
 
-            case ITEM_TYPE_COMBAT_SPELL:
+            case itemTypeCombatSpell:
                 return *dynamic_cast<ItemCombatSpell*>(this) < dynamic_cast<ItemCombatSpell&>(b);
 
-            case ITEM_TYPE_POTION:
+            case itemTypePotion:
                 return *dynamic_cast<ItemPotion*>(this) < dynamic_cast<ItemPotion&>(b);
 
-            case ITEM_TYPE_UTILITY_SPELL:
+            case itemTypeUtilitySpell:
                 return *dynamic_cast<ItemUtilitySpell*>(this) < dynamic_cast<ItemUtilitySpell&>(b);
 
-            case ITEM_TYPE_ITEMSPECIAL:
+            case itemTypeSpecial:
                 return *dynamic_cast<ItemSpecial*>(this) < dynamic_cast<ItemSpecial&>(b);
 
-            case ITEM_TYPE_TIME_ACTIVATED:
+            case itemTypeExplosive:
                 return *dynamic_cast<ItemExplosive*>(this) < dynamic_cast<ItemExplosive&>(b);
 
-            case ITEM_TYPE_ARMOR:
+            case itemTypeArmor:
                 return *dynamic_cast<ItemArmor*>(this) < dynamic_cast<ItemArmor&>(b);
+
+            case itemTypeAofWeapon:
+                return *dynamic_cast<ItemAreaOfEffectWeapon*>(this) < dynamic_cast<ItemAreaOfEffectWeapon&>(b);
         }
     }
     return this->getItemTypeId() < b.getItemTypeId();

@@ -14,16 +14,7 @@
 
 class Level;
 
-const int ITEM_TYPE_ITEM = 0;
-const int ITEM_TYPE_EQUIPABLE = 1;
-const int ITEM_TYPE_WEAPON = 2;
-const int ITEM_TYPE_RANGED = 3;
-const int ITEM_TYPE_COMBAT_SPELL = 4;
-const int ITEM_TYPE_ARMOR = 5;
-const int ITEM_TYPE_POTION = 6;
-const int ITEM_TYPE_UTILITY_SPELL = 7;
-const int ITEM_TYPE_ITEMSPECIAL = 8;
-const int ITEM_TYPE_TIME_ACTIVATED = 9;
+enum ItemType{itemTypeEquipable, itemTypeWeapon, itemTypeRanged, itemTypeCombatSpell, itemTypeAofWeapon, itemTypeUtilitySpell, itemTypeArmor, itemTypePotion, itemTypeExplosive, itemTypeSpecial, itemTypeItem};
 
 enum UseType{useInstant, useInWorld, useInInventory};
 
@@ -59,7 +50,7 @@ public:
     virtual void load(vector<unsigned char>* data, int* position);
 
     virtual int getItemTypeId() {
-        return ITEM_TYPE_ITEM;
+        return itemTypeItem;
     }
 
     static Item* loadNew(vector<unsigned char>* data, int* position);

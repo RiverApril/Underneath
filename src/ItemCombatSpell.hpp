@@ -31,7 +31,7 @@ public:
     }
 
     virtual int getItemTypeId() {
-        return ITEM_TYPE_COMBAT_SPELL;
+        return itemTypeCombatSpell;
     }
 
     virtual void save(vector<unsigned char>* data);

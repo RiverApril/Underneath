@@ -28,7 +28,7 @@ public:
     ItemExplosive(string name, ExplosiveType explosiveType, double time, double power, double radius, bool destroysTiles);
 
     virtual int getItemTypeId(){
-        return ITEM_TYPE_TIME_ACTIVATED;
+        return itemTypeExplosive;
     }
 
     virtual UseType getUseType();

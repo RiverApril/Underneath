@@ -388,6 +388,8 @@ namespace WorldLoader {
 
         world->currentPlayer->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfilePlayer, world->currentLevel->getDifficulty(), (rand()%90)+10, 4, 5, 5));
 
+        sort(world->currentPlayer->inventory.begin(), world->currentPlayer->inventory.end(), comparePointer<Item>);
+
         world->currentLevel->newEntity(world->currentPlayer);
 
         //save(world);

@@ -35,7 +35,7 @@ public:
     }
 
     virtual int getItemTypeId() {
-        return ITEM_TYPE_POTION;
+        return itemTypePotion;
     }
 
     virtual void save(vector<unsigned char>* data);
