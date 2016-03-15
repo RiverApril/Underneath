@@ -30,7 +30,7 @@ public:
     }
 
     virtual int getItemTypeId() {
-        return ITEM_TYPE_UTILITY_SPELL;
+        return itemTypeUtilitySpell;
     }
 
     virtual UseType getUseType(){

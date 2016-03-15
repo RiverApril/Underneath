@@ -18,6 +18,7 @@
 #include "ItemExplosive.hpp"
 #include "ItemArmor.hpp"
 #include "Settings.hpp"
+#include "ItemAreaOfEffectWeapon.hpp"
 
 vector<string> consoleBuffer;
 
@@ -477,7 +478,7 @@ namespace Ui {
 
                 if(showPrice){
                     if(item->coinValue > 0){
-                        displayName += formatString("(%dc) ", item->coinValue);
+                        displayName += formatString("(%d%s) ", item->coinValue, SYMBOL_COIN);
                     }else if(item->coinValue == 0){
                         displayName += "(Free) ";
                     }else if(item->coinValue == -1){
@@ -520,6 +521,7 @@ namespace Ui {
                 ItemUtilitySpell* utilitySpell = dynamic_cast<ItemUtilitySpell*>(item);
                 ItemSpecial* itemSpecial = dynamic_cast<ItemSpecial*>(item);
                 ItemExplosive* itemExplosive = dynamic_cast<ItemExplosive*>(item);
+                ItemAreaOfEffectWeapon* aoe = dynamic_cast<ItemAreaOfEffectWeapon*>(item);
 
                 int a = 2;
 
@@ -539,7 +541,7 @@ namespace Ui {
                 }
 
                 if(item->coinValue > 0){
-                    a += printMultiLineString(a, columnX, formatString("Value: %dc", item->coinValue));
+                    a += printMultiLineString(a, columnX, formatString("Value: %d¢", item->coinValue));
                 }
 
                 setColor(C_LIGHT_GRAY, C_BLACK);
@@ -621,7 +623,7 @@ namespace Ui {
                             break;
 
                         case spellBarrier:
-                            a += printMultiLineString(a, columnX, "Place a destrutable wall at a selected location.");
+                            a += printMultiLineString(a, columnX, "Place a 3x3 square of destrutable walls at a selected location.");
                             break;
 
                         default:
@@ -667,7 +669,12 @@ namespace Ui {
                     if (ranged) {
                         a += printMultiLineString(a, columnX, formatString("Range: %.2f", ranged->range));
                         if (spell) {
-                            a += printMultiLineString(a, columnX, formatString("Mana Cost: %.2f", spell->manaCost));
+                            if(spell->manaCost > 0){
+                                a += printMultiLineString(a, columnX, formatString("Mana Cost: %.2f", spell->manaCost));
+                            }
+                            if(aoe){
+                                a += printMultiLineString(a, columnX, formatString("Radius: %d", aoe->radius));
+                            }
                         }
                     }
                     //if (!spell) {
@@ -748,17 +755,26 @@ namespace Ui {
                 } else if(itemExplosive){
                     switch (itemExplosive->explosiveType) {
                         case timeActivatedBomb:
+                            a += printMultiLineString(a, columnX, formatString("Fuse: %.2f", itemExplosive->time));
+                            //no break intentional
+                        case pressureBomb:
+                        case throwableBomb:
                             a += printMultiLineString(a, columnX, formatString("Damage: %.2f", itemExplosive->power));
                             a += printMultiLineString(a, columnX, formatString("Radius: %.2f", itemExplosive->radius));
-                            a += printMultiLineString(a, columnX, formatString("Fuse: %.2f", itemExplosive->time));
                             break;
                         default:
                             break;
                     }
                     switch (itemExplosive->explosiveType) {
+                        case pressureBomb:
+                        case throwableBomb:
                         case timeActivatedBomb:
-                            setColor(C_LIGHT_RED);
-                            a += printMultiLineString(a, columnX, itemExplosive->destroysTiles ? "Will destroy tiles." : "Will not destroy tiles.");
+                            if(itemExplosive->destroysTiles){
+                                setColor(C_LIGHT_RED);
+                                a += printMultiLineString(a, columnX, "Will destroy tiles.");
+                            }else{
+                                a += printMultiLineString(a, columnX, "Will not destroy tiles.");
+                            }
                             break;
                         default:
                             break;

@@ -117,6 +117,11 @@ extern string AudioDir;
 	#define fastTimeout 50
 #endif
 
+#ifdef NO_UNICODE
+	#define SYMBOL_COIN "c"
+#else
+	#define SYMBOL_COIN "¢"
+#endif
 
 
 

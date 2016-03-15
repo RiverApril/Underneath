@@ -53,7 +53,7 @@ public:
     ItemArmor(EquipSlot viableSlot, vector<Defense> defenses, string name);
 
     virtual int getItemTypeId() {
-        return ITEM_TYPE_ARMOR;
+        return itemTypeArmor;
     }
 
     virtual void save(vector<unsigned char>* data);

@@ -32,7 +32,7 @@ public:
     }
 
     virtual int getItemTypeId() {
-        return ITEM_TYPE_RANGED;
+        return itemTypeRanged;
     }
 
     virtual void save(vector<unsigned char>* data);

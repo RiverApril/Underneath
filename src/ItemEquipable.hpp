@@ -214,7 +214,7 @@ public:
     ItemEquipable(string name);
 
     virtual int getItemTypeId() {
-        return ITEM_TYPE_EQUIPABLE;
+        return itemTypeEquipable;
     }
 
     virtual void save(vector<unsigned char>* data);

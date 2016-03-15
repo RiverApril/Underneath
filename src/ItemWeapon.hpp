@@ -31,7 +31,7 @@ public:
     ItemWeapon(double baseDamage, string name, double useDelay);
 
     virtual int getItemTypeId() {
-        return ITEM_TYPE_WEAPON;
+        return itemTypeWeapon;
     }
 
     virtual void save(vector<unsigned char>* data);

@@ -37,6 +37,7 @@ namespace Arts {
     int artScrollHand;
     int artScrollHeal;
     int artScrollPerson;
+    int artScrollShield;
 
     int artPotion1;
     int artPotion2;
@@ -44,6 +45,9 @@ namespace Arts {
     int artPotion4;
 
     int artBomb;
+    int artMolotovCocktail;
+    int artLandMine;
+    int artEasterEgg;
 
     int artKnife;
     int artDagger;
@@ -109,6 +113,7 @@ namespace Arts {
         Arts::artScrollHand = Arts::loadNew(ArtDir + "/", "scrollHand", ArtFiles::scrollHand);
         Arts::artScrollHeal = Arts::loadNew(ArtDir + "/", "scrollHeal", ArtFiles::scrollHeal);
         Arts::artScrollPerson = Arts::loadNew(ArtDir + "/", "scrollPerson", ArtFiles::scrollPerson);
+        Arts::artScrollShield = Arts::loadNew(ArtDir + "/", "scrollShield", ArtFiles::scrollShield);
 
         Arts::artPotion1 = Arts::loadNew(ArtDir + "/", "potion1", ArtFiles::potion1);
         Arts::artPotion2 = Arts::loadNew(ArtDir + "/", "potion2", ArtFiles::potion2);
@@ -116,6 +121,9 @@ namespace Arts {
         Arts::artPotion4 = Arts::loadNew(ArtDir + "/", "potion4", ArtFiles::potion4);
 
         Arts::artBomb = Arts::loadNew(ArtDir + "/", "bomb", ArtFiles::bomb);
+        Arts::artMolotovCocktail = Arts::loadNew(ArtDir + "/", "molotovCocktail", ArtFiles::molotovCocktail);
+        Arts::artLandMine = Arts::loadNew(ArtDir + "/", "landMine", ArtFiles::landMine);
+        Arts::artEasterEgg = Arts::loadNew(ArtDir + "/", "easterEgg", ArtFiles::easterEgg);
 
         Arts::artKnife = Arts::loadNew(ArtDir + "/", "knife", ArtFiles::knife);
         Arts::artDagger = Arts::loadNew(ArtDir + "/", "dagger", ArtFiles::dagger);

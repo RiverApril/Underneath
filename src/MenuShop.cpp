@@ -92,7 +92,16 @@ namespace Ui {
             selected = 0;
         }
 
-        Ui::drawInventory(currentWorld, user, selected, shop, formatString("%s's Wallet: %dc", user->getName().c_str(), user->getWallet()), formatString("Shop Keeper's Wallet: %dc", shop->getWallet()), selectedLeft, true);
+        Ui::drawInventory(currentWorld, user, selected, shop, formatString("%s's Wallet: %d%s", user->getName().c_str(), user->getWallet(), SYMBOL_COIN), formatString("Shop Keeper's Wallet: %d%s", shop->getWallet(), SYMBOL_COIN), selectedLeft, true);
 
     }
 }
+
+
+
+
+
+
+
+
+

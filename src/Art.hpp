@@ -62,6 +62,7 @@ namespace Arts {
     extern int artScrollHand;
     extern int artScrollHeal;
     extern int artScrollPerson;
+    extern int artScrollShield;
 
     extern int artPotion1;
     extern int artPotion2;
@@ -69,6 +70,9 @@ namespace Arts {
     extern int artPotion4;
     
     extern int artBomb;
+    extern int artMolotovCocktail;
+    extern int artLandMine;
+    extern int artEasterEgg;
 
     extern int artKnife;
     extern int artDagger;

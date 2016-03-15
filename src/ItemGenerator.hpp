@@ -163,9 +163,10 @@ namespace ItemGenerator {
             return this;
         }
 
-        WeaponBase* magical(double range, double manaCost) {
+        WeaponBase* magical(double range, double manaCost, int radius = -1) {
             this->range = range;
             this->manaCost = manaCost;
+            this->radius = radius;
             return this;
         }
 
@@ -183,6 +184,7 @@ namespace ItemGenerator {
         double range = -1;
         RangedType rangedType = rangedUnlimited;
         double manaCost = -1;
+        int radius = -1;
     };
 
     struct EffIdMeta {
@@ -343,6 +345,8 @@ namespace ItemGenerator {
     extern WeaponBase* wFireItemCombatSpell;
     extern WeaponBase* wFrostItemCombatSpell;
     extern WeaponBase* wShockItemCombatSpell;
+
+    extern WeaponBase* wFireballSpell;
 
     extern WeaponBase* wHealingCombatSpell;
 

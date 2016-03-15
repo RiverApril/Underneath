@@ -13,7 +13,7 @@
 #include "Item.hpp"
 #include "Abilities.hpp"
 
-enum SpecialType{specialtyCoin, specialtyKey, specialtyCompass, specialtyRepairer};
+enum SpecialType{specialtyKey, specialtyRepairer, specialtyCompass, specialtyCoin};
 
 
 class ItemSpecial : public Item {
@@ -29,7 +29,7 @@ public:
     ItemSpecial(SpecialType specialty);
 
     virtual int getItemTypeId(){
-        return ITEM_TYPE_ITEMSPECIAL;
+        return itemTypeSpecial;
     }
 
     virtual void save(vector<unsigned char>* data);
