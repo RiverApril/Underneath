@@ -53,6 +53,8 @@ namespace MainWindow{
     void operationThreadFunction();
 
     int getCode();
+
+    void makeBuffers();
 }
 
 bool initscr();

@@ -509,12 +509,12 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                             break;
 
                         case rangedOneUse:
-                            removeItem(ranged, true);
+                            removeItemQty(1, ranged, true);
                             break;
                         case rangedOneUseRecoverable:
                             if(distanceSquared(posOfEntity, pos) > 1){
-                            	removeItem(ranged, false);
-                            	level->newEntity(new EntityItem(ranged, posOfEntity));
+                                level->newEntity(new EntityItem(Item::clone(ranged, 1), posOfEntity));
+                                removeItemQty(1, ranged, true);
                             }
                             break;
                     }

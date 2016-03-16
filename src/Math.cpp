@@ -23,11 +23,11 @@ double distanceSquared(double x, double y) {
     return dx * dx + dy*dy;
 }
 
-double randomRange(double min, double max) {
+double randomRange(double min, double max, int div) {
     if (min > max) {
         return randomRange(max, min);
     } else {
-        return (((rand()%10000) / 10000.0)*(max - min))+min;
+        return (((rand()%div) / (double)div)*(max - min))+min;
     }
 }
 

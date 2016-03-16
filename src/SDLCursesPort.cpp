@@ -57,8 +57,10 @@ namespace MainWindow{
     int width = 100;
     int height = 30;
 
-    vector<unsigned int> screenCharBuffer = vector<unsigned int>(width * height);
-    vector<unsigned char> screenColorBuffer = vector<unsigned char>(width * height);
+    vector<unsigned int> prevScreenCharBuffer;
+    vector<unsigned char> prevScreenColorBuffer;
+    vector<unsigned int> screenCharBuffer;
+    vector<unsigned char> screenColorBuffer;
 
     int charWidth = 7;
     int charHeight = 12;
@@ -285,13 +287,14 @@ namespace MainWindow{
         colorBlack = 0xFF000000;
         colorClear = 0x00000000;
 
+        makeBuffers();
 
         return initMedia();
     }
 
     void cleanupSDL(){
         SDL_DestroyWindow(mainWindow);
-        IMG_Quit();
+        //IMG_Quit();
         SDL_Quit();
     }
 
@@ -402,6 +405,26 @@ namespace MainWindow{
 
     void update(){
 
+        int wh = (width*height);
+
+        bool changed = false;
+
+        for(int c=0;c<wh;c++){
+            if(prevScreenCharBuffer[c] != screenCharBuffer[c] || prevScreenColorBuffer[c] != screenColorBuffer[c]){
+                changed = true;
+                break;
+            }
+        }
+
+        if(changed){
+            copy(screenCharBuffer.begin(), screenCharBuffer.end(), prevScreenCharBuffer.begin());
+            copy(screenColorBuffer.begin(), screenColorBuffer.end(), prevScreenColorBuffer.begin());
+        }else{
+            return;
+        }
+
+        //printf("Redraw ");
+
         SDL_RenderClear(mainRenderer);
 
         SDL_Rect src;
@@ -507,6 +530,13 @@ namespace MainWindow{
         return optimizedSurface;
     }*/
 
+    void makeBuffers(){
+        screenCharBuffer = vector<unsigned int>(width * height);
+        screenColorBuffer = vector<unsigned char>(width * height);
+        prevScreenCharBuffer = vector<unsigned int>(width * height);
+        prevScreenColorBuffer = vector<unsigned char>(width * height);
+    }
+
     int getCodeFromEvent(SDL_Event e){
         switch(e.type){
             case SDL_QUIT:{
@@ -519,8 +549,7 @@ namespace MainWindow{
                     SDL_RenderSetLogicalSize(mainRenderer, width*charWidth, height*charHeight);
                     //SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
                     //mainScreenSurface = SDL_GetWindowSurface(mainWindow);
-                    screenCharBuffer = vector<unsigned int>(width * height);
-                    screenColorBuffer = vector<unsigned char>(width * height);
+                    makeBuffers();
                     return KEY_RESIZE;
                 }
                 return ERR;
@@ -708,6 +737,9 @@ int	move(int y, int x){
 }
 
 int addch(const char c){
+    if(cursor >= screenCharBuffer.size()){
+        return 0;
+    }
     if(cursor > 0 && screenCharBuffer[cursor-1] > 127 && c < 0){
         screenCharBuffer[cursor-1] = (screenCharBuffer[cursor-1]<<8)+(unsigned char)c;
     }else{

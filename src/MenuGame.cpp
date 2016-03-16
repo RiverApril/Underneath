@@ -691,12 +691,20 @@ namespace Ui {
                         }
 
                         if(next != Point2Neg1){
-                            Utility::execute4Around(next.x, next.y, [this, &c](int x, int y){
-                                if(currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagDoor)){
+                            int pc = 0;
+                            Utility::execute4Around(next.x, next.y, [this, &c, &pc](int x, int y){
+                                if(c && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagDoor)){
                                     console("Oh a door");
                                     c = false;
                                 }
+                                if(currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagPathable)){
+                                    pc++;
+                                }
                             });
+                            if(pc > 2){
+                                console("Where to go now?");
+                                c = false;
+                            }
                         	timePassed = currentPlayer->moveAbsalute(next, currentLevel, true);
                         }else{
                             console("No unexplored area found nearby.");

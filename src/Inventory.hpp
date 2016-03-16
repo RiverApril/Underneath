@@ -47,6 +47,25 @@ public:
         return false;
     }
 
+    //return qty removed
+    virtual int removeItemQty(int q, Item* item, bool deleteItem){
+        forVector(inventory, i) {
+            Item* ie = inventory[i];
+            if (ie == item) {
+                if(ie->qty > q){
+                    ie->qty -= q;
+                    return q;
+                }else if(ie->qty == q){
+                    return removeItem(item, deleteItem) ? q : 0;
+                }else{
+                    int qq = ie->qty;
+                    return removeItem(item, deleteItem) ? qq : 0;
+                }
+            }
+        }
+        return 0;
+    }
+
     virtual bool containsItem(Item* item) {
 
         forVector(inventory, i) {

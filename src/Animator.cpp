@@ -60,7 +60,7 @@ namespace Animator {
                 if(line[i] > level->currentWorld->menuGame->viewPos && line[i] < level->currentWorld->menuGame->viewPos+level->currentWorld->menuGame->gameArea){
                     Point2 pos = line[i] - level->currentWorld->menuGame->viewPos;
 
-                    Ui::setColor(icon->getFgColor(Ui::tick, line[i], level), level->tileAt(line[i])->getIcon(true)->getBgColor(Ui::tick, line[i], level));
+                    Ui::setColor(icon->getFgColor(Ui::tick, line[i], level), level->tileAt(line[i])->getIcon(level->canSee(level->currentWorld->currentPlayer->pos, line[i], level->currentWorld->currentPlayer->viewDistance))->getBgColor(Ui::tick, line[i], level));
                     mvaddch(pos.y, pos.x, icon->getChar(Ui::tick, line[i], level));
                 }
 
@@ -102,12 +102,13 @@ namespace Animator {
             double maDivTau = ma/TAU;
 
             for(double a = 0; a<ma;a+=maDivTau){
-                Point2 pos = Point2(sin(maDivTau*a)*r, cos(maDivTau*a)*r);
-                Point2 p2 = pos + (center - level->currentWorld->menuGame->viewPos);
+                Point2 circleP = Point2(sin(maDivTau*a)*r, cos(maDivTau*a)*r);
+                Point2 worldP = circleP + center;
+                Point2 screenP = worldP - level->currentWorld->menuGame->viewPos;
                 
-                Ui::setColor(r<(radius/3)?C_LIGHT_RED:C_LIGHT_YELLOW, level->tileAt(pos)->getIcon(true)->getBgColor(Ui::tick, pos, level));
+                Ui::setColor(r<(radius/3)?C_LIGHT_RED:C_LIGHT_YELLOW, level->tileAt(worldP)->getIcon(level->canSee(level->currentWorld->currentPlayer->pos, worldP, level->currentWorld->currentPlayer->viewDistance))->getBgColor(Ui::tick, worldP, level));
 
-                mvaddch(p2.y, p2.x, chars[rand()%chars.size()]);
+                mvaddch(screenP.y, screenP.x, chars[rand()%chars.size()]);
             }
 
             if(getchSafe() != ERR){
