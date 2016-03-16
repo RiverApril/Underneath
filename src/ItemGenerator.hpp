@@ -175,6 +175,11 @@ namespace ItemGenerator {
             return this;
         }
 
+        WeaponBase* setQty(int min, int max){
+            this->qtyRange = Point2(min, max);
+            return this;
+        }
+
         double damage = 0;
         double useDelay = 0;
         vector<vector<string>> names = {{""}};
@@ -185,6 +190,7 @@ namespace ItemGenerator {
         RangedType rangedType = rangedUnlimited;
         double manaCost = -1;
         int radius = -1;
+        Point2 qtyRange = Point2One;
     };
 
     struct EffIdMeta {

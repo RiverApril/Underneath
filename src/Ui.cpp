@@ -668,6 +668,21 @@ namespace Ui {
                     }
                     if (ranged) {
                         a += printMultiLineString(a, columnX, formatString("Range: %.2f", ranged->range));
+                        switch (ranged->rangedType) {
+                            case rangedOneUse:
+                                setColor(C_LIGHT_RED);
+                                a += printMultiLineString(a, columnX, "One Use");
+                                setColor(C_LIGHT_GRAY, C_BLACK);
+                                break;
+                            case rangedOneUseRecoverable:
+                                setColor(C_LIGHT_YELLOW);
+                                a += printMultiLineString(a, columnX, "One Use, Recoverable");
+                                setColor(C_LIGHT_GRAY, C_BLACK);
+                                break;
+                                
+                            default:
+                                break;
+                        }
                         if (spell) {
                             if(spell->manaCost > 0){
                                 a += printMultiLineString(a, columnX, formatString("Mana Cost: %.2f", spell->manaCost));

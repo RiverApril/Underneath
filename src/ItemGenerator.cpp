@@ -175,7 +175,7 @@ namespace ItemGenerator {
 
 
 
-        wKnife = atl(new WeaponBase({{"Knife", "Knives"}, {"Dagger"}, {"Cleaver"}}, 0.25, 1.0/3, damSharp, wepMelee))->setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver})->ranged(8, rangedOneUseRecoverable);
+        wKnife = atl(new WeaponBase({{"Knife", "Knives"}, {"Dagger"}, {"Cleaver"}}, 0.25, 1.0/3, damSharp, wepMelee))->setArts({Arts::artKnife, Arts::artDagger, Arts::artCleaver})->ranged(8, rangedOneUseRecoverable)->setQty(1, 10);
 
         wSword = atl(new WeaponBase({{"Longsword"}, {"Cutlass", "Cutlasses"}, {"Katana"}, {"Machete"}, {"Gladius", "Gladii"}, {"Scimitar"}, {"Rapier"}, {"Short Sword"}, {"Broadsword"}, {"Saber"}, {"Claymore"}}, 1, 1, damSharp, wepMelee))->setArts({Arts::artLongsword, Arts::artCutlass, Arts::artKatana, Arts::artMachete, Arts::artGladius, Arts::artScimitar, Arts::artRapier, Arts::artShortSword, Arts::artBroadsword, Arts::artSaber, Arts::artClaymore});
         wAxe = atl(new WeaponBase({{"Axe"}, {"Hatchet"}, {"Double Axe"}}, 1.2, 1.2, damSharp, wepMelee))->setArts({Arts::artAxe, Arts::artAxe, Arts::artDoubleAxe});
@@ -591,6 +591,7 @@ namespace ItemGenerator {
         w->artIndex = base->arts[arti];
         w->damageType = base->damageType;
         w->weaponType = base->weaponType;
+        w->qty = (base->qtyRange.y > base->qtyRange.x) ? ((rand()%(base->qtyRange.y - base->qtyRange.x)) + base->qtyRange.x) : 1;
         for(EnchantmentBase* e :  base->enchs){
             w->enchantments.push_back(createEnchantmentFromBase(e));
         }
@@ -683,6 +684,9 @@ namespace ItemGenerator {
         b->power = base->power.randomRange();
         b->time = base->time.randomRange();
         b->radius = base->radius.randomRange();
+        if(b->time < b->radius + 1){
+            b->time = b->radius + 1;
+        }
         b->destroysTiles = base->destroysTiles;
 
 
@@ -797,7 +801,17 @@ namespace ItemGenerator {
                     if(ic){//Combat Spell
                         value += max(100.0 - ic->manaCost, 1.0) * 5;
                     }else{//Ranged Weapon
-
+                        switch (ir->rangedType) {
+                            case rangedOneUse:
+                                value *= .5;
+                                break;
+                            case rangedOneUseRecoverable:
+                                value *= .25;
+                                break;
+                                
+                            default:
+                                break;
+                        }
                     }
 
                 }else{//Weapon
@@ -929,7 +943,7 @@ namespace ItemGenerator {
         }else{//Item
             value = item->coinValue;
         }
-        return (int)value;
+        return (int)ceil(value);
     }
 
 

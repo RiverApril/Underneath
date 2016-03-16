@@ -119,7 +119,12 @@ struct Abilities {
 
 template <typename T>
 bool operator==(const Abilities<T> a, const Abilities<T> b) {
-    return a.list == b.list;
+    for(int i = 0; i < abilityCount; i++){
+        if(a.list[i] != b.list[i]){
+            return false;
+        }
+    }
+    return true;
 }
 
 template <typename T>

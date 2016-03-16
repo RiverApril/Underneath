@@ -10,6 +10,7 @@
 #include "Utility.hpp"
 #include "Ui.hpp"
 #include "Abilities.hpp"
+#include "Math.hpp"
 
 string effectName(Effect eff) {
     switch (eff.eId) {
@@ -182,9 +183,9 @@ void Effect::load(vector<unsigned char>* data, int* position) {
 
 bool operator==(const Effect a, const Effect b) {
     return a.eId == b.eId
-            && a.timeLeft == b.timeLeft
-            && a.power == b.power
-            && a.meta == b.meta;
+            && aproxEqual(a.timeLeft, b.timeLeft)
+            && aproxEqual(a.power, b.power)
+            && aproxEqual(a.meta, b.meta);
 }
 
 bool operator!=(const Effect a, const Effect b) {
