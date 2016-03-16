@@ -14,7 +14,7 @@
 
 class Level;
 
-enum ItemType{itemTypeEquipable, itemTypeWeapon, itemTypeRanged, itemTypeCombatSpell, itemTypeAofWeapon, itemTypeUtilitySpell, itemTypeArmor, itemTypePotion, itemTypeExplosive, itemTypeSpecial, itemTypeItem};
+enum ItemType{itemTypeEquipable, itemTypeWeapon, itemTypeRanged, itemTypeCombatSpell, itemTypeAofWeapon, itemTypeArmor, itemTypeUtilitySpell, itemTypePotion, itemTypeExplosive, itemTypeSpecial, itemTypeItem};
 
 enum UseType{useInstant, useInWorld, useInInventory};
 
@@ -30,7 +30,7 @@ inline EquipSlot operator+(EquipSlot a, int b){
 class Item {
 public:
 
-    static Item* clone(Item* oldI);
+    static Item* clone(Item* oldI, int qty = -1);
 
     Item() {
 

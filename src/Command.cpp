@@ -44,11 +44,16 @@ namespace Commands {
         }
 
         if (!currentMenu->menuOnlyExecute(commandName, arguments, argumentsRaw)) {
+            bool ex = false;
             for (Command* c : commandList) {
                 if (c->acceptableName(commandName)) {
                     c->execute(commandName, arguments, argumentsRaw, currentMenu);
+                    ex = true;
                     break;
                 }
+            }
+            if(!ex){
+                consolef("Unknown command: %s", commandName.c_str());
             }
 
         }
@@ -312,6 +317,40 @@ namespace Commands {
         }
     };
 
+    struct CommandLoot : Command {
+        string help(){
+            return "Gives random loot";
+        }
+
+        string usage(){
+            return "loot [qty] [difficulty]";
+        }
+
+        string defaultName(){
+            return "loot";
+        }
+
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
+            MenuGame* mg = dynamic_cast<MenuGame*> (currentMenu);
+            if (mg) {
+                int qty = 1;
+                int d = mg->currentWorld->currentLevel->getDifficulty();
+                if (arguments.size() >= 1) {
+                    qty = Utility::parseInt(arguments[0]);
+                }
+                if (arguments.size() >= 2) {
+                    d = Utility::parseInt(arguments[1]);
+                }
+                mg->currentWorld->currentPlayer->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, d, 0, qty, qty, 0));
+                console("Gave loot");
+                return true;
+            } else {
+                console("Must be ingame.");
+            }
+            return false;
+        }
+    };
+
     struct CommandDebugTools : Command {
         string help() {
             return "Gives debug tools";
@@ -405,6 +444,7 @@ namespace Commands {
         commandList.push_back(new CommandClear());
         commandList.push_back(new CommandDebugTools());
         commandList.push_back(new CommandKillall());
+        commandList.push_back(new CommandLoot());
     }
 
     void cleanupCommands() {

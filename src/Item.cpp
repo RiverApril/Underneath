@@ -53,7 +53,7 @@ Sub* Item::makeNewAndClone(Super* oldT) {
     return Sub::cloneUnsafe(dynamic_cast<Sub*> (oldT), newT);
 }
 
-Item* Item::clone(Item* oldI) {
+Item* Item::clone(Item* oldI, int qty) {
 
     if(!oldI){
         return nullptr;
@@ -61,46 +61,62 @@ Item* Item::clone(Item* oldI) {
 
     int type = oldI->getItemTypeId();
 
+    Item* i = nullptr;
+
     switch (type) {
         case itemTypeItem:
-            return makeNewAndClone<Item, Item>(oldI);
+            i = makeNewAndClone<Item, Item>(oldI);
+            break;
 
         case itemTypeEquipable:
-            return makeNewAndClone<Item, ItemEquipable>(oldI);
+            i = makeNewAndClone<Item, ItemEquipable>(oldI);
+            break;
 
         case itemTypeWeapon:
-            return makeNewAndClone<Item, ItemWeapon>(oldI);
+            i = makeNewAndClone<Item, ItemWeapon>(oldI);
+            break;
 
         case itemTypeRanged:
-            return makeNewAndClone<Item, ItemRanged>(oldI);
+            i = makeNewAndClone<Item, ItemRanged>(oldI);
+            break;
 
         case itemTypeCombatSpell:
-            return makeNewAndClone<Item, ItemCombatSpell>(oldI);
+            i = makeNewAndClone<Item, ItemCombatSpell>(oldI);
+            break;
 
         case itemTypePotion:
-            return makeNewAndClone<Item, ItemPotion>(oldI);
+            i = makeNewAndClone<Item, ItemPotion>(oldI);
+            break;
 
 		case itemTypeUtilitySpell:
-            return makeNewAndClone<Item, ItemUtilitySpell>(oldI);
+            i = makeNewAndClone<Item, ItemUtilitySpell>(oldI);
+            break;
 
         case itemTypeSpecial:
-            return makeNewAndClone<Item, ItemSpecial>(oldI);
+            i = makeNewAndClone<Item, ItemSpecial>(oldI);
+            break;
 
         case itemTypeExplosive:
-            return makeNewAndClone<Item, ItemExplosive>(oldI);
+            i = makeNewAndClone<Item, ItemExplosive>(oldI);
+            break;
 
         case itemTypeArmor:
-            return makeNewAndClone<Item, ItemArmor>(oldI);
+            i = makeNewAndClone<Item, ItemArmor>(oldI);
+            break;
 
         case itemTypeAofWeapon:
-            return makeNewAndClone<Item, ItemAreaOfEffectWeapon>(oldI);
+            i = makeNewAndClone<Item, ItemAreaOfEffectWeapon>(oldI);
+            break;
 
         default:
             throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));
-            return nullptr;
             break;
     }
+    if(i && qty != -1){
+        i->qty = qty;
+    }
 
+    return i;
 
 
 }

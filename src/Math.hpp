@@ -19,7 +19,7 @@
 double distanceSquared(double ax, double ay, double bx, double by);
 double distanceSquared(double x, double y);
 
-double randomRange(double min, double max);
+double randomRange(double min, double max, int div = 1000000);
 
 /*template <typename T> const T abs(const T a) {
     return (a < 0) ? -a : a;
