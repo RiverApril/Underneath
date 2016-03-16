@@ -600,7 +600,7 @@ namespace Ui {
                                 }
 
                                 Point2 d = p-currentPlayer->pos;
-                                if(abs(d.x) <= 1 && abs(d.y) <= 1){
+                                if(distanceSquared(d, Point2Zero) <= 1){
                                     timePassed = currentPlayer->tryToMoveRelative(d, currentLevel);
                                 }else{
                                     console("Next Path fragment is too far.");
@@ -622,7 +622,7 @@ namespace Ui {
                             Point2 d = targetPosition-currentPlayer->pos;
                             if(currentPlayer->pos == t){
                                 console("You have arrived at your destination.");
-                            }else if(abs(d.x) <= 1 && abs(d.y) <= 1){
+                            }else if(distanceSquared(d, Point2Zero) <= 1){
                                 console("Your destination is next to you.");
                             }
                         }else{
