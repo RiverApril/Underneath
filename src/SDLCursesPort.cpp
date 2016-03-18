@@ -672,7 +672,7 @@ namespace MainWindow{
     int getCode(){
         int tick = SDL_GetTicks();
         SDL_Event e;
-        while(SDL_PollEvent(&e)==0){
+        while(SDL_WaitEventTimeout(&e, inputTimeout)==0){
             int lastTick = SDL_GetTicks();
             if(lastTick - tick > inputTimeout){
                 return ERR;
