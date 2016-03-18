@@ -113,7 +113,7 @@ namespace Utility {
 
     unsigned char loadUnsignedChar(vector<unsigned char>* data, int* position) {
         if((int)data->size() <= *position){
-            throw 1;
+            throw FileExceptionLoad(formatString("Attemted to read further than data size: %d", data->size()));
         }
         unsigned char l = (*data)[*position];
         *position += 1;
