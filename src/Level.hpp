@@ -28,7 +28,6 @@ class Entity;
 struct TileData {
     uint8_t index = 0;
     bool explored = false;
-    //Entity* entity = nullptr;
 };
 
 enum GenType{genTypeStartArea, genTypeDungeon};
