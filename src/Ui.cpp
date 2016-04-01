@@ -359,7 +359,29 @@ namespace Ui {
             a += printMultiLineString(a, columnX, formatString("Enchantments:"));
             for (Enchantment e : enchantments) {
                 setColor(effectColor(e.effect.eId, e.effect.meta));
-                string s = "   "+effectName(e.effect);
+                string s = "";
+                switch (e.style) {
+                    case eStyle_EnemyToSelf_EnemyEff:
+                        s += "E->@ *E";
+                        break;
+                    case eStyle_EnemyToSelf_SelfEff:
+                        s += "E->@ *@";
+                        break;
+                    case eStyle_onTick_SelfEff:
+                        s += "tick *@";
+                        break;
+                    case eStyle_SelfToEnemy_EnemyEff:
+                        s += "@->E *E";
+                        break;
+                    case eStyle_SelfToEnemy_SelfEff:
+                        s += "@->E *@";
+                        break;
+
+                    default:
+                        break;
+                }
+                s += ":  ";
+                s += effectName(e.effect);
                 string ss = effectPowerString(e.effect.eId, e.effect.power);
                 if(e.effect.power != 1 || ss.size() > 0){
                     s += " "+ss;
@@ -368,7 +390,11 @@ namespace Ui {
                     s += " (";
                 }
                 if(e.chance != 1){
-                    s += formatString("1/%d", e.chance);
+                    if(e.chance > 0){
+                    	s += formatString("1/%d", e.chance);
+                    }else{
+                        s += formatString("!!!", e.chance);
+                    }
                 }
                 if(e.chance != 1 && e.effect.timeLeft > 0){
                     s += ", ";

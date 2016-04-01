@@ -167,7 +167,7 @@ double EntityAlive::hurt(Level* level, DamageType damageType, double amount, dou
 double EntityAlive::hurt(Level* level, ItemWeapon* w, double damageMultiplier) {
     double d = w->baseDamage * Random::randDouble(.8, 1);
     for (Enchantment ench : w->enchantments) {
-        if (ench.style == eStyle_SelfToEnemy_EnemyEff && rand() % ench.chance == 0) {
+        if (ench.style == eStyle_SelfToEnemy_EnemyEff && (rand() % ench.chance) == 0) {
             addEffect(ench.effect);
         }
     }
