@@ -205,8 +205,8 @@ namespace ItemGenerator {
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effMultAttack, 10, 20, .2, .5, 5, 10, damNone));
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 10, 15, 1, 3, 5, 10, damBlood));
 
-        atlA(new EnchantmentBase(eStyle_EnemyToSelf_SelfEff, effMultAttack, 0, 0, 1.1, 1.5, 2, 5));
-        atlA(new EnchantmentBase(eStyle_EnemyToSelf_SelfEff, effPurity, 10, 20, 0, 0, 0, 0));
+        atlA(new EnchantmentBase(eStyle_onTick_SelfEff, effMultAttack, 0, 0, 1.1, 1.5, 2, 5));
+        atlA(new EnchantmentBase(eStyle_onTick_SelfEff, effPurity, 10, 20, 0, 0, 0, 0));
 
 
 

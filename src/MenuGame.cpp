@@ -693,7 +693,7 @@ namespace Ui {
                         if(next != Point2Neg1){
                             int pc = 0;
                             Utility::execute4Around(next.x, next.y, [this, &c, &pc](int x, int y){
-                                if(c && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagDoor)){
+                                if(c && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagDoor | tileFlagPathable)){
                                     console("Oh a door");
                                     c = false;
                                 }

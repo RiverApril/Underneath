@@ -132,6 +132,8 @@ public:
     double dexMult = 1;
     double intMult = 1;
 
+    double enchTick = 0;
+
 
 protected:
     int timeSinceCombat = 0;

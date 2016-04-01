@@ -50,6 +50,28 @@ bool EntityPlayer::update(double deltaTime, double time, Level* level) {
 
     timeSinceCombat += deltaTime;
 
+    enchTick += deltaTime;
+    if(enchTick >= 1){
+        enchTick -= 1;
+        for(pair<EquipSlot, Item*> p : equipedItems){
+            ItemArmor* a = dynamic_cast<ItemArmor*>(p.second);
+            ItemWeapon* w = dynamic_cast<ItemWeapon*>(p.second);
+            if(a){
+                for(Enchantment e : a->enchantments){
+                    if(e.style == eStyle_onTick_SelfEff && (rand() % e.chance) == 0){
+                        addEffect(e.effect);
+                    }
+                }
+            }else if(w){
+                for(Enchantment e : w->enchantments){
+                    if(e.style == eStyle_onTick_SelfEff && (rand() % e.chance) == 0){
+                        addEffect(e.effect);
+                    }
+                }
+            }
+        }
+    }
+
     return EntityAlive::update(deltaTime, time, level);
 }
 
@@ -579,6 +601,7 @@ void EntityPlayer::save(vector<unsigned char>* data) {
     Utility::saveDouble(data, xp);
     Utility::saveDouble(data, nextLevelXp);
     Utility::saveInt(data, timeSinceCombat);
+    Utility::saveDouble(data, enchTick);
 
     int size = 0;
     for(pair<EquipSlot, Item*> p : equipedItems){
@@ -611,6 +634,7 @@ void EntityPlayer::load(vector<unsigned char>* data, int* position) {
     xp = Utility::loadDouble(data, position);
     nextLevelXp = Utility::loadDouble(data, position);
     timeSinceCombat = Utility::loadInt(data, position);
+    enchTick = Utility::loadDouble(data, position);
 
     int size = Utility::loadInt(data, position);
 

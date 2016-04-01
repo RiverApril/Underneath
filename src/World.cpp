@@ -137,6 +137,10 @@ namespace WorldLoader {
 
                             level->load(levelData, levelPosition);
 
+                            if(*levelPosition != levelData->size()){
+                                debugf("There is data that was not loaded: %d bytes worth", levelData->size() - *levelPosition);
+                            }
+
                             world->currentLevel = level;
 
                             delete levelData;
