@@ -27,6 +27,7 @@
 #include <cmath>
 #include <fstream>
 #include <assert.h>
+#include <climits>
 
 #include <stdio.h>
 
