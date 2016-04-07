@@ -107,6 +107,7 @@ public:
 
     void gainXp(double amount);
 
+    bool equipItemWithIgnoreList(ItemEquipable* newItem, vector<EquipSlot> ignoreSlots);
     bool equipItem(ItemEquipable* newItem);
     bool equipItem(Item* newItem, EquipSlot slot);
 
