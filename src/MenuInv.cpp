@@ -42,7 +42,7 @@ namespace Ui {
         } else if (in == Key::equip) {
             ItemEquipable* equipable = dynamic_cast<ItemEquipable*> (currentWorld->currentPlayer->inventory[selected]);
             if (equipable) {
-                if(!currentWorld->currentPlayer->equipItem(equipable)){
+                if(!currentWorld->currentPlayer->equipItemWithIgnoreList(equipable, {slotWep2})){
                     flashImportantInfo = flashTimeMax;
                 }
             }else{

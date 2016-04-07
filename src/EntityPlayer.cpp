@@ -690,8 +690,22 @@ bool EntityPlayer::removeItem(Item* item, bool deleteItem) {
 }
 
 bool EntityPlayer::equipItem(ItemEquipable* newItem){
+    return equipItemWithIgnoreList(newItem, {});
+}
+
+bool EntityPlayer::equipItemWithIgnoreList(ItemEquipable* newItem, vector<EquipSlot> ignoreSlots){
     if(newItem){
         vector<EquipSlot> vs = newItem->getViableSlots();
+        while(ignoreSlots.size() > 0){
+            size_t i;
+            for(i = 0; i<vs.size(); i++){
+                if(vs[i] == ignoreSlots[0]){
+                    break;
+                }
+            }
+            vs.erase(vs.begin()+i);
+            ignoreSlots.erase(ignoreSlots.begin());
+        }
         if(vs.size() > 0){
             EquipSlot currentSlot = slotNone;
             for(EquipSlot slot : vs){
@@ -807,7 +821,7 @@ bool EntityPlayer::equipItem(Item* newItem, EquipSlot slot){
 }
 
 void EntityPlayer::setActiveItemWeapon(ItemWeapon* newItemWeapon) {
-    equipItem(newItemWeapon);
+    equipItem(newItemWeapon, slotWep1);
 }
 
 double EntityPlayer::hurt(Level* level, DamageType damageType, double amount, double damageMultiplier) {

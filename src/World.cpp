@@ -387,7 +387,7 @@ namespace WorldLoader {
             }while(wepBase == nullptr || wepBase->weaponType != wepMelee);
             weapon = ItemGenerator::createItemWeaponFromBase(wepBase, 0);
         }while((weapon->baseDamage / weapon->useDelay) < 5 || (weapon->baseDamage / weapon->useDelay) > 6);
-        world->currentPlayer->setActiveItemWeapon(weapon);
+        world->currentPlayer->equipItem(weapon, slotWep1);
         world->currentPlayer->addItem(new ItemSpecial(specialtyCompass));
 
         world->currentPlayer->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfilePlayer, world->currentLevel->getDifficulty(), (rand()%90)+10, 4, 5, 5));
