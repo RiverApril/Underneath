@@ -511,6 +511,8 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             if (weapon) {
                 timeSinceCombat = 0;
 
+                double ud = useDelay(item);
+
                 /*if(weapon->durability > -1){
                     if(weapon->durability <= 0){
                         consolef("&%cYour weapon is broken!", Ui::cc(C_LIGHT_RED));
@@ -546,7 +548,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
 
                 }
 
-                return useDelay(item);
+                return ud;
             }
 
             return 0;
@@ -649,6 +651,9 @@ void EntityPlayer::load(vector<unsigned char>* data, int* position) {
 }
 
 double EntityPlayer::useDelay(Item* item) {
+    if(!item){
+    	return interactDelay;
+    }
     ItemWeapon* weapon = dynamic_cast<ItemWeapon*> (item);
     double d = 0;
     if (weapon) {
