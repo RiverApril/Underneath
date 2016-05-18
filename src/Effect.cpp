@@ -21,10 +21,10 @@ string effectName(Effect eff) {
             return "Heal";
 
         case effMultAttack:
-            return "Buff "+damageTypeName((DamageType) eff.meta);
+            return "Outgoing "+(string(damageTypeName((DamageType) eff.meta)))+" Multiplied";
 
         case effMultRecivedDamage:
-            return "Incoming "+string(damageTypeName((DamageType) eff.meta))+" Damage Multiplied";
+            return "Incoming "+(string(damageTypeName((DamageType) eff.meta)))+" Multiplied";
 
         case effLSD:
             return "Psychedelic";
