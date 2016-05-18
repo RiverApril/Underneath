@@ -713,10 +713,10 @@ bool EntityPlayer::equipItemWithIgnoreList(ItemEquipable* newItem, vector<EquipS
             size_t i;
             for(i = 0; i<vs.size(); i++){
                 if(vs[i] == ignoreSlots[0]){
+                    vs.erase(vs.begin()+i);
                     break;
                 }
             }
-            vs.erase(vs.begin()+i);
             ignoreSlots.erase(ignoreSlots.begin());
         }
         if(vs.size() > 0){
