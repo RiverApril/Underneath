@@ -76,6 +76,10 @@ bool EntityPlayer::update(double deltaTime, double time, Level* level) {
 }
 
 double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract) {
+    if(hasEffect(effStun)){
+        console("You are stunned! You can only wait.");
+        return 1;
+    }
     if (tryToMoveAbsalute(p, level)) {
         return moveDelay;
     } else if(canInteract) {
@@ -85,6 +89,10 @@ double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract) {
 }
 
 double EntityPlayer::moveRelative(Point2 p, Level* level) {
+    if(hasEffect(effStun)){
+        console("You are stunned! You can only wait.");
+        return 1;
+    }
     return moveAbsalute(p + pos, level, true);
 }
 
@@ -114,7 +122,12 @@ int EntityPlayer::repairToolPower(){
 }
 
 double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeSolid, Item* item, bool okayToInteractWithSelf) {
-
+    
+    
+    if(hasEffect(effStun)){
+        console("You are stunned! You can only wait.");
+        return 1;
+    }
 
 
     if (item == nullptr || containsItem(item)) {
