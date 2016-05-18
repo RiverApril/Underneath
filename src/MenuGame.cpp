@@ -662,7 +662,7 @@ namespace Ui {
                             if(currentLevel->inRange(x, y) && !currentLevel->getExplored(x, y)){
                                 int nearExplored = false;
                                 Utility::execute4Around(x, y, [this, &nearExplored](int x, int y){
-                                    if(currentLevel->getExplored(x, y) && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagPathable)  && currentLevel->tileAt(x, y)->doesNotHaveAllOfFlags(currentPlayer->getSolidity())){
+                                    if(currentLevel->getExplored(x, y) && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagPathable)/*  && currentLevel->tileAt(x, y)->doesNotHaveAllOfFlags(currentPlayer->getSolidity())*/){
                                         nearExplored = true;
                                         return;
                                     }
@@ -705,7 +705,7 @@ namespace Ui {
                                 console("Where to go now?");
                                 c = false;
                             }
-                        	timePassed = currentPlayer->moveAbsalute(next, currentLevel, true);
+                        	timePassed = currentPlayer->moveAbsalute(next, currentLevel, false);
                         }else{
                             console("No unexplored area found nearby.");
                             c = false;
