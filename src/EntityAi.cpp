@@ -59,6 +59,10 @@ void EntityAi::lookAi(double time, Level* level){
 }
 
 void EntityAi::moveAi(double time, Level* level) {
+    
+    if(hasEffect(effStun)){
+        return;
+    }
 
     Point2 speed;
 
@@ -286,22 +290,26 @@ void EntityAi::attackAi(double time, Level* level){
     }*/
 
     bool attack = false;
-    if (ai & aiAttack) {
-        if (activeItemWeapon != nullptr && target) {
-            if (distanceSquared(pos, target->pos) <= 1) {
-                attack = true;
-            } else {
-                ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
-                if (r) {
-                    if (canSeeTarget && level->canSee(pos, target->pos, r->range)) {
-                        attack = true;
+    
+    if(!hasEffect(effStun)){
+        if (ai & aiAttack) {
+            if (activeItemWeapon != nullptr && target) {
+                if (distanceSquared(pos, target->pos) <= 1) {
+                    attack = true;
+                } else {
+                    ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
+                    if (r) {
+                        if (canSeeTarget && level->canSee(pos, target->pos, r->range)) {
+                            attack = true;
+                        }
+
                     }
 
                 }
-
             }
         }
     }
+    
     if (attack) {
         while (lastAttackTime + activeItemWeapon->useDelay <= time) {
 
