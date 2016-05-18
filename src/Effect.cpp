@@ -35,9 +35,6 @@ string effectName(Effect eff) {
         case effPurity:
             return "Purity";
 
-        case effBuffAbility:
-            return "Buff "+abilityNames[(size_t)eff.meta];
-
         case effStun:
             return "Stun";
 
@@ -68,9 +65,6 @@ Ui::Color effectColor(EffectId eid, double meta) {
 
         case effPurity:
             return C_LIGHT_BLUE;
-
-        case effBuffAbility:
-            return C_LIGHT_YELLOW;
 
         case effStun:
             return C_LIGHT_YELLOW;
@@ -103,9 +97,6 @@ string effectPowerString(EffectId eid, double power){
         case effPurity:
             return "";
 
-        case effBuffAbility:
-            return formatString("%.2f", power);
-
         case effStun:
             return "";
             
@@ -136,9 +127,6 @@ bool isBadEffect(Effect e){
 
         case effPurity:
             return false;
-
-        case effBuffAbility:
-            return e.power < 0;
 
         case effStun:
             return true;
