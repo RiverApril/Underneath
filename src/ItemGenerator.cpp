@@ -16,6 +16,7 @@
 #include "ItemPotion.hpp"
 #include "ItemExplosive.hpp"
 #include "ItemSpecial.hpp"
+#include "ItemAreaOfEffectWeapon.hpp"
 
 namespace ItemGenerator {
 
@@ -185,10 +186,10 @@ namespace ItemGenerator {
         wBow = atl(new WeaponBase({{"Longbow"}, {"Bow"}, {"Recurve Bow"}}, .5, 1, damPierce, wepRanged))->ranged(20)->setArts({Arts::artLongbow, Arts::artLongbow, Arts::artRecurveBow});
         wCrossbow = atl(new WeaponBase({{"Crossbow"}, {"Scorpion"}}, 0.6, 0.8, damPierce, wepRanged))->ranged(10)->setArts({Arts::artCrossbow});
 
-        wFireItemCombatSpell = atl(new WeaponBase({{"Ignite Spell"}, {"Scorch Spell"}, {"Burn Spell"}}, 1, .8, damFire, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFire});
-        wFireItemCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damFire));
+        //wFireItemCombatSpell = atl(new WeaponBase({{"Ignite Spell"}, {"Scorch Spell"}, {"Burn Spell"}}, 1, .8, damFire, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFire});
+        //wFireItemCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damFire));
 
-        wFrostItemCombatSpell = atl(new WeaponBase({{"Freeze Spell"}, {"Chill Spell"}}, 1, .8, damIce, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFrost});
+        wFrostItemCombatSpell = atl(new WeaponBase({{"Freeze Spell"}, {"Chill Spell"}, {"Frost Spell"}}, 1, .8, damIce, wepMagic))->magical(8, 3)->setArts({Arts::artScrollFrost});
         wFrostItemCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damIce));
 
         wShockItemCombatSpell = atl(new WeaponBase({{"Electrocute Spell"}, {"Shock Spell"}, {"Zap Spell"}}, 1, .8, damShock, wepMagic))->magical(8, 3)->setArts({Arts::artScrollShock});
@@ -197,7 +198,7 @@ namespace ItemGenerator {
         wHealingCombatSpell = atl(new WeaponBase({{"Healing Spell"}}, 0, .8, damNone, wepMagic))->magical(8, 3)->setArts({Arts::artScrollHeal});
         wHealingCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effHeal, 1, 1, 10, 30, 0, 0));
 
-        wFireballSpell = atl(new WeaponBase({{"Fireball Spell"}}, 2, 1.5, damFire, wepMagic))->magical(16, 5, 5)->setArts({Arts::artScrollFire});
+        wFireballSpell = atl(new WeaponBase({{"Fireball Spell"}}, 2, 1.5, damFire, wepMagic))->magical(16, 5, 4)->setArts({Arts::artScrollFire});
         wFireballSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damFire));
 
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effStun, 10, 30, 0, 0, 2, 5));
@@ -571,9 +572,13 @@ namespace ItemGenerator {
 
         if (base->range != -1) {
             if (base->manaCost != -1) {
-                w = new ItemCombatSpell();
+                if (base->radius != -1) {
+                    w = new ItemAreaOfEffectWeapon();
+                    ((ItemAreaOfEffectWeapon*) w)->radius = (base->radius * Random::randDouble(0.5, 2.0));
+                }else{
+                    w = new ItemCombatSpell();
+                }
                 ((ItemCombatSpell*) w)->manaCost = (base->manaCost * Random::randDouble(1.0, 2.0));
-                //w->addEnchantment(Enchantment(effDamage, 10, 1, 6, base.damageType));
             } else {
                 w = new ItemRanged();
             }
@@ -582,9 +587,6 @@ namespace ItemGenerator {
         } else {
             w = new ItemWeapon();
         }
-        /*if(w->durability != -1){
-            w->durability = (rand()%200)+50;
-        }*/
         w->baseDamage = base->damage;
         w->useDelay = base->useDelay;
         w->setName(base->names[ni]);
