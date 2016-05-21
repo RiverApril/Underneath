@@ -39,6 +39,10 @@ namespace Verbalizer {
     }
 
     void attack(EntityAlive* attacker, EntityAlive* underAttack, ItemWeapon* weapon, double damage) {
+        
+        if(attacker == underAttack){
+            return;
+        }
 
         //You deal 2.56 damage to the Golbin Archer
         //The Golbin Archer dealt 2.65 damage to you.

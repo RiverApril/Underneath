@@ -278,15 +278,24 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
 
     ItemWeapon* weapon = dynamic_cast<ItemWeapon*> (item);
     if (weapon) {
-        if (distanceSquared(posOfTile, pos) > 1) {
-            use = false;
+        double dis = distanceSquared(posOfTile, pos);
+        if (dis > 1) {
             ItemAreaOfEffectWeapon* aoe = dynamic_cast<ItemAreaOfEffectWeapon*>(item);
             if(aoe){
-                BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
-                Animator::renderRangedAttack(pos, posOfTile, icon, level, 4);
-                Animator::renderExposion(posOfTile, aoe->radius, level, 1);
-                level->explode(posOfTile, aoe->radius, aoe->baseDamage, false);
-
+                use = false;
+                if(aoe->range * aoe->range < dis){
+                    consolef("&%cOut of range!", Ui::cc(C_LIGHT_RED));
+                    return 0;
+                } else if(!level->canSee(pos, posOfTile, aoe->range)){
+                    consolef("&%cNo line of sight!", Ui::cc(C_LIGHT_RED));
+                    return 0;
+                } else {
+                    BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
+                    Animator::renderRangedAttack(pos, posOfTile, icon, level, 4);
+                    Animator::renderExposion(posOfTile, aoe->radius, level, 1);
+                    level->explode(posOfTile, aoe->radius, aoe->baseDamage, false);
+                    return useDelay(aoe);
+                }
             }
         }
     }
