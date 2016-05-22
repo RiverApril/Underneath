@@ -110,6 +110,7 @@ namespace ItemGenerator {
 
     struct EnchantableBase : ItemBase{
         vector<EnchantmentBase*> enchs;
+        bool extraEnchantmentsAllowed = true;
     };
 
     struct ArmorBase : EnchantableBase{

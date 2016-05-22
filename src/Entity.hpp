@@ -39,7 +39,7 @@ public:
 
     virtual ~Entity();
 
-    virtual bool tryToMoveAbsalute(Point2 p, Level* world);
+    virtual bool tryToMoveAbsalute(Point2 p, Level* world, bool force = false);
 
     virtual bool tryToMoveRelative(Point2 p, Level* world);
 

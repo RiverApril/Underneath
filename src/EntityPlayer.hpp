@@ -30,7 +30,7 @@ public:
 
     double moveRelative(Point2 p, Level* level);
 
-    double moveAbsalute(Point2, Level* level, bool canInteract);
+    double moveAbsalute(Point2, Level* level, bool canInteract, bool force = false);
 
     double useItemOnOther(Item* itemToUse, Item* itemToBeUsedOn);
     

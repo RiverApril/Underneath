@@ -161,7 +161,7 @@ namespace ItemGenerator {
 
         scrollRemoteUse = atl(new ScrollBase({{"Telekinesis Scroll"}}, spellRemoteUse));
         scrollRelocate = atl(new ScrollBase({{"Relocation Scroll"}}, spellRelocate));
-        scrollBarrier = atl(new ScrollBase({{"Protection Scroll"}}, spellBarrier));
+        scrollBarrier = atl(new ScrollBase({{"Barrier Scroll"}}, spellBarrier));
 
 
         bombWallSmall = atl(new BombBase({{"Small Destructive Explosive"}}, timeActivatedBomb, 5, 10, 500, 1000, 1, 3, true))->setArts({Arts::artBomb});
@@ -197,6 +197,7 @@ namespace ItemGenerator {
 
         wHealingCombatSpell = atl(new WeaponBase({{"Healing Spell"}}, 0, .8, damNone, wepMagic))->magical(8, 3)->setArts({Arts::artScrollHeal});
         wHealingCombatSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effHeal, 1, 1, 10, 30, 0, 0));
+        wHealingCombatSpell->extraEnchantmentsAllowed = false;
 
         wFireballSpell = atl(new WeaponBase({{"Fireball Spell"}}, 2, 1.5, damFire, wepMagic))->magical(16, 5, 4)->setArts({Arts::artScrollFire});
         wFireballSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damFire));
@@ -638,12 +639,14 @@ namespace ItemGenerator {
     }
 
     void applyRandomEnchantmentBaseToEnchantableBase(EnchantableBase* eb){
-        ArmorBase* ab = dynamic_cast<ArmorBase*>(eb);
-        WeaponBase* wb = dynamic_cast<WeaponBase*>(eb);
-        if(ab){
-            ab->enchs.push_back(armorEnchantmentList[rand()%armorEnchantmentList.size()]);
-        }else if(wb){
-            wb->enchs.push_back(weaponEnchantmentList[rand()%weaponEnchantmentList.size()]);
+        if(eb->extraEnchantmentsAllowed){
+            ArmorBase* ab = dynamic_cast<ArmorBase*>(eb);
+            WeaponBase* wb = dynamic_cast<WeaponBase*>(eb);
+            if(ab){
+                ab->enchs.push_back(armorEnchantmentList[rand()%armorEnchantmentList.size()]);
+            }else if(wb){
+                wb->enchs.push_back(weaponEnchantmentList[rand()%weaponEnchantmentList.size()]);
+            }
         }
     }
 

@@ -75,12 +75,12 @@ bool EntityPlayer::update(double deltaTime, double time, Level* level) {
     return EntityAlive::update(deltaTime, time, level);
 }
 
-double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract) {
+double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract, bool force) {
     if(hasEffect(effStun)){
         console("You are stunned! You can only wait.");
         return 1;
     }
-    if (tryToMoveAbsalute(p, level)) {
+    if (tryToMoveAbsalute(p, level, force)) {
         return moveDelay;
     } else if(canInteract) {
         return interact(level, p, true, getActiveItemWeapon(), false);
@@ -89,10 +89,6 @@ double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract) {
 }
 
 double EntityPlayer::moveRelative(Point2 p, Level* level) {
-    if(hasEffect(effStun)){
-        console("You are stunned! You can only wait.");
-        return 1;
-    }
     return moveAbsalute(p + pos, level, true);
 }
 
@@ -178,10 +174,8 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         if (posToInteract == pos) {
                             posToInteract = level->findRandomWithoutFlag(getSolidity());
                         }
-                        pos = posToInteract; //force move, may cause death
-                        /*if (!moveAbsalute(posToInteract, level, false)) {
-                            hurt(level, damSuffocation, maxHp * 2);
-                        }*/
+                        
+                        moveAbsalute(posToInteract, level, false, true);
                         break;
                     case spellBarrier:{
                         bool success = false;
