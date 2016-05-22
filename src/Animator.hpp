@@ -15,7 +15,7 @@
 namespace Animator {
     void renderFlash(Point2 p, Level* level, vector<char> chars, int speed, Ui::Color fg, Ui::Color bg);
     void renderRangedAttack(Point2 from, Point2 to, Icon* icon, Level* level, int length);
-    void renderExposion(Point2 center, double radius, Level* level, int length);
+    void renderExposion(Point2 center, double radius, Level* level, int length, DamageType damType = damExplosion);
 }
 
 

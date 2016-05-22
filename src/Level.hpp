@@ -18,6 +18,7 @@
 #include "MenuGame.hpp"
 #include "TEStair.hpp"
 #include "TEChest.hpp"
+#include "DamageType.hpp"
 
 namespace Ui {
     class MenuGame;
@@ -122,7 +123,7 @@ public:
         return difficulty;
     }
 
-    void explode(Point2 pos, double radius, double attackPower, bool destroyTiles);
+    void explode(Point2 pos, double radius, double attackPower, bool destroyTiles, DamageType damType = damExplosion, bool fire = true);
 
     int countTilesAround(Point2 p, Tile* t) {
         int c = 0;
