@@ -678,7 +678,7 @@ namespace Ui {
                         for(Point2 p : possibilityList){
                             path = currentLevel->getPathTo(p, currentPlayer->pos, tileFlagPathable, tileFlagNone, true, true);
                             if(path.size() > 0){
-                                if(next == Point2Neg1 || next == path[0]){
+                                if(next == Point2Neg1){
                                     next = path[0];
                                     count = path.size();
                                 }else{
