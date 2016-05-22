@@ -89,7 +89,35 @@ namespace Animator {
 
     }
 
-    void renderExposion(Point2 center, double radius, Level* level, int length){
+    void renderExposion(Point2 center, double radius, Level* level, int length, DamageType damType){
+        
+        Ui::Color color1;
+        Ui::Color color2;
+        
+        switch (damType) {
+                
+            case damPoison:
+                color1 = C_LIGHT_GREEN;
+                color2 = C_DARK_GREEN;
+                break;
+                
+            case damShock:
+                color1 = C_LIGHT_MAGENTA;
+                color2 = C_DARK_MAGENTA;
+                break;
+                
+            case damIce:
+                color1 = C_LIGHT_BLUE;
+                color2 = C_LIGHT_CYAN;
+                break;
+                
+            case damFire:
+            case damExplosion:
+            default:
+                color1 = C_LIGHT_RED;
+                color2 = C_LIGHT_YELLOW;
+                break;
+        }
 
         double p = 8;
 
@@ -106,7 +134,7 @@ namespace Animator {
                 Point2 worldP = circleP + center;
                 Point2 screenP = worldP - level->currentWorld->menuGame->viewPos;
                 
-                Ui::setColor(r<(radius/3)?C_LIGHT_RED:C_LIGHT_YELLOW, level->tileAt(worldP)->getIcon(level->canSee(level->currentWorld->currentPlayer->pos, worldP, level->currentWorld->currentPlayer->viewDistance))->getBgColor(Ui::tick, worldP, level));
+                Ui::setColor(r<(radius/3)?color1:color2, level->tileAt(worldP)->getIcon(level->canSee(level->currentWorld->currentPlayer->pos, worldP, level->currentWorld->currentPlayer->viewDistance))->getBgColor(Ui::tick, worldP, level));
 
                 mvaddch(screenP.y, screenP.x, chars[rand()%chars.size()]);
             }

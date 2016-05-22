@@ -292,8 +292,8 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                 } else {
                     BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
                     Animator::renderRangedAttack(pos, posOfTile, icon, level, 4);
-                    Animator::renderExposion(posOfTile, aoe->radius, level, 1);
-                    level->explode(posOfTile, aoe->radius, aoe->baseDamage, false);
+                    Animator::renderExposion(posOfTile, aoe->radius, level, 1, aoe->damageType);
+                    level->explode(posOfTile, aoe->radius, aoe->baseDamage, false, aoe->damageType);
                     return useDelay(aoe);
                 }
             }

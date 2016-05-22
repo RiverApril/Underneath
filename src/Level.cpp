@@ -631,7 +631,7 @@ bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag ba
     return false;*/
 }
 
-void Level::explode(Point2 pos, double radius, double attackPower, bool destroyTiles){
+void Level::explode(Point2 pos, double radius, double attackPower, bool destroyTiles, DamageType damType, bool fire){
     double radiusSquared = radius*radius;
     for(int i=-radius; i<=radius; i++){
         for (int j=-radius; j<=radius; j++) {
@@ -640,12 +640,12 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
                 if(tileAt(p)->doesNotHaveAnyOfFlags(tileFlagIndestructable) && rand()%20!=0){
 
                     if(destroyTiles){
-                        if(tileAt(p)->hasAllOfFlags(tileFlagFlammable)){
+                        if(tileAt(p)->hasAllOfFlags(tileFlagFlammable) || !fire){
                             setTile(p, Tiles::tileFire);
                         }else{
                             setTile(p, Tiles::tileRubble);
                         }
-                    }else{
+                    }else if(fire){
                         if(tileAt(p)->hasAllOfFlags(tileFlagFlammable | tileFlagReplaceable)){
                             setTile(p, Tiles::tileFire);
                         }
@@ -661,8 +661,8 @@ void Level::explode(Point2 pos, double radius, double attackPower, bool destroyT
                 if(a){
                     double disS = distanceSquared(a->pos, pos);
                     if(canSee(pos, a->pos, radius)){
-                        a->hurt(this, damExplosion, attackPower*(((radiusSquared)-disS))/(radiusSquared));
-                        a->addEffect(Effect(effDamage, Random::randDouble(5, 10), 1, damFire));
+                        a->hurt(this, damType, attackPower*(((radiusSquared)-disS))/(radiusSquared));
+                        a->addEffect(Effect(effDamage, Random::randDouble(5, 10), 1, damType == damExplosion ? damFire : damType));
                     }
                 }
             }

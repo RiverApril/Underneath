@@ -1131,6 +1131,7 @@ namespace Ui {
             //printCenterOffset(gameArea.y / 2 + 3, -(borderSize.x / 2), "Press Escape to return to the Main Menu.");
 
             Art* a = Arts::getArt(Arts::artGameOver);
+            setColor(C_WHITE, C_BLACK);
             a->printCenter((gameArea.y / 2) - ((int)a->lines.size()/2), -(borderSize.x / 2));
             printCenterOffset(gameArea.y / 2 + 3 + ((int)a->lines.size()/2), -(borderSize.x / 2), "Press Escape to return to the Main Menu.");
         }
