@@ -504,7 +504,7 @@ void Level::actuallyRemoveTileEntityUnsafe(TileEntity* e) {
     debugf("Failed to Remove Tile Entity: %d", e->getTileEntityTypeId());
 }
 
-vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored, TileFlag requiredEitherFlag) {
+vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored, TileFlag requiredEitherFlag, int returnAmount, int* actualLength) {
 
     for (int i = 0; i < size.x; i++) {
         for (int j = 0; j < size.y; j++) {
@@ -520,11 +520,18 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
     priorityQueue.push(to);
 
     Point2 p;
+    
+    if(actualLength){
+        *actualLength = 0;
+    }
 
     while (!priorityQueue.empty()) {
         Point2 c = priorityQueue.front();
         priorityQueue.pop();
         if (c == from) {
+            if(actualLength){
+                *actualLength = pathMap[from.x][from.y];
+            }
             vector<Point2> path;
             Point2 l = from;
             int v = pathMap[from.x][from.y];
@@ -534,9 +541,9 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
                 bool ry = rand()%2==0;
                 for (int i = -1; i <= 1 && !leave; i++) {
                     for (int j = -1; j <= 1 && !leave; j++) {
-                        p.x = l.x + (rx?i:-i);
-                        p.y = l.y + (ry?j:-j);
                         if ((abs(i) + abs(j)) == 1) {
+                            p.x = l.x + (rx?i:-i);
+                            p.y = l.y + (ry?j:-j);
                             if (inRange(p)) {
                                 if (pathMap[p.x][p.y] < v && pathMap[p.x][p.y] != -1) {
                                     v = pathMap[p.x][p.y];
@@ -548,7 +555,7 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
                         }
                     }
                 }
-                if (!leave) {
+                if (!leave || path.size() == returnAmount) {
                     break;
                 }
             }
@@ -558,12 +565,12 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
             bool ry = rand()%2==0;
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
-                    Point2 p = Point2(c.x + (rx?i:-i), c.y + (ry?j:-j));
                     if ((abs(i) + abs(j)) == 1) {
+                        Point2 p = Point2(c.x + (rx?i:-i), c.y + (ry?j:-j));
                         if (inRange(p)) {
                             if (tileAt(p)->hasAllOfFlags(requiredFlag) && tileAt(p)->doesNotHaveAnyOfFlags(bannedFlag) && tileAt(p)->hasAnyOfFlags(requiredEitherFlag) && (!mustBeExplored || getExplored(p))) {
                                 bool ent = false;
-                                if((!mustBeExplored || getExplored(p)) && careAboutEntities && p != to && p != from){
+                                if(careAboutEntities && (!mustBeExplored || getExplored(p)) && p != to && p != from){
                                     for(Entity* e : entityList){
                                         if(e){
                                             if(!(bool)(e->getSolidity() & requiredFlag) || (bool)(e->getSolidity() & bannedFlag)){
@@ -593,7 +600,7 @@ vector<Point2> Level::getPathTo(Point2 to, Point2 from, TileFlag requiredFlag, T
 }
 
 bool Level::canPathTo(Point2 from, Point2 to, TileFlag requiredFlag, TileFlag bannedFlag, bool careAboutEntities, bool mustBeExplored, TileFlag requiredAnyFlag) {
-    return !(getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities, mustBeExplored, requiredAnyFlag).empty());
+    return !(getPathTo(from, to, requiredFlag, bannedFlag, careAboutEntities, mustBeExplored, requiredAnyFlag, 1).empty());
 
     /*vector<vector<char>> map = vector<vector<char>>(size.x, vector<char>(size.y));
     for(int i=0;i<size.x;i++){

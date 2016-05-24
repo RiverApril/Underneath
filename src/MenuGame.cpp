@@ -653,16 +653,13 @@ namespace Ui {
                             }
                         }
 
-                        Point2 next = Point2Neg1;
-                        size_t count = 1000000;
-
                         vector<Point2> possibilityList;
 
                         Utility::executeGrid(currentPlayer->pos-currentPlayer->viewDistance*2, currentPlayer->pos+currentPlayer->viewDistance*2, [this, &possibilityList](int x, int y){
                             if(currentLevel->inRange(x, y) && !currentLevel->getExplored(x, y)){
                                 int nearExplored = false;
                                 Utility::execute4Around(x, y, [this, &nearExplored](int x, int y){
-                                    if(currentLevel->getExplored(x, y) && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagPathable)/*  && currentLevel->tileAt(x, y)->doesNotHaveAllOfFlags(currentPlayer->getSolidity())*/){
+                                    if(currentLevel->getExplored(x, y) && currentLevel->tileAt(x, y)->hasAllOfFlags(tileFlagPathable)){
                                         nearExplored = true;
                                         return;
                                     }
@@ -672,22 +669,45 @@ namespace Ui {
                                 }
                             }
                         });
+                        
+                        Point2 next = Point2Neg1;
+                        
+                        vector<Point2> nexts;
+                        
+                        size_t count = 1000000;
 
                         vector<Point2> path;
 
                         for(Point2 p : possibilityList){
-                            path = currentLevel->getPathTo(p, currentPlayer->pos, tileFlagPathable, tileFlagNone, true, true);
-                            if(path.size() > 0){
+                            int actualLength;
+                            path = currentLevel->getPathTo(p, currentPlayer->pos, tileFlagPathable, currentPlayer->solidity, true, true, tileFlagAll, 1, &actualLength);
+                            if(actualLength > 0){
+                                bool nn = true;
+                                for(Point2 n : nexts){
+                                    if(n == path[0]){
+                                        nn = false;
+                                        break;
+                                    }
+                                }
+                                if(nn){
+                                    nexts.push_back(path[0]);
+                                }
                                 if(next == Point2Neg1){
                                     next = path[0];
-                                    count = path.size();
+                                    count = actualLength;
                                 }else{
-                                    if(path.size() < count){
+                                    if(actualLength < count){
                                         next = path[0];
-                                        count = path.size();
+                                        count = actualLength;
                                     }
                                 }
                             }
+                        }
+                        
+                        if(next == currentPlayer->lastPos){ //TODO figure out why this doesn't work (detect when you turn around)
+                            console("Whelp, that's the end of the line.");
+                            c = false;
+                            break;
                         }
 
                         if(next != Point2Neg1){
@@ -701,16 +721,20 @@ namespace Ui {
                                     pc++;
                                 }
                             });
-                            if(pc > 2){
+                            if(pc > 2 && nexts.size() > 1){
                                 console("Where to go now?");
                                 c = false;
                             }
-                        	timePassed = currentPlayer->moveAbsalute(next, currentLevel, false);
+                            timePassed = currentPlayer->moveAbsalute(next, currentLevel, false);
+                            if(timePassed == 0){
+                                console("Your path is blocked!");
+                                c = false;
+                            }
                         }else{
                             console("No unexplored area found nearby.");
                             c = false;
-                            timePassed = 0;
                         }
+                        
                         MenuGame::update();
                         if(!currentPlayer){
                             timeout(defaultTimeout);
