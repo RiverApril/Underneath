@@ -90,7 +90,7 @@ public:
 
     bool canPathTo(Point2 from, Point2 to, TileFlag requiredFlag = tileFlagIsTile, TileFlag bannedFlag = tileFlagNone, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll);
 
-    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag = tileFlagIsTile, TileFlag bannedFlag = tileFlagNone, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll);
+    vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag = tileFlagIsTile, TileFlag bannedFlag = tileFlagNone, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll, int returnAmount = -1, int* actualLength = nullptr);
 
     Point2 generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel);
 

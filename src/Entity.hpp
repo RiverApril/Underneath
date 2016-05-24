@@ -94,8 +94,8 @@ public:
     char defaultIcon = '?';
     Ui::Color fgColor;
 
-protected:
     Point2 lastPos;
+protected:
 
     template<class Super, class Sub>
     static Sub* makeNewAndClone(Super* oldT);
