@@ -13,6 +13,7 @@
 #include "Item.hpp"
 #include "Abilities.hpp"
 #include "Enchantment.hpp"
+#include "Controls.hpp"
 
 class ItemEquipable : public Item {
 public:
@@ -44,25 +45,25 @@ public:
             case slotNeck:
                 return 'N';
             case slotFav1:
-                return '1';
+                return keyDisplayName(Key::favs[0])[0];
             case slotFav2:
-                return '2';
+                return keyDisplayName(Key::favs[1])[0];
             case slotFav3:
-                return '3';
+                return keyDisplayName(Key::favs[2])[0];
             case slotFav4:
-                return '4';
+                return keyDisplayName(Key::favs[3])[0];
             case slotFav5:
-                return '5';
+                return keyDisplayName(Key::favs[4])[0];
             case slotFav6:
-                return '6';
+                return keyDisplayName(Key::favs[5])[0];
             case slotFav7:
-                return '7';
+                return keyDisplayName(Key::favs[6])[0];
             case slotFav8:
-                return '8';
+                return keyDisplayName(Key::favs[7])[0];
             case slotFav9:
-                return '9';
+                return keyDisplayName(Key::favs[8])[0];
             case slotFav0:
-                return '0';
+                return keyDisplayName(Key::favs[9])[0];
 
             case slotNone:
                 return '~';

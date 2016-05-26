@@ -45,7 +45,7 @@ namespace Ui {
             int newKey;
             do{
                 newKey = getchSafe();
-            }while(newKey == ERR);
+            }while(newKey == ERR && newKey != KEY_RESIZE);
 
             bool set = true;
             for(int r : reservedKeys){
@@ -67,7 +67,7 @@ namespace Ui {
         setColor(C_WHITE);
 
         int y = 0;
-        mvprintw(y++, 0, "Controls");
+        mvprintw(y++, 0, "Controls  -  Press [ %s ] to modify a Key Binding", keyDisplayName('\n').c_str());
         mvhline(y++, 0, '-', terminalSize.x);
 
 

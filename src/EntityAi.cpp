@@ -256,8 +256,7 @@ void EntityAi::moveAi(double time, Level* level) {
         }
 
     }
-
-    lastPos = pos;
+    
     bool m = false;
     if(rand() % 2 == 0){
         m = m || tryToMoveRelative(speed.xOnly(), level);

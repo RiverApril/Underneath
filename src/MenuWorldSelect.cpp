@@ -75,7 +75,7 @@ namespace Ui {
             if (name.length() > 0) {
                 name = name.substr(0, name.length() - 1);
             }
-        }else if ((in == '_') || (in >= '0' && in <= '9') || (in >= 'A' && in <= 'Z') || (in >= 'a' && in <= 'z')) {
+        }else if ((in == '_') || (in >= '0' && in <= '9') || (in >= 'A' && in <= 'Z') || (in >= 'a' && in <= 'z') || (in == ' ') || (in == '-')) {
                     name += (char) in;
         }
 
@@ -89,16 +89,13 @@ namespace Ui {
 
         printCenter(2, "Enter Name");
 
-        printCenter(5, e ? "  %sContinue%s  " : "%sCreate New%s",
-                selection == selPlay ? "- " : "  ", selection == selPlay ? " -" : "  ");
+        printCenter(5, e ? "  %sContinue%s  " : "%sCreate New%s", selection == selPlay ? "- " : "  ", selection == selPlay ? " -" : "  ");
 
         setColor(e ? C_LIGHT_RED : C_DARK_GRAY);
-        printCenter(6, "%sDelete%s",
-                selection == selDel ? "- " : "  ", selection == selDel ? " -" : "  ");
+        printCenter(6, "%sDelete%s", selection == selDel ? "- " : "  ", selection == selDel ? " -" : "  ");
         setColor(C_WHITE);
 
-        printCenter(8, "%sBack%s", selection == selBack ? "- " : "  ",
-                selection == selBack ? " -" : "  ");
+        printCenter(8, "%sBack%s", selection == selBack ? "- " : "  ", selection == selBack ? " -" : "  ");
 
 
         setColor(e ? C_LIGHT_GREEN : C_LIGHT_YELLOW);
