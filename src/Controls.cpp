@@ -21,9 +21,9 @@ namespace Key {
     int inspect = 'q';
     int adjustConsole = '\\';
     int waitUntilHealed = 'h';
-    int wait = 'w';
-    int walk = 'e';
-    int explore = 't';
+    int wait = 't';
+    int walk = 'w';
+    int explore = 'e';
     int instantInteract = 'j';
 
     //Open UI
@@ -48,32 +48,23 @@ namespace Key {
     //In chest
     int take = 't';
     int takeStack = 'T';
-
-    int fav1 = '1';
-    int fav2 = '2';
-    int fav3 = '3';
-    int fav4 = '4';
-    int fav5 = '5';
-    int fav6 = '6';
-    int fav7 = '7';
-    int fav8 = '8';
-    int fav9 = '9';
-    int fav0 = '0';
+    
+    int favs[10] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
 }
 
 vector<KeyBind*> keybindings = {
-    new KeyBind("Move Up", &Key::moveUp, keyCatPlayer),
-    new KeyBind("Move Down", &Key::moveDown, keyCatPlayer),
-    new KeyBind("Move Left", &Key::moveLeft, keyCatPlayer),
-    new KeyBind("Move Right", &Key::moveRight, keyCatPlayer),
-    new KeyBind("Interact / Use / Attack", &Key::interact, keyCatPlayer | keyCatUi),
+    new KeyBind("Walk / Interact Up", &Key::moveUp, keyCatPlayer),
+    new KeyBind("Walk / Interact Down", &Key::moveDown, keyCatPlayer),
+    new KeyBind("Walk / Interact Left", &Key::moveLeft, keyCatPlayer),
+    new KeyBind("Walk / Interact Right", &Key::moveRight, keyCatPlayer),
+    new KeyBind("Interact / Use / Primary Attack", &Key::interact, keyCatPlayer | keyCatUi),
     new KeyBind("Secondary Attack", &Key::secondaryAttack, keyCatPlayer),
     new KeyBind("Examine", &Key::inspect, keyCatPlayer),
     new KeyBind("Auto Walk", &Key::walk, keyCatPlayer),
     new KeyBind("Wait", &Key::wait, keyCatPlayer),
     new KeyBind("Auto Explore", &Key::explore, keyCatPlayer),
-    new KeyBind("Instant Interact", &Key::instantInteract, keyCatPlayer),
+    new KeyBind("Interact Here", &Key::instantInteract, keyCatPlayer),
     new KeyBind("Wait until Healed", &Key::waitUntilHealed, keyCatPlayer),
     new KeyBind("Open Inventory", &Key::inventory, keyCatPlayer | keyCatUi),
     new KeyBind("Open Skills", &Key::statsMenu, keyCatPlayer),
@@ -84,23 +75,23 @@ vector<KeyBind*> keybindings = {
     new KeyBind("Equip Item", &Key::equip, keyCatUi),
     new KeyBind("Drop Item", &Key::drop, keyCatUi),
     //KeyBind("Drop Stack", &Key::dropAll, keyCatUi),
-    new KeyBind("Transfer Item", &Key::take, keyCatUi),
-    new KeyBind("Transfer Stack", &Key::takeStack, keyCatUi),
+    new KeyBind("Transfer / Sell / Buy", &Key::take, keyCatUi),
+    new KeyBind("Transfer / Sell / Buy Stack", &Key::takeStack, keyCatUi),
     new KeyBind("Sort Inventory", &Key::sortInv, keyCatUi),
 
     new KeyBind("Open Console", &Key::console, keyCatPlayer | keyCatUi),
     new KeyBind("Adjust Borders", &Key::adjustConsole, keyCatPlayer),
 
-    new KeyBind("Favorite 1", &Key::fav1, keyCatPlayer | keyCatUi),
-    new KeyBind("Favorite 2", &Key::fav2, keyCatPlayer | keyCatUi),
-    new KeyBind("Favorite 3", &Key::fav3, keyCatPlayer | keyCatUi),
-    new KeyBind("Favorite 4", &Key::fav4, keyCatPlayer | keyCatUi),
-    new KeyBind("Favorite 5", &Key::fav5, keyCatPlayer | keyCatUi),
-    new KeyBind("Favorite 6", &Key::fav6, keyCatPlayer | keyCatUi),
-    new KeyBind("Favorite 7", &Key::fav7, keyCatPlayer | keyCatUi),
-    new KeyBind("Favorite 8", &Key::fav8, keyCatPlayer | keyCatUi),
-    new KeyBind("Favorite 9", &Key::fav9, keyCatPlayer | keyCatUi),
-    new KeyBind("Favorite 0", &Key::fav0, keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 1", &Key::favs[0], keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 2", &Key::favs[1], keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 3", &Key::favs[2], keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 4", &Key::favs[3], keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 5", &Key::favs[4], keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 6", &Key::favs[5], keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 7", &Key::favs[6], keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 8", &Key::favs[7], keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 9", &Key::favs[8], keyCatPlayer | keyCatUi),
+    new KeyBind("Favorite 10", &Key::favs[9], keyCatPlayer | keyCatUi),
 };
 
 vector<int> reservedKeys = {

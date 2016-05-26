@@ -129,6 +129,10 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
 }
 
 double EntityAlive::hurt(Level* level, DamageType damageType, double amount, double damageMultiplier) {
+    
+    if(dead){
+        return 0;
+    }
 
     damageMultiplier *= getRecivedDamageMultiplierFromEffects(damageType);
 

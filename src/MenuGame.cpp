@@ -8,6 +8,7 @@
 
 #include "MenuGame.hpp"
 #include "MenuMain.hpp"
+#include "MenuEscape.hpp"
 #include "MenuInv.hpp"
 #include "MenuStats.hpp"
 #include "MenuYesNo.hpp"
@@ -278,7 +279,7 @@ namespace Ui {
             if(currentPlayer && currentPlayer->hasEffect(effLSD)){
                 if(bg != C_BLACK){
                     bg = (((int)((currentWorld->worldTime+100)*2.7))+p.y-p.x) % 16;
-                }else{
+                }else if(fg != C_BLACK && symbol != ' '){
                     fg = (((int)((currentWorld->worldTime+100)*2.3))+p.x-p.y) % 16;
                 }
             }
@@ -357,7 +358,7 @@ namespace Ui {
                     closeAllMenus();
                     return;
                 } else {
-                    openMenu(new MenuYesNo("Do you want to save '" + currentWorld->name + "' ?", saveAnswer, true));
+                    openMenu(new MenuEscape(this));
                 }
             }
 
@@ -704,7 +705,7 @@ namespace Ui {
                             }
                         }
                         
-                        if(next == currentPlayer->lastPos){ //TODO figure out why this doesn't work (detect when you turn around)
+                        if(next == currentPlayer->lastPos){
                             console("Whelp, that's the end of the line.");
                             c = false;
                             break;
@@ -820,26 +821,11 @@ namespace Ui {
                 }
             }else {
                 EquipSlot slot = slotNone;
-                if(in == Key::fav1){
-                    slot = slotFav1;
-                }else if(in == Key::fav2){
-                    slot = slotFav2;
-                }else if(in == Key::fav3){
-                    slot = slotFav3;
-                }else if(in == Key::fav4){
-                    slot = slotFav4;
-                }else if(in == Key::fav5){
-                    slot = slotFav5;
-                }else if(in == Key::fav6){
-                    slot = slotFav6;
-                }else if(in == Key::fav7){
-                    slot = slotFav7;
-                }else if(in == Key::fav8){
-                    slot = slotFav8;
-                }else if(in == Key::fav9){
-                    slot = slotFav9;
-                }else if(in == Key::fav0){
-                    slot = slotFav0;
+                for(int i=0;i<10;i++){
+                    if(in == Key::favs[i]){
+                        slot = slotFav1 + i;
+                        break;
+                    }
                 }
 
                 if(slot >= 0){
@@ -1034,7 +1020,7 @@ namespace Ui {
 
             if(Settings::debugMode){
             	mvprintw(a++, gameArea.x + 1, "Time: %.2f", displayTime);
-            	mvprintw(a++, gameArea.x+1, "Tick: %d", tick);
+                mvprintw(a++, gameArea.x + 1, "Tick: %d", tick);
             }
 
             if(currentPlayer->abilityPoints > 0){
@@ -1125,7 +1111,8 @@ namespace Ui {
             for(int i=0;i<10;i++){
                 Item* it = currentPlayer->getEquiped(slotFav1+i);
                 if(it){
-                    mvprintw(gameArea.y-2, x, "+%.*s%1d%.*s+", fw[i]/2-1, dashes, i==9?0:(i+1), ((fw[i]%2==1)?1:0)+fw[i]/2-1, dashes);
+                    string name = keyDisplayName(Key::favs[i]);
+                    mvprintw(gameArea.y-2, x, "+%.*s%.*s%.*s+", (fw[i]-name.length())/2, dashes, name.length(), name.c_str(), (((fw[i]-name.length())%2==1)?1:0)+(fw[i]-name.length())/2-1, dashes);
                     mvprintw(gameArea.y-1, x, "|%.*s|", fw[i]-1, spaces);
                     string s = it->getName(it->qty!=1);
                     s = s.substr(0, fw[i]-1);

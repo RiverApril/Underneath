@@ -39,6 +39,9 @@ Entity::~Entity() {
 }
 
 bool Entity::tryToMoveAbsalute(Point2 p, Level* level, bool force) {
+    
+    lastPos = pos;
+
     if (level->tileAt(p)->doesNotHaveAnyOfFlags(getSolidity())) {
         bool block = false;
         for (Entity* e : level->entityList) {
@@ -72,12 +75,6 @@ bool Entity::tryToMoveRelative(Point2 p, Level* level) {
 }
 
 bool Entity::update(double deltaTime, double time, Level* level) {
-
-    if (pos != lastPos) {
-        lastPos = pos;
-        return true;
-    }
-
     return false;
 }
 

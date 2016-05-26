@@ -50,7 +50,7 @@ namespace Ui {
         clrtobot();
         setColor(C_WHITE);
 
-        mvprintw(0, 0, "Settings - auto saves on escape");
+        mvprintw(0, 0, "Settings");
 
         int a = 2;
 

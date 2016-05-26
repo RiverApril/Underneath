@@ -71,26 +71,11 @@ namespace Ui {
         }else{
 
             EquipSlot slot = slotNone;
-            if(in == Key::fav1){
-                slot = slotFav1;
-            }else if(in == Key::fav2){
-                slot = slotFav2;
-            }else if(in == Key::fav3){
-                slot = slotFav3;
-            }else if(in == Key::fav4){
-                slot = slotFav4;
-            }else if(in == Key::fav5){
-                slot = slotFav5;
-            }else if(in == Key::fav6){
-                slot = slotFav6;
-            }else if(in == Key::fav7){
-                slot = slotFav7;
-            }else if(in == Key::fav8){
-                slot = slotFav8;
-            }else if(in == Key::fav9){
-                slot = slotFav9;
-            }else if(in == Key::fav0){
-                slot = slotFav0;
+            for(int i=0;i<10;i++){
+                if(in == Key::favs[i]){
+                    slot = slotFav1 + i;
+                    break;
+                }
             }
 
             if(slot >= 0){
