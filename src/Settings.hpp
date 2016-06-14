@@ -163,7 +163,7 @@ namespace Settings{
         ~SettingTicks(){}
         
         string renderValue(unsigned long tick){
-            return to_string(*value) + "ticks";
+            return to_string(*value) + SYMBOL_TIME;
         }
         
         string stringValue(){
