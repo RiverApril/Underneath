@@ -916,7 +916,7 @@ namespace Ui {
 
         if(currentPlayer){
 
-            if(Settings::autoSave && timeSinceTimePassed == autoSaveTime){
+            if(Settings::autoSave && timeSinceTimePassed == Settings::autoSaveDelay){
                 WorldLoader::save(currentWorld);
             }
 
@@ -1001,12 +1001,12 @@ namespace Ui {
                 Effect eff = currentPlayer->effects[i];
                 setColor(effectColor(eff.eId, eff.meta));
                 if(eff.eId == effMultRecivedDamage || eff.eId == effMultAttack){
-                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %d%% for %.2ft", effectName(eff).c_str(), (int)(eff.power*100), eff.timeLeft));
+                    a += printMultiLineString(a, gameArea.x + 1, formatString("%s %d%% for %.2f%s", effectName(eff).c_str(), (int)(eff.power*100), eff.timeLeft, SYMBOL_TIME));
                 }else{
                     if(eff.power != 0){
-                    	a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f for %.2ft", effectName(eff).c_str(), eff.power, eff.timeLeft));
+                    	a += printMultiLineString(a, gameArea.x + 1, formatString("%s %.2f for %.2f%s", effectName(eff).c_str(), eff.power, eff.timeLeft, SYMBOL_TIME));
                     }else{
-                        a += printMultiLineString(a, gameArea.x + 1, formatString("%s for %.2ft", effectName(eff).c_str(), eff.timeLeft));
+                        a += printMultiLineString(a, gameArea.x + 1, formatString("%s for %.2f%s", effectName(eff).c_str(), eff.timeLeft, SYMBOL_TIME));
                     }
                 }
             }
@@ -1031,7 +1031,7 @@ namespace Ui {
 
             a++;
 
-            if(Settings::autoSave && timeSinceTimePassed > autoSaveTime && timeSinceTimePassed < autoSaveTime+10){
+            if(Settings::autoSave && timeSinceTimePassed > Settings::autoSaveDelay && timeSinceTimePassed < Settings::autoSaveDelay+10){
                 printMultiLineString(a++, gameArea.x+1, "Auto saving...");
                 a++;
             }

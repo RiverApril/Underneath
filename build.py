@@ -72,7 +72,7 @@ objectExtention = "opp"
 
 
 compiler = "g++"
-compilerFlags = "-std=gnu++11 "
+compilerFlags = "-std=gnu++11 -stdlib=libc++"
 libraryFlags = ""
 
 optimization = ""
@@ -133,6 +133,10 @@ if args.windows:
         
         
 else:
+    
+    if systemName == "Darwin":
+        compilerFlags += " -mmacosx-version-min=10.7"
+    
     if args.SDLGraphics:
         if systemName == "Darwin":
             compilerFlags += " -I/usr/local/include"

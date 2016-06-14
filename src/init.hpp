@@ -30,24 +30,42 @@ int cleanup();
 
 
 bool* init(int argc, char* argv[]){
-    if (!GetCurrentDir(workingDirectory, sizeof (workingDirectory))) {
+    
+#ifdef __APPLE__
+    string home = string(getenv("HOME"));
+    string appdata = home + "/Library/Application Support/Underneath/";
+#elif _WIN32
+    string appdata = string(getenv("APPDATA"));
+    appdata += "/Underneath/";
+#else
+    string appdata = "./";
+#endif
+    
+    char runningDirectory[FILENAME_MAX];
+    
+    if (!GetCurrentDir(runningDirectory, sizeof (runningDirectory))) {
         exit(errno);
     }
 
     
-    string s1 = ("Working Directory: " + (string(workingDirectory)));
+    string s1 = ("Running Directory: " + (string(runningDirectory)));
     string s2 = "";
-
-    CustomWorkingDirectory = Utility::readTextFile("customUnderneathWorkingDirectory.txt", "./");
-    CustomWorkingDirectory = CustomWorkingDirectory.substr(0, CustomWorkingDirectory.find_last_of('/') + 1);
-    UnderneathDir = CustomWorkingDirectory;
+    
+    string customDataDirectory = Utility::readTextFile("customUnderneathDataDirectory.txt", "");
+    if(customDataDirectory.length() > 0){
+        customDataDirectory = customDataDirectory.substr(0, customDataDirectory.find_last_of('/') + 1);
+        UnderneathDir = customDataDirectory;
+        s2 = "Custom Data Directory Read: " + UnderneathDir;
+    }else{
+        UnderneathDir = appdata;
+        s2 = "Default Data Directory: " + UnderneathDir;
+    }
+    
     WorldsDir = UnderneathDir + "worlds";
     ArtDir = UnderneathDir + "art";
     AudioDir = UnderneathDir + "audio";
-
-    if (CustomWorkingDirectory.length() > 0) {
-        s2 = ("Custom Working Directory: " + CustomWorkingDirectory);
-    }
+    
+    mkdir(UnderneathDir.c_str(), 0777);
 
     Settings::loadSettings(UnderneathDir + "settings.txt");
 

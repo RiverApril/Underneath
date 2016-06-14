@@ -38,13 +38,10 @@ int getchSafe(){
     return g;
 }
 
-char workingDirectory[FILENAME_MAX];
-
 bool running;
 
 int nextUniqueId;
 
-string CustomWorkingDirectory;
 string UnderneathDir;
 string WorldsDir;
 string ArtDir;

@@ -316,6 +316,26 @@ namespace Commands {
             return true;
         }
     };
+    
+    struct CommandDataDir : Command {
+        
+        string help() {
+            return "Prints the Data Directory";
+        }
+        
+        string usage() {
+            return "datadir";
+        }
+        
+        string defaultName() {
+            return "datadir";
+        }
+        
+        bool execute(string name, vector<string> arguments, string argumentsRaw, Menu* currentMenu) {
+            console("Data Directory: "+UnderneathDir);
+            return true;
+        }
+    };
 
     struct CommandLoot : Command {
         string help(){
@@ -445,6 +465,7 @@ namespace Commands {
         commandList.push_back(new CommandDebugTools());
         commandList.push_back(new CommandKillall());
         commandList.push_back(new CommandLoot());
+        commandList.push_back(new CommandDataDir());
     }
 
     void cleanupCommands() {

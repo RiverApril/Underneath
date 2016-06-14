@@ -97,13 +97,10 @@ using namespace std;
 int getchSafe();
 
 
-extern char workingDirectory[FILENAME_MAX];
-
 extern bool running;
 
 extern int nextUniqueId;
 
-extern string CustomWorkingDirectory;
 extern string UnderneathDir;
 extern string WorldsDir;
 extern string ArtDir;
@@ -120,8 +117,10 @@ extern string AudioDir;
 
 #ifdef NO_UNICODE
 	#define SYMBOL_COIN "c"
+    #define SYMBOL_TIME "t"
 #else
-	#define SYMBOL_COIN "¢"
+    #define SYMBOL_COIN "¢"
+    #define SYMBOL_TIME "⧖"
 #endif
 
 
