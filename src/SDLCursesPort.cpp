@@ -56,6 +56,8 @@ namespace MainWindow{
 
     int width = 100;
     int height = 30;
+    
+    int borderSize = 4;
 
     vector<unsigned int> prevScreenCharBuffer;
     vector<unsigned char> prevScreenColorBuffer;
@@ -450,8 +452,8 @@ namespace MainWindow{
                 src.x = srcX(screenCharBuffer[c]);
                 src.y = srcY(screenCharBuffer[c]);
 
-                dst.x = (c%width)*charWidth;
-                dst.y = (c/width)*charHeight;
+                dst.x = ((c%width)*charWidth) + borderSize;
+                dst.y = ((c/width)*charHeight) + borderSize;;
 
                 fgColorCode = ((screenColorBuffer[c])) & 0xF;
                 bgColorCode = (((screenColorBuffer[c])) >> 4) & 0xF;
@@ -548,8 +550,8 @@ namespace MainWindow{
             }
             case SDL_WINDOWEVENT:{
                 if(e.window.event == SDL_WINDOWEVENT_RESIZED){
-                    width = (int)ceil(e.window.data1 / (double)charWidth);
-                    height = (int)ceil(e.window.data2 / (double)charHeight);
+                    width = (int)ceil(e.window.data1 / (double)charWidth) + (borderSize * 2);
+                    height = (int)ceil(e.window.data2 / (double)charHeight) + (borderSize * 2);
                     SDL_RenderSetLogicalSize(mainRenderer, width*charWidth, height*charHeight);
                     //SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
                     //mainScreenSurface = SDL_GetWindowSurface(mainWindow);
