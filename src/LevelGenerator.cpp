@@ -93,7 +93,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
 
 
 
-    setTile(door, Tiles::tileNonThreateningDoor);
+    setTile(door, Tiles::tileDoor);
 
     debug("Gen: Created Ruin");
 
@@ -459,7 +459,7 @@ namespace LevelGenerator {
                 }
 
                 grid[p.x][p.y] = 'v';
-                level->setTile(p, (rand()%100==0)?Tiles::tileSecretDoor:Tiles::tileDoor);
+                level->setTile(p, (rand()%100==0)?Tiles::tileSecretDoor:Tiles::tileThreateningDoor);
                 
                 //space in front of door
                 if(level->inRange(p2)){
@@ -595,7 +595,7 @@ namespace LevelGenerator {
                         level->setTile(lastDoorLocation, rand()%3==0?Tiles::tileSecretDoor:Tiles::tileLockedDoor);
                     }else{
 
-                        level->setTile(lastDoorLocation, Tiles::tileNonThreateningDoor);
+                        level->setTile(lastDoorLocation, Tiles::tileDoor);
                         
                         Utility::executeGrid(r->pos + 2, r->pos + (r->size) - 2, [&level, &r](int x, int y){
                             if((y - r->pos.y)%3==0 && rand() % 10 > 0){
@@ -631,7 +631,7 @@ namespace LevelGenerator {
                         for (int j = r->pos.y; j < r->pos.y+r->size.y; j++) {
                             Point2 p = Point2(i, j);
                             if (level->indexAt(p) == Tiles::tileFloor->getIndex()) {
-                                int doors = level->countTilesAround(p, Tiles::tileDoor);
+                                int doors = level->countTilesAround(p, Tiles::tileThreateningDoor);
                                 int walls = level->countTilesAround(p, Tiles::tileWall) + level->countTilesAround(r->pos + Point2(i, j), Tiles::tilePonyWall);
                                 int crates = level->countTilesAround(p, Tiles::tileCrate);
                                 switch (pass) {

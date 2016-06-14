@@ -155,9 +155,9 @@ namespace Settings{
         
         SettingTicks(string name, int* value, int min, int max, int step) : Setting(name){
             this->value = value;
-            this->step = step;
             this->min = min;
             this->max = max;
+            this->step = step;
         }
         
         ~SettingTicks(){}
