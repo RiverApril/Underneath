@@ -23,9 +23,11 @@ namespace Settings{
     int musicVolume = 50;
 
     bool autoSave = true;
+    int autoSaveDelay = 30;
 
     vector<Setting*> settingList = {
         new SettingBool("Auto Save", &autoSave),
+        new SettingTicks("Auto Save Delay", &autoSaveDelay, 0, 1000, 5),
         new SettingPercent("Music Volume", &musicVolume, 1),
         new SettingLabel(""),
         new SettingBool("Debug Output", &debugMode),
@@ -45,6 +47,8 @@ namespace Settings{
         if(file != NULL){
 
             string lines = "";
+            
+            lines += "#Controls:\n";
 
             for(KeyBind* bind : keybindings){
                 lines += bind->name;
@@ -60,6 +64,8 @@ namespace Settings{
             }
 
             lines += "\n";
+            
+            lines += "#Settings:\n";
 
             for(Setting* set : settingList){
                 if(set->name.size() == 0){
@@ -100,8 +106,16 @@ namespace Settings{
             int c;
             string line = "";
             string settingId = "";
+            bool ignoreLine = false;
             do {
                 c = fgetc(file);
+                if(ignoreLine){
+                    if(c == '\n'){
+                        ignoreLine = false;
+                    }else{
+                        continue;
+                    }
+                }
                 if (c == '\n') {
 
                     for(KeyBind* bind : keybindings){
@@ -147,6 +161,8 @@ namespace Settings{
                 } else if (c == ':') {
                     settingId = line;
                     line = "";
+                } else if (c == '#'){
+                    ignoreLine = true;
                 } else {
                     line += (char) c;
                 }

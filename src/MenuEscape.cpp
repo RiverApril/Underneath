@@ -39,7 +39,7 @@ namespace Ui {
         clrtoeol();
         
         if(in == KEY_ESCAPE){
-            running = false;
+            closeThisMenu();
         } else if(in == Key::interact || in == '\n'){
             switch (selection) {
                 case 0:
@@ -55,7 +55,7 @@ namespace Ui {
                     break;
                     
                 case 3:
-                    if(Settings::autoSave && menuTime > autoSaveTime){
+                    if(Settings::autoSave && menuTime > Settings::autoSaveDelay){
                         closeAllMenus();
                     } else {
                         openMenu(new MenuYesNo("Do you want to save '" + menuGame->currentWorld->name + "' ?", menuGame->saveAnswer, true));
@@ -92,16 +92,16 @@ namespace Ui {
         
         printCenter(a++, "%sSettings%s", selection == 2 ? "- " : "  ", selection == 2 ? " -" : "  ");
         
-        printCenter(a++, "%sExit%s", selection == 3 ? "- " : "  ", selection == 3 ? " -" : "  ");
+        printCenter(a++, "%sMain Menu%s", selection == 3 ? "- " : "  ", selection == 3 ? " -" : "  ");
         
         a = terminalSize.y - 2;
         
-        if(Settings::autoSave && menuGame->currentWorld && menuTime == autoSaveTime){
+        if(Settings::autoSave && menuGame->currentWorld && menuTime == Settings::autoSaveDelay){
             printCenter(a++, "   Auto Saving...");
             WorldLoader::save(menuGame->currentWorld);
         }
         
-        if(menuTime > autoSaveTime){
+        if(menuTime > Settings::autoSaveDelay){
             printCenter(a++, "   Auto Saved    ");
         }
         

@@ -385,8 +385,11 @@ namespace MainWindow{
 
     int srcX(int cc){
         switch (cc) {
-            case (194<<8)+162://¢
+            case 0xC2A2://¢
                 return 0*imageCharWidth;
+                
+            case 0xE2A796://⧖
+                return 1*imageCharWidth;
                 
             default:
                 return (((int)cc-32)%imageCharsPerLine)*imageCharWidth;
@@ -395,7 +398,8 @@ namespace MainWindow{
 
     int srcY(int cc){
         switch (cc) {
-            case (194<<8)+162://¢
+            case 0xC2A2://¢
+            case 0xE2A796://⧖
                 return 6*imageCharHeight;
                 
             default:

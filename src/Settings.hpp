@@ -22,6 +22,7 @@ namespace Settings{
     extern int musicVolume; //0-100
 
     extern bool autoSave;
+    extern int autoSaveDelay;
 
     struct Setting{
 
@@ -33,7 +34,7 @@ namespace Settings{
 
         virtual ~Setting(){}
 
-        virtual string renderValue(){
+        virtual string renderValue(unsigned long tick){
             return "";
         }
 
@@ -58,7 +59,7 @@ namespace Settings{
 
         ~SettingLabel(){}
 
-        string renderValue(){
+        string renderValue(unsigned long tick){
             return "";
         }
 
@@ -83,7 +84,7 @@ namespace Settings{
 
         ~SettingBool(){}
 
-        string renderValue(){
+        string renderValue(unsigned long tick){
             return (*value)?" On":"Off";
         }
 
@@ -120,7 +121,7 @@ namespace Settings{
 
         ~SettingPercent(){}
 
-        string renderValue(){
+        string renderValue(unsigned long tick){
             return to_string(*value)+"%";
         }
 
@@ -138,8 +139,49 @@ namespace Settings{
             if(*value > 100){
                 *value = 0;
             }
-            while(*value < 0){
+            if(*value < 0){
                 *value = 100;
+            }
+        }
+    };
+    
+    struct SettingTicks : Setting{
+        
+        int* value;
+        
+        int min;
+        int max;
+        int step;
+        
+        SettingTicks(string name, int* value, int min, int max, int step) : Setting(name){
+            this->value = value;
+            this->step = step;
+            this->min = min;
+            this->max = max;
+        }
+        
+        ~SettingTicks(){}
+        
+        string renderValue(unsigned long tick){
+            return to_string(*value) + "ticks";
+        }
+        
+        string stringValue(){
+            return to_string(*value);
+        }
+        
+        bool setValue(string text){
+            *value = atoi(text.c_str());
+            return false;
+        }
+        
+        virtual void cycleValue(bool right){
+            *value += right?step:-step;
+            if(*value > max){
+                *value = min;
+            }
+            if(*value < min){
+                *value = max;
             }
         }
     };
