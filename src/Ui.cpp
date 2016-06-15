@@ -380,10 +380,10 @@ namespace Ui {
                     default:
                         break;
                 }
-                s += ":  ";
+                s += ": ";
                 s += effectName(e.effect);
                 string ss = effectPowerString(e.effect.eId, e.effect.power);
-                if(e.effect.power != 1 || ss.size() > 0){
+                if(ss.size() > 0){
                     s += " "+ss;
                 }
                 if(e.chance != 1 || e.effect.timeLeft > 0){
@@ -400,7 +400,7 @@ namespace Ui {
                     s += ", ";
                 }
                 if(e.effect.timeLeft > 0){
-                    s += formatString("lasts for %.2f%s", e.effect.timeLeft, SYMBOL_TIME);
+                    s += formatString("%.2f%s", e.effect.timeLeft, SYMBOL_TIME);
                 }
                 if(e.chance != 1 || e.effect.timeLeft > 0){
                     s += ")";
@@ -618,12 +618,12 @@ namespace Ui {
                         for (Effect e : potion->effects) {
                             if (e.timeLeft > 0) {
                                 if(e.eId == effMultRecivedDamage || e.eId == effMultAttack){
-                                    a += printMultiLineString(a, columnX, formatString("   %s %d%% for %.2f%s", effectName(e).c_str(), (int)(e.power*100), e.timeLeft, SYMBOL_TIME));
+                                    a += printMultiLineString(a, columnX, formatString("   %s %d%%, %.2f%s", effectName(e).c_str(), (int)(e.power*100), e.timeLeft, SYMBOL_TIME));
                                 }else{
                                     if(e.power == 0){
-                                        a += printMultiLineString(a, columnX, formatString("   %s for %.2f%s", effectName(e).c_str(), e.timeLeft, SYMBOL_TIME));
+                                        a += printMultiLineString(a, columnX, formatString("   %s, %.2f%s", effectName(e).c_str(), e.timeLeft, SYMBOL_TIME));
                                     }else{
-                                        a += printMultiLineString(a, columnX, formatString("   %s %.2f for %.2f%s", effectName(e).c_str(), e.power, e.timeLeft, SYMBOL_TIME));
+                                        a += printMultiLineString(a, columnX, formatString("   %s %.2f, %.2f%s", effectName(e).c_str(), e.power, e.timeLeft, SYMBOL_TIME));
                                     }
                                 }
                             } else {

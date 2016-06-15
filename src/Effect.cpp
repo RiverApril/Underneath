@@ -21,10 +21,10 @@ string effectName(Effect eff) {
             return "Heal";
 
         case effMultAttack:
-            return "Outgoing "+(string(damageTypeName((DamageType) eff.meta)));
+            return (string(damageTypeName((DamageType) eff.meta)))+" Attacks";
 
         case effMultRecivedDamage:
-            return "Incoming "+(string(damageTypeName((DamageType) eff.meta)));
+            return (string(damageTypeName((DamageType) eff.meta)))+" Damage";
 
         case effLSD:
             return "Psychedelic";
@@ -52,10 +52,10 @@ Ui::Color effectColor(EffectId eid, double meta) {
             return C_LIGHT_GREEN;
 
         case effMultAttack:
-            return C_LIGHT_BLUE;
+            return C_LIGHT_YELLOW;
 
         case effMultRecivedDamage:
-            return C_LIGHT_BLUE;
+            return C_LIGHT_YELLOW;
 
         case effLSD:
             return C_LIGHT_MAGENTA;
@@ -64,7 +64,7 @@ Ui::Color effectColor(EffectId eid, double meta) {
             return C_LIGHT_GRAY;
 
         case effPurity:
-            return C_LIGHT_BLUE;
+            return C_LIGHT_CYAN;
 
         case effStun:
             return C_LIGHT_YELLOW;
@@ -83,10 +83,10 @@ string effectPowerString(EffectId eid, double power){
             return formatString("%.2f", power);
 
         case effMultAttack:
-            return formatString("%.2f", power);
+            return formatString("%d%%", (int)(power * 100));
 
         case effMultRecivedDamage:
-            return formatString("%.2f", power);
+            return formatString("%d%%", (int)(power * 100));
 
         case effLSD:
             return "";

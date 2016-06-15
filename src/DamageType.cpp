@@ -11,7 +11,7 @@
 string damageTypeName(DamageType d) {
     switch (d) {
         case damNone:
-            return "Damage";
+            return "All";
         case damSharp:
             return "Sharp";
         case damBlunt:
