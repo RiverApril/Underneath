@@ -40,7 +40,6 @@ Entity::~Entity() {
 
 bool Entity::tryToMoveAbsalute(Point2 p, Level* level, bool force) {
     
-    lastPos = pos;
 
     if (level->tileAt(p)->doesNotHaveAnyOfFlags(getSolidity())) {
         bool block = false;
@@ -60,6 +59,7 @@ bool Entity::tryToMoveAbsalute(Point2 p, Level* level, bool force) {
                 Animator::renderFlash(pos, level, {defaultIcon, 'O', 'o', '.'}, 1, fgColor, getBgColor(0, pos, level));
                 Animator::renderFlash(p, level, {'.', 'o', 'O', defaultIcon}, 1, fgColor, getBgColor(0, pos, level));
             }
+            lastPos = pos;
             pos = p;
             return true;
         }
