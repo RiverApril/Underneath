@@ -7,6 +7,7 @@
 //
 
 #include "MenuSettings.hpp"
+#include "MenuYesNo.hpp"
 #include "Controls.hpp"
 #include "Settings.hpp"
 
@@ -14,6 +15,10 @@ namespace Ui {
 
     MenuSettings::MenuSettings() : Menu() {
 
+    }
+    
+    bool MenuSettings::openUi() {
+        return true;
     }
 
 
@@ -27,21 +32,30 @@ namespace Ui {
             selected--;
             if (selected < 0) {
                 selected = (int)Settings::settingList.size()-1;
+            }else{
+                if(dynamic_cast<Settings::SettingLabel*>(Settings::settingList[selected]) || !Settings::settingList[selected]->condition()){
+                    MenuSettings::handleInput(Key::uiUp);
+                }
             }
         }else if(in == Key::uiDown){
             selected++;
             if (selected >= (int)Settings::settingList.size()) {
                 selected = 0;
+            }else{
+                if(dynamic_cast<Settings::SettingLabel*>(Settings::settingList[selected]) || !Settings::settingList[selected]->condition()){
+                    MenuSettings::handleInput(Key::uiDown);
+                }
             }
 
         }else if(in == Key::uiLeft){
-            Settings::settingList[selected]->cycleValue(false);
+            Settings::settingList[selected]->cycleValue(false, this);
             
         }else if(in == Key::uiRight){
-            Settings::settingList[selected]->cycleValue(true);
+            Settings::settingList[selected]->cycleValue(true, this);
 
         }else if(in == '\n'){
-            Settings::settingList[selected]->cycleValue(true);
+            Settings::settingList[selected]->cycleValue(true, this);
+            
         }
     }
 
@@ -57,8 +71,8 @@ namespace Ui {
         mvprintw(selected+a, 0, "-");
 
         for(Settings::Setting* setting : Settings::settingList){
-            Settings::SettingLabel* sl = dynamic_cast<Settings::SettingLabel*>(setting);
-            if(sl){
+            setColor(setting->condition() ? C_WHITE : C_DARK_GRAY);
+            if(setting->renderValue(tick).size() == 0){
                 mvprintw(a++, 1, "%s", setting->name.c_str());
             }else{
             	mvprintw(a++, 3, "%s - %s", setting->renderValue(tick).c_str(), setting->name.c_str());

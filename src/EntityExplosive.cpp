@@ -115,6 +115,7 @@ void EntityExplosive::hit(Level* level, HitType h, Point2 p){
 bool EntityExplosive::update(double deltaTime, double time, Level* level) {
     if(expl){
         switch (expl->explosiveType) {
+            case dudBomb:
             case timeActivatedBomb: {
                 expl->time -= deltaTime;
                 if(!removed && expl->time <= 0){

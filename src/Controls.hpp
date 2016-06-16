@@ -15,6 +15,7 @@
 #define keyCatUi 2
 
 struct KeyBind{
+    int defaultKey;
     int* key;
     int catagory;
     string name;
@@ -22,6 +23,7 @@ struct KeyBind{
     KeyBind(string name, int* key, int catagory){
         this->name = name;
         this->key = key;
+        this->defaultKey = *key;
         this->catagory = catagory;
     }
 };

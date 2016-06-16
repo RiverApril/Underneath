@@ -203,7 +203,7 @@ namespace Ui {
         bool inView = false;
         if (currentLevel) {
             if(currentPlayer && !currentPlayer->dead){
-                if ((currentLevel->canSee(p, currentPlayer->pos, currentPlayer->viewDistance) || Settings::seeEverything)) {
+                if ((currentLevel->canSee(p, currentPlayer->pos, currentPlayer->viewDistance))) {
                     inView = true;
                 }
             }else{
@@ -212,7 +212,7 @@ namespace Ui {
             if(inView){
                 currentLevel->setExplored(p, true);
             }
-            if (!currentLevel->getExplored(p)) {
+            if (!currentLevel->getExplored(p) && !Settings::seeEverything) {
                 symbol = ' ';
             } else {
                 Tile* tempTile = currentLevel->tileAt(p);
@@ -241,7 +241,7 @@ namespace Ui {
                     }
                     if (e) {
 
-                        if (inView) {
+                        if (inView || Settings::seeEverything) {
                             if (controlMode == modeSelectDirection && currentPlayer == e) {
                                 fg = e->getBgColor(tick, p, currentLevel);
                                 bg = e->getFgColor(tick, p, currentLevel);
@@ -269,7 +269,7 @@ namespace Ui {
             }
 
             if(currentPlayer && currentPlayer->hasEffect(effMemory)){
-                if(!inView){
+                if(!inView && !Settings::seeEverything){
                     bg = C_BLACK;
                     fg = C_BLACK;
                     symbol = ' ';

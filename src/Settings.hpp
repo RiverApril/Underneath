@@ -11,6 +11,10 @@
 
 #include "Global.hpp"
 
+namespace Ui{
+    class Menu;
+}
+
 namespace Settings{
 
     extern bool godMode;
@@ -27,7 +31,14 @@ namespace Settings{
     struct Setting{
 
         string name = "";
+        
+        function<bool()> condition = []{return true;};
 
+        Setting(function<bool()> condition, string name){
+            this->condition = condition;
+            this->name = name;
+        }
+        
         Setting(string name){
             this->name = name;
         }
@@ -46,8 +57,12 @@ namespace Settings{
             return false;
         }
 
-        virtual void cycleValue(bool right){
+        virtual void cycleValue(bool right, Ui::Menu* menu){
 
+        }
+        
+        virtual void resetToDefault(){
+            
         }
     };
 
@@ -71,15 +86,17 @@ namespace Settings{
             return true;
         }
 
-        virtual void cycleValue(bool right){}
+        virtual void cycleValue(bool right, Ui::Menu* menu){}
     };
 
     struct SettingBool : Setting{
 
+        bool defaultValue;
         bool* value;
 
         SettingBool(string name, bool* value) : Setting(name){
             this->value = value;
+            this->defaultValue = *value;
         }
 
         ~SettingBool(){}
@@ -103,68 +120,74 @@ namespace Settings{
             return false;
         }
 
-        virtual void cycleValue(bool right){
+        virtual void cycleValue(bool right, Ui::Menu* menu){
             *value = !*value;
         }
-    };
-
-    struct SettingPercent : Setting{
-
-        int* value;
-
-        int step;
-
-        SettingPercent(string name, int* value, int step) : Setting(name){
-            this->value = value;
-            this->step = step;
-        }
-
-        ~SettingPercent(){}
-
-        string renderValue(unsigned long tick){
-            return to_string(*value)+"%";
-        }
-
-        string stringValue(){
-            return to_string(*value);
-        }
-
-        bool setValue(string text){
-            *value = atoi(text.c_str());
-            return false;
-        }
-
-        virtual void cycleValue(bool right){
-            *value += right?step:-step;
-            if(*value > 100){
-                *value = 0;
-            }
-            if(*value < 0){
-                *value = 100;
-            }
+        
+        virtual void resetToDefault(){
+            *value = defaultValue;
         }
     };
     
-    struct SettingTicks : Setting{
+    
+    struct SettingExe : Setting{
         
+        function<void(Ui::Menu*)> exe;
+        
+        SettingExe(string name, function<void(Ui::Menu*)> exe) : Setting(name){
+            this->exe = exe;
+        }
+        
+        ~SettingExe(){}
+        
+        string renderValue(unsigned long tick){
+            return "";
+        }
+        
+        string stringValue(){
+            return "";
+        }
+        
+        bool setValue(string text){
+            return true;
+        }
+        
+        virtual void cycleValue(bool right, Ui::Menu* menu){
+            exe(menu);
+        }
+    };
+    
+    struct SettingIntFormat : Setting{
+        
+        int defaultValue;
         int* value;
         
         int min;
         int max;
         int step;
+        string format;
         
-        SettingTicks(string name, int* value, int min, int max, int step) : Setting(name){
+        SettingIntFormat(string name, int* value, int min, int max, int step, string format) : Setting(name){
             this->value = value;
+            this->defaultValue = *value;
             this->min = min;
             this->max = max;
             this->step = step;
+            this->format = format;
         }
         
-        ~SettingTicks(){}
-        
-        string renderValue(unsigned long tick){
-            return to_string(*value) + SYMBOL_TIME;
+        SettingIntFormat(function<bool()> condition, string name, int* value, int min, int max, int step, string format) : Setting(condition, name){
+            this->value = value;
+            this->defaultValue = *value;
+            this->min = min;
+            this->max = max;
+            this->step = step;
+            this->format = format;
         }
+        
+        ~SettingIntFormat(){}
+        
+        string renderValue(unsigned long tick);
         
         string stringValue(){
             return to_string(*value);
@@ -175,7 +198,7 @@ namespace Settings{
             return false;
         }
         
-        virtual void cycleValue(bool right){
+        virtual void cycleValue(bool right, Ui::Menu* menu){
             *value += right?step:-step;
             if(*value > max){
                 *value = min;
@@ -183,6 +206,10 @@ namespace Settings{
             if(*value < min){
                 *value = max;
             }
+        }
+        
+        virtual void resetToDefault(){
+            *value = defaultValue;
         }
     };
 
@@ -195,5 +222,7 @@ namespace Settings{
     bool loadSettings(string path);
 
 }
+
+#include "Menu.hpp"
 
 #endif /* defined(__Underneath__Settings__) */

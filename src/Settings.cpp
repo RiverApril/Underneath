@@ -11,6 +11,7 @@
 #include "Ui.hpp"
 #include "Utility.hpp"
 #include "Audio.hpp"
+#include "MenuYesNo.hpp"
 
 namespace Settings{
 
@@ -27,15 +28,36 @@ namespace Settings{
 
     vector<Setting*> settingList = {
         new SettingBool("Auto Save", &autoSave),
-        new SettingTicks("Auto Save Delay", &autoSaveDelay, 0, 1000, 5),
-        new SettingPercent("Music Volume", &musicVolume, 1),
+        new SettingIntFormat([]{return Settings::autoSave;}, "Auto Save Delay", &autoSaveDelay, 0, 1000, 5, "%d"+string(SYMBOL_TIME)),
+        new SettingIntFormat("Music Volume", &musicVolume, 0, 100, 5, "%d%%"),
         new SettingLabel(""),
+        new SettingLabel("Debug / Cheats:"),
         new SettingBool("Debug Output", &debugMode),
         new SettingBool("Log File", &logFile),
         new SettingBool("God Mode", &godMode),
         new SettingBool("Show AI Paths", &showFollowPaths),
         new SettingBool("X-ray Vision", &seeEverything),
         new SettingBool("Cheat Keys", &cheatKeysEnabled),
+        new SettingLabel(""),
+        new SettingExe("Reset Settings", [](Ui::Menu* menu){
+            menu->openMenu(new Ui::MenuYesNo("Are you sure you want to reset all settings?", [](yesNo answer){
+                if(answer == aYes){
+                    for(Settings::Setting* setting : Settings::settingList){
+                        setting->resetToDefault();
+                    }
+                }
+            }, true));
+        }),
+        new SettingExe("Reset Controls", [](Ui::Menu* menu){
+            menu->openMenu(new Ui::MenuYesNo("Are you sure you want to reset all controls?", [](yesNo answer){
+                if(answer == aYes){
+                    for(KeyBind* bind : keybindings){
+                        *(bind->key) = bind->defaultKey;
+                    }
+                }
+            }, true));
+        }),
+        
     };
 
     vector<Setting*> hiddenSettingList = {
@@ -176,6 +198,9 @@ namespace Settings{
         }
 
     }
-
+    
+    string SettingIntFormat::renderValue(unsigned long tick){
+        return formatString(format, *value);
+    }
 
 }
