@@ -16,24 +16,43 @@ namespace Ui {
         this->canEscape = canEscape;
         *answer = aUndefined;
     }
+    
+    MenuYesNo::MenuYesNo(string question, function<void(yesNo)> exe, bool canEscape) : Menu() {
+        this->question = question;
+        this->answer = nullptr;
+        this->exe = exe;
+        this->canEscape = canEscape;
+    }
 
     void MenuYesNo::handleInput(int in) {
         switch (in) {
             case 'Y':
             case 'y':
-                *answer = aYes;
+                if(answer){
+                    *answer = aYes;
+                }else{
+                    exe(aYes);
+                }
                 closeThisMenu();
                 break;
 
             case 'N':
             case 'n':
-                *answer = aNo;
+                if(answer){
+                    *answer = aNo;
+                }else{
+                    exe(aNo);
+                }
                 closeThisMenu();
                 break;
 
             case KEY_ESCAPE:
                 if (canEscape) {
-                    *answer = aUndefined;
+                    if(answer){
+                        *answer = aUndefined;
+                    }else{
+                        exe(aUndefined);
+                    }
                     closeThisMenu();
                 }
                 break;

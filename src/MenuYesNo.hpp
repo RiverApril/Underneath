@@ -17,6 +17,9 @@ namespace Ui {
     public:
 
         MenuYesNo(string question, yesNo* answer, bool canEscape);
+        
+        MenuYesNo(string question, function<void(yesNo)> exe, bool canEscape);
+
 
         ~MenuYesNo() {
         }
@@ -25,8 +28,9 @@ namespace Ui {
         void update();
 
         string question;
-        yesNo* answer;
+        yesNo* answer = nullptr;
         bool canEscape;
+        function<void(yesNo)> exe;
 
 
     };

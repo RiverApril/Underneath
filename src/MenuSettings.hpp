@@ -24,9 +24,9 @@ namespace Ui {
 
         void handleInput(int in);
         void update();
+        bool openUi();
 
         int selected = 0;
-
         
         
     };

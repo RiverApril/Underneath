@@ -83,6 +83,7 @@ namespace Ui {
     void MenuEscape::update() {
         move(0, 0);
         clrtobot();
+        setColor(C_WHITE);
         
         int a = ( terminalSize.y / 2 ) - 4;
         

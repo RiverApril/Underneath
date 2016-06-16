@@ -39,8 +39,6 @@ const char C_CODE_BLACK = C_CODE_DARK_BLACK;*/
 
 namespace Ui {
 
-    class Menu;
-
     class Menu {
     private:
 
