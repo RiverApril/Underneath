@@ -16,6 +16,12 @@ namespace Ui{
 }
 
 namespace Settings{
+    
+    typedef char leftRight;
+    
+    const leftRight dLeft = 'L';
+    const leftRight dRight = 'R';
+    const leftRight dEnter = 'E';
 
     extern bool godMode;
     extern bool debugMode;
@@ -57,7 +63,7 @@ namespace Settings{
             return false;
         }
 
-        virtual void cycleValue(bool right, Ui::Menu* menu){
+        virtual void cycleValue(leftRight dir, Ui::Menu* menu){
 
         }
         
@@ -75,7 +81,7 @@ namespace Settings{
         ~SettingLabel(){}
 
         string renderValue(unsigned long tick){
-            return "";
+            return name;
         }
 
         string stringValue(){
@@ -86,7 +92,7 @@ namespace Settings{
             return true;
         }
 
-        virtual void cycleValue(bool right, Ui::Menu* menu){}
+        virtual void cycleValue(leftRight dir, Ui::Menu* menu){}
     };
 
     struct SettingBool : Setting{
@@ -102,7 +108,7 @@ namespace Settings{
         ~SettingBool(){}
 
         string renderValue(unsigned long tick){
-            return (*value)?" On":"Off";
+            return "   " + name + " - " +  ((*value)?"On":"Off");
         }
 
         string stringValue(){
@@ -120,7 +126,7 @@ namespace Settings{
             return false;
         }
 
-        virtual void cycleValue(bool right, Ui::Menu* menu){
+        virtual void cycleValue(leftRight dir, Ui::Menu* menu){
             *value = !*value;
         }
         
@@ -141,7 +147,7 @@ namespace Settings{
         ~SettingExe(){}
         
         string renderValue(unsigned long tick){
-            return "";
+            return "   " + name;
         }
         
         string stringValue(){
@@ -152,8 +158,10 @@ namespace Settings{
             return true;
         }
         
-        virtual void cycleValue(bool right, Ui::Menu* menu){
-            exe(menu);
+        virtual void cycleValue(leftRight dir, Ui::Menu* menu){
+            if(dir == dEnter){
+                exe(menu);
+            }
         }
     };
     
@@ -198,8 +206,15 @@ namespace Settings{
             return false;
         }
         
-        virtual void cycleValue(bool right, Ui::Menu* menu){
-            *value += right?step:-step;
+        virtual void cycleValue(leftRight dir, Ui::Menu* menu){
+            if(dir == dRight){
+                *value += step;
+            }else if(dir == dLeft){
+                *value -= step;
+            }else{
+                *value += step;
+            }
+            
             if(*value > max){
                 *value = min;
             }

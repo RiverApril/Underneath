@@ -31,14 +31,6 @@ namespace Settings{
         new SettingIntFormat([]{return Settings::autoSave;}, "Auto Save Delay", &autoSaveDelay, 0, 1000, 5, "%d"+string(SYMBOL_TIME)),
         new SettingIntFormat("Music Volume", &musicVolume, 0, 100, 5, "%d%%"),
         new SettingLabel(""),
-        new SettingLabel("Debug / Cheats:"),
-        new SettingBool("Debug Output", &debugMode),
-        new SettingBool("Log File", &logFile),
-        new SettingBool("God Mode", &godMode),
-        new SettingBool("Show AI Paths", &showFollowPaths),
-        new SettingBool("X-ray Vision", &seeEverything),
-        new SettingBool("Cheat Keys", &cheatKeysEnabled),
-        new SettingLabel(""),
         new SettingExe("Reset Settings", [](Ui::Menu* menu){
             menu->openMenu(new Ui::MenuYesNo("Are you sure you want to reset all settings?", [](yesNo answer){
                 if(answer == aYes){
@@ -57,6 +49,14 @@ namespace Settings{
                 }
             }, true));
         }),
+        new SettingLabel(""),
+        new SettingLabel("Debug / Cheats:"),
+        new SettingBool("Debug Output", &debugMode),
+        new SettingBool("Log File", &logFile),
+        new SettingBool("God Mode", &godMode),
+        new SettingBool("Show AI Paths", &showFollowPaths),
+        new SettingBool("X-ray Vision", &seeEverything),
+        new SettingBool("Cheat Keys", &cheatKeysEnabled),
         
     };
 
@@ -200,7 +200,22 @@ namespace Settings{
     }
     
     string SettingIntFormat::renderValue(unsigned long tick){
-        return formatString(format, *value);
+        return formatString("   %s - "+format, name.c_str(), *value);
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
