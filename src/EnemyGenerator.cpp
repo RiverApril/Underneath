@@ -50,7 +50,7 @@ namespace EnemyGenerator {
         goblinArcher = atl(new EntityBase(50, "Goblin Archer", 'a', aiAttackAndFleeAtLowHealth, 25, ItemGenerator::wBow, "", C_LIGHT_GREEN, 1.0));
         goblinArcher->weaknesses.push_back(Weakness(damPoison, 2));
         goblinArcher->weaknesses.push_back(Weakness(damBlunt, 1.25));
-        goblinArcher->moveDelay = 1.2;
+        goblinArcher->moveDelay = 1.75;
         goblinArcher->lootProfileIndex = atl(new LootProfile(true, false, {make_pair(10, wBow), make_pair(10, wCrossbow)}));
 
 
@@ -124,6 +124,10 @@ namespace EnemyGenerator {
         imp->lootProfileIndex = atl(new LootProfile(true, true, {make_pair(10, wFireItemCombatSpell), make_pair(10, wFrostItemCombatSpell), make_pair(10, wShockItemCombatSpell), make_pair(10, wHealingCombatSpell)}));
         imp->solidity = tileFlagSolidInAir;
         imp->maxLootDrop = 2;
+        
+        
+        rat = atl(new EntityBase(10, "Rat", 'r', aiFlee | aiMoveRandom, 8, ItemGenerator::wNatural, "Teeth", C_LIGHT_GRAY, 0));
+        rat->moveDelay = 0.5;
 
 
         mimic = new EntityBase(0, "Mimic", 'M', aiAttack | aiMoveRandom, 75, ItemGenerator::wNatural, "Teeth", C_LIGHT_GREEN, 0);
@@ -138,10 +142,6 @@ namespace EnemyGenerator {
         lp->allowCoins = false;
         bunny->lootProfileIndex = atl(lp);
         bunny->minLootDrop = 1;
-
-
-        rat = atl(new EntityBase(10, "Rat", 'r', aiFlee | aiMoveRandom, 8, ItemGenerator::wNatural, "Teeth", C_LIGHT_GRAY, 0));
-        rat->moveDelay = 0.5;
         
 
 
