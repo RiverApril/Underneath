@@ -22,3 +22,10 @@ Underneath.xcodeproj/
 
 #netbeans
 netbeans/
+
+#NDS
+UnderneathNDS/build/
+build/
+*.nds
+*.elf
+*.pnproj

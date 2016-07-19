@@ -44,13 +44,22 @@ using namespace std;
 #ifdef __ANDROID__
 	#include "../AndroidCursesInterface.hpp"
     extern int ESCDELAY;
+#endif
 
-    template <typename T>
+#ifdef __NDS__
+	#include "NDSPort.hpp"
+    extern int ESCDELAY;
+#endif
+
+#if defined(_WIN32) || defined(__NDS__) || defined(__ANDROID__)
+
+	template <typename T>
     string to_string(T a) {
         stringstream ss;
         ss << a;
         return ss.str();
     }
+	
 #endif
 
 #ifdef _WIN32
@@ -60,13 +69,6 @@ using namespace std;
     #include <stdint.h>
     #define GetCurrentDir _getcwd
     int mkdir(const char *filename, int useless);
-
-    template <typename T>
-    string to_string(T a) {
-        stringstream ss;
-        ss << a;
-        return ss.str();
-    }
 
     #ifndef useSDLGraphics
         #include "curses.h"
@@ -81,7 +83,9 @@ using namespace std;
 
     #ifndef useSDLGraphics
         #ifndef __ANDROID__
-            #include <ncurses.h>
+			#ifndef __NDS__
+				#include <ncurses.h>
+			#endif
         #endif
     #endif
 

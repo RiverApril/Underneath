@@ -24,6 +24,10 @@
 	int ESCDELAY;
 #endif
 
+#ifdef __NDS__
+    int ESCDELAY;
+#endif
+
 int getchSafe(){
     int g = getch();
     if(g == KEY_ESCAPE){//27
