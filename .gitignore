@@ -5,7 +5,6 @@ worlds/
 
 #Build Script:
 obj/
-src/ArtFiles.hpp
 *.pyc
 Underneath_*
 *.sh
