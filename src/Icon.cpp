@@ -9,6 +9,8 @@
 #include "Icon.hpp"
 #include "Random.hpp"
 
+vector<Icon*> iconList;
+
 char RandomIcon::getChar(unsigned long tick, Point2 pos, Level* lvl){
     return i[Random::randomFromPoint(pos)%i.size()];
 }
@@ -34,3 +36,5 @@ char AnimatedIcon::getChar(unsigned long tick, Point2 pos, Level* lvl){
 char ColorAnimatedIcon::getChar(unsigned long tick, Point2 pos, Level* lvl){
     return i[((tick/speed)+(randomStart?Random::randomFromPoint(pos):0))%i.size()];
 }
+
+

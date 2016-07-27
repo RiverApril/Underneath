@@ -12,7 +12,7 @@
 EntityMultiSub* EntityMultiSub::cloneUnsafe(EntityMultiSub* oldE, EntityMultiSub* newE){
     EntityAlive::cloneUnsafe(oldE, newE);
     
-    newE->masterId = oldE->master->uniqueId;
+    newE->relPos = oldE->relPos;
     
     return newE;
 }
@@ -20,19 +20,17 @@ EntityMultiSub* EntityMultiSub::cloneUnsafe(EntityMultiSub* oldE, EntityMultiSub
 void EntityMultiSub::save(vector<unsigned char>* data){
     EntityAlive::save(data);
     
-    Utility::saveInt(data, master->uniqueId);
     relPos.save(data);
 }
 
 void EntityMultiSub::load(vector<unsigned char>* data, int* position){
     EntityAlive::load(data, position);
     
-    masterId = Utility::loadInt(data, position);
     relPos = Point2(data, position);
 }
 
 int EntityMultiSub::getEntityTypeId(){
-    return ENTITY_TYPE_MULTI;
+    return ENTITY_TYPE_MULTI_SUB;
 }
 
 EntityMultiSub::EntityMultiSub(){
@@ -57,11 +55,6 @@ double EntityMultiSub::hurt(Level* level, ItemWeapon* w, double damageMultiplier
 }
 
 bool EntityMultiSub::update(double deltaTime, double time, Level* level){
-    if(masterId != -1){
-        master = dynamic_cast<EntityMulti*>(level->getEntity(masterId));
-        
-        masterId = -1;
-    }
     return EntityAlive::update(deltaTime, time, level);
 }
 

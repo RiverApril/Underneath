@@ -11,6 +11,7 @@
 
 #include "ItemGenerator.hpp"
 #include "EntityAi.hpp"
+#include "EntityMulti.hpp"
 
 namespace EnemyGenerator {
 
@@ -81,7 +82,8 @@ namespace EnemyGenerator {
     EntityAi* makeRandomEntity(int difficulty);
 
     EntityAi* makeEntity(EntityBase* we, int difficulty);
-
+    
+    EntityMulti* makeBossVenom(Point2 pos, int difficulty);
 }
 
 #endif /* defined(__Underneath__EnemyGenerator__) */

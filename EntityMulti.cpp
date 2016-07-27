@@ -11,6 +11,7 @@
 #include "Level.hpp"
 #include "Animator.hpp"
 #include "Verbalizer.hpp"
+#include "EntityExplosive.hpp"
 
 
 EntityMulti* EntityMulti::cloneUnsafe(EntityMulti* oldE, EntityMulti* newE){
@@ -26,11 +27,16 @@ EntityMulti* EntityMulti::cloneUnsafe(EntityMulti* oldE, EntityMulti* newE){
     newE->aiMulti = oldE->aiMulti;
     newE->moveDelay = oldE->moveDelay;
     newE->lastAttackTime = oldE->lastAttackTime;
+    newE->lastThrowTime = oldE->lastThrowTime;
     newE->lastKnownTargetPos = oldE->lastKnownTargetPos;
     
     forVector(oldE->inventory, i) {
         if (oldE->inventory[i] == oldE->activeItemWeapon) {
             newE->activeItemWeapon = dynamic_cast<ItemWeapon*> (newE->inventory[i]);
+            break;
+        }
+        if (oldE->inventory[i] == oldE->activeItemExplosive) {
+            newE->activeItemExplosive = dynamic_cast<ItemExplosive*> (newE->inventory[i]);
             break;
         }
     }
@@ -50,16 +56,24 @@ void EntityMulti::save(vector<unsigned char>* data){
     Utility::saveDouble(data, moveDelay);
     Utility::saveDouble(data, lastMoveTime);
     Utility::saveDouble(data, lastAttackTime);
+    Utility::saveDouble(data, lastThrowTime);
     lastKnownTargetPos.save(data);
     
     int activeItemWeaponIndex = -1;
+    int activeItemExplosiveIndex = -1;
     
     forVector(inventory, i) {
         Item* ie = inventory[i];
         if (ie == activeItemWeapon) {
             activeItemWeaponIndex = i;
         }
+        if (ie == activeItemExplosive) {
+            activeItemExplosiveIndex = i;
+        }
     }
+    
+    Utility::saveInt(data, activeItemWeaponIndex);
+    Utility::saveInt(data, activeItemExplosiveIndex);
 }
 
 void EntityMulti::load(vector<unsigned char>* data, int* position){
@@ -74,6 +88,7 @@ void EntityMulti::load(vector<unsigned char>* data, int* position){
     moveDelay = Utility::loadDouble(data, position);
     lastMoveTime = Utility::loadDouble(data, position);
     lastAttackTime = Utility::loadDouble(data, position);
+    lastThrowTime = Utility::loadDouble(data, position);
     lastKnownTargetPos = Point2(data, position);
     
     
@@ -82,6 +97,12 @@ void EntityMulti::load(vector<unsigned char>* data, int* position){
         activeItemWeapon = dynamic_cast<ItemWeapon*> (inventory[activeItemWeaponIndex]);
     } else {
         activeItemWeapon = nullptr;
+    }
+    int activeItemExplosiveIndex = Utility::loadInt(data, position);
+    if (activeItemExplosiveIndex != -1) {
+        activeItemExplosive = dynamic_cast<ItemExplosive*> (inventory[activeItemExplosiveIndex]);
+    } else {
+        activeItemExplosive = nullptr;
     }
 }
 
@@ -120,9 +141,11 @@ void EntityMulti::lookAi(double time, Level* level){
         return;
     }
     
+    canSeeTarget = false;
     
-    
-    canSeeTarget = level->canSee(pos, target->pos, viewDistance);
+    for(EntityMultiSub* sub : subEntities){
+        canSeeTarget |= level->canSee(sub->pos, target->pos, viewDistance);
+    }
     
     if (canSeeTarget) {
         lastKnownTargetPos = target->pos;
@@ -131,27 +154,44 @@ void EntityMulti::lookAi(double time, Level* level){
 
 void EntityMulti::attackAi(double time, Level* level){
     bool attackNormal = false;
+    bool attackThrow = false;
+    
+    vector<Point2> normalFrom;
+    vector<Point2> throwFrom;
     
     if(!hasEffect(effStun)){
         if (aiMulti & aiMultiAttackNormal) {
-            if (activeItemWeapon != nullptr && target) {
-                if (distanceSquared(pos, target->pos) <= 1) {
-                    attackNormal = true;
-                } else {
-                    ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
-                    if (r) {
-                        if (canSeeTarget && level->canSee(pos, target->pos, r->range)) {
-                            attackNormal = true;
+            if (activeItemWeapon && target) {
+                for(EntityMultiSub* sub : subEntities){
+                    if (distanceSquared(sub->pos, target->pos) <= 1) {
+                        attackNormal = true;
+                        normalFrom.push_back(sub->pos);
+                    } else {
+                        ItemRanged* r = dynamic_cast<ItemRanged*> (activeItemWeapon);
+                        if (r) {
+                            if (canSeeTarget && level->canSee(sub->pos, target->pos, r->range)) {
+                                attackNormal = true;
+                                normalFrom.push_back(sub->pos);
+                            }
+                            
                         }
                         
                     }
-                    
                 }
             }
         }
         if (aiMulti & aiMultiAttackThrow) {
-            if(target){
-                
+            if(activeItemExplosive && target){
+                for(EntityMultiSub* sub : subEntities){
+                    if (distanceSquared(sub->pos, target->pos) <= 1) {
+                        //
+                    } else {
+                        if (canSeeTarget && level->canSee(sub->pos, target->pos, viewDistance, true)) {
+                            attackThrow = true;
+                            throwFrom.push_back(sub->pos);
+                        }
+                    }
+                }
             }
         }
     }
@@ -159,18 +199,33 @@ void EntityMulti::attackAi(double time, Level* level){
     if (attackNormal) {
         while (lastAttackTime + activeItemWeapon->useDelay <= time) {
             
+            Point2 from = normalFrom[rand()%normalFrom.size()];
+            
             ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(activeItemWeapon);
             BasicIcon* icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), C_BLACK);
             if(spell){
-                Animator::renderRangedAttack(pos, target->pos, icon, level, 8);
+                Animator::renderRangedAttack(from, target->pos, icon, level, 8);
             }else{
-                Animator::renderRangedAttack(pos, target->pos, icon, level, 1);
+                Animator::renderRangedAttack(from, target->pos, icon, level, 1);
             }
             delete icon;
             
             double d = target->hurt(level, activeItemWeapon, 1);
             Verbalizer::attack(this, target, activeItemWeapon, d);
-            lastAttackTime += activeItemWeapon->useDelay;
+            lastAttackTime += activeItemWeapon->useDelay / 2;
+        }
+    }
+    
+    if(attackThrow){
+        while (lastThrowTime + 5 <= time) {
+            
+            
+            Point2 from = throwFrom[rand()%throwFrom.size()];
+            
+            Item* item = Item::clone(activeItemExplosive);
+            EntityExplosive* expl = new EntityExplosive(dynamic_cast<ItemExplosive*>(item), from, lastKnownTargetPos, 1, uniqueId);
+            level->newEntity(expl);
+            lastThrowTime += 5;
         }
     }
     
@@ -189,6 +244,7 @@ bool EntityMulti::update(double deltaTime, double time, Level* level){
         for(int id : subEntitiesAsIds){
             Entity* e = level->getEntity(id);
             if(e){
+                dynamic_cast<EntityMultiSub*>(e)->master = this;
                 subEntities.push_back(dynamic_cast<EntityMultiSub*>(e));
             }
         }
@@ -248,6 +304,40 @@ bool EntityMulti::tryToMoveAbsalute(Point2 p, Level* world, bool force){
         return true;
     }
     return false;
+}
+
+void EntityMulti::setActiveItemWeapon(ItemWeapon* newItemWeapon) {
+    
+    if (newItemWeapon == nullptr) {
+        activeItemWeapon = nullptr;
+        return;
+    }
+    
+    for (Item* ie : inventory) {
+        if (ie == newItemWeapon) {
+            activeItemWeapon = dynamic_cast<ItemWeapon*> (ie);
+            return;
+        }
+    }
+    inventory.push_back(newItemWeapon);
+    activeItemWeapon = newItemWeapon;
+}
+
+void EntityMulti::setActiveItemExplosive(ItemExplosive* newItemExplosive) {
+    
+    if (newItemExplosive == nullptr) {
+        activeItemExplosive = nullptr;
+        return;
+    }
+    
+    for (Item* ie : inventory) {
+        if (ie == newItemExplosive) {
+            activeItemExplosive = dynamic_cast<ItemExplosive*> (ie);
+            return;
+        }
+    }
+    inventory.push_back(newItemExplosive);
+    activeItemExplosive = newItemExplosive;
 }
 
 

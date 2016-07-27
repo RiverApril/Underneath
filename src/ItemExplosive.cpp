@@ -25,6 +25,7 @@ void ItemExplosive::save(vector<unsigned char>* data){
     Utility::saveDouble(data, power);
     Utility::saveDouble(data, radius);
     Utility::saveBool(data, destroysTiles);
+    Utility::saveInt(data, iconIndex);
 }
 
 void ItemExplosive::load(vector<unsigned char>* data, int* position){
@@ -34,6 +35,7 @@ void ItemExplosive::load(vector<unsigned char>* data, int* position){
     power = Utility::loadDouble(data, position);
     radius = Utility::loadDouble(data, position);
     destroysTiles = Utility::loadBool(data, position);
+    iconIndex = Utility::loadInt(data, position);
 }
 
 ItemExplosive* ItemExplosive::cloneUnsafe(ItemExplosive* oldE, ItemExplosive* newE){
@@ -45,6 +47,7 @@ ItemExplosive* ItemExplosive::cloneUnsafe(ItemExplosive* oldE, ItemExplosive* ne
     newE->power = oldE->power;
     newE->radius = oldE->radius;
     newE->destroysTiles = oldE->destroysTiles;
+    newE->iconIndex = oldE->iconIndex;
 
     return newE;
 

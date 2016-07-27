@@ -36,8 +36,6 @@ public:
     bool update(double deltaTime, double time, Level* level);
     
     
-    //temp
-    int masterId = -1;
     
     
     EntityMulti* master;

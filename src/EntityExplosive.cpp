@@ -32,6 +32,9 @@ EntityExplosive::~EntityExplosive() {
 
 char EntityExplosive::getChar(unsigned long tick, Point2 pos, Level* lvl) {
     if(expl){
+        if(expl->iconIndex != -1){
+            return iconList[expl->iconIndex]->getChar(tick, pos, lvl);
+        }
         switch (expl->explosiveType) {
             case timeActivatedBomb:
                 return tick%4==0?'*':((expl->time<10)?(to_string((int)expl->time)[0]):'!');
@@ -58,6 +61,9 @@ char EntityExplosive::getChar(unsigned long tick, Point2 pos, Level* lvl) {
 
 Ui::Color EntityExplosive::getFgColor(unsigned long tick, Point2 pos, Level *lvl){
     if(expl){
+        if(expl->iconIndex != -1){
+            return iconList[expl->iconIndex]->getFgColor(tick, pos, lvl);
+        }
         switch (expl->explosiveType) {
             case timeActivatedBomb:
             case pressureBomb:
@@ -132,7 +138,7 @@ bool EntityExplosive::update(double deltaTime, double time, Level* level) {
                     }
                 }
                 if(eh){
-                    if(expl->time == 0){       //nobody on me
+                    if(expl->time == 0){       //nobody was on me
                         expl->time = 1;        //entity is on me
                     }else if(expl->time == 2){ //entity stepped off, now I can explode
                         activate(level);

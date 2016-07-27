@@ -12,6 +12,7 @@
 #include "Global.hpp"
 #include "EntityAlive.hpp"
 #include "Icon.hpp"
+#include "ItemExplosive.hpp"
 
 
 class EntityMultiSub;
@@ -58,6 +59,25 @@ public:
     
     virtual bool tryToMoveAbsalute(Point2 p, Level* world, bool force = false);
     
+    virtual void setActiveItemWeapon(ItemWeapon* newItemWeapon);
+    
+    virtual ItemWeapon* getActiveItemWeapon() {
+        return activeItemWeapon;
+    }
+    
+    virtual void setActiveItemExplosive(ItemExplosive* newItemExplosive);
+    
+    virtual ItemExplosive* getActiveItemExplosive() {
+        return activeItemExplosive;
+    }
+    
+    virtual void setTimes(double time) {
+        lastMoveTime = time;
+        lastAttackTime = time;
+        lastThrowTime = time;
+        EntityAlive::setTimes(time);
+    }
+    
     
     //temp
     vector<int> subEntitiesAsIds;
@@ -66,6 +86,7 @@ public:
     vector<EntityMultiSub*> subEntities;
     bool spawnedSubs = false;
     ItemWeapon* activeItemWeapon;
+    ItemExplosive* activeItemExplosive;
     
     int aiMulti = aiMultiNone;
     Point2 lastKnownTargetPos = Point2Neg1;
@@ -75,6 +96,8 @@ public:
     double lastMoveTime = 0;
     
     double lastAttackTime = 0;
+    
+    double lastThrowTime = 0;
     
 };
 

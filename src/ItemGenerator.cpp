@@ -58,6 +58,7 @@ namespace ItemGenerator {
     BombBase* landMine;
     BombBase* molotovCocktail;
     BombBase* easterEgg;
+    BombBase* venomBomb;
 
     WeaponBase* wKnife;
     WeaponBase* wSword;
@@ -77,6 +78,8 @@ namespace ItemGenerator {
     WeaponBase* wHealingCombatSpell;
 
     WeaponBase* wNatural;
+    
+    WeaponBase* wVenomSpit;
 
     /*Condition* cBroken;
     Condition* cNormal;
@@ -169,7 +172,11 @@ namespace ItemGenerator {
 
         landMine = atl(new BombBase({{"Pressure Explosive"}}, pressureBomb, 0, 0, 200, 300, 5, 10, true))->setArts({Arts::artLandMine});
 
-        molotovCocktail = atl(new BombBase({{"Molotov Cocktail"}}, throwableBomb, 0, 0, 10, 20, 2, 5, false))->setArts({Arts::artMolotovCocktail});
+        iconList.push_back(new AnimatedIcon({'i', '-', '!', '-'}, 1, C_LIGHT_YELLOW, C_BLACK));
+        molotovCocktail = atl(new BombBase({{"Molotov Cocktail"}}, throwableBomb, 0, 0, 10, 20, 2, 5, false, (int)iconList.size()-1))->setArts({Arts::artMolotovCocktail});
+        
+        iconList.push_back(new AnimatedIcon({'*', 'x', '+'}, 1, C_LIGHT_GREEN, C_BLACK));
+        venomBomb = new BombBase({{"Venom"}}, throwableBomb, 0, 0, 10, 20, 3, 5, false, (int)iconList.size()-1);
 
 
         easterEgg = (new BombBase({{"Easter Egg"}}, timeActivatedBomb, 1, 1, 30, 70, 10, 20, true))->setArts({Arts::artEasterEgg});
@@ -201,6 +208,9 @@ namespace ItemGenerator {
 
         wFireballSpell = atl(new WeaponBase({{"Fireball Spell"}}, 2, 1.5, damFire, wepMagic))->magical(16, 5, 4)->setArts({Arts::artScrollFire});
         wFireballSpell->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 6, 12, 1, 2, 5, 10, (double)(int)damFire));
+        
+        wVenomSpit = (new WeaponBase({{"Venom Spit"}}, 8, 3, damPoison, wepMagic))->magical(20, 10, 4);
+        wVenomSpit->enchs.push_back(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effDamage, 2, 4, 1, 2, 8, 10, (double)(int)damPoison));
 
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effStun, 10, 30, 0, 0, 2, 5));
         atlW(new EnchantmentBase(eStyle_SelfToEnemy_EnemyEff, effMultRecivedDamage, 10, 20, 1.2, 1.5, 5, 10, damNone));
@@ -693,6 +703,7 @@ namespace ItemGenerator {
             b->time = b->radius + 1;
         }
         b->destroysTiles = base->destroysTiles;
+        b->iconIndex = base->iconIndex;
 
 
         return b;

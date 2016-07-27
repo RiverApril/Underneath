@@ -241,7 +241,7 @@ vector<Entity*> Level::allEntitiesHere(Point2 p){
     return v;
 }
 
-bool Level::canSee(Point2 origin, Point2 test, double range) {
+bool Level::canSee(Point2 origin, Point2 test, double range, bool strict) {
 
     if(origin == test){
         return true;
@@ -292,7 +292,7 @@ bool Level::canSee(Point2 origin, Point2 test, double range) {
         }
     }
 
-    return (!hitAWall1 || !hitAWall2);
+    return strict ? (!(hitAWall1 || hitAWall2)) : (!hitAWall1 || !hitAWall2);
 
 }
 

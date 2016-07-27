@@ -84,7 +84,7 @@ public:
 
     vector<Entity*> getAllVisableEntities(Point2 origin, double range, vector<Entity*> notMes, Point2 nearestTo, Point2 inDirection, bool sort);
 
-    bool canSee(Point2 origin, Point2 test, double range);
+    bool canSee(Point2 origin, Point2 test, double range, bool strict = false);
 
     int entityCount();
 
