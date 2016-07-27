@@ -213,7 +213,7 @@ int Level::indexAt(int x, int y) {
     return Tiles::tileEdge->getIndex();
 }
 
-Entity* Level::getEnitity(int UID){
+Entity* Level::getEntity(int UID){
     for(Entity* e : entityList){
         if(e->uniqueId == UID){
             return e;

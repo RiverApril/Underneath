@@ -113,7 +113,7 @@ public:
         }
         return d;
     }
-
+    
     bool dead = false;
 
     double moveDelay = 1.5;
@@ -127,7 +127,6 @@ public:
 
     TileFlag solidity = tileFlagSolidOnGround;
 
-protected:
     string name;
     double maxHp = 30;
     double hp = maxHp;

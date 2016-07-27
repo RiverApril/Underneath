@@ -23,6 +23,7 @@
 #include "Animator.hpp"
 #include "Settings.hpp"
 #include "ItemAreaOfEffectWeapon.hpp"
+#include "EntityMulti.hpp"
 
 EntityPlayer::EntityPlayer() : EntityPlayer("", ' ', Point2Zero, C_WHITE, Abilities<int>()) {
 
@@ -223,6 +224,13 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         EntityShop* e = new EntityShop("Merchant", aiNone, 'M', posToInteract, C_LIGHT_MAGENTA, 100);
                         e->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, level->getDifficulty(), (rand()%9000)+1000, 10, 20, 2));
                         e->addItem(ItemGenerator::makeCoins(1000));
+                        level->newEntity(e);
+                        break;
+                    }
+                    case spellDebugPlaceBoss:{
+                        EntityMulti* e = new EntityMulti("Boss Test", aiMultiAttackNormal, {{'(', '-', ')'}, {'(', 'O', ')'}, {'(', '-', ')'}}, COLOR_WHITE, posToInteract, Point2(1, 1), 100);
+                        ItemWeapon* weapon = ItemGenerator::createItemWeaponFromBase(ItemGenerator::wFireballSpell, level->getDifficulty());
+                        e->setActiveItemWeapon(weapon);
                         level->newEntity(e);
                         break;
                     }

@@ -25,6 +25,8 @@ const int ENTITY_TYPE_ITEMENTITY = 4;
 const int ENTITY_TYPE_EXPLOSIVE = 5;
 const int ENTITY_TYPE_SHOP = 6;
 const int ENTITY_TYPE_MOVING = 7;
+const int ENTITY_TYPE_MULTI = 8;
+const int ENTITY_TYPE_MULTI_SUB = 9;
 
 class Entity : Icon {
 public:
@@ -38,7 +40,8 @@ public:
     Entity(char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY);
 
     virtual ~Entity();
-
+    
+    virtual bool canMoveAbsalute(Point2 p, Level* world, bool force = false);
     virtual bool tryToMoveAbsalute(Point2 p, Level* world, bool force = false);
 
     virtual bool tryToMoveRelative(Point2 p, Level* world);
