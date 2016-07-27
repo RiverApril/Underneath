@@ -243,13 +243,14 @@ namespace ItemGenerator {
         BombBase() {
         }
 
-        BombBase(vector<vector<string> > names, ExplosiveType type, double minTime, double maxTime, double minPower, double maxPower, double minRadius, double maxRadius, bool destroysTiles) {
+        BombBase(vector<vector<string> > names, ExplosiveType type, double minTime, double maxTime, double minPower, double maxPower, double minRadius, double maxRadius, bool destroysTiles, int iconIndex = -1) {
             this->names = names;
             this->timeActivedType = type;
             this->time = Vector2(minTime, maxTime);
             this->power = Vector2(minPower, maxPower);
             this->radius = Vector2(minRadius, maxRadius);
             this->destroysTiles = destroysTiles;
+            this->iconIndex = iconIndex;
         }
 
         BombBase* setArts(vector<int> artIndecies) {
@@ -265,6 +266,7 @@ namespace ItemGenerator {
         Vector2 power;
         Vector2 radius;
         bool destroysTiles;
+        int iconIndex = -1;
 
     };
 
@@ -339,6 +341,7 @@ namespace ItemGenerator {
     extern BombBase* landMine;
     extern BombBase* molotovCocktail;
     extern BombBase* easterEgg;
+    extern BombBase* venomBomb;
 
     extern WeaponBase* wKnife;
     extern WeaponBase* wSword;
@@ -358,6 +361,8 @@ namespace ItemGenerator {
     extern WeaponBase* wHealingCombatSpell;
 
     extern WeaponBase* wNatural;
+    
+    extern WeaponBase* wVenomSpit;
 
     extern ArmorBase* aLeatherChest;
     extern ArmorBase* aLeatherHelm;

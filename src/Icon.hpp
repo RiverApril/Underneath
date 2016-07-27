@@ -157,4 +157,6 @@ public:
     }
 };
 
+extern vector<Icon*> iconList;
+
 #endif /* defined(__Underneath__Icon__) */

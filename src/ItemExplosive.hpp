@@ -11,6 +11,7 @@
 
 #include "Global.hpp"
 #include "Item.hpp"
+#include "Icon.hpp"
 
 enum ExplosiveType{dudBomb, timeActivatedBomb, pressureBomb, throwableBomb};
 
@@ -44,6 +45,7 @@ public:
     double power = 1;
     double radius = 4;
     bool destroysTiles = false;
+    int iconIndex = -1;
 
     bool operator< (ItemExplosive& b){
         return this->explosiveType < b.explosiveType;

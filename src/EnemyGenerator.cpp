@@ -217,6 +217,18 @@ namespace EnemyGenerator {
         }
         return makeEntity(last, difficulty);
     }
+    
+    EntityMulti* makeBossVenom(Point2 pos, int difficulty){
+        EntityMulti* e = new EntityMulti("Venom Boss", aiMultiAttackNormal | aiMultiAttackThrow, {{'(', '-', ')'}, {'(', 'o', ')'}, {'(', '-', ')'}}, C_DARK_GREEN, pos, Point2(1, 1), 100);
+        ItemWeapon* weapon = ItemGenerator::createItemWeaponFromBase(ItemGenerator::wVenomSpit, difficulty);
+        e->setActiveItemWeapon(weapon);
+        ItemExplosive* explosive = ItemGenerator::createBombFromBase(ItemGenerator::venomBomb);
+        e->setActiveItemExplosive(explosive);
+        e->weaknesses.push_back(Weakness(damExplosion, 0));
+        e->weaknesses.push_back(Weakness(damFire, 0));
+        e->weaknesses.push_back(Weakness(damPoison, 0));
+        return e;
+    }
 
 
 

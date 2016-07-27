@@ -14,6 +14,8 @@
 #include "EntityExplosive.hpp"
 #include "EntityShop.hpp"
 #include "EntityMoving.hpp"
+#include "EntityMulti.hpp"
+#include "EntityMultiSub.hpp"
 
 #include "Animator.hpp"
 #include "Level.hpp"
@@ -142,9 +144,15 @@ Entity* Entity::clone(Entity* oldE) {
 
         case ENTITY_TYPE_MOVING:
             return makeNewAndClone<Entity, EntityMoving>(oldE);
-
+            
         case ENTITY_TYPE_SHOP:
             return makeNewAndClone<Entity, EntityShop>(oldE);
+            
+        case ENTITY_TYPE_MULTI:
+            return makeNewAndClone<Entity, EntityMulti>(oldE);
+            
+        case ENTITY_TYPE_MULTI_SUB:
+            return makeNewAndClone<Entity, EntityMultiSub>(oldE);
 
         default:
             throw Utility::FileExceptionLoad("Entity type unknown: " + to_string(type));
@@ -222,6 +230,12 @@ Entity* Entity::loadNew(vector<unsigned char>* data, int* position) {
             break;
         case ENTITY_TYPE_SHOP:
             e = new EntityShop();
+            break;
+        case ENTITY_TYPE_MULTI:
+            e = new EntityMulti();
+            break;
+        case ENTITY_TYPE_MULTI_SUB:
+            e = new EntityMultiSub();
             break;
 
         default:

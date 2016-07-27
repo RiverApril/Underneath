@@ -228,9 +228,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         break;
                     }
                     case spellDebugPlaceBoss:{
-                        EntityMulti* e = new EntityMulti("Boss Test", aiMultiAttackNormal, {{'(', '-', ')'}, {'(', 'O', ')'}, {'(', '-', ')'}}, COLOR_WHITE, posToInteract, Point2(1, 1), 100);
-                        ItemWeapon* weapon = ItemGenerator::createItemWeaponFromBase(ItemGenerator::wFireballSpell, level->getDifficulty());
-                        e->setActiveItemWeapon(weapon);
+                        Entity* e = EnemyGenerator::makeBossVenom(posToInteract, level->getDifficulty());
                         level->newEntity(e);
                         break;
                     }
