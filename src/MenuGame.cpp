@@ -23,6 +23,7 @@
 #include "ItemUtilitySpell.hpp"
 #include "Settings.hpp"
 #include "Audio.hpp"
+#include "EntityMultiSub.hpp"
 
 #define currentPlayer (currentWorld->currentPlayer)
 #define currentLevel (currentWorld->currentLevel)
@@ -1045,7 +1046,7 @@ namespace Ui {
 
             for (size_t i = 0; i < nearestEntities.size() && a < terminalSize.y; i++) {
                 Entity* nearestEntity = nearestEntities[i];
-                if (nearestEntity && !nearestEntity->removed) {
+                if (nearestEntity && !nearestEntity->removed && !dynamic_cast<EntityMultiSub*>(nearestEntity)) {
                     Ui::setColor(C_WHITE);
 
                     a += printMultiLineColoredString(a, gameArea.x + 1, formatString("[&%c%c&%c] %s ", cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE), nearestEntity->getName().c_str()));

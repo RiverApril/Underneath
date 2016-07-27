@@ -407,6 +407,10 @@ namespace Commands {
                 i = new ItemUtilitySpell(spellDebugPlaceShop, 0, "DEBUG Shop wand");
                 i->continuousUse = true;
                 mg->currentWorld->currentPlayer->addItem(i);
+                
+                i = new ItemUtilitySpell(spellDebugPlaceBoss, 0, "DEBUG Boss wand");
+                i->continuousUse = true;
+                mg->currentWorld->currentPlayer->addItem(i);
 
 
                 consolef("Tools given");
