@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#include "font.h"
+
 
 namespace NDS {
 
@@ -14,8 +16,13 @@ namespace NDS {
 	
     bool shiftIsDown = false;
 	
-	PrintConsole pcTop;
-	PrintConsole pcBottom;
+	PrintConsole* pcTop;
+	//PrintConsole pcBottom;
+
+	int bgTop;
+	//int bgBottom;
+
+	int scaleX, scaleY;
 	
 	touchPosition touchXY;
 	
@@ -32,15 +39,34 @@ namespace NDS {
 
 		irqSet(IRQ_VBLANK, Vblank);
 		
-		videoSetMode(MODE_0_2D);
-		videoSetModeSub(MODE_0_2D);
+		videoSetMode(MODE_5_2D);
+		//videoSetModeSub(MODE_5_2D);
 		
 		vramSetBankA(VRAM_A_MAIN_BG);
-		vramSetBankC(VRAM_C_SUB_BG);
+		//vramSetBankC(VRAM_C_SUB_BG);
 
-		consoleInit(&pcTop, 3, BgType_Text4bpp, BgSize_T_512x512, 31, 0, true, true);
-		consoleInit(&pcBottom, 3, BgType_Text4bpp, BgSize_T_512x512, 31, 0, false, true);
+		pcTop = consoleInit(0, 3, BgType_ExRotation, BgSize_ER_256x256, 20, 0, true, false);
+		//consoleInit(&pcBottom, 3, BgType_ExRotation, BgSize_ER_1024x1024, 20, 0, false, true);
+
+		ConsoleFont font;
+
+		font.gfx = (u16*)fontTiles;
+		font.pal = (u16*)fontPal;
+		font.numChars = 95;
+		font.numColors =  fontPalLen / 2;
+		font.bpp = 8;
+		font.asciiOffset = 32;
+		font.convertSingleColor = false;
 		
+		consoleSetFont(pcTop, &font);
+		//consoleSetFont(&pcBottom, &font);
+
+		bgTop = pcTop->bgId;
+		//bgBottom = pcBottom.bgId;
+
+		scaleX = intToFixed(1,8);
+		scaleY = intToFixed(1,8);
+
 		return true;
 	}
 
@@ -51,12 +77,19 @@ namespace NDS {
 	void update(){
 		swiWaitForVBlank();
 		scanKeys();
-		consoleSelect(&pcBottom);
-		move(0, 0);
-		printf("Keyboard here\n");
-		consoleSelect(&pcTop);
+		//consoleSelect(&pcBottom);
+		//move(0, 0);
+		//printf("Keyboard here\n");
+		//consoleSelect(&pcTop);
+
+		//scaleX += 1;
+		//scaleY += 1;
+
+		bgSetRotateScale(bgTop, 0, scaleX, scaleY);
+		bgSetScroll(bgTop, 0, 0);
+		bgUpdate();
 	}
-	\
+	
 	int getCode(){
 		
 		keystate = keysDown();
@@ -158,8 +191,8 @@ int getch(){
 }
 
 int	move(int y, int x){
-    pcTop.cursorX = x;
-	pcTop.cursorY = y;
+    pcTop->cursorX = x;
+	pcTop->cursorY = y;
     return 0;
 }
 
@@ -216,8 +249,8 @@ int	mvprintw(int y, int x, const char * s, ...){
 }
 
 int	hline(const char c, int l){
-    for(int j=0;j<min(l, pcTop.consoleHeight-pcTop.cursorY);j++){
-		move(pcTop.cursorY+j, pcTop.cursorX);
+    for(int j=0;j<min(l, pcTop->consoleHeight-pcTop->cursorY);j++){
+		move(pcTop->cursorY+j, pcTop->cursorX);
 		addch(c);
 	}
     return 0;
@@ -229,7 +262,7 @@ int	mvhline(int y, int x, const char c, int l){
 }
 
 int	vline(const char c, int l){
-    for(int i=0;i<min(l, pcTop.consoleWidth-pcTop.cursorX);i++){
+    for(int i=0;i<min(l, pcTop->consoleWidth-pcTop->cursorX);i++){
 		addch(c);
 	}
     return 0;
@@ -241,15 +274,15 @@ int	mvvline(int y, int x, const char c, int l){
 }
 
 int clrtoeol(){
-    for(int i=pcTop.cursorX;i<pcTop.consoleWidth;i++){
+    for(int i=pcTop->cursorX;i<pcTop->consoleWidth;i++){
 		addch(' ');
 	}
     return 0;
 }
 
 int clrtobot(){
-	for(int j=pcTop.cursorY;j<pcTop.consoleHeight;j++){
-		for(int i=pcTop.cursorX;i<pcTop.consoleWidth;i++){
+	for(int j=pcTop->cursorY;j<pcTop->consoleHeight;j++){
+		for(int i=pcTop->cursorX;i<pcTop->consoleWidth;i++){
 			addch(' ');
 		}
 	}
@@ -267,11 +300,11 @@ int endwin(){
 }
 
 int getcurx(int scr){
-    return pcTop.cursorX;
+    return pcTop->cursorX;
 }
 
 int getcury(int scr){
-    return pcTop.cursorY;
+    return pcTop->cursorY;
 }
 
 int bkgd(int c){
@@ -285,11 +318,11 @@ int init_pair(int i, int a, int b){
 }
 
 int getmaxx(int scr){
-    return pcTop.consoleWidth;
+    return pcTop->consoleWidth;
 }
 
 int getmaxy(int scr){
-    return pcTop.consoleHeight;
+    return pcTop->consoleHeight;
 }
 
 int attrset(int attr){
