@@ -31,12 +31,12 @@ struct TileData {
     bool explored = false;
 };
 
-enum GenType{genTypeStartArea, genTypeDungeon};
+enum GenType{genTypeStartArea, genTypeDungeon, genTypeBoss};
 
 class Level {
 public:
 
-    Level(World* w, string n, Point2 s, int d);
+    Level(World* w, string n, Point2 s, int d, int p);
     ~Level();
 
     bool getExplored(Point2 p);
@@ -75,6 +75,8 @@ public:
 
     Entity* getEntity(int UID);
     
+    bool entityAt(int UID, Point2 p, bool includeMulti = true);
+    
     Entity* firstEntityHere(Point2 p);
 
     vector<Entity*> allEntitiesHere(Point2 p);
@@ -92,11 +94,12 @@ public:
 
     vector<Point2> getPathTo(Point2 from, Point2 to, TileFlag requiredFlag = tileFlagIsTile, TileFlag bannedFlag = tileFlagNone, bool careAboutEntities = false, bool mustBeExplored = false, TileFlag requiredEitherFlag = tileFlagAll, int returnAmount = -1, int* actualLength = nullptr);
 
-    Point2 generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel);
+    Point2 generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel, string nextLevel);
 
     //The following are implemented in LevelGenerator.cpp
-    Point2 generateStartArea(Point2 stairUpPos, string previousLevel);
-    Point2 generateDungeon(Point2 stairUpPos, string previousLevel);
+    Point2 generateStartArea(Point2 stairUpPos, string previousLevel, string nextLevel);
+    Point2 generateDungeon(Point2 stairUpPos, string previousLevel, string nextLevel);
+    Point2 generateBossArea(Point2 stairUpPos, string previousLevel, string nextLevel);
     
 
     void placeNewEntityAi(EntityAi* e, Point2 entrance);
@@ -155,6 +158,8 @@ public:
     Point2 stairDownPos;
 
     Point2 size;
+    
+    int depth = 0;
 
 private:
 

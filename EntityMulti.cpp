@@ -12,6 +12,7 @@
 #include "Animator.hpp"
 #include "Verbalizer.hpp"
 #include "EntityExplosive.hpp"
+#include "EntityItem.hpp"
 
 
 EntityMulti* EntityMulti::cloneUnsafe(EntityMulti* oldE, EntityMulti* newE){
@@ -204,7 +205,7 @@ void EntityMulti::attackAi(double time, Level* level){
             ItemCombatSpell* spell = dynamic_cast<ItemCombatSpell*>(activeItemWeapon);
             BasicIcon* icon = new BasicIcon('*', damageTypeColor(activeItemWeapon->damageType), C_BLACK);
             if(spell){
-                Animator::renderRangedAttack(from, target->pos, icon, level, 8);
+                Animator::renderRangedAttack(from, target->pos, icon, level, 3);
             }else{
                 Animator::renderRangedAttack(from, target->pos, icon, level, 1);
             }
@@ -278,7 +279,18 @@ bool EntityMulti::update(double deltaTime, double time, Level* level){
 }
 
 void EntityMulti::dropLoots(Level* level){
-    //todo
+    
+    int xp = rand() % (int) maxHp;
+    Verbalizer::defeatedEnemy(this, xp);
+    
+    if(level->currentWorld->currentPlayer){
+        level->currentWorld->currentPlayer->gainXp(xp);
+    }
+    
+    vector<Item*> drops = ItemGenerator::makeLoot(ItemGenerator::lootProfileBoss, level->getDifficulty(), rand()%(int)(maxHp*max(1, level->getDifficulty())), 10, 20, 5);
+    for(Item* i : drops){
+        level->newEntity(new EntityItem(i, pos));
+    }
 }
 
 double EntityMulti::hurt(Level* level, DamageType damageType, double amount, double damageMultiplier){

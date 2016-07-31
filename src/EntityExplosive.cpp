@@ -103,8 +103,7 @@ void EntityExplosive::hit(Level* level, HitType h, Point2 p){
         switch (expl->explosiveType) {
             case throwableBomb:{
                 if(h != hitGround){
-                    Entity* e = level->getEntity(ignoreUID);
-                    if(e && e->pos == pos){
+                    if(level->entityAt(ignoreUID, pos)){
                         break;
                     }
                 }

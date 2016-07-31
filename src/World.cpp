@@ -130,10 +130,12 @@ namespace WorldLoader {
                             int* levelPosition = new int(0);
 
                             Point2 levelSize = Point2(levelData, levelPosition);
-
+                            
                             int levelDifficulty = Utility::loadInt(levelData, levelPosition);
+                            
+                            int depth = Utility::loadInt(levelData, levelPosition);
 
-                            Level* level = new Level(world, currentLevelName, levelSize, levelDifficulty);
+                            Level* level = new Level(world, currentLevelName, levelSize, levelDifficulty, depth);
 
                             level->load(levelData, levelPosition);
 
@@ -357,7 +359,7 @@ namespace WorldLoader {
         World* world = new World(name);
 
         debug("new Level()");
-        world->currentLevel = new Level(world, "Surface", Point2(120, 120), 0);
+        world->currentLevel = new Level(world, "Surface", Point2(120, 120), 0, 0);
 
         srand(static_cast<unsigned int> (time(NULL)));
 
@@ -367,7 +369,7 @@ namespace WorldLoader {
             start = Point2((rand() % (world->currentLevel->getSize().x-20))+10, (rand() % (world->currentLevel->getSize().y-20))+10);
             world->seed = (unsigned int) rand();
             debug("currentLevel->generate()");
-            p = world->currentLevel->generate(genTypeStartArea, world->seed, start, "");
+            p = world->currentLevel->generate(genTypeStartArea, world->seed, start, "", "Dungeon I");
         } while (!(p.x >= 0 && p.y >= 0));
 
         debug("Successful generation.");
@@ -440,7 +442,8 @@ namespace WorldLoader {
         }
         debug("Level not found, creating a new one...");
 		
-        int newDifficulty = world->currentLevel->getDifficulty() + 2;
+        int newDepth = world->currentLevel->depth + 1;
+        int newDifficulty = (world->currentLevel->getDifficulty() + 2);
         Point2 newSize = (world->currentLevel->getSize());
         EntityPlayer* newEntityPlayer = dynamic_cast<EntityPlayer*> (EntityPlayer::clone(world->currentPlayer));
 
@@ -449,9 +452,17 @@ namespace WorldLoader {
         delete world->currentLevel;
         world->currentLevel = nullptr;
 
-        Level* newLevel = new Level(world, newName, newSize, newDifficulty);
+        Level* newLevel = new Level(world, newName, newSize, newDifficulty, newDepth);
+        
+        string nextName = "Dungeon " + Utility::intToRomanNumerals(newDepth+1);
+        
+        GenType gen = genTypeDungeon;
+        
+        if(newDepth % 10 == 0){
+            gen = genTypeBoss;
+        }
 
-        newLevel->generate(genTypeDungeon, world->seed, entrance, oldName);
+        newLevel->generate(gen, world->seed, entrance, oldName, nextName);
 
         world->currentPlayer = newEntityPlayer;
         world->currentPlayer->pos = entrance;

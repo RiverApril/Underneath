@@ -17,11 +17,13 @@
 #include "Utility.hpp"
 #include "Settings.hpp"
 #include "Random.hpp"
+#include "EntityMultiSub.hpp"
 
-Level::Level(World* w, string n, Point2 s, int d) {
+Level::Level(World* w, string n, Point2 s, int d, int p) {
     currentWorld = w;
     name = n;
     difficulty = d;
+    depth = p;
     size = s;
     tileGrid = vector<vector < TileData >> (size.x, vector<TileData>(size.y));
 
@@ -220,6 +222,25 @@ Entity* Level::getEntity(int UID){
         }
     }
     return nullptr;
+}
+
+bool Level::entityAt(int UID, Point2 p, bool includeMulti){
+    for(Entity* e : entityList){
+        if(e->pos == p){
+            if(includeMulti){
+                EntityMultiSub* sub = dynamic_cast<EntityMultiSub*>(e);
+                if(sub){
+                    if(sub->master->uniqueId){
+                        return true;
+                    }
+                }
+            }
+            if(e->uniqueId == UID){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 Entity* Level::firstEntityHere(Point2 p){
@@ -696,6 +717,7 @@ void Level::save(vector<unsigned char>* data) {
 
     size.save(data);
     Utility::saveInt(data, difficulty);
+    Utility::saveInt(data, depth);
     Utility::saveInt(data, nextUniqueId);
 
     stairDownPos.save(data);
@@ -741,6 +763,7 @@ void Level::load(vector<unsigned char>* data, int* position) {
     //these happen beforehand:
     //load size
     //load difficulty
+    //load depth
     nextUniqueId = Utility::loadInt(data, position);
 
     stairDownPos = Point2(data, position);
@@ -776,7 +799,7 @@ void Level::load(vector<unsigned char>* data, int* position) {
 }
 
 
-Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel) {
+Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, string previousLevel, string nextLevel) {
     entityList.clear();
     tileEntityList.clear();
 
@@ -784,10 +807,13 @@ Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, st
 
     switch(genType){
         case genTypeStartArea:{
-            return generateStartArea(stairUpPos, previousLevel);
+            return generateStartArea(stairUpPos, previousLevel, nextLevel);
         }
         case genTypeDungeon:{
-            return generateDungeon(stairUpPos, previousLevel);
+            return generateDungeon(stairUpPos, previousLevel, nextLevel);
+        }
+        case genTypeBoss:{
+            return generateBossArea(stairUpPos, previousLevel, nextLevel);
         }
 
     }

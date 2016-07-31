@@ -110,6 +110,7 @@ namespace ItemGenerator {
     int lootProfileCrate;
     int lootProfileShop;
     int lootProfilePlayer;
+    int lootProfileBoss;
 
     void initItemTemplates() {
 
@@ -284,6 +285,19 @@ namespace ItemGenerator {
             LootProfile* lp = new LootProfile(true, true, l);
             lp->enchantChance = 20;
             lootProfileChest = atl(lp);
+        }
+        
+        {
+            vector<pair<int, ItemBase*>> l;
+            for(ItemBase* ib : weaponList){
+                l.emplace_back(20, ib);
+            }
+            for(ItemBase* ib : armorList){
+                l.emplace_back(10, ib);
+            }
+            LootProfile* lp = new LootProfile(true, true, l);
+            lp->enchantChance = 5;
+            lootProfileBoss = atl(lp);
         }
 
 
