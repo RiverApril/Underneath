@@ -28,3 +28,4 @@ build/
 *.nds
 *.elf
 *.pnproj
+.vscode/.browse.VC.db
