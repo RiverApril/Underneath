@@ -382,6 +382,7 @@ namespace ItemGenerator {
     extern int lootProfileCrate;
     extern int lootProfileShop;
     extern int lootProfilePlayer;
+    extern int lootProfileBoss;
 
 
     //vector<Item*> createRandLoots(int difficulty, int goldMaxQty, int wepMaxQty, int armMaxQty, int altMaxQty, int keyMaxQty);

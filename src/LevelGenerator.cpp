@@ -11,7 +11,7 @@
 #include "EntityShop.hpp"
 
 
-Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
+Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel, string nextLevel){
 
     Point2 center = size / 2;
 
@@ -145,7 +145,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
     stairDownPos = center;
 
     setTile(stairDownPos, Tiles::tileStairDown);
-    tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor 1"));
+    tileEntityList.push_back(new TEStair(stairDownPos, false, nextLevel));
 
     debug("Gen: Stair down placed");
 
@@ -187,7 +187,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel){
 
 }
 
-Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
+Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel, string nextLevel){
 
     int attemt = 0;
 
@@ -287,7 +287,7 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
     if (previousLevel.size() > 0) {
         tileEntityList.push_back(new TEStair(stairUpPos, true, previousLevel));
     }
-    tileEntityList.push_back(new TEStair(stairDownPos, false, "Floor" + to_string(Utility::parseInt(name.substr(5)) + 1)));
+    tileEntityList.push_back(new TEStair(stairDownPos, false, nextLevel));
 
 
     debugf("Counting Solid Tiles...");
@@ -336,6 +336,95 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel){
     return stairUpPos;
 
 
+}
+
+Point2 Level::generateBossArea(Point2 stairUpPos, string previousLevel, string nextLevel){
+    
+    Point2 center = size / 2;
+    
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
+            tileGrid[i][j].index = (int8_t) Tiles::tileUnset->getIndex();
+            tileGrid[i][j].explored = false;
+        }
+    }
+    
+    int centerRoomRadius = 15;
+    int centerRoomInnerRadius1 = centerRoomRadius - 2;
+    int centerRoomInnerRadius2 = centerRoomRadius - 5;
+    
+    int startRoomRadius = 4;
+    int startRoomInnerRadius = startRoomRadius - 2;
+    
+    stairDownPos = center - Point2(centerRoomRadius + startRoomRadius + 1, 0);
+    
+    
+    //big room
+    Utility::executeGrid(stairDownPos-centerRoomRadius, stairDownPos+centerRoomRadius, [this](int x, int y){
+        setTile(Point2(x, y), Tiles::tileFloor);
+    });
+    Utility::executeBorder(stairDownPos-centerRoomInnerRadius1, stairDownPos+centerRoomInnerRadius1, [this](int x, int y){
+        if(rand()%6 != 0 && (x+y)%2 == 0){
+            setTile(Point2(x, y), Tiles::tilePillar);
+        }
+    });
+    Utility::executeBorder(stairDownPos-centerRoomInnerRadius2, stairDownPos+centerRoomInnerRadius2, [this](int x, int y){
+        if(rand()%6 != 0 && (x+y)%2 == 1){
+            setTile(Point2(x, y), Tiles::tilePillar);
+        }
+    });
+    Utility::executeBorder(stairDownPos-centerRoomRadius, stairDownPos+centerRoomRadius, [this](int x, int y){
+        setTile(Point2(x, y), Tiles::tileWall);
+    });
+    
+    
+    //start room
+    Utility::executeGrid(stairUpPos-startRoomRadius, stairUpPos+startRoomRadius, [this](int x, int y){
+        setTile(Point2(x, y), Tiles::tileFloor);
+    });
+    Utility::executeBorder(stairUpPos-startRoomRadius, stairUpPos+startRoomRadius, [this](int x, int y){
+        setTile(Point2(x, y), Tiles::tileWall);
+    });
+    
+    
+    
+    
+    vector<Point2> path = getPathTo(stairUpPos, stairDownPos);
+    
+    for(Point2 p : path){
+        if(tileAt(p)->getIndex() == Tiles::tileUnset->getIndex()){
+            setTile(p, Tiles::tilePath);
+        }else if(tileAt(p)->getIndex() == Tiles::tileWall->getIndex()){
+            setTile(p, Tiles::tileDoor);
+        }
+    }
+    
+    
+    for (int i = 0; i < size.x; i++) {
+        for (int j = 0; j < size.y; j++) {
+            if(tileGrid[i][j].index == (int8_t) Tiles::tileUnset->getIndex()){
+                tileGrid[i][j].index = (int8_t) Tiles::tileWall->getIndex();
+            }
+        }
+    }
+    
+    setTile(stairUpPos, Tiles::tileStairUp);
+    setTile(stairDownPos, Tiles::tileStairDown);
+    if (previousLevel.size() > 0) {
+        tileEntityList.push_back(new TEStair(stairUpPos, true, previousLevel));
+    }
+    tileEntityList.push_back(new TEStair(stairDownPos, false, nextLevel));
+    
+    switch (depth) {
+        default:
+        case 10:{
+            Entity* e = EnemyGenerator::makeBossVenom(stairDownPos, difficulty);
+            newEntity(e);
+            break;
+        }
+    }
+    
+    return stairUpPos;
 }
 
 
