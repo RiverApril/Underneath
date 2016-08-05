@@ -1,3 +1,4 @@
+#ifdef __NDS__
 
 #include "NDSPort.hpp"
 
@@ -329,3 +330,5 @@ int attrset(int attr){
     currentColor = attr >> 17;
     return 0;
 }
+
+#endif
