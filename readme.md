@@ -19,7 +19,7 @@ Davalynn Towell reserves all rights to the audio files.
 ---
 
 
-## Build.py:
+## build.py
 
 I made a compile script with python, I originally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to a langueage I have a little more experience using. The script is not nessisary to use as the program is very simple, so feel free to use a compiler directly.
 
