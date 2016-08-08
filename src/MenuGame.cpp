@@ -1109,6 +1109,8 @@ namespace Ui {
             
             int x = 0;
             
+            Ui::setColor(C_WHITE);
+            
             for(int i=0;i<10;i++){
                 Item* it = currentPlayer->getEquiped(slotFav1+i);
                 if(it){
