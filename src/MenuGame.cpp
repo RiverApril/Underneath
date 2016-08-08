@@ -147,7 +147,9 @@ namespace Ui {
             } else if(use == useInWorld){
                 itemToBeUsedRange = 1000000;
                 itemToBeUsed = currentPlayer->inventory[*useItem];
-                targetPosition = currentPlayer->pos;
+                if (!currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)) {
+                    targetPosition = currentPlayer->pos;
+                }
                 changeMode(modeSelectPosition);
                 selectMode = selectModeAttack;
                 *useItem = -1;
@@ -208,7 +210,7 @@ namespace Ui {
                     inView = true;
                 }
             }else{
-                inView = true;
+                inView = false;
             }
             if(inView){
                 currentLevel->setExplored(p, true);
@@ -553,7 +555,9 @@ namespace Ui {
                     changeMode(modeSelectPosition);
                     selectMode = selectModeWalk;
                     itemToBeUsedRange = 1000000;
-                    targetPosition = currentPlayer->pos;
+                    if (!currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)) {
+                        targetPosition = currentPlayer->pos;
+                    }
                 } else if(controlMode == modeSelectPosition){
                     if(selectMode == selectModeWalk){
                         Point2 t = targetPosition;
@@ -756,7 +760,9 @@ namespace Ui {
                     changeMode(modeSelectPosition);
                     selectMode = selectModeInspect;
                     itemToBeUsedRange = 1000000;
-                    targetPosition = currentPlayer->pos;
+                    if (!currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)) {
+                        targetPosition = currentPlayer->pos;
+                    }
                 } else if(controlMode == modeSelectPosition){
                     if(selectMode == selectModeInspect){
                         changeMode(modeEntityPlayerControl);
@@ -844,7 +850,9 @@ namespace Ui {
                             }else{
                                 itemToBeUsedRange = 1000000;
                                 itemToBeUsed = it;
-                                targetPosition = currentPlayer->pos;
+                                if (!currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)) {
+                                    targetPosition = currentPlayer->pos;
+                                }
                                 changeMode(modeSelectPosition);
                                 selectMode = selectModeAttack;
                             }
@@ -1057,7 +1065,7 @@ namespace Ui {
                         const int hp = roundToInt(alive->getHp());
                         const int maxHp = roundToInt(alive->getMaxHp());
 
-                        a += printMultiLineColoredString(a, gameArea.x + 2, formatString("HP: &%c%s&%c ", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (gameArea.x + 1) - 5)).c_str(), cc(C_WHITE)));
+                        a += printMultiLineColoredString(a, gameArea.x + 1, formatString("^HP: &%c%s&%c ", cc((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN), Utility::makeBar(hp, maxHp, (terminalSize.x - (gameArea.x + 1) - 5)).c_str(), cc(C_WHITE)));
 
                         for (size_t i = 0; i < alive->effects.size(); i++) {
                             Effect eff = alive->effects[i];
@@ -1073,7 +1081,7 @@ namespace Ui {
                             }
                         }
                     }
-                    a++;
+                    //a++;
 
 
 
@@ -1180,6 +1188,7 @@ namespace Ui {
                 itemToBeUsedRange = -1;
                 itemToBeUsed = nullptr;
                 targetEntity = nullptr;
+                
                 break;
 
             default:
