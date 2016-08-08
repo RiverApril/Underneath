@@ -37,7 +37,7 @@ char EntityExplosive::getChar(unsigned long tick, Point2 pos, Level* lvl) {
         }
         switch (expl->explosiveType) {
             case timeActivatedBomb:
-                return tick%4==0?'*':((expl->time<10)?(to_string((int)expl->time)[0]):'!');
+                return tick%4==0?'*':((expl->time<10)?('0'+expl->time):'!');
 
             case pressureBomb:
                 return expl->time == 2 ? '.' : '*';

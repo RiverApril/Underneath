@@ -713,7 +713,7 @@ namespace ItemGenerator {
         b->power = base->power.randomRange();
         b->time = base->time.randomRange();
         b->radius = base->radius.randomRange();
-        if(b->time < b->radius + 1){
+        if(b->time < b->radius + 1 && base->timeActivedType != pressureBomb){
             b->time = b->radius + 1;
         }
         b->destroysTiles = base->destroysTiles;
