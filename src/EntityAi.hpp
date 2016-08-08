@@ -126,8 +126,6 @@ protected:
 
     bool agro = false;
 
-    Point2 lastPos;
-
     ItemWeapon* activeItemWeapon = nullptr;
 };
 
