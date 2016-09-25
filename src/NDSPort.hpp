@@ -1,4 +1,4 @@
-
+#ifdef __NDS__
 
 #include <nds.h>
 
@@ -60,3 +60,5 @@ int init_pair(int, int, int);
 int getmaxx(int);
 int getmaxy(int);
 int attrset(int);
+
+#endif

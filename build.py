@@ -72,7 +72,7 @@ objectExtention = "opp"
 
 
 compiler = "g++"
-compilerFlags = "-std=gnu++11 -stdlib=libc++"
+compilerFlags = "-std=gnu++11"
 libraryFlags = ""
 
 optimization = ""
@@ -89,7 +89,6 @@ else:
     optimization = "-Os"
 
 compilerFlags = optimization+" "+compilerFlags;
-
 
 
 if args.compiler:
@@ -151,13 +150,17 @@ else:
             libraryFlags += " -lncurses"
         elif systemName == "Linux":
             libraryFlags += " -lncurses"
+        elif systemName == "Windows":
+            libraryFlags += " -lpdcurses"
 
     if args.SDLAudio:
         if systemName == "Darwin":
+            compilerFlags += " -stdlib=libc++"
             compilerFlags += " -I/usr/local/include"
             libraryFlags += " -L/usr/local/lib `sdl2-config --cflags` -lSDL2_mixer"
             libraryFlags += " `sdl2-config --libs`"
         elif systemName == "Linux":
+            compilerFlags += " -stdlib=libc++"
             compilerFlags += " `sdl2-config --cflags`"
             libraryFlags  += " `sdl2-config --libs` -lSDL2_mixer"
 
