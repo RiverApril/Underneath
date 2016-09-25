@@ -368,9 +368,8 @@ namespace WorldLoader {
         do {
             start = Point2((rand() % (world->currentLevel->getSize().x-20))+10, (rand() % (world->currentLevel->getSize().y-20))+10);
             world->seed = (unsigned int) rand();
-            debug("currentLevel->generate()");
             p = world->currentLevel->generate(genTypeStartArea, world->seed, start, "", "Dungeon I");
-        } while (!(p.x >= 0 && p.y >= 0));
+        } while (p.x < 0 || p.y < 0);
 
         debug("Successful generation.");
         world->levels.push_back(world->currentLevel->getName());

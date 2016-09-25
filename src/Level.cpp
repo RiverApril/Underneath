@@ -805,6 +805,7 @@ Point2 Level::generate(GenType genType, unsigned int seed, Point2 stairUpPos, st
 
     srand(seed);
 
+    
     switch(genType){
         case genTypeStartArea:{
             return generateStartArea(stairUpPos, previousLevel, nextLevel);
