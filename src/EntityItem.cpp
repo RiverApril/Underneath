@@ -16,6 +16,7 @@ EntityItem::EntityItem() : EntityItem(nullptr, Point2Zero) {
 EntityItem::EntityItem(Item* item, Point2 p) : Entity(' ', p, C_WHITE) {
     this->item = item;
     defaultIcon = '*';
+    fgColor = C_LIGHT_YELLOW;
 }
 
 EntityItem::~EntityItem() {

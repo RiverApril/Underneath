@@ -289,7 +289,11 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                 } else if(!level->canSee(pos, posOfTile, aoe->range)){
                     consolef("&%cNo line of sight!", Ui::cc(C_LIGHT_RED));
                     return 0;
+                } else if(mp < aoe->manaCost){
+                    consolef("&%cNot enough mana!", Ui::cc(C_LIGHT_RED));
+                    return 0;
                 } else {
+                    mp -= aoe->manaCost;
                     BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
                     Animator::renderRangedAttack(pos, posOfTile, icon, level, 4);
                     Animator::renderExposion(posOfTile, aoe->radius, level, 1, aoe->damageType);

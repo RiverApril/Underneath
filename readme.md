@@ -19,59 +19,8 @@ Davalynn Towell reserves all rights to the audio files.
 ---
 
 
-## Compiling:
+## build.py
 
-I made a compile script with python, I originally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to a langueage I have mor experience with. I haven't compiled in a long time directly from Windows itself. So the windows builds are compiled on linux and mac using mingw32
-
-To build the terminal version run the following in the repository directory:
-```
-./build.py
-```
-
-To compile the version that runs in a window instead of the terminal, use the following flag: 
-```
-./build.py -s
-```
-
-To compile with audio, use the following flag: 
-```
-./build.py -m
-```
-
-If you need to completely rebuild all of the files you can use the -a flag to ensure no files are skipped.
-```
-./build.py -a
-```
-
-To run immediately after building use the -r flag.
-```
-./build.py -r
-```
-
-Flags can be used together, for example to build and run all with SDL2 Graphics, Music and debug optimization:
-```
-./build.py -smaur
-```
-All flags:
-```
--h  List all flags
--r  Run after successful build
-
--s  Compile using SDL2 Graphics instead of Curses
--m  Compile with the SDL2 Mixer Audio Library (no audio by default)
-
--a  Compile all sources (it defaults to only ones that have changed)
--i  Don't check included headers (makes compiling faster, but doesn't recompile cpp files if only included headers were modified)
--l  Link only, don't compile sources
--u  Optimization level 0 (default 3) and show warnings
-
--d  Print all commands that the build.py is executing
--t  Do not remake ArtFiles.hpp
-
---use64 Compile with the -m64 flag (force 64-Bit)
---use32 Compile with the -m32 flag (force 32-bit)
--w  Use Windows mingw32 compiler (Mac: i586-mingw32-c++, Linux: i686-w64-mingw32-c++)
---compiler COMPILER  Specify the compiler manually (default is g++)
-```
+I made a compile script with python, I originally used GNU MAKE, but I'm not well versed with that and I kept running into issues so I moved to a langueage I have a little more experience using. The script is not nessisary to use as the program is very simple, so feel free to use a compiler directly.
 
 ---
