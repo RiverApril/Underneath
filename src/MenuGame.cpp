@@ -377,6 +377,9 @@ namespace Ui {
         } else if (in == Key::moveRight) {
             arrowMove(Point2Right);
 
+        } else if (in == Key::standStill) {
+            arrowMove(Point2Zero);
+
         } else if (in == Key::inventory) {
             if (currentPlayer != nullptr) {
                 openMenu(new MenuInv(currentWorld, useItem));
