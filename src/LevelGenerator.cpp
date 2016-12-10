@@ -41,7 +41,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel, string 
 
             int distance = sqrt(distanceSquared(here, center));
 
-            if((rand() % (distance+1)) > ring){
+            if((rand() % (distance+1)) > ring && rand()%2==0){
                 setTile(here, Tiles::tileTree);
             }else{
                 setTile(here, Tiles::tileGrass);
