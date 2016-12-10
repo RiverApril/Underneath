@@ -16,6 +16,7 @@ namespace Key {
     int moveDown = KEY_DOWN;
     int moveLeft = KEY_LEFT;
     int moveRight = KEY_RIGHT;
+    int standStill = '.';
     int interact = 'g';
     int secondaryAttack = 'f';
     int inspect = 'q';
@@ -58,6 +59,7 @@ vector<KeyBind*> keybindings = {
     new KeyBind("Walk / Interact Down", &Key::moveDown, keyCatPlayer),
     new KeyBind("Walk / Interact Left", &Key::moveLeft, keyCatPlayer),
     new KeyBind("Walk / Interact Right", &Key::moveRight, keyCatPlayer),
+    new KeyBind("Stand still", &Key::standStill, keyCatPlayer),
     new KeyBind("Interact / Use / Primary Attack", &Key::interact, keyCatPlayer | keyCatUi),
     new KeyBind("Secondary Attack", &Key::secondaryAttack, keyCatPlayer),
     new KeyBind("Examine", &Key::inspect, keyCatPlayer),
