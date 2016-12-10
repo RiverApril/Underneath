@@ -362,19 +362,19 @@ namespace Ui {
                 string s = "";
                 switch (e.style) {
                     case eStyle_EnemyToSelf_EnemyEff:
-                        s += "E->@ *E";
+                        s += "T->@ *T";
                         break;
                     case eStyle_EnemyToSelf_SelfEff:
-                        s += "E->@ *@";
+                        s += "T->@ *@";
                         break;
                     case eStyle_onTick_SelfEff:
                         s += "tick *@";
                         break;
                     case eStyle_SelfToEnemy_EnemyEff:
-                        s += "@->E *E";
+                        s += "@->T *T";
                         break;
                     case eStyle_SelfToEnemy_SelfEff:
-                        s += "@->E *@";
+                        s += "@->T *@";
                         break;
 
                     default:
