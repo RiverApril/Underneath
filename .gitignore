@@ -33,4 +33,4 @@ build/
 .vscode/
 
 #Windows
-.dll
+*.dll
