@@ -16,7 +16,7 @@ namespace Ui {
     class MenuDialog : public Menu {
     public:
 
-        MenuDialog(vector<string> messageList, vector<string> dialogOptions, function<void(MenuDialog*, int)> afterClose, bool escapable = true, int defaultSelect = 0);
+        MenuDialog(vector<string> messageList, vector<string> dialogOptions, function<void(Menu*, int)> afterClose, bool escapable = true, int defaultSelect = 0);
 
         ~MenuDialog() {}
 
@@ -28,7 +28,7 @@ namespace Ui {
         void update();
 
         int selected;
-        function<void(MenuDialog*, int)> afterClose;
+        function<void(Menu*, int)> afterClose;
         bool escapable;
         vector<string> messageList;
         vector<string> dialogOptions;

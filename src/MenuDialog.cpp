@@ -11,7 +11,7 @@
 
 namespace Ui {
 
-    MenuDialog::MenuDialog(vector<string> messageList, vector<string> dialogOptions, function<void(MenuDialog*, int)> afterClose, bool escapable, int defaultSelect) : Menu() {
+    MenuDialog::MenuDialog(vector<string> messageList, vector<string> dialogOptions, function<void(Menu*, int)> afterClose, bool escapable, int defaultSelect) : Menu() {
         this->messageList = messageList;
         this->dialogOptions = dialogOptions;
         this->afterClose = afterClose;
@@ -36,11 +36,13 @@ namespace Ui {
             selected++;
             scrollTick = INT_MAX;
         } else if (in == Key::interact || in == '\n') {
+            Menu* sm = surMenu;
             closeThisMenu();
-            afterClose(this, selected);
+            afterClose(sm, selected);
         } else if (escapable && in == KEY_ESCAPE) {
+            Menu* sm = surMenu;
             closeThisMenu();
-            afterClose(this, -1);
+            afterClose(sm, -1);
         } else if(in != -1) {
             scrollTick = INT_MAX;
         }
