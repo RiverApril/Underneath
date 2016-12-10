@@ -257,18 +257,18 @@ namespace ItemGenerator {
 
         aMailChest = atl(new ArmorBase({{"Mail Shirt"}, {"Hauberk"}}, {slotBody}, {DefenseRange(damSharp, .01, .30), DefenseRange(damPierce, .01, .30), DefenseRange(damBlunt, .01, .10)}));
 
-        aMailHelm = atl(new ArmorBase({{"Mail Cowl"}, {"Mail Hood"}}, {slotHead}, {DefenseRange(damSharp, .01, .15), DefenseRange(damPierce, .01, .15)}));
+        aMailHelm = atl(new ArmorBase({{"Mail Cowl"}, {"Mail Hood"}}, {slotHead}, {DefenseRange(damSharp, .01, .15), DefenseRange(damPierce, .01, .15)}))->setArts({Arts::artCowl});
 
         aMailLeggings = atl(new ArmorBase({{"Mail Leggings", "Pairs of Mail Leggings"}}, {slotLegs}, {DefenseRange(damSharp, .01, .10), DefenseRange(damPierce, .01, .10)}));
 
         aMailBoots = atl(new ArmorBase({{"Mail Socks", "Pairs of Mail Socks"}}, {slotFeet}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}));
 
-        aMailGloves = atl(new ArmorBase({{"Mail Gloves", "Pairs of Mail Gloves"}, {"Mail Gauntlets", "Pairs of Mail Gauntlets"}}, {slotHands}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}));
+        aMailGloves = atl(new ArmorBase({{"Mail Gloves", "Pairs of Mail Gloves"}, {"Mail Gauntlets", "Pairs of Mail Gauntlets"}}, {slotHands}, {DefenseRange(damSharp, .01, .08), DefenseRange(damPierce, .01, .08)}))->setArts({Arts::artGloves, Arts::artGauntlets});
 
 
         aGoldenRing = atl(new ArmorBase({{"Golden Ring"}, {"Silver Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .10, 10), DefenseRange(damIce, .01, .10, 10), DefenseRange(damShock, .01, .10, 10)}))->setArts({Arts::artRing});
 
-        aJewelRing = atl(new ArmorBase({{"Golden Garnet Ring"}, {"Silver Amethyst Ring"}, {"Silver Garnet Ring"}, {"Golden Amethyst Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .20, 10), DefenseRange(damIce, .01, .20, 10), DefenseRange(damShock, .01, .20, 10)}))->setArts({Arts::artJewelRing});;
+        aJewelRing = atl(new ArmorBase({{"Golden Garnet Ring"}, {"Silver Amethyst Ring"}, {"Silver Garnet Ring"}, {"Golden Amethyst Ring"}}, {slotFinger1, slotFinger2, slotFinger3, slotFinger4}, {DefenseRange(damFire, .01, .20, 10), DefenseRange(damIce, .01, .20, 10), DefenseRange(damShock, .01, .20, 10)}))->setArts({Arts::artJewelRing});
 
 
 

@@ -642,7 +642,9 @@ namespace Ui {
                     timeout(fastTimeout);
                     console("Exploring... Press any key to stop.");
                     bool c = true;
+                    int exploreTicks = -1;
                     while (c) {
+                        exploreTicks++;
                         vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
                         for (Entity* e : nearest) {
                             if (e->isHostile()) {
@@ -710,7 +712,7 @@ namespace Ui {
                             }
                         }
                         
-                        if(next == currentPlayer->lastPos){
+                        if(next == currentPlayer->lastPos && exploreTicks > 0){
                             console("Whelp, that's the end of the line.");
                             c = false;
                             break;
@@ -1024,7 +1026,7 @@ namespace Ui {
 
             //mvprintw(a++, gameArea.x + 1, "Tick [%c]: %s", spinyIcon->getChar(tick, Point2Neg1, currentLevel), Utility::toString((int)tick, 62).c_str());
 
-            mvprintw(a++, gameArea.x + 1, "%d:%02d:%02d:%02d", (((int)displayTime)/60/60/24), (((int)displayTime)/60/60)%(24), (((int)displayTime)/60)%60, ((int)displayTime)%60);
+            mvprintw(a++, gameArea.x + 1, "%d:%02d:%02d:%02d.%02d", (((int)displayTime)/60/60/24), (((int)displayTime)/60/60)%(24), (((int)displayTime)/60)%60, ((int)displayTime)%60, (int)(displayTime/100.0f));
             //mvprintw(a++, gameArea.x + 1, "Time: %s", Utility::intToRomanNumerals((int) displayTime).c_str());
 
             if(Settings::debugMode){
