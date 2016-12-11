@@ -46,6 +46,7 @@ if not args.notart:
 systemName = platform.system()
 system64Bit = sys.maxsize > 2**32
 build64Bit = False
+build32Bit = False
 
 if system64Bit:
     build64Bit = True
@@ -56,10 +57,10 @@ if args.use64 and args.use32:
 
 if args.use64:
     build64Bit = True
-    
+
 if args.use32:
-    build64Bit = False
-    
+    build32Bit = True
+
 
 
 sourceDirectory = "src"
@@ -72,7 +73,7 @@ objectExtention = "opp"
 
 
 compiler = "g++"
-compilerFlags = "-std=gnu++11"
+compilerFlags = ""
 libraryFlags = ""
 
 optimization = ""
@@ -81,6 +82,12 @@ executableName = "Underneath"
 
 compileAll = args.all
 
+if args.windows:
+    compilerFlags += "-std=gnu++11"
+elif systemName == "Darwin":
+    compilerFlags += "-stdlib=libc++ -std=gnu++11"
+else:
+    compilerFlags += "-std=gnu++11"
 
 if args.unoptimized:
     executableName += "_Unoptim"
@@ -112,7 +119,7 @@ if args.windows:
         compilerFlags += " -D WIN32"
 
     print("    # The Windows executable will require the following dll files:")
-        
+
     if args.SDLGraphics:
         libraryFlags += " -lSDL2main -lSDL2 -lSDL2_image"
         print("    #   SDL2.dll")
@@ -122,20 +129,20 @@ if args.windows:
     else:
         libraryFlags += " -lpdcurses"
         print("    #   pdcurses.dll")
-        
+
     if args.SDLAudio:
         libraryFlags += " -lSDL2main  -lSDL2 -lSDL2_mixer"
         print("    #   SDL2_mixer.dll")
         print("    #   libogg-0.dll")
-        
+
     libraryFlags += " -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -Wl,-Bdynamic"
-        
-        
+
+
 else:
-    
+
     if systemName == "Darwin":
         compilerFlags += " -mmacosx-version-min=10.7"
-    
+
     if args.SDLGraphics:
         if systemName == "Darwin":
             compilerFlags += " -I/usr/local/include"
@@ -169,9 +176,11 @@ if args.windows:
     if build64Bit:
         executableName += "_Windows_64.exe"
         compilerFlags += "  -m64"
-    else:
+    elif build32Bit:
         executableName += "_Windows_32.exe"
         compilerFlags += "  -m32"
+    else:
+        executableName += "_"+systemName
 elif systemName == "Darwin":
     executableName += "_OSX"
     #OSX 32 bit is obsolete
@@ -179,9 +188,11 @@ else:
     if build64Bit:
         executableName += "_"+systemName+"_64"
         compilerFlags += "  -m64"
-    else:
+    elif build32Bit:
         executableName += "_"+systemName+"_32"
         compilerFlags += "  -m32"
+    else:
+        executableName += "_"+systemName
 
 
 
