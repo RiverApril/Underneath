@@ -93,7 +93,7 @@ namespace Ui {
         
         printCenter(a++, "%sSettings%s", selection == 2 ? "- " : "  ", selection == 2 ? " -" : "  ");
         
-        printCenter(a++, "%sMain Menu%s", selection == 3 ? "- " : "  ", selection == 3 ? " -" : "  ");
+        printCenter(a++, " %sMain Menu%s", selection == 3 ? "- " : "  ", selection == 3 ? " -" : "  ");
         
         a = terminalSize.y - 2;
         
