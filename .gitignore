@@ -34,3 +34,6 @@ build/
 
 #Windows
 *.dll
+
+#Mac
+.DS_Store
