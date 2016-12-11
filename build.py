@@ -61,6 +61,10 @@ if args.use64:
 if args.use32:
     build32Bit = True
 
+if systemName=="Windows":
+    if args.windows:
+        print "Already in windows, no need to use the -w flag."
+    args.windows = True
 
 
 sourceDirectory = "src"
@@ -180,7 +184,7 @@ if args.windows:
         executableName += "_Windows_32.exe"
         compilerFlags += "  -m32"
     else:
-        executableName += "_"+systemName
+        executableName += "_Windows.exe"
 elif systemName == "Darwin":
     executableName += "_OSX"
     #OSX 32 bit is obsolete
