@@ -474,8 +474,8 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             }else{
                 message = {"Welcome! I'm glad I found someone down here.", "Would you like to trade wares?"};
             }
-            level->currentWorld->menuGame->openMenu(new Ui::MenuShop(is, this, level->currentWorld));
-            /*
+            //level->currentWorld->menuGame->openMenu(new Ui::MenuShop(is, this, level->currentWorld));
+            
             level->currentWorld->menuGame->openMenu(new Ui::MenuDialog(message, {"Trade", "No thanks"}, [this, &is, &level](Ui::MenuDialog* menu, int result){
                 if(result == 0){
                     menu->openMenu(new Ui::MenuShop(is, this, level->currentWorld));
@@ -485,7 +485,7 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
                 //result 1 is cancel
                 //result -1 is escape
                 //these will just exit
-            }, true));*/
+            }, true));
             return interactDelay;
         }
 
