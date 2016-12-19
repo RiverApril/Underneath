@@ -366,6 +366,22 @@ bool EntityAi::update(double deltaTime, double time, Level* level) {
 }
 
 void EntityAi::dropLoots(Level* level){
+    
+    //Special case for bunnies:
+    if(name.compare("Bunny") == 0){
+        for(Entity* e : level->entityList){
+            EntityAi* ai = dynamic_cast<EntityAi*>(e);
+            if(ai){
+                if(ai->name.compare("Bunny") == 0){
+                    ai->addEffect(Effect(effMultRecivedDamage, 1000000, -1, damFire));
+                    ai->addEffect(Effect(effMultRecivedDamage, 1000000, -1, damExplosion));
+                    ai->ai |= aiAttack;
+                    ai->ai ^= aiFlee;
+                }
+            }
+        }
+    }
+    //
 
     if(!getActiveItemWeapon()){
         return;
