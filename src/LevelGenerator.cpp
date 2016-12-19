@@ -56,32 +56,25 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel, string 
     }
 
     debug("Gen: Filled in Trees and Grass");
-    
-    stairDownPos = center;
-    vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
-    if(path.size() == 0){
-        debug("Gen: No path found");
-        return Point2Neg1;
-    }
 
 
     //RUIN
-    int centerRoomRadius = (rand() % 3) + 4;
+    int centerRoomRadius = (rand() % 4) + 4;
 
     int centerRoomInnerRadius = centerRoomRadius - 2;
 
 
-    Utility::executeGrid(center-centerRoomRadius, center+centerRoomRadius, [this](int x, int y){
+    Utility::executeGrid(center-centerRoomInnerRadius, center+centerRoomInnerRadius, [this](int x, int y){
         setTile(Point2(x, y), Tiles::tileFloor);
     });
 
-    Utility::executeBorder(center-centerRoomInnerRadius, center+centerRoomInnerRadius, [this](int x, int y){
+    Utility::executeBorder(center-centerRoomRadius, center+centerRoomRadius, [this](int x, int y){
         if(rand()%6 != 0 && (x+y)%2 == 1){
             setTile(Point2(x, y), Tiles::tilePillar);
         }
     });
 
-    Utility::executeBorder(center-centerRoomRadius, center+centerRoomRadius, [this](int x, int y){
+    Utility::executeBorder(center-centerRoomInnerRadius, center+centerRoomInnerRadius, [this](int x, int y){
         setTile(Point2(x, y), Tiles::tileWall);
     });
 
@@ -91,11 +84,11 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel, string 
     Point2 d = (stairUpPos-center);
 
     if(abs(d.x) < abs(d.y)){
-        door.x += d.x>0?centerRoomRadius:-centerRoomRadius;
+        door.x += d.x>0?centerRoomInnerRadius:-centerRoomInnerRadius;
         //door.y += (rand()%centerRoomRadius*2)-centerRoomRadius;
     }else{
         //door.x += (rand()%centerRoomRadius*2)-centerRoomRadius;
-        door.y += d.y>0?centerRoomRadius:-centerRoomRadius;
+        door.y += d.y>0?centerRoomInnerRadius:-centerRoomInnerRadius;
     }
 
 
@@ -103,6 +96,13 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel, string 
     setTile(door, Tiles::tileDoor);
 
     debug("Gen: Created Ruin");
+    
+    stairDownPos = center;
+    vector<Point2> path = getPathTo(stairUpPos, stairDownPos, tileFlagPathable);
+    if(path.size() == 0){
+        debug("Gen: No path found");
+        return Point2Neg1;
+    }
 
 
     /*int r = (rand() % 3) + 2;
@@ -144,11 +144,7 @@ Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel, string 
 
     setTile(door, Tiles::tileDoor);*/
 
-
-
-
-
-
+    
 
     setTile(stairDownPos, Tiles::tileStairDown);
     tileEntityList.push_back(new TEStair(stairDownPos, false, nextLevel));
