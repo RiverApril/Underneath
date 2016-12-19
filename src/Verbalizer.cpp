@@ -88,7 +88,7 @@ namespace Verbalizer {
     }
 
     void defeatedEnemy(EntityAlive* dead, int xpGained) {
-        consolef("You have deafeated the %s%s%s and gained %s%d xp%s.",
+        consolef("You have defeated the %s%s%s and gained %s%d xp%s.",
                 colorCode(C_LIGHT_BLUE).c_str(),
                 dead->getName().c_str(),
                 colorCode(C_WHITE).c_str(),
