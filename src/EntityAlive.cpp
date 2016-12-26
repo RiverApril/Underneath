@@ -46,7 +46,8 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
             addEffect(Effect(effDamage, Random::randDouble(4, 8), 1, damFire));
         }
 
-        if(hp<maxHp && ((int)hp)>0 && rand() % (int)(((double)hp/maxHp)*100.0) == 0){
+        int r = (int)(((double)hp/maxHp)*100.0);
+        if(hp<maxHp && ((int)hp)>0 && rand() % (r==0?1:r) == 0){
             if(tile->hasAllOfFlags(tileFlagReplaceable)){
                 level->setTile(pos, Tiles::tileBloodFloor);
             }

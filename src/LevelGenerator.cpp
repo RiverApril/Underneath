@@ -664,7 +664,7 @@ namespace LevelGenerator {
                 }
             }
 
-            //Chest Room or Shop
+            //Chest Room, Shop, or Alter
             if(!addedWalls){
                 int doors = 0;
                 Point2 lastDoorLocation = Point2Neg1;
@@ -675,43 +675,70 @@ namespace LevelGenerator {
                     }
                 });
 
-                if(doors == 1 && r->size.x > 5 && r->size.y > 5 && rand() % 3 == 0){
-                    //Chest
-                    if (rand() % 2 == 0) {
-                        level->setTile(r->pos + (r->size/2), Tiles::tileChest);
-                        level->setTile(lastDoorLocation, rand()%3==0?Tiles::tileSecretDoor:Tiles::tileLockedDoor);
-                        if(rand() % 2 == 0){
-                            Utility::executeBorder(r->pos + (r->size/2)-2, r->pos + (r->size/2)+2, [level](int x, int y){
-                                level->setTile(x, y, Tiles::tileSpikes);
-                            });
+                if(doors <= 1 && r->size.x > 5 && r->size.y > 5 && rand()%2 == 0){
+                    switch(rand() % 3){
+                        case 0: { //chest
+                            level->setTile(r->pos + (r->size/2), Tiles::tileChest);
+                            switch(rand() % 3){
+                                case 0:{ //locked
+                                    level->setTile(lastDoorLocation, rand()%3==0?Tiles::tileSecretDoor:Tiles::tileLockedDoor);
+                                    break;
+                                }
+                                case 1:{ //spikes
+                                    Utility::executeBorder(r->pos + (r->size/2)-2, r->pos + (r->size/2)+2, [level](int x, int y){
+                                        level->setTile(x, y, Tiles::tileSpikes);
+                                    });
+                                    break;
+                                }
+                                case 2:{ //pony wall
+                                    Utility::executeBorder(r->pos + (r->size/2)-2, r->pos + (r->size/2)+2, [level](int x, int y){
+                                        level->setTile(x, y, Tiles::tilePonyWall);
+                                    });
+                                    break;
+                                }
+                            }
+                            break;
                         }
-                    }else{
+                        case 1 : { //Shop
 
-                        level->setTile(lastDoorLocation, Tiles::tileDoor);
-                        
-                        Utility::executeGrid(r->pos + 2, r->pos + (r->size) - 2, [&level, &r](int x, int y){
-                            if((y - r->pos.y)%3==0 && rand() % 10 > 0){
-                                level->setTile(x, y, Tiles::tileBookcase);
-                            }else{
-                                level->setTile(x, y, Tiles::tileFloor);
-                            }
-                        });
-                        
-                        int c = 0;
+                            level->setTile(lastDoorLocation, Tiles::tileDoor);
                             
-                        Utility::executeGrid(r->pos + (r->size/2)-1, r->pos + (r->size/2)+1, [&level, &c](int x, int y){
-                            if(level->tileAt(x, y)->hasAllOfFlags(tileFlagPathable) || level->indexAt(x, y) == Tiles::tileBookcase->getIndex()){
-                                level->setTile(x, y, Tiles::tileFloor);
-                            }
-                        });
-                        
-                        EntityShop* e = new EntityShop("Merchant", aiNone, 'M', r->pos + (r->size/2), C_LIGHT_MAGENTA, 100);
-                        e->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, level->getDifficulty(), (rand()%9000)+1000, 10, 20, 2));
-                        e->addItem(ItemGenerator::makeCoins(1000));
-                        level->newEntity(e);
+                            Utility::executeGrid(r->pos + 2, r->pos + (r->size) - 2, [&level, &r](int x, int y){
+                                if((y - r->pos.y)%3==0 && rand() % 10 > 0){
+                                    level->setTile(x, y, Tiles::tileBookcase);
+                                }else{
+                                    level->setTile(x, y, Tiles::tileFloor);
+                                }
+                            });
+                            
+                            int c = 0;
+                                
+                            Utility::executeGrid(r->pos + (r->size/2)-1, r->pos + (r->size/2)+1, [&level, &c](int x, int y){
+                                if(level->tileAt(x, y)->hasAllOfFlags(tileFlagPathable) || level->indexAt(x, y) == Tiles::tileBookcase->getIndex()){
+                                    level->setTile(x, y, Tiles::tileFloor);
+                                }
+                            });
+                            
+                            EntityShop* e = new EntityShop("Merchant", aiNone, 'M', r->pos + (r->size/2), C_LIGHT_MAGENTA, 100);
+                            e->addItems(ItemGenerator::makeLoot(ItemGenerator::lootProfileShop, level->getDifficulty(), (rand()%9000)+1000, 10, 20, 2));
+                            e->addItem(ItemGenerator::makeCoins(1000));
+                            level->newEntity(e);
+                            break;
+                        }
+                        case 2 : { //Alter
+                            Utility::executeGrid(r->pos + 2, r->pos + (r->size) - 2, [&level, &r](int x, int y){
+                                if(rand() % 4 == 0){
+                                    level->setTile(x, y, Tiles::tileSpikes);
+                                }else{
+                                    level->setTile(x, y, Tiles::tileFloor);
+                                }
+                            });
+                            level->setTile(r->pos + (r->size/2), Tiles::tileAlter);
+                            break;
+                        }
                     }
+                    addedWalls = true;
                 }
-                addedWalls = true;
             }
 
 

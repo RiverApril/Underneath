@@ -63,6 +63,9 @@ namespace Tiles {
     
     Tile* tileSpikes;
     Tile* tileBloodSpikes;
+    
+    Tile* tileAlter;
+    Tile* tileBrokenAlter;
 
     Tile* tileStairUp;
     Tile* tileStairDown;
@@ -121,6 +124,9 @@ namespace Tiles {
         
         tileSpikes = new Tile(new BasicIcon('x', C_WHITE, C_BLACK), "spikes", tileFlagNone);
         tileBloodSpikes = new Tile(new BasicIcon('x', C_LIGHT_RED, C_BLACK), "bloody spikes", tileFlagNone);
+        
+        tileAlter = new Tile(new BasicIcon('A', C_WHITE, C_BLACK), "alter", tileFlagSolidOnGround);
+        tileBrokenAlter = new Tile(new BasicIcon('A', C_DARK_GRAY, C_BLACK), "broken alter", tileFlagSolidOnGround);
 
         tileStairUp = new Tile(new BasicIcon('^',  C_LIGHT_GREEN, bg), "stair up", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
         tileStairDown = new Tile(new BasicIcon('v',  C_LIGHT_GREEN, bg), "stair down", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
