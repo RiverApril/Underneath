@@ -268,7 +268,7 @@ namespace MainWindow{
             printf("Failed to initalize SDL. Error: %s\n", SDL_GetError());
             return false;
         }
-        mainWindow = SDL_CreateWindow("Underneath", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width*charWidth, height*charHeight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+        mainWindow = SDL_CreateWindow("Underneath", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width*charWidth + (borderSize*2), height*charHeight + (borderSize*2), SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
         if(mainWindow == NULL){
             printf("Failed to create window. Error: %s\n", SDL_GetError());
             return false;
@@ -554,10 +554,10 @@ namespace MainWindow{
             }
             case SDL_WINDOWEVENT:{
                 if(e.window.event == SDL_WINDOWEVENT_RESIZED){
-                    width = (int)round((e.window.data1) / (double)charWidth);
-                    height = (int)round((e.window.data2) / (double)charHeight);
-                    SDL_RenderSetLogicalSize(mainRenderer, width*charWidth, height*charHeight);
-                    SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
+                    width = (int)round((e.window.data1 - (borderSize*2)) / (double)charWidth);
+                    height = (int)round((e.window.data2 - (borderSize*2)) / (double)charHeight);
+                    SDL_RenderSetLogicalSize(mainRenderer, width*charWidth + (borderSize*2), height*charHeight + (borderSize*2));
+                    SDL_SetWindowSize(mainWindow, width*charWidth + (borderSize*2), height*charHeight + (borderSize*2));
                     //mainScreenSurface = SDL_GetWindowSurface(mainWindow);
                     makeBuffers();
                     return KEY_RESIZE;
