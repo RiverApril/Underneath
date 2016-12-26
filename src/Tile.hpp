@@ -104,6 +104,9 @@ namespace Tiles {
     extern Tile* tileOpenDoor;
     extern Tile* tileLockedDoor;
     extern Tile* tileThreateningDoor;
+    
+    extern Tile* tileSpikes;
+    extern Tile* tileBloodSpikes;
 
     extern Tile* tileStairUp;
     extern Tile* tileStairDown;

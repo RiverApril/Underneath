@@ -680,6 +680,11 @@ namespace LevelGenerator {
                     if (rand() % 2 == 0) {
                         level->setTile(r->pos + (r->size/2), Tiles::tileChest);
                         level->setTile(lastDoorLocation, rand()%3==0?Tiles::tileSecretDoor:Tiles::tileLockedDoor);
+                        if(rand() % 2 == 0){
+                            Utility::executeBorder(r->pos + (r->size/2)-2, r->pos + (r->size/2)+2, [level](int x, int y){
+                                level->setTile(x, y, Tiles::tileSpikes);
+                            });
+                        }
                     }else{
 
                         level->setTile(lastDoorLocation, Tiles::tileDoor);

@@ -326,3 +326,19 @@ void EntityAlive::load(vector<unsigned char>* data, int* position) {
         effects.push_back(Effect(data, position));
     }
 }
+
+bool EntityAlive::tryToMoveAbsalute(Point2 p, Level* level, bool force) {
+    
+    if(Entity::tryToMoveAbsalute(p, level, force)){
+        int index = level->indexAt(p);
+        if(index == Tiles::tileSpikes->getIndex() || index == Tiles::tileBloodSpikes->getIndex()){
+            Effect e = Effect(effDamage, randomRange(10, 20), 10, damBlood);
+            this->addEffect(e);
+            level->setTile(p, Tiles::tileBloodSpikes);
+        }
+        return true;
+    }else{
+        return false;
+    }
+    
+}
