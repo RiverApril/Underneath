@@ -443,7 +443,7 @@ namespace Ui {
                     ItemWeapon* w = dynamic_cast<ItemWeapon*>(itemToBeUsed);
                     ItemRanged* ranged = dynamic_cast<ItemRanged*> (itemToBeUsed);
                     
-                    double range = ranged ? ranged->range : 1;
+                    double range = ranged ? ranged->range : 1.5; // just over sqrt(2) to satisfy float comparison
                     
                     if(currentLevel->canSee(currentPlayer->pos, targetPosition, range)){
                         timePassed += currentPlayer->interact(currentLevel, targetPosition, false, itemToBeUsed, w?w->baseDamage==0:true);
