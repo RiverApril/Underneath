@@ -60,6 +60,9 @@ namespace Tiles {
     Tile* tileThreateningDoor;
     Tile* tileOpenDoor;
     Tile* tileLockedDoor;
+    
+    Tile* tileSpikes;
+    Tile* tileBloodSpikes;
 
     Tile* tileStairUp;
     Tile* tileStairDown;
@@ -115,6 +118,9 @@ namespace Tiles {
         tileOpenDoor = new Tile(new BasicIcon('/', C_WHITE, bg), "open door", tileFlagPathable | tileFlagFlammable);
         tileLockedDoor = new Tile(new BasicIcon('%', C_LIGHT_MAGENTA, C_WHITE), "locked door", tileFlagSolidBoth | tileFlagSecretPathable, new BasicIcon('%', C_DARK_MAGENTA, C_DARK_GRAY));
 
+        
+        tileSpikes = new Tile(new BasicIcon('x', C_WHITE, C_BLACK), "spikes", tileFlagNone);
+        tileBloodSpikes = new Tile(new BasicIcon('x', C_LIGHT_RED, C_BLACK), "bloody spikes", tileFlagNone);
 
         tileStairUp = new Tile(new BasicIcon('^',  C_LIGHT_GREEN, bg), "stair up", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
         tileStairDown = new Tile(new BasicIcon('v',  C_LIGHT_GREEN, bg), "stair down", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);

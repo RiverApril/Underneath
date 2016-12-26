@@ -93,6 +93,8 @@ public:
     virtual TileFlag getSolidity(){
         return solidity;
     }
+    
+    virtual bool tryToMoveAbsalute(Point2 p, Level* world, bool force = false);
 
     //vector<Item*> inventory;
 
