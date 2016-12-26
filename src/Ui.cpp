@@ -501,6 +501,20 @@ namespace Ui {
                     pre = '-';
                 }
                 string displayName = formatString("%c ", pre);
+                
+                bool fav = false;
+                for(int i=0;i<10;i++){
+                    if(currentWorld->currentPlayer->getFav(i) == item){
+                        if(!fav){
+                            displayName += SYMBOL_HEART;
+                        }
+                        displayName += i==9?'0':i+'1';
+                        fav = true;
+                    }
+                }
+                if(fav){
+                    displayName += " ";
+                }
 
                 if(showPrice){
                     if(item->coinValue > 0){

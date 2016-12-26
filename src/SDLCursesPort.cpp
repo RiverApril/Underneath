@@ -393,6 +393,9 @@ namespace MainWindow{
             case 0xE2A796://⧖
                 return 1*imageCharWidth;
                 
+            case 0xE299A5://♥
+                return 2*imageCharWidth;
+                
             default:
                 return (((int)cc-32)%imageCharsPerLine)*imageCharWidth;
         }
@@ -402,6 +405,7 @@ namespace MainWindow{
         switch (cc) {
             case 0xC2A2://¢
             case 0xE2A796://⧖
+            case 0xE299A5://♥
                 return 6*imageCharHeight;
                 
             default:
