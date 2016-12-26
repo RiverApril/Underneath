@@ -1112,7 +1112,11 @@ namespace Ui {
             for(int i=0;i<10;i++){
                 if(f[i] == 'I'){
                     Item* it = currentPlayer->getFav(i);
-                    fw[i] = min((terminalSize.x - borderSize.x) / ic, (int)it->getName(it->qty!=1).size()+1);
+                    
+                    int extra = 0;
+                    EquipSlot slot = currentPlayer->getSlot(it);
+                    if(slot != slotNone){ extra = 2; }
+                    fw[i] = min((terminalSize.x - borderSize.x) / ic, (int)it->getName(it->qty!=1).size()+1+extra);
                 }else{
                     fw[i] = 0;
                 }
@@ -1132,6 +1136,10 @@ namespace Ui {
                     mvprintw(gameArea.y-2, x, "+%.*s%.*s%.*s+", (fw[i]-name.length())/2, dashes, name.length(), name.c_str(), (((fw[i]-name.length())%2==1)?1:0)+(fw[i]-name.length())/2-1, dashes);
                     mvprintw(gameArea.y-1, x, "|%.*s|", fw[i]-1, spaces);
                     string s = it->getName(it->qty!=1);
+                    EquipSlot slot = currentPlayer->getSlot(it);
+                    if(slot != slotNone){
+                        s = formatString("%c %s", ItemEquipable::equipSlotAbr(slot), s.c_str());
+                    }
                     s = s.substr(0, fw[i]-1);
                     mvprintw(gameArea.y-1, (int)((x+fw[i]*.5)-((int)s.size()*.5))+1, "%.*s", fw[i]-1, s.c_str());
                     mvprintw(gameArea.y, x, "+%.*s+", fw[i]-1, dashes);

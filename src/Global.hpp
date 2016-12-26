@@ -122,9 +122,11 @@ extern string AudioDir;
 #ifdef NO_UNICODE
 	#define SYMBOL_COIN "c"
     #define SYMBOL_TIME "t"
+    #define SYMBOL_HEART "f"
 #else
     #define SYMBOL_COIN "¢"
     #define SYMBOL_TIME "⧖"
+    #define SYMBOL_HEART "♥"
 #endif
 
 

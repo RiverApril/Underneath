@@ -645,14 +645,30 @@ void EntityPlayer::save(vector<unsigned char>* data) {
     Utility::saveInt(data, size);
 
     for(pair<EquipSlot, Item*> p : equipedItems){
-        forVector(inventory, i) {
-            if(p.second){
+        if(p.second){
+            forVector(inventory, i) {
                 if (inventory[i] == p.second) {
                     Utility::saveInt(data, p.first);
                     Utility::saveInt(data, i);
                     break;
                 }
             }
+        }else{
+            Utility::saveInt(data, p.first);
+            Utility::saveInt(data, -1);
+        }
+    }
+    
+    for(Item* item : favItems){
+        if(item){
+            forVector(inventory, i) {
+                if (inventory[i] == item) {
+                    Utility::saveInt(data, i);
+                    break;
+                }
+            }
+        }else{
+            Utility::saveInt(data, -1);
         }
     }
 
@@ -673,7 +689,16 @@ void EntityPlayer::load(vector<unsigned char>* data, int* position) {
     for(int i=0;i<size;i++){
         EquipSlot slot = (EquipSlot)Utility::loadInt(data, position);
         int index = Utility::loadInt(data, position);
-        equipedItems[slot] = inventory[index];
+        if(index != -1){
+            equipedItems[slot] = inventory[index];
+        }
+    }
+    
+    for(int i=0;i<10;i++){
+        int index = Utility::loadInt(data, position);
+        if(index != -1){
+            favItems[i] = inventory[index];
+        }
     }
 	
     updateVariablesForAbilities();
@@ -989,6 +1014,11 @@ Item* EntityPlayer::getFav(int fav){
 }
 
 void EntityPlayer::setFav(Item* item, int fav){
+    for(int i=0;i<10;i++){
+        if(getFav(i) == item){
+            favItems[i] = nullptr;
+        }
+    }
     favItems[fav] = item;
 }
 

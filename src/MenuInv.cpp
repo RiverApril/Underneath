@@ -79,7 +79,11 @@ namespace Ui {
             }
 
             if(fav >= 0){
-                currentWorld->currentPlayer->setFav(currentWorld->currentPlayer->inventory[selected], fav);
+                if(currentWorld->currentPlayer->getFav(fav) == currentWorld->currentPlayer->inventory[selected]){
+                    currentWorld->currentPlayer->setFav(nullptr, fav);
+                }else{
+                    currentWorld->currentPlayer->setFav(currentWorld->currentPlayer->inventory[selected], fav);
+                }
             }
         }
     }
