@@ -97,6 +97,7 @@ if args.unoptimized:
     executableName += "_Unoptim"
     optimization = "-g -O0 -Wall"
 else:
+    compilerFlags += " -D OPTIMIZED"
     optimization = "-Os"
 
 compilerFlags = optimization+" "+compilerFlags;
