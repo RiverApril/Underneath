@@ -44,26 +44,6 @@ public:
                 return 'O';
             case slotNeck:
                 return 'N';
-            case slotFav1:
-                return keyDisplayName(Key::favs[0])[0];
-            case slotFav2:
-                return keyDisplayName(Key::favs[1])[0];
-            case slotFav3:
-                return keyDisplayName(Key::favs[2])[0];
-            case slotFav4:
-                return keyDisplayName(Key::favs[3])[0];
-            case slotFav5:
-                return keyDisplayName(Key::favs[4])[0];
-            case slotFav6:
-                return keyDisplayName(Key::favs[5])[0];
-            case slotFav7:
-                return keyDisplayName(Key::favs[6])[0];
-            case slotFav8:
-                return keyDisplayName(Key::favs[7])[0];
-            case slotFav9:
-                return keyDisplayName(Key::favs[8])[0];
-            case slotFav0:
-                return keyDisplayName(Key::favs[9])[0];
 
             case slotNone:
                 return '~';
@@ -98,26 +78,6 @@ public:
                 return "Right Middle Finger";
             case slotNeck:
                 return "Neck";
-            case slotFav1:
-                return "Favorite Slot 1";
-            case slotFav2:
-                return "Favorite Slot 2";
-            case slotFav3:
-                return "Favorite Slot 3";
-            case slotFav4:
-                return "Favorite Slot 4";
-            case slotFav5:
-                return "Favorite Slot 5";
-            case slotFav6:
-                return "Favorite Slot 6";
-            case slotFav7:
-                return "Favorite Slot 7";
-            case slotFav8:
-                return "Favorite Slot 8";
-            case slotFav9:
-                return "Favorite Slot 9";
-            case slotFav0:
-                return "Favorite Slot 0";
 
             case slotNone:
                 return "None";
@@ -147,18 +107,6 @@ public:
             case slotNeck:
                 return "around";
 
-            case slotFav1:
-            case slotFav2:
-            case slotFav3:
-            case slotFav4:
-            case slotFav5:
-            case slotFav6:
-            case slotFav7:
-            case slotFav8:
-            case slotFav9:
-            case slotFav0:
-                return "in";
-
             default:
                 return "ERR: "+to_string(slot);
         }
@@ -186,18 +134,6 @@ public:
                 return "Finger";
             case slotNeck:
                 return "Neck";
-
-            case slotFav1:
-            case slotFav2:
-            case slotFav3:
-            case slotFav4:
-            case slotFav5:
-            case slotFav6:
-            case slotFav7:
-            case slotFav8:
-            case slotFav9:
-            case slotFav0:
-                return "Favorite";
 
             case slotNone:
                 return "None";

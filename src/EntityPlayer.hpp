@@ -91,6 +91,9 @@ public:
         }
         return equipedItems[slot];
     }
+    
+    Item* getFav(int fav);
+    void setFav(Item* item, int fav);
 
     virtual bool removeItem(Item* item, bool deleteItem);
 
@@ -126,6 +129,8 @@ public:
     double useDelay(Item* item);
 
     map<EquipSlot, Item*> equipedItems;
+    
+    Item* favItems[10] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 
 
     double interactDelay = .1;

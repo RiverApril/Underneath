@@ -61,23 +61,16 @@ namespace Ui {
         Point2 targetPosition = Point2Zero;
         Entity* targetEntity = nullptr;
 
-        double itemToBeUsedRange = -1;
         Item* itemToBeUsed = nullptr;
 
         vector<Entity*> nearestEntities;
 
-#define modeEntityPlayerControl 0
+#define modePlayerControl 0
 #define modeAdjustBorder 1
-#define modeSelectDirection 2
+//#define modeSelectDirection 2
 #define modeSelectPosition 3
 #define modeSelectEntity 4
-        int controlMode = modeEntityPlayerControl;
-
-#define selectModeNone 0
-#define selectModeAttack 1
-#define selectModeWalk 2
-#define selectModeInspect 3
-        int selectMode = selectModeNone;
+        int controlMode = modePlayerControl;
 
 #define fadeInMax 100
 #define fadeInMin 0
