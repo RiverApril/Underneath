@@ -9,7 +9,7 @@
 #ifndef __Underneath__Math__
 #define __Underneath__Math__
 
-#define PI 3.14159265358979
+#define PI (3.14159265358979)
 #define TAU (2*PI)
 #define HALF_PI (0.5*PI)
 #define QUARTER_PI (0.25*PI)
