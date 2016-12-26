@@ -554,10 +554,10 @@ namespace MainWindow{
             }
             case SDL_WINDOWEVENT:{
                 if(e.window.event == SDL_WINDOWEVENT_RESIZED){
-                    width = (int)ceil(e.window.data1 / (double)charWidth) + (borderSize * 2);
-                    height = (int)ceil(e.window.data2 / (double)charHeight) + (borderSize * 2);
+                    width = (int)round((e.window.data1) / (double)charWidth);
+                    height = (int)round((e.window.data2) / (double)charHeight);
                     SDL_RenderSetLogicalSize(mainRenderer, width*charWidth, height*charHeight);
-                    //SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
+                    SDL_SetWindowSize(mainWindow, width*charWidth, height*charHeight);
                     //mainScreenSurface = SDL_GetWindowSurface(mainWindow);
                     makeBuffers();
                     return KEY_RESIZE;
