@@ -18,7 +18,7 @@ enum ItemType{itemTypeEquipable, itemTypeWeapon, itemTypeRanged, itemTypeCombatS
 
 enum UseType{useInstant, useInWorld, useInInventory};
 
-enum EquipSlot{slotNone = -1, slotWep1, slotWep2, slotHands, slotHead, slotBody, slotFeet, slotLegs, slotFinger1, slotFinger2, slotFinger3, slotFinger4, slotNeck, slotFav1, slotFav2 = slotFav1+1, slotFav3 = slotFav2+1, slotFav4 = slotFav3+1, slotFav5 = slotFav4+1, slotFav6 = slotFav5+1, slotFav7 = slotFav6+1, slotFav8 = slotFav7+1, slotFav9 = slotFav8+1, slotFav0 = slotFav9+1, slotQty};
+enum EquipSlot{slotNone = -1, slotWep1, slotWep2, slotHands, slotHead, slotBody, slotFeet, slotLegs, slotFinger1, slotFinger2, slotFinger3, slotFinger4, slotNeck, slotQty};
 
 inline EquipSlot operator+(EquipSlot a, EquipSlot b){
     return static_cast<EquipSlot>(static_cast<int>(a) + static_cast<int>(b));
@@ -66,9 +66,6 @@ public:
     }
 
     virtual bool canBeEquipedHere(EquipSlot e) {
-        if(e >= slotFav1 && e <= slotFav0){
-            return true;
-        }
         return false;
     }
 

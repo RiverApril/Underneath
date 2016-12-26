@@ -715,6 +715,11 @@ bool EntityPlayer::removeItem(Item* item, bool deleteItem) {
                 equipItem(nullptr, p.first);
             }
         }
+        for(int i=0;i<10;i++){
+            if (item == favItems[i]) {
+                setFav(nullptr, i);
+            }
+        }
     }
     return Inventory::removeItem(item, deleteItem);
 }
@@ -978,3 +983,13 @@ double EntityPlayer::getAttackMultiplierFromEffectsAndEquips(DamageType damType)
     }
     return d;
 }
+
+Item* EntityPlayer::getFav(int fav){
+    return favItems[fav];
+}
+
+void EntityPlayer::setFav(Item* item, int fav){
+    favItems[fav] = item;
+}
+
+

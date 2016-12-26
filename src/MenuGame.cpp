@@ -145,13 +145,11 @@ namespace Ui {
                 m->selected = selected;
                 openMenu(m);
             } else if(use == useInWorld){
-                itemToBeUsedRange = 1000000;
                 itemToBeUsed = currentPlayer->inventory[*useItem];
                 if (!currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)) {
                     targetPosition = currentPlayer->pos;
                 }
                 changeMode(modeSelectPosition);
-                selectMode = selectModeAttack;
                 *useItem = -1;
             } else if(use == useInInventory){
                 MenuUseInInv* m = new MenuUseInInv(currentPlayer, currentWorld, *useItem);
@@ -245,10 +243,10 @@ namespace Ui {
                     if (e) {
 
                         if (inView || Settings::seeEverything) {
-                            if (controlMode == modeSelectDirection && currentPlayer == e) {
+                            /*if (controlMode == modeSelectDirection && currentPlayer == e) {
                                 fg = e->getBgColor(tick, p, currentLevel);
                                 bg = e->getFgColor(tick, p, currentLevel);
-                            } else {
+                            } else */{
                                 fg = e->getFgColor(tick, p, currentLevel);
                                 bg = e->getBgColor(tick, p, currentLevel);
                             }
@@ -305,18 +303,18 @@ namespace Ui {
     void MenuGame::arrowMove(Point2 p) {
         if (controlMode == modeSelectPosition) {
             targetPosition += p;
-        } else if (controlMode == modeSelectDirection) {
+        }/* else if (controlMode == modeSelectDirection) {
 
             Item* i = itemToBeUsed!=nullptr? itemToBeUsed : currentPlayer->getActiveItemWeapon();
 
             timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos + p, false, i, false);
 
-            changeMode(modeEntityPlayerControl);
+            changeMode(modePlayerControl);
 
-        } else if (controlMode == modeAdjustBorder) {
+        }*/ else if (controlMode == modeAdjustBorder) {
             borderSize -= p;
             setGameAreaSize();
-        } else if (controlMode == modeEntityPlayerControl && currentPlayer != nullptr && currentLevel != nullptr) {
+        } else if (controlMode == modePlayerControl && currentPlayer != nullptr && currentLevel != nullptr) {
 
             timePassed += currentPlayer->moveRelative(p, currentLevel);
 
@@ -335,7 +333,7 @@ namespace Ui {
                 targetEntity = list[0];
                 targetPosition = targetEntity->pos;
             } else if (!targetEntity) {
-                changeMode(modeEntityPlayerControl);
+                changeMode(modePlayerControl);
             } else {
                 targetPosition = targetEntity->pos;
             }
@@ -349,8 +347,8 @@ namespace Ui {
             setGameAreaSize();
 
         } else if (in == KEY_ESCAPE) {
-            if (controlMode != modeEntityPlayerControl) {
-                changeMode(modeEntityPlayerControl);
+            if (controlMode != modePlayerControl) {
+                changeMode(modePlayerControl);
             } else {
                 if (!currentPlayer || currentPlayer->dead) {
                     WorldLoader::deleteWorld(currentWorld->name);
@@ -392,7 +390,7 @@ namespace Ui {
 
         } else if (in == Key::adjustConsole) {
             if (controlMode == modeAdjustBorder) {
-                changeMode(modeEntityPlayerControl);
+                changeMode(modePlayerControl);
             } else {
                 changeMode(modeAdjustBorder);
             }
@@ -408,7 +406,7 @@ namespace Ui {
                     }
                 }
 
-                changeMode(modeEntityPlayerControl);
+                changeMode(modePlayerControl);
 
             } else if ((false) && in == 'f') {
                 ItemRanged* ranged = dynamic_cast<ItemRanged*> (currentPlayer->getActiveItemWeapon());
@@ -431,46 +429,55 @@ namespace Ui {
 
             if (in == Key::interact || in == Key::secondaryAttack) {
                 ItemWeapon* wep = (in == Key::interact)?currentPlayer->getActiveItemWeapon():currentPlayer->getSecondaryItemWeapon();
-                if (controlMode == modeSelectDirection) {
+                /*if (controlMode == modeSelectDirection) {
 
                     ItemWeapon* w = dynamic_cast<ItemWeapon*>(itemToBeUsed);
 
                     timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, itemToBeUsed, w?w->baseDamage==0:true);
 
                     itemToBeUsed = nullptr;
-                    changeMode(modeEntityPlayerControl);
-                } else if (controlMode == modeSelectPosition) {
-                    if(selectMode == selectModeAttack){
+                    changeMode(modePlayerControl);
+                } else*/ if (controlMode == modeSelectPosition) {
 
-                        ItemUtilitySpell* us = dynamic_cast<ItemUtilitySpell*>(itemToBeUsed);
-                        ItemWeapon* w = dynamic_cast<ItemWeapon*>(itemToBeUsed);
-
+                    ItemUtilitySpell* us = dynamic_cast<ItemUtilitySpell*>(itemToBeUsed);
+                    ItemWeapon* w = dynamic_cast<ItemWeapon*>(itemToBeUsed);
+                    ItemRanged* ranged = dynamic_cast<ItemRanged*> (itemToBeUsed);
+                    
+                    double range = ranged ? ranged->range : 1;
+                    
+                    if(currentLevel->canSee(currentPlayer->pos, targetPosition, range)){
                         timePassed += currentPlayer->interact(currentLevel, targetPosition, false, itemToBeUsed, w?w->baseDamage==0:true);
+                    }
 
-                        if(!(us && us->continuousUse)){
-                            changeMode(modeEntityPlayerControl);
-                        }
+                    if(!(us && us->continuousUse)){
+                        changeMode(modePlayerControl);
                     }
 
                 } else {
+                    
                     ItemRanged* ranged = dynamic_cast<ItemRanged*> (wep);
+                    changeMode(modeSelectPosition);
+                    if (!ranged || !currentLevel->canSee(currentPlayer->pos, targetPosition, ranged->range)) {
+                        targetPosition = currentPlayer->pos;
+                    }
+                    itemToBeUsed = wep;
+                    
+                    /*ItemRanged* ranged = dynamic_cast<ItemRanged*> (wep);
                     if (ranged) {
                         changeMode(modeSelectPosition);
-                        selectMode = selectModeAttack;
                         if (!currentLevel->canSee(currentPlayer->pos, targetPosition, ranged->range)) {
                             targetPosition = currentPlayer->pos;
                         }
-                        itemToBeUsedRange = ranged->range;
                         itemToBeUsed = ranged;
                     } else {
                         changeMode(modeSelectDirection);
                         itemToBeUsed = wep;
-                    }
+                    }*/
                 }
             } else if(in == Key::instantInteract){
                 timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, currentPlayer->getActiveItemWeapon(), false);
             }else if(in == Key::waitUntilHealed) {
-                if(controlMode == modeEntityPlayerControl){
+                if(controlMode == modePlayerControl){
                     if(currentPlayer && (currentPlayer->getHp() < currentPlayer->getMaxHp() || currentPlayer->getMp() < currentPlayer->getMaxMp())){
                         unsigned char b = 1;
                         timeout(fastestTimeout);
@@ -517,7 +524,7 @@ namespace Ui {
                 }
 
             } else if (in == Key::wait) {
-                if(controlMode == modeEntityPlayerControl){
+                if(controlMode == modePlayerControl){
                     timeout(fastTimeout);
                     console("Waiting indefinitely. Press any key to stop waiting.");
                     bool c = true;
@@ -554,94 +561,90 @@ namespace Ui {
                 }
 
             } else if (in == Key::walk) {
-                if(controlMode == modeEntityPlayerControl){
+                if(controlMode == modePlayerControl){
                     changeMode(modeSelectPosition);
-                    selectMode = selectModeWalk;
-                    itemToBeUsedRange = 1000000;
                     if (!currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)) {
                         targetPosition = currentPlayer->pos;
                     }
                 } else if(controlMode == modeSelectPosition){
-                    if(selectMode == selectModeWalk){
-                        Point2 t = targetPosition;
-                        changeMode(modeEntityPlayerControl);
-                        vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, currentPlayer->getSolidity(), false, true);
-                        path.push_back(t);
-                        bool pathExplored = true;
-                        if(!Settings::seeEverything){
-                            for(Point2 p : path){
-                                if(!currentLevel->getExplored(p)){
-                                    pathExplored = false;
+                    Point2 t = targetPosition;
+                    changeMode(modePlayerControl);
+                    vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, currentPlayer->getSolidity(), false, true);
+                    path.push_back(t);
+                    bool pathExplored = true;
+                    if(!Settings::seeEverything){
+                        for(Point2 p : path){
+                            if(!currentLevel->getExplored(p)){
+                                pathExplored = false;
+                                break;
+                            }
+                        }
+                    }
+                    if(path.size() > 0 && pathExplored){
+                        timeout(fastTimeout);
+                        console("Walking to target position...");
+                        bool c = true;
+                        for(Point2 p : path) {
+                            /*vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
+                            for (Entity* e : nearest) {
+                                if (e->isHostile()) {
+                                    console("A hostile is near!");
+                                    c = false;
+                                    break;
+                                }
+                            }*/
+                            vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
+                            for (Entity* e : nearest) {
+                                if (e->isHostile()) {
+                                    console("A hostile is near!");
+                                    c = false;
                                     break;
                                 }
                             }
-                        }
-                        if(path.size() > 0 && pathExplored){
-                            timeout(fastTimeout);
-                            console("Walking to target position...");
-                            bool c = true;
-                            for(Point2 p : path) {
-                                /*vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
-                                for (Entity* e : nearest) {
-                                    if (e->isHostile()) {
-                                        console("A hostile is near!");
-                                        c = false;
-                                        break;
-                                    }
-                                }*/
-                                vector<Entity*> nearest = currentLevel->getAllVisableEntities(currentPlayer->pos, currentPlayer->viewDistance, currentPlayer, false);
-                                for (Entity* e : nearest) {
-                                    if (e->isHostile()) {
-                                        console("A hostile is near!");
-                                        c = false;
-                                        break;
-                                    }
-                                }
-                                for(Effect e : currentPlayer->effects){
-                                    if(e.eId == effDamage && e.power > 0){
-                                        console("You have an effect that is lowering your health!");
-                                        c = false;
-                                        break;
-                                    }
-                                }
-                                if(!c){
+                            for(Effect e : currentPlayer->effects){
+                                if(e.eId == effDamage && e.power > 0){
+                                    console("You have an effect that is lowering your health!");
+                                    c = false;
                                     break;
                                 }
+                            }
+                            if(!c){
+                                break;
+                            }
 
-                                Point2 d = p-currentPlayer->pos;
-                                if(distanceSquared(d, Point2Zero) <= 1){
-                                    timePassed = currentPlayer->tryToMoveRelative(d, currentLevel);
-                                }else{
-                                    console("Next Path fragment is too far.");
-                                    break;
-                                }
-                                tick++;
-                                MenuGame::update();
-                                if(!currentPlayer){
-                                    timeout(defaultTimeout);
-                                    return;
-                                }
-                                if (getchSafe() != ERR) {
-                                    console("Stopped walking.");
-                                    break;
-                                }
-                                refresh();
+                            Point2 d = p-currentPlayer->pos;
+                            if(distanceSquared(d, Point2Zero) <= 1){
+                                timePassed = currentPlayer->tryToMoveRelative(d, currentLevel);
+                            }else{
+                                console("Next Path fragment is too far.");
+                                break;
                             }
-                            timeout(defaultTimeout);
-                            Point2 d = targetPosition-currentPlayer->pos;
-                            if(currentPlayer->pos == t){
-                                console("You have arrived at your destination.");
-                            }else if(distanceSquared(d, Point2Zero) <= 1){
-                                console("Your destination is next to you.");
+                            tick++;
+                            MenuGame::update();
+                            if(!currentPlayer){
+                                timeout(defaultTimeout);
+                                return;
                             }
-                        }else{
-                            console("No expolored path found.");
+                            if (getchSafe() != ERR) {
+                                console("Stopped walking.");
+                                break;
+                            }
+                            refresh();
                         }
+                        timeout(defaultTimeout);
+                        Point2 d = targetPosition-currentPlayer->pos;
+                        if(currentPlayer->pos == t){
+                            console("You have arrived at your destination.");
+                        }else if(distanceSquared(d, Point2Zero) <= 1){
+                            console("Your destination is next to you.");
+                        }
+                    }else{
+                        console("No expolored path found.");
                     }
                 }
 
             }  else if (in == Key::explore) {
-                if(controlMode == modeEntityPlayerControl){
+                if(controlMode == modePlayerControl){
                     timeout(fastTimeout);
                     console("Exploring... Press any key to stop.");
                     bool c = true;
@@ -761,114 +764,112 @@ namespace Ui {
                 }
 
             } else if (in == Key::inspect) {
-                if(controlMode == modeEntityPlayerControl){
+                if(controlMode == modePlayerControl){
                     changeMode(modeSelectPosition);
-                    selectMode = selectModeInspect;
-                    itemToBeUsedRange = 1000000;
                     if (!currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)) {
                         targetPosition = currentPlayer->pos;
                     }
                 } else if(controlMode == modeSelectPosition){
-                    if(selectMode == selectModeInspect){
-                        changeMode(modeEntityPlayerControl);
+                    changeMode(modePlayerControl);
 
-                        console("Inspecting...");
+                    console("Inspecting...");
 
-                        if(currentLevel->getExplored(targetPosition)){
+                    if(currentLevel->getExplored(targetPosition)){
 
-                            console(Utility::capitalize(currentLevel->tileAt(targetPosition)->getName()));
+                        console(Utility::capitalize(currentLevel->tileAt(targetPosition)->getName()));
 
-                            if(currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)){
-                                for(Entity* e : currentLevel->entityList){
-                                    if(!e->removed && e->pos == targetPosition){
-                                        if(Settings::debugMode){
-                                            console("Entity("+to_string(e->getEntityTypeId())+"): "+e->getName());
-                                        }
-
-                                        EntityAlive* a = dynamic_cast<EntityAlive*>(e);
-                                        if(a){
-                                            consolef("%s  HP:[%.0f/%.0f]", a->getName().c_str(), a->getHp(), a->getMaxHp());
-                                            EntityAi* eai = dynamic_cast<EntityAi*>(a);
-                                            if(eai){
-                                                ItemWeapon* w = eai->getActiveItemWeapon();
-                                                if(w){
-                                                    consolef("Weapon: %s  %.2f d/t (%.2f per %.2ft) ", damageTypeName(w->damageType).c_str(), w->baseDamage / w->useDelay, w->baseDamage, w->useDelay);
-                                                }
-                                            }
-                                            for(Weakness w : a->weaknesses){
-                                                if(w.multiplier > 1){
-                                                    consolef("%d%% Resistance to %s", (int)((1-w.multiplier)*100), damageTypeName(w.damageType).c_str());
-                                                }else if(w.multiplier < 1){
-                                                    consolef("%d%% Weakness to %s", (int)((w.multiplier-1)*100), damageTypeName(w.damageType).c_str());
-                                                }
-                                            }
-                                        }
-
+                        if(currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)){
+                            for(Entity* e : currentLevel->entityList){
+                                if(!e->removed && e->pos == targetPosition){
+                                    if(Settings::debugMode){
+                                        console("Entity("+to_string(e->getEntityTypeId())+"): "+e->getName());
                                     }
-                                }
-                                for(TileEntity* t : currentLevel->tileEntityList){
-                                    if(t->pos == targetPosition){
-                                        if(Settings::debugMode){
-                                            console("Tile Entity("+to_string(t->getTileEntityTypeId())+"): "+t->debugString());
-                                        }
-                                        switch (t->getTileEntityTypeId()) {
-                                            case TILE_ENTITY_TYPE_STAIR:{
-                                                TEStair* tes = dynamic_cast<TEStair*>(t);
-                                                consolef("Staircase going &%c%s", cc(C_LIGHT_CYAN), tes->up?"Up":"Down");
-                                                break;
-                                            }
 
-                                            default:
-                                                break;
+                                    EntityAlive* a = dynamic_cast<EntityAlive*>(e);
+                                    if(a){
+                                        consolef("%s  HP:[%.0f/%.0f]", a->getName().c_str(), a->getHp(), a->getMaxHp());
+                                        EntityAi* eai = dynamic_cast<EntityAi*>(a);
+                                        if(eai){
+                                            ItemWeapon* w = eai->getActiveItemWeapon();
+                                            if(w){
+                                                consolef("Weapon: %s  %.2f d/t (%.2f per %.2ft) ", damageTypeName(w->damageType).c_str(), w->baseDamage / w->useDelay, w->baseDamage, w->useDelay);
+                                            }
+                                        }
+                                        for(Weakness w : a->weaknesses){
+                                            if(w.multiplier > 1){
+                                                consolef("%d%% Resistance to %s", (int)((1-w.multiplier)*100), damageTypeName(w.damageType).c_str());
+                                            }else if(w.multiplier < 1){
+                                                consolef("%d%% Weakness to %s", (int)((w.multiplier-1)*100), damageTypeName(w.damageType).c_str());
+                                            }
                                         }
                                     }
+
                                 }
-                            }else{
-                                console("Area not in view");
+                            }
+                            for(TileEntity* t : currentLevel->tileEntityList){
+                                if(t->pos == targetPosition){
+                                    if(Settings::debugMode){
+                                        console("Tile Entity("+to_string(t->getTileEntityTypeId())+"): "+t->debugString());
+                                    }
+                                    switch (t->getTileEntityTypeId()) {
+                                        case TILE_ENTITY_TYPE_STAIR:{
+                                            TEStair* tes = dynamic_cast<TEStair*>(t);
+                                            consolef("Staircase going &%c%s", cc(C_LIGHT_CYAN), tes->up?"Up":"Down");
+                                            break;
+                                        }
+
+                                        default:
+                                            break;
+                                    }
+                                }
                             }
                         }else{
-                            console("Area Unexplored.");
+                            console("Area not in view");
                         }
+                    }else{
+                        console("Area Unexplored.");
                     }
                 }
             }else {
-                EquipSlot slot = slotNone;
+                int fav = -1;
                 for(int i=0;i<10;i++){
                     if(in == Key::favs[i]){
-                        slot = slotFav1 + i;
+                        fav = i;
                         break;
                     }
                 }
 
-                if(slot >= 0){
-                    Item* it = currentPlayer->getEquiped(slot);
+                if(fav >= 0){
+                    Item* it = currentPlayer->getFav(fav);
+                    
                     if(it){
-                        UseType use = it->getUseType();
-                        if (use == useInstant) {
-                            timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, it, false);
-                        } else if(use == useInWorld){
-                            ItemWeapon* wep = dynamic_cast<ItemWeapon*>(it);
-                            ItemRanged* rng = dynamic_cast<ItemRanged*>(it);
-                            if(!rng && wep){
-                                changeMode(modeSelectDirection);
-                                itemToBeUsed = it;
-                            }else{
-                                itemToBeUsedRange = 1000000;
-                                itemToBeUsed = it;
-                                if (!currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)) {
-                                    targetPosition = currentPlayer->pos;
+                        ItemEquipable* eqip = dynamic_cast<ItemEquipable*>(it);
+                        if(eqip){
+                            currentPlayer->equipItem(eqip);
+                        }else{
+                            UseType use = it->getUseType();
+                            if (use == useInstant) {
+                                timePassed += currentPlayer->interact(currentLevel, currentPlayer->pos, false, it, true);
+                            } else if(use == useInWorld){
+                                if(controlMode == modePlayerControl){
+                                    itemToBeUsed = it;
+                                    if (!currentLevel->canSee(currentPlayer->pos, targetPosition, currentPlayer->viewDistance)) {
+                                        targetPosition = currentPlayer->pos;
+                                    }
+                                    changeMode(modeSelectPosition);
+                                }else if(controlMode == modeSelectPosition){
+                                    ItemWeapon* wep = dynamic_cast<ItemWeapon*>(it);
+                                    timePassed += currentPlayer->interact(currentLevel, targetPosition, false, itemToBeUsed, wep?wep->baseDamage==0:true);
+                                    changeMode(modePlayerControl);
                                 }
-                                changeMode(modeSelectPosition);
-                                selectMode = selectModeAttack;
-                            }
-                        } else if(use == useInInventory){
-                            int i = -1;
-                            forVector(currentPlayer->inventory, i){
-                                if(currentPlayer->inventory[i] == it){
-
+                            } else if(use == useInInventory){
+                                int i=0;
+                                for(Item* item : currentPlayer->inventory){
+                                    if(item == it){
+                                        break;
+                                    }
+                                    i++;
                                 }
-                            }
-                            if(i >= 0){
                                 MenuUseInInv* m = new MenuUseInInv(currentPlayer, currentWorld, i);
                                 openMenu(m);
                             }
@@ -1100,7 +1101,7 @@ namespace Ui {
             int ic = 0;
 
             for(int i=0;i<10;i++){
-                if(currentPlayer->getEquiped(slotFav1+i)){
+                if(currentPlayer->getFav(i)){
                     f[i] = 'I';
                     ic ++;
                 }else{
@@ -1110,7 +1111,7 @@ namespace Ui {
             
             for(int i=0;i<10;i++){
                 if(f[i] == 'I'){
-                    Item* it = currentPlayer->getEquiped(slotFav1+i);
+                    Item* it = currentPlayer->getFav(i);
                     fw[i] = min((terminalSize.x - borderSize.x) / ic, (int)it->getName(it->qty!=1).size()+1);
                 }else{
                     fw[i] = 0;
@@ -1125,7 +1126,7 @@ namespace Ui {
             Ui::setColor(C_WHITE);
             
             for(int i=0;i<10;i++){
-                Item* it = currentPlayer->getEquiped(slotFav1+i);
+                Item* it = currentPlayer->getFav(i);
                 if(it){
                     string name = keyDisplayName(Key::favs[i]);
                     mvprintw(gameArea.y-2, x, "+%.*s%.*s%.*s+", (fw[i]-name.length())/2, dashes, name.length(), name.c_str(), (((fw[i]-name.length())%2==1)?1:0)+(fw[i]-name.length())/2-1, dashes);
@@ -1179,18 +1180,16 @@ namespace Ui {
     }
 
     void MenuGame::changeMode(int newMode) {
-        selectMode = selectModeNone;
         if (newMode == controlMode) {
             return;
         }
         switch (controlMode) {
-            case modeSelectDirection:
+            //case modeSelectDirection:
             case modeSelectPosition:
             case modeSelectEntity:
                 if(!targetPosition.inRange(viewPos, viewPos+gameArea)){
                     targetPosition = viewPos+(gameArea/2);
                 }
-                itemToBeUsedRange = -1;
                 itemToBeUsed = nullptr;
                 targetEntity = nullptr;
                 

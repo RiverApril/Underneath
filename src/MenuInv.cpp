@@ -70,16 +70,16 @@ namespace Ui {
             return;
         }else{
 
-            EquipSlot slot = slotNone;
+            int fav = -1;
             for(int i=0;i<10;i++){
                 if(in == Key::favs[i]){
-                    slot = slotFav1 + i;
+                    fav = i;
                     break;
                 }
             }
 
-            if(slot >= 0){
-                currentWorld->currentPlayer->equipItem(currentWorld->currentPlayer->inventory[selected], slot);
+            if(fav >= 0){
+                currentWorld->currentPlayer->setFav(currentWorld->currentPlayer->inventory[selected], fav);
             }
         }
     }
