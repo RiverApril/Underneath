@@ -122,8 +122,8 @@ namespace Tiles {
         tileLockedDoor = new Tile(new BasicIcon('%', C_LIGHT_MAGENTA, C_WHITE), "locked door", tileFlagSolidBoth | tileFlagSecretPathable, new BasicIcon('%', C_DARK_MAGENTA, C_DARK_GRAY));
 
         
-        tileSpikes = new Tile(new BasicIcon('x', C_WHITE, C_BLACK), "spikes", tileFlagNone);
-        tileBloodSpikes = new Tile(new BasicIcon('x', C_LIGHT_RED, C_BLACK), "bloody spikes", tileFlagNone);
+        tileSpikes = new Tile(new BasicIcon('x', C_WHITE, C_BLACK), "spikes", tileFlagHarmful);
+        tileBloodSpikes = new Tile(new BasicIcon('x', C_LIGHT_RED, C_BLACK), "bloody spikes", tileFlagHarmful);
         
         tileAlter = new Tile(new BasicIcon('A', C_WHITE, C_BLACK), "alter", tileFlagSolidOnGround);
         tileBrokenAlter = new Tile(new BasicIcon('A', C_DARK_GRAY, C_BLACK), "broken alter", tileFlagSolidOnGround);

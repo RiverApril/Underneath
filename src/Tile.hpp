@@ -27,8 +27,9 @@ enum TileFlag{
     tileFlagFlammable = 1 << 8,
     tileFlagIsTile = 1 << 9,
     tileFlagMonsterSpawningDoor = 1 << 10,
+    tileFlagHarmful = 1 << 11,
 
-    tileFlagAll = tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable | tileFlagFlammable | tileFlagIsTile | tileFlagMonsterSpawningDoor,
+    tileFlagAll = tileFlagSolidBoth | tileFlagDoor | tileFlagPathable | tileFlagSecretPathable | tileFlagHasTileEntity | tileFlagIndestructable | tileFlagReplaceable | tileFlagFlammable | tileFlagIsTile | tileFlagMonsterSpawningDoor | tileFlagHarmful,
 };
 
 inline TileFlag operator| (TileFlag a, TileFlag b){
