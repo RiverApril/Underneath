@@ -121,9 +121,9 @@ void EntityAi::moveAi(double time, Level* level) {
                 runToPos.x = pos.x + (rand() % viewDistance)-(viewDistance/2);
                 runToPos.y = pos.y + (rand() % viewDistance)-(viewDistance/2);
 
-                path = level->getPathTo(runToPos, pos, tileFlagIsTile, getSolidity(), true);
+                path = level->getPathTo(runToPos, pos, tileFlagIsTile, getSolidity() | tileFlagHarmful, true);
 
-                if(level->getPathTo(target->pos, runToPos, tileFlagIsTile, getSolidity(), false).size() < path.size()){
+                if(level->getPathTo(target->pos, runToPos, tileFlagIsTile, getSolidity() | tileFlagHarmful, false).size() < path.size()){
                     path.clear();
                 }
             };
@@ -206,9 +206,9 @@ void EntityAi::moveAi(double time, Level* level) {
             double dis = distanceSquared(target->pos, pos);
             double rng = r?(r->range * r->range):0;
             if (!r || (dis > rng || !canSeeTarget)) {
-                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, getSolidity(), true);
+                vector<Point2> path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, getSolidity() | tileFlagHarmful, true);
                 if(path.empty()){
-                    path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, getSolidity(), false);
+                    path = level->getPathTo(lastKnownTargetPos, pos, tileFlagIsTile, getSolidity() | tileFlagHarmful, false);
                 }
                 if(!path.empty()){
                     if(Settings::showFollowPaths){
@@ -242,7 +242,7 @@ void EntityAi::moveAi(double time, Level* level) {
                 for(int j=-1;j<=1;j++){
                     if(abs(i) != abs(j)){
                         Point2 p = pos+Point2(i, j);
-                        if(p != lastPos && level->tileAt(p)->doesNotHaveAnyOfFlags(getSolidity())){
+                        if(p != lastPos && level->tileAt(p)->doesNotHaveAnyOfFlags(getSolidity() | tileFlagHarmful)){
                             possibilities.push_back(Point2(i, j));
                         }
                     }

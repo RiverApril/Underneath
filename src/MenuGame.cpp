@@ -445,7 +445,7 @@ namespace Ui {
                     
                     double range = ranged ? ranged->range : 1.5; // just over sqrt(2) to satisfy float comparison
                     
-                    if(currentLevel->canSee(currentPlayer->pos, targetPosition, range)){
+                    if(us || currentLevel->canSee(currentPlayer->pos, targetPosition, range)){
                         timePassed += currentPlayer->interact(currentLevel, targetPosition, false, itemToBeUsed, w?w->baseDamage==0:true);
                     }
 
@@ -569,7 +569,7 @@ namespace Ui {
                 } else if(controlMode == modeSelectPosition){
                     Point2 t = targetPosition;
                     changeMode(modePlayerControl);
-                    vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, currentPlayer->getSolidity(), false, true);
+                    vector<Point2> path = currentLevel->getPathTo(t, currentPlayer->pos, tileFlagPathable, currentPlayer->getSolidity() | tileFlagHarmful, false, true);
                     path.push_back(t);
                     bool pathExplored = true;
                     if(!Settings::seeEverything){
@@ -694,7 +694,7 @@ namespace Ui {
 
                         for(Point2 p : possibilityList){
                             int actualLength;
-                            path = currentLevel->getPathTo(p, currentPlayer->pos, tileFlagPathable, currentPlayer->solidity, true, true, tileFlagAll, 1, &actualLength);
+                            path = currentLevel->getPathTo(p, currentPlayer->pos, tileFlagPathable, currentPlayer->solidity | tileFlagHarmful, true, true, tileFlagAll, 1, &actualLength);
                             if(actualLength > 0){
                                 bool nn = true;
                                 for(Point2 n : nexts){
