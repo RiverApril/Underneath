@@ -663,11 +663,16 @@ void EntityPlayer::save(vector<unsigned char>* data) {
     
     for(Item* item : favItems){
         if(item){
+            bool found = false;
             forVector(inventory, i) {
                 if (inventory[i] == item) {
                     Utility::saveInt(data, i);
+                    found = true;
                     break;
                 }
+            }
+            if(!found){
+                Utility::saveInt(data, -1);
             }
         }else{
             Utility::saveInt(data, -1);

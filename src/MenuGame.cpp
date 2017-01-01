@@ -447,6 +447,12 @@ namespace Ui {
                     
                     if(us || currentLevel->canSee(currentPlayer->pos, targetPosition, range)){
                         timePassed += currentPlayer->interact(currentLevel, targetPosition, false, itemToBeUsed, w?w->baseDamage==0:true);
+                    } else {
+                        if(distanceSquared(currentPlayer->pos, targetPosition) > range){
+                            consolef("&%cOut of range!", Ui::cc(C_LIGHT_RED));
+                        }else{
+                            consolef("&%cNo line of sight!", Ui::cc(C_LIGHT_RED));
+                        }
                     }
 
                     if(!(us && us->continuousUse)){

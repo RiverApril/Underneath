@@ -23,7 +23,8 @@ public:
     }
 
     ItemCombatSpell(int baseDamage, string name, int manaCost, double useDelay, int range) : ItemRanged(baseDamage, name, useDelay, range) {
-
+        
+        this->weaponType = wepMagic;
         this->baseDamage = baseDamage;
         this->damageType = damFire;
         this->manaCost = manaCost;

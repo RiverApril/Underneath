@@ -33,7 +33,7 @@ namespace Animator {
 
         level->currentWorld->menuGame->render(level->currentWorld->worldTime);
 
-        vector<Point2> line = Utility::plotLine(from, to);
+        vector<Point2> line = level->getPathTo(from, to, tileFlagNone, tileFlagSolidInAir, false, false);//Utility::plotLine(from, to);
 
         if(line.size() <= 2){
             return;
