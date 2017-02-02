@@ -850,7 +850,7 @@ bool EntityPlayer::equipItem(Item* newItem, EquipSlot slot){
 
                 for (int i = 0; i < abilityCount; i++) {
                     if (eqp->minimumAbilities[i] > abilities[i]) {
-                        consolef("Ability %s too high: %d", abilityAbr[i].c_str(), eqp->minimumAbilities[i]);
+                        consolef("Required ability %s too high: %d", abilityAbr[i].c_str(), eqp->minimumAbilities[i]);
                         throw false;
                     }
                 }
