@@ -14,7 +14,7 @@
 
 #define EFFECT_DELAY 1
 
-enum EffectId{effDamage, effHeal, effMultAttack, effMultRecivedDamage, effLSD, effMemory, effPurity, effStun};
+enum EffectId{effDamage, effHeal, effMultAttack, effMultRecivedDamage, effLSD, effMemory, effPurity, effStun, effMultiMoveDelay};
 
 struct Effect {
     Effect();

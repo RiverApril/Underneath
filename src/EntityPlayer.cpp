@@ -934,6 +934,11 @@ void EntityPlayer::updateVariablesForAbilities() {
     strMult = 1 + (((double) abilities[iSTR]*0.075));
     dexMult = 1 + (((double) abilities[iDEX]*0.075));
     intMult = 1 + (((double) abilities[iINT]*0.075));
+    for(Effect eff : effects){
+        if(eff.eId == effMultiMoveDelay){
+            moveDelay *= eff.power;
+        }
+    }
 }
 
 int EntityPlayer::xpForLevel(int l){
@@ -1027,6 +1032,10 @@ void EntityPlayer::setFav(Item* item, int fav){
         }
     }
     favItems[fav] = item;
+}
+
+void EntityPlayer::effectsChanged(){
+    updateVariablesForAbilities();
 }
 
 
