@@ -67,6 +67,8 @@ public:
     void addEffect(Effect e);
 
     bool hasEffect(EffectId eid);
+    
+    virtual void effectsChanged();
 
     virtual double heal(double amount, bool overload);
 

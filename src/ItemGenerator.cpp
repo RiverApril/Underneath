@@ -31,8 +31,7 @@ namespace ItemGenerator {
     vector<BombBase*> bombBaseList;
 
     vector<PotionBase*> potionList;
-    vector<int> potionChanceList;
-
+    
     vector<EnchantmentBase*> armorEnchantmentList;
     vector<EnchantmentBase*> weaponEnchantmentList;
 
@@ -46,6 +45,7 @@ namespace ItemGenerator {
     PotionBase* potionElementalDefense;
     PotionBase* potionPhysicalAttack;
     PotionBase* potionElementalAttack;
+    PotionBase* potionMovementSpeed;
 
     PotionBase* potionRemoveBad;
 
@@ -124,38 +124,42 @@ namespace ItemGenerator {
         //repairHammer = new ExactItemBase(r);
         
 
-        potionHealth = atl(new PotionBase({{"Health Potion"}}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100), 100);
-        potionMana = atl(new PotionBase({{"Mana Potion"}}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100), 80);
+        potionHealth = atl(new PotionBase({{"Health Potion"}}, {EffIdMeta(effHeal, 0)}, 0, 0, 5, 100));
+        potionMana = atl(new PotionBase({{"Mana Potion"}}, {EffIdMeta(effHeal, 1)}, 0, 0, 5, 100));
 
-        potionRegen = atl(new PotionBase({{"Regeneration Potion"}}, {EffIdMeta(effHeal, 0)}, 2, 30, 1, 10), 60);
-        potionManaRegen = atl(new PotionBase({{"Mana Regeneration Potion"}}, {EffIdMeta(effHeal, 1)}, 2, 30, 1, 10), 50);
+        potionRegen = atl(new PotionBase({{"Regeneration Potion"}}, {EffIdMeta(effHeal, 0)}, 2, 30, 1, 10));
+        potionManaRegen = atl(new PotionBase({{"Mana Regeneration Potion"}}, {EffIdMeta(effHeal, 1)}, 2, 30, 1, 10));
 
         potionPhysicalDefense = atl(new PotionBase({{"Physical Defense Potion"}}, {
             EffIdMeta(effMultRecivedDamage, damPierce),
             EffIdMeta(effMultRecivedDamage, damSharp),
         	EffIdMeta(effMultRecivedDamage, damBlunt)
-        }, 4, 60, .9, .5, false), 50);
+        }, 4, 60, .9, .5, false));
 
         potionElementalDefense = atl(new PotionBase({{"Elemental Defense Potion"}}, {
             EffIdMeta(effMultRecivedDamage, damFire),
             EffIdMeta(effMultRecivedDamage, damIce),
             EffIdMeta(effMultRecivedDamage, damShock)
-        }, 2, 30, .9, .7, false), 25);
+        }, 2, 30, .9, .7, false));
 
         potionPhysicalAttack = atl(new PotionBase({{"Physical Attack Potion"}}, {
             EffIdMeta(effMultAttack, damPierce),
             EffIdMeta(effMultAttack, damSharp),
             EffIdMeta(effMultAttack, damBlunt)
-        }, 4, 60, 1.1, 2, false), 50);
+        }, 4, 60, 1.1, 2, false));
 
         potionElementalAttack = atl(new PotionBase({{"Elemental Attack Potion"}}, {
             EffIdMeta(effMultAttack, damFire),
             EffIdMeta(effMultAttack, damIce),
             EffIdMeta(effMultAttack, damShock)
-        }, 2, 30, 1.1, 2, false), 25);
+        }, 2, 30, 1.1, 2, false));
+        
+        potionMovementSpeed = atl(new PotionBase({{"Speed Potion"}}, {
+            EffIdMeta(effMultiMoveDelay, 0)
+        }, 10, 40, 0.2, 0.8, false));
 
         //PotionBase potionPreventBad = atl(PotionBase({{"Purity Potion"}}, {EffIdMeta(effPurity, 0)}, 3, 30, 0, 0, false), 5);
-        potionRemoveBad = atl(new PotionBase({{"Clensing Potion"}}, {EffIdMeta(effPurity, 0)}, 0, 0, 0, 0, false), 10);
+        potionRemoveBad = atl(new PotionBase({{"Clensing Potion"}}, {EffIdMeta(effPurity, 0)}, 0, 0, 0, 0, false));
 
         /*PotionBase potionOrganicDefense = atl(PotionBase({"Organic Defense Potion"}, {
             EffIdMeta(effBuffDefense, damPoison),
@@ -365,9 +369,8 @@ namespace ItemGenerator {
         return w;
     }
 
-    PotionBase* atl(PotionBase* p, int of100) {
+    PotionBase* atl(PotionBase* p) {
         potionList.push_back(p);
-        potionChanceList.push_back(of100);
         return p;
     }
 
@@ -994,6 +997,7 @@ namespace ItemGenerator {
             loots.emplace_back(45, potionRemoveBad);
             loots.emplace_back(50, potionPhysicalAttack);
             loots.emplace_back(50, potionPhysicalDefense);
+            loots.emplace_back(50, potionMovementSpeed);
 
             loots.emplace_back(40, scrollRelocate);
             loots.emplace_back(40, scrollRemoteUse);

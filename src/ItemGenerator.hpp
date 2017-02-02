@@ -293,7 +293,7 @@ namespace ItemGenerator {
     ArmorBase* atl(ArmorBase* a);
     //Condition* atl(Condition* c);
     WeaponBase* atl(WeaponBase* w);
-    PotionBase* atl(PotionBase* p, int of100);
+    PotionBase* atl(PotionBase* p);
     ScrollBase* atl(ScrollBase* s);
     BombBase* atl(BombBase* b);
 
@@ -309,7 +309,6 @@ namespace ItemGenerator {
     extern vector<WeaponBase*> weaponList;
     extern vector<ScrollBase*> scrollList;
     extern vector<PotionBase*> potionList;
-    extern vector<int> potionChanceList;
     extern vector<BombBase*> bombBaseList;
 
     extern vector<EnchantmentBase*> armorEnchantmentList;
@@ -329,6 +328,7 @@ namespace ItemGenerator {
     extern PotionBase* potionElementalDefense;
     extern PotionBase* potionPhysicalAttack;
     extern PotionBase* potionElementalAttack;
+    extern PotionBase* potionMovementSpeed;
 
     extern PotionBase* potionRemoveBad;
 

@@ -25,6 +25,8 @@ public:
     EntityPlayer(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities);
 
     ~EntityPlayer();
+    
+    virtual void effectsChanged();
 
     bool update(double deltaTime, double time, Level* world);
 
@@ -98,7 +100,7 @@ public:
     virtual bool removeItem(Item* item, bool deleteItem);
 
     void updateVariablesForAbilities();
-
+    
     Abilities<int> abilities;
     int abilityPoints = 0;
     int level = 0;

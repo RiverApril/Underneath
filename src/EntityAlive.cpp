@@ -105,6 +105,7 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
             if (e->timeLeft <= 0) {
                 effects.erase(effects.begin()+(long) i);
                 i--;
+                effectsChanged();
                 continue;
             }
             debug(e->toString());
@@ -118,6 +119,7 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
                     e->timeLeft = 0;
                     effects.erase(effects.begin()+(long) i);
                     i--;
+                    effectsChanged();
                     continue;
                 }
 
@@ -191,6 +193,7 @@ void EntityAlive::addEffect(Effect e) {
         }
     }
     effects.push_back(e);
+    effectsChanged();
 }
 
 bool EntityAlive::hasEffect(EffectId eid){
@@ -200,6 +203,10 @@ bool EntityAlive::hasEffect(EffectId eid){
         }
     }
     return false;
+}
+
+void EntityAlive::effectsChanged(){
+    
 }
 
 double EntityAlive::heal(double amount, bool overload) {
