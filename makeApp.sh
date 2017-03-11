@@ -1,18 +1,19 @@
 #!/bin/bash
 rm -rf $@.app
 mkdir -p $@.app
-mkdir -p $@.app/lib
-mkdir -p $@.app/MacOS
-mkdir -p $@.app/Resources
-cp $@ $@.app/MacOS/
-cp font.png $@.app/Resources/
-cp -r audio $@.app/Resources/
-cp icon.icns $@.app/Resources/
-chmod a+x $@.app/MacOS/$@
+mkdir -p $@.app/Contents
+mkdir -p $@.app/Contents/lib
+mkdir -p $@.app/Contents/MacOS
+mkdir -p $@.app/Contents/Resources
+cp $@ $@.app/Contents/MacOS/
+cp font.png $@.app/Contents/Resources/
+cp -r audio $@.app/Contents/Resources/
+cp icon.icns $@.app/Contents/Resources/
+chmod a+x $@.app/Contents/MacOS/$@
 otool -L $@ | awk '{if(NR>1)print}' | while read -r line ; do
     file=${line%%'('*}
-    cp $file ./$@.app/lib/
-    install_name_tool -change $file ../lib/$file $@.app/MacOS/$@
+    cp $file ./$@.app/Contents/lib/
+    install_name_tool -change $file ../lib/$file $@.app/Contents/MacOS/$@
 done
 
 text="
@@ -33,4 +34,4 @@ text="
 "
 
 
-printf "$text" > $@.app/Info.plist
+printf "$text" > $@.app/Contents/Info.plist
