@@ -29,7 +29,9 @@ namespace Settings{
     vector<Setting*> settingList = {
         new SettingBool("Auto Save", &autoSave),
         new SettingIntFormat([]{return Settings::autoSave;}, "Auto Save Delay", &autoSaveDelay, 0, 1000, 5, "%d"+string(SYMBOL_TIME)),
+#ifdef useSDLAudio
         new SettingIntFormat("Music Volume", &musicVolume, 0, 100, 5, "%d%%"),
+#endif
         new SettingLabel(""),
         new SettingExe("Reset Settings", [](Ui::Menu* menu){
             menu->openMenu(new Ui::MenuYesNo("Are you sure you want to reset all settings?", [](yesNo answer){
