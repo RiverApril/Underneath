@@ -31,8 +31,10 @@ struct TEAlter : public TileEntity {
     }
     
     virtual string debugString(){
-        return pos.toString();
+        return pos.toString() + ", offerIndex: "+to_string(offerIndex);
     }
+
+    int offerIndex = -1;
     
     virtual void save(vector<unsigned char>* data);
     

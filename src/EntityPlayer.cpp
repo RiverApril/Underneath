@@ -25,6 +25,7 @@
 #include "ItemAreaOfEffectWeapon.hpp"
 #include "EntityMulti.hpp"
 #include "TEAlter.hpp"
+#include "Offers.hpp"
 
 EntityPlayer::EntityPlayer() : EntityPlayer("", ' ', Point2Zero, C_WHITE, Abilities<int>()) {
 
@@ -344,7 +345,11 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                         {
                             if(tid == Tiles::tileAlter->getIndex()){
                                 TEAlter* tea = dynamic_cast<TEAlter*>(te);
-                                
+                                if(tea->offerIndex != -1){
+                                    Offers::offers[tea->offerIndex]->presentOffering(level->currentWorld->menuGame);
+                                    level->removeTileEntity(tea);
+                                    level->setTile(posOfTile, Tiles::tileBrokenAlter);
+                                }
                             }
                         }
                     }

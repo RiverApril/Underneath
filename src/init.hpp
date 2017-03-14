@@ -19,6 +19,7 @@
 #include "Settings.hpp"
 #include "Random.hpp"
 #include "Audio.hpp"
+#include "Offers.hpp"
 
 
 Ui::MenuMain* mainMenu;
@@ -77,6 +78,7 @@ bool* init(int argc, char* argv[]){
     Ui::initNCurses(false);
     Commands::initCommands();
     EnemyGenerator::initEnemies();
+    Offers::initOffers();
     Random::setup();
     Audio::initAudio();
 

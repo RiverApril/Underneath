@@ -12,6 +12,7 @@
 #include "ItemSpecial.hpp"
 #include "ItemExplosive.hpp"
 #include "MenuGame.hpp"
+#include "Offers.hpp"
 
 World::World(string n) {
     levels = vector<string>();
@@ -100,6 +101,10 @@ namespace WorldLoader {
 
                     string currentLevelName = Utility::loadString(data, position);
                     //int playerUniqueId = Utility::loadInt(data, position);
+                    
+                    for(size_t j = 0; j < Offers::offers.size(); j++){
+                        Offers::offers[j]->usedUp = Utility::loadBool(data, position);
+                    }
 
                     world->currentLevel = nullptr;
 
@@ -220,6 +225,10 @@ namespace WorldLoader {
 
             Utility::saveString(data, loadedWorld->currentLevel->getName());
             //Utility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
+            
+            for(size_t j = 0; j < Offers::offers.size(); j++){
+                Utility::saveBool(data, Offers::offers[j]->usedUp);
+            }
 
             for (size_t j = 0; j < loadedWorld->levels.size(); j++) {
                 Utility::saveString(data, loadedWorld->levels[j]);
