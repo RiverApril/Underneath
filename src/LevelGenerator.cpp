@@ -9,6 +9,8 @@
 #include "LevelGenerator.hpp"
 #include "EnemyGenerator.hpp"
 #include "EntityShop.hpp"
+#include "TEAlter.hpp"
+#include "Offers.hpp"
 
 
 Point2 Level::generateStartArea(Point2 stairUpPos, string previousLevel, string nextLevel){
@@ -256,6 +258,14 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel, string ne
                 TEChest* te = new TEChest(Point2(i, j));
                 //te->addItems(ItemGenerator::createRandLoots(difficulty, difficulty * 100, 5, 5, 5, 10));
                 te->lootProfileIndex = ItemGenerator::lootProfileChest;
+                tileEntityList.push_back(te);
+                chestCount++;
+                continue;
+            }
+
+            if (tileGrid[i][j].index == (int8_t) Tiles::tileAlter->getIndex()) {
+                TEAlter* te = new TEAlter(Point2(i, j));
+                te->offerIndex = rand()%Offers::offers.size();
                 tileEntityList.push_back(te);
                 chestCount++;
                 continue;

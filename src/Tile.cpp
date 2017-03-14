@@ -125,7 +125,7 @@ namespace Tiles {
         tileSpikes = new Tile(new BasicIcon('x', C_WHITE, C_BLACK), "spikes", tileFlagHarmful);
         tileBloodSpikes = new Tile(new BasicIcon('x', C_LIGHT_RED, C_BLACK), "bloody spikes", tileFlagHarmful);
         
-        tileAlter = new Tile(new BasicIcon('A', C_WHITE, C_BLACK), "alter", tileFlagSolidOnGround);
+        tileAlter = new Tile(new BasicIcon('A', C_WHITE, C_BLACK), "alter", tileFlagSolidOnGround | tileFlagHasTileEntity);
         tileBrokenAlter = new Tile(new BasicIcon('A', C_DARK_GRAY, C_BLACK), "broken alter", tileFlagSolidOnGround);
 
         tileStairUp = new Tile(new BasicIcon('^',  C_LIGHT_GREEN, bg), "stair up", tileFlagPathable | tileFlagHasTileEntity | tileFlagIndestructable);
