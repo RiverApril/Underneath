@@ -1,3 +1,5 @@
+./i686-w64-mingw32-windres icon.rc icon.o
+
 ./build.py -w --use32
 ./build.py -ws --use32
 
