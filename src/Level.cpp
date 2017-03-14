@@ -42,6 +42,20 @@ Level::Level(World* w, string n, Point2 s, int d, int p) {
 }
 
 Level::~Level() {
+    
+    while (removeEntityList.size() > 0) {
+        actuallyRemoveEntityUnsafe(removeEntityList[0], false);
+        removeEntityList.erase(removeEntityList.begin());
+    }
+    while (deleteEntityList.size() > 0) {
+        actuallyRemoveEntityUnsafe(deleteEntityList[0], true);
+        deleteEntityList.erase(deleteEntityList.begin());
+    }
+    while (deleteTileEntityList.size() > 0) {
+        actuallyRemoveTileEntityUnsafe(deleteTileEntityList[0]);
+        deleteTileEntityList.erase(deleteTileEntityList.begin());
+    }
+    
     for (Entity* e : entityList) {
         if(e){
         	delete e;
@@ -49,33 +63,12 @@ Level::~Level() {
     }
     entityList.clear();
 
-    for (Entity* e : deleteEntityList) {
-        if(e){
-        	delete e;
-        }
-    }
-    deleteEntityList.clear();
-
-    for (Entity* e : removeEntityList) {
-        if(e){
-        	delete e;
-        }
-    }
-    removeEntityList.clear();
-
     for (TileEntity* e : tileEntityList) {
         if(e){
         	delete e;
         }
     }
     tileEntityList.clear();
-
-    for (TileEntity* e : deleteTileEntityList) {
-        if(e){
-        	delete e;
-        }
-    }
-    deleteTileEntityList.clear();
 
 
 }
