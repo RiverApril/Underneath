@@ -57,9 +57,11 @@ if args.use64 and args.use32:
 
 if args.use64:
     build64Bit = True
+    build32Bit = False
 
 if args.use32:
     build32Bit = True
+    build64Bit = False
 
 if systemName=="Windows":
     if args.windows:
@@ -117,7 +119,7 @@ if args.SDLAudio:
 if args.windows:
 
     if systemName == "Darwin":
-        compiler = "i586-mingw32-c++"
+        compiler = "i686-w64-mingw32-c++"
         compilerFlags += " -D WIN32"
     elif systemName == "Linux":
         compiler = "i686-w64-mingw32-c++"
