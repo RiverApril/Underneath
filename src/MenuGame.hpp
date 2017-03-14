@@ -75,6 +75,9 @@ namespace Ui {
 #define fadeInMax 100
 #define fadeInMin 0
         int fadeIn = fadeInMin;
+        int rumble = 0;
+        int rumbleX = 0;
+        int rumbleY = 0;
 
         int timeSinceTimePassed = 0;
 

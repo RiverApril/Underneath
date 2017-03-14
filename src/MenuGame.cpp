@@ -197,6 +197,10 @@ namespace Ui {
     }
 
     void MenuGame::drawTileAt(Point2 p) {
+        if(rumble > 0){
+            p.x += rumbleX;
+            p.y += rumbleY;
+        }
         Ui::Color fg = C_LIGHT_RED;
         Ui::Color bg = C_BLACK;
         char symbol = ' ';
@@ -912,6 +916,8 @@ namespace Ui {
                     } else if (in == 'P') {
                         currentPlayer->changeSpecial(specialPoolHpMp, !currentPlayer->specials[specialPoolHpMp]);
                         
+                    } else if (in == 'O') {
+                        rumble+=50;
                     }
                 }
             }
@@ -967,6 +973,12 @@ namespace Ui {
 
         if(fadeIn < fadeInMax){
             fadeIn++;
+        }
+
+        if(rumble > 0){
+            rumbleX = rand()%2;
+            rumbleY = rand()%2;
+            rumble--;
         }
 
         for (int j = 0; j < gameArea.y; j++) {
