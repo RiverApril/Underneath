@@ -24,6 +24,7 @@
 #include "Settings.hpp"
 #include "ItemAreaOfEffectWeapon.hpp"
 #include "EntityMulti.hpp"
+#include "TEAlter.hpp"
 
 EntityPlayer::EntityPlayer() : EntityPlayer("", ' ', Point2Zero, C_WHITE, Abilities<int>()) {
 
@@ -336,6 +337,14 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                                 cw->menuGame->levelHasChanged();
                                 //level no longer the currentLevel
                                 return delay;
+                            }
+                        }
+                            
+                        case TILE_ENTITY_TYPE_ALTER:
+                        {
+                            if(tid == Tiles::tileAlter->getIndex()){
+                                TEAlter* tea = dynamic_cast<TEAlter*>(te);
+                                
                             }
                         }
                     }
