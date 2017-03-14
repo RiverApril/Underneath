@@ -15,6 +15,11 @@
 #include "Abilities.hpp"
 #include "ItemArmor.hpp"
 
+enum Special{
+    specialPoolHpMp,
+    specialCOUNT
+};
+
 class EntityPlayer : public EntityAlive {
 public:
 
@@ -58,14 +63,12 @@ public:
 
     double hurtMiddleStep(Level* level, DamageType damageType, double damageMultiplier);
 
-    virtual double heal(double amount, bool overload) {
-        double a = EntityAlive::heal(amount, overload);
-        return a;
+    virtual void heal(double amount) {
+        EntityAlive::heal(amount);
     }
 
-    virtual double healMana(double amount, bool overload) {
-        double a = EntityAlive::healMana(amount, overload);
-        return a;
+    virtual void healMana(double amount) {
+        EntityAlive::healMana(amount);
     }
 
     virtual void setActiveItemWeapon(ItemWeapon* newItemWeapon);
@@ -94,6 +97,8 @@ public:
         return equipedItems[slot];
     }
     
+    virtual void changeSpecial(Special sp, bool enable);
+    
     Item* getFav(int fav);
     void setFav(Item* item, int fav);
 
@@ -106,6 +111,8 @@ public:
     int level = 0;
     double xp = 0;
     double nextLevelXp = 0;
+    
+    vector<bool> specials = vector<bool>(specialCOUNT);
 
     //                                           STR     DEX     INT     AGI     CON     WIS     LUK
     Abilities<int> maxAbilities = Abilities<int>(999999, 999999, 999999, 999999, 999999, 999999, 999999);

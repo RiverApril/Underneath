@@ -280,14 +280,14 @@ bool EntityMulti::update(double deltaTime, double time, Level* level){
 
 void EntityMulti::dropLoots(Level* level){
     
-    int xp = rand() % (int) maxHp;
+    int xp = rand() % (int) getMaxHp();
     Verbalizer::defeatedEnemy(this, xp);
     
     if(level->currentWorld->currentPlayer){
         level->currentWorld->currentPlayer->gainXp(xp);
     }
     
-    vector<Item*> drops = ItemGenerator::makeLoot(ItemGenerator::lootProfileBoss, level->getDifficulty(), rand()%(int)(maxHp*max(1, level->getDifficulty())), 10, 20, 5);
+    vector<Item*> drops = ItemGenerator::makeLoot(ItemGenerator::lootProfileBoss, level->getDifficulty(), rand()%(int)(getMaxHp()*max(1, level->getDifficulty())), 10, 20, 5);
     for(Item* i : drops){
         level->newEntity(new EntityItem(i, pos));
     }

@@ -41,20 +41,20 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
     } else {
         Tile* tile = level->tileAt(pos);
         if(tile->hasAnyOfFlags(solidity)){
-            hurt(level, damSuffocation, maxHp * maxHp);
+            hurt(level, damSuffocation, getMaxHp() * getMaxHp());
         }else if(tile->getIndex() == Tiles::tileFire->getIndex()){
             addEffect(Effect(effDamage, Random::randDouble(4, 8), 1, damFire));
         }
 
         int r = (int)(((double)hp/maxHp)*100.0);
-        if(hp<maxHp && ((int)hp)>0 && rand() % (r==0?1:r) == 0){
+        if(getHp()<getMaxHp() && ((int)getHp())>0 && rand() % (r==0?1:r) == 0){
             if(tile->hasAllOfFlags(tileFlagReplaceable)){
                 level->setTile(pos, Tiles::tileBloodFloor);
             }
         }
         
-        heal((healMultiplier*healBase)*deltaTime, false);
-        healMana((healManaMultiplier*healManaBase)*deltaTime, false);
+        heal((healMultiplier*healBase)*deltaTime);
+        healMana((healManaMultiplier*healManaBase)*deltaTime);
             
         healMultiplier *= 1+(.01*deltaTime);
         healManaMultiplier *= 1+(.01*deltaTime);
@@ -82,9 +82,9 @@ bool EntityAlive::update(double deltaTime, double time, Level* level) {
                     break;
                 case effHeal:
                     if ((int)e->meta == 0) {
-                        heal(e->power * m, e->timeLeft == 0);
+                        heal(e->power * m);
                     } else if ((int)e->meta == 1) {
-                        healMana(e->power * m, e->timeLeft == 0);
+                        healMana(e->power * m);
                     }
                     break;
                 case effMultAttack:
@@ -164,8 +164,9 @@ double EntityAlive::hurt(Level* level, DamageType damageType, double amount, dou
         consolef("Dodged!");
     }*/
 
-    hp -= amount;
-    if (hp <= 0 && !dead) {
+    changeHp(-amount);
+    //hp -= amount;
+    if (getHp() <= 0 && !dead) {
         die();
     }
     return amount;
@@ -209,32 +210,18 @@ void EntityAlive::effectsChanged(){
     
 }
 
-double EntityAlive::heal(double amount, bool overload) {
+void EntityAlive::heal(double amount) {
     if (dead) {
-        return 0;
+        return;
     }
-    hp += amount;
-    if (hp > maxHp && !overload) {
-        double a = amount - (hp - maxHp);
-        hp = maxHp;
-        return a;
-    }
-
-    return amount;
+    changeHp(amount);
 }
 
-double EntityAlive::healMana(double amount, bool overload) {
+void EntityAlive::healMana(double amount) {
     if (dead) {
-        return 0;
+        return;
     }
-    mp += amount;
-    if (mp > maxMp && !overload) {
-        double a = amount - (mp - maxMp);
-        mp = maxMp;
-        return a;
-    }
-
-    return amount;
+    changeMp(amount);
 }
 
 EntityAlive* EntityAlive::cloneUnsafe(EntityAlive* oldE, EntityAlive* newE) {
