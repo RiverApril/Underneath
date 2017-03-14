@@ -36,8 +36,7 @@ EntityPlayer::EntityPlayer(string name, char icon, Point2 startPos, Ui::Color co
     for (int i = 0; i < abilityCount; i++) {
         setNextLevelXp();
     }
-    hp = maxHp;
-    mp = maxMp;
+    setHpAndMpToMax();
 }
 
 EntityPlayer::~EntityPlayer() {
@@ -159,8 +158,8 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
             int use = 0;
             if (s->manaCost == -1) {
                 use = 2;
-            } else if (mp >= s->manaCost) {
-                mp -= s->manaCost;
+            } else if (getMp() >= s->manaCost) {
+                changeMp(-s->manaCost);
                 use = 1;
             }
             if (use) {
@@ -289,11 +288,11 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                 } else if(!level->canSee(pos, posOfTile, aoe->range)){
                     consolef("&%cNo line of sight!", Ui::cc(C_LIGHT_RED));
                     return 0;
-                } else if(mp < aoe->manaCost){
+                } else if(getMp() < aoe->manaCost){
                     consolef("&%cNot enough mana!", Ui::cc(C_LIGHT_RED));
                     return 0;
                 } else {
-                    mp -= aoe->manaCost;
+                    changeMp(-aoe->manaCost);
                     BasicIcon* icon = new BasicIcon('*', damageTypeColor(weapon->damageType), C_BLACK);
                     Animator::renderRangedAttack(pos, posOfTile, icon, level, 4);
                     Animator::renderExposion(posOfTile, aoe->radius, level, 1, aoe->damageType);
@@ -523,8 +522,8 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
             }
 
             if (spell) {
-                if (mp >= spell->manaCost) {
-                    mp -= spell->manaCost;
+                if (getMp() >= spell->manaCost) {
+                    changeMp(-spell->manaCost);
 
                     timeSinceCombat = 0;
                     double d = a->hurt(level, spell, x + 1);
@@ -926,8 +925,8 @@ void EntityPlayer::updateVariablesForAbilities() {
     healManaBase = 1 + (abilities[iWIS]*0.01);
     interactDelay = max(.1*pow(0.99, abilities[iAGI]), 0.0001);
 
-    maxHp = 100 + (abilities[iCON] * 5);
-    maxMp = 0 + (abilities[iWIS] * 5);
+    setMaxHp(100 + (abilities[iCON] * 5));
+    setMaxMp(0 + (abilities[iWIS] * 5));
 
     dodgeChance = max(1*pow(0.995, abilities[iAGI]), 0.0001);
 
@@ -1037,5 +1036,16 @@ void EntityPlayer::setFav(Item* item, int fav){
 void EntityPlayer::effectsChanged(){
     updateVariablesForAbilities();
 }
+
+void EntityPlayer::changeSpecial(Special sp, bool enable){
+    if(enable == specials[sp]){
+        return;
+    }
+    specials[sp] = enable;
+    if(sp == specialPoolHpMp){
+        setPoolHpMp(enable);
+    }
+}
+
 
 

@@ -898,17 +898,20 @@ namespace Ui {
                         currentPlayer->hurt(currentLevel, damDebug, 1);
 
                     } else if (in == ']') {
-                        currentPlayer->heal(1, true);
+                        currentPlayer->heal(1);
 
                     } else if (in == '{') {
                         currentPlayer->hurt(currentLevel, damDebug, 10);
 
                     } else if (in == '}') {
-                        currentPlayer->heal(10, true);
+                        currentPlayer->heal(10);
 
                     } else if (in == 'D') {
                         openMenu(new MenuDebug());
 
+                    } else if (in == 'P') {
+                        currentPlayer->changeSpecial(specialPoolHpMp, !currentPlayer->specials[specialPoolHpMp]);
+                        
                     }
                 }
             }
@@ -992,30 +995,49 @@ namespace Ui {
 
             p = currentPlayer->pos;
             mvprintw(a, gameArea.x + 1, "%s", currentPlayer->getName().c_str());
-
+            
             const int hp = roundToInt(currentPlayer->getHp());
             const int maxHp = roundToInt(currentPlayer->getMaxHp());
-            const int mp = roundToInt(currentPlayer->getMp());
-            const int maxMp = roundToInt(currentPlayer->getMaxMp());
-
-            a++;
-
-            move(a, gameArea.x + 1);
-            clrtoeol();
-
-            a += printMultiLineString(a, gameArea.x + 1, formatString("HP: %d/%d", hp, maxHp));
-            Ui::setColor((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN);
-            printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 1)).c_str());
-            Ui::setColor(C_WHITE);
-
-            move(a, gameArea.x + 1);
-            clrtoeol();
-
-            if(maxMp > 0){
-                a += printMultiLineString(a, gameArea.x + 1, formatString("MP: %d/%d", mp, maxMp));
-                Ui::setColor(C_LIGHT_BLUE);
-                printw(" %s", Utility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 1)).c_str());
+            
+            if(currentPlayer->specials[specialPoolHpMp]){
+                
+                a++;
+                
+                move(a, gameArea.x + 1);
+                clrtoeol();
+                
+                a += printMultiLineString(a, gameArea.x + 1, formatString("HP+MP: %d/%d", hp, maxHp));
+                Ui::setColor((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_BLUE);
+                printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 1)).c_str());
                 Ui::setColor(C_WHITE);
+                
+                move(a, gameArea.x + 1);
+                clrtoeol();
+                
+            }else{
+
+                const int mp = roundToInt(currentPlayer->getMp());
+                const int maxMp = roundToInt(currentPlayer->getMaxMp());
+
+                a++;
+
+                move(a, gameArea.x + 1);
+                clrtoeol();
+
+                a += printMultiLineString(a, gameArea.x + 1, formatString("HP: %d/%d", hp, maxHp));
+                Ui::setColor((hp < (maxHp / 3 * 2)) ? ((hp < (maxHp / 3)) ? C_LIGHT_RED : C_LIGHT_YELLOW) : C_LIGHT_GREEN);
+                printw(" %s", Utility::makeBar(hp, maxHp, (terminalSize.x - getcurx(stdscr) - 1)).c_str());
+                Ui::setColor(C_WHITE);
+
+                move(a, gameArea.x + 1);
+                clrtoeol();
+
+                if(maxMp > 0){
+                    a += printMultiLineString(a, gameArea.x + 1, formatString("MP: %d/%d", mp, maxMp));
+                    Ui::setColor(C_LIGHT_BLUE);
+                    printw(" %s", Utility::makeBar(mp, maxMp, (terminalSize.x - getcurx(stdscr) - 1)).c_str());
+                    Ui::setColor(C_WHITE);
+                }
             }
 
             for (size_t i = 0; i < currentPlayer->effects.size(); i++) {

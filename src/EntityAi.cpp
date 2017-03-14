@@ -78,12 +78,12 @@ void EntityAi::moveAi(double time, Level* level) {
 
     if(ai & aiAttackAndFleeAtLowHealth){
         if(ai & aiFlee){
-            if((hp/maxHp) > healthPercentUpperBoundry){
+            if((getHp()/getMaxHp()) > healthPercentUpperBoundry){
                 ai -= aiFlee;
                 ai |= aiAttack;
             }
         }else if(ai & aiAttack){
-            if((hp/maxHp) < healthPercentLowerBoundry){
+            if((getHp()/getMaxHp()) < healthPercentLowerBoundry){
                 ai -= aiAttack;
                 ai |= aiFlee;
             }
@@ -387,7 +387,7 @@ void EntityAi::dropLoots(Level* level){
         return;
     }
 
-    int xp = rand() % (int) maxHp;
+    int xp = rand() % (int) getMaxHp();
     Verbalizer::defeatedEnemy(this, xp);
 
     if(level->currentWorld->currentPlayer){
@@ -430,7 +430,7 @@ void EntityAi::dropLoots(Level* level){
             er = 3;
         }
     }
-    vector<Item*> drops = ItemGenerator::makeLoot(lootProfileIndex, level->getDifficulty(), rand()%(int)(maxHp*max(1, level->getDifficulty())), minLootDrop, maxLootDrop+ll, er);
+    vector<Item*> drops = ItemGenerator::makeLoot(lootProfileIndex, level->getDifficulty(), rand()%(int)(getMaxHp()*max(1, level->getDifficulty())), minLootDrop, maxLootDrop+ll, er);
     for(Item* i : drops){
         level->newEntity(new EntityItem(i, pos));
     }

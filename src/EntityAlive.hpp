@@ -33,21 +33,54 @@ public:
     virtual string getName() {
         return name;
     }
+    
+    void changeHp(double change) {
+        if(getHp() + change < getMaxHp()){
+            hp += change;
+        }else{
+            hp = getMaxHp();
+        }
+    }
+    
+    void changeMp(double change) {
+        if(pool){
+            changeHp(change);
+        }else{
+            if(getMp() + change < getMaxMp()){
+                mp += change;
+            }else{
+                mp = getMaxMp();
+            }
+        }
+    }
+    
+    void setHpAndMpToMax() {
+        hp = maxHp;
+        mp = maxMp;
+    }
 
     double getHp() {
         return hp;
     }
 
     double getMaxHp() {
-        return maxHp;
+        return pool? maxHp+maxMp : maxHp;
     }
 
     double getMp() {
-        return mp;
+        return pool?hp:mp;
     }
 
     double getMaxMp() {
-        return maxMp;
+        return pool? maxHp+maxMp : maxMp;
+    }
+    
+    void setMaxHp(double newMaxHp) {
+        maxHp = newMaxHp;
+    }
+    
+    void setMaxMp(double newMaxMp) {
+        maxMp = newMaxMp;
     }
 
     virtual void die() {
@@ -70,9 +103,9 @@ public:
     
     virtual void effectsChanged();
 
-    virtual double heal(double amount, bool overload);
+    virtual void heal(double amount);
 
-    virtual double healMana(double amount, bool overload);
+    virtual void healMana(double amount);
 
     virtual void save(vector<unsigned char>* data);
 
@@ -132,10 +165,17 @@ public:
     TileFlag solidity = tileFlagSolidOnGround;
 
     string name;
+    
+    void setPoolHpMp(bool enable){
+        pool = enable;
+    }
+    
+private:
     double maxHp = 30;
     double hp = maxHp;
     double maxMp = 0;
     double mp = maxMp;
+    bool pool = false;
 
 };
 
