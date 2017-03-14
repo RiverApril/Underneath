@@ -315,6 +315,9 @@ if args.linkonly:
 else:
     print("    . Skipped "+str(skipCount)+" compilations.")
 
+if args.windows:
+    oppList.append("icon.o")
+
 if returnCode == 0:
     print("    ~ Linking: "+executableName);
     command = compiler+" "+compilerFlags+" "+(" ".join(oppList))+" -o "+ executableName+" "+libraryFlags
