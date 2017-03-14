@@ -7,7 +7,6 @@ worlds/
 obj/
 *.pyc
 Underneath_*
-*.sh
 
 #Xcode:
 Underneath.xcodeproj/
