@@ -70,7 +70,7 @@ bool Entity::canMoveAbsalute(Point2 p, Level* level, bool force) {
                 Animator::renderFlash(pos, level, {defaultIcon, 'O', 'o', '.'}, 1, fgColor, getBgColor(0, pos, level));
                 Point2 pp = pos;
                 pos = p;
-                level->currentWorld->menuGame->viewUpdate();
+                //level->currentWorld->menuGame->viewUpdate();
                 level->currentWorld->menuGame->render(level->currentWorld->worldTime);
                 Animator::renderFlash(pos, level, {'.', 'o', 'O', defaultIcon}, 1, fgColor, getBgColor(0, pos, level));
                 pos = pp;
