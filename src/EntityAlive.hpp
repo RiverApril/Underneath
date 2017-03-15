@@ -55,8 +55,8 @@ public:
     }
     
     void setHpAndMpToMax() {
-        hp = maxHp;
-        mp = maxMp;
+        hp = getMaxHp();
+        mp = getMaxMp();
     }
 
     double getHp() {
@@ -77,10 +77,16 @@ public:
     
     void setMaxHp(double newMaxHp) {
         maxHp = newMaxHp;
+        if(getHp() > maxHp){
+            hp = maxHp;
+        }
     }
     
     void setMaxMp(double newMaxMp) {
         maxMp = newMaxMp;
+        if(getMp() > maxMp){
+            mp = maxMp;
+        }
     }
 
     virtual void die() {
