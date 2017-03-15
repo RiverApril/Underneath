@@ -346,7 +346,7 @@ double EntityPlayer::interactWithTile(Level* level, int tid, Point2 posOfTile, I
                             if(tid == Tiles::tileAlter->getIndex()){
                                 TEAlter* tea = dynamic_cast<TEAlter*>(te);
                                 if(tea->offerIndex != -1){
-                                    Offers::offers[tea->offerIndex]->presentOffering(level->currentWorld->menuGame);
+                                    level->currentWorld->offers->list[tea->offerIndex]->presentOffering(level->currentWorld->menuGame);
                                     level->removeTileEntity(tea);
                                     level->setTile(posOfTile, Tiles::tileBrokenAlter);
                                 }
@@ -691,6 +691,10 @@ void EntityPlayer::save(vector<unsigned char>* data) {
             Utility::saveInt(data, -1);
         }
     }
+    
+    for(int i = 0; i < specialCOUNT; i++){
+        Utility::saveBool(data, specials[i]);
+    }
 
 }
 
@@ -719,6 +723,10 @@ void EntityPlayer::load(vector<unsigned char>* data, int* position) {
         if(index != -1){
             favItems[i] = inventory[index];
         }
+    }
+    
+    for(int i = 0; i < specialCOUNT; i++){
+        specials[i] = Utility::loadBool(data, position);
     }
 	
     updateVariablesForAbilities();
@@ -952,6 +960,8 @@ void EntityPlayer::updateVariablesForAbilities() {
             moveDelay *= eff.power;
         }
     }
+    
+    setPoolHpMp(specials[specialPoolHpMp]);
 }
 
 int EntityPlayer::xpForLevel(int l){
@@ -1056,15 +1066,7 @@ void EntityPlayer::changeSpecial(Special sp, bool enable){
         return;
     }
     specials[sp] = enable;
-    if(sp == specialPoolHpMp){
-        setPoolHpMp(enable);
-    }
-    if(sp == specialHalfHpMp){
-        updateVariablesForAbilities();
-    }
-    if(sp == specialDisableRegen){
-        updateVariablesForAbilities();
-    }
+    updateVariablesForAbilities();
 }
 
 

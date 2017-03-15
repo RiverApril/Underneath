@@ -19,6 +19,8 @@ namespace Ui{
 #include "Geometry.hpp"
 #include "EntityPlayer.hpp"
 
+class Offers;
+
 class World {
 public:
 
@@ -35,6 +37,7 @@ public:
     double worldLastTime = 0.0;
     unsigned int seed = 0;
     Ui::MenuGame* menuGame;
+    Offers* offers;
 
 };
 
