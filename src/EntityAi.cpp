@@ -392,6 +392,9 @@ void EntityAi::dropLoots(Level* level){
 
     if(level->currentWorld->currentPlayer){
     	level->currentWorld->currentPlayer->gainXp(xp);
+        if(level->currentWorld->currentPlayer->specials[specialHealOnKills]){
+            level->currentWorld->currentPlayer->heal(this->getMaxHp());
+        }
     }
     //level->newEntity(new EntityItem(ItemGenerator::makeCoins((rand()%(int)maxHp*2)), pos));
 

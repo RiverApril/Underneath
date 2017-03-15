@@ -935,8 +935,8 @@ double EntityPlayer::hurtMiddleStep(Level* level, DamageType damageType, double 
 
 void EntityPlayer::updateVariablesForAbilities() {
     moveDelay = max(1*pow(0.98, abilities[iAGI]), 0.0001);
-    healBase = 1 + (abilities[iCON]*0.01);
-    healManaBase = 1 + (abilities[iWIS]*0.01);
+    healBase = specials[specialDisableRegen] ? 0 : 1 + (abilities[iCON]*0.01);
+    healManaBase = specials[specialDisableRegen] ? 0 : 1 + (abilities[iWIS]*0.01);
     interactDelay = max(.1*pow(0.99, abilities[iAGI]), 0.0001);
 
     setMaxHp(100 + (abilities[iCON] * 5));
@@ -1058,6 +1058,9 @@ void EntityPlayer::changeSpecial(Special sp, bool enable){
     specials[sp] = enable;
     if(sp == specialPoolHpMp){
         setPoolHpMp(enable);
+    }
+    if(sp == specialDisableRegen){
+        updateVariablesForAbilities();
     }
 }
 
