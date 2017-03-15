@@ -17,6 +17,7 @@
 World::World(string n) {
     levels = vector<string>();
     this->name = n;
+    this->offers = new Offers();
 }
 
 World::~World() {
@@ -102,8 +103,10 @@ namespace WorldLoader {
                     string currentLevelName = Utility::loadString(data, position);
                     //int playerUniqueId = Utility::loadInt(data, position);
                     
-                    for(size_t j = 0; j < Offers::offers.size(); j++){
-                        Offers::offers[j]->usedUp = Utility::loadBool(data, position);
+                    int offerCount = Utility::loadInt(data, position);
+                    
+                    for(size_t j = 0; j < offerCount; j++){
+                        world->offers->list[j]->usedUp = Utility::loadBool(data, position);
                     }
 
                     world->currentLevel = nullptr;
@@ -226,8 +229,10 @@ namespace WorldLoader {
             Utility::saveString(data, loadedWorld->currentLevel->getName());
             //Utility::saveInt(data, loadedWorld->currentPlayer->uniqueId);
             
-            for(size_t j = 0; j < Offers::offers.size(); j++){
-                Utility::saveBool(data, Offers::offers[j]->usedUp);
+            Utility::saveInt(data, (int)loadedWorld->offers->list.size());
+            
+            for(size_t j = 0; j < loadedWorld->offers->list.size(); j++){
+                Utility::saveBool(data, loadedWorld->offers->list[j]->usedUp);
             }
 
             for (size_t j = 0; j < loadedWorld->levels.size(); j++) {
@@ -333,7 +338,9 @@ namespace WorldLoader {
                 int levelCount = Utility::loadInt(data, position); // levelCount
                 Utility::loadString(data, position); // World Name
                 
-                for(size_t j = 0; j < Offers::offers.size(); j++){
+                int offerCount = Utility::loadInt(data, position);
+                
+                for(size_t j = 0; j < offerCount; j++){
                     Utility::loadBool(data, position);//Offer used up
                 }
 

@@ -265,7 +265,7 @@ Point2 Level::generateDungeon(Point2 stairUpPos, string previousLevel, string ne
 
             if (tileGrid[i][j].index == (int8_t) Tiles::tileAlter->getIndex()) {
                 TEAlter* te = new TEAlter(Point2(i, j));
-                te->offerIndex = rand()%Offers::offers.size();
+                te->offerIndex = rand()%currentWorld->offers->list.size();
                 tileEntityList.push_back(te);
                 chestCount++;
                 continue;

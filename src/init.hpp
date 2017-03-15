@@ -78,7 +78,6 @@ bool* init(int argc, char* argv[]){
     Ui::initNCurses(false);
     Commands::initCommands();
     EnemyGenerator::initEnemies();
-    Offers::initOffers();
     Random::setup();
     Audio::initAudio();
 
