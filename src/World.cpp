@@ -329,15 +329,17 @@ namespace WorldLoader {
                 int* position = new int(0);
 
                 Utility::loadType<unsigned int>(data, position);
-                /*double worldTime = */Utility::loadDouble(data, position); // worldTime
+                Utility::loadDouble(data, position); // worldTime
                 int levelCount = Utility::loadInt(data, position); // levelCount
-                /*string worldName = */Utility::loadString(data, position); // World Name
-                //Utility::loadInt(data, position);
-
+                Utility::loadString(data, position); // World Name
+                
+                for(size_t j = 0; j < Offers::offers.size(); j++){
+                    Utility::loadBool(data, position);//Offer used up
+                }
 
                 for (int i = 0; i < levelCount; i++) {
                     string levelName = Utility::loadString(data, position);
-                    //debugf("levelName: %s", levelName.c_str());
+                    debugf("levelName: %s", levelName.c_str());
                     remove((dir + levelName + ".lvl").c_str());
                 }
 

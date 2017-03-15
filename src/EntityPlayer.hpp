@@ -17,6 +17,8 @@
 
 enum Special{
     specialPoolHpMp,
+    specialDisableRegen,
+    specialHealOnKills,
     specialCOUNT
 };
 
