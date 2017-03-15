@@ -49,11 +49,10 @@ namespace Offers{
     }
 
     void initOffers(){
-        addOffer(new Offer({"I will merge your health and mana pools forever.", "However, your maximum reserves will half."},
+        addOffer(new Offer({"I will merge your health and mana pools forever.", "However, your maximum reserves will be cut in half."},
                            [](Offer* offer, EntityPlayer* player, bool accepted){
             if(accepted){
-                player->setMaxHp(player->getMaxHp() / 2);
-                player->setMaxMp(player->getMaxMp() / 2);
+                player->changeSpecial(Special::specialHalfHpMp, true);
                 player->changeSpecial(Special::specialPoolHpMp, true);
             }
         }));

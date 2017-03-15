@@ -939,8 +939,8 @@ void EntityPlayer::updateVariablesForAbilities() {
     healManaBase = specials[specialDisableRegen] ? 0 : 1 + (abilities[iWIS]*0.01);
     interactDelay = max(.1*pow(0.99, abilities[iAGI]), 0.0001);
 
-    setMaxHp(100 + (abilities[iCON] * 5));
-    setMaxMp(0 + (abilities[iWIS] * 5));
+    setMaxHp((specials[specialHalfHpMp] ? .5 : 1) * (100 + (abilities[iCON] * 5)));
+    setMaxMp((specials[specialHalfHpMp] ? .5 : 1) * (0 + (abilities[iWIS] * 5)));
 
     dodgeChance = max(1*pow(0.995, abilities[iAGI]), 0.0001);
 
@@ -1058,6 +1058,9 @@ void EntityPlayer::changeSpecial(Special sp, bool enable){
     specials[sp] = enable;
     if(sp == specialPoolHpMp){
         setPoolHpMp(enable);
+    }
+    if(sp == specialHalfHpMp){
+        updateVariablesForAbilities();
     }
     if(sp == specialDisableRegen){
         updateVariablesForAbilities();
