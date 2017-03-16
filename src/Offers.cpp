@@ -19,13 +19,13 @@ void Offer::presentOffering(Ui::MenuGame* menuGame) {
         return;
     }
     
-    menuGame->rumble = 75;
+    menuGame->rumble = 125;
     while(menuGame->rumble > 25){
         menuGame->render(menuGame->currentWorld->worldTime);
         refresh();
     }
     
-    vector<string> message = {"*You hear a deep voice from deep below you...*",
+    vector<string> message = {"*You hear a voice from deep below you...*",
                               "I see great potentoial in you, I offer you a proposal...", ""};
     message.insert(message.end(), dialog.begin(), dialog.end());
     menuGame->openMenu(new Ui::MenuDialog(message, {"Accept", "Decline"}, [this, menuGame](Ui::MenuDialog* menu, int result){
