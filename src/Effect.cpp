@@ -37,6 +37,9 @@ string effectName(Effect eff) {
 
         case effStun:
             return "Stun";
+            
+        case effMultiMoveDelay:
+            return "Move Delay";
 
         default:
             return "UNDEFINED";
