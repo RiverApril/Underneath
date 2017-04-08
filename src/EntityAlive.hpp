@@ -56,7 +56,7 @@ public:
     
     void setHpAndMpToMax() {
         hp = getMaxHp();
-        mp = getMaxMp();
+        mp = getMaxMp()d;
     }
 
     double getHp() {
