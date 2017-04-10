@@ -1,10 +1,8 @@
 #Underneath:
-settings.txt
-worlds/
-*.log
 
 #Build Script:
 obj/
+builds/
 *.pyc
 Underneath_*
 *.o

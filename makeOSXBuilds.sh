@@ -3,7 +3,7 @@
 ./makeApp.sh Underneath_SDLgfx_OSX
 
 DATE=`date +%Y-%m-%d`
-BUILDSDIR="$HOME/Dropbox/Underneath/builds/$DATE/OSX/"
+BUILDSDIR="builds/$DATE/OSX/"
 
 mkdir -p $BUILDSDIR
 

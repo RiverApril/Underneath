@@ -4,7 +4,7 @@
 ./build.py -ws --use32
 
 DATE=`date +%Y-%m-%d`
-BUILDSDIR="$HOME/Dropbox/Underneath/builds/$DATE/Win32/"
+BUILDSDIR="builds/$DATE/Win32/"
 
 mkdir -p $BUILDSDIR
 
