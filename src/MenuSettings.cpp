@@ -80,14 +80,12 @@ namespace Ui {
         }*/
         
         int y = 0;
-        mvprintw(y++, 0, "Settings  -  Press [ %s ], [ %s ], or [ %s ] to cycle settings", keyDisplayName(Key::uiLeft).c_str(), keyDisplayName(Key::uiRight).c_str(), keyDisplayName('\n').c_str());
+        mvprintw(y++, 0, "Settings  -  [%s], [%s], or [%s] to cycle settings", keyDisplayName(Key::uiLeft).c_str(), keyDisplayName(Key::uiRight).c_str(), keyDisplayName('\n').c_str());
         mvhline(y++, 0, '-', terminalSize.x);
         
-        
-        int countI = terminalSize.y - 3;
-        int midI = (countI / 2) + selected;
-        int minI = max(0, midI - countI);
-        int maxI = min(midI + countI, (int) Settings::settingList.size());
+        int countI = terminalSize.y - 4;
+        int minI = max(min(selected - (countI/2), (int)Settings::settingList.size() - countI), 0);
+        int maxI = min(max(selected + (countI/2), countI), (int)Settings::settingList.size());
         
         for (int i = minI; i < maxI; i++) {
             if(i == selected){
@@ -98,6 +96,11 @@ namespace Ui {
             
             mvprintw(y++, 1, "%s", Settings::settingList[i]->renderValue(tick).c_str());
         }
+        
+        setColor(C_WHITE, C_BLACK);
+        
+        mvhline(terminalSize.y - 2, 0, '-', terminalSize.x);
+        mvprintw(terminalSize.y - 1, 0, "<- Back [%s]", keyDisplayName(KEY_ESCAPE).c_str());
 
     }
 
