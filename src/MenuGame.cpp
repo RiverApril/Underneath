@@ -1051,6 +1051,8 @@ namespace Ui {
                     Ui::setColor(C_WHITE);
                 }
             }
+            a += printMultiLineString(a, gameArea.x + 1, formatString("Lvl %d", currentPlayer->level));
+            printw(" %s", Utility::makeBar(currentPlayer->xp, currentPlayer->nextLevelXp, (terminalSize.x - getcurx(stdscr) - 1)).c_str());
 
             for (size_t i = 0; i < currentPlayer->effects.size(); i++) {
                 Effect eff = currentPlayer->effects[i];
