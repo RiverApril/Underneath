@@ -224,28 +224,6 @@ void EntityAlive::healMana(double amount) {
     changeMp(amount);
 }
 
-EntityAlive* EntityAlive::cloneUnsafe(EntityAlive* oldE, EntityAlive* newE) {
-
-    Entity::cloneUnsafe(oldE, newE);
-
-    newE->name = oldE->name;
-    newE->maxHp = oldE->maxHp;
-    newE->hp = oldE->hp;
-    newE->maxMp = oldE->maxMp;
-    newE->mp = oldE->mp;
-    newE->viewDistance = oldE->viewDistance;
-
-    newE->removeAllItems(true);
-    forVector(oldE->inventory, i) {
-        newE->inventory.push_back(Item::clone(oldE->inventory[i]));
-    }
-
-    newE->effects = oldE->effects;
-
-    return newE;
-
-}
-
 int EntityAlive::getEntityTypeId() {
     return ENTITY_TYPE_ALIVE;
 }

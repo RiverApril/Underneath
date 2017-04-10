@@ -49,16 +49,6 @@ void ItemSpecial::load(vector<unsigned char>* data, int* position){
 
 }
 
-ItemSpecial* ItemSpecial::cloneUnsafe(ItemSpecial* oldE, ItemSpecial* newE){
-
-    Item::cloneUnsafe(oldE, newE);
-
-    newE->specialty = oldE->specialty;
-
-    return newE;
-
-}
-
 bool ItemSpecial::equalsExceptQty(Item* other){
     ItemSpecial* otherW = dynamic_cast<ItemSpecial*>(other);
     return (otherW)

@@ -9,14 +9,6 @@
 #include "EntityMultiSub.hpp"
 #include "Level.hpp"
 
-EntityMultiSub* EntityMultiSub::cloneUnsafe(EntityMultiSub* oldE, EntityMultiSub* newE){
-    EntityAlive::cloneUnsafe(oldE, newE);
-    
-    newE->relPos = oldE->relPos;
-    
-    return newE;
-}
-
 void EntityMultiSub::save(vector<unsigned char>* data){
     EntityAlive::save(data);
     

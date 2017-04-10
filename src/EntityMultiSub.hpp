@@ -15,8 +15,6 @@ class EntityMultiSub : public EntityAlive{
     
 public:
     
-    static EntityMultiSub* cloneUnsafe(EntityMultiSub* oldE, EntityMultiSub* newE);
-    
     virtual void save(vector<unsigned char>* data);
     
     virtual void load(vector<unsigned char>* data, int* position);

@@ -24,15 +24,3 @@ void ItemUtilitySpell::load(vector<unsigned char>* data, int* position) {
     manaCost = Utility::loadDouble(data, position);
     continuousUse = Utility::loadBool(data, position);
 }
-
-ItemUtilitySpell* ItemUtilitySpell::cloneUnsafe(ItemUtilitySpell* oldE, ItemUtilitySpell* newE) {
-
-    Item::cloneUnsafe(oldE, newE);
-
-    newE->spellEffect = oldE->spellEffect;
-    newE->manaCost = oldE->manaCost;
-    newE->continuousUse = oldE->continuousUse;
-
-    return newE;
-
-}

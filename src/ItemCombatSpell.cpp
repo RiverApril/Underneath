@@ -20,14 +20,3 @@ void ItemCombatSpell::load(vector<unsigned char>* data, int* position) {
 
     manaCost = Utility::loadDouble(data, position);
 }
-
-ItemCombatSpell* ItemCombatSpell::cloneUnsafe(ItemCombatSpell* oldE, ItemCombatSpell* newE) {
-
-    ItemRanged::cloneUnsafe(oldE, newE);
-
-    newE->manaCost = oldE->manaCost;
-
-
-    return newE;
-
-}

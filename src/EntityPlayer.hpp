@@ -26,8 +26,6 @@ enum Special{
 class EntityPlayer : public EntityAlive {
 public:
 
-    static EntityPlayer* cloneUnsafe(EntityPlayer* oldE, EntityPlayer* newE);
-
     EntityPlayer();
 
     EntityPlayer(string name, char icon, Point2 startPos, Ui::Color colorCode, Abilities<int> startAbilities);

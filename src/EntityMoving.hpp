@@ -23,8 +23,6 @@ enum HitType{hitNormal, hitGround, hitAngle};
 class EntityMoving : public Entity {
 public:
 
-    static EntityMoving* cloneUnsafe(EntityMoving* oldE, EntityMoving* newE);
-
     EntityMoving();
 
     EntityMoving(Point2 p, double z);

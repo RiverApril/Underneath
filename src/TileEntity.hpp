@@ -48,13 +48,6 @@ struct TileEntity {
         return pos.toString();
     }
 
-
-protected:
-
-    template<class Super, class Sub>
-    static Sub* makeNewAndClone(Super* oldT);
-
-    static TileEntity* cloneUnsafe(TileEntity* oldE, TileEntity* newE);
 };
 
 #endif /* defined(__Underneath__TileEntity__) */

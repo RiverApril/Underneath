@@ -74,16 +74,6 @@ bool EntityMoving::update(double deltaTime, double time, Level* level) {
     return Entity::update(deltaTime, time, level);
 }
 
-EntityMoving* EntityMoving::cloneUnsafe(EntityMoving* oldE, EntityMoving* newE) {
-
-    Entity::cloneUnsafe(oldE, newE);
-
-    newE->location = oldE->location;
-    newE->velocity = oldE->velocity;
-
-    return newE;
-}
-
 int EntityMoving::getEntityTypeId() {
     return ENTITY_TYPE_MOVING;
 }

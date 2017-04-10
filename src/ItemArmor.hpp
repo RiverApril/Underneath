@@ -42,8 +42,6 @@ class ItemArmor : public ItemEquipable {
 public:
 
 
-    static ItemArmor* cloneUnsafe(ItemArmor* oldE, ItemArmor* newE = nullptr);
-
     ItemArmor() : ItemEquipable() {
 
     }

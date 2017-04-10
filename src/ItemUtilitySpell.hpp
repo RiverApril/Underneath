@@ -18,8 +18,6 @@ enum SpellEffect{spellRemoteUse, spellRelocate, spellBarrier, spellDebugPlaceWal
 class ItemUtilitySpell : public Item {
 public:
 
-    static ItemUtilitySpell* cloneUnsafe(ItemUtilitySpell* oldE, ItemUtilitySpell* newE = nullptr);
-
     ItemUtilitySpell() : Item() {
 
     }

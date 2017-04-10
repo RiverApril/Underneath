@@ -16,8 +16,6 @@ class ItemAreaOfEffectWeapon : public ItemCombatSpell {
 
 public:
 
-    static ItemAreaOfEffectWeapon* cloneUnsafe(ItemAreaOfEffectWeapon* oldE, ItemAreaOfEffectWeapon* newE);
-
     ItemAreaOfEffectWeapon() : ItemCombatSpell() {
 
     }

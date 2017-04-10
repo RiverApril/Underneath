@@ -19,9 +19,6 @@ enum SpecialType{specialtyKey, specialtyRepairer, specialtyCompass, specialtyCoi
 class ItemSpecial : public Item {
 public:
 
-
-    static ItemSpecial* cloneUnsafe(ItemSpecial* oldE, ItemSpecial* newE = nullptr);
-
     ItemSpecial() : Item(){
 
     }

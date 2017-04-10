@@ -14,37 +14,6 @@
 #include "EntityExplosive.hpp"
 #include "EntityItem.hpp"
 
-
-EntityMulti* EntityMulti::cloneUnsafe(EntityMulti* oldE, EntityMulti* newE){
-    EntityAlive::cloneUnsafe(oldE, newE);
-    
-    for(EntityMultiSub* entity : oldE->subEntities){
-        EntityMultiSub* c = new EntityMultiSub();
-        c->master = newE;
-        newE->subEntities.push_back(dynamic_cast<EntityMultiSub*>(c->clone(entity)));
-    }
-    newE->spawnedSubs = false;
-    
-    newE->aiMulti = oldE->aiMulti;
-    newE->moveDelay = oldE->moveDelay;
-    newE->lastAttackTime = oldE->lastAttackTime;
-    newE->lastThrowTime = oldE->lastThrowTime;
-    newE->lastKnownTargetPos = oldE->lastKnownTargetPos;
-    
-    forVector(oldE->inventory, i) {
-        if (oldE->inventory[i] == oldE->activeItemWeapon) {
-            newE->activeItemWeapon = dynamic_cast<ItemWeapon*> (newE->inventory[i]);
-            break;
-        }
-        if (oldE->inventory[i] == oldE->activeItemExplosive) {
-            newE->activeItemExplosive = dynamic_cast<ItemExplosive*> (newE->inventory[i]);
-            break;
-        }
-    }
-    
-    return newE;
-}
-
 void EntityMulti::save(vector<unsigned char>* data){
     EntityAlive::save(data);
     

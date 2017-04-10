@@ -54,16 +54,6 @@ bool EntityItem::update(double deltaTime, double time, Level* level) {
     return Entity::update(deltaTime, time, level);
 }
 
-EntityItem* EntityItem::cloneUnsafe(EntityItem* oldE, EntityItem* newE) {
-
-    Entity::cloneUnsafe(oldE, newE);
-
-    newE->item = Item::clone(oldE->item);
-
-    return newE;
-
-}
-
 int EntityItem::getEntityTypeId() {
     return ENTITY_TYPE_ITEMENTITY;
 }

@@ -612,30 +612,6 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
     return 0;
 }
 
-EntityPlayer* EntityPlayer::cloneUnsafe(EntityPlayer* oldE, EntityPlayer* newE) {
-
-    EntityAlive::cloneUnsafe(oldE, newE);
-
-    newE->abilities = oldE->abilities;
-    newE->abilityPoints = oldE->abilityPoints;
-    newE->level = oldE->level;
-    newE->xp = oldE->xp;
-    newE->nextLevelXp = oldE->nextLevelXp;
-    newE->timeSinceCombat = oldE->timeSinceCombat;
-
-    forVector(oldE->inventory, i) {
-        for(pair<EquipSlot, Item*> p : oldE->equipedItems){
-            if (oldE->inventory[i] == p.second) {
-                newE->equipedItems[p.first] = newE->inventory[i];
-            }
-        }
-    }
-
-    newE->updateVariablesForAbilities();
-
-    return newE;
-}
-
 int EntityPlayer::getEntityTypeId() {
     return ENTITY_TYPE_PLAYER;
 }

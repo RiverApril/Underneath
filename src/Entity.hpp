@@ -31,8 +31,6 @@ const int ENTITY_TYPE_MULTI_SUB = 9;
 class Entity : Icon {
 public:
 
-    static Entity* cloneUnsafe(Entity* oldE, Entity* newE);
-
     static Entity* clone(Entity* oldE);
 
     Entity();
@@ -98,10 +96,6 @@ public:
     Ui::Color fgColor;
 
     Point2 lastPos;
-protected:
-
-    template<class Super, class Sub>
-    static Sub* makeNewAndClone(Super* oldT);
 
 };
 

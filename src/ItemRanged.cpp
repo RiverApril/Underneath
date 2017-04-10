@@ -22,15 +22,3 @@ void ItemRanged::load(vector<unsigned char>* data, int* position) {
     range = Utility::loadDouble(data, position);
     rangedType = (RangedType)Utility::loadInt(data, position);
 }
-
-ItemRanged* ItemRanged::cloneUnsafe(ItemRanged* oldE, ItemRanged* newE) {
-
-    ItemWeapon::cloneUnsafe(oldE, newE);
-
-    newE->range = oldE->range;
-    newE->rangedType = oldE->rangedType;
-
-
-    return newE;
-
-}

@@ -20,8 +20,6 @@
 class EntityAlive : public Entity, public Inventory {
 public:
 
-    static EntityAlive* cloneUnsafe(EntityAlive* oldE, EntityAlive* newE);
-
     EntityAlive();
 
     EntityAlive(string name, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 30);

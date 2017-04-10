@@ -35,18 +35,6 @@ void ItemEquipable::load(vector<unsigned char>* data, int* position) {
     }
 }
 
-ItemEquipable* ItemEquipable::cloneUnsafe(ItemEquipable* oldE, ItemEquipable* newE) {
-
-    Item::cloneUnsafe(oldE, newE);
-
-    newE->minimumAbilities = oldE->minimumAbilities;
-    //newE->durability = oldE->durability;
-
-
-    return newE;
-
-}
-
 bool ItemEquipable::equalsExceptQty(Item* other) {
     ItemEquipable* otherW = dynamic_cast<ItemEquipable*> (other);
     return (otherW)

@@ -21,11 +21,3 @@ void ItemAreaOfEffectWeapon::load(vector<unsigned char>* data, int* position) {
     radius = Utility::loadInt(data, position);
 }
 
-ItemAreaOfEffectWeapon* ItemAreaOfEffectWeapon::cloneUnsafe(ItemAreaOfEffectWeapon* oldE, ItemAreaOfEffectWeapon* newE) {
-    ItemCombatSpell::cloneUnsafe(oldE, newE);
-
-    newE->radius = oldE->radius;
-
-    return newE;
-}
-

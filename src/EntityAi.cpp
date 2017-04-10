@@ -440,31 +440,6 @@ void EntityAi::dropLoots(Level* level){
 
 }
 
-EntityAi* EntityAi::cloneUnsafe(EntityAi* oldE, EntityAi* newE) {
-
-    EntityAlive::cloneUnsafe(oldE, newE);
-
-    newE->ai = oldE->ai;
-    newE->agro = oldE->agro;
-    newE->moveDelay = oldE->moveDelay;
-    newE->lastMoveTime = oldE->lastMoveTime;
-    newE->lastAttackTime = oldE->lastAttackTime;
-    newE->attackMultiplier = oldE->attackMultiplier;
-    newE->lastKnownTargetPos = oldE->lastKnownTargetPos;
-    newE->lootProfileIndex = oldE->lootProfileIndex;
-    newE->maxLootDrop = oldE->maxLootDrop;
-    newE->minLootDrop = oldE->minLootDrop;
-
-    forVector(oldE->inventory, i) {
-        if (oldE->inventory[i] == oldE->activeItemWeapon) {
-            newE->activeItemWeapon = dynamic_cast<ItemWeapon*> (newE->inventory[i]);
-            break;
-        }
-    }
-
-    return newE;
-}
-
 int EntityAi::getEntityTypeId() {
     return ENTITY_TYPE_AIENTITY;
 }

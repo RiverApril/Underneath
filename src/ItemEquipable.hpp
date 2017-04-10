@@ -142,8 +142,6 @@ public:
         }
     }
 
-    static ItemEquipable* cloneUnsafe(ItemEquipable* oldE, ItemEquipable* newE = nullptr);
-
     ItemEquipable() : Item() {
 
     }
