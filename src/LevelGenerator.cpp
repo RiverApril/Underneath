@@ -362,9 +362,8 @@ Point2 Level::generateBossArea(Point2 stairUpPos, string previousLevel, string n
     int centerRoomInnerRadius2 = centerRoomRadius - 5;
     
     int startRoomRadius = 4;
-    int startRoomInnerRadius = startRoomRadius - 2;
     
-    stairDownPos = center - Point2(centerRoomRadius + startRoomRadius + 1, 0);
+    stairDownPos = center;
     
     
     //big room
