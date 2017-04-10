@@ -36,89 +36,25 @@ void Item::load(vector<unsigned char>* data, int* position) {
     coinValue = Utility::loadInt(data, position);
 }
 
-Item* Item::cloneUnsafe(Item* oldE, Item* newE) {
-
-    newE->name = oldE->name;
-    newE->pluralName = oldE->pluralName;
-    newE->qty = oldE->qty;
-    newE->artIndex = oldE->artIndex;
-    newE->coinValue = oldE->coinValue;
-
-    return newE;
-}
-
-template<class Super, class Sub>
-Sub* Item::makeNewAndClone(Super* oldT) {
-    Sub* newT = new Sub();
-    return Sub::cloneUnsafe(dynamic_cast<Sub*> (oldT), newT);
-}
-
 Item* Item::clone(Item* oldI, int qty) {
 
     if(!oldI){
         return nullptr;
     }
-
-    int type = oldI->getItemTypeId();
-
-    Item* i = nullptr;
-
-    switch (type) {
-        case itemTypeItem:
-            i = makeNewAndClone<Item, Item>(oldI);
-            break;
-
-        case itemTypeEquipable:
-            i = makeNewAndClone<Item, ItemEquipable>(oldI);
-            break;
-
-        case itemTypeWeapon:
-            i = makeNewAndClone<Item, ItemWeapon>(oldI);
-            break;
-
-        case itemTypeRanged:
-            i = makeNewAndClone<Item, ItemRanged>(oldI);
-            break;
-
-        case itemTypeCombatSpell:
-            i = makeNewAndClone<Item, ItemCombatSpell>(oldI);
-            break;
-
-        case itemTypePotion:
-            i = makeNewAndClone<Item, ItemPotion>(oldI);
-            break;
-
-		case itemTypeUtilitySpell:
-            i = makeNewAndClone<Item, ItemUtilitySpell>(oldI);
-            break;
-
-        case itemTypeSpecial:
-            i = makeNewAndClone<Item, ItemSpecial>(oldI);
-            break;
-
-        case itemTypeExplosive:
-            i = makeNewAndClone<Item, ItemExplosive>(oldI);
-            break;
-
-        case itemTypeArmor:
-            i = makeNewAndClone<Item, ItemArmor>(oldI);
-            break;
-
-        case itemTypeAofWeapon:
-            i = makeNewAndClone<Item, ItemAreaOfEffectWeapon>(oldI);
-            break;
-
-        default:
-            throw Utility::FileExceptionLoad("Item type unknown: " + to_string(type));
-            break;
-    }
+    
+    vector<unsigned char>* data = new vector<unsigned char>();
+    oldI->save(data);
+    int* position = new int(0);
+    Item* i = loadNew(data, position);
+    
+    delete data;
+    delete position;
+    
     if(i && qty != -1){
         i->qty = qty;
     }
-
+    
     return i;
-
-
 }
 
 Item* Item::loadNew(vector<unsigned char>* data, int* position) {

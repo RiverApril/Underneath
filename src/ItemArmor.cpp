@@ -45,19 +45,6 @@ void ItemArmor::load(vector<unsigned char>* data, int* position) {
     }
 }
 
-ItemArmor* ItemArmor::cloneUnsafe(ItemArmor* oldE, ItemArmor* newE) {
-
-    ItemEquipable::cloneUnsafe(oldE, newE);
-
-    newE->defenses = oldE->defenses;
-    newE->enchantments = oldE->enchantments;
-    newE->viableSlots = oldE->viableSlots;
-    
-    
-    return newE;
-    
-}
-
 bool operator==(const Defense& a, const Defense& b){
     return a.amount == b.amount && a.damageType == b.damageType;
 }

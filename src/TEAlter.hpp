@@ -12,7 +12,6 @@
 #include "TileEntity.hpp"
 
 struct TEAlter : public TileEntity {
-    static TEAlter* cloneUnsafe(TEAlter* oldE, TEAlter* newE);
     
     TEAlter() : TEAlter(Point2Neg1) {
         

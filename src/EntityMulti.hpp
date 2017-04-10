@@ -28,8 +28,6 @@ class EntityMulti : public EntityAlive{
     
 public:
     
-    static EntityMulti* cloneUnsafe(EntityMulti* oldE, EntityMulti* newE);
-    
     virtual void save(vector<unsigned char>* data);
     
     virtual void load(vector<unsigned char>* data, int* position);

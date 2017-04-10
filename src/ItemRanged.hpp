@@ -19,8 +19,6 @@ enum RangedType{
 class ItemRanged : public ItemWeapon {
 public:
 
-    static ItemRanged* cloneUnsafe(ItemRanged* oldE, ItemRanged* newE);
-
     ItemRanged() : ItemWeapon() {
 
     }

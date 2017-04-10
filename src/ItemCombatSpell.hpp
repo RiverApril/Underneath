@@ -16,8 +16,6 @@
 class ItemCombatSpell : public ItemRanged {
 public:
 
-    static ItemCombatSpell* cloneUnsafe(ItemCombatSpell* oldE, ItemCombatSpell* newE);
-
     ItemCombatSpell() : ItemRanged() {
 
     }

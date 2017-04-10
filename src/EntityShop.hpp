@@ -14,8 +14,6 @@
 class EntityShop : public EntityAi {
 public:
 
-    static EntityShop* cloneUnsafe(EntityShop* oldE, EntityShop* newE);
-
     EntityShop();
 
     EntityShop(string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 1);

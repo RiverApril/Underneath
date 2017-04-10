@@ -32,18 +32,6 @@ void EntityShop::dropLoots(Level* level){
 
 }
 
-EntityShop* EntityShop::cloneUnsafe(EntityShop* oldE, EntityShop* newE) {
-
-    EntityAi::cloneUnsafe(oldE, newE);
-
-    newE->shopInv.removeAllItems(true);
-    forVector(oldE->shopInv.inventory, i) {
-        newE->shopInv.inventory.push_back(Item::clone(oldE->shopInv.inventory[i]));
-    }
-
-    return newE;
-}
-
 int EntityShop::getEntityTypeId() {
     return ENTITY_TYPE_SHOP;
 }

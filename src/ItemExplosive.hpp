@@ -18,9 +18,7 @@ enum ExplosiveType{dudBomb, timeActivatedBomb, pressureBomb, throwableBomb};
 
 class ItemExplosive : public Item {
 public:
-
-
-    static ItemExplosive* cloneUnsafe(ItemExplosive* oldE, ItemExplosive* newE = nullptr);
+    
 
     ItemExplosive() : Item(){
 

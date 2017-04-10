@@ -28,13 +28,3 @@ void ItemPotion::load(vector<unsigned char>* data, int* position) {
         effects.push_back(Effect(data, position));
     }
 }
-
-ItemPotion* ItemPotion::cloneUnsafe(ItemPotion* oldE, ItemPotion* newE) {
-
-    Item::cloneUnsafe(oldE, newE);
-
-    newE->effects = oldE->effects;
-
-    return newE;
-
-}

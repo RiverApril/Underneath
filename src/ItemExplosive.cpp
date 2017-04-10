@@ -38,21 +38,6 @@ void ItemExplosive::load(vector<unsigned char>* data, int* position){
     iconIndex = Utility::loadInt(data, position);
 }
 
-ItemExplosive* ItemExplosive::cloneUnsafe(ItemExplosive* oldE, ItemExplosive* newE){
-
-    Item::cloneUnsafe(oldE, newE);
-
-    newE->explosiveType = oldE->explosiveType;
-    newE->time = oldE->time;
-    newE->power = oldE->power;
-    newE->radius = oldE->radius;
-    newE->destroysTiles = oldE->destroysTiles;
-    newE->iconIndex = oldE->iconIndex;
-
-    return newE;
-
-}
-
 UseType ItemExplosive::getUseType(){
     switch (explosiveType) {
         case dudBomb:

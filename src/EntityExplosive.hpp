@@ -16,8 +16,6 @@
 class EntityExplosive : public EntityMoving {
 public:
 
-    static EntityExplosive* cloneUnsafe(EntityExplosive* oldE, EntityExplosive* newE);
-
     EntityExplosive();
 
     EntityExplosive(ItemExplosive* item, Point2 start, Point2 target, double z, int ignoreUID);

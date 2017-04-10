@@ -22,14 +22,3 @@ void TEStair::load(vector<unsigned char>* data, int* position) {
     up = Utility::loadBool(data, position);
     levelName = Utility::loadString(data, position);
 }
-
-TEStair* TEStair::cloneUnsafe(TEStair* oldE, TEStair* newE) {
-
-    TileEntity::cloneUnsafe(oldE, newE);
-
-    newE->up = oldE->up;
-    newE->levelName = oldE->levelName;
-
-    return newE;
-
-}

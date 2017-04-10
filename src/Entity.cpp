@@ -104,69 +104,17 @@ Ui::Color Entity::getBgColorCode() {
     return bgColorCode;
 }*/
 
-Entity* Entity::cloneUnsafe(Entity* oldE, Entity* newE) {
-
-    newE->uniqueId = oldE->uniqueId;
-    newE->defaultIcon = oldE->defaultIcon;
-    newE->pos = oldE->pos;
-    newE->lastPos = oldE->lastPos;
-    newE->fgColor = oldE->fgColor;
-    //newE->bgColor = oldE->bgColor;
-
-    return newE;
-}
-
-template<class Super, class Sub>
-Sub* Entity::makeNewAndClone(Super* oldT) {
-    Sub* newT = new Sub();
-    return Sub::cloneUnsafe(dynamic_cast<Sub*> (oldT), newT);
-}
-
 Entity* Entity::clone(Entity* oldE) {
-
-    int type = oldE->getEntityTypeId();
-
-    debug("Clone Entity of type: " + to_string(type));
-
-    switch (type) {
-        case ENTITY_TYPE_ENTITY:
-            return makeNewAndClone<Entity, Entity>(oldE);
-
-        case ENTITY_TYPE_ALIVE:
-            return makeNewAndClone<Entity, EntityAlive>(oldE);
-
-        case ENTITY_TYPE_AIENTITY:
-            return makeNewAndClone<Entity, EntityAi>(oldE);
-
-        case ENTITY_TYPE_PLAYER:
-            return makeNewAndClone<Entity, EntityPlayer>(oldE);
-
-        case ENTITY_TYPE_ITEMENTITY:
-            return makeNewAndClone<Entity, EntityItem>(oldE);
-
-        case ENTITY_TYPE_EXPLOSIVE:
-            return makeNewAndClone<Entity, EntityExplosive>(oldE);
-
-        case ENTITY_TYPE_MOVING:
-            return makeNewAndClone<Entity, EntityMoving>(oldE);
-            
-        case ENTITY_TYPE_SHOP:
-            return makeNewAndClone<Entity, EntityShop>(oldE);
-            
-        case ENTITY_TYPE_MULTI:
-            return makeNewAndClone<Entity, EntityMulti>(oldE);
-            
-        case ENTITY_TYPE_MULTI_SUB:
-            return makeNewAndClone<Entity, EntityMultiSub>(oldE);
-
-        default:
-            throw Utility::FileExceptionLoad("Entity type unknown: " + to_string(type));
-            return nullptr;
-            break;
-    }
-
-
-
+    
+    vector<unsigned char>* data = new vector<unsigned char>();
+    oldE->save(data);
+    int* position = new int(0);
+    Entity* e = loadNew(data, position);
+    
+    delete data;
+    delete position;
+    
+    return e;
 }
 
 Ui::Color Entity::getBgColor(unsigned long tick, Point2 pos, Level* lvl){

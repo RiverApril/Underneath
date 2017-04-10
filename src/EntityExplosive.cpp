@@ -163,16 +163,6 @@ bool EntityExplosive::update(double deltaTime, double time, Level* level) {
     return EntityMoving::update(deltaTime, time, level);
 }
 
-EntityExplosive* EntityExplosive::cloneUnsafe(EntityExplosive* oldE, EntityExplosive* newE) {
-
-    Entity::cloneUnsafe(oldE, newE);
-
-    newE->expl = dynamic_cast<ItemExplosive*>(Item::clone(oldE->expl));
-
-    return newE;
-
-}
-
 int EntityExplosive::getEntityTypeId() {
     return ENTITY_TYPE_EXPLOSIVE;
 }

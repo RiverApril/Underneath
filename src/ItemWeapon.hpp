@@ -20,9 +20,7 @@ const vector<EquipSlot> weaponSlots = {slotWep1, slotWep2};
 
 class ItemWeapon : public ItemEquipable {
 public:
-
-
-    static ItemWeapon* cloneUnsafe(ItemWeapon* oldE, ItemWeapon* newE = nullptr);
+    
 
     ItemWeapon() : ItemEquipable() {
 

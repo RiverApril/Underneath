@@ -18,13 +18,3 @@ void TEAlter::load(vector<unsigned char>* data, int* position) {
     TileEntity::load(data, position);
     offerIndex = Utility::loadInt(data, position);
 }
-
-TEAlter* TEAlter::cloneUnsafe(TEAlter* oldE, TEAlter* newE) {
-    
-    TileEntity::cloneUnsafe(oldE, newE);
-
-    newE->offerIndex = oldE->offerIndex;
-    
-    return newE;
-    
-}

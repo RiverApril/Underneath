@@ -49,17 +49,3 @@ void ItemWeapon::load(vector<unsigned char>* data, int* position) {
         enchantments.push_back(Enchantment(data, position));
     }
 }
-
-ItemWeapon* ItemWeapon::cloneUnsafe(ItemWeapon* oldE, ItemWeapon* newE) {
-
-    ItemEquipable::cloneUnsafe(oldE, newE);
-
-    newE->baseDamage = oldE->baseDamage;
-    newE->enchantments = oldE->enchantments;
-    newE->damageType = oldE->damageType;
-    newE->useDelay = oldE->useDelay;
-
-
-    return newE;
-
-}

@@ -15,8 +15,6 @@
 class EntityItem : public Entity {
 public:
 
-    static EntityItem* cloneUnsafe(EntityItem* oldE, EntityItem* newE);
-
     EntityItem();
 
     EntityItem(Item* item, Point2 p);

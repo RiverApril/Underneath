@@ -13,7 +13,6 @@
 #include "Inventory.hpp"
 
 struct TEChest : public TileEntity, public Inventory {
-    static TEChest* cloneUnsafe(TEChest* oldE, TEChest* newE);
 
     TEChest() : TEChest(Point2Neg1) {
 

@@ -16,8 +16,6 @@
 class ItemPotion : public Item {
 public:
 
-    static ItemPotion* cloneUnsafe(ItemPotion* oldE, ItemPotion* newE = nullptr);
-
     ItemPotion() : Item() {
 
     }

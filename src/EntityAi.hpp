@@ -37,8 +37,6 @@ const int agroViewDistanceMultiplier = 3;
 class EntityAi : public EntityAlive {
 public:
 
-    static EntityAi* cloneUnsafe(EntityAi* oldE, EntityAi* newE);
-
     EntityAi();
 
     EntityAi(string name, int aiFlags, char icon, Point2 startPos, Ui::Color colorCode = Ui::COLOR_DEFAULT_ENTITY, int maxHp = 1);

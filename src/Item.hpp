@@ -120,11 +120,6 @@ protected:
     string name;
     string pluralName = "";
 
-    template<class Super, class Sub>
-    static Sub* makeNewAndClone(Super* oldT);
-
-    static Item* cloneUnsafe(Item* oldE, Item* newE);
-
 };
 
 template <typename T> bool comparePointer(T* a, T* b){

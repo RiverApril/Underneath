@@ -32,17 +32,3 @@ void TEChest::load(vector<unsigned char>* data, int* position) {
     }
 
 }
-
-TEChest* TEChest::cloneUnsafe(TEChest* oldE, TEChest* newE) {
-
-    TileEntity::cloneUnsafe(oldE, newE);
-
-    newE->lootProfileIndex = oldE->lootProfileIndex;
-
-    forVector(oldE->inventory, i) {
-        newE->inventory.push_back(Item::clone(oldE->inventory[i]));
-    }
-
-    return newE;
-
-}

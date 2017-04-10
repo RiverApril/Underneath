@@ -21,44 +21,16 @@ void TileEntity::load(vector<unsigned char>* data, int* position) {
     pos = Point2(data, position);
 }
 
-TileEntity* TileEntity::cloneUnsafe(TileEntity* oldE, TileEntity* newE) {
-
-    newE->pos = oldE->pos;
-
-    return newE;
-}
-
-template<class Super, class Sub>
-Sub* TileEntity::makeNewAndClone(Super* oldT) {
-    Sub* newT = new Sub();
-    return Sub::cloneUnsafe(dynamic_cast<Sub*> (oldT), newT);
-}
-
 TileEntity* TileEntity::clone(TileEntity* oldI) {
-
-    int type = oldI->getTileEntityTypeId();
-
-    switch (type) {
-        case TILE_ENTITY_TYPE_NONE:
-            return makeNewAndClone<TileEntity, TileEntity>(oldI);
-
-        case TILE_ENTITY_TYPE_STAIR:
-            return makeNewAndClone<TileEntity, TEStair>(oldI);
-
-        case TILE_ENTITY_TYPE_CHEST:
-            return makeNewAndClone<TileEntity, TEChest>(oldI);
-            
-        case TILE_ENTITY_TYPE_ALTER:
-            return makeNewAndClone<TileEntity, TEAlter>(oldI);
-
-        default:
-            throw Utility::FileExceptionLoad("Tile Entity type unknown: " + to_string(type));
-            return nullptr;
-            break;
-    }
-
-
-
+    vector<unsigned char>* data = new vector<unsigned char>();
+    oldI->save(data);
+    int* position = new int(0);
+    TileEntity* te = loadNew(data, position);
+    
+    delete data;
+    delete position;
+    
+    return te;
 }
 
 TileEntity* TileEntity::loadNew(vector<unsigned char>* data, int* position) {

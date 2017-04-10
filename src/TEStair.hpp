@@ -12,7 +12,6 @@
 #include "TileEntity.hpp"
 
 struct TEStair : public TileEntity {
-    static TEStair* cloneUnsafe(TEStair* oldE, TEStair* newE);
 
     TEStair() : TEStair(Point2Neg1, true, "") {
 
