@@ -67,14 +67,12 @@ namespace Ui {
         setColor(C_WHITE);
 
         int y = 0;
-        mvprintw(y++, 0, "Controls  -  Press [ %s ] to modify a Key Binding", keyDisplayName('\n').c_str());
+        mvprintw(y++, 0, "Controls  -  Press [%s] to modify a Key Binding", keyDisplayName('\n').c_str());
         mvhline(y++, 0, '-', terminalSize.x);
 
-
-        int countI = terminalSize.y - 3;
-        int midI = (countI / 2) + selected;
-        int minI = max(0, midI - countI);
-        int maxI = min(midI + countI, (int) keybindings.size());
+        int countI = terminalSize.y - 4;
+        int minI = max(min(selected - (countI/2), (int)keybindings.size() - countI), 0);
+        int maxI = min(max(selected + (countI/2), countI), (int)keybindings.size());
 
         for (int i = minI; i < maxI; i++) {
             if(i == selected){
@@ -101,6 +99,9 @@ namespace Ui {
 
             setColor(C_WHITE, C_BLACK);
         }
+        
+        mvhline(terminalSize.y - 2, 0, '-', terminalSize.x);
+        mvprintw(terminalSize.y - 1, 0, "<- Back [%s]", keyDisplayName(KEY_ESCAPE).c_str());
         
     }
     
