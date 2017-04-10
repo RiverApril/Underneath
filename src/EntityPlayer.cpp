@@ -668,9 +668,6 @@ void EntityPlayer::save(vector<unsigned char>* data) {
                     break;
                 }
             }
-        }else{
-            Utility::saveInt(data, p.first);
-            Utility::saveInt(data, -1);
         }
     }
     
