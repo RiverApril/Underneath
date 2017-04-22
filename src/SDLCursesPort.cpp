@@ -24,7 +24,7 @@
 #include <string>
 
 #ifdef __MINGW32__
-    #include "thread.h"
+    #include "mingw.thread.h"
 #else
     #include <thread>
 #endif
