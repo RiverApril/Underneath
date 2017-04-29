@@ -6,6 +6,7 @@ builds/
 *.pyc
 Underneath_*
 *.o
+*.zip
 
 #Xcode:
 Underneath.xcodeproj/
@@ -39,3 +40,4 @@ build/
 #CLion
 .idea/
 cmake-build-debug/
+
