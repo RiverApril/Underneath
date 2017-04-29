@@ -62,7 +62,7 @@ public:
     }
 
     double getMaxHp() {
-        return pool? maxHp+maxMp : maxHp;
+        return maxHp;
     }
 
     double getMp() {
@@ -70,20 +70,24 @@ public:
     }
 
     double getMaxMp() {
-        return pool? maxHp+maxMp : maxMp;
+        return pool? maxHp : maxMp;
     }
     
-    void setMaxHp(double newMaxHp) {
-        maxHp = newMaxHp;
+    void setMaxHpAndMp(double newMaxHp, double newMaxMp) {
+        if(pool){
+            maxHp = newMaxHp + newMaxMp;
+        }else{
+            maxHp = newMaxHp;
+            if(getHp() > maxHp){
+                hp = maxHp;
+            }
+            maxMp = newMaxMp;
+            if(getMp() > maxMp){
+                mp = maxMp;
+            }
+        }
         if(getHp() > maxHp){
             hp = maxHp;
-        }
-    }
-    
-    void setMaxMp(double newMaxMp) {
-        maxMp = newMaxMp;
-        if(getMp() > maxMp){
-            mp = maxMp;
         }
     }
 
