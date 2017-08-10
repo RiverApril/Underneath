@@ -104,8 +104,6 @@ namespace Ui {
         printCenter(3, name);
         setColor(C_WHITE, C_BLACK);
         printCenterOffset(3, ((int) name.length() / 2) + 1, tick%10>=5?"_":" ");
-        
-        mvprintw(terminalSize.y - 1, 0, "<- Back [%s]", keyDisplayName(KEY_ESCAPE).c_str());
 
         //refresh();
     }
