@@ -670,9 +670,21 @@ namespace ItemGenerator {
             ArmorBase* ab = dynamic_cast<ArmorBase*>(eb);
             WeaponBase* wb = dynamic_cast<WeaponBase*>(eb);
             if(ab){
-                ab->enchs.push_back(armorEnchantmentList[rand()%armorEnchantmentList.size()]);
+                EnchantmentBase* newArmorEnch = armorEnchantmentList[rand()%armorEnchantmentList.size()];
+                for(EnchantmentBase* base : eb->enchs){
+                    if(base->effect == newArmorEnch->effect && base->style == newArmorEnch->style){
+                        return; // don't apply the same type of enchantment twice
+                    }
+                }
+                ab->enchs.push_back(newArmorEnch);
             }else if(wb){
-                wb->enchs.push_back(weaponEnchantmentList[rand()%weaponEnchantmentList.size()]);
+                EnchantmentBase* newWepEnch = weaponEnchantmentList[rand()%weaponEnchantmentList.size()];
+                for(EnchantmentBase* base : eb->enchs){
+                    if(base->effect == newWepEnch->effect && base->style == newWepEnch->style){
+                        return; // don't apply the same type of enchantment twice
+                    }
+                }
+                wb->enchs.push_back(newWepEnch);
             }
         }
     }
