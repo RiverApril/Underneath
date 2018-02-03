@@ -377,7 +377,7 @@ namespace WorldLoader {
         World* world = new World(name);
 
         debug("new Level()");
-        world->currentLevel = new Level(world, "Surface", Point2(120, 120), 0, 0);
+        world->currentLevel = new Level(world, "Dungeon I", Point2(120, 120), 0, 1);
 
         srand(static_cast<unsigned int> (time(NULL)));
 
@@ -386,7 +386,7 @@ namespace WorldLoader {
         do {
             start = Point2((rand() % (world->currentLevel->getSize().x-20))+10, (rand() % (world->currentLevel->getSize().y-20))+10);
             world->seed = (unsigned int) rand();
-            p = world->currentLevel->generate(genTypeStartArea, world->seed, start, "", "Dungeon I");
+            p = world->currentLevel->generate(genTypeDungeon, world->seed, start, "", "Dungeon II");
         } while (p.x < 0 || p.y < 0);
 
         debug("Successful generation.");
