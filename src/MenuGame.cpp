@@ -1071,14 +1071,27 @@ namespace Ui {
             Ui::setColor(C_WHITE);
 
             //mvprintw(a++, gameArea.x + 1, "Tick [%c]: %s", spinyIcon->getChar(tick, Point2Neg1, currentLevel), Utility::toString((int)tick, 62).c_str());
+            
+            string s = formatString("%d.%d", ((int)displayTime)%60, (int)(displayTime/100.0f));
+            if(displayTime >= 60){
+                s = formatString("%d:", (((int)displayTime)/60)%60) + s;
+                if(displayTime >= 60*60){
+                    s = formatString("%d:", (((int)displayTime)/60/60)%24) + s;
+                    if(displayTime >= 60*60*24){
+                        s = formatString("%d:", ((int)displayTime)/60/60/24) + s;
+                    }
+                }
+            }
+            printMultiLineString(a++, gameArea.x + 1, s);
 
-            printMultiLineString(a++, gameArea.x + 1, formatString("%d:%02d:%02d:%02d.%02d", (((int)displayTime)/60/60/24), (((int)displayTime)/60/60)%(24), (((int)displayTime)/60)%60, ((int)displayTime)%60, (int)(displayTime/100.0f)));
+            //printMultiLineString(a++, gameArea.x + 1, formatString("%d:%02d:%02d:%02d.%02d", (((int)displayTime)/60/60/24), (((int)displayTime)/60/60)%(24), (((int)displayTime)/60)%60, ((int)displayTime)%60, (int)(displayTime/100.0f)));
             //mvprintw(a++, gameArea.x + 1, "Time: %s", Utility::intToRomanNumerals((int) displayTime).c_str());
 
             if(Settings::debugMode){
             	mvprintw(a++, gameArea.x + 1, "Time: %.2f", displayTime);
                 mvprintw(a++, gameArea.x + 1, "Tick: %d", tick);
             }
+            mvprintw(a++, gameArea.x + 1, "%s", currentLevel->getName().c_str());
 
             if(currentPlayer->abilityPoints > 0){
                 a++;
