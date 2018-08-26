@@ -101,10 +101,12 @@ namespace EnemyGenerator {
         drake->minLootDrop = 1;
         drake->maxLootDrop = 10;
 
-
+        ItemGenerator::WeaponBase* slimeWeapon = new ItemGenerator::WeaponBase(ItemGenerator::wNatural);
+        slimeWeapon->damageType = damBlunt;
         slime = atl(new EntityBase(30, "Slime", 's', aiAttack, 40, ItemGenerator::wNatural, "Goo", C_LIGHT_YELLOW, 1.0));
-        slime->weaknesses.push_back(Weakness(damSharp, .25));
-        slime->weaknesses.push_back(Weakness(damPierce, .25));
+        slime->weaknesses.push_back(Weakness(damSharp, .5));
+        slime->weaknesses.push_back(Weakness(damPierce, .5));
+        slime->weaknesses.push_back(Weakness(damBlunt, .5));
         slime->lootProfileIndex = atl(new LootProfile(true, false));
 
 
