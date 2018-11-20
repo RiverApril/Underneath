@@ -892,7 +892,7 @@ namespace Ui {
         clrtoeol();
 
         int mpStrL = 1;
-        if(maxMp > 0){
+        if(maxMp > 0 && !player->specials[specialPoolHpMp]){
             setColor(C_LIGHT_BLUE);
             string mpStr = formatString("%d/%d", mp, maxMp);
             mpStrL += (int)mpStr.size();
