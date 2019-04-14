@@ -270,18 +270,18 @@ double EntityMulti::hurt(Level* level, ItemWeapon* w, double damageMultiplier){
     return EntityAlive::hurt(level, w, damageMultiplier);
 }
 
-bool EntityMulti::tryToMoveAbsalute(Point2 p, Level* world, bool force){
+bool EntityMulti::tryToMoveAbsolute(Point2 p, Level* world, bool force){
     bool can = true;
     for(EntityMultiSub* entity : subEntities){
-        if(!entity->canMoveAbsalute(p+entity->relPos, world, force)){
+        if(!entity->canMoveAbsolute(p+entity->relPos, world, force)){
             can = false;
         }
     }
     if(can){
         for(EntityMultiSub* entity : subEntities){
-            entity->tryToMoveAbsalute(p+entity->relPos, world, force);
+            entity->tryToMoveAbsolute(p+entity->relPos, world, force);
         }
-        Entity::tryToMoveAbsalute(p, world, force);
+        Entity::tryToMoveAbsolute(p, world, force);
         return true;
     }
     return false;

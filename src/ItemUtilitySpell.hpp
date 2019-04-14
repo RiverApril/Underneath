@@ -13,7 +13,7 @@
 #include "Item.hpp"
 #include "Math.hpp"
 
-enum SpellEffect{spellRemoteUse, spellRelocate, spellBarrier, spellDebugPlaceWall, spellDebugPlaceFloor, spellDebugPlaceGoblin, spellDebugPlaceShop, spellDebugPlaceBoss};
+enum SpellEffect{spellRemoteUse, spellRelocate, spellBarrier, spellDebugPlaceWall, spellDebugPlaceFloor, spellDebugPlaceGoblin, spellDebugPlaceShop, spellDebugPlaceBoss, spellSwap};
 
 class ItemUtilitySpell : public Item {
 public:

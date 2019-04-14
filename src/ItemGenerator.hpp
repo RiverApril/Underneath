@@ -335,6 +335,7 @@ namespace ItemGenerator {
     extern ScrollBase* scrollRemoteUse;
     extern ScrollBase* scrollRelocate;
     extern ScrollBase* scrollBarrier;
+    extern ScrollBase* scrollSwap;
 
     extern BombBase* bombWallSmall;
     extern BombBase* bombWallLarge;

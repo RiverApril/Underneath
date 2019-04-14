@@ -40,8 +40,8 @@ Entity::~Entity() {
 
 }
 
-bool Entity::tryToMoveAbsalute(Point2 p, Level* level, bool force) {
-    if(canMoveAbsalute(p, level, force)){
+bool Entity::tryToMoveAbsolute(Point2 p, Level* level, bool force) {
+    if(canMoveAbsolute(p, level, force)){
         lastPos = pos;
         pos = p;
         return true;
@@ -49,7 +49,7 @@ bool Entity::tryToMoveAbsalute(Point2 p, Level* level, bool force) {
     return false;
 }
 
-bool Entity::canMoveAbsalute(Point2 p, Level* level, bool force) {
+bool Entity::canMoveAbsolute(Point2 p, Level* level, bool force) {
     
     
     if (level->tileAt(p)->doesNotHaveAnyOfFlags(getSolidity())) {
@@ -85,7 +85,7 @@ bool Entity::tryToMoveRelative(Point2 p, Level* level) {
     if (p == Point2Zero) {
         return false;
     }
-    return tryToMoveAbsalute(pos + p, level);
+    return tryToMoveAbsolute(pos + p, level);
 }
 
 bool Entity::update(double deltaTime, double time, Level* level) {

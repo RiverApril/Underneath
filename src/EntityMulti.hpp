@@ -55,7 +55,7 @@ public:
         return (aiMulti & aiMultiAttackNormal) || (aiMulti & aiMultiAttackThrow);
     }
     
-    virtual bool tryToMoveAbsalute(Point2 p, Level* world, bool force = false);
+    virtual bool tryToMoveAbsolute(Point2 p, Level* world, bool force = false);
     
     virtual void setActiveItemWeapon(ItemWeapon* newItemWeapon);
     

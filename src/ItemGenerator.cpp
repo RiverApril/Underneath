@@ -52,6 +52,7 @@ namespace ItemGenerator {
     ScrollBase* scrollRemoteUse;
     ScrollBase* scrollRelocate;
     ScrollBase* scrollBarrier;
+    ScrollBase* scrollSwap;
 
     BombBase* bombWallSmall;
     BombBase* bombWallLarge;
@@ -170,6 +171,7 @@ namespace ItemGenerator {
         scrollRemoteUse = atl(new ScrollBase({{"Telekinesis Scroll"}}, spellRemoteUse));
         scrollRelocate = atl(new ScrollBase({{"Relocation Scroll"}}, spellRelocate));
         scrollBarrier = atl(new ScrollBase({{"Barrier Scroll"}}, spellBarrier));
+        scrollSwap = atl(new ScrollBase({{"Swap Scroll"}}, spellSwap));
 
 
         bombWallSmall = atl(new BombBase({{"Small Destructive Explosive"}}, timeActivatedBomb, 5, 10, 500, 1000, 1, 3, true))->setArts({Arts::artBomb});
@@ -340,6 +342,7 @@ namespace ItemGenerator {
             l.emplace_back(5, scrollBarrier);
             l.emplace_back(5, scrollRelocate);
             l.emplace_back(5, scrollRemoteUse);
+            l.emplace_back(5, scrollSwap);
             l.emplace_back(10, bombWallSmall);
             l.emplace_back(15, bombWallLarge);
             l.emplace_back(10, molotovCocktail);
@@ -551,6 +554,10 @@ namespace ItemGenerator {
 
             case spellBarrier:
                 utilitySpell->artIndex = Arts::artScrollShield;
+                break;
+
+            case spellSwap:
+                utilitySpell->artIndex = Arts::artScrollPerson;
                 break;
 
             default:
@@ -1014,6 +1021,7 @@ namespace ItemGenerator {
             loots.emplace_back(40, scrollRelocate);
             loots.emplace_back(40, scrollRemoteUse);
             loots.emplace_back(40, scrollBarrier);
+            loots.emplace_back(40, scrollSwap);
 
             loots.emplace_back(60, bombWallSmall);
             loots.emplace_back(80, bombWallLarge);

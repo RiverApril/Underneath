@@ -749,7 +749,7 @@ namespace Ui {
                                 console("Where to go now?");
                                 c = false;
                             }
-                            timePassed = currentPlayer->moveAbsalute(next, currentLevel, false);
+                            timePassed = currentPlayer->moveAbsolute(next, currentLevel, false);
                             if(timePassed == 0){
                                 console("Your path is blocked!");
                                 c = false;
@@ -890,12 +890,12 @@ namespace Ui {
                 if(Settings::cheatKeysEnabled){
                     if (in == 'r') {
                         Point2 p = currentLevel->findRandomWithoutFlag(currentPlayer->getSolidity());
-                        timePassed += currentPlayer->moveAbsalute(p, currentLevel, false);
+                        timePassed += currentPlayer->moveAbsolute(p, currentLevel, false);
 
                     } else if (in == 'R') {
                         Point2 p = currentLevel->stairDownPos;
                         consolef("Stair Down: %s", p.toString().c_str());
-                        //timePassed += currentPlayer->moveAbsalute(p, currentLevel);
+                        //timePassed += currentPlayer->moveAbsolute(p, currentLevel);
                         currentPlayer->pos = p;
 
                     } else if (in == '[') {

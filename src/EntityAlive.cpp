@@ -300,9 +300,9 @@ void EntityAlive::load(vector<unsigned char>* data, int* position) {
     }
 }
 
-bool EntityAlive::tryToMoveAbsalute(Point2 p, Level* level, bool force) {
+bool EntityAlive::tryToMoveAbsolute(Point2 p, Level* level, bool force) {
     
-    if(Entity::tryToMoveAbsalute(p, level, force)){
+    if(Entity::tryToMoveAbsolute(p, level, force)){
         int index = level->indexAt(p);
         if(index == Tiles::tileSpikes->getIndex() || index == Tiles::tileBloodSpikes->getIndex()){
             Effect e = Effect(effDamage, randomRange(10, 20), 10, damBlood);

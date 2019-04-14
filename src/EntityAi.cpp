@@ -176,7 +176,7 @@ void EntityAi::moveAi(double time, Level* level) {
                             p.y = (rand()%((int)ir->range*2)) - ir->range + target->pos.y;
                             //level->setTile(p, Tiles::tileDebug4);
                             if(level->canSee(pos, p, ir->range) && sqrt(distanceSquared(target->pos, p)) >= min(5.0, ir->range)){
-                                tryToMoveAbsalute(p, level);
+                                tryToMoveAbsolute(p, level);
                                 tele = true;
                                 break;
                             }

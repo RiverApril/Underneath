@@ -77,12 +77,12 @@ bool EntityPlayer::update(double deltaTime, double time, Level* level) {
     return EntityAlive::update(deltaTime, time, level);
 }
 
-double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract, bool force) {
+double EntityPlayer::moveAbsolute(Point2 p, Level* level, bool canInteract, bool force) {
     if(hasEffect(effStun)){
         console("You are stunned! You can only wait.");
         return 1;
     }
-    if (tryToMoveAbsalute(p, level, force)) {
+    if (tryToMoveAbsolute(p, level, force)) {
         return moveDelay;
     } else if(canInteract) {
         return interact(level, p, true, getActiveItemWeapon(), false);
@@ -91,7 +91,7 @@ double EntityPlayer::moveAbsalute(Point2 p, Level* level, bool canInteract, bool
 }
 
 double EntityPlayer::moveRelative(Point2 p, Level* level) {
-    return moveAbsalute(p + pos, level, true);
+    return moveAbsolute(p + pos, level, true);
 }
 
 double EntityPlayer::useItemOnOther(Item* itemToUse, Item* itemToBeUsedOn){
@@ -177,7 +177,7 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                             posToInteract = level->findRandomWithoutFlag(getSolidity());
                         }
                         
-                        moveAbsalute(posToInteract, level, false, true);
+                        moveAbsolute(posToInteract, level, false, true);
                         break;
                     case spellBarrier:{
                         bool success = false;
@@ -233,6 +233,10 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         level->newEntity(e);
                         break;
                     }
+                    default:{
+                        use = 0;
+                        break;
+                    }
                 }
                 if (use == 2) {
                     if (item->qty == 1) {
@@ -241,7 +245,9 @@ double EntityPlayer::interact(Level* level, Point2 posToInteract, bool needToBeS
                         item->qty -= 1;
                     }
                 }
-                return interactDelay;
+                if(use){
+                    return interactDelay;
+                }
             }
         }
 
@@ -462,6 +468,33 @@ double EntityPlayer::interactWithEntity(Level* level, Entity* e, Point2 posOfEnt
 
     if (e->removed) {
         return 0;
+    }
+
+
+    ItemUtilitySpell* utilSpell = dynamic_cast<ItemUtilitySpell*> (item);
+
+    if(utilSpell){
+        if(utilSpell->spellEffect == spellSwap){
+            int use = 0;
+            if (utilSpell->manaCost == -1) {
+                use = 2;
+            } else if (getMp() >= utilSpell->manaCost) {
+                changeMp(-utilSpell->manaCost);
+                use = 1;
+            }
+            if (use) {
+                e->tryToMoveAbsolute(pos, level, true);
+                moveAbsolute(posOfEntity, level, false, true);
+            }
+            if (use == 2) {
+                if (item->qty == 1) {
+                    removeItem(item, true);
+                } else {
+                    item->qty -= 1;
+                }
+            }
+            return interactDelay;
+        }
     }
 
     if (distanceSquared(posOfEntity, pos) <= 1) {
