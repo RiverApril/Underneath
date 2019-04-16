@@ -515,7 +515,7 @@ namespace Utility {
     }
 
     string capitalize(string s){
-        s[0] = (char)min((int)s[0], (int)(s[0]-('a'-'A')));
+        s[0] = (s[0] >= 'a' && s[0] <= 'z')?(s[0]-('a'-'A')):s[0];
         return s;
     }
 

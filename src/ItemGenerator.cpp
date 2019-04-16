@@ -987,6 +987,9 @@ namespace ItemGenerator {
                 case spellBarrier:
                     value = 150;
                     break;
+                case spellSwap:
+                    value = 200;
+                    break;
                 default:
                     value = -1;
                     break;

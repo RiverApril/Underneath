@@ -581,7 +581,7 @@ namespace Ui {
                 }
 
                 if(item->coinValue > 0){
-                    a += printMultiLineString(a, columnX, formatString("Value: %d¢", item->coinValue));
+                    a += printMultiLineString(a, columnX, formatString("Value: %d%s", item->coinValue, SYMBOL_COIN));
                 }
 
                 setColor(C_LIGHT_GRAY, C_BLACK);
@@ -664,6 +664,10 @@ namespace Ui {
 
                         case spellBarrier:
                             a += printMultiLineString(a, columnX, "Place a 3x3 square of destrutable walls at a selected location.");
+                            break;
+
+                        case spellSwap:
+                            a += printMultiLineString(a, columnX, "Swap places with a selected entity.");
                             break;
 
                         default:
