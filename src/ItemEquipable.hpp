@@ -192,7 +192,7 @@ public:
         if(this->getViableSlots().size() > 0 && b.getViableSlots().size() > 0){
             return this->getViableSlots()[0] < b.getViableSlots()[0];
         }else{
-            return this->getViableSlots().size() < b.getViableSlots().size();
+            return this->name < b.name;
         }
     }
 

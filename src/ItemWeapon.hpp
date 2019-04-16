@@ -67,7 +67,10 @@ public:
     vector<Enchantment> enchantments;
 
     bool operator< (ItemWeapon& b){
-        return this->damageType < b.damageType;
+        if(this->damageType != b.damageType){
+            return this->damageType < b.damageType;
+        }
+        return this->name < b.name;
     }
 
 protected:

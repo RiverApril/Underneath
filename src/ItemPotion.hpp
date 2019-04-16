@@ -53,15 +53,7 @@ public:
         return name;
     }
 
-    bool operator< (ItemPotion& b){
-        if(this->effects.size() == b.effects.size()){
-            return this->effects.size() < b.effects.size();
-        }else if(this->effects.size() > 0 && b.effects.size() > 0){
-            return this->effects[0].eId < b.effects[0].eId;
-        }else{
-            return this->effects.size() < b.effects.size();
-        }
-    }
+    bool operator< (ItemPotion& b);
 
 protected:
 };

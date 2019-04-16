@@ -46,7 +46,10 @@ public:
     int iconIndex = -1;
 
     bool operator< (ItemExplosive& b){
-        return this->explosiveType < b.explosiveType;
+        if(this->explosiveType != b.explosiveType){
+            return this->explosiveType < b.explosiveType;
+        }
+        return this->name < b.name;
     }
 
 

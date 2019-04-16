@@ -80,7 +80,10 @@ public:
     vector<EquipSlot> viableSlots;
 
     bool operator< (ItemArmor& b){
-        return this->viableSlots[0] < b.viableSlots[0];
+        if(this->viableSlots[0] != b.viableSlots[0]){
+            return this->viableSlots[0] < b.viableSlots[0];
+        }
+        return this->name < b.name;
     }
     
 protected:

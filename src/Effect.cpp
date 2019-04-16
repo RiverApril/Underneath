@@ -18,7 +18,7 @@ string effectName(Effect eff) {
             return damageTypeName((DamageType) eff.meta);
 
         case effHeal:
-            return "Heal";
+            return (((int)eff.meta == 0) ? "Heal" : (((int)eff.meta == 1) ? "Heal Mana" : "Heal Unknown"));
 
         case effMultAttack:
             return (string(damageTypeName((DamageType) eff.meta)))+" Attacks";

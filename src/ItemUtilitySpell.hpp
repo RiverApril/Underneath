@@ -57,7 +57,10 @@ public:
     }
 
     bool operator< (ItemUtilitySpell& b){
-        return this->spellEffect < b.spellEffect;
+        if(this->spellEffect != b.spellEffect){
+            return this->spellEffect < b.spellEffect;
+        }
+        return this->name < b.name;
     }
 
 protected:

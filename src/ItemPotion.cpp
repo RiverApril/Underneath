@@ -28,3 +28,14 @@ void ItemPotion::load(vector<unsigned char>* data, int* position) {
         effects.push_back(Effect(data, position));
     }
 }
+
+bool ItemPotion::operator< (ItemPotion& b){
+    if(this->effects.size() > 0 && b.effects.size() > 0){
+        if(this->effects[0].eId != b.effects[0].eId){
+            return this->effects[0].eId < b.effects[0].eId;
+        }else if(this->effects[0].meta != b.effects[0].meta){
+            return this->effects[0].meta < b.effects[0].meta;
+        }
+    }
+    return this->name < b.name;
+}

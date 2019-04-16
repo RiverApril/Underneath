@@ -46,7 +46,10 @@ public:
     int radius = 0;
 
     bool operator< (ItemAreaOfEffectWeapon& b){
-        return this->damageType < b.damageType;
+        if(this->damageType != b.damageType){
+            return this->damageType < b.damageType;
+        }
+        return this->name < b.name;
     }
     
 protected:
