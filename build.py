@@ -31,6 +31,7 @@ parser.add_argument("-d", "--debug", action="store_true")
 parser.add_argument("-t", "--notart", action="store_true")
 parser.add_argument("-w", "--windows", action="store_true")
 parser.add_argument("-i", "--dontCheckIncludes", action="store_true")
+parser.add_argument("-x", "--noUnicode", action="store_true")
 parser.add_argument("--use64", action="store_true")
 parser.add_argument("--use32", action="store_true")
 parser.add_argument("--compiler", help="specify compiler")
@@ -115,6 +116,10 @@ if args.SDLGraphics:
 if args.SDLAudio:
     executableName += "_SDLaud"
     compilerFlags += " -D useSDLAudio"
+
+if args.noUnicode:
+    executableName += "_ASCII"
+    compilerFlags += " -D NO_UNICODE"
 
 if args.windows:
 
