@@ -557,7 +557,7 @@ namespace ItemGenerator {
                 break;
 
             case spellSwap:
-                utilitySpell->artIndex = Arts::artScrollPerson;
+                utilitySpell->artIndex = Arts::artScrollSwap;
                 break;
 
             default:

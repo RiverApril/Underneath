@@ -38,6 +38,7 @@ namespace Arts {
     int artScrollHeal;
     int artScrollPerson;
     int artScrollShield;
+    int artScrollSwap;
 
     int artPotion1;
     int artPotion2;
@@ -114,6 +115,7 @@ namespace Arts {
         Arts::artScrollHeal = Arts::loadNew(ArtDir + "/", "scrollHeal", ArtFiles::scrollHeal);
         Arts::artScrollPerson = Arts::loadNew(ArtDir + "/", "scrollPerson", ArtFiles::scrollPerson);
         Arts::artScrollShield = Arts::loadNew(ArtDir + "/", "scrollShield", ArtFiles::scrollShield);
+        Arts::artScrollSwap = Arts::loadNew(ArtDir + "/", "scrollSwap", ArtFiles::scrollSwap);
 
         Arts::artPotion1 = Arts::loadNew(ArtDir + "/", "potion1", ArtFiles::potion1);
         Arts::artPotion2 = Arts::loadNew(ArtDir + "/", "potion2", ArtFiles::potion2);
