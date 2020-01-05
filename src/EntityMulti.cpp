@@ -198,6 +198,10 @@ void EntityMulti::attackAi(double time, Level* level){
             lastThrowTime += 5;
         }
     }
+
+    if(!canSeeTarget){
+        lastThrowTime = time;
+    }
     
     if (activeItemWeapon != nullptr) {
         while (lastAttackTime + activeItemWeapon->useDelay <= time) {

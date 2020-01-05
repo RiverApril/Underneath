@@ -72,6 +72,8 @@ public:
         EntityAlive::healMana(amount);
     }
 
+    virtual void die();
+
     virtual void setActiveItemWeapon(ItemWeapon* newItemWeapon);
 
     virtual ItemWeapon* getActiveItemWeapon() {

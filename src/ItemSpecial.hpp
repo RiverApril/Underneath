@@ -38,7 +38,10 @@ public:
     SpecialType specialty = specialtyCoin;
 
     bool operator< (ItemSpecial& b){
-        return this->specialty < b.specialty;
+        if(this->specialty != b.specialty){
+            return this->specialty < b.specialty;
+        }
+        return this->name < b.name;
     }
 
     virtual UseType getUseType(){

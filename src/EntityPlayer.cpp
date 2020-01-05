@@ -938,12 +938,6 @@ double EntityPlayer::hurtMiddleStep(Level* level, DamageType damageType, double 
 
     damageMultiplier *= getRecivedDamageMultiplierFromArmorAndEquips(damageType);
 
-    for(pair<EquipSlot, Item*> p : equipedItems){
-        if(p.second){
-
-        }
-    }
-
     return damageMultiplier;
 }
 
@@ -1075,5 +1069,23 @@ void EntityPlayer::changeSpecial(Special sp, bool enable){
     updateVariablesForAbilities();
 }
 
+void EntityPlayer::die() {
+    if(rand() % max(100-abilities[iLUK], 1) == 0){
+        double nowHp = getHp();
+        changeHp(nowHp < 0 ? -nowHp : 0);
+        changeHp(1);
 
+        forVector(effects, i) {
+            Effect* e = &effects[i];
+            e->timeLeft = 0;
+            effects.erase(effects.begin()+(long) i);
+            i--;
+            effectsChanged();
+        }
+
+        consolef("You almost died! Luckily you were able to hang on.");
+    }else{
+        EntityAlive::die();
+    }
+}
 
