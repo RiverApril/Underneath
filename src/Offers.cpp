@@ -2,8 +2,8 @@
 //  Offers.cpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 3/14/17.
-//  Copyright (c) 2017 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 3/14/17.
+//  Copyright (c) 2017 Emily Atlee. All rights reserved.
 //
 
 #include "Offers.hpp"

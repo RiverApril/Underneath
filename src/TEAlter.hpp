@@ -2,8 +2,8 @@
 //  TEAlter.hpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 3/11/17.
-//  Copyright © 2017 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 3/11/17.
+//  Copyright © 2017 Emily Atlee. All rights reserved.
 //
 
 #ifndef TEAlter_hpp

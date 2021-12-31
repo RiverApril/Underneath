@@ -2,8 +2,8 @@
 //  MenuEscape.cpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 5/26/16.
-//  Copyright © 2016 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 5/26/16.
+//  Copyright © 2016 Emily Atlee. All rights reserved.
 //
 
 #include "MenuEscape.hpp"

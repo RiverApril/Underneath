@@ -2,8 +2,8 @@
 //  EntityItem.cpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 11/15/14.
-//  Copyright (c) 2014 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 11/15/14.
+//  Copyright (c) 2014 Emily Atlee. All rights reserved.
 //
 
 #include "EntityItem.hpp"

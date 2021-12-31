@@ -2,8 +2,8 @@
 //  Tile.hpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 9/29/14.
-//  Copyright (c) 2014 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 9/29/14.
+//  Copyright (c) 2014 Emily Atlee. All rights reserved.
 //
 
 #ifndef __Underneath__Tile__

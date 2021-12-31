@@ -2,8 +2,8 @@
 //  Effect.hpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 3/2/14.
-//  Copyright (c) 2014 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 3/2/14.
+//  Copyright (c) 2014 Emily Atlee. All rights reserved.
 //
 
 #ifndef __Underneath__Effect__

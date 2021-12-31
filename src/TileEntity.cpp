@@ -2,8 +2,8 @@
 //  TileEntity.cpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 2/20/15.
-//  Copyright (c) 2015 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 2/20/15.
+//  Copyright (c) 2015 Emily Atlee. All rights reserved.
 //
 
 #include "TileEntity.hpp"

@@ -2,8 +2,8 @@
 //  EntityMoving.cpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 3/10/16.
-//  Copyright © 2016 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 3/10/16.
+//  Copyright © 2016 Emily Atlee. All rights reserved.
 //
 
 #include "EntityMoving.hpp"

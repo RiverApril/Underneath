@@ -2,8 +2,8 @@
 //  MenuCredits.cpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 12/30/15.
-//  Copyright © 2015 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 12/30/15.
+//  Copyright © 2015 Emily Atlee. All rights reserved.
 //
 
 #include "MenuCredits.hpp"
@@ -25,7 +25,7 @@ namespace Ui {
         printCenter(1, "C R E D I T S");
 
         printCenter(3, "- Lead Developer / Programmer / Artist -");
-        printCenter(4, "Braeden Atlee");
+        printCenter(4, "Emily Atlee");
     }
     
 }

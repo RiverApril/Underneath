@@ -2,8 +2,8 @@
 //  Icon.hpp
 //  Underneath
 //
-//  Created by Braeden Atlee on 4/15/15.
-//  Copyright (c) 2015 Braeden Atlee. All rights reserved.
+//  Created by Emily Atlee on 4/15/15.
+//  Copyright (c) 2015 Emily Atlee. All rights reserved.
 //
 
 #ifndef __Underneath__Icon__
