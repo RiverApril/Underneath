@@ -1118,8 +1118,9 @@ namespace Ui {
                 if (nearestEntity && !nearestEntity->removed && !dynamic_cast<EntityMultiSub*>(nearestEntity)) {
                     Ui::setColor(C_WHITE);
 
-                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("[&%c%c&%c] %s ", cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE), nearestEntity->getName().c_str()));
+                    bool sharesSpace = distanceSquared(nearestEntity->pos, currentPlayer->pos) < 1.0;
 
+                    a += printMultiLineColoredString(a, gameArea.x + 1, formatString("%c&%c%c&%c%c %s ", sharesSpace?'<':'[', cc(nearestEntity->getFgColor(tick, p, currentLevel), nearestEntity->getBgColor(tick, p, currentLevel)), nearestEntity->getChar(tick, nearestEntity->pos, currentLevel), cc(C_WHITE), sharesSpace?'>':']', nearestEntity->getName().c_str()));
 
                     EntityAlive* alive = dynamic_cast<EntityAlive*> (nearestEntity);
                     if (alive) {
