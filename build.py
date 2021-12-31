@@ -194,8 +194,8 @@ if args.windows:
     else:
         executableName += "_Windows.exe"
 elif systemName == "Darwin":
-    executableName += "_OSX"
-    #OSX 32 bit is obsolete
+    executableName += "_macOS"
+    #macOS 32 bit is obsolete
 else:
     if build64Bit:
         executableName += "_"+systemName+"_64"
